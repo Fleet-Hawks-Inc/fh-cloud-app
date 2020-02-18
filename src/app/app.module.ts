@@ -18,6 +18,7 @@ import { RFormsComponent } from './r-forms/r-forms.component';
 import { CompanyInfoComponent } from './company-info/company-info.component';
 import { AddQuantumComponent } from './add-quantum/add-quantum.component';
 import { AddUserComponent } from './add-user/add-user.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,9 @@ import { AddUserComponent } from './add-user/add-user.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
