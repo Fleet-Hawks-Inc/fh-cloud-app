@@ -22,7 +22,7 @@
     "memory": "512",
     "cpu": "256",
     "executionRoleArn": "arn:aws:iam::112567001577:role/fh-cloud-app-execution-role",
-    "family": "fh-app-task-definition",
+    "family": "fh-cloud-app-task-definition",
     "taskRoleArn": "",
     "placementConstraints": []
 }
