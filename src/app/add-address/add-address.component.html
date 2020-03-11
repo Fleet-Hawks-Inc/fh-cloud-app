@@ -1,0 +1,163 @@
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+
+    <!-- end: header -->
+
+
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body">
+            <header class="page-header">
+                <h2>{{title}}</h2>
+
+                <div class="right-wrapper text-right">
+                    <ol class="breadcrumbs">
+                        <li>
+                            <a routerLink="">
+                                <i class="fas fa-home"></i>
+                            </a>
+                        </li>
+
+                        <li><span>{{title}}</span></li>
+                    </ol>
+
+
+                </div>
+            </header>
+
+
+
+            <div class="row">
+                <div class="col">
+                    <section class="card">
+                        <header class="card-header">
+
+
+                            <h2 class="card-title">{{title}}</h2>
+                        </header>
+                        <div class="card-body">
+                            <form class="form-horizontal form-bordered" method="get">
+                                
+                                <div class="form-group row">
+                                    <div class="col-lg-6">
+                                       <label class="control-label text-lg-right pt-2" for="inputDefault">Parent</label>
+                                       <input type="text" class="form-control" name="parent" [(ngModel)]="parent">
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <label class="control-label text-lg-right pt-2" for="inputDefault">Document ID</label>
+                                       <input type="text" class="form-control" name="documentID" [(ngModel)]="documentID">
+                                    </div>
+                                 </div>
+                                 <div class="form-group row">
+                                    <div class="col-lg-6">
+                                       <label class="control-label text-lg-right pt-2" for="inputDefault">Street No</label>
+                                       <input type="text" class="form-control" name="stNo" [(ngModel)]="stNo">
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <label class="control-label text-lg-right text-dark text-4 pt-2" for="inputDefault">Street Name</label>
+                                       <input type="text" class="form-control" name="streetName" [(ngModel)]="streetName">							  
+                                    </div>
+                                 </div>
+                                 <div class="form-group row">
+                                    <div class="col-lg-6">
+                                       <label class="control-label text-lg-right pt-2" for="inputDefault">City</label>
+                                       <select data-plugin-selectTwo class="form-control populate" name="city" [(ngModel)]="city">
+                                          <optgroup label="">
+                                             <option value="1">123</option>
+                                             <option value="2">456</option>
+                                             <option value="2">789</option>
+                                             <option value="2">0123</option>
+                                             <option value="2">456</option>
+                                             <option value="2">789</option>
+                                             <option value="2">0123</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <label class="control-label text-lg-right pt-2" for="inputDefault">State</label>
+                                       <select data-plugin-selectTwo class="form-control populate" name="state" [(ngModel)]="state">
+                                          <optgroup label="">
+                                             <option value="1">123</option>
+                                             <option value="2">456</option>
+                                             <option value="2">789</option>
+                                             <option value="2">0123</option>
+                                             <option value="2">456</option>
+                                             <option value="2">789</option>
+                                             <option value="2">0123</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                 </div>
+                                 <div class="form-group row">
+                                    <div class="col-lg-6">
+                                       <label class="control-label text-lg-right pt-2" for="inputDefault">Zip Code</label>
+                                       <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode">
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <label class="control-label text-lg-right pt-2" for="inputDefault">Country</label>
+                                       <select data-plugin-selectTwo class="form-control populate" name="country" [(ngModel)]="country">
+                                          <optgroup label="">
+                                             <option value="1">123</option>
+                                             <option value="2">456</option>
+                                             <option value="2">789</option>
+                                             <option value="2">0123</option>
+                                             <option value="2">456</option>
+                                             <option value="2">789</option>
+                                             <option value="2">0123</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                 </div>
+                                 <div class="form-group row">
+                                    <div class="col-lg-12">
+                                       <label class="control-label text-lg-right pt-2" for="inputDefault">Geo Location</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <label class="control-label text-lg-right pt-2" for="inputDefault">Latitude</label>
+                                       <input type="text" class="form-control" name="geoLocationLat" [(ngModel)]="geoLocationLat">
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <label class="control-label text-lg-right pt-2" for="inputDefault">Longtitude</label>
+                                       <input type="text" class="form-control" name="geoLocationLong" [(ngModel)]="geoLocationLong">
+                                    </div>
+                                 </div>
+                                 <div class="form-group row">
+                                    <div class="col-lg-12">
+                                       <label class="control-label text-lg-right pt-2" for="inputDefault">Address Type</label>
+                                       <input type="text" class="form-control" name="addressType" [(ngModel)]="addressType">
+                                    </div>
+                                 </div>
+                                 <div class="form-group row">
+                                    <div class="col-lg-12">
+                                       <button class="btn btn-dark mt-4 modal-confirm" (click)="addAddress()">Submit</button>
+                                    </div>
+                                 </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+
+                                        <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
+                                        <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+
+
+
+
+
+</section>

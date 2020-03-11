@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {ApiService} from "../api.service";
 import {AuthService} from "../auth.service";
+import {Observable} from "rxjs/index";
 
 @Component({
   selector: 'app-login',
@@ -12,12 +13,13 @@ export class LoginComponent implements OnInit {
 
   email: string;
   password: string;
-  response : any ='';
+  response : any = '';
   hasError : boolean = false;
-  Error : string = '';
+  Error: string = '';
+
   constructor(private apiService: ApiService,
               private router: Router,
-  private authService: AuthService) {}
+              private authService: AuthService) {}
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
@@ -27,15 +29,16 @@ export class LoginComponent implements OnInit {
 
   LoginAction() {
     this.hasError = false;
-
-    const data = {'userName': this.email ,
-      'password': this.password };
-    this.apiService.postData('auth', data).
+    const data = JSON.stringify({'userName': this.email ,
+      'password': this.password });
+    this.apiService.getJwt('auth', data).
     subscribe({
       complete : () => {},
       error : (err) => {
         this.hasError = true;
         this.Error = err.error;
+        console.log(this.Error);
+       // console.log("clickes");
       },
       next: (res) => {
         this.response = res;

@@ -16,6 +16,9 @@ export class AddUserComponent implements OnInit {
   userName = '';
   password = '';
   address = '';
+  city = '';
+  state = '';
+  zipCode = '';
   phone = '';
   model = '';
   carrierID = '';
@@ -25,10 +28,8 @@ export class AddUserComponent implements OnInit {
   userType = '';
   currentStatus = '';
   streetName = '';
-  city = '';
-  state = '';
-  zipCode = '';
   Country = '';
+  status = '';
 
 
 
@@ -46,20 +47,20 @@ export class AddUserComponent implements OnInit {
   ngOnInit() {}
 
   addUser() {
+
     this.hasError = false;
     this.hasSuccess = false;
-
     const data = {
       "userName" : this.userName,
       "password": this.password,
-      "address": this.address,
+      "address": this.streetName + ' ,' + this.city + ' ,' + this.zipCode ,
       "phone":this.phone,
-      "carrierID": "kodebuilders",
+      "carrierID": "fleethawks",
       "firstName": this.firstName,
       "lastName":this.lastName,
       "email": this.email,
       "userType": this.userType,
-      "currentStatus": "ENABLED",
+      "currentStatus": this.status,
       "userPrivileges": {
         "apiKeys": "FULL",
         "users": "FULL"
@@ -80,23 +81,23 @@ export class AddUserComponent implements OnInit {
         this.hasSuccess = true;
         this.Success = 'User Added successfully';
 
-        // this.vehicleID = '';
-        // this.vin = '';
-        // this.year = '';
-        // this.make = '';
-        // this.model = '';
-        // this.fuelType = '';
-        // this.state = '';
-        // this.plateNumber = '';
-        // this.inspectionFormID = '';
-        // this.UID = '';
-        // this.status = 'Active';
-        // this.driverUserName = '';
-        // this.currentStatus = 'Active';
-        // this.companyID = '';
-        // this.lastServiceTime = '';
-        // this.quantum = '';
-        // this.quantumSelected = '';
+        this.userName = '';
+        this.password = '';
+        this.address = '';
+        this.city = '';
+        this.state = '';
+        this.zipCode = '';
+        this.phone = '';
+        this.model = '';
+        this.carrierID = '';
+        this.firstName = '';
+        this.lastName = '';
+        this.email = '';
+        this.userType = '';
+        this.currentStatus = '';
+        this.streetName = '';
+        this.Country = '';
+        this.status = 'Active';
 
 
 

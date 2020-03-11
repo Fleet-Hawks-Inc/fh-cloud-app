@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../api.service';
 import {Router} from '@angular/router';
-import {FormControl, FormGroup} from '@angular/forms';
+
 declare var $: any;
+declare var jQuery: any;
 @Component({
   selector: 'app-add-vehicle',
   templateUrl: './add-vehicle.component.html',
   styleUrls: ['./add-vehicle.component.css']
 })
 export class AddVehicleComponent implements OnInit {
-
-
   title = 'Add Vehicles';
 
   /********** Form Fields ***********/
@@ -31,8 +30,10 @@ export class AddVehicleComponent implements OnInit {
   lastServiceTime = '';
   quantum = '';
   quantumSelected = '';
+  quantumStatus = '';
   /******************/
 
+  quantumsList = '';
 
   response : any ='';
   hasError : boolean = false;
@@ -42,14 +43,20 @@ export class AddVehicleComponent implements OnInit {
   constructor(private apiService: ApiService,
               private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    this.apiService.getData('quantums')
+        .subscribe((result: any) => {
+          this.quantumsList = result.Items;
+        });
+
+  }
 
   addVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
 
     const data = {
-      'vehicleID': this.vehicleID,
       'vin': this.vin,
       'vehicleInfo': {
         'year': this.year,
@@ -58,17 +65,16 @@ export class AddVehicleComponent implements OnInit {
       },
       'fuelType': this.fuelType,
       'license': {
-        'state': this.status,
+        'state': this.state,
         'plateNumber': this.plateNumber
       },
-      'inspectionFormID': this.vehicleID,
+      'inspectionFormID': this.inspectionFormID,
       'quantumInfo': {
-        'UID': this.vehicleID,
-        'status': this.status
+        'UID': this.quantum,
+        'status': this.quantumStatus
       },
-      'driverUserName': 'test',
+      'driverUserName': 'default',
       'currentStatus': this.currentStatus,
-      'carrierID': 'testCompany',
       'lastServiceTime': this.lastServiceTime
     };
 
