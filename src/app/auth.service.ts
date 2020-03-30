@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
-import {Observable} from "rxjs/index";
-import {ApiService} from "./api.service";
+import {Observable} from 'rxjs/index';
+import {ApiService} from './api.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements CanActivate{
+export class AuthService implements CanActivate {
   private message: string;
+  private jwtHelper = new JwtHelperService();
   constructor(private _router: Router,
   private apiService: ApiService) { }
 
@@ -23,8 +25,10 @@ export class AuthService implements CanActivate{
    * @return {boolean}
    */
   isAuthenticated(): boolean {
+
     if (localStorage.getItem('LoggedIn') != null && localStorage.getItem('jwt') != null) {
       this.apiService.jwt = localStorage.getItem('jwt');
+      this.apiService.jwtDecoded = this.decode();
       return true;
     }
     return false;
@@ -33,6 +37,7 @@ export class AuthService implements CanActivate{
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (this.isAuthenticated()) {
+      this.apiService.jwtDecoded = this.decode();
       return true;
     }
     // navigate to login page
@@ -69,6 +74,9 @@ export class AuthService implements CanActivate{
   }
 
   decode() {
-    //return decode(localStorage.getItem('token'));
+    const decodedToken =  this.jwtHelper.decodeToken(localStorage.getItem('jwt'));
+    // console.log(decodedToken);
+    // console.log(decodedToken.carrierID);
+    return decodedToken;
   }
 }

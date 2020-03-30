@@ -8,6 +8,8 @@ import {BaseUrl} from "../objects/objects";
 export class ApiService {
 
   public jwt = '';
+  public jwtDecoded;
+  public carrierID = '';
   private httpOptions = {
     headers: new HttpHeaders({
       'Accept': 'text/html, application/xhtml+xml, */*',
@@ -15,13 +17,50 @@ export class ApiService {
     }),
     responseType: 'text'
   };
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.jwt = localStorage.getItem('jwt');
+  }
 
-  postData(url: string, data) {
-    let headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
-    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBmbGVldGhhd2tzLmNvbSIsImZpcnN0TmFtZSI6InRlc3QiLCJsYXN0TmFtZSI6InRlc3RsYXN0IiwidXNlclR5cGUiOiJBRE1JTiIsImNhcnJpZXJJRCI6ImZsZWV0LWhhd2tzIiwiY3VycmVudFN0YXR1cyI6ImRjIiwidXNlclByaXZpbGVnZXMiOnsidXNlck1hbmFnZW1lbnQiOnRydWUsImFkZFVzZXIiOnRydWV9LCJpYXQiOjE1ODA3MzY3Nzd9.zUhjMtlOuffP72RPhwq2j9TS2OlHu0VRkeeBuZ6vsoA'})
+  getJwt(url: string, data) {
+    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
     return this.http.post(BaseUrl + url , data , headers);
 
   }
+
+
+  postData(url: string, data) {
+    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
+      'x-auth-token': this.jwt})
+    };
+    return this.http.post(BaseUrl + url , data , headers);
+
+  }
+
+  putData(url: string, data) {
+    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
+      'x-auth-token': this.jwt})
+    };
+    return this.http.put<any>(BaseUrl + url , data , headers);
+
+  }
+
+  getData(url: string) {
+    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
+      'x-auth-token': this.jwt})
+    };
+    return this.http.get<any>(BaseUrl + url , headers);
+  }
+
+  deleteData(url: string) {
+    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
+      'x-auth-token': this.jwt})
+    };
+    return this.http.delete<any>(BaseUrl + url , headers);
+  }
+
+
+
+
+
 }

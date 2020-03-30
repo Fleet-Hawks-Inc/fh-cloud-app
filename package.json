@@ -19,6 +19,14 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "@auth0/angular-jwt": "^4.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^5.2.2",
+    "aws-crt": "^1.0.4",
+    "aws-iot-device-sdk": "^2.2.3",
+    "aws-iot-device-sdk-v2": "^1.0.3",
+    "aws-sdk": "^2.632.0",
+    "buffer": "^5.4.3",
+    "jwt-decode": "^2.2.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
@@ -30,7 +38,7 @@
     "@angular/language-service": "~8.2.14",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "^8.9.5",
+    "@types/node": "^8.10.59",
     "codelyzer": "^5.0.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
@@ -43,5 +51,9 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3"
+  },
+  "browser":{
+    "tls":false,
+    "fs":false
   }
 }

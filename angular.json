@@ -26,7 +26,22 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/vendor/modernizr/modernizr.min.js",
+              "src/assets/vendor/jquery/jquery.js",
+              "src/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js",
+              "src/assets/vendor/popper/umd/popper.min.js",
+              "src/assets/vendor/bootstrap/js/bootstrap.js",
+              "src/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js",
+              "src/assets/vendor/common/common.js",
+              "src/assets/vendor/nanoscroller/nanoscroller.js",
+              "src/assets/vendor/magnific-popup/jquery.magnific-popup.js",
+              "src/assets/vendor/jquery-placeholder/jquery.placeholder.js",
+              "src/assets/js/theme.js",
+              "src/assets/js/custom.js",
+              "src/assets/js/theme.init.js",
+              "src/assets/js/examples/examples.dashboard.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -48,13 +63,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "4mb",
+                  "maximumWarning": "2mb",
                   "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "100kb",
-                  "maximumError": "100kb"
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
                 }
               ]
             }

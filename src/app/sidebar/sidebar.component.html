@@ -4,7 +4,8 @@
         <div class="sidebar-title">
             Navigation
         </div>
-        <div class="sidebar-toggle d-none d-md-block" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+        <div class="sidebar-toggle d-none d-md-block" data-toggle-class="sidebar-left-collapsed" data-target="html"
+            data-fire-event="sidebar-left-toggle">
             <i class="fas fa-bars" aria-label="Toggle sidebar"></i>
         </div>
     </div>
@@ -20,20 +21,20 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-parent nav-active">
+                    <li class="nav-parent nav-active" (click)="clickEvent($event)" [ngClass]="{'nav-expanded': toggle}">
                         <a class="nav-link" [routerLink]="">
                             <i class="fas fa-car" aria-hidden="true"></i>
                             <span>Vehicles</span>
                         </a>
                         <ul class="nav nav-children">
                             <li>
-                            <a class="nav-link" routerLink="/Add-Vehicle">
-                               Add Vehicle
-                            </a>
-                        </li>
+                                <a class="nav-link" routerLink="/Add-Vehicle">
+                                    Add Vehicle
+                                </a>
+                            </li>
 
                             <li>
-                                <a class="nav-link" [routerLink]="">
+                                <a class="nav-link" routerLink="/Vehicle-List">
                                     Vehicles List
                                 </a>
                             </li>
@@ -42,7 +43,7 @@
 
                         </ul>
                     </li>
-                    <li class="nav-parent">
+                    <li class="nav-parent" (click)="clickEvent($event)" [ngClass]="{'nav-expanded': toggle}">
                         <a class="nav-link" [routerLink]="">
                             <i class="fas fa-users" aria-hidden="true"></i>
                             <span>Quantums</span>
@@ -50,12 +51,11 @@
                         <ul class="nav nav-children">
                             <li>
                                 <a class="nav-link" routerLink="/Add-Quantum">
-                                   Add Quantum
+                                    Add Quantum
                                 </a>
                             </li>
                             <li>
-                                <a class="nav-link" [routerLink]="">
-                                    Quantums List                                </a>
+                                <a class="nav-link" routerLink="/Quantum-List">Quantums List</a>
                             </li>
 
 
@@ -66,23 +66,69 @@
                     <li class="nav-parent">
                         <a class="nav-link" href="#">
                             <i class="fas fa-check-square" aria-hidden="true"></i>
-                            <span>Inspections</span>
+                            <span>User</span>
                         </a>
                         <ul class="nav nav-children">
                             <li>
-                                <a class="nav-link" href="#">
-                                    Daily Inspections
+                                <a class="nav-link" routerLink="/Add-User">
+                                    Add User
                                 </a>
                             </li>
                             <li>
-                                <a class="nav-link" href="#">
-                                    User 2
+                                <a class="nav-link" routerLink="/User-List">
+                                    User List
                                 </a>
                             </li>
 
 
                         </ul>
                     </li>
+
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-check-square" aria-hidden="true"></i>
+                            <span>Groups</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Group">
+                                    Add Group
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Group-List">
+                                    Group List
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-check-square" aria-hidden="true"></i>
+                            <span>Assets</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Assets">
+                                    Add Asset
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Assets-List">
+                                    Asset List
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
 
                     <li class="nav-parent">
                         <a class="nav-link" href="#">
@@ -91,13 +137,13 @@
                         </a>
                         <ul class="nav nav-children">
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fule History
+                                <a class="nav-link" routerLink="/Add-Fuel-Entry">
+                                    Add Fuel Entry
                                 </a>
                             </li>
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fuel Integrations
+                                <a class="nav-link" routerLink="/Fuel-Entry-List">
+                                    Fuel Entry List
                                 </a>
                             </li>
 
@@ -109,17 +155,134 @@
                         <a class="nav-link" href="#">
 
                             <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
-                            <span>Issues</span>
+                            <span>Expenses</span>
                         </a>
                         <ul class="nav nav-children">
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fule History
+                                <a class="nav-link" routerLink="/Add-Expenses">
+                                    Add Expenses
                                 </a>
                             </li>
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fuel Integrations
+                                <a class="nav-link" routerLink="/Expenses-List">
+                                    Expenses List
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Expense Types</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Expense-Type">
+                                    Add Expense Types
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Expenses-Type-List">
+                                    Expenses Type List
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Trips</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Trip">
+                                    Add Trips
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Trips-List">
+                                    Trips List
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Shippers</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Shipper">
+                                    Add Shipper
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Shipper-List">
+                                    Shipper List
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Service Vendor</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Service-Vendor">
+                                    Add Service Vendor
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Service-Vendor-List">
+                                    Service Vendor List
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Documents</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Documents">
+                                    Add Documents
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Documents-List">
+                                    Documents List
                                 </a>
                             </li>
 
@@ -129,18 +292,19 @@
 
                     <li class="nav-parent">
                         <a class="nav-link" href="#">
-                            <i class="fas fa-wrench" aria-hidden="true"></i>
-                            <span>Service</span>
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Daily Inspections</span>
                         </a>
                         <ul class="nav nav-children">
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fule History
+                                <a class="nav-link" routerLink="/Add-Daily-Inspection">
+                                    Add Daily Inspection
                                 </a>
                             </li>
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fuel Integrations
+                                <a class="nav-link" routerLink="/Daily-Inspection-List">
+                                    Daily Inspection List
                                 </a>
                             </li>
 
@@ -150,18 +314,19 @@
 
                     <li class="nav-parent">
                         <a class="nav-link" href="#">
-                            <i class="fas fa-chart-pie" aria-hidden="true"></i>
-                            <span>Reports</span>
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Customers</span>
                         </a>
                         <ul class="nav nav-children">
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fule History
+                                <a class="nav-link" routerLink="/Add-Customer">
+                                    Add Customer
                                 </a>
                             </li>
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fuel Integrations
+                                <a class="nav-link" routerLink="/Customer-List">
+                                    Customers
                                 </a>
                             </li>
 
@@ -171,18 +336,19 @@
 
                     <li class="nav-parent">
                         <a class="nav-link" href="#">
-                            <i class="fas fa-star-half-alt" aria-hidden="true"></i>
-                            <span>Driver Ranking</span>
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Yards</span>
                         </a>
                         <ul class="nav nav-children">
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fule History
+                                <a class="nav-link" routerLink="/Add-Yard">
+                                    Add Yard
                                 </a>
                             </li>
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fuel Integrations
+                                <a class="nav-link" routerLink="/Yard-List">
+                                    Yards
                                 </a>
                             </li>
 
@@ -192,19 +358,19 @@
 
                     <li class="nav-parent">
                         <a class="nav-link" href="#">
-                            <i class="fas fa-connectdevelop" aria-hidden="true"></i>
 
-                            <span>Connect</span>
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Insurances</span>
                         </a>
                         <ul class="nav nav-children">
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fule History
+                                <a class="nav-link" routerLink="/Add-Insurance">
+                                    Add Insurance
                                 </a>
                             </li>
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fuel Integrations
+                                <a class="nav-link" routerLink="/Insurance-List">
+                                    Insurances
                                 </a>
                             </li>
 
@@ -214,23 +380,345 @@
 
                     <li class="nav-parent">
                         <a class="nav-link" href="#">
-                            <i class="fas fa-building" aria-hidden="true"></i>
 
-                            <span>Company</span>
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Entries</span>
                         </a>
                         <ul class="nav nav-children">
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fule History
+                                <a class="nav-link" routerLink="/Add-Entry">
+                                    Add Entry
                                 </a>
                             </li>
                             <li>
-                                <a class="nav-link" href="#">
-                                    Fuel Integrations
+                                <a class="nav-link" routerLink="/Entries-List">
+                                    Entries
                                 </a>
                             </li>
 
 
+                        </ul>
+                    </li>
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Contacts</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Contact">
+                                    Add Contact
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Contacts-List">
+                                    Contacts
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Receivers</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Receiver">
+                                    Add Receiver
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Receivers-List">
+                                    Receivers
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Addresses</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Address">
+                                    Add Address
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Addresses-List">
+                                    Addresses
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Inspection Forms</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Inspection-Form">
+                                    Add Inspection Form
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Inspection-Form-List">
+                                    Inspection Form List
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Accounts</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Account">
+                                    Add Account
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Accounts-List">
+                                    Accounts List
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Tickets</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Ticket">
+                                    Add Ticket
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Tickets-List">
+                                    Tickets List
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Vehicle Service Logs</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Vehicle-Service-Log">
+                                    Add Vehicle Service Log
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Vehicle-Service-Logs-List">
+                                    Vehicle Service Logs List
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Certificates</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Certificate">
+                                    Add Certificate
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Certificates-List">
+                                    Certificates List
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>Carriers</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" routerLink="/Add-Carrier">
+                                    Add Carrier
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/Carriers-List">
+                                    Carriers List
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+
+
+                    <!--<li class="nav-parent">-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--<i class="fas fa-wrench" aria-hidden="true"></i>-->
+                    <!--<span>Service</span>-->
+                    <!--</a>-->
+                    <!--<ul class="nav nav-children">-->
+                    <!--<li>-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--Fule History-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--Fuel Integrations-->
+                    <!--</a>-->
+                    <!--</li>-->
+
+
+                    <!--</ul>-->
+                    <!--</li>-->
+
+                    <!--<li class="nav-parent">-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--<i class="fas fa-chart-pie" aria-hidden="true"></i>-->
+                    <!--<span>Reports</span>-->
+                    <!--</a>-->
+                    <!--<ul class="nav nav-children">-->
+                    <!--<li>-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--Fule History-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--Fuel Integrations-->
+                    <!--</a>-->
+                    <!--</li>-->
+
+
+                    <!--</ul>-->
+                    <!--</li>-->
+
+                    <!--<li class="nav-parent">-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--<i class="fas fa-star-half-alt" aria-hidden="true"></i>-->
+                    <!--<span>Driver Ranking</span>-->
+                    <!--</a>-->
+                    <!--<ul class="nav nav-children">-->
+                    <!--<li>-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--Fule History-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--Fuel Integrations-->
+                    <!--</a>-->
+                    <!--</li>-->
+
+
+                    <!--</ul>-->
+                    <!--</li>-->
+
+                    <!--<li class="nav-parent">-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--<i class="fas fa-connectdevelop" aria-hidden="true"></i>-->
+
+                    <!--<span>Connect</span>-->
+                    <!--</a>-->
+                    <!--<ul class="nav nav-children">-->
+                    <!--<li>-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--Fule History-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--Fuel Integrations-->
+                    <!--</a>-->
+                    <!--</li>-->
+
+
+                    <!--</ul>-->
+                    <!--</li>-->
+
+                    <!--<li class="nav-parent">-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--<i class="fas fa-building" aria-hidden="true"></i>-->
+
+                    <!--<span>Company</span>-->
+                    <!--</a>-->
+                    <!--<ul class="nav nav-children">-->
+                    <!--<li>-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--Fule History-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a class="nav-link" href="#">-->
+                    <!--Fuel Integrations-->
+                    <!--</a>-->
+                    <!--</li>-->
+
+
+                    <!--</ul>-->
+                    <!--</li>-->
+
+
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-power-off" aria-hidden="true"></i>
+                            <span>Action</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" [routerLink]="" (click)="Logout()">
+                                    Logout
+                                </a>
+                            </li>
                         </ul>
                     </li>
 

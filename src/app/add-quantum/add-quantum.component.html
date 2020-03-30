@@ -51,15 +51,14 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <label class="control-label text-lg-right pt-2">Mac ID</label>
-                                        <input type="text" class="form-control" name="serialNo" [(ngModel)]="macId">
+                                        <input type="text" class="form-control" name="macId" [(ngModel)]="macId">
                                     </div>
                                     <div class="col-lg-4">
                                         <label class="control-label text-lg-right pt-2" >Status</label>
-                                        <select data-plugin-selectTwo class="form-control populate" name="serialNo" [(ngModel)]="status">
-                                            <option value="1">123</option>
-                                                <option value="2">456</option>
-                                                <option value="2">789</option>
-                                                <option value="2">000</option>
+                                        <select data-plugin-selectTwo class="form-control populate" name="status" [(ngModel)]="status">
+                                            <option value="Active">Active</option>
+                                                <option value="De-active">De-active</option>
+
 
                                         </select>
                                     </div>
@@ -136,14 +135,25 @@
                                         <input type="text" class="form-control" name="phoneNumber" [(ngModel)]="phoneNumber">
                                     </div>
                                     <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Service Provider</label>
-                                        <select data-plugin-selectTwo class="form-control populate" name="serviceProvider" [(ngModel)]="serviceProvider">
-                                            <option value="1">123</option>
-                                            <option value="2">456</option>
-                                            <option value="2">789</option>
-                                            <option value="2">000</option>
+                                        <label class="control-label text-lg-right pt-2" >Curernt Firmware Version</label>
+                                        <input type="text" class="form-control" name="currentFirmwareVersion" [(ngModel)]="currentFirmwareVersion">
+                                    </div>
+                                </div>
 
-                                        </select>
+
+                                <div class="form-group row">
+
+                                    <div class="col-lg-4">
+                                        <label class="control-label text-lg-right pt-2" >Applivation Version</label>
+                                        <input type="text" class="form-control" name="applicationVersion" [(ngModel)]="applicationVersion">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="control-label text-lg-right pt-2" >Last Certification Rotation</label>
+                                        <input type="text" class="form-control" name="lastCertificateRotation" [(ngModel)]="lastCertificateRotation">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="control-label text-lg-right pt-2" >Api Url</label>
+                                        <input type="text" class="form-control" name="apiURL" [(ngModel)]="apiURL">
                                     </div>
                                 </div>
 
