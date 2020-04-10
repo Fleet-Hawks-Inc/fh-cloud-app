@@ -52,8 +52,8 @@
     "tslint": "~5.15.0",
     "typescript": "~3.5.3"
   },
-  "browser":{
-    "tls":false,
-    "fs":false
+  "browser": {
+    "tls": false,
+    "fs": false
   }
 }

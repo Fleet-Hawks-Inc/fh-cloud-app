@@ -4,8 +4,8 @@ import {ApiService} from "../api.service";
 
 @Component({
   selector: 'app-edit-insurance',
-  templateUrl: './edit-Insurance.component.html',
-  styleUrls: ['./edit-Insurance.component.css']
+  templateUrl: './edit-insurance.component.html',
+  styleUrls: ['./edit-insurance.component.css']
 })
 export class EditInsuranceComponent implements OnInit {
   title = 'Edit Insurance';
