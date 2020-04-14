@@ -96,6 +96,7 @@ import { CertificatesComponent } from './certificates/certificates.component';
 import { AddCarrierComponent } from './add-carrier/add-carrier.component';
 import { EditCarrierComponent } from './edit-carrier/edit-carrier.component';
 import { CarriersComponent } from './carriers/carriers.component';
+import { AddVehicleNewComponent } from './add-vehicle-new/add-vehicle-new.component';
 
 
 
@@ -190,6 +191,7 @@ import { CarriersComponent } from './carriers/carriers.component';
     AddCarrierComponent,
     EditCarrierComponent,
     CarriersComponent,
+    AddVehicleNewComponent,
 
   ],
   imports: [
