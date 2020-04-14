@@ -1,17 +1,20 @@
 import { Component, OnInit } from "@angular/core";
-import {ApiService} from '../api.service';
-import {Router} from '@angular/router';
+import { ApiService } from "../api.service";
+import { ActivatedRoute } from "@angular/router";
+import { read } from "fs";
+
 declare var $: any;
 
 @Component({
-  selector: "app-add-vehicle-new",
-  templateUrl: "./add-vehicle-new.component.html",
-  styleUrls: ["./add-vehicle-new.component.css"],
+  selector: "app-edit-vehicle-new",
+  templateUrl: "./edit-vehicle-new.component.html",
+  styleUrls: ["./edit-vehicle-new.component.css"],
 })
-export class AddVehicleNewComponent implements OnInit {
-  title = 'Add Vehicles';
+export class EditVehicleNewComponent implements OnInit {
+  title = "Add Vehicles";
 
   activeTab = "details";
+  vehicleID = "";
   vehicleName = "";
   VIN = "";
   year = "";
@@ -27,39 +30,39 @@ export class AddVehicleNewComponent implements OnInit {
     vehicleColor: "",
     bodyType: "",
     bodySubType: "",
-  }
+  };
   lifeCycle = {
     estimatedServiceLifeInMonths: "",
-    estimatedServiceLifeInMiles: "" 
-  }
+    estimatedServiceLifeInMiles: "",
+  };
   dimensions = {
     width: "",
-    height:  "",
+    height: "",
     length: "",
     interiorVolume: "",
     passengerVolume: "",
     cargoVolume: "",
     groundClearance: "",
-    badLength: ""
-  }
+    badLength: "",
+  };
   weight = {
     curbWeight: "",
-    grossVehicleWeightRating: ""
-  }
+    grossVehicleWeightRating: "",
+  };
   performace = {
     towingCapacity: "",
-    maxPayload:  "" 
-  }
+    maxPayload: "",
+  };
   fuelEconomy = {
     EPACity: "",
     EPAHighway: "",
-    EPACombined: ""
-  }
+    EPACombined: "",
+  };
   fuel = {
     fuelType: "",
     fuelTank1Capacity: "",
-    fuelTank2Capacity: ""
-  }
+    fuelTank2Capacity: "",
+  };
   oilCapacity = "";
   features = {
     breakSystem: "",
@@ -72,47 +75,117 @@ export class AddVehicleNewComponent implements OnInit {
     rearTyreType: "",
     rearTrackWidth: "",
     rearWheelDiameter: "",
-    rearTyrePSI: "" 
-  }
+    rearTyrePSI: "",
+  };
   settings = {
     primaryMeter: "",
     fuelUnit: "",
-    measurementUnit: ""
-  }
+    measurementUnit: "",
+  };
   safetyParameters = {
     hardBreakingParameters: "",
     hardAccelrationParameters: "",
-    turningParameters: ""
-  }
+    turningParameters: "",
+  };
 
-
-  response : any ='';
-  hasError : boolean = false;
+  response: any = "";
+  hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error : string = '';
-  Success : string = '';
+  Error: string = "";
+  Success: string = "";
 
-  constructor(private apiService: ApiService,
-    private router: Router) {}
-  
+  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+
   ngOnInit() {
-    this.settings.primaryMeter = "kilometers";
-    this.settings.fuelUnit = "liters";
-    this.settings.measurementUnit = "metric";
-    this.safetyParameters.hardBreakingParameters = "6";
-    this.safetyParameters.hardAccelrationParameters = "6";
-    this.safetyParameters.turningParameters = "6";
+    this.vehicleID = this.route.snapshot.params["vehicleID"];
 
-    $('#hardBreakingParametersValue').html(6);
-    $('#hardAccelrationParametersValue').html(6);
-    $('#turningParametersValue').html(6);
+    this.apiService
+      .getData("vehicles/" + this.vehicleID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+        this.vehicleName = result.vehicleName;
+        this.VIN = result.VIN;
+        this.year = result.year;
+        this.make = result.make;
+        this.model = result.model;
+        this.state = result.state;
+        this.plateNumber = result.plateNumber;
+        this.serviceProgram = result.serviceProgram;
+        this.currentStatus = result.currentStatus;
+        this.group = result.group;
+        this.ownership = result.ownership;
+        this.additionalDetails.vehicleColor =
+          result.additionalDetails.vehicleColor;
+        this.additionalDetails.bodyType = result.additionalDetails.bodyType;
+        (this.additionalDetails.bodySubType =
+          result.additionalDetails.bodySubType),
+          (this.lifeCycle.estimatedServiceLifeInMonths =
+            result.lifeCycle.estimatedServiceLifeInMonths),
+          (this.lifeCycle.estimatedServiceLifeInMiles =
+            result.lifeCycle.estimatedServiceLifeInMiles);
+
+        this.dimensions.width = result.dimensions.width;
+        this.dimensions.height = result.dimensions.height;
+        this.dimensions.length = result.dimensions.length;
+        this.dimensions.interiorVolume = result.dimensions.interiorVolume;
+        this.dimensions.passengerVolume = result.dimensions.passengerVolume;
+        this.dimensions.cargoVolume = result.dimensions.cargoVolume;
+        this.dimensions.groundClearance = result.dimensions.groundClearance;
+        this.dimensions.badLength = result.dimensions.badLength;
+
+        this.weight.curbWeight = result.weight.curbWeight;
+        this.weight.grossVehicleWeightRating =
+          result.weight.grossVehicleWeightRating;
+
+        this.performace.towingCapacity = result.performace.towingCapacity;
+        this.performace.maxPayload = result.performace.maxPayload;
+
+        this.fuelEconomy.EPACity = result.fuelEconomy.EPACity;
+        this.fuelEconomy.EPAHighway = result.fuelEconomy.EPAHighway;
+        this.fuelEconomy.EPACombined = result.fuelEconomy.EPACombined;
+
+        this.fuel.fuelType = result.fuel.fuelType;
+        this.fuel.fuelTank1Capacity = result.fuel.fuelTank1Capacity;
+        this.fuel.fuelTank2Capacity = result.fuel.fuelTank2Capacity;
+
+        this.oilCapacity = result.oilCapacity;
+        this.features.breakSystem = result.features.breakSystem;
+        this.features.wheelBase = result.features.wheelBase;
+        this.features.rearAxle = result.features.rearAxle;
+        this.features.frontTyreType = result.features.frontTyreType;
+        this.features.frontTrackWidth = result.features.frontTrackWidth;
+        this.features.frontWheelDiameter = result.features.frontWheelDiameter;
+        this.features.frontTyrePSI = result.features.frontTyrePSI;
+        this.features.rearTyreType = result.features.rearTyreType;
+        this.features.rearTrackWidth = result.features.rearTrackWidth;
+        this.features.rearWheelDiameter = result.features.rearWheelDiameter;
+        this.features.rearTyrePSI = result.features.rearTyrePSI;
+
+        this.settings.primaryMeter = result.settings.primaryMeter;
+        this.settings.fuelUnit = result.settings.fuelUnit;
+        this.settings.measurementUnit = result.settings.measurementUnit;
+
+        this.safetyParameters.hardBreakingParameters =
+          result.safetyParameters.hardBreakingParameters;
+        this.safetyParameters.hardAccelrationParameters =
+          result.safetyParameters.hardAccelrationParameters;
+        this.safetyParameters.turningParameters =
+          result.safetyParameters.turningParameters;
+
+          $('#hardBreakingParametersValue').html(this.safetyParameters.hardBreakingParameters);
+          $('#hardAccelrationParametersValue').html(this.safetyParameters.hardAccelrationParameters);
+          $('#turningParametersValue').html(this.safetyParameters.turningParameters);
+      });
+
+    //console.log(this.vehicleID);
   }
 
-  addVehicle() {
+  updateVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
-    console.log(this.dimensions);
+
     const data = {
+      vehicleID: this.vehicleID,
       vehicleName: this.vehicleName,
       VIN: this.VIN,
       year: this.year,
@@ -187,25 +260,24 @@ export class AddVehicleNewComponent implements OnInit {
       }
   };
 
-console.log(data);
-    this.apiService.postData('vehicles', data).
+    this.apiService.putData('vehicles', data).
     subscribe({
-      complete : () => {},
-      error : (err) => {
-        this.hasError = true;
-        this.Error = err.error;
-      },
-      next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
-        this.Success = 'Vehicle Added successfully';
+        complete : () => {},
+        error : (err) => {
+            this.hasError = true;
+            this.Error = err.error;
+        },
+        next: (res) => {
+            this.response = res;
+            this.hasSuccess = true;
+            this.Success = 'Vehicle Updated successfully';
 
-
-      }
+        }
     });
-  }
+}
+
   new_details() {
-    this.activeTab="details";
+    this.activeTab = "details";
     document.getElementById("vehicle_new_details").style.display = "block";
     document.getElementById("vehicle_new_lifecycle").style.display = "none";
     document.getElementById("vehicle_new_specifications").style.display =
@@ -216,7 +288,7 @@ console.log(data);
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_lifecycle() {
-    this.activeTab="lifeCycle";
+    this.activeTab = "lifeCycle";
     document.getElementById("vehicle_new_details").style.display = "none";
     document.getElementById("vehicle_new_lifecycle").style.display = "block";
     document.getElementById("vehicle_new_specifications").style.display =
@@ -227,7 +299,7 @@ console.log(data);
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_specifications() {
-    this.activeTab="specifications";
+    this.activeTab = "specifications";
     document.getElementById("vehicle_new_details").style.display = "none";
     document.getElementById("vehicle_new_lifecycle").style.display = "none";
     document.getElementById("vehicle_new_specifications").style.display =
@@ -238,7 +310,7 @@ console.log(data);
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_fluids() {
-    this.activeTab="fluids";
+    this.activeTab = "fluids";
     document.getElementById("vehicle_new_details").style.display = "none";
     document.getElementById("vehicle_new_lifecycle").style.display = "none";
     document.getElementById("vehicle_new_specifications").style.display =
@@ -249,7 +321,7 @@ console.log(data);
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_wheels() {
-    this.activeTab="wheel&Tyres";
+    this.activeTab = "wheel&Tyres";
     document.getElementById("vehicle_new_details").style.display = "none";
     document.getElementById("vehicle_new_lifecycle").style.display = "none";
     document.getElementById("vehicle_new_specifications").style.display =
@@ -270,7 +342,7 @@ console.log(data);
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_settings() {
-    this.activeTab="settings";
+    this.activeTab = "settings";
     document.getElementById("vehicle_new_details").style.display = "none";
     document.getElementById("vehicle_new_lifecycle").style.display = "none";
     document.getElementById("vehicle_new_specifications").style.display =
@@ -281,33 +353,33 @@ console.log(data);
     document.getElementById("vehicle_new_settings").style.display = "block";
   }
 
-  onChangePrimaryMeter(value: any){
+  onChangePrimaryMeter(value: any) {
     this.settings.primaryMeter = value;
     console.log(value);
     console.log(this.settings);
   }
 
-  onChangeFuelUnit(value: any){
+  onChangeFuelUnit(value: any) {
     this.settings.fuelUnit = value;
   }
 
-  onChangeMeasurementUnit(value: any){
+  onChangeMeasurementUnit(value: any) {
     this.settings.measurementUnit = value;
-  } 
+  }
 
-  onChangeHardBreakingParameters(value: any){
+  onChangeHardBreakingParameters(value: any) {
     this.safetyParameters.hardBreakingParameters = value;
     console.log(value);
-    $('#hardBreakingParametersValue').html(value);
+    $("#hardBreakingParametersValue").html(value);
   }
 
-  onChangeAccelrationParameters(value: any){
+  onChangeAccelrationParameters(value: any) {
     this.safetyParameters.hardAccelrationParameters = value;
-    $('#hardAccelrationParametersValue').html(value);
+    $("#hardAccelrationParametersValue").html(value);
   }
 
-  onChangeturningParameters(value: any){
+  onChangeturningParameters(value: any) {
     this.safetyParameters.turningParameters = value;
-    $('#turningParametersValue').html(value);
+    $("#turningParametersValue").html(value);
   }
 }

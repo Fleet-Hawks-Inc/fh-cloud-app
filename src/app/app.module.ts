@@ -97,6 +97,7 @@ import { AddCarrierComponent } from './add-carrier/add-carrier.component';
 import { EditCarrierComponent } from './edit-carrier/edit-carrier.component';
 import { CarriersComponent } from './carriers/carriers.component';
 import { AddVehicleNewComponent } from './add-vehicle-new/add-vehicle-new.component';
+import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.component';
 
 
 
@@ -192,6 +193,7 @@ import { AddVehicleNewComponent } from './add-vehicle-new/add-vehicle-new.compon
     EditCarrierComponent,
     CarriersComponent,
     AddVehicleNewComponent,
+    EditVehicleNewComponent,
 
   ],
   imports: [
