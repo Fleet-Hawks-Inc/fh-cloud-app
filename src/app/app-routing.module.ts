@@ -101,6 +101,7 @@ import {AddCarrierComponent} from "./add-carrier/add-carrier.component";
 import {EditCarrierComponent} from "./edit-carrier/edit-carrier.component";
 import {CarriersComponent} from "./carriers/carriers.component";
 
+import {AddVehicleNewComponent} from "./add-vehicle-new/add-vehicle-new.component";
 const routes: Routes = [
    {path: '',  redirectTo: '/Login', pathMatch: 'full'},
    {path: 'Login', component: LoginComponent},
@@ -213,6 +214,8 @@ const routes: Routes = [
     {path: 'Edit-Carrier/:carrierID', component: EditCarrierComponent},
     // {path : 'Ndashboard', component : NewDashboardComponent},
     // {path : 'temp', component : TempComponent}
+
+    {path: 'Add-Vehicle-New', component: AddVehicleNewComponent},
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
