@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ApiService } from "../api.service";
 import { ActivatedRoute } from "@angular/router";
-import { read } from "fs";
 
 declare var $: any;
 
@@ -12,8 +11,18 @@ declare var $: any;
 })
 export class EditVehicleNewComponent implements OnInit {
   title = "Add Vehicles";
-
   activeTab = "details";
+
+  /**
+   * Quantum Prop
+   */
+  quantumsList = [];
+  quantum = "";
+  quantumSelected = "";
+
+  /**
+   * Vehicle Prop
+   */
   vehicleID = "";
   vehicleName = "";
   VIN = "";
@@ -99,6 +108,10 @@ export class EditVehicleNewComponent implements OnInit {
   ngOnInit() {
     this.vehicleID = this.route.snapshot.params["vehicleID"];
 
+    this.apiService.getData("quantums").subscribe((result: any) => {
+      this.quantumsList = result.Items;
+    });
+
     this.apiService
       .getData("vehicles/" + this.vehicleID)
       .subscribe((result: any) => {
@@ -171,10 +184,17 @@ export class EditVehicleNewComponent implements OnInit {
           result.safetyParameters.hardAccelrationParameters;
         this.safetyParameters.turningParameters =
           result.safetyParameters.turningParameters;
+        this.quantum = result.quantumInfo;
 
-          $('#hardBreakingParametersValue').html(this.safetyParameters.hardBreakingParameters);
-          $('#hardAccelrationParametersValue').html(this.safetyParameters.hardAccelrationParameters);
-          $('#turningParametersValue').html(this.safetyParameters.turningParameters);
+        $("#hardBreakingParametersValue").html(
+          this.safetyParameters.hardBreakingParameters
+        );
+        $("#hardAccelrationParametersValue").html(
+          this.safetyParameters.hardAccelrationParameters
+        );
+        $("#turningParametersValue").html(
+          this.safetyParameters.turningParameters
+        );
       });
 
     //console.log(this.vehicleID);
@@ -200,39 +220,40 @@ export class EditVehicleNewComponent implements OnInit {
       additionalDetails: {
         vehicleColor: this.additionalDetails.vehicleColor,
         bodyType: this.additionalDetails.bodySubType,
-        bodySubType: this.additionalDetails.bodySubType
+        bodySubType: this.additionalDetails.bodySubType,
       },
       lifeCycle: {
-        estimatedServiceLifeInMonths: this.lifeCycle.estimatedServiceLifeInMonths,
-        estimatedServiceLifeInMiles: this.lifeCycle.estimatedServiceLifeInMiles
+        estimatedServiceLifeInMonths: this.lifeCycle
+          .estimatedServiceLifeInMonths,
+        estimatedServiceLifeInMiles: this.lifeCycle.estimatedServiceLifeInMiles,
       },
       dimensions: {
         width: this.dimensions.width,
-        height:  this.dimensions.height,
+        height: this.dimensions.height,
         length: this.dimensions.length,
         interiorVolume: this.dimensions.interiorVolume,
         passengerVolume: this.dimensions.passengerVolume,
         cargoVolume: this.dimensions.cargoVolume,
         groundClearance: this.dimensions.groundClearance,
-        badLength: this.dimensions.badLength
+        badLength: this.dimensions.badLength,
       },
       weight: {
         curbWeight: this.weight.curbWeight,
-        grossVehicleWeightRating: this.weight.grossVehicleWeightRating
+        grossVehicleWeightRating: this.weight.grossVehicleWeightRating,
       },
       performace: {
         towingCapacity: this.performace.towingCapacity,
-        maxPayload: this.performace.maxPayload
+        maxPayload: this.performace.maxPayload,
       },
       fuelEconomy: {
         EPACity: this.fuelEconomy.EPACity,
         EPAHighway: this.fuelEconomy.EPAHighway,
-        EPACombined: this.fuelEconomy.EPACombined  
+        EPACombined: this.fuelEconomy.EPACombined,
       },
       fuel: {
         fuelType: this.fuel.fuelType,
         fuelTank1Capacity: this.fuel.fuelTank1Capacity,
-        fuelTank2Capacity: this.fuel.fuelTank2Capacity
+        fuelTank2Capacity: this.fuel.fuelTank2Capacity,
       },
       oilCapacity: this.oilCapacity,
       features: {
@@ -246,35 +267,35 @@ export class EditVehicleNewComponent implements OnInit {
         rearTyreType: this.features.rearTyreType,
         rearTrackWidth: this.features.rearTrackWidth,
         rearWheelDiameter: this.features.rearWheelDiameter,
-        rearTyrePSI: this.features.rearTyreType
+        rearTyrePSI: this.features.rearTyreType,
       },
       settings: {
         primaryMeter: this.settings.primaryMeter,
         fuelUnit: this.settings.fuelUnit,
-        measurementUnit: this.settings.measurementUnit
+        measurementUnit: this.settings.measurementUnit,
       },
       safetyParameters: {
         hardBreakingParameters: this.safetyParameters.hardBreakingParameters,
-        hardAccelrationParameters: this.safetyParameters.hardAccelrationParameters,
+        hardAccelrationParameters: this.safetyParameters
+          .hardAccelrationParameters,
         turningParameters: this.safetyParameters.turningParameters,
-      }
-  };
+      },
+      quantumInfo: this.quantum,
+    };
 
-    this.apiService.putData('vehicles', data).
-    subscribe({
-        complete : () => {},
-        error : (err) => {
-            this.hasError = true;
-            this.Error = err.error;
-        },
-        next: (res) => {
-            this.response = res;
-            this.hasSuccess = true;
-            this.Success = 'Vehicle Updated successfully';
-
-        }
+    this.apiService.putData("vehicles", data).subscribe({
+      complete: () => {},
+      error: (err) => {
+        this.hasError = true;
+        this.Error = err.error;
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.Success = "Vehicle Updated successfully";
+      },
     });
-}
+  }
 
   new_details() {
     this.activeTab = "details";
@@ -284,7 +305,6 @@ export class EditVehicleNewComponent implements OnInit {
       "none";
     document.getElementById("vehicle_new_fluids").style.display = "none";
     document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_engine").style.display = "none";
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_lifecycle() {
@@ -295,7 +315,6 @@ export class EditVehicleNewComponent implements OnInit {
       "none";
     document.getElementById("vehicle_new_fluids").style.display = "none";
     document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_engine").style.display = "none";
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_specifications() {
@@ -306,7 +325,6 @@ export class EditVehicleNewComponent implements OnInit {
       "block";
     document.getElementById("vehicle_new_fluids").style.display = "none";
     document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_engine").style.display = "none";
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_fluids() {
@@ -317,7 +335,6 @@ export class EditVehicleNewComponent implements OnInit {
       "none";
     document.getElementById("vehicle_new_fluids").style.display = "block";
     document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_engine").style.display = "none";
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_wheels() {
@@ -328,7 +345,6 @@ export class EditVehicleNewComponent implements OnInit {
       "none";
     document.getElementById("vehicle_new_fluids").style.display = "none";
     document.getElementById("vehicle_new_wheels").style.display = "block";
-    document.getElementById("vehicle_new_engine").style.display = "none";
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_engine() {
@@ -338,7 +354,6 @@ export class EditVehicleNewComponent implements OnInit {
       "none";
     document.getElementById("vehicle_new_fluids").style.display = "none";
     document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_engine").style.display = "block";
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_settings() {
@@ -349,7 +364,6 @@ export class EditVehicleNewComponent implements OnInit {
       "none";
     document.getElementById("vehicle_new_fluids").style.display = "none";
     document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_engine").style.display = "none";
     document.getElementById("vehicle_new_settings").style.display = "block";
   }
 
@@ -381,5 +395,14 @@ export class EditVehicleNewComponent implements OnInit {
   onChangeturningParameters(value: any) {
     this.safetyParameters.turningParameters = value;
     $("#turningParametersValue").html(value);
+  }
+  quantumModal() {
+    $(document).ready(function () {
+      $("#quantumModal").modal("show");
+    });
+  }
+
+  onChange(newValue) {
+    this.quantum = newValue;
   }
 }

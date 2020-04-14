@@ -385,6 +385,23 @@
                   </select>
                 </div>
               </div>
+              <div class="form-group row">
+                <div class="col-lg-12">
+                    <div class="sub-heading-new-vehicle py-2">Quantum Info</div>
+
+                </div>
+
+                <div class="col-lg-6">
+                    <label class="control-label text-lg-right pt-2" for="inputDefault">Assigned Quantum</label>
+                    <input class="form-control" id="inputDisabled" type="text" placeholder="Quantum has been assigned" disabled="" [(ngModel)]="quantum" name="UID">
+                </div>
+                <div class="col-lg-6">
+                    <a class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal" [routerLink]="" (click)="quantumModal()"><i class="fas fa-plus"></i> Assign Quantum</a>
+                </div>
+
+
+
+            </div>
               <div class="sub-heading-new-vehicle py-2">Additional Details</div>
               <div class="form-group row">
                 <div class="col-lg-6">
@@ -926,178 +943,6 @@
               </div>
             </div>
 
-            <!-- ENGINE AND TRANSMISSION -->
-            <div class="card-body" id="vehicle_new_engine">
-              <header class="card-header">
-                <h2 class="card-title">Engine & Transmission</h2>
-              </header>
-              <div class="sub-heading-new-vehicle pt-4 pb-2">Engine</div>
-              <div class="form-group row">
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Engine Summary</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Engine Brand</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Aspiration</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Block Type</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Bore</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Cam Type</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Compression</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Cylinders</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Displacement</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Fuel Induction</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Fuel Quality</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Max HP</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Max Torque</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Redline RPM</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Stroke</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Valves</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-              </div>
-              <div class="sub-heading-new-vehicle py-2">Transmission</div>
-              <div class="form-group row">
-                <div class="col-lg-6">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Transmission Summary</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-6">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Transmission Brand</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-6">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Transmission Type</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="col-lg-6">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Transmission Gears</label
-                  >
-                  <input type="text" class="form-control" />
-                </div>
-              </div>
-            </div>
 
             <!-- SETTINGS -->
             <div class="card-body" id="vehicle_new_settings">
@@ -1308,37 +1153,27 @@
       </div>
     </section>
   </div>
+</section>
 
-  <div id="modalAnim" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+<div id="quantumModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">
-            &times;
-          </button>
-          <!--<h4 class="modal-title">Assign Quantum</h4>-->
-        </div>
-        <div class="modal-body">
-          <h4 class="modal-title">Assign Quantum</h4>
-          <select
-            data-plugin-selectTwo
-            class="form-control populate"
-            [(ngModel)]="quantumSelected"
-            name="quantum info"
-            (ngModelChange)="onChange($event)"
-          >
-            <option *ngFor="let q of quantumsList" value="{{ q.quantumID }}">{{
-              q.sNo
-            }}</option>
-          </select>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-            Close
-          </button>
-        </div>
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <!--<h4 class="modal-title">Assign Quantum</h4>-->
+          </div>
+          <div class="modal-body">
+              <h4 class="modal-title">Assign Quantum</h4>
+              <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="quantumSelected" name="quantum info" (ngModelChange)="onChange($event)">
+                  <option *ngFor="let q of quantumsList" value="{{q.quantumID}}">{{q.sNo}}</option>
+              </select>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
       </div>
-    </div>
+
   </div>
-</section>
+</div>

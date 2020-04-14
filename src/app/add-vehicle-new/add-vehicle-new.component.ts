@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import {ApiService} from '../api.service';
 import {Router} from '@angular/router';
+import { retry } from 'rxjs/internal/operators';
 declare var $: any;
 
 @Component({
@@ -12,6 +13,17 @@ export class AddVehicleNewComponent implements OnInit {
   title = 'Add Vehicles';
 
   activeTab = "details";
+  /**
+   * Quantum prop
+   */
+  quantumsList = [];
+  quantum = '';
+  quantumSelected = '';
+  quantumStatus = '';
+
+  /**
+   * Vehicle Prop
+   */
   vehicleName = "";
   VIN = "";
   year = "";
@@ -96,6 +108,11 @@ export class AddVehicleNewComponent implements OnInit {
     private router: Router) {}
   
   ngOnInit() {
+    this.apiService.getData('quantums')
+    .subscribe((result: any) => {
+      this.quantumsList = result.Items;
+    });
+
     this.settings.primaryMeter = "kilometers";
     this.settings.fuelUnit = "liters";
     this.settings.measurementUnit = "metric";
@@ -111,7 +128,6 @@ export class AddVehicleNewComponent implements OnInit {
   addVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
-    console.log(this.dimensions);
     const data = {
       vehicleName: this.vehicleName,
       VIN: this.VIN,
@@ -184,7 +200,8 @@ export class AddVehicleNewComponent implements OnInit {
         hardBreakingParameters: this.safetyParameters.hardBreakingParameters,
         hardAccelrationParameters: this.safetyParameters.hardAccelrationParameters,
         turningParameters: this.safetyParameters.turningParameters,
-      }
+      },
+      quantumInfo: this.quantum 
   };
 
 console.log(data);
@@ -212,7 +229,6 @@ console.log(data);
       "none";
     document.getElementById("vehicle_new_fluids").style.display = "none";
     document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_engine").style.display = "none";
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_lifecycle() {
@@ -223,7 +239,6 @@ console.log(data);
       "none";
     document.getElementById("vehicle_new_fluids").style.display = "none";
     document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_engine").style.display = "none";
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_specifications() {
@@ -234,7 +249,6 @@ console.log(data);
       "block";
     document.getElementById("vehicle_new_fluids").style.display = "none";
     document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_engine").style.display = "none";
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_fluids() {
@@ -245,7 +259,6 @@ console.log(data);
       "none";
     document.getElementById("vehicle_new_fluids").style.display = "block";
     document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_engine").style.display = "none";
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_wheels() {
@@ -256,7 +269,6 @@ console.log(data);
       "none";
     document.getElementById("vehicle_new_fluids").style.display = "none";
     document.getElementById("vehicle_new_wheels").style.display = "block";
-    document.getElementById("vehicle_new_engine").style.display = "none";
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_engine() {
@@ -266,7 +278,6 @@ console.log(data);
       "none";
     document.getElementById("vehicle_new_fluids").style.display = "none";
     document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_engine").style.display = "block";
     document.getElementById("vehicle_new_settings").style.display = "none";
   }
   new_settings() {
@@ -277,7 +288,6 @@ console.log(data);
       "none";
     document.getElementById("vehicle_new_fluids").style.display = "none";
     document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_engine").style.display = "none";
     document.getElementById("vehicle_new_settings").style.display = "block";
   }
 
@@ -310,4 +320,17 @@ console.log(data);
     this.safetyParameters.turningParameters = value;
     $('#turningParametersValue').html(value);
   }
+
+  quantumModal() {
+    $( document ).ready(function() {
+      $('#quantumModal').modal('show');
+    });
+  }
+
+  onChange(newValue) {
+    this.quantum = newValue;
+    this.quantumSelected = newValue;
+    this.quantumID = newValue; 
+   }
+
 }
