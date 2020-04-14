@@ -73,10 +73,10 @@
                                 </thead>
                                 <tbody>
                                 <tr *ngFor="let vehicle of vehicles">
-                                    <td>{{vehicle.vin}} [{{vehicle.fuelType}}]</td>
+                                    <td>{{vehicle.VIN}}</td>
                                     <td>{{vehicle.currentStatus}}</td>
                                     <td>{{vehicle.carrierID}}</td>
-                                    <td><a routerLink="/Edit-Vehicle/{{vehicle.vehicleID}}">Edit</a></td>
+                                    <td><a routerLink="/Edit-Vehicle-New/{{vehicle.vehicleID}}">Edit</a></td>
                                     <td><a [routerLink]="" (click)="deleteVehicle(vehicle.vehicleID)" >Delete</a></td>
                                     <!--<td class="center d-lg-none">4</td>-->
                                     <!--<td class="center d-lg-none">X</td>-->
