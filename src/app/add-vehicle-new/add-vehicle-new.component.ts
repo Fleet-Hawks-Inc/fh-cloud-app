@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import {ApiService} from '../api.service';
 import {Router} from '@angular/router';
-import { retry } from 'rxjs/internal/operators';
 declare var $: any;
 
 @Component({
@@ -330,7 +329,6 @@ console.log(data);
   onChange(newValue) {
     this.quantum = newValue;
     this.quantumSelected = newValue;
-    this.quantumID = newValue; 
    }
 
 }
