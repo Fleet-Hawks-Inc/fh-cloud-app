@@ -98,8 +98,14 @@ import { EditCarrierComponent } from './edit-carrier/edit-carrier.component';
 import { CarriersComponent } from './carriers/carriers.component';
 import { AddVehicleNewComponent } from './add-vehicle-new/add-vehicle-new.component';
 import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.component';
+
 import { MapDashboardComponent } from './map-dashboard/map-dashboard.component';
 import { NoopAnimationsModule , BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { EditDriverComponent } from './edit-driver/edit-driver.component';
+import { DriverListComponent } from './driver-list/driver-list.component';
+
+
 
 
 @NgModule({
@@ -195,7 +201,12 @@ import { NoopAnimationsModule , BrowserAnimationsModule } from '@angular/platfor
     CarriersComponent,
     AddVehicleNewComponent,
     EditVehicleNewComponent,
+
     MapDashboardComponent,
+
+    EditDriverComponent,
+    DriverListComponent,
+
 
   ],
   imports: [
