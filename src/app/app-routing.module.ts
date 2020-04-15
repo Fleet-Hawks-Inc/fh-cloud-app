@@ -218,6 +218,8 @@ const routes: Routes = [
 
     {path: 'Add-Vehicle-New', component: AddVehicleNewComponent},
     {path: 'Edit-Vehicle-New/:vehicleID', component: EditVehicleNewComponent},
+
+    {path: 'Add-Driver', component: AddDriverComponent},
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
