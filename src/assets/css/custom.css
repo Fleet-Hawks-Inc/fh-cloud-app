@@ -22,3 +22,12 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #5c5c5c; 
   }
+
+  /* make borde red for validation */
+.redBorder {
+  border: solid 1px red;
+}
+
+.red {
+  color: red;
+}

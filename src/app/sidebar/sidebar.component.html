@@ -23,35 +23,26 @@
               <span>Dashboard</span>
             </a>
           </li>
-          <!-- <li
-            class="nav-parent nav-active"
-            (click)="clickEvent($event)"
-            [ngClass]="{ 'nav-expanded': toggle }"
-          >
-            <a class="nav-link" [routerLink]="">
-              <i class="fas fa-car" aria-hidden="true"></i>
-              <span>Vehicles</span>
+          <li class="nav-parent">
+            <a class="nav-link" href="#">
+              <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              <span>Drivers</span>
             </a>
             <ul class="nav nav-children">
               <li>
-                <a class="nav-link" routerLink="/Add-Vehicle">
-                  Add Vehicle
+                <a class="nav-link" routerLink="/Add-Driver">
+                  Add Driver
                 </a>
               </li>
-
               <li>
-                <a class="nav-link" routerLink="/Vehicle-List">
-                  Vehicles List
+                <a class="nav-link" routerLink="/Drivers-List">
+                  Drivers List
                 </a>
               </li>
             </ul>
-          </li> -->
-          <li
-            class="nav-parent nav-active"
-            (click)="clickEvent($event)"
-            [ngClass]="{ 'nav-expanded': toggle }"
-          >
-            <a class="nav-link" [routerLink]="">
+          </li>
+          <li class="nav-parent">
+            <a class="nav-link" href="#">
               <i class="fas fa-car" aria-hidden="true"></i>
               <span>Vehicles</span>
             </a>
@@ -69,12 +60,8 @@
               </li>
             </ul>
           </li>
-          <li
-            class="nav-parent"
-            (click)="clickEvent($event)"
-            [ngClass]="{ 'nav-expanded': toggle }"
-          >
-            <a class="nav-link" [routerLink]="">
+          <li class="nav-parent">
+            <a class="nav-link" href="#">
               <i class="fas fa-users" aria-hidden="true"></i>
               <span>Quantums</span>
             </a>

@@ -1,246 +1,709 @@
-<div class="row">
-    <div class="col">
-        <section class="card">
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
             <header class="card-header">
-                <h2 class="card-title">Details</h2>
+              <h2 class="card-title">Details</h2>
             </header>
             <div class="card-body">
-                <form class="form-horizontal form-bordered" method="get">
-                    <div class="form-group row">
-                        <div class="col-lg-6">
-                            <label class="control-label text-lg-right pt-2" for="inputDefault">Vechile ID</label>
-                            <input type="text" class="form-control" id="inputDefault">
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="control-label text-lg-right pt-2" for="inputDefault">VIN</label>
-                            <input type="text" class="form-control" id="inputDefault">
-                        </div>
-                    </div>
+              <form class="form-horizontal form-bordered" method="get">
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >User Name</label
+                    >
+                    <input
+                      type="text"
+                      (input)="updateValidation('userName')"
+                      class="form-control"
+                      name="userName"
+                      [(ngModel)]="userName"
+                      [ngClass]="{
+                        redBorder: validationErrors.userName.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.userName.error == true"
+                      class="red"
+                      >{{ validationErrors.userName.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Password</label
+                    >
+                    <input
+                      type="password"
+                      class="form-control"
+                      (input)="updateValidation('password')"
+                      name="password"
+                      [(ngModel)]="password"
+                      [ngClass]="{
+                        redBorder: validationErrors.password.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.password.error == true"
+                      class="red"
+                      >{{ validationErrors.password.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >First Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="firstName"
+                      (input)="updateValidation('firstName')"
+                      [(ngModel)]="firstName"
+                      [ngClass]="{
+                        redBorder: validationErrors.firstName.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.firstName.error == true"
+                      class="red"
+                      >{{ validationErrors.firstName.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Last Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputDefault"
+                      name="lastName"
+                      [(ngModel)]="lastName"
+                      (input)="updateValidation('lastName')"
+                      [ngClass]="{
+                        redBorder: validationErrors.lastName.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.lastName.error == true"
+                      class="red"
+                      >{{ validationErrors.lastName.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Address</label
+                    >
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      (input)="updateValidation('address')"
+                      id="textareaDefault"
+                      name="address"
+                      [(ngModel)]="address"
+                      [ngClass]="{
+                        redBorder: validationErrors.address.error == true
+                      }"
+                    ></textarea>
+                    <span
+                      *ngIf="validationErrors.address.error == true"
+                      class="red"
+                      >{{ validationErrors.address.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Phone</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputDefault"
+                      name="phone"
+                      [(ngModel)]="phone"
+                      (input)="updateValidation('phone')"
+                      [ngClass]="{
+                        redBorder: validationErrors.phone.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.phone.error == true"
+                      class="red"
+                      >{{ validationErrors.phone.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Email</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputDefault"
+                      name="email"
+                      [(ngModel)]="email"
+                      (input)="updateValidation('email')"
+                      [ngClass]="{
+                        redBorder: validationErrors.email.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.email.error == true"
+                      class="red"
+                      >{{ validationErrors.email.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Group</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="group"
+                      (change)="updateValidation('group')"
+                      [(ngModel)]="group"
+                      [ngClass]="{
+                        redBorder: validationErrors.group.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">Group 1</option>
+                        <option value="2">Group 2</option>
+                        <option value="2">Group 3</option>
+                        <option value="2">Group 4</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.group.error == true"
+                      class="red"
+                      >{{ validationErrors.group.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Login Enable</label
+                    >
+                    <input type="checkbox" [checked]="loginEnabled" (change)="loginEnabled = !loginEnabled"  class="form-control" id="inputDefault" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Driver Detail</label
+                    >
+                  </div>
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Driver Number</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputDefault"
+                      name="driverNumber"
+                      (input)="updateValidation('driverNumber')"
+                      [(ngModel)]="driverNumber"
+                      [ngClass]="{
+                        redBorder: validationErrors.driverNumber.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.driverNumber.error == true"
+                      class="red"
+                      >{{ validationErrors.driverNumber.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Driver Licence Number</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="driverLicenseNumber"
+                      (input)="updateValidation('driverLicenseNumber')"
+                      [(ngModel)]="driverLicenseNumber"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.driverLicenseNumber.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.driverLicenseNumber.error == true"
+                      class="red"
+                      >{{ validationErrors.driverLicenseNumber.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Driver Licence Type</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="driverLicenseType"
+                      (input)="updateValidation('driverLicenseType')"
+                      [(ngModel)]="driverLicenseType"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.driverLicenseType.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.driverLicenseType.error == true"
+                      class="red"
+                      >{{ validationErrors.driverLicenseType.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Driver Licence Expiry</label
+                    >
+                    <input
+                      type="text"
+                      data-plugin-datepicker=""
+                      class="form-control"
+                      (input)="updateValidation('driverLicenseExpiry')"
+                      name="driverLicenseExpiry"
+                      [(ngModel)]="driverLicenseExpiry"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.driverLicenseExpiry.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.driverLicenseExpiry.error == true"
+                      class="red"
+                      >{{ validationErrors.driverLicenseExpiry.message }}</span
+                    >
 
-                    <div class="form-group row">
-                        <div class="col-lg-12">
-                            <label class="control-label text-lg-right text-dark text-4 pt-2" for="inputDefault">Vechile Info</label>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <label class="control-label text-lg-right pt-2" for="inputDefault">Year</label>
-
-                            <select data-plugin-selectTwo class="form-control populate">
-                                <optgroup label="">
-                                    <option value="1">1980</option>
-                                    <option value="2">1981</option>
-                                    <option value="2">1982</option>
-                                    <option value="2">1983</option>
-                                    <option value="2">1984</option>
-                                    <option value="2">1985</option>
-                                    <option value="2">1986</option>
-                                    <option value="2">1987</option>
-                                    <option value="2">1988</option>
-                                    <option value="2">1989</option>
-                                    <option value="2">1990</option>
-                                    <option value="2">1991</option>
-                                    <option value="2">1992</option>
-                                    <option value="2">1993</option>
-                                    <option value="2">1994</option>
-                                    <option value="2">1995</option>
-                                    <option value="2">1996</option>
-                                    <option value="2">1997</option>
-                                    <option value="2">1998</option>
-                                    <option value="2">1999</option>
-                                    <option value="2">2000</option>
-                                    <option value="2">2001</option>
-                                    <option value="2">2002</option>
-                                    <option value="2">2003</option>
-                                    <option value="2">2004</option>
-                                    <option value="2">2005</option>
-                                    <option value="2">2006</option>
-                                    <option value="2">2007</option>
-                                    <option value="2">2008</option>
-                                    <option value="2">2009</option>
-                                    <option value="2">2010</option>
-                                    <option value="2">2011</option>
-                                    <option value="2">2012</option>
-                                    <option value="2">2013</option>
-                                    <option value="2">2014</option>
-                                    <option value="2">2015</option>
-                                    <option value="2">2016</option>
-                                    <option value="2">2017</option>
-                                    <option value="2">2018</option>
-                                    <option value="2">2019</option>
-                                    <option value="2">2020</option>
-                                </optgroup>
-                            </select>
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="control-label text-lg-right pt-2" for="inputDefault">Make</label>
-                            <select data-plugin-selectTwo class="form-control populate">
-                                <optgroup label="">
-                                    <option value="1">Tesla</option>
-                                    <option value="2">BMW</option>
-                                    <option value="2">GM</option>
-                                    <option value="2">Ford</option>
-                                    <option value="2">Fiat</option>
-                                    <option value="2">Daimler</option>
-                                    <option value="2">Honda</option>
-                                    <option value="2">Hyundai</option>
-                                    <option value="2">Kia</option>
-                                    <option value="2">Nissan</option>
-                                    <option value="2">Rivian</option>
-                                </optgroup>
-                            </select>
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="control-label text-lg-right pt-2" for="inputDefault">Model</label>
-                            <select data-plugin-selectTwo class="form-control populate">
-                                <optgroup label="">
-                                    <option value="1">ST8189LD</option>
-                                    <option value="2">ZZ0189LD</option>
-                                    <option value="2">FK36189D</option>
-                                    <option value="2">IT55855G</option>
-                                    <option value="2">POLD2132</option>
-                                    <option value="2">QJ23659W</option>
-                                    <option value="2">454564564</option>
-                                    <option value="2">1231231456789</option>
-                                    <option value="2">789798001</option>
-                                    <option value="2">0416546503</option>
-                                    <option value="2">KDF2355U</option>
-                                </optgroup>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-lg-12">
-                            <label class="control-label text-lg-right pt-2" for="inputDefault">Fuel Type</label>
-                            <input type="text" class="form-control" id="inputDefault">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-lg-12">
-                            <label class="control-label text-lg-right text-dark text-4 pt-2" for="inputDefault">Licence</label>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <label class="control-label text-lg-right pt-2" for="inputDefault">State</label>
-                            <select data-plugin-selectTwo class="form-control populate">
-                                <optgroup label="">
-                                    <option value="1">California</option>
-                                    <option value="2">Florida</option>
-                                    <option value="2">New Jersey</option>
-                                    <option value="2">New York</option>
-                                    <option value="2">New Mexico</option>
-                                    <option value="2">Texas</option>
-                                    <option value="2">Washington</option>
-                                    <option value="2">West Virginia</option>
-                                    <option value="2">Nevada</option>
-                                    <option value="2">Montana</option>
-
-                                </optgroup>
-                            </select>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="control-label text-lg-right pt-2" for="inputDefault">Plate Number</label>
-                            <select data-plugin-selectTwo class="form-control populate">
-                                <optgroup label="">
-                                    <option value="1">ST8189LD</option>
-                                    <option value="2">ZZ0189LD</option>
-                                    <option value="2">FK36189D</option>
-                                    <option value="2">IT55855G</option>
-                                    <option value="2">POLD2132</option>
-                                    <option value="2">QJ23659W</option>
-                                    <option value="2">454564564</option>
-                                    <option value="2">1231231456789</option>
-                                    <option value="2">789798001</option>
-                                    <option value="2">0416546503</option>
-                                    <option value="2">KDF2355U</option>
-                                </optgroup>
-                            </select>
-                        </div>
-
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-lg-12">
-                            <label class="control-label text-lg-right pt-2" for="inputDefault">Inspection Form</label>
-                            <select data-plugin-selectTwo class="form-control populate">
-                                <optgroup label="">
-                                    <option value="1">123</option>
-                                    <option value="2">456</option>
-                                    <option value="2">789</option>
-                                    <option value="2">0123</option>
-                                    <option value="2">456</option>
-                                    <option value="2">789</option>
-                                    <option value="2">0123</option>
-                                </optgroup>
-                            </select>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group row">
-                        <div class="col-lg-12">
-                            <label class="control-label text-lg-right text-dark text-4 pt-2" for="inputDefault">Quantum Info</label>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <label class="control-label text-lg-right pt-2" for="inputDefault">Assigned Quantum</label>
-                            <input class="form-control" id="inputDisabled" type="text" placeholder="Quantum has been assigned" disabled="">
-                        </div>
-                        <div class="col-lg-6">
-                            <a class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal" href="#modalAnim"><i class="fas fa-plus"></i> Assign Quantum</a>
-                        </div>
-
-                        <div id="modalAnim" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
-                            <section class="card">
-                                <header class="card-header">
-                                    <h2 class="card-title">Assign Quantum</h2>
-                                </header>
-                                <div class="card-body">
-                                    <div class="modal-wrapper">
-                                        <select data-plugin-selectTwo class="form-control populate">
-                                            <optgroup label="">
-                                                <option value="1">Quantum 1</option>
-                                                <option value="2">Quantum 2</option>
-                                                <option value="2">Quantum 3</option>
-                                                <option value="2">Quantum 4</option>
-                                                <option value="2">Quantum 5</option>
-                                            </optgroup>
-                                        </select>
-                                    </div>
-                                </div>
-                                <footer class="card-footer">
-                                    <div class="row">
-                                        <div class="col-md-12 text-right">
-                                            <button class="btn btn-dark modal-confirm">Submit</button>
-                                            <button class="btn btn-default modal-dismiss">Cancel</button>
-                                        </div>
-                                    </div>
-                                </footer>
-                            </section>
-                        </div>
-
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-lg-12">
-                            <label class="control-label text-lg-right pt-2" for="inputDefault">Status</label>
-                            <select data-plugin-selectTwo class="form-control populate">
-                                <optgroup label="">
-                                    <option value="1">Enable</option>
-                                    <option value="2">Disable</option>
-                                    <option value="2">Out of Service</option>
-
-                                </optgroup>
-                            </select>
-                            <button class="btn btn-dark mt-4 modal-confirm">Submit</button>
-                        </div>
-                    </div>
-
-
-
-                </form>
+                    <input
+                      type="file"
+                      name="fileToUpload"
+                      id="fileToUpload"
+                      class="form-control mt-2"
+                    />
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Driver Licence State</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="driverLicenseState"
+                      [(ngModel)]="driverLicenseState"
+                      (change)="updateValidation('driverLicenseState')"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.driverLicenseState.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">1231231</option>
+                        <option value="2">4564564</option>
+                        <option value="2">45645</option>
+                        <option value="2">45646</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.driverLicenseState.error == true"
+                      class="red"
+                      >{{ validationErrors.driverLicenseState.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >HOS Compliance</label
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Status</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="HOSComplianceStatus"
+                      [(ngModel)]="HOSCompliance.status"
+                      (change)="updateValidation('HOSCompliance','status')"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.HOSCompliance.status.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">1231231</option>
+                        <option value="2">4564564</option>
+                        <option value="2">45645</option>
+                        <option value="2">45646</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="
+                        validationErrors.HOSCompliance.status.error == true
+                      "
+                      class="red"
+                      >{{ validationErrors.HOSCompliance.status.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Type</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="HOSComplianceType"
+                      [(ngModel)]="HOSCompliance.type"
+                      (change)="updateValidation('HOSCompliance','type')"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.HOSCompliance.type.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">1231231</option>
+                        <option value="2">4564564</option>
+                        <option value="2">45645</option>
+                        <option value="2">45646</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.HOSCompliance.type.error == true"
+                      class="red"
+                      >{{ validationErrors.HOSCompliance.type.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Cycle</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="HOSComplianceCycle"
+                      [(ngModel)]="HOSCompliance.cycle"
+                      (change)="updateValidation('HOSCompliance','cycle')"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.HOSCompliance.cycle.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">1231231</option>
+                        <option value="2">4564564</option>
+                        <option value="2">45645</option>
+                        <option value="2">45646</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.HOSCompliance.cycle.error == true"
+                      class="red"
+                      >{{ validationErrors.HOSCompliance.cycle.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Dafault Contract</label
+                    >
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Per Mile</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      (input)="updateValidation('defaultContract','perMile')"
+                      name="defaultContractPerMile"
+                      [(ngModel)]="defaultContract.perMile"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.defaultContract.perMile.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="
+                        validationErrors.defaultContract.perMile.error == true
+                      "
+                      class="red"
+                      >{{
+                        validationErrors.defaultContract.perMile.message
+                      }}</span
+                    >
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Team</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      (input)="updateValidation('defaultContract','team')"
+                      name="defaultContractTeam"
+                      [(ngModel)]="defaultContract.team"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.defaultContract.team.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="
+                        validationErrors.defaultContract.team.error == true
+                      "
+                      class="red"
+                      >{{ validationErrors.defaultContract.team.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Hourly</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      (input)="updateValidation('defaultContract','hourly')"
+                      name="defaultContractHourly"
+                      [(ngModel)]="defaultContract.hourly"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.defaultContract.hourly.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="
+                        validationErrors.defaultContract.hourly.error == true
+                      "
+                      class="red"
+                      >{{
+                        validationErrors.defaultContract.hourly.message
+                      }}</span
+                    >
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Pick/Drop</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      (input)="updateValidation('defaultContract','pickOrDrop')"
+                      name="defaultContractpPickOrDrop"
+                      [(ngModel)]="defaultContract.pickOrDrop"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.defaultContract.pickOrDrop.error ==
+                          true
+                      }"
+                    />
+                    <span
+                      *ngIf="
+                        validationErrors.defaultContract.pickOrDrop.error ==
+                        true
+                      "
+                      class="red"
+                      >{{
+                        validationErrors.defaultContract.pickOrDrop.message
+                      }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Fixed</label
+                    >
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Amount</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="fixedAmount"
+                      (input)="updateValidation('fixed','amount')"
+                      [(ngModel)]="fixed.amount"
+                      [ngClass]="{
+                        redBorder: validationErrors.fixed.amount.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.fixed.amount.error == true"
+                      class="red"
+                      >{{ validationErrors.fixed.amount.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Type</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="fixedType"
+                      [(ngModel)]="fixed.type"
+                      (change)="updateValidation('fixed','type')"
+                      [ngClass]="{
+                        redBorder: validationErrors.fixed.type.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">1231231</option>
+                        <option value="2">4564564</option>
+                        <option value="2">45645</option>
+                        <option value="2">45646</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.fixed.type.error == true"
+                      class="red"
+                      >{{ validationErrors.fixed.type.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Home Terminal</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="homeTerminal"
+                      [(ngModel)]="homeTerminal"
+                      (input)="updateValidation('homeTerminal')"
+                      [ngClass]="{
+                        redBorder: validationErrors.homeTerminal.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">1231231</option>
+                        <option value="2">4564564</option>
+                        <option value="2">45645</option>
+                        <option value="2">45646</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.homeTerminal.error == true"
+                      class="red"
+                      >{{ validationErrors.homeTerminal.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button
+                      class="btn btn-dark mt-4 modal-confirm"
+                      (click)="addDriver()"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
-        </section>
-    </div>
-</div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
