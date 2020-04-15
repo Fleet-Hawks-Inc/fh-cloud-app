@@ -45,6 +45,7 @@
                     >
                     <input
                       type="text"
+                      disabled
                       (input)="updateValidation('userName')"
                       class="form-control"
                       name="userName"
@@ -236,7 +237,13 @@
                       for="inputDefault"
                       >Login Enable</label
                     >
-                    <input type="checkbox" [checked]="loginEnabled" (change)="loginEnabled = !loginEnabled"  class="form-control" id="inputDefault" />
+                    <input
+                      type="checkbox"
+                      [checked]="loginEnabled"
+                      (change)="loginEnabled = !loginEnabled"
+                      class="form-control"
+                      id="inputDefault"
+                    />
                   </div>
                 </div>
                 <div class="form-group row">
@@ -399,7 +406,7 @@
                       class="form-control populate"
                       name="HOSComplianceStatus"
                       [(ngModel)]="HOSCompliance.status"
-                      (change)="updateValidation('HOSCompliance','status')"
+                      (change)="updateValidation('HOSCompliance', 'status')"
                       [ngClass]="{
                         redBorder:
                           validationErrors.HOSCompliance.status.error == true
@@ -431,7 +438,7 @@
                       class="form-control populate"
                       name="HOSComplianceType"
                       [(ngModel)]="HOSCompliance.type"
-                      (change)="updateValidation('HOSCompliance','type')"
+                      (change)="updateValidation('HOSCompliance', 'type')"
                       [ngClass]="{
                         redBorder:
                           validationErrors.HOSCompliance.type.error == true
@@ -461,7 +468,7 @@
                       class="form-control populate"
                       name="HOSComplianceCycle"
                       [(ngModel)]="HOSCompliance.cycle"
-                      (change)="updateValidation('HOSCompliance','cycle')"
+                      (change)="updateValidation('HOSCompliance', 'cycle')"
                       [ngClass]="{
                         redBorder:
                           validationErrors.HOSCompliance.cycle.error == true
@@ -498,7 +505,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      (input)="updateValidation('defaultContract','perMile')"
+                      (input)="updateValidation('defaultContract', 'perMile')"
                       name="defaultContractPerMile"
                       [(ngModel)]="defaultContract.perMile"
                       [ngClass]="{
@@ -525,7 +532,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      (input)="updateValidation('defaultContract','team')"
+                      (input)="updateValidation('defaultContract', 'team')"
                       name="defaultContractTeam"
                       [(ngModel)]="defaultContract.team"
                       [ngClass]="{
@@ -550,7 +557,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      (input)="updateValidation('defaultContract','hourly')"
+                      (input)="updateValidation('defaultContract', 'hourly')"
                       name="defaultContractHourly"
                       [(ngModel)]="defaultContract.hourly"
                       [ngClass]="{
@@ -577,7 +584,9 @@
                     <input
                       type="text"
                       class="form-control"
-                      (input)="updateValidation('defaultContract','pickOrDrop')"
+                      (input)="
+                        updateValidation('defaultContract', 'pickOrDrop')
+                      "
                       name="defaultContractpPickOrDrop"
                       [(ngModel)]="defaultContract.pickOrDrop"
                       [ngClass]="{
@@ -616,7 +625,7 @@
                       type="text"
                       class="form-control"
                       name="fixedAmount"
-                      (input)="updateValidation('fixed','amount')"
+                      (input)="updateValidation('fixed', 'amount')"
                       [(ngModel)]="fixed.amount"
                       [ngClass]="{
                         redBorder: validationErrors.fixed.amount.error == true
@@ -639,7 +648,7 @@
                       class="form-control populate"
                       name="fixedType"
                       [(ngModel)]="fixed.type"
-                      (change)="updateValidation('fixed','type')"
+                      (change)="updateValidation('fixed', 'type')"
                       [ngClass]="{
                         redBorder: validationErrors.fixed.type.error == true
                       }"
@@ -693,19 +702,18 @@
                   <div class="col-lg-12">
                     <button
                       class="btn btn-dark mt-4 modal-confirm"
-                      (click)="addDriver()"
+                      (click)="updateDriver()"
                     >
                       Submit
                     </button>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <div class="col-lg-12">
-
-                      <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
-                      <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
-                  </div>
-              </div>
+                    <div class="col-lg-12">
+                        <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
+                        <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
+                    </div>
+                </div>
               </form>
             </div>
           </section>
