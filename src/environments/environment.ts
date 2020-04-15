@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  BaseUrl : 'http://service-ap-south-1.fleethawks.com/api/v1/',
+  temp : 'search',
+  LoginUrl : 'users/login',
+  ApiKey : ''
 };
 
 /*

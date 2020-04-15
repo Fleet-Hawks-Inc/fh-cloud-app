@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {BaseUrl} from "../objects/objects";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {environment} from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,7 @@ export class ApiService {
   public jwt = '';
   public jwtDecoded;
   public carrierID = '';
+  public BaseUrl = environment.BaseUrl;
   private httpOptions = {
     headers: new HttpHeaders({
       'Accept': 'text/html, application/xhtml+xml, */*',
@@ -24,7 +25,7 @@ export class ApiService {
   getJwt(url: string, data) {
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.http.post(BaseUrl + url , data , headers);
+    return this.http.post(this.BaseUrl + url , data , headers);
 
   }
 
@@ -33,7 +34,7 @@ export class ApiService {
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
       'x-auth-token': this.jwt})
     };
-    return this.http.post(BaseUrl + url , data , headers);
+    return this.http.post(this.BaseUrl + url , data , headers);
 
   }
 
@@ -41,7 +42,7 @@ export class ApiService {
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
       'x-auth-token': this.jwt})
     };
-    return this.http.put<any>(BaseUrl + url , data , headers);
+    return this.http.put<any>(this.BaseUrl + url , data , headers);
 
   }
 
@@ -49,14 +50,14 @@ export class ApiService {
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
       'x-auth-token': this.jwt})
     };
-    return this.http.get<any>(BaseUrl + url , headers);
+    return this.http.get<any>(this.BaseUrl + url , headers);
   }
 
   deleteData(url: string) {
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
       'x-auth-token': this.jwt})
     };
-    return this.http.delete<any>(BaseUrl + url , headers);
+    return this.http.delete<any>(this.BaseUrl + url , headers);
   }
 
 

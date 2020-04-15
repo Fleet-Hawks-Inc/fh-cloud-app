@@ -103,11 +103,15 @@ import {CarriersComponent} from "./carriers/carriers.component";
 
 import {AddVehicleNewComponent} from "./add-vehicle-new/add-vehicle-new.component";
 import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.component';
+import {MapDashboardComponent} from './map-dashboard/map-dashboard.component';
 const routes: Routes = [
    {path: '',  redirectTo: '/Login', pathMatch: 'full'},
    {path: 'Login', component: LoginComponent},
    {path: 'Dashboard', component: DashboardComponent, canActivate: [AuthService]},
-   {path: 'Add-Vehicle', component: AddVehicleComponent, canActivate: [AuthService]},
+
+    {path: 'Map-Dashboard', component: MapDashboardComponent, canActivate: [AuthService]},
+
+    {path: 'Add-Vehicle', component: AddVehicleComponent, canActivate: [AuthService]},
     {path: 'Left-Bar', component: LeftBarComponent},
     {path: 'R-Forms', component: RFormsComponent},
     {path: 'Add-Quantum', component: AddQuantumComponent},
@@ -205,7 +209,7 @@ const routes: Routes = [
     {path: 'Add-Vehicle-Service-Log', component: AddVehicleServiceLogComponent},
     {path: 'Vehicle-Service-Logs-List', component: VehicleServiceLogsComponent},
     {path: 'Edit-Vehicle-Service-Log/:logID', component: EditVehicleServiceLogComponent},
-    
+
     {path: 'Add-Certificate', component: AddCertificateComponent},
     {path: 'Certificates-List', component: CertificatesComponent},
     {path: 'Edit-Certificate/:certificateID', component: EditCertificateComponent},

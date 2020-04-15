@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {NgModule, OnInit} from '@angular/core';
+import {NgModule} from '@angular/core';
 
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -98,7 +98,8 @@ import { EditCarrierComponent } from './edit-carrier/edit-carrier.component';
 import { CarriersComponent } from './carriers/carriers.component';
 import { AddVehicleNewComponent } from './add-vehicle-new/add-vehicle-new.component';
 import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.component';
-
+import { MapDashboardComponent } from './map-dashboard/map-dashboard.component';
+import { NoopAnimationsModule , BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -194,6 +195,7 @@ import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.com
     CarriersComponent,
     AddVehicleNewComponent,
     EditVehicleNewComponent,
+    MapDashboardComponent,
 
   ],
   imports: [
@@ -203,7 +205,9 @@ import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.com
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-      NgbModule
+      NgbModule,
+    BrowserAnimationsModule,
+    NoopAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
