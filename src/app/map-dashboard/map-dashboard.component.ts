@@ -13,11 +13,11 @@ declare var $: any;
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
-        style({transform: 'translateY(-100%)'}),
-        animate('2000ms', style({transform: 'translateY(0%)'}))
+        style({transform: 'translateX(100%)'}),
+        animate('400ms', style({transform: 'translateX(0%)'}))
       ]),
       transition(':leave', [
-        animate('2000ms', style({transform: 'translateY(-100%)'}))
+        animate('400ms', style({transform: 'translateX(100%)'}))
       ])
     ])
   ],
@@ -32,6 +32,7 @@ export class MapDashboardComponent implements OnInit {
   @ViewChild('gmap' , { static: true }) gmapElement: any;
   map: google.maps.Map;
 
+  /*************Static Markers ************/
   markers = of(
     {lat: 30.934050, lng: 75.810590},
     {lat: 30.938620, lng: 75.816780},
@@ -44,25 +45,7 @@ export class MapDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.initMap();
-
-    // $(document).ready(() => {
-    //     const timeToSlide = 0.5;
-    //     $('#arrowR').on('click', () => {
-    //     $('#driverList').hide('slide', {direction: 'right'}, (timeToSlide * 1000));
-    //     $('#arrowR').hide();
-    //     $('#arrowL').show(); });
-    //     $('#arrowL').on('click', () => {
-    //     $('#driverList').show('slide', {direction: 'right'}, (timeToSlide * 1000));
-    //     setTimeout(() => {
-    //     $('#arrowR').show();
-    //     $('#arrowL').hide();
-    //     }, (timeToSlide * 1000));
-    //   });
-    // });
-
-
-
-  }
+    }
 
 
   valuechange() {
@@ -77,9 +60,11 @@ export class MapDashboardComponent implements OnInit {
       styles: MAPSTYLES
     };
 
+     /*********Initiate Map *******************/
      this.map = new google.maps.Map(this.gmapElement.nativeElement, this.mapProp);
 
 
+     /*****************Create Markers ************/
      this.markers
        .pipe(tap((v) => {
          this.marker = new google.maps.Marker({
@@ -89,11 +74,7 @@ export class MapDashboardComponent implements OnInit {
            }
          ))
        .subscribe((val) => console.log(val));
-
-
-
-
-  }
+     }
 
 
 

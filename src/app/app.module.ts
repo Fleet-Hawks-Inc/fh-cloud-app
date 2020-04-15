@@ -100,7 +100,7 @@ import { AddVehicleNewComponent } from './add-vehicle-new/add-vehicle-new.compon
 import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.component';
 
 import { MapDashboardComponent } from './map-dashboard/map-dashboard.component';
-import { NoopAnimationsModule , BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { EditDriverComponent } from './edit-driver/edit-driver.component';
 import { DriverListComponent } from './driver-list/driver-list.component';
@@ -217,8 +217,7 @@ import { DriverListComponent } from './driver-list/driver-list.component';
     FormsModule,
     ReactiveFormsModule,
       NgbModule,
-    BrowserAnimationsModule,
-    NoopAnimationsModule
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -103,14 +103,14 @@ import {CarriersComponent} from "./carriers/carriers.component";
 
 import {AddVehicleNewComponent} from "./add-vehicle-new/add-vehicle-new.component";
 import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.component';
-<<<<<<< HEAD
+
 import {MapDashboardComponent} from './map-dashboard/map-dashboard.component';
-=======
+
 
 import { EditDriverComponent } from './edit-driver/edit-driver.component';
 import {DriverListComponent} from "./driver-list/driver-list.component";
 
->>>>>>> ddfa38217ad72fecff955b0c4fc46201956a8059
+
 const routes: Routes = [
    {path: '',  redirectTo: '/Login', pathMatch: 'full'},
    {path: 'Login', component: LoginComponent},
@@ -233,7 +233,7 @@ const routes: Routes = [
     {path: 'Add-Driver', component: AddDriverComponent},
     {path: 'Edit-Driver/:userName', component: EditDriverComponent},
     {path: 'Drivers-List', component: DriverListComponent},
-  
+
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
