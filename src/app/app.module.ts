@@ -98,6 +98,8 @@ import { EditCarrierComponent } from './edit-carrier/edit-carrier.component';
 import { CarriersComponent } from './carriers/carriers.component';
 import { AddVehicleNewComponent } from './add-vehicle-new/add-vehicle-new.component';
 import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.component';
+import { EditDriverComponent } from './edit-driver/edit-driver.component';
+import { DriverListComponent } from './driver-list/driver-list.component';
 
 
 
@@ -194,6 +196,8 @@ import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.com
     CarriersComponent,
     AddVehicleNewComponent,
     EditVehicleNewComponent,
+    EditDriverComponent,
+    DriverListComponent,
 
   ],
   imports: [
