@@ -110,6 +110,9 @@ import {MapDashboardComponent} from './map-dashboard/map-dashboard.component';
 import { EditDriverComponent } from './edit-driver/edit-driver.component';
 import {DriverListComponent} from "./driver-list/driver-list.component";
 
+import {AddItemComponent} from "./add-item/add-item.component";
+import {ItemsListComponent} from "./items-list/items-list.component";
+import { EditItemComponent } from './edit-item/edit-item.component';
 
 const routes: Routes = [
    {path: '',  redirectTo: '/Login', pathMatch: 'full'},
@@ -233,6 +236,10 @@ const routes: Routes = [
     {path: 'Add-Driver', component: AddDriverComponent},
     {path: 'Edit-Driver/:userName', component: EditDriverComponent},
     {path: 'Drivers-List', component: DriverListComponent},
+
+    {path: 'Add-Item', component: AddItemComponent},
+    {path: 'Edit-Item/:itemID', component: EditItemComponent},
+    {path: 'Item-List', component: ItemsListComponent},
 
 ];
 @NgModule({
