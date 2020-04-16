@@ -107,6 +107,9 @@ import { DriverListComponent } from './driver-list/driver-list.component';
 import { AddItemComponent } from './add-item/add-item.component';
 import { ItemsListComponent } from './items-list/items-list.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
+import { AddVendorComponent } from './add-vendor/add-vendor.component';
+import { EditVendorComponent } from './edit-vendor/edit-vendor.component';
+import { VendorsListComponent } from './vendors-list/vendors-list.component';
 
 
 
@@ -212,6 +215,9 @@ import { EditItemComponent } from './edit-item/edit-item.component';
     AddItemComponent,
     ItemsListComponent,
     EditItemComponent,
+    AddVendorComponent,
+    EditVendorComponent,
+    VendorsListComponent,
 
 
   ],
