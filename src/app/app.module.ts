@@ -104,6 +104,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { EditDriverComponent } from './edit-driver/edit-driver.component';
 import { DriverListComponent } from './driver-list/driver-list.component';
+import { AddItemComponent } from './add-item/add-item.component';
+import { ItemsListComponent } from './items-list/items-list.component';
+import { EditItemComponent } from './edit-item/edit-item.component';
 
 
 
@@ -206,6 +209,9 @@ import { DriverListComponent } from './driver-list/driver-list.component';
 
     EditDriverComponent,
     DriverListComponent,
+    AddItemComponent,
+    ItemsListComponent,
+    EditItemComponent,
 
 
   ],

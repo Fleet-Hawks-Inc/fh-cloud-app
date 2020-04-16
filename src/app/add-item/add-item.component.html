@@ -1,0 +1,220 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li></li>
+
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">Item Entry Form</h2>
+            </header>
+            <div class="card-body">
+              <form class="form-horizontal form-bordered" method="get">
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Item Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      (input)="updateValidation('itemName')"
+                      name="itemName"
+                      [(ngModel)]="itemName"
+                      [ngClass]="{
+                        redBorder: validationErrors.itemName.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.itemName.error == true"
+                      class="red"
+                      >{{ validationErrors.itemName.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Opening Stock</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      (change)="updateValidation('openingStock')"
+                      name="openingStock"
+                      [(ngModel)]="openingStock"
+                      [ngClass]="{
+                        redBorder: validationErrors.openingStock.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.openingStock.error == true"
+                      class="red"
+                      >{{ validationErrors.openingStock.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Default Purchase Price</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      (input)="updateValidation('defaultPurchasePrice')"
+                      name="defaultPurchasePrice"
+                      [(ngModel)]="defaultPurchasePrice"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.defaultPurchasePrice.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="
+                        validationErrors.defaultPurchasePrice.error == true
+                      "
+                      class="red"
+                      >{{ validationErrors.defaultPurchasePrice.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Default Purchase Vendor</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      (change)="updateValidation('defaultPurchaseVendor')"
+                      name="defaultPurchaseVendor"
+                      [(ngModel)]="defaultPurchaseVendor"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.defaultPurchaseVendor.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">Vendor 1</option>
+                        <option value="2">Vendor 2</option>
+                        <option value="2">Vendor 3</option>
+                        <option value="2">Vendor 4</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="
+                        validationErrors.defaultPurchaseVendor.error == true
+                      "
+                      class="red"
+                      >{{
+                        validationErrors.defaultPurchaseVendor.message
+                      }}</span
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Default Tax Account</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      (change)="updateValidation('defaultTaxAccount')"
+                      name="defaultTaxAccount"
+                      [(ngModel)]="defaultTaxAccount"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.defaultTaxAccount.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">Account 1</option>
+                        <option value="2">Account 2</option>
+                        <option value="2">Account 3</option>
+                        <option value="2">Account 4</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.defaultTaxAccount.error == true"
+                      class="red"
+                      >{{ validationErrors.defaultTaxAccount.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Description</label
+                    >
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      (input)="updateValidation('description')"
+                      name="description"
+                      [(ngModel)]="description"
+                      [ngClass]="{
+                        redBorder: validationErrors.description.error == true
+                      }"
+                    ></textarea>
+                    <span
+                      *ngIf="validationErrors.description.error == true"
+                      class="red"
+                      >{{ validationErrors.description.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button
+                      class="btn btn-dark mt-4 modal-confirm"
+                      (click)="addItem()"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
