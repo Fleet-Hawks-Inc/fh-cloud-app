@@ -130,7 +130,7 @@ const routes: Routes = [
 
     {path: 'Add-User', component: AddUserComponent},
     {path: 'User-List', component: UserListComponent},
-    {path: 'Edit-User/:userId', component: EditUserComponent},
+    {path: 'Edit-User/:userName', component: EditUserComponent},
 
     {path: 'Add-Group', component: AddGroupComponent},
     {path: 'Group-List', component: GroupListComponent},

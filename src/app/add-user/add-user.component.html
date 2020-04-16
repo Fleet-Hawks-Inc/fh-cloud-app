@@ -1,411 +1,271 @@
 <section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
 
-    <!-- start: header -->
-    <app-header></app-header>
+  <!-- end: header -->
 
-    <!-- end: header -->
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
 
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
 
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li>
+              <a href="/">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li>
+              <span>{{ parentTitle }}</span>
+            </li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
 
-    <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
-        <section role="main" class="content-body">
-            <header class="page-header">
-                <h2>{{title}}</h2>
-
-                <div class="right-wrapper text-right">
-                    <ol class="breadcrumbs">
-                        <li>
-                            <a href="/">
-                                <i class="fas fa-home"></i>
-                            </a>
-                        </li>
-                        <li><span>{{parentTitle}}</span></li>
-                        <li><span>{{title}}</span></li>
-                    </ol>
-
-
-                </div>
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">Details</h2>
             </header>
-
-
-
-            <div class="row">
-                <div class="col">
-                    <section class="card">
-                        <header class="card-header">
-
-
-                            <h2 class="card-title">Details</h2>
-                        </header>
-                        <div class="card-body">
-                            <form class="form-horizontal form-bordered" method="get">
-                                <div class="form-group row">
-                                    <div class="col-lg-3">
-                                        <label class="control-label text-lg-right pt-2"  >User Name</label>
-                                        <input type="text" class="form-control"  name="userName" [(ngModel)]="userName">
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label class="control-label text-lg-right pt-2" >Password</label>
-                                        <input type="password" class="form-control"  name="password" [(ngModel)]="password">
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <label class="control-label text-lg-right pt-2" >First Name</label>
-                                        <input type="text" class="form-control" name="firstName" [(ngModel)]="firstName">
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label class="control-label text-lg-right pt-2" >Last Name</label>
-                                        <input type="text" class="form-control" name="lastName" [(ngModel)]="lastName">
-                                    </div>
-
-                                </div>
-
-
-
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <label class="control-label text-lg-right text-4 pt-2" >Address</label>
-                                    </div>
-
-                                    <!--<div class="col-lg-4">-->
-                                        <!--<label class="control-label text-lg-right pt-2" >Street No</label>-->
-                                        <!--<input type="text" class="form-control" name="address" [(ngModel)]="address">-->
-                                    <!--</div>-->
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Street Name</label>
-                                        <input type="text" class="form-control" name="streetName" [(ngModel)]="streetName">
-                                    </div>
-
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Zip Code</label>
-                                        <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode">
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >City</label>
-                                        <input type="text" class="form-control" name="city" [(ngModel)]="city">
-                                    </div>
-                                    <!--<div class="col-lg-4">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">City</label>-->
-                                        <!--<select data-plugin-selectTwo class="form-control populate" name="city" [(ngModel)]="city">-->
-
-                                                <!--<option value="1">123</option>-->
-                                                <!--<option value="2">456</option>-->
-                                                <!--<option value="2">789</option>-->
-                                                <!--<option value="2">0123</option>-->
-                                                <!--<option value="2">456</option>-->
-                                                <!--<option value="2">789</option>-->
-                                                <!--<option value="2">0123</option>-->
-
-                                        <!--</select>-->
-                                    <!--</div>-->
-                                    <!--<div class="col-lg-4">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">State</label>-->
-                                        <!--<select data-plugin-selectTwo class="form-control populate" name="state" [(ngModel)]="state">-->
-
-                                                <!--<option value="1">123</option>-->
-                                                <!--<option value="2">456</option>-->
-                                                <!--<option value="2">789</option>-->
-                                                <!--<option value="2">0123</option>-->
-                                                <!--<option value="2">456</option>-->
-                                                <!--<option value="2">789</option>-->
-                                                <!--<option value="2">0123</option>-->
-
-                                        <!--</select>-->
-                                    <!--</div>-->
-
-                                    <!--<div class="col-lg-4">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Country</label>-->
-                                        <!--<select data-plugin-selectTwo class="form-control populate" name="Country" [(ngModel)]="Country">-->
-
-                                                <!--<option value="1">123</option>-->
-                                                <!--<option value="2">456</option>-->
-                                                <!--<option value="2">789</option>-->
-                                                <!--<option value="2">0123</option>-->
-                                                <!--<option value="2">456</option>-->
-                                                <!--<option value="2">789</option>-->
-                                                <!--<option value="2">0123</option>-->
-
-                                        <!--</select>-->
-
-                                    <!--</div>-->
-
-
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Phone</label>
-                                        <input type="text" class="form-control" name="phone" [(ngModel)]="phone">
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Email</label>
-                                        <input type="text" class="form-control" name="email" [(ngModel)]="email">
-                                    </div>
-
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >User Type</label>
-
-                                        <select data-plugin-selectTwo class="form-control populate" name="userType" [(ngModel)]="userType">
-
-                                                <option >Editor</option>
-                                                <option >Admin</option>
-                                                <option >Owner</option>
-                                                <option >Driver</option>
-
-
-                                        </select>
-                                    </div>
-
-                                </div>
-
-
-
-                                <!--<div class="form-group row">-->
-
-                                    <!--<div class="col-lg-12">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Driver Detail</label>-->
-                                    <!--</div>-->
-
-                                    <!--<div class="col-lg-6">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Drvier Number</label>-->
-                                        <!--<input type="text" class="form-control" id="inputDefault">-->
-                                    <!--</div>-->
-
-                                    <!--<div class="col-lg-6">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Driver Licence Number</label>-->
-
-                                        <!--<input type="text" data-plugin-datepicker="" class="form-control">-->
-                                    <!--</div>-->
-
-
-
-
-
-
-                                <!--</div>-->
-
-                                <!--<div class="form-group row">-->
-
-
-
-                                    <!--<div class="col-lg-4">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Driver Photo</label>-->
-
-                                        <!--<input type="file" name="fileToUpload" id="fileToUpload" class="form-control">-->
-                                    <!--</div>-->
-
-                                    <!--<div class="col-lg-4">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Driver Licence Expire</label>-->
-
-                                        <!--<input type="text" data-plugin-datepicker="" class="form-control">-->
-
-
-                                    <!--</div>-->
-
-                                    <!--<div class="col-lg-4">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Driver Licence State</label>-->
-
-                                        <!--<select data-plugin-selectTwo class="form-control populate">-->
-                                            <!--<optgroup label="">-->
-                                                <!--<option value="1">1231231</option>-->
-                                                <!--<option value="2">4564564</option>-->
-                                                <!--<option value="2">45645</option>-->
-                                                <!--<option value="2">45646</option>-->
-
-                                            <!--</optgroup>-->
-                                        <!--</select>-->
-                                    <!--</div>-->
-
-
-                                <!--</div>-->
-
-                                <!--<div class="form-group row">-->
-                                    <!--<div class="col-lg-12">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">HOS Compliance</label>-->
-                                    <!--</div>-->
-
-
-                                    <!--<div class="col-lg-4">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Status</label>-->
-
-                                        <!--<select data-plugin-selectTwo class="form-control populate">-->
-                                            <!--<optgroup label="">-->
-                                                <!--<option value="1">1231231</option>-->
-                                                <!--<option value="2">4564564</option>-->
-                                                <!--<option value="2">45645</option>-->
-                                                <!--<option value="2">45646</option>-->
-
-                                            <!--</optgroup>-->
-                                        <!--</select>-->
-                                    <!--</div>-->
-
-                                    <!--&lt;!&ndash;<div class="col-lg-4">&ndash;&gt;-->
-                                        <!--&lt;!&ndash;<label class="control-label text-lg-right pt-2" for="inputDefault">Type</label>&ndash;&gt;-->
-
-                                        <!--&lt;!&ndash;<select data-plugin-selectTwo class="form-control populate">&ndash;&gt;-->
-                                            <!--&lt;!&ndash;<optgroup label="">&ndash;&gt;-->
-                                                <!--&lt;!&ndash;<option value="1">1231231</option>&ndash;&gt;-->
-                                                <!--&lt;!&ndash;<option value="2">4564564</option>&ndash;&gt;-->
-                                                <!--&lt;!&ndash;<option value="2">45645</option>&ndash;&gt;-->
-                                                <!--&lt;!&ndash;<option value="2">45646</option>&ndash;&gt;-->
-
-                                            <!--&lt;!&ndash;</optgroup>&ndash;&gt;-->
-                                        <!--&lt;!&ndash;</select>&ndash;&gt;-->
-
-                                        <!--&lt;!&ndash;&lt;!&ndash; <input type="file" name="fileToUpload" id="fileToUpload" class="form-control mt-2"> &ndash;&gt;&ndash;&gt;-->
-                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-                                    <!--&lt;!&ndash;<div class="col-lg-4">&ndash;&gt;-->
-                                        <!--&lt;!&ndash;<label class="control-label text-lg-right pt-2" for="inputDefault">Cycle</label>&ndash;&gt;-->
-
-                                        <!--&lt;!&ndash;<select data-plugin-selectTwo class="form-control populate">&ndash;&gt;-->
-                                            <!--&lt;!&ndash;<optgroup label="">&ndash;&gt;-->
-                                                <!--&lt;!&ndash;<option value="1">1231231</option>&ndash;&gt;-->
-                                                <!--&lt;!&ndash;<option value="2">4564564</option>&ndash;&gt;-->
-                                                <!--&lt;!&ndash;<option value="2">45645</option>&ndash;&gt;-->
-                                                <!--&lt;!&ndash;<option value="2">45646</option>&ndash;&gt;-->
-
-                                            <!--&lt;!&ndash;</optgroup>&ndash;&gt;-->
-                                        <!--&lt;!&ndash;</select>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-
-                                <!--</div>-->
-
-
-                                <!--<div class="form-group row">-->
-                                    <!--<div class="col-lg-12">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Dafault Contract</label>-->
-                                    <!--</div>-->
-
-
-                                    <!--<div class="col-lg-3">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Per Mile</label>-->
-
-                                        <!--<input type="text" data-plugin-datepicker="" class="form-control">-->
-                                    <!--</div>-->
-
-                                    <!--<div class="col-lg-3">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Team</label>-->
-
-                                        <!--<input type="text" data-plugin-datepicker="" class="form-control">-->
-
-                                        <!--&lt;!&ndash; <input type="file" name="fileToUpload" id="fileToUpload" class="form-control mt-2"> &ndash;&gt;-->
-                                    <!--</div>-->
-
-                                    <!--<div class="col-lg-3">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Hourly</label>-->
-
-                                        <!--<input type="text" data-plugin-datepicker="" class="form-control">-->
-                                    <!--</div>-->
-
-                                    <!--<div class="col-lg-3">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Pick/Drop</label>-->
-
-                                        <!--<input type="text" data-plugin-datepicker="" class="form-control">-->
-                                    <!--</div>-->
-
-                                <!--</div>-->
-
-                                <!--<div class="form-group row">-->
-                                    <!--<div class="col-lg-12">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Fixed</label>-->
-                                    <!--</div>-->
-
-
-                                    <!--<div class="col-lg-6">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Amount</label>-->
-
-                                        <!--<input type="text" data-plugin-datepicker="" class="form-control">-->
-                                    <!--</div>-->
-
-                                    <!--<div class="col-lg-6">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Type</label>-->
-
-                                        <!--<select data-plugin-selectTwo class="form-control populate">-->
-                                            <!--<optgroup label="">-->
-                                                <!--<option value="1">1231231</option>-->
-                                                <!--<option value="2">4564564</option>-->
-                                                <!--<option value="2">45645</option>-->
-                                                <!--<option value="2">45646</option>-->
-
-                                            <!--</optgroup>-->
-                                        <!--</select>-->
-
-
-                                    <!--</div>-->
-
-
-                                <!--</div>-->
-
-
-                                <!--<div class="form-group row">-->
-                                    <!--<div class="col-lg-12">-->
-                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Home Terminal</label>-->
-
-                                        <!--<select data-plugin-selectTwo class="form-control populate">-->
-                                            <!--<optgroup label="">-->
-                                                <!--<option value="1">1231231</option>-->
-                                                <!--<option value="2">4564564</option>-->
-                                                <!--<option value="2">45645</option>-->
-                                                <!--<option value="2">45646</option>-->
-
-                                            <!--</optgroup>-->
-                                        <!--</select>-->
-                                    <!--</div>-->
-
-                                <!--</div>-->
-
-
-
-                                <div class="col-lg-4">
-                                <label class="control-label text-lg-right pt-2">Status</label>
-
-                                <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="status" name="status">
-                                <optgroup label="">
-                                <option >Active</option>
-                                <option >De-Active</option>
-
-
-                                </optgroup>
-                                </select>
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <button class="btn btn-dark mt-4 modal-confirm" (click)="addUser()">Submit</button>
-                                    </div>
-
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-
-                                        <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
-                                        <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
-                                    </div>
-                                </div>
-
-
-
-                            </form>
-                        </div>
-                    </section>
+            <div class="card-body">
+              <form class="form-horizontal form-bordered" method="get">
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >User Name</label
+                    >
+                    <input
+                      type="text"
+                      (input)="updateValidation('userName')"
+                      class="form-control"
+                      name="userName"
+                      [(ngModel)]="userName"
+                      [ngClass]="{
+                        redBorder: validationErrors.userName.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.userName.error == true"
+                      class="red"
+                      >{{ validationErrors.userName.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Password</label
+                    >
+                    <input
+                      type="password"
+                      class="form-control"
+                      (input)="updateValidation('password')"
+                      name="password"
+                      [(ngModel)]="password"
+                      [ngClass]="{
+                        redBorder: validationErrors.password.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.password.error == true"
+                      class="red"
+                      >{{ validationErrors.password.message }}</span
+                    >
+                  </div>
                 </div>
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >First Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="firstName"
+                      (input)="updateValidation('firstName')"
+                      [(ngModel)]="firstName"
+                      [ngClass]="{
+                        redBorder: validationErrors.firstName.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.firstName.error == true"
+                      class="red"
+                      >{{ validationErrors.firstName.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Last Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="lastName"
+                      [(ngModel)]="lastName"
+                      (input)="updateValidation('lastName')"
+                      [ngClass]="{
+                        redBorder: validationErrors.lastName.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.lastName.error == true"
+                      class="red"
+                      >{{ validationErrors.lastName.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Address</label
+                    >
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      (input)="updateValidation('address')"
+                      id="textareaDefault"
+                      name="address"
+                      [(ngModel)]="address"
+                      [ngClass]="{
+                        redBorder: validationErrors.address.error == true
+                      }"
+                    ></textarea>
+                    <span
+                      *ngIf="validationErrors.address.error == true"
+                      class="red"
+                      >{{ validationErrors.address.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Phone</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="phone"
+                      [(ngModel)]="phone"
+                      (input)="updateValidation('phone')"
+                      [ngClass]="{
+                        redBorder: validationErrors.phone.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.phone.error == true"
+                      class="red"
+                      >{{ validationErrors.phone.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Email</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="email"
+                      [(ngModel)]="email"
+                      (input)="updateValidation('email')"
+                      [ngClass]="{
+                        redBorder: validationErrors.email.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.email.error == true"
+                      class="red"
+                      >{{ validationErrors.email.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Group</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="group"
+                      (change)="updateValidation('group')"
+                      [(ngModel)]="group"
+                      [ngClass]="{
+                        redBorder: validationErrors.group.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">Group 1</option>
+                        <option value="2">Group 2</option>
+                        <option value="2">Group 3</option>
+                        <option value="2">Group 4</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.group.error == true"
+                      class="red"
+                      >{{ validationErrors.group.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Login Enable</label
+                    >
+                    <input
+                      type="checkbox"
+                      [checked]="loginEnabled"
+                      (change)="loginEnabled = !loginEnabled"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button
+                      class="btn btn-dark mt-4 modal-confirm"
+                      (click)="addDriver()"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+              </form>
             </div>
-
-        </section>
-    </div>
-
-
-
-
-
-
-
-
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>

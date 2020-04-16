@@ -22,12 +22,11 @@ export class UserListComponent implements OnInit {
   }
 
   fetchUsers() {
-    this.apiService.getData('users')
+    this.apiService.getData('users/userType/manager')
         .subscribe((result: any) => {
           this.users = result.Items;
         });
   }
-
 
 
   deleteUser(userId) {
