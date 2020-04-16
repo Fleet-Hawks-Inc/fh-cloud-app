@@ -1,0 +1,323 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">Add Vendor</h2>
+            </header>
+            <div class="card-body">
+              <form class="form-horizontal form-bordered" method="get">
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Vendor Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      (input)="updateValidation('vendorName')"
+                      name="vendorName"
+                      [(ngModel)]="vendorName"
+                      [ngClass]="{
+                        redBorder: validationErrors.vendorName.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.vendorName.error == true"
+                      class="red"
+                      >{{ validationErrors.vendorName.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Vendor Type</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      (change)="updateValidation('vendorType')"
+                      name="vendorType"
+                      [(ngModel)]="vendorType"
+                      [ngClass]="{
+                        redBorder: validationErrors.vendorType.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">V 1</option>
+                        <option value="2">V 2</option>
+                        <option value="2">V 3</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.vendorType.error == true"
+                      class="red"
+                      >{{ validationErrors.vendorType.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Geo-location</label
+                    >
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Latitude</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      (change)="updateValidation('geoLocation', 'latitude')"
+                      name="geoLocationLatitude"
+                      [(ngModel)]="geoLocation.latitude"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.geoLocation.latitude.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="2">3</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="
+                        validationErrors.geoLocation.latitude.error == true
+                      "
+                      class="red"
+                      >{{ validationErrors.geoLocation.latitude.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Longitude</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      (change)="updateValidation('geoLocation', 'longitude')"
+                      name="geoLocationLongitude"
+                      [(ngModel)]="geoLocation.longitude"
+                      [ngClass]="{
+                        redBorder:
+                          validationErrors.geoLocation.longitude.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="2">3</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="
+                        validationErrors.geoLocation.longitude.error == true
+                      "
+                      class="red"
+                      >{{
+                        validationErrors.geoLocation.longitude.message
+                      }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Address</label
+                    >
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      (input)="updateValidation('address')"
+                      name="address"
+                      [(ngModel)]="address"
+                      [ngClass]="{
+                        redBorder: validationErrors.address.error == true
+                      }"
+                    ></textarea>
+                    <span
+                      *ngIf="validationErrors.address.error == true"
+                      class="red"
+                      >{{ validationErrors.address.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >State</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      (change)="updateValidation('state')"
+                      name="state"
+                      [(ngModel)]="state"
+                      [ngClass]="{
+                        redBorder: validationErrors.state.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">State 1</option>
+                        <option value="2">State 2</option>
+                        <option value="2">State 3</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.address.error == true"
+                      class="red"
+                      >{{ validationErrors.state.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Country</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      (change)="updateValidation('country')"
+                      name="country"
+                      [(ngModel)]="country"
+                      [ngClass]="{
+                        redBorder: validationErrors.country.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">Country 1</option>
+                        <option value="2">Country 2</option>
+                        <option value="2">Country 3</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.country.error == true"
+                      class="red"
+                      >{{ validationErrors.country.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >TaxID</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      (change)="updateValidation('taxID')"
+                      name="taxID"
+                      [(ngModel)]="taxID"
+                      [ngClass]="{
+                        redBorder: validationErrors.taxID.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">tax 1</option>
+                        <option value="2">tax 2</option>
+                        <option value="2">tax 3</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.address.error == true"
+                      class="red"
+                      >{{ validationErrors.taxID.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Credit Days</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="creditDays"
+                      (input)="updateValidation('creditDays')"
+                      [(ngModel)]="creditDays"
+                      [ngClass]="{
+                        redBorder: validationErrors.creditDays.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.creditDays.error == true"
+                      class="red"
+                      >{{ validationErrors.creditDays.message }}</span
+                    >
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button
+                      class="btn btn-dark mt-4 modal-confirm"
+                      (click)="addVendor()"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

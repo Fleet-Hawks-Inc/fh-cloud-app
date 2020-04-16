@@ -114,6 +114,11 @@ import {AddItemComponent} from "./add-item/add-item.component";
 import {ItemsListComponent} from "./items-list/items-list.component";
 import { EditItemComponent } from './edit-item/edit-item.component';
 
+import {AddVendorComponent} from "./add-vendor/add-vendor.component";
+import {EditVendorComponent} from "./edit-vendor/edit-vendor.component";
+import {VendorsListComponent} from "./vendors-list/vendors-list.component";
+
+
 const routes: Routes = [
    {path: '',  redirectTo: '/Login', pathMatch: 'full'},
    {path: 'Login', component: LoginComponent},
@@ -240,6 +245,10 @@ const routes: Routes = [
     {path: 'Add-Item', component: AddItemComponent},
     {path: 'Edit-Item/:itemID', component: EditItemComponent},
     {path: 'Item-List', component: ItemsListComponent},
+
+    {path: 'Add-Vendor', component: AddVendorComponent},
+    {path: 'Edit-Vendor/:vendorID', component: EditVendorComponent},
+    {path: 'Vendors-List', component: VendorsListComponent},
 
 ];
 @NgModule({
