@@ -47,6 +47,7 @@
                     >
                     <input
                       type="text"
+                      disabled
                       (input)="updateValidation('userName')"
                       class="form-control"
                       name="userName"
@@ -187,6 +188,7 @@
                     <input
                       type="text"
                       class="form-control"
+                      disabled
                       name="email"
                       [(ngModel)]="email"
                       (input)="updateValidation('email')"
