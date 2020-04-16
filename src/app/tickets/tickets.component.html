@@ -44,7 +44,7 @@
                             </div>
                         </div>
 
-                        <a routerLink="/Add-Documents" class="mb-1 mt-1 mr-1 btn btn-success"><i class="fas fa-plus"></i> Add Ticket</a>
+                        <a routerLink="/Add-Ticket" class="mb-1 mt-1 mr-1 btn btn-success"><i class="fas fa-plus"></i> Add Ticket</a>
 
                     </div>
                 </div>
@@ -66,11 +66,8 @@
                                     <th>Ticket Type</th>
                                     <th>Ticket Value</th>
                                     <th>Description</th>
-                                    <th>Ticket No</th>
+                                    <th>Ticket Number</th>
                                     <th>Office Detials</th>
-                                    <th>Document ID</th>
-                                    <th>Expense ID</th>
-                                    <th>Trip ID</th>
                                     <th>Edit</th>
                                     <th>Delete</th>
                                     <!--<th class="d-lg-none">Operator</th>-->
@@ -84,11 +81,8 @@
                                     <td>{{ticket.ticketType}}</td>
                                     <td>{{ticket.ticketValue}}</td>
                                     <td>{{ticket.description}}</td>
-                                    <td>{{ticket.ticketNo}}</td>
+                                    <td>{{ticket.ticketNumber}}</td>
                                     <td>{{ticket.officeDetails}}</td>
-                                    <td>{{ticket.documentID}}</td>
-                                    <td>{{ticket.expenseID}}</td>
-                                    <td>{{ticket.tripID}}</td>
 
                                     <td><a routerLink="/Edit-Ticket/{{ticket.ticketID}}">Edit</a></td>
                                     <td><a [routerLink]="" (click)="deleteTicket(ticket.ticketID)" >Delete</a></td>
