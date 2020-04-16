@@ -1,48 +1,29 @@
-import { Component, OnInit } from "@angular/core";
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { ApiService } from "../api.service";
 import { Router } from "@angular/router";
+import {catchError, map, mapTo, tap} from 'rxjs/operators';
+import {from, of} from 'rxjs';
+declare var jquery: any;
+declare var $: any;
 
 @Component({
   selector: "app-add-ticket",
   templateUrl: "./add-ticket.component.html",
   styleUrls: ["./add-ticket.component.css"],
 })
-export class AddTicketComponent implements OnInit {
+export class AddTicketComponent implements OnInit, AfterViewInit {
   title = "Add Ticket";
   users = [];
   /********** Form Fields ***********/
 
+  errors = {};
   userName = "";
   ticketNumber = "";
   ticketType = "";
   ticketValue = "";
   description = "";
   officeDetails = "";
-  
-  /**
-   * Form errors prop
-   */
-  validationErrors = {
-    userName: {
-      error: false
-    },
-    ticketNumber: {
-      error: false
-    },
-    ticketType: {
-      error: false
-    },
-    ticketValue: {
-      error: false
-    },
-    description: {
-      error: false
-    },
-    officeDetails: {
-      error: false
-    }
-  }
-
+  form;
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -52,6 +33,13 @@ export class AddTicketComponent implements OnInit {
 
   ngOnInit() {
     this.fetchUsers();
+
+    }
+
+  ngAfterViewInit() {
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
+    });
   }
 
   fetchUsers() {
@@ -62,6 +50,8 @@ export class AddTicketComponent implements OnInit {
   }
 
   addTicket() {
+    this.errors = {};
+
     this.hasError = false;
     this.hasSuccess = false;
 
@@ -73,15 +63,30 @@ export class AddTicketComponent implements OnInit {
       description: this.description,
       officeDetails: this.officeDetails
     };
-  
-    this.apiService.postData("tickets", data).subscribe({
+
+    const handleError = this.apiService.postData("tickets", data)
+      .pipe(
+        catchError((err) => {
+          return from(err.error)
+        }),
+        tap((val) => console.log(val)),
+        map((val: any) => {
+            val.message = val.message.replace(/".*"/, 'This Field');
+            this.errors[val.path[0]] = val.message ;
+        }),
+        )
+      .subscribe({
       complete: () => {},
       error: (err) => {
-        this.mapErrors(err.error);
+        console.log(err);
+        // this.mapErrors(err.error);
         this.hasError = true;
         this.Error = err.error;
       },
       next: (res) => {
+        if (!$.isEmptyObject(this.errors)) {
+         return this.throwErrors();
+        }
         this.response = res;
         this.hasSuccess = true;
         this.Success = "Ticket Added successfully";
@@ -95,35 +100,9 @@ export class AddTicketComponent implements OnInit {
     });
   }
 
-  mapErrors(errors) {
-    for (var i = 0; i < errors.length; i++) {
-      let key = errors[i].path;
-      let length = key.length;
-
-      //make array of message to remove the fieldName
-      let message = errors[i].message.split(" ");
-      delete message[0];
-
-      //new message
-      let modifiedMessage = `This field${message.join(" ")}`;
-
-      if (length == 1) {
-        //single object
-        this.validationErrors[key[0]].error = true;
-        this.validationErrors[key[0]].message = modifiedMessage;
-      } else if (length == 2) {
-        //two dimensional object
-        this.validationErrors[key[0]][key[1]].error = true;
-        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
-      }
+  throwErrors() {
+    this.form.showErrors(this.errors);
     }
-  }
 
-  updateValidation(first, second = "") {
-    if (second == "") {
-      this.validationErrors[first].error = false;
-    } else {
-      this.validationErrors[first][second].error = false;
-    }
-  } 
+
 }

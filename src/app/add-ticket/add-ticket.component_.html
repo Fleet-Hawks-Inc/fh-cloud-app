@@ -34,24 +34,33 @@
               <h2 class="card-title">Ticket</h2>
             </header>
             <div class="card-body">
-              <form class="form-horizontal form-bordered" method="get" id="form_" name="form">
+              <form class="form-horizontal form-bordered" method="get">
                 <div class="form-group row">
                   <div class="col-lg-4">
                     <label
                       class="control-label text-lg-right pt-2"
                       for="inputDefault"
-                    >Driver</label
+                      >Driver</label
                     >
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
+                      (change)="updateValidation('userName')"
                       name="userName"
-                      [(ngModel)]="userName">
+                      [(ngModel)]="userName"
+                      [ngClass]="{
+                        redBorder: validationErrors.userName.error == true
+                      }"
+                    >
                       <optgroup label="">
                         <option *ngFor="let user of users" value="{{user.userName}}">{{user.userName}}</option>
                       </optgroup>
                     </select>
-
+                    <span
+                      *ngIf="validationErrors.userName.error == true"
+                      class="red"
+                      >{{ validationErrors.userName.message }}</span
+                    >
                   </div>
                 </div>
                 <div class="form-group row">
@@ -59,85 +68,124 @@
                     <label
                       class="control-label text-lg-right pt-2"
                       for="inputDefault"
-                    >Ticket Number</label
+                      >Ticket Number</label
                     >
                     <input
                       type="text"
                       class="form-control"
+                      (input)="updateValidation('ticketNumber')"
                       name="ticketNumber"
                       [(ngModel)]="ticketNumber"
-                    required />
-
+                      [ngClass]="{
+                        redBorder: validationErrors.ticketNumber.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.ticketNumber.error == true"
+                      class="red"
+                      >{{ validationErrors.ticketNumber.message }}</span
+                    >
                   </div>
                   <div class="col-lg-4">
                     <label
                       class="control-label text-lg-right pt-2"
                       for="inputDefault"
-                    >Ticket Type</label
+                      >Ticket Type</label
                     >
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
+                      (change)="updateValidation('ticketType')"
                       name="ticketType"
-                      [(ngModel)]="ticketType">
+                      [(ngModel)]="ticketType"
+                      [ngClass]="{
+                        redBorder: validationErrors.ticketType.error == true
+                      }"
+                    >
                       <optgroup label="">
                         <option value="1">Type 1</option>
                         <option value="2">Type 2</option>
                         <option value="2">Type 3</option>
                       </optgroup>
                     </select>
-
+                    <span
+                      *ngIf="validationErrors.ticketType.error == true"
+                      class="red"
+                      >{{ validationErrors.ticketType.message }}</span
+                    >
                   </div>
                   <div class="col-lg-4">
                     <label
                       class="control-label text-lg-right text-dark text-4 pt-2"
                       for="inputDefault"
-                    >Value</label
+                      >Value</label
                     >
                     <input
                       type="text"
                       class="form-control"
+                      (input)="updateValidation('ticketValue')"
                       name="ticketValue"
                       [(ngModel)]="ticketValue"
-                      required
+                      [ngClass]="{
+                        redBorder: validationErrors.ticketValue.error == true
+                      }"
                     />
-
+                    <span
+                      *ngIf="validationErrors.ticketValue.error == true"
+                      class="red"
+                      >{{ validationErrors.ticketValue.message }}</span
+                    >
                   </div>
                   <div class="col-lg-8">
                     <label
                       class="control-label text-lg-right pt-2"
                       for="inputDefault"
-                    >Description</label
-                    >
-                    <textarea
-                      class="form-control"
-                      rows="3"
-                      name="description"
-                      [(ngModel)]="description"
-
-                    ></textarea>
-
-                  </div>
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                    >Officer Details</label
+                      >Description</label
                     >
                     <textarea
                       class="form-control"
                       rows="3"
                       id="textareaDefault"
+                      (input)="updateValidation('description')"
+                      name="description"
+                      [(ngModel)]="description"
+                      [ngClass]="{
+                        redBorder: validationErrors.description.error == true
+                      }"
+                    ></textarea>
+                    <span
+                      *ngIf="validationErrors.description.error == true"
+                      class="red"
+                      >{{ validationErrors.description.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Officer Details</label
+                    >
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      id="textareaDefault"
+                      (input)="updateValidation('officeDetails')"
                       name="officeDetails"
                       [(ngModel)]="officeDetails"
-
+                      [ngClass]="{
+                        redBorder: validationErrors.officeDetails.error == true
+                      }"
                     ></textarea>
-
+                    <span
+                      *ngIf="validationErrors.officeDetails.error == true"
+                      class="red"
+                      >{{ validationErrors.officeDetails.message }}</span
+                    >
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-lg-12">
-                    <button class="btn btn-dark mt-4 modal-confirm" (click)="addTicket()" type="submit">
+                    <button class="btn btn-dark mt-4 modal-confirm" (click)="addTicket()">
                       Submit
                     </button>
                   </div>
