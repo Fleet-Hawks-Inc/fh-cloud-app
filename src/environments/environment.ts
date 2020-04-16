@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  BaseUrl : 'http://service-ap-south-1.fleethawks.com/api/v1/',
+  BaseUrl : 'http://localhost:3000/api/v1/',
   temp : 'search',
   LoginUrl : 'users/login',
   ApiKey : ''

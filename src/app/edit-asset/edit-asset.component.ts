@@ -40,6 +40,70 @@ export class EditAssetComponent implements OnInit {
   /******************/
 
 
+  /**
+   * Form errors prop
+   */
+  validationErrors = {
+    Assetname: {
+      error: false,
+    },
+    VTN: {
+      error: false,
+    },
+    type: {
+      error: false,
+    },
+    year: {
+      error: false,
+    },
+    make: {
+      error: false,
+    },
+    model: {
+      error: false,
+    },
+    length: {
+      error: false,
+    },
+    axle: {
+      error: false,
+    },
+    GVWR: {
+      error: false,
+    },
+    GAWR: {
+      error: false,
+    },
+    state: {
+      error: false,
+    },
+    plateNumber: {
+      error: false,
+    },
+    ownership: {
+      error: false,
+    },
+    remarks: {
+      error: false,
+    },
+    state2: {
+      error: false,
+    },
+    UID: {
+      error: false,
+    },
+    currentStatus: {
+      error: false,
+    },
+    quantum: {
+      error: false,
+    },
+    quantumSelected: {
+      error: false,
+    }
+  };
+
+
   response : any ='';
   hasError : boolean = false;
   hasSuccess: boolean = false;
@@ -56,7 +120,7 @@ export class EditAssetComponent implements OnInit {
         .subscribe((result: any) => {
           //console.log(result);
           result = result.Items[0];
-          this.VTN = result.VTN;
+          this.VTN = result.VIN;
           this.type = result.type;
           this.year = result.assetInfo.year;
           this.make = result.assetInfo.make;
@@ -101,7 +165,7 @@ export class EditAssetComponent implements OnInit {
 
     const data = {
       "assetID": this.assetId,
-      "VTN": this.VTN,
+      "VIN": this.VTN,
       "type": this.type,
       "assetInfo": {
         "year": this.year,
@@ -123,7 +187,7 @@ export class EditAssetComponent implements OnInit {
         "UID": this.UID,
         "status": this.status
       },
-      "carrierID": this.carrierID,
+      // "carrierID": this.carrierID,
       "vehicleID": this.vehicleID,
       "currentStatus": this.currentStatus
 
@@ -134,6 +198,7 @@ export class EditAssetComponent implements OnInit {
     subscribe({
       complete : () => {},
       error : (err) => {
+        this.mapErrors(err.error);
         this.hasError = true;
         this.Error = err.error;
       },
@@ -146,6 +211,40 @@ export class EditAssetComponent implements OnInit {
     });
   }
 
+
+
+  mapErrors(errors) {
+    for (var i = 0; i < errors.length; i++) {
+      let key = errors[i].path;
+      let length = key.length;
+
+      //make array of message to remove the fieldName
+      let message = errors[i].message.split(" ");
+      delete message[0];
+
+      //new message
+      let modifiedMessage = `This field${message.join(" ")}`;
+
+      if (length == 1) {
+        //single object
+        this.validationErrors[key[0]].error = true;
+        this.validationErrors[key[0]].message = modifiedMessage;
+      } else if (length == 2) {
+        //two dimensional object
+        this.validationErrors[key[0]][key[1]].error = true;
+        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
+      }
+    }
+    console.log(this.validationErrors);
+  }
+
+  updateValidation(first, second = "") {
+    if (second == "") {
+      this.validationErrors[first].error = false;
+    } else {
+      this.validationErrors[first][second].error = false;
+    }
+  }
 
 
 }
