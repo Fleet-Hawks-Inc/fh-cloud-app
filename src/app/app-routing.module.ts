@@ -150,7 +150,7 @@ const routes: Routes = [
 
     {path: 'Add-Fuel-Entry', component: AddFuelEntryComponent},
     {path: 'Fuel-Entry-List', component: FuelEntryListComponent},
-    {path: 'Edit-Fuel-Entry/:fuelEntryId', component: EditFuelEntryComponent},
+    {path: 'Edit-Fuel-Entry/:entryID', component: EditFuelEntryComponent},
 
     {path: 'Add-Expenses', component: AddExpensesComponent},
     {path: 'Expenses-List', component: ExpensesListComponent},
