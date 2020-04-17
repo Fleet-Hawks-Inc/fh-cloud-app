@@ -113,6 +113,9 @@ import {DriverListComponent} from "./driver-list/driver-list.component";
 import {AddItemComponent} from "./add-item/add-item.component";
 import {ItemsListComponent} from "./items-list/items-list.component";
 import { EditItemComponent } from './edit-item/edit-item.component';
+import {AddServiceProgramComponent} from './add-service-program/add-service-program.component';
+import {EditServiceProgramComponent} from './edit-service-program/edit-service-program.component';
+import {ServiceProgramListComponent} from './service-program-list/service-program-list.component';
 
 const routes: Routes = [
    {path: '',  redirectTo: '/Login', pathMatch: 'full'},
@@ -240,6 +243,12 @@ const routes: Routes = [
     {path: 'Add-Item', component: AddItemComponent},
     {path: 'Edit-Item/:itemID', component: EditItemComponent},
     {path: 'Item-List', component: ItemsListComponent},
+
+
+  {path: 'Add-Service-Program', component: AddServiceProgramComponent},
+  {path: 'Edit-Service-Program/:programID', component: EditServiceProgramComponent},
+  {path: 'Service-Program-List', component: ServiceProgramListComponent},
+
 
 ];
 @NgModule({

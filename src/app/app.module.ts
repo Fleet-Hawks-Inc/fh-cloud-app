@@ -107,6 +107,9 @@ import { DriverListComponent } from './driver-list/driver-list.component';
 import { AddItemComponent } from './add-item/add-item.component';
 import { ItemsListComponent } from './items-list/items-list.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
+import { AddServiceProgramComponent } from './add-service-program/add-service-program.component';
+import { EditServiceProgramComponent } from './edit-service-program/edit-service-program.component';
+import { ServiceProgramListComponent } from './service-program-list/service-program-list.component';
 
 
 
@@ -212,6 +215,9 @@ import { EditItemComponent } from './edit-item/edit-item.component';
     AddItemComponent,
     ItemsListComponent,
     EditItemComponent,
+    AddServiceProgramComponent,
+    EditServiceProgramComponent,
+    ServiceProgramListComponent,
 
 
   ],

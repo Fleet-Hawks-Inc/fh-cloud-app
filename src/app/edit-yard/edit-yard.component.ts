@@ -1,22 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ApiService} from "../api.service";
+import {catchError, map, mapTo, tap} from 'rxjs/operators';
+import {from, of} from 'rxjs';
+declare var jquery: any;
+declare var $: any;
+
 
 @Component({
   selector: 'app-edit-yard',
   templateUrl: './edit-yard.component.html',
   styleUrls: ['./edit-yard.component.css']
 })
-export class EditYardComponent implements OnInit {
+export class EditYardComponent implements OnInit, AfterViewInit {
   title = 'Edit Yard';
+
+  errors = {};
+  form;
 
   /********** Form Fields ***********/
 
-  geoLocationLat = '';
-  geoLocationLong = '';
+  yardName = '';
+  description = '';
+  latitude = '';
+  longitude = '';
   geofence = '';
-  addressID = '';
-  timeZone = '';
+  state = '';
+  country = '';
+
   /******************/
 
   yardID ='';
@@ -36,11 +47,13 @@ export class EditYardComponent implements OnInit {
     this.apiService.getData('yards/' + this.yardID)
         .subscribe((result: any) => {
           result = result.Items[0];
-          this.geoLocationLat = result.geolocation.lat;
-          this.geoLocationLong = result.geolocation.long;
+          this.yardName = result.yardName;
+          this.description = result.description;
+          this.latitude = result.geolocation.latitude;
+          this.longitude = result.geolocation.longitude;
           this.geofence = result.geofence;
-          this.addressID = result.addressID;
-          this.timeZone = result.timeZone;
+          this.state = result.state;
+          this.country = result.country;
 
 
         });
@@ -48,32 +61,54 @@ export class EditYardComponent implements OnInit {
   }
 
 
+  ngAfterViewInit() {
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
+    });
+  }
 
 
   updateYard() {
+    this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
     const data = {
       "yardID": this.yardID,
+      "yardName" : this.yardName,
+      "description": this.description,
       "geolocation": {
-        "lat": this.geoLocationLat,
-        "long": this.geoLocationLong
+        "latitude": this.latitude,
+        "longitude": this.longitude
       },
       "geofence": this.geofence,
-      "addressID": this.addressID,
-      "timeZone": this.timeZone
-
+      "state": this.state,
+      "country" : this.state
     };
 
-    this.apiService.putData('yards', data).
-    subscribe({
+    this.apiService.putData('yards', data)
+      .pipe(
+        catchError((err) => {
+          return from(err.error)
+        }),
+        tap((val) => console.log(val)),
+        map((val: any) => {
+          val.message = val.message.replace(/".*"/, 'This Field');
+          this.errors[val.context.key] = val.message ;
+        }),
+      )
+      .subscribe({
       complete : () => {},
       error : (err) => {
         this.hasError = true;
         this.Error = err.error;
       },
       next: (res) => {
+        if (!$.isEmptyObject(this.errors)) {
+          return this.throwErrors();
+        }
+
+
         this.response = res;
         this.hasSuccess = true;
         this.Success = 'Yard Updated successfully';
@@ -81,4 +116,9 @@ export class EditYardComponent implements OnInit {
       }
     });
   }
+
+  throwErrors() {
+    this.form.showErrors(this.errors);
+  }
+
 }
