@@ -44,7 +44,7 @@
                             </div>
                         </div>
 
-                        <a routerLink="/Add-Entry" class="mb-1 mt-1 mr-1 btn btn-success"><i class="fas fa-plus"></i> Add Document</a>
+                        <a routerLink="/Add-Entry" class="mb-1 mt-1 mr-1 btn btn-success"><i class="fas fa-plus"></i> Add Stock Entry</a>
 
                     </div>
                 </div>
@@ -62,10 +62,10 @@
                             <table class="table table-bordered table-striped mb-0" id="datatable-default">
                                 <thead>
                                 <tr>
-                                    <th>Account Id</th>
-                                    <th>Entry Type</th>
-                                    <th>Debit or Credit</th>
-                                    <th>Value</th>
+                                    <th>Item</th>
+                                    <th>Total Quantity</th>
+                                    <th>Vendor</th>
+                                    <th>Description</th>
                                     <th>Edit</th>
                                     <th>Delete</th>
                                     <!--<th class="d-lg-none">Operator</th>-->
@@ -75,10 +75,10 @@
                                 <tbody>
                                 <tr *ngFor="let entry of entries">
 
-                                    <td>{{entry.accountID}}</td>
-                                    <td>{{entry.entryType}}</td>
-                                    <td>{{entry.drOrCr}}</td>
-                                    <td>{{entry.value}}</td>
+                                    <td>{{entry.itemID}}</td>
+                                    <td>{{entry.totalQuantity}}</td>
+                                    <td>{{entry.vendorID}}</td>
+                                    <td>{{entry.description}}</td>
                                     <td><a routerLink="/Edit-Entry/{{entry.entryID}}">Edit</a></td>
                                     <td><a [routerLink]="" (click)="deleteEntry(entry.entryID)" >Delete</a></td>
                                     <!--<td class="center d-lg-none">4</td>-->

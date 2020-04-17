@@ -22,7 +22,7 @@ export class EntriesComponent implements OnInit {
   }
 
   fetchEntries() {
-    this.apiService.getData('entries')
+    this.apiService.getData('stockEntries')
         .subscribe((result: any) => {
           this.entries = result.Items;
         });
@@ -31,7 +31,7 @@ export class EntriesComponent implements OnInit {
 
 
   deleteEntry(documentId) {
-    this.apiService.deleteData('entries/' + documentId)
+    this.apiService.deleteData('StockEntries/' + documentId)
         .subscribe((result: any) => {
           this.fetchEntries();
         })
