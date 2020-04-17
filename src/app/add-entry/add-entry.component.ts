@@ -55,7 +55,6 @@ export class AddEntryComponent implements OnInit {
       .postData("stockEntries", data)
       .pipe(
         catchError((err) => {
-          console.log(err.error);
           return from(err.error);
         }),
         tap((val) => console.log(val)),
@@ -67,7 +66,6 @@ export class AddEntryComponent implements OnInit {
       .subscribe({
         complete: () => {},
         error: (err) => {
-          console.log(err);
           // this.mapErrors(err.error);
           this.hasError = true;
           this.Error = err.error;

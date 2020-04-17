@@ -1,85 +1,96 @@
 <section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
 
-    <!-- start: header -->
-    <app-header></app-header>
+  <!-- end: header -->
 
-    <!-- end: header -->
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
 
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
 
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
 
-    <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
-        <section role="main" class="content-body">
-            <header class="page-header">
-                <h2>Assets</h2>
-
-                <div class="right-wrapper text-right">
-                    <ol class="breadcrumbs">
-                        <li>
-                            <a href="index.html">
-                                <i class="fas fa-home"></i>
-                            </a>
-                        </li>
-                        <li><span>Vehicles</span></li>
-                        <li><span>Add Vehicles</span></li>
-                    </ol>
-
-
-                </div>
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">Expense Type Entry Form</h2>
             </header>
-
-
-
-            <div class="row">
-                <div class="col">
-                    <section class="card">
-                        <header class="card-header">
-
-
-                            <h2 class="card-title">Expense Types</h2>
-                        </header>
-                        <div class="card-body">
-                            <form class="form-horizontal form-bordered" method="get">
-                                <div class="form-group row">
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Expense Type</label>
-                                        <input type="text" class="form-control" [(ngModel)]="expenseType" name="expenseType" >
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Description</label>
-                                        <input type="text" class="form-control" [(ngModel)]="description" name="description"  >
-                                    </div>
-
-
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <button class="btn btn-dark mt-4 modal-confirm" (click)="updateExpenseType()">Submit</button>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-
-                                        <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
-                                        <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </section>
+            <div class="card-body">
+              <form
+                class="form-horizontal form-bordered"
+                method="get"
+                id="form_"
+                name="form"
+              >
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Expense Type Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="expenseTypeName"
+                      name="expenseTypeName"
+                    />
+                  </div>
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Description</label
+                    >
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      [(ngModel)]="description"
+                      name="description"
+                    ></textarea>
+                  </div>
                 </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button
+                      class="btn btn-dark mt-4 modal-confirm"
+                      (click)="addExpenseType()"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+              </form>
             </div>
-
-        </section>
-    </div>
-
-
-
-
-
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>

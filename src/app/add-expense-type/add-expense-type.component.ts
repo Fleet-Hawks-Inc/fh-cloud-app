@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {Router} from "@angular/router";
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import { ApiService } from "../api.service";
+import { Router } from "@angular/router";
+import {catchError, map, mapTo, tap} from 'rxjs/operators';
+import {from, of} from 'rxjs';
+declare var jquery: any;
+declare var $: any;
 
 @Component({
   selector: 'app-add-expense-type',
@@ -11,13 +15,13 @@ export class AddExpenseTypeComponent implements OnInit {
   title = 'Add Expense Types';
 
   /********** Form Fields ***********/
-  expenseType = '';
+  expenseTypeName = '';
   description = '';
-  carrierID = '';
 
   /******************/
 
-
+  errors={};
+  form;
   response : any ='';
   hasError : boolean = false;
   hasSuccess: boolean = false;
@@ -28,33 +32,58 @@ export class AddExpenseTypeComponent implements OnInit {
 
   ngOnInit() {}
 
+  ngAfterViewInit() {
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
+    });
+  }
+
+  
+
   addExpenseType() {
+    this.errors = {};
+
     this.hasError = false;
     this.hasSuccess = false;
 
-    const data = {
-      "expenseType": this.expenseType,
-      "description": this.description
-    };
+    let data = {
+      expenseTypeName: this.expenseTypeName,
+      description: this.description  };
 
-
-    this.apiService.postData('expenseTypes', data).
-    subscribe({
-      complete : () => {},
-      error : (err) => {
+    const handleError = this.apiService.postData("expenseTypes", data)
+      .pipe(
+        catchError((err) => {
+          return from(err.error)
+        }),
+        tap((val) => console.log(val)),
+        map((val: any) => {
+            val.message = val.message.replace(/".*"/, 'This Field');
+            this.errors[val.path[0]] = val.message ;
+        }),
+        )
+      .subscribe({
+      complete: () => {},
+      error: (err) => {
+        console.log(err);
+        // this.mapErrors(err.error);
         this.hasError = true;
         this.Error = err.error;
       },
       next: (res) => {
+        if (!$.isEmptyObject(this.errors)) {
+         return this.throwErrors();
+        }
         this.response = res;
         this.hasSuccess = true;
-        this.Success = 'Expense Type Added successfully';
-
-        this.expenseType = '';
-        this.description = '';
-        this.carrierID = '';
-
-      }
+        this.Success = "Ticket Added successfully";
+        this.expenseTypeName = "";
+        this.description = "";
+      },
     });
   }
+
+  throwErrors() {
+    this.form.showErrors(this.errors);
+    }
+
 }
