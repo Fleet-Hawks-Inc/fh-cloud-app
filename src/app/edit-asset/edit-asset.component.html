@@ -46,12 +46,28 @@
                                 <div class="form-group row">
                                     <div class="col-lg-8">
                                         <label class="control-label text-lg-right pt-2" >Vin</label>
-                                        <input type="text" class="form-control" id="VTN" [(ngModel)]="VTN" name="VTN">
+                                        <input type="text" class="form-control" id="VTN" [(ngModel)]="VTN" name="VTN" (input)="updateValidation('VTN')"
+                                               [ngClass]="{
+                        redBorder: validationErrors.VTN.error == true
+                      }">
+                                      <span
+                                        *ngIf="validationErrors.VTN.error == true"
+                                        class="red"
+                                      >{{ validationErrors.VTN.message }}</span
+                                      >
                                     </div>
 
                                     <div class="col-lg-4">
                                         <label class="control-label text-lg-right pt-2" >Type</label>
-                                        <input type="text" class="form-control" id="type" [(ngModel)]="type" name="type">
+                                        <input type="text" class="form-control" id="type" [(ngModel)]="type" name="type" (input)="updateValidation('type')"
+                                               [ngClass]="{
+                        redBorder: validationErrors.type.error == true
+                      }">
+                                      <span
+                                        *ngIf="validationErrors.type.error == true"
+                                        class="red"
+                                      >{{ validationErrors.type.message }}</span
+                                      >
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -60,7 +76,10 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <label class="control-label text-lg-right pt-2" >Year</label>
-                                        <select data-plugin-selectTwo class="form-control populate" id="year" [(ngModel)]="year" name="year">
+                                        <select data-plugin-selectTwo class="form-control populate" id="year" [(ngModel)]="year" name="year" (input)="updateValidation('year')"
+                                                [ngClass]="{
+                        redBorder: validationErrors.year.error == true
+                      }">
                                             <optgroup label="">
                                                 <option >1980</option>
                                                 <option >1981</option>
@@ -105,10 +124,18 @@
                                                 <option >2020</option>
                                             </optgroup>
                                         </select>
+                                      <span
+                                        *ngIf="validationErrors.year.error == true"
+                                        class="red"
+                                      >{{ validationErrors.year.message }}</span
+                                      >
                                     </div>
                                     <div class="col-lg-4">
                                         <label class="control-label text-lg-right pt-2" >Make</label>
-                                        <select data-plugin-selectTwo class="form-control populate" id="make" [(ngModel)]="make" name="make">
+                                        <select data-plugin-selectTwo class="form-control populate" id="make" [(ngModel)]="make" name="make" (input)="updateValidation('make')"
+                                                [ngClass]="{
+                        redBorder: validationErrors.make.error == true
+                      }">
                                             <optgroup label="">
                                                 <option >Tesla</option>
                                                 <option >BMW</option>
@@ -123,10 +150,18 @@
                                                 <option >Rivian</option>
                                             </optgroup>
                                         </select>
+                                      <span
+                                        *ngIf="validationErrors.make.error == true"
+                                        class="red"
+                                      >{{ validationErrors.make.message }}</span
+                                      >
                                     </div>
                                     <div class="col-lg-4">
                                         <label class="control-label text-lg-right pt-2" >Model</label>
-                                        <select data-plugin-selectTwo class="form-control populate" id="model" [(ngModel)]="model" name="model">
+                                        <select data-plugin-selectTwo class="form-control populate" id="model" [(ngModel)]="model" name="model" (input)="updateValidation('model')"
+                                                [ngClass]="{
+                        redBorder: validationErrors.model.error == true
+                      }">
                                             <optgroup label="">
                                                 <option >ST8189LD</option>
                                                 <option >ZZ0189LD</option>
@@ -141,24 +176,58 @@
                                                 <option >KDF2355U</option>
                                             </optgroup>
                                         </select>
+                                      <span
+                                        *ngIf="validationErrors.model.error == true"
+                                        class="red"
+                                      >{{ validationErrors.model.message }}</span
+                                      >
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-lg-3">
                                         <label class="control-label text-lg-right pt-2" >Length</label>
-                                        <input type="text" class="form-control" id="length" [(ngModel)]="length" name="length">
+                                        <input type="text" class="form-control" id="length" [(ngModel)]="length" name="length" (input)="updateValidation('length')"
+                                               [ngClass]="{
+                        redBorder: validationErrors.length.error == true
+                      }">
+                                      <span
+                                        *ngIf="validationErrors.length.error == true"
+                                        class="red"
+                                      >{{ validationErrors.length.message }}</span
+                                      >
                                     </div>
                                     <div class="col-lg-3">
                                         <label class="control-label text-lg-right pt-2" >Axle</label>
-                                        <input type="text" class="form-control" id="axle" [(ngModel)]="axle" name="axle">
+                                        <input type="text" class="form-control" id="axle" [(ngModel)]="axle" name="axle" (input)="updateValidation('axle')"
+                                               [ngClass]="{
+                        redBorder: validationErrors.axle.error == true
+                      }"><span
+                                      *ngIf="validationErrors.axle.error == true"
+                                      class="red"
+                                    >{{ validationErrors.axle.message }}</span
+                                    >
                                     </div>
                                     <div class="col-lg-3">
                                         <label class="control-label text-lg-right pt-2" >Gross Vehicle Weight Rating (GVWR)</label>
-                                        <input type="text" class="form-control" id="GVWR" [(ngModel)]="GVWR" name="GVWR">
+                                        <input type="text" class="form-control" id="GVWR" [(ngModel)]="GVWR" name="GVWR" (input)="updateValidation('GVWR')"
+                                               [ngClass]="{
+                        redBorder: validationErrors.GVWR.error == true
+                      }"><span
+                                      *ngIf="validationErrors.GVWR.error == true"
+                                      class="red"
+                                    >{{ validationErrors.GVWR.message }}</span
+                                    >
                                     </div>
                                     <div class="col-lg-3">
                                         <label class="control-label text-lg-right pt-2" >Gross Axle Weight Rating (GAWR)</label>
-                                        <input type="text" class="form-control" id="GAWR" [(ngModel)]="GAWR" name="GAWR">
+                                        <input type="text" class="form-control" id="GAWR" [(ngModel)]="GAWR" name="GAWR" (input)="updateValidation('GAWR')"
+                                               [ngClass]="{
+                        redBorder: validationErrors.GAWR.error == true
+                      }"><span
+                                      *ngIf="validationErrors.GAWR.error == true"
+                                      class="red"
+                                    >{{ validationErrors.GAWR.message }}</span
+                                    >
                                     </div>
                                 </div>
 
@@ -169,7 +238,10 @@
 
                                     <div class="col-lg-6">
                                         <label class="control-label text-lg-right pt-2">State</label>
-                                        <select data-plugin-selectTwo class="form-control populate" id="state" [(ngModel)]="state" name="state">
+                                        <select data-plugin-selectTwo class="form-control populate" id="state" [(ngModel)]="state" name="state" (input)="updateValidation('state')"
+                                                [ngClass]="{
+                        redBorder: validationErrors.state.error == true
+                      }">
                                             <optgroup label="">
                                                 <option value="1">California</option>
                                                 <option >Florida</option>
@@ -182,11 +254,22 @@
                                                 <option >Nevada</option>
                                                 <option >Montana</option>
                                             </optgroup>
-                                        </select>
+                                        </select><span
+                                      *ngIf="validationErrors.state.error == true"
+                                      class="red"
+                                    >{{ validationErrors.state.message }}</span
+                                    >
                                     </div>
                                     <div class="col-lg-6">
                                         <label class="control-label text-lg-right pt-2" >Plate Number</label>
-                                        <input type="text" class="form-control" id="plateNumber" [(ngModel)]="plateNumber" name="plateNumber">
+                                        <input type="text" class="form-control" id="plateNumber" [(ngModel)]="plateNumber" name="plateNumber" (input)="updateValidation('plateNumber')"
+                                               [ngClass]="{
+                        redBorder: validationErrors.plateNumber.error == true
+                      }"><span
+                                      *ngIf="validationErrors.plateNumber.error == true"
+                                      class="red"
+                                    >{{ validationErrors.plateNumber.message }}</span
+                                    >
                                     </div>
 
                                 </div>
@@ -194,11 +277,21 @@
                                 <div class="form-group row">
                                     <div class="col-lg-4">
                                         <label class="control-label text-lg-right pt-2" >Owner Ship</label>
-                                        <input class="form-control"  type="text" placeholder="Ownership" id="ownership" [(ngModel)]="ownership" name="ownership">
+                                        <input class="form-control"  type="text" placeholder="Ownership" id="ownership" [(ngModel)]="ownership" name="ownership" (input)="updateValidation('ownership')"
+                                               [ngClass]="{
+                        redBorder: validationErrors.ownership.error == true
+                      }"><span
+                                      *ngIf="validationErrors.ownership.error == true"
+                                      class="red"
+                                    >{{ validationErrors.ownership.message }}</span
+                                    >
                                     </div>
                                     <div class="col-lg-4">
                                         <label class="control-label text-lg-right pt-2" >State</label>
-                                        <select data-plugin-selectTwo class="form-control populate" id="state2" [(ngModel)]="state2" name="state2">
+                                        <select data-plugin-selectTwo class="form-control populate" id="state2" [(ngModel)]="state2" name="state2" (input)="updateValidation('state2')"
+                                                [ngClass]="{
+                        redBorder: validationErrors.state2.error == true
+                      }">
                                             <optgroup label="">
                                                 <option value="1">California</option>
                                                 <option >Florida</option>
@@ -211,12 +304,23 @@
                                                 <option >Nevada</option>
                                                 <option >Montana</option>
                                             </optgroup>
-                                        </select>
+                                        </select><span
+                                      *ngIf="validationErrors.state2.error == true"
+                                      class="red"
+                                    >{{ validationErrors.state2.message }}</span
+                                    >
                                     </div>
 
                                     <div class="col-lg-4">
                                         <label class="control-label text-lg-right pt-2" >Remarks</label>
-                                        <textarea class="form-control" rows="3"  id="remarks" [(ngModel)]="remarks" name="remarks"></textarea>
+                                        <textarea class="form-control" rows="3"  id="remarks" [(ngModel)]="remarks" name="remarks" (input)="updateValidation('remarks')"
+                                                  [ngClass]="{
+                        redBorder: validationErrors.remarks.error == true
+                      }"></textarea><span
+                                      *ngIf="validationErrors.remarks.error == true"
+                                      class="red"
+                                    >{{ validationErrors.remarks.message }}</span
+                                    >
                                     </div>
 
 
@@ -232,7 +336,7 @@
 
                                     <div class="col-lg-6">
                                         <label class="control-label text-lg-right pt-2" >Assigned Quantum</label>
-                                        <input class="form-control" type="text" placeholder="Quantum has been assigned" disabled="" id="UID" [(ngModel)]="UID" name="UID">
+                                        <input class="form-control" type="text" placeholder="Quantum has been assigned" disabled="" id="UID" [(ngModel)]="UID" name="UID" >
                                     </div>
                                     <div class="col-lg-6">
                                         <a class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal" [routerLink]="" (click)="quantumModal()"><i class="fas fa-plus"></i> Assign Quantum</a>
@@ -270,14 +374,21 @@
                                 <div class="form-group row">
                                     <div class="col-lg-6">
                                         <label class="control-label text-lg-right pt-2" >Status</label>
-                                        <select data-plugin-selectTwo class="form-control populate" name="currentStatus" [(ngModel)]="currentStatus">
+                                        <select data-plugin-selectTwo class="form-control populate" name="currentStatus" [(ngModel)]="currentStatus" (input)="updateValidation('currentStatus')"
+                                                [ngClass]="{
+                        redBorder: validationErrors.currentStatus.error == true
+                      }">
                                             <optgroup label="">
                                                 <option value="1">Enable</option>
                                                 <option >Disable</option>
                                                 <option >Out of Service</option>
 
                                             </optgroup>
-                                        </select>
+                                        </select><span
+                                      *ngIf="validationErrors.currentStatus.error == true"
+                                      class="red"
+                                    >{{ validationErrors.currentStatus.message }}</span
+                                    >
                                         <button class="btn btn-dark mt-4 modal-confirm" (click)="updateAsset();">Submit</button>
                                     </div>
 

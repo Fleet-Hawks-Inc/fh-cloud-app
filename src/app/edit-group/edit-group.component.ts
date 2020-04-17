@@ -20,6 +20,22 @@ export class EditGroupComponent implements OnInit {
 
   /******************/
 
+  /**
+   * Form errors prop
+   */
+  validationErrors = {
+    groupName: {
+      error: false,
+    },
+    description: {
+      error: false,
+    },
+    groupType: {
+      error: false,
+    },
+
+  };
+
 
   response : any ='';
   hasError : boolean = false;
@@ -63,6 +79,7 @@ export class EditGroupComponent implements OnInit {
     subscribe({
       complete : () => {},
       error : (err) => {
+        this.mapErrors(err.error);
         this.hasError = true;
         this.Error = err.error;
       },
@@ -73,6 +90,41 @@ export class EditGroupComponent implements OnInit {
 
       }
     });
+  }
+
+
+
+  mapErrors(errors) {
+    for (var i = 0; i < errors.length; i++) {
+      let key = errors[i].path;
+      let length = key.length;
+
+      //make array of message to remove the fieldName
+      let message = errors[i].message.split(" ");
+      delete message[0];
+
+      //new message
+      let modifiedMessage = `This field${message.join(" ")}`;
+
+      if (length == 1) {
+        //single object
+        this.validationErrors[key[0]].error = true;
+        this.validationErrors[key[0]].message = modifiedMessage;
+      } else if (length == 2) {
+        //two dimensional object
+        this.validationErrors[key[0]][key[1]].error = true;
+        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
+      }
+    }
+    console.log(this.validationErrors);
+  }
+
+  updateValidation(first, second = "") {
+    if (second == "") {
+      this.validationErrors[first].error = false;
+    } else {
+      this.validationErrors[first][second].error = false;
+    }
   }
 
 }
