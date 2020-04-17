@@ -72,7 +72,7 @@
                                 </thead>
                                 <tbody>
                                 <tr *ngFor="let expenseType of expenseTypes">
-                                    <td>{{expenseType.expenseType}}</td>
+                                    <td>{{expenseType.expenseTypeName}}</td>
                                     <td>{{expenseType.description}}</td>
 
                                     <td><a routerLink="/Edit-Expense-Type/{{expenseType.expenseTypeID}}">Edit</a></td>
