@@ -4,10 +4,15 @@
 
 export const environment = {
   production: false,
-  BaseUrl : 'http://service-ap-south-1.fleethawks.com/api/v1/',
-  temp : 'search',
-  LoginUrl : 'users/login',
-  ApiKey : ''
+  BaseUrl: 'http://service-ap-south-1.fleethawks.com/api/v1/',
+  temp: 'search',
+  LoginUrl: 'users/login',
+  ApiKey: '',
+  congitoConfig: {
+    USER_POOL_ID: 'us-east-2_YNgmnLURY',
+    REGION: 'us-east-2',
+    APP_CLIENT_ID: '77ihpijtlrk6kt7e2ufma285il'
+  }
 };
 
 /*

@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {HttpClientModule} from '@angular/common/http';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,13 +12,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AddDriverComponent } from './add-driver/add-driver.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { HeaderComponent } from './header/header.component';
-import {AddVehicleComponent} from './add-vehicle/add-vehicle.component';
+import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
 import { LeftBarComponent } from './left-bar/left-bar.component';
 import { RFormsComponent } from './r-forms/r-forms.component';
 import { CompanyInfoComponent } from './company-info/company-info.component';
 import { AddQuantumComponent } from './add-quantum/add-quantum.component';
 import { AddUserComponent } from './add-user/add-user.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { LogoutComponent } from './logout/logout.component';
 import { EditVehicleComponent } from './edit-vehicle/edit-vehicle.component';
@@ -110,6 +110,8 @@ import { EditItemComponent } from './edit-item/edit-item.component';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
 import { EditVendorComponent } from './edit-vendor/edit-vendor.component';
 import { VendorsListComponent } from './vendors-list/vendors-list.component';
+import { RegisterUserComponent } from './register-user/register-user.component';
+import { CognitoUtility } from './services/cognito.utility.service';
 
 
 
@@ -218,6 +220,7 @@ import { VendorsListComponent } from './vendors-list/vendors-list.component';
     AddVendorComponent,
     EditVendorComponent,
     VendorsListComponent,
+    RegisterUserComponent,
 
 
   ],
@@ -228,10 +231,12 @@ import { VendorsListComponent } from './vendors-list/vendors-list.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-      NgbModule,
+    NgbModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    CognitoUtility
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
