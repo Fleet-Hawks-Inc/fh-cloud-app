@@ -1,97 +1,139 @@
 <section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
 
-    <!-- start: header -->
-    <app-header></app-header>
+  <!-- end: header -->
 
-    <!-- end: header -->
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
 
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
 
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
 
-    <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
 
-        <section role="main" class="content-body">
-            <header class="page-header">
-                <h2>{{title}}</h2>
-
-                <div class="right-wrapper text-right">
-                    <ol class="breadcrumbs">
-                        <li>
-                            <a routerLink="">
-                                <i class="fas fa-home"></i>
-                            </a>
-                        </li>
-
-                        <li><span>{{title}}</span></li>
-                    </ol>
-
-
-                </div>
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">Add Stock Entry</h2>
             </header>
-
-
-
-            <div class="row">
-                <div class="col">
-                    <section class="card">
-                        <header class="card-header">
-
-
-                            <h2 class="card-title">{{title}}</h2>
-                        </header>
-                        <div class="card-body">
-                            <form class="form-horizontal form-bordered" method="get">
-                                <div class="form-group row">
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Account ID</label>
-                                        <input type="text" class="form-control" name="accountID" [(ngModel)]="accountID" >
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Entry Type</label>
-                                        <input type="text" class="form-control" name="entryType" [(ngModel)]="entryType" >
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Debit or Credit</label>
-                                        <input type="text" class="form-control" name="drOrCr" [(ngModel)]="drOrCr" >
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Value</label>
-                                        <input type="text" class="form-control" name="value" [(ngModel)]="value" >
-                                    </div>
-
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <button class="btn btn-dark mt-4 modal-confirm" (click)="updateEntry()">Submit</button>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-
-                                        <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
-                                        <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
-                                    </div>
-                                </div>
-
-                            </form>
-                        </div>
-                    </section>
+            <div class="card-body">
+              <form
+                class="form-horizontal form-bordered"
+                method="get"
+                id="form_"
+                name="form"
+              >
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Items</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      [(ngModel)]="itemID"
+                      name="itemID"
+                    >
+                      <optgroup label="">
+                        <option value="1">Item 1</option>
+                        <option value="2">Item 2</option>
+                        <option value="2">Item 3</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Total Quantity</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="totalQuantity"
+                      name="totalQuantity"
+                    />
+                  </div>
                 </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Vendor</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      [(ngModel)]="vendorID"
+                      name="vendorID"
+                    >
+                      <optgroup label="">
+                        <option value="1">V 1</option>
+                        <option value="2">V 2</option>
+                        <option value="2">V 3</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Description</label
+                    >
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      [(ngModel)]="description"
+                      name="description"
+                    ></textarea>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button
+                      class="btn btn-dark mt-4 modal-confirm"
+                      (click)="updateStockEntry()"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+              </form>
             </div>
-
-        </section>
-    </div>
-
-
-
-
-
-
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>

@@ -708,9 +708,9 @@
 
   /* make borde red for validation */
 .redBorder {
-  border: solid 1px red;
+  border: solid 1px #C10000;
 }
 
 .red {
-  color: red;
+  color:#C10000;
 }

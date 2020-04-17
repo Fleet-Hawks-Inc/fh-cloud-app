@@ -158,7 +158,7 @@ const routes: Routes = [
 
     {path: 'Add-Expense-Type', component: AddExpenseTypeComponent},
     {path: 'Expenses-Type-List', component: ExpenseTypeListComponent},
-    {path: 'Edit-Expense-Type/:expenseTypeId', component: EditExpenseTypeComponent},
+    {path: 'Edit-Expense-Type/:expenseTypeID', component: EditExpenseTypeComponent},
 
 
     {path: 'Add-Documents', component: AddDocumentsComponent},
