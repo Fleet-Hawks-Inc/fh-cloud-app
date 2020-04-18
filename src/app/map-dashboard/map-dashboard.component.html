@@ -7,7 +7,7 @@
     <!-- end: sidebar -->
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header">
-        <h2>{{title}}</h2>
+        <h2>{{ title }}</h2>
         <div class="right-wrapper text-right">
           <ol class="breadcrumbs pr-3">
             <li>
@@ -15,41 +15,56 @@
                 <i class="fas fa-home"></i>
               </a>
             </li>
-            <li><span>{{title}}</span></li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
           </ol>
         </div>
       </header>
 
       <div class="mapclass drivermain">
-        <div class="map" id="map" style="width: 100%;border-radius: 5px; padding:10px"></div>
+        <div
+          class="map"
+          id="map"
+          style="width: 100%; height:200px, border-radius: 5px; padding:10px"
+        ></div>
 
         <div class="iconR" id="arrowR" *ngIf="visible">
-          <a [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-right"></i></a>
+          <a [routerLink]="" (click)="valuechange()"
+            ><i class="fas fa-arrow-right"></i
+          ></a>
         </div>
 
         <div class="iconL" id="arrowL" *ngIf="!visible">
-          <a [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
+          <a [routerLink]="" (click)="valuechange()"
+            ><i class="fas fa-arrow-left"></i
+          ></a>
         </div>
 
-
-        <div class="drivelist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverList"
-          *ngIf="visible" [@slideInOut]>
-
-
-          <div class="driverdetail">
-            <a href="dashboard-driver.html">
-              <p class="mb-2 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span> Manjit
-                Singh</p>
+        <div
+          class="drivelist"
+          style="overflow-y: scroll; overflow-x: hidden; height: 100%;"
+          id="driverList"
+          *ngIf="visible"
+          [@slideInOut]
+        >
+          <div *ngFor="let driver of frontEndData.drivers">
+            <div class="driverdetail" style="padding: 5px; cursor:grab;" (click)="flyToDriver(driver.location)">
+              <p class="mb-2 text-4 font-weight-semibold text-dark">
+                <span class="onduty pull-right">ON</span>
+                {{ driver.driverName }}
+              </p>
 
               <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle</p>
               <p class="driverstatus mb-0">Kingston, Toronto, ON K7L 5K4</p>
 
-
-
-              <p class="mb-2 mt-3 text-4 font-weight-semibold text-dark">Trip Info</p>
-              <div class="tripscrolbar mb-3" style="overflow-x: scroll; overflow-y: hidden; width: 400px;">
-
-
+              <p class="mb-2 mt-3 text-4 font-weight-semibold text-dark">
+                Trip Info
+              </p>
+              <div
+                class="tripscrolbar mb-3"
+                style="overflow-x: scroll; overflow-y: hidden; width: 400px;"
+              >
                 <div class="tripbar"></div>
                 <div class="tripbarfinish"></div>
                 <div class="tripdot1"></div>
@@ -60,370 +75,94 @@
                 <div class="tripdot6"></div>
 
                 <div class="tripdt1">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 1<br>00:00</p>
+                  <p class="line-height-xs text-2 font-weight-bold">
+                    Day 1<br />00:00
+                  </p>
                 </div>
                 <div class="tripdt2">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 2<br>00:00</p>
+                  <p class="line-height-xs text-2 font-weight-bold">
+                    Day 2<br />00:00
+                  </p>
                 </div>
                 <div class="tripdt3">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 3<br>00:00</p>
+                  <p class="line-height-xs text-2 font-weight-bold">
+                    Day 3<br />00:00
+                  </p>
                 </div>
                 <div class="tripdt4">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 4<br>00:00</p>
+                  <p class="line-height-xs text-2 font-weight-bold">
+                    Day 4<br />00:00
+                  </p>
                 </div>
                 <div class="tripdt5">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 5<br>00:00</p>
+                  <p class="line-height-xs text-2 font-weight-bold">
+                    Day 5<br />00:00
+                  </p>
                 </div>
                 <div class="tripdt6">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 6<br>00:00</p>
+                  <p class="line-height-xs text-2 font-weight-bold">
+                    Day 6<br />00:00
+                  </p>
                 </div>
-
 
                 <div class="triploc1">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 1</p>
+                  <p class="line-height-xs text-2 font-weight-bold">
+                    Location 1
+                  </p>
                 </div>
                 <div class="triploc2">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 2</p>
+                  <p class="line-height-xs text-2 font-weight-bold">
+                    Location 2
+                  </p>
                 </div>
                 <div class="triploc3">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 3</p>
+                  <p class="line-height-xs text-2 font-weight-bold">
+                    Location 3
+                  </p>
                 </div>
                 <div class="triploc4">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 4</p>
+                  <p class="line-height-xs text-2 font-weight-bold">
+                    Location 4
+                  </p>
                 </div>
                 <div class="triploc5">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 5</p>
+                  <p class="line-height-xs text-2 font-weight-bold">
+                    Location 5
+                  </p>
                 </div>
                 <div class="triploc6">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 6</p>
+                  <p class="line-height-xs text-2 font-weight-bold">
+                    Location 6
+                  </p>
                 </div>
-
               </div>
 
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Temperature Requirements
-                <span class="pull-right text-right">-10<sup>o</sup>C C to -20<sup>o</sup></span></p>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Requirements
-                <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">On Time</button></span></p>
-
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Load Status
-                <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">Partial</button></span></p>
-
-
-
-
-            </a>
-          </div>
-
-          <div class="driverdetail">
-            <a href="dashboard-driver.html">
-              <p class="mb-2 text-4 font-weight-semibold text-dark"><span class="offduty pull-right">OFF</span> Roshan
-                Prince</p>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle</p>
-              <p class="driverstatus mb-0">Crescent Road Vancouver, BC V6T 1Z2</p>
-
-
-              <p class="mb-2 mt-3 text-4 font-weight-semibold text-dark">Trip Info</p>
-              <div class="tripscrolbar mb-3" style="overflow-x: scroll; overflow-y: hidden; width: 400px;">
-
-
-                <div class="tripbar"></div>
-                <div class="tripbarfinish"></div>
-                <div class="tripdot1"></div>
-                <div class="tripdot2"></div>
-                <div class="tripdot3"></div>
-                <div class="tripdot4"></div>
-                <div class="tripdot5"></div>
-                <div class="tripdot6"></div>
-
-                <div class="tripdt1">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 1<br>00:00</p>
-                </div>
-                <div class="tripdt2">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 2<br>00:00</p>
-                </div>
-                <div class="tripdt3">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 3<br>00:00</p>
-                </div>
-                <div class="tripdt4">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 4<br>00:00</p>
-                </div>
-                <div class="tripdt5">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 5<br>00:00</p>
-                </div>
-                <div class="tripdt6">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 6<br>00:00</p>
-                </div>
-
-
-                <div class="triploc1">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 1</p>
-                </div>
-                <div class="triploc2">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 2</p>
-                </div>
-                <div class="triploc3">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 3</p>
-                </div>
-                <div class="triploc4">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 4</p>
-                </div>
-                <div class="triploc5">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 5</p>
-                </div>
-                <div class="triploc6">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 6</p>
-                </div>
-
-              </div>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Temperature Requirements
-                <span class="pull-right text-right">-10<sup>o</sup>C C to -20<sup>o</sup></span></p>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Requirements
-                <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">On Time</button></span></p>
-
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Load Status
-                <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">Partial</button></span></p>
-
-
-
-
-            </a>
-          </div>
-
-          <div class="driverdetail">
-            <a href="dashboard-driver.html">
-              <p class="mb-2 text-4 font-weight-semibold text-dark"><span class="dutyonly pull-right">D</span> Bachitar
+              <p class="mb-2 text-4 font-weight-semibold text-dark">
+                Temperature Requirements
+                <span class="pull-right text-right"
+                  >-10<sup>o</sup>C C to -20<sup>o</sup></span
+                >
               </p>
 
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle</p>
-              <p class="driverstatus mb-0">Crt Brampton ON L6Z 3G4</p>
+              <p class="mb-2 text-4 font-weight-semibold text-dark">
+                Schedule Requirements
+                <span class="pull-right"
+                  ><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">
+                    On Time
+                  </button></span
+                >
+              </p>
 
-
-              <p class="mb-2 mt-3 text-4 font-weight-semibold text-dark">Trip Info</p>
-              <div class="tripscrolbar mb-3" style="overflow-x: scroll; overflow-y: hidden; width: 400px;">
-
-
-                <div class="tripbar"></div>
-                <div class="tripbarfinish"></div>
-                <div class="tripdot1"></div>
-                <div class="tripdot2"></div>
-                <div class="tripdot3"></div>
-                <div class="tripdot4"></div>
-                <div class="tripdot5"></div>
-                <div class="tripdot6"></div>
-
-                <div class="tripdt1">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 1<br>00:00</p>
-                </div>
-                <div class="tripdt2">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 2<br>00:00</p>
-                </div>
-                <div class="tripdt3">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 3<br>00:00</p>
-                </div>
-                <div class="tripdt4">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 4<br>00:00</p>
-                </div>
-                <div class="tripdt5">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 5<br>00:00</p>
-                </div>
-                <div class="tripdt6">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 6<br>00:00</p>
-                </div>
-
-
-                <div class="triploc1">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 1</p>
-                </div>
-                <div class="triploc2">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 2</p>
-                </div>
-                <div class="triploc3">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 3</p>
-                </div>
-                <div class="triploc4">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 4</p>
-                </div>
-                <div class="triploc5">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 5</p>
-                </div>
-                <div class="triploc6">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 6</p>
-                </div>
-
-              </div>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Temperature Requirements
-                <span class="pull-right text-right">-10<sup>o</sup>C C to -20<sup>o</sup></span></p>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Requirements
-                <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">On Time</button></span></p>
-
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Load Status
-                <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">Partial</button></span></p>
-
-
-            </a>
+              <p class="mb-2 text-4 font-weight-semibold text-dark">
+                Load Status
+                <span class="pull-right"
+                  ><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">
+                    Partial
+                  </button></span
+                >
+              </p>
+            </div>
           </div>
-
-
-          <div class="driverdetail">
-            <a href="dashboard-driver.html">
-              <p class="mb-2 text-4 font-weight-semibold text-dark"><span class="pcduty pull-right">PC</span> Kapil
-                Sharma</p>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle</p>
-              <p class="driverstatus mb-0">McCallum Ave Regina SK S4S 0S4</p>
-              <hr class="solid mt-2 mb-2">
-
-              <p class="mb-2 mt-3 text-4 font-weight-semibold text-dark">Trip Info</p>
-              <div class="tripscrolbar mb-3" style="overflow-x: scroll; overflow-y: hidden; width: 400px;">
-
-
-                <div class="tripbar"></div>
-                <div class="tripbarfinish"></div>
-                <div class="tripdot1"></div>
-                <div class="tripdot2"></div>
-                <div class="tripdot3"></div>
-                <div class="tripdot4"></div>
-                <div class="tripdot5"></div>
-                <div class="tripdot6"></div>
-
-                <div class="tripdt1">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 1<br>00:00</p>
-                </div>
-                <div class="tripdt2">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 2<br>00:00</p>
-                </div>
-                <div class="tripdt3">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 3<br>00:00</p>
-                </div>
-                <div class="tripdt4">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 4<br>00:00</p>
-                </div>
-                <div class="tripdt5">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 5<br>00:00</p>
-                </div>
-                <div class="tripdt6">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 6<br>00:00</p>
-                </div>
-
-
-                <div class="triploc1">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 1</p>
-                </div>
-                <div class="triploc2">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 2</p>
-                </div>
-                <div class="triploc3">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 3</p>
-                </div>
-                <div class="triploc4">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 4</p>
-                </div>
-                <div class="triploc5">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 5</p>
-                </div>
-                <div class="triploc6">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 6</p>
-                </div>
-
-              </div>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Temperature Requirements
-                <span class="pull-right text-right">-10<sup>o</sup>C C to -20<sup>o</sup></span></p>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Requirements
-                <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">On Time</button></span></p>
-
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Load Status
-                <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">Partial</button></span></p>
-
-
-
-            </a>
-          </div>
-
-          <div class="driverdetail">
-            <a href="dashboard-driver.html">
-              <p class="mb-2 text-4 font-weight-semibold text-dark"><span class="ymduty pull-right">YM</span> Rohit
-                Aggarwal</p>
-
-
-              <p class="mb-2 mt-3 text-4 font-weight-semibold text-dark">Trip Info</p>
-              <div class="tripscrolbar mb-3" style="overflow-x: scroll; overflow-y: hidden; width: 400px;">
-
-
-                <div class="tripbar"></div>
-                <div class="tripbarfinish"></div>
-                <div class="tripdot1"></div>
-                <div class="tripdot2"></div>
-                <div class="tripdot3"></div>
-                <div class="tripdot4"></div>
-                <div class="tripdot5"></div>
-                <div class="tripdot6"></div>
-
-                <div class="tripdt1">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 1<br>00:00</p>
-                </div>
-                <div class="tripdt2">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 2<br>00:00</p>
-                </div>
-                <div class="tripdt3">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 3<br>00:00</p>
-                </div>
-                <div class="tripdt4">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 4<br>00:00</p>
-                </div>
-                <div class="tripdt5">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 5<br>00:00</p>
-                </div>
-                <div class="tripdt6">
-                  <p class="line-height-xs text-2 font-weight-bold">Day 6<br>00:00</p>
-                </div>
-
-
-                <div class="triploc1">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 1</p>
-                </div>
-                <div class="triploc2">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 2</p>
-                </div>
-                <div class="triploc3">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 3</p>
-                </div>
-                <div class="triploc4">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 4</p>
-                </div>
-                <div class="triploc5">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 5</p>
-                </div>
-                <div class="triploc6">
-                  <p class="line-height-xs text-2 font-weight-bold">Location 6</p>
-                </div>
-
-              </div>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Temperature Requirements
-                <span class="pull-right text-right">-10<sup>o</sup>C C to -20<sup>o</sup></span></p>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Requirements
-                <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">On Time</button></span></p>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Load Status
-                <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">Partial</button></span></p>
-
-            </a>
-          </div>
-
-
         </div>
       </div>
     </section>

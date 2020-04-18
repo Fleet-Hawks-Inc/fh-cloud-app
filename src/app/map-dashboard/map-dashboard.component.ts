@@ -27,7 +27,6 @@ declare var $: any;
 export class MapDashboardComponent implements OnInit {
 
   title = 'Map Dashboard';
-  mapProp;
   visible = true;
 
   // Mapbox Integration
@@ -58,33 +57,11 @@ export class MapDashboardComponent implements OnInit {
   }
 
 
-  // valuechange() {
-  //   this.visible = !this.visible;
-  // }
-
-  // initMap() {
-  //   this.mapProp = {
-  //     center: new google.maps.LatLng(this.center),
-  //     zoom: 12,
-  //     mapTypeId: google.maps.MapTypeId.ROADMAP,
-  //     styles: MAPSTYLES
-  //   };
-
-  //   /*********Initiate Map *******************/
-  //   this.map = new google.maps.Map(this.gmapElement.nativeElement, this.mapProp);
+  valuechange() {
+    this.visible = !this.visible;
+  }
 
 
-  //   /*****************Create Markers ************/
-  //   this.markers
-  //     .pipe(tap((v) => {
-  //       this.marker = new google.maps.Marker({
-  //         position: new google.maps.LatLng(v.lat, v.lng),
-  //         map: this.map
-  //       });
-  //     }
-  //     ))
-  //     .subscribe((val) => console.log(val));
-  // }
 
 
   /**
@@ -128,7 +105,7 @@ export class MapDashboardComponent implements OnInit {
       const latLang = new mapboxgl.LngLat(driver.location[0], driver.location[1]);
       const el = document.createElement('div');
       //  el.className = 'marker';
-      el.style.backgroundImage = 'url(../../assets/cargo-truck-2.png)';
+      el.style.backgroundImage = 'url(../../assets/img/truck_mapbox_marker.png)';
       el.style.backgroundSize = 'cover';
       // el.style.backgroundColor = 'red';
       el.style.width = '64px';
@@ -146,7 +123,7 @@ export class MapDashboardComponent implements OnInit {
 
   }
 
-
+  /** MOCK DATA:  This data will be from service */
   getDriverData() {
     const mockData = {
       'drivers': [
@@ -199,10 +176,12 @@ export class MapDashboardComponent implements OnInit {
   }
 
   flyToDriver(currentFeature) {
+
     this.map.flyTo({
-      center: currentFeature.geometry.coordinates,
+      center: currentFeature,
       zoom: 15
     });
 
 
   }
+}
