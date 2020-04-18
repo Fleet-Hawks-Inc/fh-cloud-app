@@ -149,7 +149,7 @@ const routes: Routes = [
 
     {path: 'Add-Assets', component: AddAssetsComponent},
     {path: 'Assets-List', component: AssetListComponent},
-    {path: 'Edit-Asset/:assetId', component: EditAssetComponent},
+    {path: 'Edit-Asset/:assetID', component: EditAssetComponent},
 
     {path: 'Add-Fuel-Entry', component: AddFuelEntryComponent},
     {path: 'Fuel-Entry-List', component: FuelEntryListComponent},
