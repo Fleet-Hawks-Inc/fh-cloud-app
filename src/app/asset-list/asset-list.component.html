@@ -62,9 +62,9 @@
                             <table class="table table-bordered table-striped mb-0" id="datatable-default">
                                 <thead>
                                 <tr>
-                                    <th>Vehicle Id</th>
-                                    <th>OwnerShip</th>
-                                    <th>Group Type</th>
+                                    <th>Asset Name</th>
+                                    <th>Asset Type</th>
+                                    <th>VIN</th>
                                     <th>Edit</th>
                                     <th>Delete</th>
                                     <!--<th class="d-lg-none">Operator</th>-->
@@ -73,9 +73,9 @@
                                 </thead>
                                 <tbody>
                                 <tr *ngFor="let asset of assets">
-                                    <td>{{asset.vehicleID}}</td>
-                                    <td>{{asset.carrierID}}</td>
-                                    <td>{{asset.state}}</td>
+                                    <td>{{asset.assetName}}</td>
+                                    <td>{{asset.assetType}}</td>
+                                    <td>{{asset.VIN}}</td>
                                     <td><a routerLink="/Edit-Asset/{{asset.assetID}}">Edit</a></td>
                                     <td><a [routerLink]="" (click)="deleteAsset(asset.assetID)" >Delete</a></td>
                                     <!--<td class="center d-lg-none">4</td>-->
