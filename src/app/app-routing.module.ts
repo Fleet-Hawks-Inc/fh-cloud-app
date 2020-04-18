@@ -117,6 +117,11 @@ import {AddServiceProgramComponent} from './add-service-program/add-service-prog
 import {EditServiceProgramComponent} from './edit-service-program/edit-service-program.component';
 import {ServiceProgramListComponent} from './service-program-list/service-program-list.component';
 
+import {AddVendorComponent} from "./add-vendor/add-vendor.component";
+import {EditVendorComponent} from "./edit-vendor/edit-vendor.component";
+import {VendorsListComponent} from "./vendors-list/vendors-list.component";
+
+
 const routes: Routes = [
    {path: '',  redirectTo: '/Login', pathMatch: 'full'},
    {path: 'Login', component: LoginComponent},
@@ -148,7 +153,7 @@ const routes: Routes = [
 
     {path: 'Add-Fuel-Entry', component: AddFuelEntryComponent},
     {path: 'Fuel-Entry-List', component: FuelEntryListComponent},
-    {path: 'Edit-Fuel-Entry/:fuelEntryId', component: EditFuelEntryComponent},
+    {path: 'Edit-Fuel-Entry/:entryID', component: EditFuelEntryComponent},
 
     {path: 'Add-Expenses', component: AddExpensesComponent},
     {path: 'Expenses-List', component: ExpensesListComponent},
@@ -156,7 +161,7 @@ const routes: Routes = [
 
     {path: 'Add-Expense-Type', component: AddExpenseTypeComponent},
     {path: 'Expenses-Type-List', component: ExpenseTypeListComponent},
-    {path: 'Edit-Expense-Type/:expenseTypeId', component: EditExpenseTypeComponent},
+    {path: 'Edit-Expense-Type/:expenseTypeID', component: EditExpenseTypeComponent},
 
 
     {path: 'Add-Documents', component: AddDocumentsComponent},
@@ -245,10 +250,14 @@ const routes: Routes = [
     {path: 'Item-List', component: ItemsListComponent},
 
 
+
   {path: 'Add-Service-Program', component: AddServiceProgramComponent},
   {path: 'Edit-Service-Program/:programID', component: EditServiceProgramComponent},
   {path: 'Service-Program-List', component: ServiceProgramListComponent},
 
+    {path: 'Add-Vendor', component: AddVendorComponent},
+    {path: 'Edit-Vendor/:vendorID', component: EditVendorComponent},
+    {path: 'Vendors-List', component: VendorsListComponent},
 
 ];
 @NgModule({

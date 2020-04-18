@@ -110,6 +110,9 @@ import { EditItemComponent } from './edit-item/edit-item.component';
 import { AddServiceProgramComponent } from './add-service-program/add-service-program.component';
 import { EditServiceProgramComponent } from './edit-service-program/edit-service-program.component';
 import { ServiceProgramListComponent } from './service-program-list/service-program-list.component';
+import { AddVendorComponent } from './add-vendor/add-vendor.component';
+import { EditVendorComponent } from './edit-vendor/edit-vendor.component';
+import { VendorsListComponent } from './vendors-list/vendors-list.component';
 
 
 
@@ -218,6 +221,9 @@ import { ServiceProgramListComponent } from './service-program-list/service-prog
     AddServiceProgramComponent,
     EditServiceProgramComponent,
     ServiceProgramListComponent,
+    AddVendorComponent,
+    EditVendorComponent,
+    VendorsListComponent
 
 
   ],
