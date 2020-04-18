@@ -28,6 +28,8 @@ export class EditFuelEntryComponent implements OnInit {
   timeCreated: "";
   /******************/
 
+  vehicle = [];
+  vendors = [];
   errors = {};
   form;
   response: any = "";
@@ -41,6 +43,23 @@ export class EditFuelEntryComponent implements OnInit {
     this.entryID = this.route.snapshot.params["entryID"];
 
     this.fetchFuelEntry();
+    this.fetchVehicles();
+    this.fetchVendors();
+  }
+
+  
+  fetchVehicles(){
+    this.apiService.getData('vehicles')
+    .subscribe((result: any) => {
+      this.vehicles = result.Items;
+    });
+  }
+
+  fetchVendors(){
+    this.apiService.getData('vendors')
+    .subscribe((result: any) => {
+      this.vendors = result.Items;
+    });
   }
 
   fetchFuelEntry() {

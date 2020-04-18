@@ -25,7 +25,8 @@
     date: "";
     price: "";
     volume: "";
-
+    vehicles = [];
+    vendors = [];
     /******************/
 
     errors = {};
@@ -37,7 +38,24 @@
     Success: string = "";
     constructor(private apiService: ApiService, private router: Router) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+      this.fetchVehicles();
+      this.fetchVendors();
+    }
+  
+    fetchVehicles(){
+      this.apiService.getData('vehicles')
+      .subscribe((result: any) => {
+        this.vehicles = result.Items;
+      });
+    }
+  
+    fetchVendors(){
+      this.apiService.getData('vendors')
+      .subscribe((result: any) => {
+        this.vendors = result.Items;
+      });
+    }
 
     ngAfterViewInit() {
       $(document).ready(() => {

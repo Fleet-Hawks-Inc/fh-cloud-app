@@ -52,15 +52,8 @@
                       data-plugin-selectTwo
                       class="form-control populate"
                     >
-                      <optgroup label="">
-                        <option value="1">123</option>
-                        <option value="2">456</option>
-                        <option value="2">789</option>
-                        <option value="2">0123</option>
-                        <option value="2">456</option>
-                        <option value="2">789</option>
-                        <option value="2">0123</option>
-                      </optgroup>
+                    <option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleName}}</option>
+
                     </select>
                   </div>
                   <div class="col-lg-4">
@@ -75,12 +68,8 @@
                       [(ngModel)]="vendorID"
                       name="vendorID"
                     >
-                      <optgroup label="">
-                        <option value="1">Vendor 1</option>
-                        <option value="2">Vendor 2</option>
-                        <option value="2">Vendor 3</option>
-                        <option value="2">Vendor 4</option>
-                      </optgroup>
+                    <option *ngFor="let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.vendorName}}</option>
+
                     </select>
                   </div>
                   <div class="col-lg-4">
