@@ -17,13 +17,14 @@ export class AddTicketComponent implements OnInit, AfterViewInit {
   /********** Form Fields ***********/
 
   errors = {};
+  form;
+
   userName = "";
   ticketNumber = "";
   ticketType = "";
   ticketValue = "";
   description = "";
   officeDetails = "";
-  form;
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;

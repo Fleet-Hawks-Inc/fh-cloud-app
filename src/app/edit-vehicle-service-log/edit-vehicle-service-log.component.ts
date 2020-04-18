@@ -1,25 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ApiService} from "../api.service";
+import {from, of} from 'rxjs';
+import {catchError, map, mapTo, tap} from 'rxjs/operators';
+declare var jquery: any;
+declare var $: any;
+
 
 @Component({
   selector: 'app-edit-vehicle-service-log',
   templateUrl: './edit-vehicle-service-log.component.html',
   styleUrls: ['./edit-vehicle-service-log.component.css']
 })
-export class EditVehicleServiceLogComponent implements OnInit {
+export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
   title = 'Edit Vehicle Service Log';
+
+  errors = {};
+  form;
 
   /********** Form Fields ***********/
 
+
   vehicleID = '';
-  vendorID = '';
-  task: '';
-  description: '';
-  value: '';
-  image : '';
-  serviceType: '';
-  odometer: '';
+  vendorID =  '';
+  taskDescription = '';
+  serviceType = '';
+  value = '';
+  odometer = '';
+  attachStockItem = '';
+
+
+
   /******************/
 
   logID ='';
@@ -41,20 +52,28 @@ export class EditVehicleServiceLogComponent implements OnInit {
           result = result.Items[0];
           this.vehicleID = result.vehicleID;
           this.vendorID = result.vendorID;
-          this.task = result.task;
-          this.description = result.description;
-          this.value = result.value;
-          this.image = result.image;
           this.serviceType = result.serviceType;
+          this.taskDescription = result.taskDescription;
+          this.value = result.value;
           this.odometer = result.odometer;
+          this.attachStockItem = result.attachStockItem;
+
         });
 
+  }
+
+  ngAfterViewInit() {
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
+    });
   }
 
 
 
 
   updateVehicleServiceLog() {
+
+    this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
@@ -62,22 +81,36 @@ export class EditVehicleServiceLogComponent implements OnInit {
       "logID": this.logID,
       "vehicleID": this.vehicleID,
       "vendorID": this.vendorID,
-      "task": this.task,
-      "description": this.description,
-      "value": this.value,
-      "image": this.image,
+      "taskDescription": this.taskDescription,
       "serviceType": this.serviceType,
-      "odometer": this.odometer
+      "value": this.vendorID,
+      "odometer": this.odometer,
+      "attachStockItem": this.attachStockItem
     };
 
-    this.apiService.putData('vehicleServiceLogs', data).
-    subscribe({
+    this.apiService.putData('vehicleServiceLogs', data)
+      .pipe(
+        catchError((err) => {
+          return from(err.error)
+        }),
+        tap((val) => console.log(val)),
+        map((val: any) => {
+          val.message = val.message.replace(/".*"/, 'This Field');
+          this.errors[val.context.key] = val.message ;
+        }),
+      )
+      .subscribe({
       complete : () => {},
       error : (err) => {
         this.hasError = true;
         this.Error = err.error;
       },
       next: (res) => {
+
+        if (!$.isEmptyObject(this.errors)) {
+          return this.throwErrors();
+        }
+
         this.response = res;
         this.hasSuccess = true;
         this.Success = 'Vehicle Service Log Updated successfully';
@@ -85,4 +118,9 @@ export class EditVehicleServiceLogComponent implements OnInit {
       }
     });
   }
+
+  throwErrors() {
+    this.form.showErrors(this.errors);
+  }
+
 }

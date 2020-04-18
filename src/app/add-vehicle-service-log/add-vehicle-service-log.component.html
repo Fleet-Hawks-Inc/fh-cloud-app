@@ -41,67 +41,166 @@
 
                             <h2 class="card-title">{{title}}</h2>
                         </header>
-                        <div class="card-body">
-                            <form class="form-horizontal form-bordered" method="get">
-                                <div class="form-group row">
 
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Vehicle ID</label>
-                                        <input type="text" class="form-control" name="vehicleID" [(ngModel)]="vehicleID" >
-                                    </div>
 
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Vendor ID</label>
-                                        <input type="text" class="form-control" name="vendorID" [(ngModel)]="vendorID" >
-                                    </div>
+                      <div class="card-body" data-select2-id="12">
+                        <form class="form-horizontal form-bordered" method="get" data-select2-id="11" name="form" id="form_">
+                          <div class="form-group row">
+                            <div class="col-lg-6">
+                              <label class="control-label text-lg-right pt-2" for="inputDefault">Vehicle</label>
+                              <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true" name="vehicleID" [ngModel]="vehicleID">
+                                <optgroup label="">
+                                  <option value="1" data-select2-id="3">Vehicle 1</option>
+                                  <option value="2">Vehicle 2</option>
+                                  <option value="2">Vehicle 3</option>
+                                  <option value="2">Vehicle 4</option>
+                                </optgroup>
+                              </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="2" style="width: 741.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-j7uo-container"><span class="select2-selection__rendered" id="select2-j7uo-container" role="textbox" aria-readonly="true" title="Vehicle 1">Vehicle 1</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                            </div>
+                            <div class="col-lg-6">
+                              <label class="control-label text-lg-right pt-2" for="inputDefault">Vendor</label>
+                              <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="4" tabindex="-1" aria-hidden="true" name="vendorID" [ngModel]="vendorID">
+                                <optgroup label="">
+                                  <option value="1" data-select2-id="6">Vendor 1</option>
+                                  <option value="2">Vendor 2</option>
+                                  <option value="2">Vendor 3</option>
+                                  <option value="2">Vendor 4</option>
+                                </optgroup>
+                              </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="5" style="width: 741.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-6c6a-container"><span class="select2-selection__rendered" id="select2-6c6a-container" role="textbox" aria-readonly="true" title="Vendor 1">Vendor 1</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-12">
+                              <label class="control-label text-lg-right pt-2" for="inputDefault">Task Description</label>
+                              <textarea class="form-control" rows="3" id="textareaDefault" name="taskDescription" [ngModel]="taskDescription"></textarea>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-4">
+                              <label class="control-label text-lg-right pt-2" for="inputDefault">Service Type</label>
+                              <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="7" tabindex="-1" aria-hidden="true" name="serviceType" [ngModel]="serviceType">
+                                <optgroup label="" data-select2-id="17">
+                                  <option value="1" data-select2-id="9">Service 1</option>
+                                  <option value="2" data-select2-id="18">Service 2</option>
+                                  <option value="2" data-select2-id="19">Service 3</option>
+                                  <option value="2" data-select2-id="20">Service 4</option>
+                                </optgroup>
+                              </select><span class="select2 select2-container select2-container--bootstrap select2-container--below select2-container--focus" dir="ltr" data-select2-id="8" style="width: 484.333px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-3eoc-container"><span class="select2-selection__rendered" id="select2-3eoc-container" role="textbox" aria-readonly="true" title="Service 1">Service 1</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                            </div>
+                            <div class="col-lg-4">
+                              <label class="control-label text-lg-right pt-2" for="inputDefault">Value</label>
+                              <input type="text" class="form-control"  name="value" [ngModel]="value">
+                            </div>
+                            <div class="col-lg-4">
+                              <label class="control-label text-lg-right pt-2" for="inputDefault">Odometer</label>
+                              <input type="text" class="form-control" id="inputDefault" name="odometer" [ngModel]="odometer">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-6">
+                              <label class="control-label text-lg-right pt-2">Attach Stock Item</label>
+                              <select class="form-control" multiple="multiple" data-plugin-multiselect="" data-plugin-options="{ &quot;maxHeight&quot;: 200 }" id="ms_example0" style="display: none;" name="attachStockItem" [ngModel]="attachStockItem">
+                                <option value="cheese">Item 1</option>
+                                <option value="tomatoes" selected="">Item 2</option>
+                                <option value="mozarella" selected="">Item 3</option>
+                                <option value="mushrooms">Item 4</option>
+                                <option value="pepperoni">Item 5</option>
+                                <option value="onions">Item 6</option>
+                              </select><div class="btn-group"><button type="button" class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" title="Item 2, Item 3, Item 4, Item 5, Item 6" aria-expanded="false"><span class="multiselect-selected-text">5 selected</span> <b class="caret"></b></button><ul class="multiselect-container dropdown-menu" style="max-height: 200px; overflow: hidden auto; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 0px, 0px);" x-placement="top-start"><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="cheese"> Item 1</label></a></li><li class="active"><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="tomatoes"> Item 2</label></a></li><li class="active"><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="mozarella"> Item 3</label></a></li><li class="active"><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="mushrooms"> Item 4</label></a></li><li class="active"><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="pepperoni"> Item 5</label></a></li><li class="active"><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="onions"> Item 6</label></a></li></ul></div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-4">
+                              <label class="control-label text-lg-right text-dark text-4 pt-2" for="inputDefault">Image</label>
+                              <input type="file" name="fileToUpload" id="fileToUpload" class="form-control mt-2" >
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-12">
+                              <button class="btn btn-dark mt-4 modal-confirm" (click)="addVehicleServiceLog()">Submit</button>
+                            </div>
+                          </div>
 
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Task</label>
-                                        <input type="text" class="form-control" name="task" [(ngModel)]="task" >
-                                    </div>
 
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Description</label>
-                                        <input type="text" class="form-control" name="description" [(ngModel)]="description" >
-                                    </div>
+                          <div class="form-group row">
+                            <div class="col-lg-12">
 
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Value</label>
-                                        <input type="text" class="form-control" name="value" [(ngModel)]="value" >
-                                    </div>
+                              <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
+                              <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
+                            </div>
+                          </div>
 
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Image</label>
-                                        <input type="text" class="form-control" name="image" [(ngModel)]="image" >
-                                    </div>
+                        </form>
+                      </div>
 
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Service Type</label>
-                                        <input type="text" class="form-control" name="serviceType" [(ngModel)]="serviceType" >
-                                    </div>
 
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Odometer</label>
-                                        <input type="text" class="form-control" name="odometer" [(ngModel)]="odometer" >
-                                    </div>
 
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <button class="btn btn-dark mt-4 modal-confirm" (click)="addVehicleServiceLog()">Submit</button>
-                                    </div>
-                                </div>
+                      <!--<div class="card-body">-->
+                            <!--<form class="form-horizontal form-bordered" method="get">-->
+                                <!--<div class="form-group row">-->
 
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
+                                    <!--<div class="col-lg-6">-->
+                                        <!--<label class="control-label text-lg-right pt-2" >Vehicle ID</label>-->
+                                        <!--<input type="text" class="form-control" name="vehicleID" [(ngModel)]="vehicleID" >-->
+                                    <!--</div>-->
 
-                                        <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
-                                        <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
-                                    </div>
-                                </div>
+                                    <!--<div class="col-lg-6">-->
+                                        <!--<label class="control-label text-lg-right pt-2" >Vendor ID</label>-->
+                                        <!--<input type="text" class="form-control" name="vendorID" [(ngModel)]="vendorID" >-->
+                                    <!--</div>-->
 
-                            </form>
-                        </div>
+                                    <!--<div class="col-lg-6">-->
+                                        <!--<label class="control-label text-lg-right pt-2" >Task</label>-->
+                                        <!--<input type="text" class="form-control" name="task" [(ngModel)]="task" >-->
+                                    <!--</div>-->
+
+                                    <!--<div class="col-lg-6">-->
+                                        <!--<label class="control-label text-lg-right pt-2" >Description</label>-->
+                                        <!--<input type="text" class="form-control" name="description" [(ngModel)]="description" >-->
+                                    <!--</div>-->
+
+                                    <!--<div class="col-lg-6">-->
+                                        <!--<label class="control-label text-lg-right pt-2" >Value</label>-->
+                                        <!--<input type="text" class="form-control" name="value" [(ngModel)]="value" >-->
+                                    <!--</div>-->
+
+                                    <!--<div class="col-lg-6">-->
+                                        <!--<label class="control-label text-lg-right pt-2" >Image</label>-->
+                                        <!--<input type="text" class="form-control" name="image" [(ngModel)]="image" >-->
+                                    <!--</div>-->
+
+                                    <!--<div class="col-lg-6">-->
+                                        <!--<label class="control-label text-lg-right pt-2" >Service Type</label>-->
+                                        <!--<input type="text" class="form-control" name="serviceType" [(ngModel)]="serviceType" >-->
+                                    <!--</div>-->
+
+                                    <!--<div class="col-lg-6">-->
+                                        <!--<label class="control-label text-lg-right pt-2" >Odometer</label>-->
+                                        <!--<input type="text" class="form-control" name="odometer" [(ngModel)]="odometer" >-->
+                                    <!--</div>-->
+
+                                <!--</div>-->
+                                <!--<div class="form-group row">-->
+                                    <!--<div class="col-lg-12">-->
+                                        <!--<button class="btn btn-dark mt-4 modal-confirm" (click)="addVehicleServiceLog()">Submit</button>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+                                <!--<div class="form-group row">-->
+                                    <!--<div class="col-lg-12">-->
+
+                                        <!--<p class="text text-danger" *ngIf="hasError">{{Error}}</p>-->
+                                        <!--<p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+                            <!--</form>-->
+                        <!--</div>-->
+
+
+
+
+
                     </section>
                 </div>
             </div>

@@ -1,23 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ApiService} from "../api.service";
 import {Router} from "@angular/router";
+import {catchError, map, mapTo, tap} from 'rxjs/operators';
+import {from, of} from 'rxjs';
+declare var jquery: any;
+declare var $: any;
 
 @Component({
   selector: 'app-add-yard',
   templateUrl: './add-yard.component.html',
   styleUrls: ['./add-yard.component.css']
 })
-export class AddYardComponent implements OnInit {
+export class AddYardComponent implements OnInit, AfterViewInit {
 
   title = 'Add Yard';
 
+
+  errors = {};
+  form;
+
   /********** Form Fields ***********/
 
-  geoLocationLat = '';
-  geoLocationLong = '';
+  yardName = '';
+  description = '';
+  latitude = '';
+  longitude = '';
   geofence = '';
-  addressID = '';
-  timeZone = '';
+  state = '';
+  country = '';
 
   /******************/
 
@@ -32,44 +42,68 @@ export class AddYardComponent implements OnInit {
 
   ngOnInit() {}
 
+  ngAfterViewInit() {
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
+    });
+  }
 
 
 
-  addDocument() {
+
+  addYard() {
+    this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
     const data = {
+      "yardName" : this.yardName,
+      "description": this.description,
       "geolocation": {
-        'lat' : this.geoLocationLat,
-        'long' : this.geoLocationLong
-
-      },
-      "geofence": this.geofence,
-      "addressID":  this.addressID,
-      "timeZone": this.timeZone
-
+        "latitude": this.latitude,
+        "longitude": this.longitude
+        },
+    "geofence": this.geofence,
+    "state": this.state,
+    "country" : this.state
     };
 
 
-    this.apiService.postData('yards', data).
-    subscribe({
+    this.apiService.postData('yards', data)
+      .pipe(
+        catchError((err) => {
+          return from(err.error)
+        }),
+        tap((val) => console.log(val)),
+        map((val: any) => {
+          val.message = val.message.replace(/".*"/, 'This Field');
+          this.errors[val.context.key] = val.message ;
+        }),
+      )
+      .subscribe({
       complete : () => {},
       error : (err) => {
         this.hasError = true;
         this.Error = err.error;
       },
       next: (res) => {
+        if (!$.isEmptyObject(this.errors)) {
+          return this.throwErrors();
+        }
         this.response = res;
         this.hasSuccess = true;
         this.Success = 'Yard Added successfully';
-        this.geoLocationLat = '';
-        this.geoLocationLong = '';
+        this.yardName = '';
+        this.description = '';
         this.geofence = '';
-        this.addressID = '';
-        this.timeZone = '';
+        this.latitude = '';
+        this.longitude = '';
 
       }
     });
+  }
+
+  throwErrors() {
+    this.form.showErrors(this.errors);
   }
 }
