@@ -14,7 +14,8 @@ export class EditEntryComponent implements OnInit {
   title = "Add Stock Entry";
 
   /********** Form Fields ***********/
-
+  items = [];
+  vendors = [];
   entryID = "";
   itemID = "";
   totalQuantity = "";
@@ -45,7 +46,25 @@ export class EditEntryComponent implements OnInit {
         this.description = result.description;
         this.timeCreated = result.timeCreated
       });
+
+      this.fetchItems();
+      this.fetchVendors();
   }
+
+  fetchItems(){
+    this.apiService.getData('items')
+    .subscribe((result: any) => {
+      this.items = result.Items;
+    });
+  }
+
+  fetchVendors(){
+    this.apiService.getData('vendors')
+    .subscribe((result: any) => {
+      this.vendors = result.Items;
+    });
+  }
+
 
   updateStockEntry() {
     this.errors = {};

@@ -13,6 +13,7 @@ export class EditItemComponent implements OnInit {
   /**
    * Form props
    */
+  vendors: [];
   itemID = "";
   itemName = "";
   description = "";
@@ -54,8 +55,15 @@ export class EditItemComponent implements OnInit {
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
   ngOnInit() {
     this.itemID = this.route.snapshot.params["itemID"];
-
+    this.fetchVendors();
     this.fetchItem();
+  }
+
+  fetchVendors(){
+    this.apiService.getData('vendors')
+    .subscribe((result: any) => {
+      this.vendors = result.Items;
+    });
   }
 
   fetchItem() {

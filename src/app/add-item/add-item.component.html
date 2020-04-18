@@ -120,12 +120,8 @@
                           validationErrors.defaultPurchaseVendor.error == true
                       }"
                     >
-                      <optgroup label="">
-                        <option value="1">Vendor 1</option>
-                        <option value="2">Vendor 2</option>
-                        <option value="2">Vendor 3</option>
-                        <option value="2">Vendor 4</option>
-                      </optgroup>
+                    <option *ngFor="let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.vendorName}}</option>
+
                     </select>
                     <span
                       *ngIf="
