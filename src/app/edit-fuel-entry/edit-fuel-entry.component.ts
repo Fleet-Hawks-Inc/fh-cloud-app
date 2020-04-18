@@ -28,7 +28,7 @@ export class EditFuelEntryComponent implements OnInit {
   timeCreated: "";
   /******************/
 
-  vehicle = [];
+  vehicles = [];
   vendors = [];
   errors = {};
   form;
