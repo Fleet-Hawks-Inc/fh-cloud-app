@@ -113,6 +113,9 @@ import { ServiceProgramListComponent } from './service-program-list/service-prog
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
 import { EditVendorComponent } from './edit-vendor/edit-vendor.component';
 import { VendorsListComponent } from './vendors-list/vendors-list.component';
+import { AddItemGroupComponent } from './add-item-group/add-item-group.component';
+import { EditItemGroupComponent } from './edit-item-group/edit-item-group.component';
+import { ItemGroupListComponent } from './item-group-list/item-group-list.component';
 
 
 
@@ -223,7 +226,10 @@ import { VendorsListComponent } from './vendors-list/vendors-list.component';
     ServiceProgramListComponent,
     AddVendorComponent,
     EditVendorComponent,
-    VendorsListComponent
+    VendorsListComponent,
+    AddItemGroupComponent,
+    EditItemGroupComponent,
+    ItemGroupListComponent
 
 
   ],
