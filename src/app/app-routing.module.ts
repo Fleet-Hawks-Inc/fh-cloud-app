@@ -128,6 +128,10 @@ import { AddStockAssignmentComponent } from "./add-stock-assignment/add-stock-as
 import { EditStockAssignmentComponent } from "./edit-stock-assignment/edit-stock-assignment.component";
 import { StockAssignmentListComponent } from "./stock-assignment-list/stock-assignment-list.component";
 
+import { AddTicketTypeComponent } from "./add-ticket-type/add-ticket-type.component";
+import { EditTicketTypeComponent } from "./edit-ticket-type/edit-ticket-type.component";
+import { TicketTypeListComponent } from "./ticket-type-list/ticket-type-list.component";
+
 const routes: Routes = [
   { path: "", redirectTo: "/Login", pathMatch: "full" },
   { path: "Login", component: LoginComponent },
@@ -299,9 +303,9 @@ const routes: Routes = [
   { path: "Edit-Vendor/:vendorID", component: EditVendorComponent },
   { path: "Vendors-List", component: VendorsListComponent },
 
-  { path: "Add-Stock-Assignment", component: AddStockAssignmentComponent },
-  { path: "Edit-Stock-Assignment/:assignmentID", component: EditStockAssignmentComponent },
-  { path: "Stock-Assignment-List", component: StockAssignmentListComponent },
+  { path: "Add-Ticket-Type", component: AddTicketTypeComponent },
+  { path: "Edit-Ticket-Type/:typeID", component: EditTicketTypeComponent },
+  { path: "Ticket-Types-List", component: TicketTypeListComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
