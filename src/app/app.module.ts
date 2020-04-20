@@ -122,6 +122,15 @@ import { StockAssignmentListComponent } from './stock-assignment-list/stock-assi
 import { AddTicketTypeComponent } from './add-ticket-type/add-ticket-type.component';
 import { EditTicketTypeComponent } from './edit-ticket-type/edit-ticket-type.component';
 import { TicketTypeListComponent } from './ticket-type-list/ticket-type-list.component';
+import { CountriesComponent } from './countries/countries.component';
+import { AddCountryComponent } from './add-country/add-country.component';
+import { EditCountryComponent } from './edit-country/edit-country.component';
+import { StatesComponent } from './states/states.component';
+import { AddStateComponent } from './add-state/add-state.component';
+import { EditStateComponent } from './edit-state/edit-state.component';
+import { CitiesComponent } from './cities/cities.component';
+import { AddCityComponent } from './add-city/add-city.component';
+import { EditCityComponent } from './edit-city/edit-city.component';
 
 
 
@@ -241,7 +250,16 @@ import { TicketTypeListComponent } from './ticket-type-list/ticket-type-list.com
     StockAssignmentListComponent,
     AddTicketTypeComponent,
     EditTicketTypeComponent,
-    TicketTypeListComponent
+    TicketTypeListComponent,
+    CountriesComponent,
+    AddCountryComponent,
+    EditCountryComponent,
+    StatesComponent,
+    AddStateComponent,
+    EditStateComponent,
+    CitiesComponent,
+    AddCityComponent,
+    EditCityComponent
 
 
   ],
