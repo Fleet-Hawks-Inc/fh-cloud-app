@@ -116,6 +116,9 @@ import { VendorsListComponent } from './vendors-list/vendors-list.component';
 import { AddItemGroupComponent } from './add-item-group/add-item-group.component';
 import { EditItemGroupComponent } from './edit-item-group/edit-item-group.component';
 import { ItemGroupListComponent } from './item-group-list/item-group-list.component';
+import { AddStockAssignmentComponent } from './add-stock-assignment/add-stock-assignment.component';
+import { EditStockAssignmentComponent } from './edit-stock-assignment/edit-stock-assignment.component';
+import { StockAssignmentListComponent } from './stock-assignment-list/stock-assignment-list.component';
 
 
 
@@ -229,7 +232,10 @@ import { ItemGroupListComponent } from './item-group-list/item-group-list.compon
     VendorsListComponent,
     AddItemGroupComponent,
     EditItemGroupComponent,
-    ItemGroupListComponent
+    ItemGroupListComponent,
+    AddStockAssignmentComponent,
+    EditStockAssignmentComponent,
+    StockAssignmentListComponent
 
 
   ],
