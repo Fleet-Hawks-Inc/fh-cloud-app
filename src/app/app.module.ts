@@ -119,6 +119,9 @@ import { ItemGroupListComponent } from './item-group-list/item-group-list.compon
 import { AddStockAssignmentComponent } from './add-stock-assignment/add-stock-assignment.component';
 import { EditStockAssignmentComponent } from './edit-stock-assignment/edit-stock-assignment.component';
 import { StockAssignmentListComponent } from './stock-assignment-list/stock-assignment-list.component';
+import { AddTicketTypeComponent } from './add-ticket-type/add-ticket-type.component';
+import { EditTicketTypeComponent } from './edit-ticket-type/edit-ticket-type.component';
+import { TicketTypeListComponent } from './ticket-type-list/ticket-type-list.component';
 
 
 
@@ -235,7 +238,10 @@ import { StockAssignmentListComponent } from './stock-assignment-list/stock-assi
     ItemGroupListComponent,
     AddStockAssignmentComponent,
     EditStockAssignmentComponent,
-    StockAssignmentListComponent
+    StockAssignmentListComponent,
+    AddTicketTypeComponent,
+    EditTicketTypeComponent,
+    TicketTypeListComponent
 
 
   ],
