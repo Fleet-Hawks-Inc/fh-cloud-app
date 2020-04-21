@@ -131,6 +131,12 @@ import { EditStateComponent } from './edit-state/edit-state.component';
 import { CitiesComponent } from './cities/cities.component';
 import { AddCityComponent } from './add-city/add-city.component';
 import { EditCityComponent } from './edit-city/edit-city.component';
+import { AddManufacturerComponent } from './add-manufacturer/add-manufacturer.component';
+import { EditManufacturerComponent } from './edit-manufacturer/edit-manufacturer.component';
+import { ManufacturerListComponent } from './manufacturer-list/manufacturer-list.component';
+import { AddModelComponent } from './add-model/add-model.component';
+import { EditModelComponent } from './edit-model/edit-model.component';
+import { ModelListComponent } from './model-list/model-list.component';
 
 
 
@@ -259,7 +265,13 @@ import { EditCityComponent } from './edit-city/edit-city.component';
     EditStateComponent,
     CitiesComponent,
     AddCityComponent,
-    EditCityComponent
+    EditCityComponent,
+    AddManufacturerComponent,
+    EditManufacturerComponent,
+    ManufacturerListComponent,
+    AddModelComponent,
+    EditModelComponent,
+    ModelListComponent
 
 
   ],
