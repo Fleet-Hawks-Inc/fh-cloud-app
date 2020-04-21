@@ -131,15 +131,23 @@ import { StockAssignmentListComponent } from "./stock-assignment-list/stock-assi
 import { AddTicketTypeComponent } from "./add-ticket-type/add-ticket-type.component";
 import { EditTicketTypeComponent } from "./edit-ticket-type/edit-ticket-type.component";
 import { TicketTypeListComponent } from "./ticket-type-list/ticket-type-list.component";
-import {CountriesComponent} from './countries/countries.component';
-import {EditCountryComponent} from './edit-country/edit-country.component';
-import {AddCountryComponent} from './add-country/add-country.component';
-import {AddStateComponent} from './add-state/add-state.component';
-import {EditStateComponent} from './edit-state/edit-state.component';
-import {StatesComponent} from './states/states.component';
-import {CitiesComponent} from './cities/cities.component';
-import {EditCityComponent} from './edit-city/edit-city.component';
-import {AddCityComponent} from './add-city/add-city.component';
+import { CountriesComponent } from "./countries/countries.component";
+import { EditCountryComponent } from "./edit-country/edit-country.component";
+import { AddCountryComponent } from "./add-country/add-country.component";
+import { AddStateComponent } from "./add-state/add-state.component";
+import { EditStateComponent } from "./edit-state/edit-state.component";
+import { StatesComponent } from "./states/states.component";
+import { CitiesComponent } from "./cities/cities.component";
+import { EditCityComponent } from "./edit-city/edit-city.component";
+import { AddCityComponent } from "./add-city/add-city.component";
+
+import { AddManufacturerComponent } from "./add-manufacturer/add-manufacturer.component";
+import { EditManufacturerComponent } from "./edit-manufacturer/edit-manufacturer.component";
+import { ManufacturerListComponent } from "./manufacturer-list/manufacturer-list.component";
+
+import { AddModelComponent } from "./add-model/add-model.component";
+import { EditModelComponent } from "./edit-model/edit-model.component";
+import { ModelListComponent } from "./model-list/model-list.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "/Login", pathMatch: "full" },
@@ -328,6 +336,25 @@ const routes: Routes = [
   { path: "Edit-City/:cityID", component: EditCityComponent },
   { path: "City-List", component: CitiesComponent },
 
+  { path: "Add-Stock-Assignment", component: AddStockAssignmentComponent },
+  {
+    path: "Edit-Stock-Assignment/:assignmentID",
+    component: EditStockAssignmentComponent,
+  },
+  { path: "Stock-Assignment-List", component: StockAssignmentListComponent },
+  { path: "Add-Manufacturer", component: AddManufacturerComponent },
+  {
+    path: "Edit-Manufacturer/:manufacturerID",
+    component: EditManufacturerComponent,
+  },
+  { path: "Manufacturers-List", component: ManufacturerListComponent },
+
+  { path: "Add-Model", component: AddModelComponent },
+  {
+    path: "Edit-Model/:modelID",
+    component: EditModelComponent,
+  },
+  { path: "Models-List", component: ModelListComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
