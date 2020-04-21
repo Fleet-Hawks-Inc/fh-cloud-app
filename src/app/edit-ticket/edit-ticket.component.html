@@ -99,23 +99,21 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      (change)="updateValidation('ticketType')"
-                      name="ticketType"
-                      [(ngModel)]="ticketType"
+                      (change)="updateValidation('ticketTypeID')"
+                      name="ticketTypeID"
+                      [(ngModel)]="ticketTypeID"
                       [ngClass]="{
-                        redBorder: validationErrors.ticketType.error == true
+                        redBorder: validationErrors.ticketTypeID.error == true
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">Type 1</option>
-                        <option value="2">Type 2</option>
-                        <option value="2">Type 3</option>
+                        <option *ngFor="let ticketType of ticketTypes" value="{{ticketType.typeID}}">{{ticketType.typeName}}</option>
                       </optgroup>
                     </select>
                     <span
-                      *ngIf="validationErrors.ticketType.error == true"
+                      *ngIf="validationErrors.ticketTypeID.error == true"
                       class="red"
-                      >{{ validationErrors.ticketType.message }}</span
+                      >{{ validationErrors.ticketTypeID.message }}</span
                     >
                   </div>
                   <div class="col-lg-4">

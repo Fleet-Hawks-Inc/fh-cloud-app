@@ -75,9 +75,10 @@
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">V 1</option>
-                        <option value="2">V 2</option>
-                        <option value="2">V 3</option>
+                        <option value="Service Vendor">Service Vendor</option>
+                        <option value="Insurance Vendor"
+                          >Insurance Vendor</option
+                        >
                       </optgroup>
                     </select>
                     <span
@@ -189,56 +190,60 @@
                     <label
                       class="control-label text-lg-right pt-2"
                       for="inputDefault"
-                      >State</label
-                    >
-                    <select
-                      data-plugin-selectTwo
-                      class="form-control populate"
-                      (change)="updateValidation('state')"
-                      name="state"
-                      [(ngModel)]="state"
-                      [ngClass]="{
-                        redBorder: validationErrors.state.error == true
-                      }"
-                    >
-                      <optgroup label="">
-                        <option value="1">State 1</option>
-                        <option value="2">State 2</option>
-                        <option value="2">State 3</option>
-                      </optgroup>
-                    </select>
-                    <span
-                      *ngIf="validationErrors.address.error == true"
-                      class="red"
-                      >{{ validationErrors.state.message }}</span
-                    >
-                  </div>
-                  <div class="col-lg-6">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
                       >Country</label
                     >
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
                       (change)="updateValidation('country')"
-                      name="country"
-                      [(ngModel)]="country"
+                      name="countryID"
+                      [(ngModel)]="countryID"
                       [ngClass]="{
-                        redBorder: validationErrors.country.error == true
+                        redBorder: validationErrors.countryID.error == true
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">Country 1</option>
-                        <option value="2">Country 2</option>
-                        <option value="2">Country 3</option>
+                        <option
+                          *ngFor="let country of countries"
+                          value="{{ country.countryID }}"
+                          >{{ country.countryName }}</option
+                        >
                       </optgroup>
                     </select>
                     <span
-                      *ngIf="validationErrors.country.error == true"
+                      *ngIf="validationErrors.countryID.error == true"
                       class="red"
-                      >{{ validationErrors.country.message }}</span
+                      >{{ validationErrors.countryID.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >State</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      (change)="updateValidation('stateID')"
+                      name="stateID"
+                      [(ngModel)]="stateID"
+                      [ngClass]="{
+                        redBorder: validationErrors.stateID.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let state of states"
+                          value="{{ state.stateID }}"
+                          >{{ state.stateName }}</option
+                        >
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.stateID.error == true"
+                      class="red"
+                      >{{ validationErrors.stateID.message }}</span
                     >
                   </div>
                 </div>

@@ -205,6 +205,11 @@ export class AddDriverComponent implements OnInit {
 
       if (length == 1) {
         //single object
+        if(modifiedMessage == 'This field is already exists'){
+          if(key[0] == 'userName') modifiedMessage = `This User Name${message.join(" ")}`;
+          else if(key[0] == 'email') modifiedMessage = `This Email${message.join(" ")}`;                      
+        }
+
         this.validationErrors[key[0]].error = true;
         this.validationErrors[key[0]].message = modifiedMessage;
       } else if (length == 2) {

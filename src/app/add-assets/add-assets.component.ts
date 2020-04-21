@@ -105,6 +105,9 @@ export class AddAssetsComponent implements OnInit {
     },
   };
 
+  manufacturers = [];
+  states = [];
+  models = []
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -113,9 +116,37 @@ export class AddAssetsComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
+    this.fetchQuantum();
+    this.fetchManufactuer();
+    this.fetchModel();
+    this.fetchState();
+  }
+
+  fetchQuantum(){
     this.apiService.getData('quantums')
     .subscribe((result: any) => {
       this.quantumsList = result.Items;
+    });
+  }
+
+  fetchManufactuer(){
+    this.apiService.getData('manufacturers')
+    .subscribe((result: any) => {
+      this.manufacturers = result.Items;
+    });
+  }
+
+  fetchModel(){
+    this.apiService.getData('models')
+    .subscribe((result: any) => {
+      this.models = result.Items;
+    });
+  }
+
+  fetchState(){
+    this.apiService.getData('states')
+    .subscribe((result: any) => {
+      this.states = result.Items;
     });
   }
 

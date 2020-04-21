@@ -15,11 +15,12 @@ export class EditTicketComponent implements OnInit {
   ticketID = "";
   userName = "";
   ticketNumber = "";
-  ticketType = "";
+  ticketTypeID = "";
   ticketValue = "";
   description = "";
   officeDetails = "";
   timeCreated = "";
+  ticketTypes = [];
   /**
    * Form errors prop
    */
@@ -30,7 +31,7 @@ export class EditTicketComponent implements OnInit {
     ticketNumber: {
       error: false,
     },
-    ticketType: {
+    ticketTypeID: {
       error: false,
     },
     ticketValue: {
@@ -55,8 +56,17 @@ export class EditTicketComponent implements OnInit {
   ngOnInit() {
     this.ticketID = this.route.snapshot.params["ticketID"];
     this.fetchUsers();
+    this.fetchTicketTypes();
     this.fetchTicket();
   }
+
+  fetchTicketTypes(){
+    this.apiService.getData('ticketTypes')
+    .subscribe((result: any) => {
+      this.ticketTypes = result.Items;
+    });
+  }
+
 
   fetchUsers() {
     this.apiService
@@ -74,7 +84,7 @@ export class EditTicketComponent implements OnInit {
 
         this.ticketID = result.ticketID;
         this.userName = result.userName;
-        this.ticketType = result.ticketType;
+        this.ticketTypeID = result.ticketTypeID;
         this.ticketValue = result.ticketValue;
         this.description = result.description;
         this.ticketNumber = result.ticketNumber;
@@ -90,7 +100,7 @@ export class EditTicketComponent implements OnInit {
     const data = {
       ticketID: this.ticketID,
       userName: this.userName,
-      ticketType: this.ticketType,
+      ticketTypeID: this.ticketTypeID,
       ticketValue: this.ticketValue,
       description: this.description,
       ticketNumber: this.ticketNumber,

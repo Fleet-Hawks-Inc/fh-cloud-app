@@ -111,6 +111,11 @@ export class AddUserComponent implements OnInit {
       let modifiedMessage = `This field${message.join(" ")}`;
 
       if (length == 1) {
+        if(modifiedMessage == 'This field is already exists'){
+          if(key[0] == 'userName') modifiedMessage = `This User Name${message.join(" ")}`;
+          else if(key[0] == 'email') modifiedMessage = `This Email${message.join(" ")}`;                      
+        }
+
         //single object
         this.validationErrors[key[0]].error = true;
         this.validationErrors[key[0]].message = modifiedMessage;
