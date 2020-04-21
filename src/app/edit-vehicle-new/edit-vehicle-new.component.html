@@ -304,13 +304,11 @@
                   <select
                     data-plugin-selectTwo
                     class="form-control populate"
-                    [(ngModel)]="serviceProgram"
-                    name="serviceProgram"
+                    [(ngModel)]="serviceProgramID"
+                    name="serviceProgramID"
                   >
                     <optgroup label="">
-                      <option value="1">Heavy Duty Maintenance</option>
-                      <option value="2">Light Duty Maintenance</option>
-                      <option value="2">Basic Vehicle Maintenance</option>
+                      <option *ngFor="let q of servicePrograms" value="{{q.programID}}">{{q.programName}}</option>
                     </optgroup>
                   </select>
                 </div>

@@ -31,7 +31,7 @@ export class EditVehicleNewComponent implements OnInit {
   model = "";
   state = "";
   plateNumber = "";
-  serviceProgram = "";
+  serviceProgramID = "";
   currentStatus = "";
   group = "";
   ownership = "";
@@ -96,7 +96,8 @@ export class EditVehicleNewComponent implements OnInit {
     hardAccelrationParameters: "",
     turningParameters: "",
   };
-
+  servicePrograms = [];
+  
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -107,7 +108,7 @@ export class EditVehicleNewComponent implements OnInit {
 
   ngOnInit() {
     this.vehicleID = this.route.snapshot.params["vehicleID"];
-
+    this.fetchServicePrograms();
     this.apiService.getData("quantums").subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
@@ -123,7 +124,7 @@ export class EditVehicleNewComponent implements OnInit {
         this.model = result.model;
         this.state = result.state;
         this.plateNumber = result.plateNumber;
-        this.serviceProgram = result.serviceProgram;
+        this.serviceProgramID = result.serviceProgramID;
         this.currentStatus = result.currentStatus;
         this.group = result.group;
         this.ownership = result.ownership;
@@ -200,6 +201,13 @@ export class EditVehicleNewComponent implements OnInit {
     //console.log(this.vehicleID);
   }
 
+  fetchServicePrograms(){
+    this.apiService.getData('servicePrograms')
+      .subscribe((result: any) => {
+        this.servicePrograms = result.Items;
+      });
+  }
+
   updateVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
@@ -213,7 +221,7 @@ export class EditVehicleNewComponent implements OnInit {
       model: this.model,
       state: this.state,
       plateNumber: this.plateNumber,
-      serviceProgram: this.serviceProgram,
+      serviceProgramID: this.serviceProgramID,
       currentStatus: this.currentStatus,
       group: this.group,
       ownership: this.ownership,
