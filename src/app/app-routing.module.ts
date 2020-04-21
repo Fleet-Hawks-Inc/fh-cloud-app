@@ -131,6 +131,15 @@ import { StockAssignmentListComponent } from "./stock-assignment-list/stock-assi
 import { AddTicketTypeComponent } from "./add-ticket-type/add-ticket-type.component";
 import { EditTicketTypeComponent } from "./edit-ticket-type/edit-ticket-type.component";
 import { TicketTypeListComponent } from "./ticket-type-list/ticket-type-list.component";
+import {CountriesComponent} from './countries/countries.component';
+import {EditCountryComponent} from './edit-country/edit-country.component';
+import {AddCountryComponent} from './add-country/add-country.component';
+import {AddStateComponent} from './add-state/add-state.component';
+import {EditStateComponent} from './edit-state/edit-state.component';
+import {StatesComponent} from './states/states.component';
+import {CitiesComponent} from './cities/cities.component';
+import {EditCityComponent} from './edit-city/edit-city.component';
+import {AddCityComponent} from './add-city/add-city.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "/Login", pathMatch: "full" },
@@ -306,6 +315,19 @@ const routes: Routes = [
   { path: "Add-Ticket-Type", component: AddTicketTypeComponent },
   { path: "Edit-Ticket-Type/:typeID", component: EditTicketTypeComponent },
   { path: "Ticket-Types-List", component: TicketTypeListComponent },
+
+  { path: "Add-Country", component: AddCountryComponent },
+  { path: "Edit-Country/:countryID", component: EditCountryComponent },
+  { path: "Country-List", component: CountriesComponent },
+
+  { path: "Add-State", component: AddStateComponent },
+  { path: "Edit-State/:stateID", component: EditStateComponent },
+  { path: "State-List", component: StatesComponent },
+
+  { path: "Add-City", component: AddCityComponent },
+  { path: "Edit-City/:cityID", component: EditCityComponent },
+  { path: "City-List", component: CitiesComponent },
+
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

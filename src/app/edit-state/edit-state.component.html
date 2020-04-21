@@ -1,0 +1,123 @@
+<section class="body">
+
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{title}}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li>
+              <a href="/">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li><span>States</span></li>
+            <li><span>{{title}}</span></li>
+          </ol>
+
+
+        </div>
+      </header>
+
+
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+
+
+              <h2 class="card-title">Details</h2>
+            </header>
+            <div class="card-body">
+              <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
+
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label class="control-label text-lg-right pt-2" for="inputDefault" >Country Id</label>
+
+                    <select name="country" class="form-control" [(ngModel)]="country">
+                      <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
+                    </select>
+
+                  </div>
+
+
+
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label class="control-label text-lg-right pt-2" for="inputDefault" >State Code</label>
+                    <input type="text" class="form-control" id="inputDefault" [(ngModel)]="stateCode"
+                           name="stateCode" >
+
+                  </div>
+                  <div class="col-lg-6">
+                    <label class="control-label text-lg-right pt-2" for="inputDefault">State Name</label>
+                    <input type="text" class="form-control" id="inputDefault1" [(ngModel)]="stateName"
+                           name="stateName" >
+                  </div>
+
+
+                </div>
+
+
+
+
+
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <label class="control-label text-lg-right pt-2" for="inputDefault">Status</label> -->
+                    <!-- <select data-plugin-selectTwo class="form-control populate">
+                        <optgroup label="">
+                            <option value="1">Enable</option>
+                            <option value="2">Disable</option>
+                            <option value="2">Out of Service</option>
+
+                        </optgroup>
+                    </select> -->
+                    <button class="btn btn-dark mt-4 modal-confirm" (click)="addCountry()">Submit</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+
+                    <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
+                    <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
+                  </div>
+                </div>
+
+
+
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+
+
+
+
+
+
+
+</section>
