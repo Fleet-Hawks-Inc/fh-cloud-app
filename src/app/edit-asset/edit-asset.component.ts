@@ -112,16 +112,44 @@ export class EditAssetComponent implements OnInit {
   hasSuccess: boolean = false;
   Error: string = "";
   Success: string = "";
+  manufacturers = [];
+  states = [];
+  models = []
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.assetID = this.route.snapshot.params['assetID'];
+    this.fetchManufactuer();
+    this.fetchModel();
+    this.fetchState();
     this.apiService.getData("quantums").subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
 
     this.fetchAsset();
   }
+
+  fetchManufactuer(){
+    this.apiService.getData('manufacturers')
+    .subscribe((result: any) => {
+      this.manufacturers = result.Items;
+    });
+  }
+
+  fetchModel(){
+    this.apiService.getData('models')
+    .subscribe((result: any) => {
+      this.models = result.Items;
+    });
+  }
+
+  fetchState(){
+    this.apiService.getData('states')
+    .subscribe((result: any) => {
+      this.states = result.Items;
+    });
+  }
+
 
   fetchAsset() {
     this.apiService.getData("assets/" + this.assetID).subscribe((result: any) => {

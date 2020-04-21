@@ -182,17 +182,7 @@
                       }"
                     >
                       <optgroup label="">
-                        <option>Tesla</option>
-                        <option>BMW</option>
-                        <option>GM</option>
-                        <option>Ford</option>
-                        <option>Fiat</option>
-                        <option>Daimler</option>
-                        <option>Honda</option>
-                        <option>Hyundai</option>
-                        <option>Kia</option>
-                        <option>Nissan</option>
-                        <option>Rivian</option>
+                        <option *ngFor="let q of manufacturers" value="{{q.manufacturerID}}">{{q.name}}</option>
                       </optgroup>
                     </select>
                     <span
@@ -218,17 +208,7 @@
                       }"
                     >
                       <optgroup label="">
-                        <option>ST8189LD</option>
-                        <option>ZZ0189LD</option>
-                        <option>FK36189D</option>
-                        <option>IT55855G</option>
-                        <option>POLD2132</option>
-                        <option>QJ23659W</option>
-                        <option>454564564</option>
-                        <option>1231231456789</option>
-                        <option>789798001</option>
-                        <option>0416546503</option>
-                        <option>KDF2355U</option>
+                        <option *ngFor="let q of models" value="{{q.modelID}}">{{q.name}}</option>
                       </optgroup>
                     </select>
                     <span
@@ -347,16 +327,7 @@
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">California</option>
-                        <option>Florida</option>
-                        <option>New Jersey</option>
-                        <option>New York</option>
-                        <option>New Mexico</option>
-                        <option>Texas</option>
-                        <option>Washington</option>
-                        <option>West Virginia</option>
-                        <option>Nevada</option>
-                        <option>Montana</option>
+                        <option *ngFor="let q of states" value="{{q.stateID}}">{{q.stateName}}</option>
                       </optgroup>
                     </select>
                     <span
@@ -390,22 +361,33 @@
                 </div>
 
                 <div class="form-group row">
-                  <div class="col-lg-4">
-                    <label class="control-label text-lg-right pt-2"
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right text-dark text-4 pt-2"
                       >Owner Ship</label
                     >
-                    <input
-                      class="form-control"
-                      type="text"
-                      placeholder="Ownership"
-                      id="ownerShip"
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Type</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      id="year"
                       [(ngModel)]="ownerShip"
                       name="ownerShip"
-                      (input)="updateValidation('ownerShip')"
+                      (change)="updateValidation('ownerShip')"
                       [ngClass]="{
                         redBorder: validationErrors.ownerShip.error == true
                       }"
-                    />
+                    >
+                      <optgroup label="">
+                        <option>owned</option>
+                        <option>rented</option>
+                        <option>external</option>
+                      </optgroup>
+                    </select>
                     <span
                       *ngIf="validationErrors.ownerShip.error == true"
                       class="red"
@@ -428,16 +410,8 @@
                       }"
                     >
                       <optgroup label="">
-                        <option>California</option>
-                        <option>Florida</option>
-                        <option>New Jersey</option>
-                        <option>New York</option>
-                        <option>New Mexico</option>
-                        <option>Texas</option>
-                        <option>Washington</option>
-                        <option>West Virginia</option>
-                        <option>Nevada</option>
-                        <option>Montana</option>
+                        <option *ngFor="let q of states" value="{{q.stateID}}">{{q.stateName}}</option>
+
                       </optgroup>
                     </select>
                     <span
@@ -552,7 +526,7 @@
 
                 <div class="form-group row">
                   <div class="col-lg-12">
-                    <!-- <p class="text text-danger" *ngIf="hasError">{{ Error }}</p> -->
+                    <p class="text text-danger" *ngIf="hasError">{{ Error }}</p>
                     <p class="text text-success" *ngIf="hasSuccess">
                       {{ Success }}
                     </p>
@@ -586,9 +560,7 @@
           name="quantum info"
           (ngModelChange)="onChange($event)"
         >
-          <option *ngFor="let q of quantumsList" value="{{ q.quantumID }}">{{
-            q.sNo
-          }}</option>
+        <option *ngFor="let q of quantumsList" value="{{q.quantumID}}">{{q.sNo}}</option>
         </select>
       </div>
       <div class="modal-footer">

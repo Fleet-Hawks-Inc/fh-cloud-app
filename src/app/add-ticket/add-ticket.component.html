@@ -78,12 +78,10 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      name="ticketType"
-                      [(ngModel)]="ticketType">
+                      name="ticketTypeID"
+                      [(ngModel)]="ticketTypeID">
                       <optgroup label="">
-                        <option value="1">Type 1</option>
-                        <option value="2">Type 2</option>
-                        <option value="2">Type 3</option>
+                        <option *ngFor="let ticketType of ticketTypes" value="{{ticketType.typeID}}">{{ticketType.typeName}}</option>
                       </optgroup>
                     </select>
 

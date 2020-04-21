@@ -21,11 +21,14 @@ export class AddVendorComponent implements OnInit {
     longitude: "",
   };
   address = "";
-  state = "";
-  country = "";
+  stateID = "";
+  countryID = "";
   taxID = "";
   creditDays = "";
 
+
+  countries = [];
+  states = [];
   /**
    * Form errors prop
    */
@@ -47,10 +50,10 @@ export class AddVendorComponent implements OnInit {
     address: {
       error: false,
     },
-    country: {
+    countryID: {
       error: false,
     },
-    state: {
+    stateID: {
       error: false,
     },
     taxID: {
@@ -68,7 +71,24 @@ export class AddVendorComponent implements OnInit {
   Success: string = "";
   constructor(private apiService: ApiService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchCountries()
+    this.fetchStates();
+  }
+
+  fetchCountries(){
+    this.apiService.getData('countries')
+      .subscribe((result: any) => {
+        this.countries = result.Items;
+      });
+  }
+
+  fetchStates(){
+    this.apiService.getData('states')
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
 
   addVendor() {
     let data = {
@@ -79,8 +99,8 @@ export class AddVendorComponent implements OnInit {
         longitude: this.geoLocation.longitude,
       },
       address: this.address,
-      state: this.state,
-      country: this.country,
+      stateID: this.stateID,
+      countryID: this.countryID,
       taxID: this.taxID,
       creditDays: this.creditDays,
     };
@@ -103,8 +123,8 @@ export class AddVendorComponent implements OnInit {
           longitude: "",
         };
         this.address = "";
-        this.state = "";
-        this.country = "";
+        this.stateID = "";
+        this.countryID = "";
         this.taxID = "";
         this.creditDays = "";
       },

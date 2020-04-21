@@ -21,11 +21,14 @@ export class EditVendorComponent implements OnInit {
     longitude: "",
   };
   address = "";
-  state = "";
-  country = "";
+  stateID = "";
+  countryID = "";
   taxID = "";
   creditDays = "";
   timeCreated = "";
+
+  countries = [];
+  states = [];
   /**
    * Form errors prop
    */
@@ -47,10 +50,10 @@ export class EditVendorComponent implements OnInit {
     address: {
       error: false,
     },
-    country: {
+    countryID: {
       error: false,
     },
-    state: {
+    stateID: {
       error: false,
     },
     taxID: {
@@ -70,7 +73,23 @@ export class EditVendorComponent implements OnInit {
 
   ngOnInit() {
     this.vendorID = this.route.snapshot.params["vendorID"];
+    this.fetchCountries()
+    this.fetchStates();
     this.fetchVendor();
+  }
+
+  fetchCountries(){
+    this.apiService.getData('countries')
+      .subscribe((result: any) => {
+        this.countries = result.Items;
+      });
+  }
+
+  fetchStates(){
+    this.apiService.getData('states')
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
   }
 
     /**
@@ -89,8 +108,8 @@ export class EditVendorComponent implements OnInit {
           longitude: result.geoLocation.longitude,
         };
         this.address = result.address;
-        this.state = result.state;
-        this.country = result.country;
+        this.stateID = result.stateID;
+        this.countryID = result.countryID;
         this.taxID = result.taxID;
         this.creditDays = result.creditDays;
         this.timeCreated = result.timeCreated;
@@ -108,8 +127,8 @@ export class EditVendorComponent implements OnInit {
         longitude: this.geoLocation.longitude,
       },
       address: this.address,
-      state: this.state,
-      country: this.country,
+      stateID: this.stateID,
+      countryID: this.countryID,
       taxID: this.taxID,
       creditDays: this.creditDays,
       timeCreated: this.timeCreated
