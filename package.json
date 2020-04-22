@@ -20,6 +20,9 @@
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
     "@auth0/angular-jwt": "^4.0.0",
+    "@mapbox/mapbox-gl-directions": "4.0.3",
+    "@mapbox/mapbox-gl-traffic": "1.0.2",
+    "@mapbox/mapbox-sdk": "0.10.0",
     "@ng-bootstrap/ng-bootstrap": "^5.2.2",
     "@types/googlemaps": "^3.39.3",
     "@types/jquery.validation": "^1.16.6",
@@ -31,6 +34,7 @@
     "buffer": "^5.4.3",
     "jquery-validation": "^1.19.1",
     "jwt-decode": "^2.2.0",
+    "mapbox-gl": "1.9.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

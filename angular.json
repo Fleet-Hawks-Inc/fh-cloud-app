@@ -24,6 +24,8 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/mapbox-gl/dist/mapbox-gl.css",
+              "node_modules/@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css",
               "src/styles.css"
             ],
             "scripts": [
@@ -41,7 +43,7 @@
               "src/assets/js/custom.js",
               "src/assets/js/theme.init.js",
               "src/assets/js/examples/examples.dashboard.js",
-              "src/assets/js/jquery.validate.min.js"
+              "src/assets/js/jquery.validate.min.js",
             ]
           },
           "configurations": {
@@ -136,6 +138,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "fleethawks-dashboard"
 }
