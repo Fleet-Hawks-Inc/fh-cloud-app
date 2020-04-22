@@ -149,6 +149,10 @@ import { AddModelComponent } from "./add-model/add-model.component";
 import { EditModelComponent } from "./edit-model/edit-model.component";
 import { ModelListComponent } from "./model-list/model-list.component";
 
+import { AddAlertComponent } from "./add-alert/add-alert.component";
+import { EditAlertComponent } from "./edit-alert/edit-alert.component";
+import { AlertListComponent } from "./alert-list/alert-list.component";
+
 const routes: Routes = [
   { path: "", redirectTo: "/Login", pathMatch: "full" },
   { path: "Login", component: LoginComponent },
@@ -355,6 +359,13 @@ const routes: Routes = [
     component: EditModelComponent,
   },
   { path: "Models-List", component: ModelListComponent },
+
+  { path: "Add-Alert", component: AddAlertComponent },
+  {
+    path: "Edit-Alert/:alertID",
+    component: EditAlertComponent,
+  },
+  { path: "Alerts-List", component: AlertListComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
