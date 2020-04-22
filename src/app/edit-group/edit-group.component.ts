@@ -14,10 +14,9 @@ export class EditGroupComponent implements OnInit {
   /********** Form Fields ***********/
   groupName = '';
   description = '';
-  carrierID = '';
   groupType = '';
   groupId = '';
-
+  timeCreated = ""
   /******************/
 
   /**
@@ -32,8 +31,7 @@ export class EditGroupComponent implements OnInit {
     },
     groupType: {
       error: false,
-    },
-
+    }
   };
 
 
@@ -56,9 +54,8 @@ export class EditGroupComponent implements OnInit {
           result = result.Items[0];
           this.groupName = result.groupName;
           this.description =  result.description;
-          this.carrierID =  result.carrierID;
           this.groupType =  result.groupType;
-
+          this.timeCreated = result.timeCreated
         });
   }
 
@@ -70,8 +67,8 @@ export class EditGroupComponent implements OnInit {
       "groupID": this.groupId,
       "groupName": this.groupName,
       "description": this.description,
-      "carrierID": 'default',
-      "groupType": this.groupType
+      "groupType": this.groupType,
+      timeCreated: this.timeCreated
     };
 
 
