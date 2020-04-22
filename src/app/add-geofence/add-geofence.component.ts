@@ -1,30 +1,26 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import {ApiService} from '../api.service';
 import {from} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
 declare var $: any;
 @Component({
-  selector: 'app-add-city',
-  templateUrl: './add-city.component.html',
-  styleUrls: ['./add-city.component.css']
+  selector: 'app-add-geofence',
+  templateUrl: './add-geofence.component.html',
+  styleUrls: ['./add-geofence.component.css']
 })
-export class AddCityComponent implements OnInit {
-
-  title = 'Add City';
+export class AddGeofenceComponent implements OnInit {
+  title = 'Add Geofencing';
 
   errors = {};
   form;
-  stateID = '';
-  states = [];
-
 
   /********** Form Fields ***********/
 
-
-  cityName = '';
+  fenceName = '';
+  location = '';
+  description = '';
   timeCreated = '';
-
 
   /******************/
 
@@ -39,52 +35,27 @@ export class AddCityComponent implements OnInit {
 
 
   ngOnInit() {
-
-    this.fetchStates();
-
-   // this.stateID = this.route.snapshot.params['stateID'];
-
-    // this.apiService.getData('states/' + this.stateID)
-    //   .subscribe((result: any) => {
-    //     //console.log(result);
-    //     result = result.Items[0];
-    //     this.cityName = result.stateName;
-    //     this.timeCreated = result.timeCreated;
-    //
-    //   });
-
-
-
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
   }
 
-
-
-  fetchStates(){
-    this.apiService.getData('states')
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
-  }
-
-  addCity() {
+  addGeofence() {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
     const data = {
+      "fenceName": this.fenceName,
+      "location": this.location,
+      "description": this.description
+    };
 
-      "stateID": this.stateID,
-      "cityName": this.cityName,
-
-    }
-
-    this.apiService.postData('cities', data)
+    this.apiService.postData('geofences', data)
       .subscribe({
         complete : () => {},
         error : (err) => {
+
           from(err.error)
             .pipe(
               map((val: any) => {
@@ -92,16 +63,21 @@ export class AddCityComponent implements OnInit {
                 this.errors[val.context.key] = val.message;
               }),
             )
-            .subscribe((val) => {
-              this.throwErrors();
-            });
+            .subscribe({
+              complete : () => { this.throwErrors(); },
+              error : () => {},
+              next: () => {}
+        });
 
         },
         next: (res) => {
-          this.cityName = '';
+          this.fenceName = '';
+          this.location = '';
+          this.description = '';
+
           this.response = res;
           this.hasSuccess = true;
-          this.Success = 'City Added successfully';
+          this.Success = 'Geofence Added successfully';
 
         }
       });

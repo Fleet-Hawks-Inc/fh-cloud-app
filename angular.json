@@ -24,7 +24,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css"
             ],
             "scripts": [
               "src/assets/vendor/modernizr/modernizr.min.js",
@@ -41,7 +42,8 @@
               "src/assets/js/custom.js",
               "src/assets/js/theme.init.js",
               "src/assets/js/examples/examples.dashboard.js",
-              "src/assets/js/jquery.validate.min.js"
+              "src/assets/js/jquery.validate.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js"
             ]
           },
           "configurations": {

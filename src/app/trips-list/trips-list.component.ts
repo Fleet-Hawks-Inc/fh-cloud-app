@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from "../api.service";
 import {Router} from "@angular/router";
-
+import {timer} from 'rxjs';
+declare var $: any;
 @Component({
   selector: 'app-trips-list',
   templateUrl: './trips-list.component.html',
@@ -10,29 +11,51 @@ import {Router} from "@angular/router";
 export class TripsListComponent implements OnInit {
   title = 'Trips List';
   tripLists;
+  // @ViewChild('FhDataTable', {static: false}) table;
+  // dataTable: any;
 
   constructor(private apiService: ApiService,
               private router: Router) { }
 
   ngOnInit() {
-    this.fuelEntries();
-  }
+    this.tripLists = [];
+    this.tripEntries();
+    $(document).ready(() => {});
+    }
 
-  fuelEntries() {
+  tripEntries() {
     this.apiService.getData('trips')
-        .subscribe((result: any) => {
-          console.log(result);
-          this.tripLists = result.Items;
+        .subscribe({
+          complete: () => {
+            this.initDataTable();
+          },
+          error: () => {},
+          next: (result: any) => {
+            console.log(result);
+            this.tripLists = result.Items;
+            }
         });
   }
 
-
-
   deleteTrip(tripId) {
+    /******** Clear DataTable ************/
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
+      }
+      /******************************/
+
     this.apiService.deleteData('trips/' + tripId)
         .subscribe((result: any) => {
-          this.fuelEntries();
-        })
+          this.tripEntries();
+          });
   }
+
+  /********Initialize Datatable, Wait To Load Records First ********/
+  initDataTable() {
+    timer(200).subscribe(() => {
+      $('#datatable-default').DataTable();
+    });
+  }
+
 
 }
