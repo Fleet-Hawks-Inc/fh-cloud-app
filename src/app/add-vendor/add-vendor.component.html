@@ -75,88 +75,16 @@
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">V 1</option>
-                        <option value="2">V 2</option>
-                        <option value="2">V 3</option>
+                        <option value="Service Vendor">Service Vendor</option>
+                        <option value="Insurance Vendor"
+                          >Insurance Vendor</option
+                        >
                       </optgroup>
                     </select>
                     <span
                       *ngIf="validationErrors.vendorType.error == true"
                       class="red"
                       >{{ validationErrors.vendorType.message }}</span
-                    >
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Geo-location</label
-                    >
-                  </div>
-                  <div class="col-lg-6">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Latitude</label
-                    >
-                    <select
-                      data-plugin-selectTwo
-                      class="form-control populate"
-                      (change)="updateValidation('geoLocation', 'latitude')"
-                      name="geoLocationLatitude"
-                      [(ngModel)]="geoLocation.latitude"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.geoLocation.latitude.error == true
-                      }"
-                    >
-                      <optgroup label="">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="2">3</option>
-                      </optgroup>
-                    </select>
-                    <span
-                      *ngIf="
-                        validationErrors.geoLocation.latitude.error == true
-                      "
-                      class="red"
-                      >{{ validationErrors.geoLocation.latitude.message }}</span
-                    >
-                  </div>
-                  <div class="col-lg-6">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Longitude</label
-                    >
-                    <select
-                      data-plugin-selectTwo
-                      class="form-control populate"
-                      (change)="updateValidation('geoLocation', 'longitude')"
-                      name="geoLocationLongitude"
-                      [(ngModel)]="geoLocation.longitude"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.geoLocation.longitude.error == true
-                      }"
-                    >
-                      <optgroup label="">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="2">3</option>
-                      </optgroup>
-                    </select>
-                    <span
-                      *ngIf="
-                        validationErrors.geoLocation.longitude.error == true
-                      "
-                      class="red"
-                      >{{
-                        validationErrors.geoLocation.longitude.message
-                      }}</span
                     >
                   </div>
                 </div>
@@ -189,56 +117,60 @@
                     <label
                       class="control-label text-lg-right pt-2"
                       for="inputDefault"
-                      >State</label
+                      >Country</label
                     >
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      (change)="updateValidation('state')"
-                      name="state"
-                      [(ngModel)]="state"
+                      (change)="updateValidation('countryID')"
+                      name="countryID"
+                      [(ngModel)]="countryID"
                       [ngClass]="{
-                        redBorder: validationErrors.state.error == true
+                        redBorder: validationErrors.countryID.error == true
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">State 1</option>
-                        <option value="2">State 2</option>
-                        <option value="2">State 3</option>
+                        <option
+                          *ngFor="let country of countries"
+                          value="{{ country.countryID }}"
+                          >{{ country.countryName }}</option
+                        >
                       </optgroup>
                     </select>
                     <span
-                      *ngIf="validationErrors.address.error == true"
+                      *ngIf="validationErrors.countryID.error == true"
                       class="red"
-                      >{{ validationErrors.state.message }}</span
+                      >{{ validationErrors.countryID.message }}</span
                     >
                   </div>
                   <div class="col-lg-6">
                     <label
                       class="control-label text-lg-right pt-2"
                       for="inputDefault"
-                      >Country</label
+                      >State</label
                     >
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      (change)="updateValidation('country')"
-                      name="country"
-                      [(ngModel)]="country"
+                      (change)="updateValidation('stateID')"
+                      name="stateID"
+                      [(ngModel)]="stateID"
                       [ngClass]="{
-                        redBorder: validationErrors.country.error == true
+                        redBorder: validationErrors.stateID.error == true
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">Country 1</option>
-                        <option value="2">Country 2</option>
-                        <option value="2">Country 3</option>
+                        <option
+                          *ngFor="let state of states"
+                          value="{{ state.stateID }}"
+                          >{{ state.stateName }}</option
+                        >
                       </optgroup>
                     </select>
                     <span
-                      *ngIf="validationErrors.country.error == true"
+                      *ngIf="validationErrors.stateID.error == true"
                       class="red"
-                      >{{ validationErrors.country.message }}</span
+                      >{{ validationErrors.stateID.message }}</span
                     >
                   </div>
                 </div>
@@ -278,7 +210,7 @@
                       >Credit Days</label
                     >
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       name="creditDays"
                       (input)="updateValidation('creditDays')"
@@ -294,6 +226,40 @@
                     >
                   </div>
                 </div>
+                
+                <div class="col-lg-12 col-xl-12">
+                  <div class="accordion" id="accordion2Quaternary">
+                     <div class="card card-default">
+                        <div class="card-header">
+                           <h4 class="card-title m-0">
+                              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2Quaternary" href="#collapse2QuaternaryOne">
+                                Set Geofences <span class="pull-right"><i class="fas fa-angle-down"></i></span>
+                              </a>
+                           </h4>
+                        </div>
+                        <div id="collapse2QuaternaryOne" class="collapse">
+                           <div class="card-body p-0 gfmap">
+                              <div class="gfmaps">
+                                 <form action="#" class="search nav-form">
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" name="q" id="q" placeholder="Search geofence location here...">
+                                       <span class="input-group-append">
+                                          <button class="btn btn-default" type="submit"><i class="fas fa-search"></i></button>
+                                       </span>
+                                    </div>
+                                 </form>
+
+                              </div>
+
+                              <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15125141.447846191!2d-96.44470702054707!3d49.12262240661983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1587377009062!5m2!1sen!2sin" width="100%" height="650" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                           </div>
+                        </div>
+                     </div>
+                     
+                     
+                     
+                  </div>
+               </div>
 
                 <div class="form-group row">
                   <div class="col-lg-12">

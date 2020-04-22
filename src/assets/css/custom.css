@@ -7,43 +7,43 @@
     width: 8px;
   }
  */
-::-webkit-scrollbar {
+ ::-webkit-scrollbar {
   width: 2px;
 }
-
+ 
 ::-webkit-scrollbar:horizontal {
   width: 2px;
 }
 
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: #fff;
-}
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #fff; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #dedede ; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #5c5c5c; 
+  }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #dedede ;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #5c5c5c;
-}
-
-
-
-/* chat classes start from here*/
+  
+  
+  /* chat classes start from here*/
 .chat-menu{float: left;}
 .chat-icon {
-  display: block;
-  transition: all .2s;
-  opacity: 1; float: left;
-  width: 20%;
+    display: block;
+    transition: all .2s;
+    opacity: 1; float: left;
+    width: 20%;
 }
 
 .chat-icon img {
-  border-radius: 50px !important ;
+  border-radius: 50px !important ;  
   width: 44px;
   height: 44px;
 }
@@ -66,14 +66,14 @@
 }
 
 .chat-hdicon img {
-  border-radius: 50px !important ;
-  width: 44px;
-  height: 44px;
+border-radius: 50px !important ;  
+width: 44px;
+height: 44px;
 }
 
 .chat-headname {
-  display: block;
-  float:  left;
+display: block;
+float:  left;
 }
 
 .chat-headname p{margin-bottom: 0px; font-weight: 600; line-height: 14px; color: #000;}
@@ -141,10 +141,10 @@
   border-left: 1px solid rgba(0, 0, 0, 0.03);
   float: right;
   bottom: 0;
-  left: 0;
-  position: absolute;
-  right: 0;
-
+	left: 0;
+	position: absolute;
+	right: 0;
+    
 }
 
 
@@ -162,39 +162,39 @@
 .chatinput{width: 96% !important; margin-left: 4%; margin-right: 3%; border-radius: 60px;}
 
 @media (max-width:1720px){
-  .chatinput{width: 91% !important; margin-left: 5%;}
+.chatinput{width: 91% !important; margin-left: 5%;}
 }
 
 @media (max-width:1600px){
   .chatinput{width: 90% !important; margin-left: 6%;}
-}
+  }
 
 @media (max-width:1440px){
-  .chatinput{width: 89% !important; margin-left: 7%;}
-}
+    .chatinput{width: 89% !important; margin-left: 7%;}
+  }
 
-@media (max-width:1000px){
-  .chatinput{width: 87% !important; margin-left: 9%;}
-}
+  @media (max-width:1000px){
+    .chatinput{width: 87% !important; margin-left: 9%;}
+  }
 
 @media (max-width:900px){
-  .chatinput{width: 84% !important; margin-left: 10%;}
-}
+    .chatinput{width: 84% !important; margin-left: 10%;}
+  }
 
-@media (max-width:768px){
-  .chatinput{width: 82% !important; margin-left: 11%;}
-}
+  @media (max-width:768px){
+    .chatinput{width: 82% !important; margin-left: 11%;}
+  }
 
-@media (max-width:568px){
-  .chatinput{width: 80% !important; margin-left: 12%;}
-}
+  @media (max-width:568px){
+    .chatinput{width: 80% !important; margin-left: 12%;}
+  }
 
-@media (max-width:468px){
-  .chatinput{width: 80% !important; margin-left: 12%;}
-}
+  @media (max-width:468px){
+    .chatinput{width: 80% !important; margin-left: 12%;}
+  }
 
 
-
+    
 .input-group-prepend {
   position: absolute; top: 5px; left: 5px;
 }
@@ -257,7 +257,7 @@
   border-radius: 0;
   font-size: 15px; color: #fff;
   background: #212529b8;
-
+ 
 }
 
 .profile-img .file input {
@@ -270,17 +270,17 @@
 
 /* map classes */
 .mapclass{
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  
 }
 
-.mapclass .mapclassmain{
-  height:100%;
-  width:100%;
-  position: fixed !important;
+.mapclass .mapclassmain{ 
+    height:100%;
+    width:100%;
+    position: fixed !important; 
 
 }
 
@@ -328,7 +328,7 @@
   color: #fff;;
   margin-right: 5px;
 
-
+  
 }
 
 
@@ -563,7 +563,7 @@
   position: absolute; width: 400px;
   background: #f5f5f5; height: 100%; padding-bottom: 100px;
   position: fixed;
-  right:0px; top: 110px;
+  right:0px; top: 110px; 
 }
 
 .driverdetail{float: left; background: #f5f5f5; width: 100%;
@@ -576,29 +576,29 @@
 .curcycle{width: 130px; float: left;  }
 
 .iconR{position: absolute;
-  right:400px;
+  right:400px; 
   top: 370px;
-}
+  }
 
-.iconR a{background: #fff; padding: 10px;}
-.iconR a{background: #ebebeb;}
+  .iconR a{background: #fff; padding: 10px;}
+  .iconR a{background: #ebebeb;}
 
-.iconL{position: absolute;
-  right:0px;
-  top: 370px;
-}
+  .iconL{position: absolute;
+    right:0px; 
+    top: 370px;
+    }
+  
+    .iconL a{background: #fff; padding: 10px;}
+    .iconL a{background: #ebebeb;}
 
-.iconL a{background: #fff; padding: 10px;}
-.iconL a{background: #ebebeb;}
-
-
-/*dashboard drive detail classes*/
-.driverdetail2{float: left; background: #f5f5f5; width: 100%;
-  border-bottom: 1px solid #bec8d1; padding:10px 10px;}
-
+    
+    /*dashboard drive detail classes*/
+    .driverdetail2{float: left; background: #f5f5f5; width: 100%;
+      border-bottom: 1px solid #bec8d1; padding:10px 10px;}
+ 
 .vinfo{background: :#fff; border:solid 1px #dcdcdc;
-  min-height:200px; border-radius:6px; margin-top:20px;
-  margin-bottom:20px;
+min-height:200px; border-radius:6px; margin-top:20px;
+margin-bottom:20px;
 }
 .vinfo .vdetail{padding: 10px;}
 
@@ -608,34 +608,34 @@
 .tripscrolbar{height: 150px; margin-top: 0px; position: relative;}
 
 .tripbar{width:500px; height: 5px; background: #727272;
-  position: absolute; left: 0; top: 60px; z-index: 100;}
+position: absolute; left: 0; top: 60px; z-index: 100;}
 .tripbarfinish{width:200px; height: 5px; background: #0fd50a;
   position: absolute; left: 0; top: 60px; z-index: 500;
 }
 
-.tripdot1{width: 16px; height: 16px; border-radius: 50%;
+ .tripdot1{width: 16px; height: 16px; border-radius: 50%;
   background: #141414; z-index: 999; position: absolute;
   left: 0; top: 55px;}
 
 .tripdot2{width: 16px; height: 16px; border-radius: 50%;
-  background: #141414; z-index: 999; position: absolute;
-  left: 100px; top: 55px;}
+    background: #141414; z-index: 999; position: absolute;
+    left: 100px; top: 55px;}
 
 .tripdot3{width: 16px; height: 16px; border-radius: 50%;
-  background: #141414; z-index: 999; position: absolute;
-  left: 200px; top: 55px;}
+      background: #141414; z-index: 999; position: absolute;
+      left: 200px; top: 55px;}
 
 .tripdot4{width: 16px; height: 16px; border-radius: 50%;
-  background: #141414; z-index: 999; position: absolute;
-  left: 300px; top: 55px;}
+        background: #141414; z-index: 999; position: absolute;
+        left: 300px; top: 55px;}
 
 .tripdot5{width: 16px; height: 16px; border-radius: 50%;
-  background: #141414; z-index: 999; position: absolute;
-  left: 400px; top: 55px;}
+          background: #141414; z-index: 999; position: absolute;
+          left: 400px; top: 55px;}
 
 .tripdot6{width: 16px; height: 16px; border-radius: 50%;
-  background: #ff0000; z-index: 999; position: absolute;
-  left: 472px; top: 55px;}
+            background: #ff0000; z-index: 999; position: absolute;
+            left: 472px; top: 55px;}
 
 /* trip info date time */
 
@@ -659,15 +659,15 @@
 
 
 .dionduty{border: solid 2px #f0bd0b; float: left;
-  width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
+width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
 }
 
 .didriving{border: solid 2px #167efa; float: left;
   width: 100%; padding:2% 5%; font-size: 20px; color:#167efa;
-}
-.dioffduty{border: solid 2px #fc3142; float: left;
-  width: 100%; padding:2% 5%; font-size: 20px; color:#fc3142;
-}
+  }
+  .dioffduty{border: solid 2px #fc3142; float: left;
+    width: 100%; padding:2% 5%; font-size: 20px; color:#fc3142;
+    }
 
 /* HOS driver insight classes di mean drive insite rejected end */
 
@@ -678,11 +678,11 @@
 .driverbar{float: left; width: 100%;}
 .ditotald{font-size: 50px; float: left; color: #000;
   padding-top: 10px; font-weight: 600;}
+  
 
 
 
-
-/* widget classes dispatch dashboard classed start */
+  /* widget classes dispatch dashboard classed start */
 .widgetmain{background: #fff; height: 400px;}
 .widgettopbar{background: #f6f6f6; width: 100%; float: left; padding:0px   10px;}
 .widgettopbar2{background: #000; width: 100%; float: left; padding: 10px;}
@@ -700,11 +700,144 @@
 .widgetinfo{float: left; width: 100%; background: #fff;
   height:400px; padding: 10px;}
 
-.widgetchid{float: left; width: 100%; border-bottom: solid 1px #ddd;
+  .widgetchid{float: left; width: 100%; border-bottom: solid 1px #ddd;
   margin-bottom: 10px;}
 
-.minwidth60{min-width: 60px;}
-.minwidth127{min-width: 127px;}
+  .minwidth60{min-width: 60px;}
+  .minwidth127{min-width: 127px;}
+
+
+
+
+/* ********************* dashboard chat main box classes start here ********************** */
+  
+  .dchatmb{
+    width: 280px; height: 460px;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    left: 0px; bottom: 0px; z-index: 99999 !important;
+  }
+
+  /* Button used to open the chat form */
+.open-button {
+  background-color: #333; z-index:9999;
+  color: #fff; padding: 10px 20px;
+  border: none; cursor: pointer;
+  position: fixed; bottom: 0px;
+  left: 0px; width: 280px;
+}
+
+/* The popup chat - hidden by default */
+.chat-popup {
+  display: none; bottom: 0; right: 15px;
+  
+}
+
+.dchathead{
+  background: #333; width: 100%;
+  height: 50px; border-radius:7px 7px 0 0;}
+
+
+  /* chat input of all chat boxes */
+  .dcinput{
+    width: 73% !important;
+    margin-left: 17%;
+    border-radius: 60px;}
+
+ 
+
+
+/* chat box 1*/
+  .dchatb1{
+    width: 280px; height: 460px; display: none;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    left: 281px; bottom: 0px; z-index: 99999 !important;
+  }
+
+  .dchathead1{
+    background: #f6f6f6; width: 100%;
+    height: 50px; border-radius:7px 7px 0 0;}
+
+
+    /* chat box 2*/
+  .dchatb2{
+    width: 280px; height: 460px; display: none;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    left: 562px; bottom: 0px; z-index: 99999 !important;
+  }
+
+  .dchathead2{
+    background: #f6f6f6; width: 100%;
+    height: 50px; border-radius:7px 7px 0 0;}
+
+
+      /* chat box 3*/
+  .dchatb3{
+    width: 280px; height: 460px; display: none;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    left: 843px; bottom: 0px; z-index: 99999 !important;
+  }
+
+  .dchathead3{
+    background: #f6f6f6; width: 100%;
+    height: 50px; border-radius:7px 7px 0 0;}
+
+     /* chat box 4*/
+  .dchatb4{
+    width: 280px; height: 460px; display: none;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    left: 1124px; bottom: 0px; z-index: 99999 !important;
+  }
+
+  .dchathead4{
+    background: #f6f6f6; width: 100%;
+    height: 50px; border-radius:7px 7px 0 0;}
+
+
+    /* ********************* chat classes end here ********************** */
+
+
+
+
+    /* ********************* yard entery page classes start here ********************** */
+
+    /* geofenc map serach*/
+
+.gfmap{position: relative;}
+.gfmaps{
+width: 400px;
+position: absolute;
+right: 20px; top: 10px;
+
+}
+
+    /* ********************* yard entery page classes end here ********************** */
+
+
+/* ********************* vehicle new page classes start here ********************** */
+
+/* Safety Parameters */
+
+    .slidecontainer {width: 100%;}
+    
+    .slider {
+      -webkit-appearance: none;
+      width: 100%; height: 10px; background: #d3d3d3;
+      outline: none;  opacity: 1;
+      -webkit-transition: .2s; transition: opacity .2s;
+    }
+    
+    .slider:hover { opacity: 1;}
+    
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;  width: 20px; height: 20px;
+      background: #000; cursor: pointer;
+    }
+    
+    .slider::-moz-range-thumb {
+      width: 20px; height: 20px; background: #333;  cursor: pointer;
+    }
+
 
   /* make borde red for validation */
 .redBorder {

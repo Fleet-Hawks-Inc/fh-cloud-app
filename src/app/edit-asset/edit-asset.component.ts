@@ -1,66 +1,72 @@
-import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { ApiService } from "../api.service";
+import { ActivatedRoute, Router } from "@angular/router";
 declare var $: any;
 declare var jQuery: any;
 @Component({
-  selector: 'app-edit-asset',
-  templateUrl: './edit-asset.component.html',
-  styleUrls: ['./edit-asset.component.css']
+  selector: "app-edit-asset",
+  templateUrl: "./edit-asset.component.html",
+  styleUrls: ["./edit-asset.component.css"],
 })
 export class EditAssetComponent implements OnInit {
-  title = 'Edit Assets';
+  title = "Edit Assets";
 
   /********** Form Fields ***********/
-  VTN = '';
-  type = '';
-  year = '';
-  make = '';
-  model = '';
-  length = '';
-  axle = '';
-  GVWR = '';
-  GAWR = '';
-  state = '';
-  plateNumber = '';
-  ownership = '';
-  remarks = '';
-  state2 = '';
-  UID = '';
-  status = 'Active';
-  currentStatus = '';
-  quantum = '';
-  quantumSelected = '';
-  quantumStatus = '';
+  assetID= "";
+  assetName = "";
+  VIN = "";
+  assetType = "";
+  year = "";
+  assetInfo = {
+    year: "",
+    make: "",
+    model: "",
+  };
+  length: "";
+  axle = "";
+  GVWR = "";
+  GAWR = "";
+  license = {
+    state: "",
+    plateNumber: "",
+  };
 
-  carrierID = 'defualt';
-  vehicleID = 'default';
-  assetId = '';
+  ownerShip = "";
+  remarks = "";
+  state = "";
+  quantumInfo = {
+    UID: "",
+  };
+  currentStatus = "";
+  timeCreated = "";
 
+  quantum = "";
+  quantumsList = [];
   /******************/
-
 
   /**
    * Form errors prop
    */
   validationErrors = {
-    Assetname: {
+    assetName: {
       error: false,
     },
-    VTN: {
+    VIN: {
       error: false,
     },
-    type: {
+    assetType: {
       error: false,
     },
-    year: {
-      error: false,
-    },
-    make: {
-      error: false,
-    },
-    model: {
-      error: false,
+    assetInfo: {
+      year: {
+        error: false,
+      },
+      make: {
+        error: false,
+      },
+      model: {
+        error: false,
+      },
     },
     length: {
       error: false,
@@ -74,130 +80,149 @@ export class EditAssetComponent implements OnInit {
     GAWR: {
       error: false,
     },
-    state: {
-      error: false,
+    license: {
+      state: {
+        error: false,
+      },
+      plateNumber: {
+        error: false,
+      },
     },
-    plateNumber: {
-      error: false,
-    },
-    ownership: {
+    ownerShip: {
       error: false,
     },
     remarks: {
       error: false,
     },
-    state2: {
+    state: {
       error: false,
     },
-    UID: {
-      error: false,
+    quantumInfo: {
+      UID: {
+        error: false,
+      },
     },
     currentStatus: {
       error: false,
     },
-    quantum: {
-      error: false,
-    },
-    quantumSelected: {
-      error: false,
-    }
   };
 
-
-  response : any ='';
-  hasError : boolean = false;
+  response: any = "";
+  hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error : string = '';
-  Success : string = '';
-  constructor(private apiService: ApiService,
-              private router: Router,
-              private route: ActivatedRoute) {}
+  Error: string = "";
+  Success: string = "";
+  manufacturers = [];
+  states = [];
+  models = []
+  constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.assetId = this.route.snapshot.params['assetId'];
-
-    this.apiService.getData('assets/' + this.assetId)
-        .subscribe((result: any) => {
-          //console.log(result);
-          result = result.Items[0];
-          this.VTN = result.VIN;
-          this.type = result.type;
-          this.year = result.assetInfo.year;
-          this.make = result.assetInfo.make;
-          this.model = result.assetInfo.model;
-          this.length = result.length;
-          this.axle = result.axle;
-          this.GVWR = result.GVWR;
-          this.GAWR = result.GAWR;
-          this.state = result.license.state;
-          this.plateNumber = result.license.plateNumber;
-          this.ownership = result.ownership;
-          this.remarks = result.remarks;
-          this.state2 = result.state;
-          this.UID = result.quantumInfo.UID;
-          status = 'Active';
-          this.currentStatus = result.currentStatus;
-        });
-
-
-  }
-
-  quantumModal() {
-    $( document ).ready(function() {
-      $('#modalAnim').modal('show');
+    this.assetID = this.route.snapshot.params['assetID'];
+    this.fetchManufactuer();
+    this.fetchModel();
+    this.fetchState();
+    this.apiService.getData("quantums").subscribe((result: any) => {
+      this.quantumsList = result.Items;
     });
 
+    this.fetchAsset();
+  }
+
+  fetchManufactuer(){
+    this.apiService.getData('manufacturers')
+    .subscribe((result: any) => {
+      this.manufacturers = result.Items;
+    });
+  }
+
+  fetchModel(){
+    this.apiService.getData('models')
+    .subscribe((result: any) => {
+      this.models = result.Items;
+    });
+  }
+
+  fetchState(){
+    this.apiService.getData('states')
+    .subscribe((result: any) => {
+      this.states = result.Items;
+    });
+  }
+
+
+  fetchAsset() {
+    this.apiService.getData("assets/" + this.assetID).subscribe((result: any) => {
+      result = result.Items[0];
+      
+      this.assetName = result.assetName;
+      this.VIN = result.VIN;
+      this.assetType = result.assetType;
+      this.assetInfo.year = result.assetInfo.year;
+      this.assetInfo.make = result.assetInfo.make;
+      this.assetInfo.model = result.assetInfo.model;
+      this.length = result.length;
+      this.axle = result.axle;
+      this.GVWR = result.GVWR;
+      this.GAWR = result.GAWR;
+      this.license.state = result.license.state;
+      this.license.plateNumber = result.license.plateNumber;
+      this.ownerShip = result.ownerShip;
+      this.remarks = result.remarks;
+      this.state = result.state;
+      this.quantumInfo.UID = result.quantumInfo.UID;
+      this.currentStatus = result.currentStatus;
+      this.timeCreated = result.timeCreated;
+    });
+  }
+
+
+  quantumModal() {
+    $(document).ready(function () {
+      $("#modalAnim").modal("show");
+    });
   }
 
   onChange(newValue) {
     this.quantum = newValue;
-    this.UID = newValue;
+    this.quantumInfo.UID = newValue;
   }
-
-
-
-
-
 
   updateAsset() {
     this.hasError = false;
     this.hasSuccess = false;
 
     const data = {
-      "assetID": this.assetId,
-      "VIN": this.VTN,
-      "type": this.type,
-      "assetInfo": {
-        "year": this.year,
-        "make": this.make,
-        "model": this.model
+      assetID: this.assetID,
+      assetName: this.assetName,
+      VIN: this.VIN,
+      assetType: this.assetType,
+      assetInfo: {
+        year: this.assetInfo.year,
+        make: this.assetInfo.make,
+        model: this.assetInfo.model,
       },
-      "length": this.length,
-      "axle": this.axle,
-      "GVWR": this.GVWR,
-      "GAWR": this.GAWR,
-      "license": {
-        "state": this.state,
-        "plateNumber": this.plateNumber
+      length: this.length,
+      axle: this.axle,
+      GVWR: this.GVWR,
+      GAWR: this.GAWR,
+      license: {
+        state: this.license.state,
+        plateNumber: this.license.plateNumber,
       },
-      "ownership": this.ownership,
-      "remarks": this.remarks,
-      "state": this.state2,
-      "quantumInfo": {
-        "UID": this.UID,
-        "status": this.status
+      ownerShip: this.ownerShip,
+      remarks: this.remarks,
+      state: this.state,
+      quantumInfo: {
+        UID: this.quantumInfo.UID,
       },
-      // "carrierID": this.carrierID,
-      "vehicleID": this.vehicleID,
-      "currentStatus": this.currentStatus
-
+      currentStatus: this.currentStatus,
+      timeCreated: this.timeCreated
     };
-
-
-    this.apiService.putData('assets', data).
-    subscribe({
-      complete : () => {},
-      error : (err) => {
+    
+    this.apiService.putData("assets", data).subscribe({
+      complete: () => {},
+      error: (err) => {
         this.mapErrors(err.error);
         this.hasError = true;
         this.Error = err.error;
@@ -205,13 +230,10 @@ export class EditAssetComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = 'Asset Updated successfully';
-
-      }
+        this.Success = "Asset updated successfully";
+      },
     });
   }
-
-
 
   mapErrors(errors) {
     for (var i = 0; i < errors.length; i++) {
@@ -228,11 +250,11 @@ export class EditAssetComponent implements OnInit {
       if (length == 1) {
         //single object
         this.validationErrors[key[0]].error = true;
-        this.validationErrors[key[0]].message = modifiedMessage;
+        this.validationErrors[key[0]].message = errors[i].message;
       } else if (length == 2) {
         //two dimensional object
         this.validationErrors[key[0]][key[1]].error = true;
-        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
+        this.validationErrors[key[0]][key[1]].message = errors[i].message;
       }
     }
     console.log(this.validationErrors);
@@ -245,6 +267,4 @@ export class EditAssetComponent implements OnInit {
       this.validationErrors[first][second].error = false;
     }
   }
-
-
 }

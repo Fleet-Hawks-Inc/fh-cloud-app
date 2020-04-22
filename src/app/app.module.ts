@@ -107,9 +107,39 @@ import { DriverListComponent } from './driver-list/driver-list.component';
 import { AddItemComponent } from './add-item/add-item.component';
 import { ItemsListComponent } from './items-list/items-list.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
+import { AddServiceProgramComponent } from './add-service-program/add-service-program.component';
+import { EditServiceProgramComponent } from './edit-service-program/edit-service-program.component';
+import { ServiceProgramListComponent } from './service-program-list/service-program-list.component';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
 import { EditVendorComponent } from './edit-vendor/edit-vendor.component';
 import { VendorsListComponent } from './vendors-list/vendors-list.component';
+import { AddItemGroupComponent } from './add-item-group/add-item-group.component';
+import { EditItemGroupComponent } from './edit-item-group/edit-item-group.component';
+import { ItemGroupListComponent } from './item-group-list/item-group-list.component';
+import { AddStockAssignmentComponent } from './add-stock-assignment/add-stock-assignment.component';
+import { EditStockAssignmentComponent } from './edit-stock-assignment/edit-stock-assignment.component';
+import { StockAssignmentListComponent } from './stock-assignment-list/stock-assignment-list.component';
+import { AddTicketTypeComponent } from './add-ticket-type/add-ticket-type.component';
+import { EditTicketTypeComponent } from './edit-ticket-type/edit-ticket-type.component';
+import { TicketTypeListComponent } from './ticket-type-list/ticket-type-list.component';
+import { CountriesComponent } from './countries/countries.component';
+import { AddCountryComponent } from './add-country/add-country.component';
+import { EditCountryComponent } from './edit-country/edit-country.component';
+import { StatesComponent } from './states/states.component';
+import { AddStateComponent } from './add-state/add-state.component';
+import { EditStateComponent } from './edit-state/edit-state.component';
+import { CitiesComponent } from './cities/cities.component';
+import { AddCityComponent } from './add-city/add-city.component';
+import { EditCityComponent } from './edit-city/edit-city.component';
+import { AddManufacturerComponent } from './add-manufacturer/add-manufacturer.component';
+import { EditManufacturerComponent } from './edit-manufacturer/edit-manufacturer.component';
+import { ManufacturerListComponent } from './manufacturer-list/manufacturer-list.component';
+import { AddModelComponent } from './add-model/add-model.component';
+import { EditModelComponent } from './edit-model/edit-model.component';
+import { ModelListComponent } from './model-list/model-list.component';
+import { AddAlertComponent } from './add-alert/add-alert.component';
+import { EditAlertComponent } from './edit-alert/edit-alert.component';
+import { AlertListComponent } from './alert-list/alert-list.component';
 
 
 
@@ -215,9 +245,39 @@ import { VendorsListComponent } from './vendors-list/vendors-list.component';
     AddItemComponent,
     ItemsListComponent,
     EditItemComponent,
+    AddServiceProgramComponent,
+    EditServiceProgramComponent,
+    ServiceProgramListComponent,
     AddVendorComponent,
     EditVendorComponent,
     VendorsListComponent,
+    AddItemGroupComponent,
+    EditItemGroupComponent,
+    ItemGroupListComponent,
+    AddStockAssignmentComponent,
+    EditStockAssignmentComponent,
+    StockAssignmentListComponent,
+    AddTicketTypeComponent,
+    EditTicketTypeComponent,
+    TicketTypeListComponent,
+    CountriesComponent,
+    AddCountryComponent,
+    EditCountryComponent,
+    StatesComponent,
+    AddStateComponent,
+    EditStateComponent,
+    CitiesComponent,
+    AddCityComponent,
+    EditCityComponent,
+    AddManufacturerComponent,
+    EditManufacturerComponent,
+    ManufacturerListComponent,
+    AddModelComponent,
+    EditModelComponent,
+    ModelListComponent,
+    AddAlertComponent,
+    EditAlertComponent,
+    AlertListComponent
 
 
   ],

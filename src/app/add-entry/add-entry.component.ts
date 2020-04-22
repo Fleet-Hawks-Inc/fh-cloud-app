@@ -16,6 +16,8 @@ export class AddEntryComponent implements OnInit {
 
   /********** Form Fields ***********/
 
+  items = [];
+  vendors = [];
   itemID = "";
   totalQuantity = "";
   vendorID = "";
@@ -30,7 +32,24 @@ export class AddEntryComponent implements OnInit {
   Success: string = "";
   constructor(private apiService: ApiService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchItems();
+    this.fetchVendors();
+  }
+
+  fetchItems(){
+    this.apiService.getData('items')
+    .subscribe((result: any) => {
+      this.items = result.Items;
+    });
+  }
+
+  fetchVendors(){
+    this.apiService.getData('vendors')
+    .subscribe((result: any) => {
+      this.vendors = result.Items;
+    });
+  }
 
   ngAfterViewInit() {
     $(document).ready(() => {

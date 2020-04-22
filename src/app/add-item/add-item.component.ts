@@ -8,7 +8,7 @@ import { Router } from "@angular/router";
   styleUrls: ['./add-item.component.css']
 })
 export class AddItemComponent implements OnInit {
-  title = "Add Ticket";
+  title = "Add Item";
 
   /**
    * Form props
@@ -19,7 +19,7 @@ export class AddItemComponent implements OnInit {
   defaultPurchaseVendor = "";
   defaultTaxAccount = "";
   openingStock = "";
-
+  vendors = [];
   /**
    * Form errors props
    */
@@ -52,6 +52,14 @@ export class AddItemComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
+    this.fetchVendors();
+  }
+
+  fetchVendors(){
+    this.apiService.getData('vendors')
+    .subscribe((result: any) => {
+      this.vendors = result.Items;
+    });
   }
 
   addItem() {

@@ -1,24 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
-import {ApiService} from "../api.service";
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { ApiService } from "../api.service";
 
 @Component({
-  selector: 'app-add-group',
-  templateUrl: './add-group.component.html',
-  styleUrls: ['./add-group.component.css']
+  selector: "app-add-group",
+  templateUrl: "./add-group.component.html",
+  styleUrls: ["./add-group.component.css"],
 })
 export class AddGroupComponent implements OnInit {
-  title = 'Add Group';
+  title = "Add Group";
 
   /********** Form Fields ***********/
-  groupName = '';
-  description = '';
-  carrierID = '';
-  groupType = '';
+  groupName = "";
+  description = "";
+  groupType = "";
 
   /******************/
-
-
 
   /**
    * Form errors prop
@@ -33,18 +30,14 @@ export class AddGroupComponent implements OnInit {
     groupType: {
       error: false,
     },
-
   };
 
-
-
-  response : any ='';
-  hasError : boolean = false;
+  response: any = "";
+  hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error : string = '';
-  Success : string = '';
-  constructor(private apiService: ApiService,
-              private router: Router) {}
+  Error: string = "";
+  Success: string = "";
+  constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {}
 
@@ -53,17 +46,14 @@ export class AddGroupComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "groupName": this.groupName,
-      "description": this.description,
-      "carrierID": "default",
-      "groupType": this.groupType
+      groupName: this.groupName,
+      description: this.description,
+      groupType: this.groupType,
     };
 
-
-    this.apiService.postData('groups', data).
-    subscribe({
-      complete : () => {},
-      error : (err) => {
+    this.apiService.postData("groups", data).subscribe({
+      complete: () => {},
+      error: (err) => {
         this.mapErrors(err.error);
         this.hasError = true;
         this.Error = err.error;
@@ -71,19 +61,14 @@ export class AddGroupComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = 'Group Added successfully';
+        this.Success = "Group Added successfully";
 
-        this.groupName = '';
-        this.description = '';
-        this.groupType = '';
-
-
-
-
-      }
+        this.groupName = "";
+        this.description = "";
+        this.groupType = "";
+      },
     });
   }
-
 
   mapErrors(errors) {
     for (var i = 0; i < errors.length; i++) {
@@ -117,6 +102,4 @@ export class AddGroupComponent implements OnInit {
       this.validationErrors[first][second].error = false;
     }
   }
-
-
 }

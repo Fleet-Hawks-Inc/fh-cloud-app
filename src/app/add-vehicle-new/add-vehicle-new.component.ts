@@ -30,7 +30,7 @@ export class AddVehicleNewComponent implements OnInit {
   model = "";
   state = "";
   plateNumber = "";
-  serviceProgram = "";
+  serviceProgramID = "";
   currentStatus = "";
   group = "";
   ownership = "";
@@ -95,7 +95,7 @@ export class AddVehicleNewComponent implements OnInit {
     hardAccelrationParameters: "",
     turningParameters: ""
   }
-
+  servicePrograms =  [];
 
   response : any ='';
   hasError : boolean = false;
@@ -107,6 +107,7 @@ export class AddVehicleNewComponent implements OnInit {
     private router: Router) {}
   
   ngOnInit() {
+    this.fetchServicePrograms();
     this.apiService.getData('quantums')
     .subscribe((result: any) => {
       this.quantumsList = result.Items;
@@ -124,6 +125,13 @@ export class AddVehicleNewComponent implements OnInit {
     $('#turningParametersValue').html(6);
   }
 
+  fetchServicePrograms(){
+    this.apiService.getData('servicePrograms')
+      .subscribe((result: any) => {
+        this.servicePrograms = result.Items;
+      });
+  }
+
   addVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
@@ -135,7 +143,7 @@ export class AddVehicleNewComponent implements OnInit {
       model: this.model,
       state: this.state,
       plateNumber: this.plateNumber,
-      serviceProgram: this.serviceProgram,
+      serviceProgramID: this.serviceProgramID,
       currentStatus: this.currentStatus,
       group: this.group,
       ownership: this.ownership,

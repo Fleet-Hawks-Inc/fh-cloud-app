@@ -17,13 +17,16 @@ export class AddTicketComponent implements OnInit, AfterViewInit {
   /********** Form Fields ***********/
 
   errors = {};
+  form;
+
   userName = "";
   ticketNumber = "";
-  ticketType = "";
+  ticketTypeID = "";
   ticketValue = "";
   description = "";
   officeDetails = "";
-  form;
+
+  ticketTypes = [];
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -33,12 +36,19 @@ export class AddTicketComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.fetchUsers();
-
+    this.fetchTicketTypes();
     }
 
   ngAfterViewInit() {
     $(document).ready(() => {
       this.form = $('#form_').validate();
+    });
+  }
+
+  fetchTicketTypes(){
+    this.apiService.getData('ticketTypes')
+    .subscribe((result: any) => {
+      this.ticketTypes = result.Items;
     });
   }
 
@@ -58,7 +68,7 @@ export class AddTicketComponent implements OnInit, AfterViewInit {
     let data = {
       userName: this.userName,
       ticketNumber: this.ticketNumber,
-      ticketType: this.ticketType,
+      ticketTypeID: this.ticketTypeID,
       ticketValue: this.ticketValue,
       description: this.description,
       officeDetails: this.officeDetails
@@ -91,7 +101,7 @@ export class AddTicketComponent implements OnInit, AfterViewInit {
         this.hasSuccess = true;
         this.Success = "Ticket Added successfully";
         this.userName = "";
-        this.ticketType = "";
+        this.ticketTypeID = "";
         this.ticketValue = "";
         this.description = "";
         this.ticketNumber = "";

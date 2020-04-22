@@ -1,66 +1,70 @@
-import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {Router} from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { ApiService } from "../api.service";
+import { Router } from "@angular/router";
 declare var $: any;
 declare var jQuery: any;
 @Component({
-  selector: 'app-add-assets',
-  templateUrl: './add-assets.component.html',
-  styleUrls: ['./add-assets.component.css']
+  selector: "app-add-assets",
+  templateUrl: "./add-assets.component.html",
+  styleUrls: ["./add-assets.component.css"],
 })
 export class AddAssetsComponent implements OnInit {
-  title = 'Add Assets';
+  title = "Add Assets";
 
   /********** Form Fields ***********/
-  Assetname = '';
-  VTN = '';
-  type = '';
-  year = '';
-  make = '';
-  model = '';
-  length = '';
-  axle = '';
-  GVWR = '';
-  GAWR = '';
-  state = '';
-  plateNumber = '';
-  ownership = '';
-  remarks = '';
-  state2 = '';
-  UID = '';
-  status = 'Active';
-  currentStatus = '';
-  quantum = '';
-  quantumSelected = '';
-  quantumStatus = '';
+  assetName = "";
+  VIN = "";
+  assetType = "";
+  year = "";
+  assetInfo = {
+    year: "",
+    make: "",
+    model: "",
+  };
+  length: "";
+  axle = "";
+  GVWR = "";
+  GAWR = "";
+  license = {
+    state: "",
+    plateNumber: "",
+  };
 
-  carrierID = 'defualt';
-  vehicleID = 'default';
+  ownerShip = "";
+  remarks = "";
+  state = "";
+  quantumInfo = {
+    UID: "",
+  };
+  currentStatus = "";
 
+  quantum = "";
+  quantumsList = [];
   /******************/
-
 
   /**
    * Form errors prop
    */
   validationErrors = {
-    Assetname: {
+    assetName: {
       error: false,
     },
-    VTN: {
+    VIN: {
       error: false,
     },
-    type: {
+    assetType: {
       error: false,
     },
-    year: {
-      error: false,
-    },
-    make: {
-      error: false,
-    },
-    model: {
-      error: false,
+    assetInfo: {
+      year: {
+        error: false,
+      },
+      make: {
+        error: false,
+      },
+      model: {
+        error: false,
+      },
     },
     length: {
       error: false,
@@ -74,101 +78,122 @@ export class AddAssetsComponent implements OnInit {
     GAWR: {
       error: false,
     },
-    state: {
-      error: false,
+    license: {
+      state: {
+        error: false,
+      },
+      plateNumber: {
+        error: false,
+      },
     },
-    plateNumber: {
-      error: false,
-    },
-    ownership: {
+    ownerShip: {
       error: false,
     },
     remarks: {
       error: false,
     },
-    state2: {
+    state: {
       error: false,
     },
-    UID: {
-      error: false,
+    quantumInfo: {
+      UID: {
+        error: false,
+      },
     },
     currentStatus: {
       error: false,
     },
-    quantum: {
-      error: false,
-    },
-    quantumSelected: {
-      error: false,
-    }
   };
 
-
-
-  response : any ='';
-  hasError : boolean = false;
+  manufacturers = [];
+  states = [];
+  models = []
+  response: any = "";
+  hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error : string = '';
-  Success : string = '';
-  constructor(private apiService: ApiService,
-              private router: Router) {}
+  Error: string = "";
+  Success: string = "";
+  constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
-    console.log(this.apiService.jwtDecoded);
-    this.carrierID = this.apiService.jwtDecoded.carrierID;
+    this.fetchQuantum();
+    this.fetchManufactuer();
+    this.fetchModel();
+    this.fetchState();
+  }
+
+  fetchQuantum(){
+    this.apiService.getData('quantums')
+    .subscribe((result: any) => {
+      this.quantumsList = result.Items;
+    });
+  }
+
+  fetchManufactuer(){
+    this.apiService.getData('manufacturers')
+    .subscribe((result: any) => {
+      this.manufacturers = result.Items;
+    });
+  }
+
+  fetchModel(){
+    this.apiService.getData('models')
+    .subscribe((result: any) => {
+      this.models = result.Items;
+    });
+  }
+
+  fetchState(){
+    this.apiService.getData('states')
+    .subscribe((result: any) => {
+      this.states = result.Items;
+    });
   }
 
   quantumModal() {
-    $( document ).ready(function() {
-      $('#modalAnim').modal('show');
+    $(document).ready(function () {
+      $("#modalAnim").modal("show");
     });
-
   }
 
   onChange(newValue) {
     this.quantum = newValue;
-    this.UID = newValue;
+    this.quantumInfo.UID = newValue;
   }
-
 
   addAsset() {
     this.hasError = false;
     this.hasSuccess = false;
 
     const data = {
-      "VIN": this.VTN,
-      "type": this.type,
-      "assetInfo": {
-        "year": this.year,
-        "make": this.make,
-        "model": this.model
+      assetName: this.assetName,
+      VIN: this.VIN,
+      assetType: this.assetType,
+      assetInfo: {
+        year: this.assetInfo.year,
+        make: this.assetInfo.make,
+        model: this.assetInfo.model,
       },
-      "length": this.length,
-      "axle": this.axle,
-      "GVWR": this.GVWR,
-      "GAWR": this.GAWR,
-      "license": {
-        "state": this.state,
-        "plateNumber": this.plateNumber
+      length: this.length,
+      axle: this.axle,
+      GVWR: this.GVWR,
+      GAWR: this.GAWR,
+      license: {
+        state: this.license.state,
+        plateNumber: this.license.plateNumber,
       },
-      "ownership": this.ownership,
-      "remarks": this.remarks,
-      "state": this.state2,
-      "quantumInfo": {
-        "UID": this.UID,
-        "status": this.status
+      ownerShip: this.ownerShip,
+      remarks: this.remarks,
+      state: this.state,
+      quantumInfo: {
+        UID: this.quantumInfo.UID,
       },
-      // "carrierID": this.carrierID,
-      "vehicleID": this.vehicleID,
-      "currentStatus": this.currentStatus
-
+      currentStatus: this.currentStatus,
     };
 
-
-    this.apiService.postData('assets', data).
-    subscribe({
-      complete : () => {},
-      error : (err) => {
+    this.apiService.postData("assets", data).subscribe({
+      complete: () => {},
+      error: (err) => {
         this.mapErrors(err.error);
         this.hasError = true;
         this.Error = err.error;
@@ -176,29 +201,28 @@ export class AddAssetsComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = 'Asset Added successfully';
+        this.Success = "Asset Added successfully";
 
-        this.VTN = '';
-        this.type = '';
-        this.year = '';
-        this.make = '';
-        this.model = '';
-        this.length = '';
-        this.axle = '';
-        this.GVWR = '';
-        this.GAWR = '';
-        this.state = '';
-        this.plateNumber = '';
-        this.ownership = '';
-        this.remarks = '';
-        this.state2 = '';
-        this.UID = '';
-        this.currentStatus = '';
-
-      }
+        this.assetName = "";
+        this.VIN = "";
+        this.assetType = "";
+        this.assetInfo.year = "";
+        this.assetInfo.make = "";
+        this.assetInfo.model = "";
+        this.length = "";
+        this.axle = "";
+        this.GVWR = "";
+        this.GAWR = "";
+        this.license.state = "";
+        this.license.plateNumber = "";
+        this.ownerShip = "";
+        this.remarks = "";
+        this.state = "";
+        this.quantumInfo.UID = "";
+        this.currentStatus = "";
+      },
     });
   }
-
 
   mapErrors(errors) {
     for (var i = 0; i < errors.length; i++) {
@@ -215,11 +239,11 @@ export class AddAssetsComponent implements OnInit {
       if (length == 1) {
         //single object
         this.validationErrors[key[0]].error = true;
-        this.validationErrors[key[0]].message = modifiedMessage;
+        this.validationErrors[key[0]].message = errors[i].message;
       } else if (length == 2) {
         //two dimensional object
         this.validationErrors[key[0]][key[1]].error = true;
-        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
+        this.validationErrors[key[0]][key[1]].message = errors[i].message;
       }
     }
     console.log(this.validationErrors);
@@ -232,5 +256,4 @@ export class AddAssetsComponent implements OnInit {
       this.validationErrors[first][second].error = false;
     }
   }
-
 }
