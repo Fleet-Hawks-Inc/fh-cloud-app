@@ -4,7 +4,6 @@
 
 export const environment = {
   production: false,
-<<<<<<< HEAD
   BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
   temp: 'search',
   LoginUrl: 'users/login',
@@ -12,12 +11,6 @@ export const environment = {
   mapBox: {
     accessToken: 'pk.eyJ1Ijoia3VuYWxmbGVldGhhd2tzIiwiYSI6ImNrNzRuZW9qdjA1bHkzcW5ra3hjejNzenoifQ.CeUFzFnbOiG-XP6FRqiqtQ'
   }
-=======
-  BaseUrl : 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
-  temp : 'search',
-  LoginUrl : 'users/login',
-  ApiKey : ''
->>>>>>> 316521b12fdc27e2839a5d0fa87d0bfacbdb60c6
 };
 
 /*
