@@ -140,6 +140,9 @@ import { ModelListComponent } from './model-list/model-list.component';
 import { AddAlertComponent } from './add-alert/add-alert.component';
 import { EditAlertComponent } from './edit-alert/edit-alert.component';
 import { AlertListComponent } from './alert-list/alert-list.component';
+import { AddGeofenceComponent } from './add-geofence/add-geofence.component';
+import { GeofenceListComponent } from './geofence-list/geofence-list.component';
+import { EditGeofenceComponent } from './edit-geofence/edit-geofence.component';
 
 
 
@@ -277,7 +280,10 @@ import { AlertListComponent } from './alert-list/alert-list.component';
     ModelListComponent,
     AddAlertComponent,
     EditAlertComponent,
-    AlertListComponent
+    AlertListComponent,
+    AddGeofenceComponent,
+    GeofenceListComponent,
+    EditGeofenceComponent
 
 
   ],

@@ -152,6 +152,9 @@ import { ModelListComponent } from "./model-list/model-list.component";
 import { AddAlertComponent } from "./add-alert/add-alert.component";
 import { EditAlertComponent } from "./edit-alert/edit-alert.component";
 import { AlertListComponent } from "./alert-list/alert-list.component";
+import {EditGeofenceComponent} from './edit-geofence/edit-geofence.component';
+import {GeofenceListComponent} from './geofence-list/geofence-list.component';
+import {AddGeofenceComponent} from './add-geofence/add-geofence.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "/Login", pathMatch: "full" },
@@ -366,6 +369,12 @@ const routes: Routes = [
     component: EditAlertComponent,
   },
   { path: "Alerts-List", component: AlertListComponent },
+
+
+  { path: "Add-Geofence", component: AddGeofenceComponent },
+  { path: "Edit-Geofence/:fenceID", component: EditGeofenceComponent },
+  { path: "Geofence-List", component: GeofenceListComponent },
+
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
