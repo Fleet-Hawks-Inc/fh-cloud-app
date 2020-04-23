@@ -29,6 +29,8 @@ export class EditVendorComponent implements OnInit {
 
   countries = [];
   states = [];
+  taxAccounts = [];
+
   /**
    * Form errors prop
    */
@@ -75,7 +77,15 @@ export class EditVendorComponent implements OnInit {
     this.vendorID = this.route.snapshot.params["vendorID"];
     this.fetchCountries()
     this.fetchStates();
+    this.fetchAccounts();
     this.fetchVendor();
+  }
+
+  fetchAccounts(){
+    this.apiService.getData(`accounts/accountType/Tax`)
+    .subscribe((result: any) => {
+      this.taxAccounts = result.Items;
+    });
   }
 
   fetchCountries(){

@@ -13,6 +13,7 @@ export class EditItemComponent implements OnInit {
   /**
    * Form props
    */
+  taxAccounts = [];
   vendors: [];
   itemID = "";
   itemName = "";
@@ -57,12 +58,20 @@ export class EditItemComponent implements OnInit {
     this.itemID = this.route.snapshot.params["itemID"];
     this.fetchVendors();
     this.fetchItem();
+    this.fetchAccounts();
   }
 
   fetchVendors(){
     this.apiService.getData('vendors')
     .subscribe((result: any) => {
       this.vendors = result.Items;
+    });
+  }
+
+  fetchAccounts(){
+    this.apiService.getData(`accounts/accountType/Tax`)
+    .subscribe((result: any) => {
+      this.taxAccounts = result.Items;
     });
   }
 

@@ -21,9 +21,9 @@ export class AddYardComponent implements OnInit, AfterViewInit {
 
   yardName = "";
   description = "";
-  latitude = "";
-  longitude = "";
-  geofence = "";
+  latitude = "12";
+  longitude = "34";
+  geofence = "ludhiana";
   state = "";
   country = "";
 

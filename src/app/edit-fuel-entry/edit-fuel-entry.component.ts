@@ -30,6 +30,7 @@ export class EditFuelEntryComponent implements OnInit {
 
   vehicles = [];
   vendors = [];
+  trips = [];
   errors = {};
   form;
   response: any = "";
@@ -45,6 +46,7 @@ export class EditFuelEntryComponent implements OnInit {
     this.fetchFuelEntry();
     this.fetchVehicles();
     this.fetchVendors();
+    this.fetchTrips();
   }
 
   
@@ -54,6 +56,14 @@ export class EditFuelEntryComponent implements OnInit {
       this.vehicles = result.Items;
     });
   }
+
+  fetchTrips(){
+    this.apiService.getData('trips')
+    .subscribe((result: any) => {
+      this.trips = result.Items;
+    });
+  }
+
 
   fetchVendors(){
     this.apiService.getData('vendors')

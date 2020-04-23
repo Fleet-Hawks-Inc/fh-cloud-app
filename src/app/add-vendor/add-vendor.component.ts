@@ -17,11 +17,11 @@ export class AddVendorComponent implements OnInit {
   vendorName = "";
   vendorType = "";
   geoLocation = {
-    latitude: "",
-    longitude: "",
+    latitude: "12.2",
+    longitude: "23.2",
   };
   address = "";
-  stateID = "";
+  stateID = ""; 
   countryID = "";
   taxID = "";
   creditDays = "";
@@ -29,6 +29,7 @@ export class AddVendorComponent implements OnInit {
 
   countries = [];
   states = [];
+  taxAccounts = [];
   /**
    * Form errors prop
    */
@@ -74,6 +75,7 @@ export class AddVendorComponent implements OnInit {
   ngOnInit() {
     this.fetchCountries()
     this.fetchStates();
+    this.fetchAccounts();
   }
 
   fetchCountries(){
@@ -88,6 +90,13 @@ export class AddVendorComponent implements OnInit {
       .subscribe((result: any) => {
         this.states = result.Items;
       });
+  }
+
+  fetchAccounts(){
+    this.apiService.getData(`accounts/accountType/Tax`)
+    .subscribe((result: any) => {
+      this.taxAccounts = result.Items;
+    });
   }
 
   addVendor() {

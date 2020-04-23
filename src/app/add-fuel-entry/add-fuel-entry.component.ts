@@ -27,6 +27,7 @@
     volume: "";
     vehicles = [];
     vendors = [];
+    trips = [];
     /******************/
 
     errors = {};
@@ -41,12 +42,20 @@
     ngOnInit() {
       this.fetchVehicles();
       this.fetchVendors();
+      this.fetchTrips();
     }
   
     fetchVehicles(){
       this.apiService.getData('vehicles')
       .subscribe((result: any) => {
         this.vehicles = result.Items;
+      });
+    }
+
+    fetchTrips(){
+      this.apiService.getData('trips')
+      .subscribe((result: any) => {
+        this.trips = result.Items;
       });
     }
   

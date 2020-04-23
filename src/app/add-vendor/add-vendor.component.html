@@ -192,9 +192,7 @@
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">tax 1</option>
-                        <option value="2">tax 2</option>
-                        <option value="2">tax 3</option>
+                        <option *ngFor="let account of taxAccounts" value="{{account.accountID}}">{{account.accountName}}</option>
                       </optgroup>
                     </select>
                     <span
