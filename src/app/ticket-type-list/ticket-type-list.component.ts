@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ApiService } from "../api.service";
 import { Router } from "@angular/router";
+import { timer } from "rxjs";
+declare var $: any;
 
 @Component({
   selector: "app-ticket-type-list",
@@ -18,16 +20,35 @@ export class TicketTypeListComponent implements OnInit {
   }
 
   fetchTicketTypes() {
-    this.apiService.getData("ticketTypes").subscribe((result: any) => {
-      this.ticketTypes = result.Items;
+    this.apiService.getData("ticketTypes").subscribe({
+      complete: () => {
+        this.initDataTable();
+      },
+      error: () => {},
+      next: (result: any) => {
+        console.log(result);
+        this.ticketTypes = result.Items;
+      },
     });
   }
 
   deleteTicketType(ticketID) {
+    /******** Clear DataTable ************/
+    if ($.fn.DataTable.isDataTable("#datatable-default")) {
+      $("#datatable-default").DataTable().clear().destroy();
+    }
+    /******************************/
+
     this.apiService
       .deleteData("ticketTypes/" + ticketID)
       .subscribe((result: any) => {
         this.fetchTicketTypes();
       });
+  }
+
+  initDataTable() {
+    timer(200).subscribe(() => {
+      $("#datatable-default").DataTable();
+    });
   }
 }

@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../api.service';
-import {Router} from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { ApiService } from "../api.service";
+import { Router } from "@angular/router";
+import { timer } from "rxjs";
+declare var $: any;
+
 
 @Component({
   selector: 'app-cities',
@@ -22,19 +25,38 @@ export class CitiesComponent implements OnInit {
   }
 
   fetchCities() {
-    this.apiService.getData('cities')
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-        this.timeCreated = result.timeCreated
+  
+
+      this.apiService.getData("cities").subscribe({
+        complete: () => {
+          this.initDataTable();
+        },
+        error: () => {},
+        next: (result: any) => {
+          console.log(result);
+          this.cities = result.Items;
+        },
       });
   }
 
 
 
   deleteCity(cityID) {
+     /******** Clear DataTable ************/
+     if ($.fn.DataTable.isDataTable("#datatable-default")) {
+      $("#datatable-default").DataTable().clear().destroy();
+    }
+    /******************************/
+
     this.apiService.deleteData('cities/' + cityID)
       .subscribe((result: any) => {
         this.fetchCities();
       })
+  }
+
+  initDataTable() {
+    timer(200).subscribe(() => {
+      $("#datatable-default").DataTable();
+    });
   }
 }

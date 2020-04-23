@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from "../api.service";
 import {Router} from "@angular/router";
-import {map} from "rxjs/internal/operators";
+import { timer } from "rxjs";
+declare var $: any;
 
 @Component({
   selector: 'app-vehicle-list',
@@ -23,19 +24,37 @@ export class VehicleListComponent implements OnInit {
   }
 
   fetchVehicles() {
-      this.apiService.getData('vehicles')
-          .subscribe((result: any) => {
-              this.vehicles = result.Items;
-          });
+    this.apiService.getData("vehicles").subscribe({
+      complete: () => {
+        this.initDataTable();
+      },
+      error: () => {},
+      next: (result: any) => {
+        console.log(result);
+        this.vehicles = result.Items;
+      },
+    });
   }
 
 
 
   deleteVehicle(vehicleId) {
+    /******** Clear DataTable ************/
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+    $('#datatable-default').DataTable().clear().destroy();
+    }
+    /******************************/
+
     this.apiService.deleteData('vehicles/' + vehicleId)
         .subscribe((result: any) => {
             this.fetchVehicles();
         })
+  }
+
+  initDataTable() {
+    timer(200).subscribe(() => {
+      $("#datatable-default").DataTable();
+    });
   }
 
 }

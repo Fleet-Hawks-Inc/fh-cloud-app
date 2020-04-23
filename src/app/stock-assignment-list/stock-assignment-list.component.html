@@ -1,108 +1,113 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-  
-    <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <app-sidebar></app-sidebar>
-      <!-- end: sidebar -->
-  
-      <section role="main" class="content-body">
-        <header class="page-header">
-          <h2>{{ title }}</h2>
-  
-          <div class="right-wrapper text-right">
-            <ol class="breadcrumbs">
-              <li>
-                <a routerLink="">
-                  <i class="fas fa-home"></i>
-                </a>
-              </li>
-              <li>
-                <span>{{ title }}</span>
-              </li>
-            </ol>
-          </div>
-        </header>
-  
-        <section class="card mb-4">
-          <div class="card-body">
-            <h2 class="card-title mt-3 pull-left">{{ title }}</h2>
-            <div class="pull-right">
-              <div class="btn-group flex-wrap">
-                <button
-                  type="button"
-                  class="mb-1 mt-1 mr-1 btn btn-default dropdown-toggle"
-                  data-toggle="dropdown"
-                >
-                  <i class="fas fa-ellipsis-v"></i> Action
-                  <span class="caret"></span>
-                </button>
-                <div class="dropdown-menu" role="menu">
-                  <a class="dropdown-item text-1" href="#">Action</a>
-                  <a class="dropdown-item text-1" href="#">Another action</a>
-                  <a class="dropdown-item text-1" href="#">Something else here</a>
-                  <a class="dropdown-item text-1" href="#">Separated link</a>
-                </div>
-              </div>
-  
-              <a
-                routerLink="/Add-Stock-Assignment"
-                class="mb-1 mt-1 mr-1 btn btn-success"
-                ><i class="fas fa-plus"></i> Add Stock Assignment</a
+  <!-- start: header -->
+  <app-header></app-header>
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+
+      <section class="card mb-4">
+        <div class="card-body">
+          <h2 class="card-title mt-3 pull-left">{{ title }}</h2>
+          <div class="pull-right">
+            <div class="btn-group flex-wrap">
+              <button
+                type="button"
+                class="mb-1 mt-1 mr-1 btn btn-default dropdown-toggle"
+                data-toggle="dropdown"
               >
-            </div>
-          </div>
-        </section>
-  
-        <div class="row">
-          <div class="col">
-            <section class="card">
-              <header class="card-header">
-                <h2 class="card-title">{{ title }}</h2>
-              </header>
-              <div class="card-body">
-                <table
-                  class="table table-bordered table-striped mb-0"
-                  id="datatable-default"
-                >
-                  <thead>
-                    <tr>
-                      <th>Vehicle</th>
-                      <th>Quantity</th>
-                      <th>Edit</th>
-                      <th>Delete</th>
-                      <!--<th class="d-lg-none">Operator</th>-->
-                      <!--<th class="d-lg-none">CSS grade</th>-->
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let stockAssignment of stockAssignments">
-                      <td>{{ getVehicleName(stockAssignment.vehicleID) }}</td>
-                      <td>{{ stockAssignment.totalQuantity }}</td>
-                      <td>
-                        <a routerLink="/Edit-Stock-Assignment/{{ stockAssignment.assignmentID }}"
-                          >Edit</a
-                        >
-                      </td>
-                      <td>
-                        <a
-                          [routerLink]=""
-                          (click)="deleteStockAssignment(stockAssignment.assignmentID)"
-                          >Delete</a
-                        >
-                      </td>
-                      <!--<td class="center d-lg-none">4</td>-->
-                      <!--<td class="center d-lg-none">X</td>-->
-                    </tr>
-                  </tbody>
-                </table>
+                <i class="fas fa-ellipsis-v"></i> Action
+                <span class="caret"></span>
+              </button>
+              <div class="dropdown-menu" role="menu">
+                <a class="dropdown-item text-1" href="#">Action</a>
+                <a class="dropdown-item text-1" href="#">Another action</a>
+                <a class="dropdown-item text-1" href="#">Something else here</a>
+                <a class="dropdown-item text-1" href="#">Separated link</a>
               </div>
-            </section>
+            </div>
+
+            <a
+              routerLink="/Add-Stock-Assignment"
+              class="mb-1 mt-1 mr-1 btn btn-success"
+              ><i class="fas fa-plus"></i> Add Stock Assignment</a
+            >
           </div>
         </div>
       </section>
-    </div>
-  </section>
-  
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">{{ title }}</h2>
+            </header>
+            <div class="card-body">
+              <table
+                class="table table-bordered table-striped mb-0"
+                #FhDataTable
+                id="datatable-default"
+              >
+                <thead>
+                  <tr>
+                    <th>Vehicle</th>
+                    <th>Quantity</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <!--<th class="d-lg-none">Operator</th>-->
+                    <!--<th class="d-lg-none">CSS grade</th>-->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let stockAssignment of stockAssignments">
+                    <td>{{ stockAssignment.vehicleID }}</td>
+                    <td>{{ stockAssignment.totalQuantity }}</td>
+                    <td>
+                      <a
+                        routerLink="/Edit-Stock-Assignment/{{
+                          stockAssignment.assignmentID
+                        }}"
+                        >Edit</a
+                      >
+                    </td>
+                    <td>
+                      <a
+                        [routerLink]=""
+                        (click)="
+                          deleteStockAssignment(stockAssignment.assignmentID)
+                        "
+                        >Delete</a
+                      >
+                    </td>
+                    <!--<td class="center d-lg-none">4</td>-->
+                    <!--<td class="center d-lg-none">X</td>-->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

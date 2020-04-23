@@ -47,7 +47,9 @@
               </div>
             </div>
 
-            <a routerLink="/Add-Ticket-Type" class="mb-1 mt-1 mr-1 btn btn-success"
+            <a
+              routerLink="/Add-Ticket-Type"
+              class="mb-1 mt-1 mr-1 btn btn-success"
               ><i class="fas fa-plus"></i> Add Ticket Type</a
             >
           </div>
@@ -63,6 +65,7 @@
             <div class="card-body">
               <table
                 class="table table-bordered table-striped mb-0"
+                #FhDataTable
                 id="datatable-default"
               >
                 <thead>
@@ -85,7 +88,9 @@
                       >
                     </td>
                     <td>
-                      <a [routerLink]="" (click)="deleteTicketType(ticketType.typeID)"
+                      <a
+                        [routerLink]=""
+                        (click)="deleteTicketType(ticketType.typeID)"
                         >Delete</a
                       >
                     </td>
