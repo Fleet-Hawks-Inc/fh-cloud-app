@@ -143,6 +143,8 @@ import { AlertListComponent } from './alert-list/alert-list.component';
 import { AddGeofenceComponent } from './add-geofence/add-geofence.component';
 import { GeofenceListComponent } from './geofence-list/geofence-list.component';
 import { EditGeofenceComponent } from './edit-geofence/edit-geofence.component';
+import { MultiSidebarComponents } from './sidebars/multi-sidebar.component';
+import {RouterModule} from '@angular/router';
 
 
 
@@ -283,13 +285,15 @@ import { EditGeofenceComponent } from './edit-geofence/edit-geofence.component';
     AlertListComponent,
     AddGeofenceComponent,
     GeofenceListComponent,
-    EditGeofenceComponent
+    EditGeofenceComponent,
+    MultiSidebarComponents
 
 
   ],
   imports: [
     CommonModule,
     BrowserModule,
+    RouterModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,

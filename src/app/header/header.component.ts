@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {SharedServiceService} from '../shared-service.service';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  @Output() navClicked = new EventEmitter<any>();
+  navSelected = '';
+  constructor(private sharedService: SharedServiceService) {
+    this.sharedService.activeParentNav.subscribe((val) => {
+      this.navSelected = val;
+    });
+  }
 
   ngOnInit() {
+  }
+
+  onNavSelected(nav: string) {
+    this.navClicked.emit(nav);
+    this.sharedService.activeParentNav.next(nav);
   }
 
 }

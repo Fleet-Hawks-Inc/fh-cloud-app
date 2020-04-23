@@ -11,23 +11,23 @@
             <div class="header-nav-main header-nav-main-square">
                 <nav>
                     <ul class="nav">
-                        <li class="">
-                            <a class="nav-link" href="#">
+                        <li class="" [class.active]="navSelected === 'fleet'">
+                            <a class="nav-link" [routerLink]="" (click)="onNavSelected('fleet')" >
                                 Fleet
                             </a>
                         </li>
-                        <li class="">
-                            <a class="nav-link" href="#">
+                        <li class="" [class.active]="navSelected === 'alert'">
+                            <a class="nav-link" [routerLink]="" (click)="onNavSelected('alert')">
                                 Alert
                             </a>
                         </li>
-                        <li class="">
-                            <a class="nav-link" href="#">
+                        <li class="" [class.active]="navSelected === 'setting'">
+                            <a class="nav-link" [routerLink]="" (click)="onNavSelected('setting')">
                                 Setting
                             </a>
                         </li>
-                        <li class="">
-                            <a class="nav-link" href="#">
+                        <li class="" [class.active]="navSelected === 'dispatch'">
+                            <a class="nav-link" [routerLink]="" (click)="onNavSelected('dispatch')">
                                 Dispatch
                             </a>
                         </li>

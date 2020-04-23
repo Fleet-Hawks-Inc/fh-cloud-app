@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
  // import * as AwsIot from 'aws-iot-device-sdk';
 // declare var fs: any;
 // import { mqtt, io, iot } from 'aws-crt';
@@ -42,5 +42,7 @@ export class DashboardComponent implements OnInit {
     // });
 
   }
+
+
 
 }
