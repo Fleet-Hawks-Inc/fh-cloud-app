@@ -31,6 +31,9 @@ export class EditYardComponent implements OnInit, AfterViewInit {
   /******************/
 
   yardID ='';
+  countries = [];
+  states = [];
+
   response : any = '';
   hasError : boolean = false;
   hasSuccess: boolean = false;
@@ -67,6 +70,19 @@ export class EditYardComponent implements OnInit, AfterViewInit {
     });
   }
 
+  fetchCountries(){
+    this.apiService.getData('countries')
+      .subscribe((result: any) => {
+        this.countries = result.Items;
+      });
+  }
+
+  getStates(){
+    this.apiService.getData('states/countryID/' + this.country)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
 
   updateYard() {
     this.errors = {};

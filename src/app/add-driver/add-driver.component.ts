@@ -21,17 +21,17 @@ export class AddDriverComponent implements OnInit {
   address = "";
   phone = "";
   email = "";
-  group = "";
+  groupID = "";
   loginEnabled = true;
   driverNumber = "";
   driverLicenseNumber = "";
   driverLicenseType = "";
   driverLicenseExpiry = "";
-  driverLicenseState = "";
+  driverLicenseStateID = "";
   HOSCompliance = {
     status: "",
     type: "",
-    cycle: "",
+    cycleID: "",
   };
   defaultContract = {
     perMile: "",
@@ -43,7 +43,7 @@ export class AddDriverComponent implements OnInit {
     amount: "",
     type: "",
   };
-  homeTerminal = "";
+  yardID = "";
 
   /**
    * Form errors prop
@@ -70,7 +70,7 @@ export class AddDriverComponent implements OnInit {
     email: {
       error: false,
     },
-    group: {
+    groupID: {
       error: false,
     },
     loginEnabled: {
@@ -88,7 +88,7 @@ export class AddDriverComponent implements OnInit {
     driverLicenseExpiry: {
       error: false,
     },
-    driverLicenseState: {
+    driverLicenseStateID: {
       error: false,
     },
     HOSCompliance: {
@@ -98,7 +98,7 @@ export class AddDriverComponent implements OnInit {
       type: {
         error: false,
       },
-      cycle: {
+      cycleID: {
         error: false,
       },
     },
@@ -124,11 +124,16 @@ export class AddDriverComponent implements OnInit {
         error: false,
       },
     },
-    homeTerminal: {
+    yardID: {
       error: false,
     },
   };
 
+  driverLicenseCountry = "";
+  groups = [];
+  countries = [];
+  states = [];
+  yards = [];
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -138,7 +143,37 @@ export class AddDriverComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
-    console.log(this.validationErrors);
+    this.fetchGroups();
+    this.fetchCountries();
+    this.fetchYards();
+  }
+
+  fetchGroups(){
+    this.apiService.getData('groups')
+    .subscribe((result: any) => {
+      this.groups = result.Items;
+    });
+  }
+
+  fetchCountries(){
+    this.apiService.getData('countries')
+      .subscribe((result: any) => {
+        this.countries = result.Items;
+      });
+  }
+
+  fetchYards(){
+    this.apiService.getData('yards')
+      .subscribe((result: any) => {
+        this.yards = result.Items;
+      });
+  }
+
+  getStates(){
+    this.apiService.getData('states/countryID/' + this.driverLicenseCountry)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
   }
 
   addDriver() {
@@ -151,17 +186,17 @@ export class AddDriverComponent implements OnInit {
       address: this.address,
       phone: this.phone,
       email: this.email,
-      group: this.group,
+      groupID: this.groupID,
       loginEnabled: this.loginEnabled,
       driverNumber: this.driverNumber,
       driverLicenseNumber: this.driverLicenseNumber,
       driverLicenseType: this.driverLicenseType,
       driverLicenseExpiry: this.driverLicenseExpiry,
-      driverLicenseState: this.driverLicenseState,
+      driverLicenseStateID: this.driverLicenseStateID,
       HOSCompliance: {
         status: this.HOSCompliance.status,
         type: this.HOSCompliance.type,
-        cycle: this.HOSCompliance.cycle,
+        cycleID: this.HOSCompliance.cycleID,
       },
       defaultContract: {
         perMile: this.defaultContract.perMile,
@@ -173,7 +208,7 @@ export class AddDriverComponent implements OnInit {
         amount: this.fixed.amount,
         type: this.fixed.type,
       },
-      homeTerminal: this.homeTerminal,
+      yardID: this.yardID,
     };
 
     this.apiService.postData("users", data).subscribe({

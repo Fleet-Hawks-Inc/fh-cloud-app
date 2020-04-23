@@ -96,8 +96,15 @@ export class EditVehicleNewComponent implements OnInit {
     hardAccelrationParameters: "",
     turningParameters: "",
   };
+  timeCreated = "";
+
+  countryID = "";
   servicePrograms = [];
-  
+  manufacturers = [];
+  models = [];
+  countries = [];
+  states = [];
+  groups = [];
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -109,6 +116,9 @@ export class EditVehicleNewComponent implements OnInit {
   ngOnInit() {
     this.vehicleID = this.route.snapshot.params["vehicleID"];
     this.fetchServicePrograms();
+    this.fetchManufacturers();
+    this.fetchCountries();
+    this.fetchGroups();
     this.apiService.getData("quantums").subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
@@ -120,13 +130,13 @@ export class EditVehicleNewComponent implements OnInit {
         this.vehicleName = result.vehicleName;
         this.VIN = result.VIN;
         this.year = result.year;
-        this.make = result.make;
-        this.model = result.model;
-        this.state = result.state;
+        this.make = result.manufacturerID;
+        this.model = result.modelID;
+        this.state = result.stateID;
         this.plateNumber = result.plateNumber;
         this.serviceProgramID = result.serviceProgramID;
         this.currentStatus = result.currentStatus;
-        this.group = result.group;
+        this.group = result.groupID;
         this.ownership = result.ownership;
         this.additionalDetails.vehicleColor =
           result.additionalDetails.vehicleColor;
@@ -186,6 +196,7 @@ export class EditVehicleNewComponent implements OnInit {
         this.safetyParameters.turningParameters =
           result.safetyParameters.turningParameters;
         this.quantum = result.quantumInfo;
+        this.timeCreated = result.timeCreated;
 
         $("#hardBreakingParametersValue").html(
           this.safetyParameters.hardBreakingParameters
@@ -201,11 +212,44 @@ export class EditVehicleNewComponent implements OnInit {
     //console.log(this.vehicleID);
   }
 
-  fetchServicePrograms(){
-    this.apiService.getData('servicePrograms')
+  fetchManufacturers() {
+    this.apiService.getData("manufacturers").subscribe((result: any) => {
+      this.manufacturers = result.Items;
+    });
+  }
+
+  fetchCountries() {
+    this.apiService.getData("countries").subscribe((result: any) => {
+      this.countries = result.Items;
+    });
+  }
+
+  fetchGroups() {
+    this.apiService.getData("groups").subscribe((result: any) => {
+      this.groups = result.Items;
+    });
+  }
+
+  getStates() {
+    this.apiService
+      .getData("states/countryID/" + this.countryID)
       .subscribe((result: any) => {
-        this.servicePrograms = result.Items;
+        this.states = result.Items;
       });
+  }
+
+  getModels() {
+    this.apiService
+      .getData(`models/manufacturerID/${this.make}`)
+      .subscribe((result: any) => {
+        this.models = result.Items;
+      });
+  }
+
+  fetchServicePrograms() {
+    this.apiService.getData("servicePrograms").subscribe((result: any) => {
+      this.servicePrograms = result.Items;
+    });
   }
 
   updateVehicle() {
@@ -217,13 +261,13 @@ export class EditVehicleNewComponent implements OnInit {
       vehicleName: this.vehicleName,
       VIN: this.VIN,
       year: this.year,
-      make: this.make,
-      model: this.model,
-      state: this.state,
+      manufacturerID: this.make,
+      modelID: this.model,
+      stateID: this.state,
       plateNumber: this.plateNumber,
       serviceProgramID: this.serviceProgramID,
       currentStatus: this.currentStatus,
-      group: this.group,
+      groupID: this.group,
       ownership: this.ownership,
       additionalDetails: {
         vehicleColor: this.additionalDetails.vehicleColor,
@@ -289,6 +333,7 @@ export class EditVehicleNewComponent implements OnInit {
         turningParameters: this.safetyParameters.turningParameters,
       },
       quantumInfo: this.quantum,
+      timeCreated: this.timeCreated
     };
 
     this.apiService.putData("vehicles", data).subscribe({

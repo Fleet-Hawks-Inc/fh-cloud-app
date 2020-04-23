@@ -23,7 +23,7 @@ export class AddUserComponent implements OnInit {
   address = "";
   phone = "";
   email = "";
-  group = "";
+  groupID = "";
   loginEnabled = true;
 
   /**
@@ -51,7 +51,7 @@ export class AddUserComponent implements OnInit {
     email: {
       error: false,
     },
-    group: {
+    groupID: {
       error: false,
     },
     loginEnabled: {
@@ -59,6 +59,7 @@ export class AddUserComponent implements OnInit {
     },
   };
 
+  groups = [];
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -67,7 +68,16 @@ export class AddUserComponent implements OnInit {
   constructor(private apiService: ApiService,
               private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchGroups();
+  }
+
+  fetchGroups(){
+    this.apiService.getData('groups')
+    .subscribe((result: any) => {
+      this.groups = result.Items;
+    });
+  }
 
   addDriver() {
     let data = {
@@ -79,7 +89,7 @@ export class AddUserComponent implements OnInit {
       address: this.address,
       phone: this.phone,
       email: this.email,
-      group: this.group,
+      groupID: this.groupID,
       loginEnabled: this.loginEnabled,
     };
 

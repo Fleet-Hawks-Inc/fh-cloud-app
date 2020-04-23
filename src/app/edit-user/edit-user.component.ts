@@ -21,7 +21,7 @@ export class EditUserComponent implements OnInit {
   address = "";
   phone = "";
   email = "";
-  group = "";
+  groupID = "";
   loginEnabled = true;
   timeCreated = "";
 
@@ -50,7 +50,7 @@ export class EditUserComponent implements OnInit {
     email: {
       error: false,
     },
-    group: {
+    groupID: {
       error: false,
     },
     loginEnabled: {
@@ -58,6 +58,7 @@ export class EditUserComponent implements OnInit {
     },
   };
 
+  groups = [];
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -69,6 +70,14 @@ export class EditUserComponent implements OnInit {
   ngOnInit() {
     this.userName = this.route.snapshot.params["userName"];
     this.fetchUser();
+    this.fetchGroups();
+  }
+
+  fetchGroups(){
+    this.apiService.getData('groups')
+    .subscribe((result: any) => {
+      this.groups = result.Items;
+    });
   }
 
   /**
@@ -87,7 +96,7 @@ export class EditUserComponent implements OnInit {
         this.address = result.address;
         this.phone = result.phone;
         this.email = result.email;
-        this.group = result.group;
+        this.groupID = result.groupID;
         this.loginEnabled = result.loginEnabled;
         this.timeCreated = result.timeCreated;
       });
@@ -103,7 +112,7 @@ export class EditUserComponent implements OnInit {
       address: this.address,
       phone: this.phone,
       email: this.email,
-      group: this.group,
+      groupID: this.groupID,
       loginEnabled: this.loginEnabled,
       timeCreated: this.timeCreated,
     };

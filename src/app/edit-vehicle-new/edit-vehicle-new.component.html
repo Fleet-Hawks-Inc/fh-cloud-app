@@ -208,19 +208,10 @@
                     class="form-control populate"
                     [(ngModel)]="make"
                     name="make"
+                    (change)="getModels()"
                   >
                     <optgroup label="">
-                      <option value="1">Tesla</option>
-                      <option value="2">BMW</option>
-                      <option value="2">GM</option>
-                      <option value="2">Ford</option>
-                      <option value="2">Fiat</option>
-                      <option value="2">Daimler</option>
-                      <option value="2">Honda</option>
-                      <option value="2">Hyundai</option>
-                      <option value="2">Kia</option>
-                      <option value="2">Nissan</option>
-                      <option value="2">Rivian</option>
+                      <option *ngFor="let val of manufacturers" value="{{val.manufacturerID}}">{{val.name}}</option>
                     </optgroup>
                   </select>
                 </div>
@@ -237,17 +228,25 @@
                     name="model"
                   >
                     <optgroup label="">
-                      <option value="1">ST8189LD</option>
-                      <option value="2">ZZ0189LD</option>
-                      <option value="2">FK36189D</option>
-                      <option value="2">IT55855G</option>
-                      <option value="2">POLD2132</option>
-                      <option value="2">QJ23659W</option>
-                      <option value="2">454564564</option>
-                      <option value="2">1231231456789</option>
-                      <option value="2">789798001</option>
-                      <option value="2">0416546503</option>
-                      <option value="2">KDF2355U</option>
+                      <option *ngFor="let val of models" value="{{val.modelID}}">{{val.name}}</option>
+                    </optgroup>
+                  </select>
+                </div>
+                <div class="col-lg-3">
+                  <label
+                    class="control-label text-lg-right pt-2"
+                    for="inputDefault"
+                    >Country</label
+                  >
+                  <select
+                  (change)="getStates()"
+                    data-plugin-selectTwo
+                    class="form-control populate"
+                    [(ngModel)]="countryID"
+                    name="countryID"
+                  >
+                    <optgroup label="">
+                      <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
                     </optgroup>
                   </select>
                 </div>
@@ -264,16 +263,7 @@
                     name="state"
                   >
                     <optgroup label="">
-                      <option value="1">California</option>
-                      <option value="2">Florida</option>
-                      <option value="2">New Jersey</option>
-                      <option value="2">New York</option>
-                      <option value="2">New Mexico</option>
-                      <option value="2">Texas</option>
-                      <option value="2">Washington</option>
-                      <option value="2">West Virginia</option>
-                      <option value="2">Nevada</option>
-                      <option value="2">Montana</option>
+                      <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
                     </optgroup>
                   </select>
                 </div>
@@ -353,16 +343,7 @@
                     name="group"
                   >
                     <optgroup label="">
-                      <option value="1">California</option>
-                      <option value="2">Florida</option>
-                      <option value="2">New Jersey</option>
-                      <option value="2">New York</option>
-                      <option value="2">New Mexico</option>
-                      <option value="2">Texas</option>
-                      <option value="2">Washington</option>
-                      <option value="2">West Virginia</option>
-                      <option value="2">Nevada</option>
-                      <option value="2">Montana</option>
+                      <option *ngFor="let group of groups" value="{{group.groupID}}">{{group.groupName}}</option>
                     </optgroup>
                   </select>
                 </div>
@@ -633,7 +614,7 @@
                 Weight
               </div>
               <div class="form-group row">
-                <div class="col-lg-6">
+                <div class="col-lg-6">`
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -1019,20 +1000,6 @@
                           checked
                         />
                         <label for="radioExample2">Kilometers</label>
-                      </div>
-                    </div>
-                    <div class="col-lg-3">
-                      <div class="radio-custom">
-                        <input
-                          type="radio"
-                          id="radioExample3"
-                          [checked]="
-                          settings.primaryMeter == 'hours' ? 'true' : 'false'
-                        "
-                          (change)="onChangePrimaryMeter('hours')"
-                          name="primaryMeter"
-                        />
-                        <label for="radioExample3">Hours</label>
                       </div>
                     </div>
                   </div>

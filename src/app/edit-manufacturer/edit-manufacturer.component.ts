@@ -43,8 +43,6 @@ export class EditManufacturerComponent implements OnInit {
   ngOnInit() {
     this.manufacturerID = this.route.snapshot.params["manufacturerID"];
     this.fetchCountries();
-    this.fetchStates();
-    this.fetchCities();
     this.fetchManufacturer();
     $(document).ready(() => {
       this.form = $("#form_").validate();
@@ -71,16 +69,18 @@ export class EditManufacturerComponent implements OnInit {
     });
   }
 
-  fetchStates() {
-    this.apiService.getData("states").subscribe((result: any) => {
-      this.states = result.Items;
-    });
+  getStates(){
+    this.apiService.getData('states/countryID/' + this.countryID)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
   }
 
-  fetchCities() {
-    this.apiService.getData("cities").subscribe((result: any) => {
-      this.cities = result.Items;
-    });
+  getCities(){
+    this.apiService.getData('cities/stateID/' + this.stateID)
+      .subscribe((result: any) => {
+        this.cities = result.Items;
+      });
   }
 
   updateManufacturer() {
