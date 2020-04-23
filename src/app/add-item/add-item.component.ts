@@ -20,6 +20,7 @@ export class AddItemComponent implements OnInit {
   defaultTaxAccount = "";
   openingStock = "";
   vendors = [];
+  taxAccounts = [];
   /**
    * Form errors props
    */
@@ -53,12 +54,20 @@ export class AddItemComponent implements OnInit {
 
   ngOnInit() {
     this.fetchVendors();
+    this.fetchAccounts();
   }
 
   fetchVendors(){
     this.apiService.getData('vendors')
     .subscribe((result: any) => {
       this.vendors = result.Items;
+    });
+  }
+
+  fetchAccounts(){
+    this.apiService.getData(`accounts/accountType/Tax`)
+    .subscribe((result: any) => {
+      this.taxAccounts = result.Items;
     });
   }
 

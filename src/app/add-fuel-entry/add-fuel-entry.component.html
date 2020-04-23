@@ -134,9 +134,7 @@
                       class="form-control populate"
                     >
                       <optgroup label="">
-                        <option value="1">Trip 1</option>
-                        <option value="2">Trip 2</option>
-                        <option value="2">Trip 3</option>
+                        <option *ngFor="let trip of trips" value="{{trip.tripID}}">{{trip.tripID}}</option>
                       </optgroup>
                     </select>
                   </div>
@@ -149,8 +147,7 @@
                       >Date</label
                     >
                     <input
-                      type="text"
-                      data-plugin-datepicker=""
+                      type="date"
                       class="form-control"
                       [(ngModel)]="date"
                       name="date"
