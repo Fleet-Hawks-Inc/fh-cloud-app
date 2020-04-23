@@ -19,21 +19,21 @@ export class EditAssetComponent implements OnInit {
   year = "";
   assetInfo = {
     year: "",
-    make: "",
-    model: "",
+    manufacturerID: "",
+    modelID: "",
   };
   length: "";
   axle = "";
   GVWR = "";
   GAWR = "";
   license = {
-    state: "",
+    stateID: "",
     plateNumber: "",
   };
 
   ownerShip = "";
   remarks = "";
-  state = "";
+  ownerShipStatus = "";
   quantumInfo = {
     UID: "",
   };
@@ -61,10 +61,10 @@ export class EditAssetComponent implements OnInit {
       year: {
         error: false,
       },
-      make: {
+      manufacturerID: {
         error: false,
       },
-      model: {
+      modelID: {
         error: false,
       },
     },
@@ -81,7 +81,7 @@ export class EditAssetComponent implements OnInit {
       error: false,
     },
     license: {
-      state: {
+      stateID: {
         error: false,
       },
       plateNumber: {
@@ -94,7 +94,7 @@ export class EditAssetComponent implements OnInit {
     remarks: {
       error: false,
     },
-    state: {
+    ownerShipStatus: {
       error: false,
     },
     quantumInfo: {
@@ -107,26 +107,50 @@ export class EditAssetComponent implements OnInit {
     },
   };
 
+  countryID = "";
+  countries = "";
+  manufacturers = [];
+  states = [];
+  models = []
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
   Error: string = "";
   Success: string = "";
-  manufacturers = [];
-  states = [];
-  models = []
+
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.assetID = this.route.snapshot.params['assetID'];
     this.fetchManufactuer();
-    this.fetchModel();
-    this.fetchState();
+    this.fetchCountries();
     this.apiService.getData("quantums").subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
 
     this.fetchAsset();
+  }
+
+
+  getModels(){
+    this.apiService.getData(`models/manufacturerID/${this.assetInfo.manufacturerID}`)
+    .subscribe((result: any) => {
+      this.models = result.Items;
+    });
+  }
+
+  fetchCountries(){
+    this.apiService.getData(`countries`)
+    .subscribe((result: any) => {
+      this.countries = result.Items;
+    });
+  }
+
+  getStates(){
+    this.apiService.getData(`states/countryID/${this.countryID}`)
+    .subscribe((result: any) => {
+      this.states = result.Items;
+    });
   }
 
   fetchManufactuer(){
@@ -159,17 +183,17 @@ export class EditAssetComponent implements OnInit {
       this.VIN = result.VIN;
       this.assetType = result.assetType;
       this.assetInfo.year = result.assetInfo.year;
-      this.assetInfo.make = result.assetInfo.make;
-      this.assetInfo.model = result.assetInfo.model;
+      this.assetInfo.manufacturerID = result.assetInfo.manufacturerID;
+      this.assetInfo.modelID = result.assetInfo.modelID;
       this.length = result.length;
       this.axle = result.axle;
       this.GVWR = result.GVWR;
       this.GAWR = result.GAWR;
-      this.license.state = result.license.state;
+      this.license.stateID = result.license.stateID;
       this.license.plateNumber = result.license.plateNumber;
       this.ownerShip = result.ownerShip;
       this.remarks = result.remarks;
-      this.state = result.state;
+      this.ownerShipStatus = result.ownerShipStatus;
       this.quantumInfo.UID = result.quantumInfo.UID;
       this.currentStatus = result.currentStatus;
       this.timeCreated = result.timeCreated;
@@ -199,20 +223,20 @@ export class EditAssetComponent implements OnInit {
       assetType: this.assetType,
       assetInfo: {
         year: this.assetInfo.year,
-        make: this.assetInfo.make,
-        model: this.assetInfo.model,
+        manufacturerID: this.assetInfo.manufacturerID,
+        modelID: this.assetInfo.modelID,
       },
       length: this.length,
       axle: this.axle,
       GVWR: this.GVWR,
       GAWR: this.GAWR,
       license: {
-        state: this.license.state,
+        stateID: this.license.stateID,
         plateNumber: this.license.plateNumber,
       },
       ownerShip: this.ownerShip,
       remarks: this.remarks,
-      state: this.state,
+      ownerShipStatus: this.ownerShipStatus,
       quantumInfo: {
         UID: this.quantumInfo.UID,
       },

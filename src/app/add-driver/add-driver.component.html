@@ -161,7 +161,7 @@
                       >Phone</label
                     >
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       name="phone"
                       [(ngModel)]="phone"
@@ -183,7 +183,7 @@
                       >Email</label
                     >
                     <input
-                      type="text"
+                      type="email"
                       class="form-control"
                       name="email"
                       [(ngModel)]="email"
@@ -207,24 +207,21 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      name="group"
-                      (change)="updateValidation('group')"
-                      [(ngModel)]="group"
+                      name="groupID"
+                      (change)="updateValidation('groupID')"
+                      [(ngModel)]="groupID"
                       [ngClass]="{
-                        redBorder: validationErrors.group.error == true
+                        redBorder: validationErrors.groupID.error == true
                       }"
                     >
-                      <optgroup label="">
-                        <option value="1">Group 1</option>
-                        <option value="2">Group 2</option>
-                        <option value="2">Group 3</option>
-                        <option value="2">Group 4</option>
-                      </optgroup>
+                      <!-- <optgroup label=""> -->
+                        <option *ngFor="let q of groups" value="{{q.groupID}}">{{q.groupName}}</option>
+                      <!-- </optgroup> -->
                     </select>
                     <span
-                      *ngIf="validationErrors.group.error == true"
+                      *ngIf="validationErrors.groupID.error == true"
                       class="red"
-                      >{{ validationErrors.group.message }}</span
+                      >{{ validationErrors.groupID.message }}</span
                     >
                   </div>
                   <div class="col-lg-3">
@@ -326,8 +323,7 @@
                       >Driver Licence Expiry</label
                     >
                     <input
-                      type="text"
-                      data-plugin-datepicker=""
+                      type="date"
                       class="form-control"
                       (input)="updateValidation('driverLicenseExpiry')"
                       name="driverLicenseExpiry"
@@ -354,30 +350,45 @@
                     <label
                       class="control-label text-lg-right pt-2"
                       for="inputDefault"
+                      >Driver Licence Country</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="driverLicenseCountry"
+                      [(ngModel)]="driverLicenseCountry"
+                      (change)="getStates()"
+                    >
+                      <optgroup label=""> 
+                        <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-3">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
                       >Driver Licence State</label
                     >
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      name="driverLicenseState"
-                      [(ngModel)]="driverLicenseState"
-                      (change)="updateValidation('driverLicenseState')"
+                      name="driverLicenseStateID" 
+                      [(ngModel)]="driverLicenseStateID"
+                      (change)="updateValidation('driverLicenseStateID')"
                       [ngClass]="{
                         redBorder:
-                          validationErrors.driverLicenseState.error == true
+                          validationErrors.driverLicenseStateID.error == true
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">1231231</option>
-                        <option value="2">4564564</option>
-                        <option value="2">45645</option>
-                        <option value="2">45646</option>
+                        <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
                       </optgroup>
                     </select>
                     <span
-                      *ngIf="validationErrors.driverLicenseState.error == true"
+                      *ngIf="validationErrors.driverLicenseStateID.error == true"
                       class="red"
-                      >{{ validationErrors.driverLicenseState.message }}</span
+                      >{{ validationErrors.driverLicenseStateID.message }}</span
                     >
                   </div>
                 </div>
@@ -407,10 +418,8 @@
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">1231231</option>
-                        <option value="2">4564564</option>
-                        <option value="2">45645</option>
-                        <option value="2">45646</option>
+                        <option value="Non Exempted">Non Exempted</option>
+                        <option value="Exempted">Exempted</option>
                       </optgroup>
                     </select>
                     <span
@@ -439,10 +448,8 @@
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">1231231</option>
-                        <option value="2">4564564</option>
-                        <option value="2">45645</option>
-                        <option value="2">45646</option>
+                        <option value="ELD">ELD</option>
+                        <option value="Log Book">Log Book</option>
                       </optgroup>
                     </select>
                     <span
@@ -460,25 +467,23 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      name="HOSComplianceCycle"
-                      [(ngModel)]="HOSCompliance.cycle"
-                      (change)="updateValidation('HOSCompliance', 'cycle')"
+                      name="HOSCompliancecycleID"
+                      [(ngModel)]="HOSCompliance.cycleID"
+                      (change)="updateValidation('HOSCompliance', 'cycleID')"
                       [ngClass]="{
                         redBorder:
-                          validationErrors.HOSCompliance.cycle.error == true
+                          validationErrors.HOSCompliance.cycleID.error == true
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">1231231</option>
-                        <option value="2">4564564</option>
-                        <option value="2">45645</option>
-                        <option value="2">45646</option>
+                        <option value="cycle 1">cycle 1</option>
+                        <option value="cycle 2">cycle 2</option>
                       </optgroup>
                     </select>
                     <span
-                      *ngIf="validationErrors.HOSCompliance.cycle.error == true"
+                      *ngIf="validationErrors.HOSCompliance.cycleID.error == true"
                       class="red"
-                      >{{ validationErrors.HOSCompliance.cycle.message }}</span
+                      >{{ validationErrors.HOSCompliance.cycleID.message }}</span
                     >
                   </div>
                 </div>
@@ -648,10 +653,10 @@
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">1231231</option>
-                        <option value="2">4564564</option>
-                        <option value="2">45645</option>
-                        <option value="2">45646</option>
+                        <option value="Daily">Daily</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Mothly">Monthly</option>
+                        <option value="For Night Only">For Night Only</option>
                       </optgroup>
                     </select>
                     <span
@@ -671,24 +676,21 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      name="homeTerminal"
-                      [(ngModel)]="homeTerminal"
-                      (input)="updateValidation('homeTerminal')"
+                      name="yardID"
+                      [(ngModel)]="yardID"
+                      (input)="updateValidation('yardID')"
                       [ngClass]="{
-                        redBorder: validationErrors.homeTerminal.error == true
+                        redBorder: validationErrors.yardID.error == true
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">1231231</option>
-                        <option value="2">4564564</option>
-                        <option value="2">45645</option>
-                        <option value="2">45646</option>
+                        <option *ngFor="let yard of yards" value="{{yard.yardID}}">{{yard.yardName}}</option>
                       </optgroup>
                     </select>
                     <span
-                      *ngIf="validationErrors.homeTerminal.error == true"
+                      *ngIf="validationErrors.yardID.error == true"
                       class="red"
-                      >{{ validationErrors.homeTerminal.message }}</span
+                      >{{ validationErrors.yardID.message }}</span
                     >
                   </div>
                 </div>

@@ -35,7 +35,12 @@
               <h2 class="card-title">{{ title }}</h2>
             </header>
             <div class="card-body">
-              <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
+              <form
+                class="form-horizontal form-bordered"
+                method="get"
+                name="form"
+                id="form_"
+              >
                 <div class="form-group row">
                   <div class="col-lg-4">
                     <label
@@ -55,6 +60,28 @@
                     <label
                       class="control-label text-lg-right pt-2"
                       for="inputDefault"
+                      >Country</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      [(ngModel)]="country"
+                      name="country"
+                      (change)="getStates()"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let country of countries"
+                          value="{{ country.countryID }}"
+                          >{{ country.countryName }}</option
+                        >
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
                       >State</label
                     >
                     <select
@@ -64,28 +91,11 @@
                       name="state"
                     >
                       <optgroup label="">
-                        <option value="1">State 1</option>
-                        <option value="2">State 2</option>
-                        <option value="2">State 3</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Country</label
-                    >
-                    <select
-                      data-plugin-selectTwo
-                      class="form-control populate"
-                      [(ngModel)]="country"
-                      name="country"
-                    >
-                      <optgroup label="">
-                        <option value="1">Country 1</option>
-                        <option value="2">Country 2</option>
-                        <option value="2">Country 3</option>
+                        <option
+                          *ngFor="let state of states"
+                          value="{{ state.stateID }}"
+                          >{{ state.stateName }}</option
+                        >
                       </optgroup>
                     </select>
                   </div>

@@ -141,7 +141,7 @@
                     <textarea
                       class="form-control"
                       rows="3"
-                      (input)="Validation('address')"
+                      (input)="updateValidation('address')"
                       id="textareaDefault"
                       name="address"
                       [(ngModel)]="address"
@@ -164,7 +164,7 @@
                       >Phone</label
                     >
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       name="phone"
                       [(ngModel)]="phone"
@@ -186,9 +186,9 @@
                       >Email</label
                     >
                     <input
-                      type="text"
-                      class="form-control"
+                      type="email"
                       disabled
+                      class="form-control"
                       name="email"
                       [(ngModel)]="email"
                       (input)="updateValidation('email')"
@@ -211,24 +211,21 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      name="group"
-                      (change)="updateValidation('group')"
-                      [(ngModel)]="group"
+                      name="groupID"
+                      (change)="updateValidation('groupID')"
+                      [(ngModel)]="groupID"
                       [ngClass]="{
-                        redBorder: validationErrors.group.error == true
+                        redBorder: validationErrors.groupID.error == true
                       }"
                     >
                       <optgroup label="">
-                        <option value="1">Group 1</option>
-                        <option value="2">Group 2</option>
-                        <option value="2">Group 3</option>
-                        <option value="2">Group 4</option>
+                        <option *ngFor="let group of groups" value="{{group.groupID}}">{{group.groupName}}</option>
                       </optgroup>
                     </select>
                     <span
-                      *ngIf="validationErrors.group.error == true"
+                      *ngIf="validationErrors.groupID.error == true"
                       class="red"
-                      >{{ validationErrors.group.message }}</span
+                      >{{ validationErrors.groupID.message }}</span
                     >
                   </div>
                   <div class="col-lg-3">

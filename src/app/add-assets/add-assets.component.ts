@@ -18,21 +18,21 @@ export class AddAssetsComponent implements OnInit {
   year = "";
   assetInfo = {
     year: "",
-    make: "",
-    model: "",
+    manufacturerID: "",
+    modelID: "",
   };
   length: "";
   axle = "";
   GVWR = "";
   GAWR = "";
   license = {
-    state: "",
+    stateID: "",
     plateNumber: "",
   };
 
   ownerShip = "";
   remarks = "";
-  state = "";
+  ownerShipStatus = "";
   quantumInfo = {
     UID: "",
   };
@@ -59,10 +59,10 @@ export class AddAssetsComponent implements OnInit {
       year: {
         error: false,
       },
-      make: {
+      manufacturerID: {
         error: false,
       },
-      model: {
+      modelID: {
         error: false,
       },
     },
@@ -79,7 +79,7 @@ export class AddAssetsComponent implements OnInit {
       error: false,
     },
     license: {
-      state: {
+      stateID: {
         error: false,
       },
       plateNumber: {
@@ -92,7 +92,7 @@ export class AddAssetsComponent implements OnInit {
     remarks: {
       error: false,
     },
-    state: {
+    ownerShipStatus: {
       error: false,
     },
     quantumInfo: {
@@ -105,6 +105,8 @@ export class AddAssetsComponent implements OnInit {
     },
   };
 
+  countryID = "";
+  countries = "";
   manufacturers = [];
   states = [];
   models = []
@@ -118,8 +120,7 @@ export class AddAssetsComponent implements OnInit {
   ngOnInit() {
     this.fetchQuantum();
     this.fetchManufactuer();
-    this.fetchModel();
-    this.fetchState();
+    this.fetchCountries();
   }
 
   fetchQuantum(){
@@ -136,15 +137,22 @@ export class AddAssetsComponent implements OnInit {
     });
   }
 
-  fetchModel(){
-    this.apiService.getData('models')
+  getModels(){
+    this.apiService.getData(`models/manufacturerID/${this.assetInfo.manufacturerID}`)
     .subscribe((result: any) => {
       this.models = result.Items;
     });
   }
 
-  fetchState(){
-    this.apiService.getData('states')
+  fetchCountries(){
+    this.apiService.getData(`countries`)
+    .subscribe((result: any) => {
+      this.countries = result.Items;
+    });
+  }
+
+  getStates(){
+    this.apiService.getData(`states/countryID/${this.countryID}`)
     .subscribe((result: any) => {
       this.states = result.Items;
     });
@@ -171,20 +179,20 @@ export class AddAssetsComponent implements OnInit {
       assetType: this.assetType,
       assetInfo: {
         year: this.assetInfo.year,
-        make: this.assetInfo.make,
-        model: this.assetInfo.model,
+        manufacturerID: this.assetInfo.manufacturerID,
+        modelID: this.assetInfo.manufacturerID,
       },
       length: this.length,
       axle: this.axle,
       GVWR: this.GVWR,
       GAWR: this.GAWR,
       license: {
-        state: this.license.state,
+        stateID: this.license.stateID,
         plateNumber: this.license.plateNumber,
       },
       ownerShip: this.ownerShip,
       remarks: this.remarks,
-      state: this.state,
+      ownerShipStatus: this.ownerShipStatus,
       quantumInfo: {
         UID: this.quantumInfo.UID,
       },
@@ -207,17 +215,17 @@ export class AddAssetsComponent implements OnInit {
         this.VIN = "";
         this.assetType = "";
         this.assetInfo.year = "";
-        this.assetInfo.make = "";
-        this.assetInfo.model = "";
+        this.assetInfo.manufacturerID = "";
+        this.assetInfo.modelID = "";
         this.length = "";
         this.axle = "";
         this.GVWR = "";
         this.GAWR = "";
-        this.license.state = "";
+        this.license.stateID = "";
         this.license.plateNumber = "";
         this.ownerShip = "";
         this.remarks = "";
-        this.state = "";
+        this.ownerShipStatus = "";
         this.quantumInfo.UID = "";
         this.currentStatus = "";
       },

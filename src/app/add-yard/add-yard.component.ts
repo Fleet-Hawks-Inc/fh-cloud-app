@@ -28,7 +28,8 @@ export class AddYardComponent implements OnInit, AfterViewInit {
   country = "";
 
   /******************/
-
+  countries = [];
+  states = [];
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -36,7 +37,24 @@ export class AddYardComponent implements OnInit, AfterViewInit {
   Success: string = "";
   constructor(private apiService: ApiService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchCountries();
+
+  }
+
+  fetchCountries(){
+    this.apiService.getData('countries')
+      .subscribe((result: any) => {
+        this.countries = result.Items;
+      });
+  }
+
+  getStates(){
+    this.apiService.getData('states/countryID/' + this.country)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
 
   ngAfterViewInit() {
     $(document).ready(() => {

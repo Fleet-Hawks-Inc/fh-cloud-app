@@ -173,12 +173,12 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      id="make"
-                      [(ngModel)]="assetInfo.make"
-                      name="make"
-                      (input)="updateValidation('assetInfo', 'make')"
+                      id="manufacturerID"
+                      [(ngModel)]="assetInfo.manufacturerID"
+                      name="manufacturerID"
+                      (change)="getModels()"
                       [ngClass]="{
-                        redBorder: validationErrors.assetInfo.make.error == true
+                        redBorder: validationErrors.assetInfo.manufacturerID.error == true
                       }"
                     >
                       <optgroup label="">
@@ -186,9 +186,9 @@
                       </optgroup>
                     </select>
                     <span
-                      *ngIf="validationErrors.assetInfo.make.error == true"
+                      *ngIf="validationErrors.assetInfo.manufacturerID.error == true"
                       class="red"
-                      >{{ validationErrors.assetInfo.make.message }}</span
+                      >{{ validationErrors.assetInfo.manufacturerID.message }}</span
                     >
                   </div>
                   <div class="col-lg-4">
@@ -199,12 +199,12 @@
                       data-plugin-selectTwo
                       class="form-control populate"
                       id="model"
-                      [(ngModel)]="assetInfo.model"
-                      name="model"
-                      (input)="updateValidation('assetInfo', 'model')"
+                      [(ngModel)]="assetInfo.modelID"
+                      name="modelID"
+                      (input)="updateValidation('assetInfo', 'modelID')"
                       [ngClass]="{
                         redBorder:
-                          validationErrors.assetInfo.model.error == true
+                          validationErrors.assetInfo.modelID.error == true
                       }"
                     >
                       <optgroup label="">
@@ -212,9 +212,9 @@
                       </optgroup>
                     </select>
                     <span
-                      *ngIf="validationErrors.assetInfo.model.error == true"
+                      *ngIf="validationErrors.assetInfo.modelID.error == true"
                       class="red"
-                      >{{ validationErrors.assetInfo.model.message }}</span
+                      >{{ validationErrors.assetInfo.modelID.message }}</span
                     >
                   </div>
                 </div>
@@ -311,7 +311,25 @@
                     >
                   </div>
 
-                  <div class="col-lg-6">
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Country</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      [(ngModel)]="countryID"
+                      name="countryID"
+                      (change)="getStates()"
+                     
+                    >
+                      <optgroup label="">
+                        <option *ngFor="let q of countries" value="{{q.countryID}}">{{q.countryName}}</option>
+                      </optgroup>
+                    </select>
+                  </div>
+
+                  <div class="col-lg-4">
                     <label class="control-label text-lg-right pt-2"
                       >State</label
                     >
@@ -319,11 +337,11 @@
                       data-plugin-selectTwo
                       class="form-control populate"
                       id="state"
-                      [(ngModel)]="license.state"
-                      name="licenseState"
-                      (input)="updateValidation('license', 'state')"
+                      [(ngModel)]="license.stateID"
+                      name="licenseStateID"
+                      (input)="updateValidation('license', 'stateID')"
                       [ngClass]="{
-                        redBorder: validationErrors.license.state.error == true
+                        redBorder: validationErrors.license.stateID.error == true
                       }"
                     >
                       <optgroup label="">
@@ -331,12 +349,12 @@
                       </optgroup>
                     </select>
                     <span
-                      *ngIf="validationErrors.license.state.error == true"
+                      *ngIf="validationErrors.license.stateID.error == true"
                       class="red"
-                      >{{ validationErrors.license.state.message }}</span
+                      >{{ validationErrors.license.stateID.message }}</span
                     >
                   </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-4">
                     <label class="control-label text-lg-right pt-2"
                       >Plate Number</label
                     >
@@ -396,28 +414,28 @@
                   </div>
                   <div class="col-lg-4">
                     <label class="control-label text-lg-right pt-2"
-                      >State</label
+                      >Status</label
                     >
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      id="state"
-                      [(ngModel)]="state"
-                      name="state"
-                      (input)="updateValidation('state')"
+                      id="ownerShipStatus"
+                      [(ngModel)]="ownerShipStatus"
+                      name="ownerShipStatus"
+                      (input)="updateValidation('ownerShipStatus')"
                       [ngClass]="{
-                        redBorder: validationErrors.state.error == true
+                        redBorder: validationErrors.ownerShipStatus.error == true
                       }"
                     >
-                      <optgroup label="">
-                        <option *ngFor="let q of states" value="{{q.stateID}}">{{q.stateName}}</option>
-
-                      </optgroup>
+                        <optgroup label="">
+                          <option>Active</option>
+                          <option>Inactive</option>
+                        </optgroup>
                     </select>
                     <span
-                      *ngIf="validationErrors.state.error == true"
+                      *ngIf="validationErrors.ownerShipStatus.error == true"
                       class="red"
-                      >{{ validationErrors.state.message }}</span
+                      >{{ validationErrors.ownerShipStatus.message }}</span
                     >
                   </div>
 
