@@ -40,8 +40,8 @@ export class AddManufacturerComponent implements OnInit {
 
   ngOnInit() {
     this.fetchCountries();
-    this.fetchStates();
-    this.fetchCities();
+    // this.fetchStates();
+    // this.fetchCities();
     $(document).ready(() => {
       this.form = $("#form_").validate();
     });
@@ -54,10 +54,17 @@ export class AddManufacturerComponent implements OnInit {
       });
   }
 
-  fetchStates(){
-    this.apiService.getData('states')
+  getStates(){
+    this.apiService.getData('states/countryID/' + this.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
+      });
+  }
+
+  getCities(){
+    this.apiService.getData('cities/stateID/' + this.stateID)
+      .subscribe((result: any) => {
+        this.cities = result.Items;
       });
   }
 
