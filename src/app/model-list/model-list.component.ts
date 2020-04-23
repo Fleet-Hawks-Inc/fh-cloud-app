@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ApiService } from "../api.service";
 import { Router } from "@angular/router";
+import { timer } from "rxjs";
+declare var $: any;
 
 @Component({
   selector: "app-model-list",
@@ -18,16 +20,33 @@ export class ModelListComponent implements OnInit {
   }
 
   fetchModels() {
-    this.apiService.getData("models").subscribe((result: any) => {
-      this.models = result.Items;
+    this.apiService.getData("models").subscribe({
+      complete: () => {
+        this.initDataTable();
+      },
+      error: () => {},
+      next: (result: any) => {
+        console.log(result);
+        this.models = result.Items;
+      },
     });
   }
 
   deleteModel(modelID) {
-    this.apiService
-      .deleteData("models/" + modelID)
-      .subscribe((result: any) => {
-        this.fetchModels();
-      });
+    /******** Clear DataTable ************/
+    if ($.fn.DataTable.isDataTable("#datatable-default")) {
+      $("#datatable-default").DataTable().clear().destroy();
+    }
+    /******************************/
+
+    this.apiService.deleteData("models/" + modelID).subscribe((result: any) => {
+      this.fetchModels();
+    });
+  }
+
+  initDataTable() {
+    timer(200).subscribe(() => {
+      $("#datatable-default").DataTable();
+    });
   }
 }

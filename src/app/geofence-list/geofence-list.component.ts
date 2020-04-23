@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../api.service';
-import {Router} from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { ApiService } from "../api.service";
+import { Router } from "@angular/router";
+import { timer } from "rxjs";
+declare var $: any;
 
 @Component({
   selector: 'app-geofence-list',
@@ -22,16 +24,35 @@ export class GeofenceListComponent implements OnInit {
   }
 
   fetchGeofences() {
-    this.apiService.getData('geofences')
-      .subscribe((result: any) => {
-        this.geofences = result.Items;
+      this.apiService.getData("geofences").subscribe({
+        complete: () => {
+          this.initDataTable();
+        },
+        error: () => {},
+        next: (result: any) => {
+          console.log(result);
+          this.geofences = result.Items;
+        },
       });
   }
 
   deleteGeofence(geofenceID) {
+     /******** Clear DataTable ************/
+     if ($.fn.DataTable.isDataTable("#datatable-default")) {
+      $("#datatable-default").DataTable().clear().destroy();
+    }
+    /******************************/
+
     this.apiService.deleteData('geofences/' + geofenceID)
       .subscribe((result: any) => {
         this.fetchGeofences();
       })
   }
+
+  initDataTable() {
+    timer(200).subscribe(() => {
+      $("#datatable-default").DataTable();
+    });
+  }
+  
 }

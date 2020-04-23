@@ -1,11 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { ApiService } from "../api.service";
 import { Router } from "@angular/router";
+import { timer } from "rxjs";
+declare var $: any;
 
 @Component({
-  selector: 'app-manufacturer-list',
-  templateUrl: './manufacturer-list.component.html',
-  styleUrls: ['./manufacturer-list.component.css']
+  selector: "app-manufacturer-list",
+  templateUrl: "./manufacturer-list.component.html",
+  styleUrls: ["./manufacturer-list.component.css"],
 })
 export class ManufacturerListComponent implements OnInit {
   title = "Manufacturer List";
@@ -18,12 +20,25 @@ export class ManufacturerListComponent implements OnInit {
   }
 
   fetchManufacturers() {
-    this.apiService.getData("manufacturers").subscribe((result: any) => {
-      this.manufacturers = result.Items;
+    this.apiService.getData("manufacturers").subscribe({
+      complete: () => {
+        this.initDataTable();
+      },
+      error: () => {},
+      next: (result: any) => {
+        console.log(result);
+        this.manufacturers = result.Items;
+      },
     });
   }
 
   deleteManufacturer(manufacturerID) {
+    /******** Clear DataTable ************/
+    if ($.fn.DataTable.isDataTable("#datatable-default")) {
+      $("#datatable-default").DataTable().clear().destroy();
+    }
+    /******************************/
+
     this.apiService
       .deleteData("manufacturers/" + manufacturerID)
       .subscribe((result: any) => {
@@ -31,5 +46,9 @@ export class ManufacturerListComponent implements OnInit {
       });
   }
 
-
+  initDataTable() {
+    timer(200).subscribe(() => {
+      $("#datatable-default").DataTable();
+    });
+  }
 }
