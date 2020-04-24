@@ -181,7 +181,7 @@
                                         <input type="text" class="form-control"  [(ngModel)]="HB" name="HB">
                                     </div>
 
-                                    
+
                                     <div class="col-lg-6">
                                         <label class="control-label text-lg-right pt-2" for="inputDefault">Log Time</label>
                                         <input type="text" class="form-control"  [(ngModel)]="logTime" name="logTime">
@@ -231,28 +231,28 @@
 
 
 
-    <div id="modalAnim" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+    <!--<div id="modalAnim" class="modal fade" role="dialog">-->
+        <!--<div class="modal-dialog">-->
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <!--&lt;!&ndash; Modal content&ndash;&gt;-->
+            <!--<div class="modal-content">-->
+                <!--<div class="modal-header">-->
+                    <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+                    <!--&lt;!&ndash;<h4 class="modal-title">Assign Quantum</h4>&ndash;&gt;-->
+                <!--</div>-->
+                <!--<div class="modal-body">-->
                     <!--<h4 class="modal-title">Assign Quantum</h4>-->
-                </div>
-                <div class="modal-body">
-                    <h4 class="modal-title">Assign Quantum</h4>
-                    <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="quantumSelected" name="quantum info" (ngModelChange)="onChange($event)">
-                        <option *ngFor="let q of quantumsList" value="{{q.quantumID}}">{{q.sNo}}</option>
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
+                    <!--<select data-plugin-selectTwo class="form-control populate" [(ngModel)]="quantumSelected" name="quantum info" (ngModelChange)="onChange($event)">-->
+                        <!--<option *ngFor="let q of quantumsList" value="{{q.quantumID}}">{{q.sNo}}</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+                <!--<div class="modal-footer">-->
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                <!--</div>-->
+            <!--</div>-->
 
-        </div>
-    </div>
+        <!--</div>-->
+    <!--</div>-->
 
     <!--<div id="modalAnim" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">-->
         <!--<section class="card">-->

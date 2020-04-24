@@ -15,6 +15,7 @@ export class EditAssetComponent implements OnInit {
   title = "Edit Assets";
   errors = {};
   form;
+  quantumSelected = '';
 
   /********** Form Fields ***********/
   assetID = "";

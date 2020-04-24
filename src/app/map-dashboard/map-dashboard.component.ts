@@ -35,7 +35,9 @@ export class MapDashboardComponent implements OnInit {
   lat = -104.618896;
   lng = 50.445210;
   isControlAdded = false;
-  frontEndData = {};
+  frontEndData = {
+    drivers : {}
+  };
 
 
   // @ViewChild('gmap', { static: true }) gmapElement: any;

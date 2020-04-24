@@ -15,6 +15,7 @@ export class AddAssetsComponent implements OnInit {
   title = "Add Assets";
   errors = {};
   form;
+  quantumSelected = '';
 
   /********** Form Fields ***********/
   assetName = "";
@@ -63,7 +64,7 @@ export class AddAssetsComponent implements OnInit {
     this.fetchManufactuer();
     this.fetchCountries();
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 

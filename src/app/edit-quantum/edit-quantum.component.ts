@@ -9,6 +9,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class EditQuantumComponent implements OnInit {
 
+  title ='Edit Quantum';
+  parentTitle = 'Quantum';
+
   /********** Form Fields ***********/
   serialNo = '';
   macId = '';

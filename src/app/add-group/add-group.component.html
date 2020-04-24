@@ -35,7 +35,7 @@
               <h2 class="card-title">Details</h2>
             </header>
             <div class="card-body">
-              <form class="form-horizontal form-bordered" method="get">
+              <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
                 <div class="form-group row">
                   <div class="col-lg-6">
                     <label
@@ -49,16 +49,8 @@
                       id="inputDefault"
                       [(ngModel)]="groupName"
                       name="groupName"
-                      (input)="updateValidation('groupName')"
-                      [ngClass]="{
-                        redBorder: validationErrors.groupName.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.groupName.error == true"
-                      class="red"
-                      >{{ validationErrors.groupName.message }}</span
-                    >
+
                   </div>
                   <div class="col-lg-6">
                     <label
@@ -71,10 +63,6 @@
                       class="form-control populate"
                       [(ngModel)]="groupType"
                       name="groupType"
-                      (input)="updateValidation('groupType')"
-                      [ngClass]="{
-                        redBorder: validationErrors.groupType.error == true
-                      }"
                     >
                       <optgroup label="">
                         <option>users</option>
@@ -83,11 +71,7 @@
                         <option>vendors</option>
                       </optgroup>
                     </select>
-                    <span
-                      *ngIf="validationErrors.groupType.error == true"
-                      class="red"
-                      >{{ validationErrors.groupType.message }}</span
-                    >
+
                   </div>
                 </div>
 
@@ -107,16 +91,8 @@
                       id="comment"
                       [(ngModel)]="description"
                       name="description"
-                      (input)="updateValidation('description')"
-                      [ngClass]="{
-                        redBorder: validationErrors.description.error == true
-                      }"
                     ></textarea>
-                    <span
-                      *ngIf="validationErrors.description.error == true"
-                      class="red"
-                      >{{ validationErrors.description.message }}</span
-                    >
+
                   </div>
                 </div>
 
@@ -155,40 +131,40 @@
     </section>
   </div>
 
-  <div id="modalAnim" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">
-            &times;
-          </button>
+  <!--<div id="modalAnim" class="modal fade" role="dialog">-->
+    <!--<div class="modal-dialog">-->
+      <!--&lt;!&ndash; Modal content&ndash;&gt;-->
+      <!--<div class="modal-content">-->
+        <!--<div class="modal-header">-->
+          <!--<button type="button" class="close" data-dismiss="modal">-->
+            <!--&times;-->
+          <!--</button>-->
+          <!--&lt;!&ndash;<h4 class="modal-title">Assign Quantum</h4>&ndash;&gt;-->
+        <!--</div>-->
+        <!--<div class="modal-body">-->
           <!--<h4 class="modal-title">Assign Quantum</h4>-->
-        </div>
-        <div class="modal-body">
-          <h4 class="modal-title">Assign Quantum</h4>
-          <select
-            data-plugin-selectTwo
-            class="form-control populate"
-            [(ngModel)]="quantumSelected"
-            name="quantum info"
-            (ngModelChange)="onChange($event)"
-          >
-            <option>Quantum 1</option>
-            <option>Quantum 2</option>
-            <option>Quantum 3</option>
-            <option>Quantum 4</option>
-            <option>Quantum 5</option>
-          </select>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+          <!--<select-->
+            <!--data-plugin-selectTwo-->
+            <!--class="form-control populate"-->
+            <!--[(ngModel)]="quantumSelected"-->
+            <!--name="quantum info"-->
+            <!--(ngModelChange)="onChange($event)"-->
+          <!--&gt;-->
+            <!--<option>Quantum 1</option>-->
+            <!--<option>Quantum 2</option>-->
+            <!--<option>Quantum 3</option>-->
+            <!--<option>Quantum 4</option>-->
+            <!--<option>Quantum 5</option>-->
+          <!--</select>-->
+        <!--</div>-->
+        <!--<div class="modal-footer">-->
+          <!--<button type="button" class="btn btn-default" data-dismiss="modal">-->
+            <!--Close-->
+          <!--</button>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
 
   <!--<div id="modalAnim" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">-->
   <!--<section class="card">-->

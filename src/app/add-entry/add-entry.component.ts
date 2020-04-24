@@ -26,8 +26,8 @@ export class AddEntryComponent implements OnInit {
   form;
   errors = {};
   response: any = "";
-  hasError: boolean = false;
-  hasSuccess: boolean = false;
+  hasError = false;
+  hasSuccess = false;
   Error: string = "";
   Success: string = "";
   constructor(private apiService: ApiService, private router: Router) {}
@@ -35,6 +35,9 @@ export class AddEntryComponent implements OnInit {
   ngOnInit() {
     this.fetchItems();
     this.fetchVendors();
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
+    });
   }
 
   fetchItems() {
@@ -49,11 +52,7 @@ export class AddEntryComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit() {
-    $(document).ready(() => {
-      this.form = $("#form_").validate();
-    });
-  }
+
 
   addStockEntry() {
     this.errors = {};

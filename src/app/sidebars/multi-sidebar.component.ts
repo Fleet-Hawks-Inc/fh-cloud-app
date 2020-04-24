@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
+import {SharedServiceService} from '../shared-service.service';
+import {Router} from '@angular/router';
 declare var $: any;
 declare var jQuery: any;
 
 
 export class CommonSideBarComponent implements OnInit {
+  //constructor(private router: Router) {}
   ngOnInit() {
     $( document ).ready(() => {
-
       // window.theme = {};
       // Bootstrap Toggle
       (function($) {
@@ -238,13 +240,30 @@ export class CommonSideBarComponent implements OnInit {
 
     });
   }
+  // Logout() {
+  //   console.log("clicked");
+  //   localStorage.removeItem('LoggedIn');
+  //   localStorage.removeItem('jwt');
+  //   this.router.navigate(['/Login']);
+  // }
 }
+
 
 @Component({
   selector: 'fleet-sidebar',
   templateUrl: './fleet-sidebar.component.html'
 })
-export class FleetSidebarComponent extends CommonSideBarComponent { }
+export class FleetSidebarComponent extends CommonSideBarComponent {
+  constructor(private router: Router) {
+    super();
+  }
+  //super(router: Router) { }
+  Logout() {
+    localStorage.removeItem('LoggedIn');
+    localStorage.removeItem('jwt');
+    this.router.navigate(['/Login']);
+  }
+}
 
 @Component({
   selector: 'alert-sidebar',
