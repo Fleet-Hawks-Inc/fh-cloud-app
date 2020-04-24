@@ -109,154 +109,206 @@
 
   <li class="nav-parent">
     <a class="nav-link" href="#">
-      <i class="fas fa-check-square" aria-hidden="true"></i>
-      <span>Ticket Types</span>
+      <i class="fas fa-users-cog" aria-hidden="true"></i>
+      <span>Expenses</span>
     </a>
     <ul class="nav nav-children">
-      <li>
-        <a class="nav-link" routerLink="/Add-Ticket-Type">
-          Add Ticket Type
+      <li class="nav-parent">
+        <a>
+          Fuel
         </a>
+        <ul class="nav nav-children">
+          <li>
+            <a class="nav-link" routerLink="/Add-Fuel-Entry">
+              Add
+            </a>
+          </li>
+
+          <li>
+            <a class="nav-link" routerLink="/Fuel-Entry-List">
+              List
+            </a>
+          </li>
+        </ul>
       </li>
-      <li>
-        <a class="nav-link" routerLink="/Ticket-Types-List">
-          Ticket Types List
+      <li class="nav-parent">
+        <a>
+          Ticket
         </a>
+        <ul class="nav nav-children">
+          <li>
+            <a class="nav-link" routerLink="/Add-Ticket">
+              Add
+            </a>
+          </li>
+
+          <li>
+            <a class="nav-link" routerLink="/Tickets-List">
+              List
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-parent">
+        <a>
+          Types
+        </a>
+        <ul class="nav nav-children">
+          <li>
+            <a class="nav-link" routerLink="/Add-Expense-Type">
+              Add
+            </a>
+          </li>
+
+          <li>
+            <a class="nav-link" routerLink="/Expenses-Type-List">
+              List
+            </a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
 
   <li class="nav-parent">
     <a class="nav-link" href="#">
-      <i class="fas fa-check-square" aria-hidden="true"></i>
-      <span>Manufacturers</span>
+      <i class="fas fa-users-cog" aria-hidden="true"></i>
+      <span>Maintenance</span>
     </a>
     <ul class="nav nav-children">
-      <li>
-        <a class="nav-link" routerLink="/Add-Manufacturer">
-          Add Manufacturer
+      <li class="nav-parent">
+        <a>
+          Vendor
         </a>
+        <ul class="nav nav-children">
+          <li>
+            <a class="nav-link" routerLink="/Add-Vendor">
+              Add
+            </a>
+          </li>
+
+          <li>
+            <a class="nav-link" routerLink="/Vendors-List">
+              List
+            </a>
+          </li>
+        </ul>
       </li>
-      <li>
-        <a class="nav-link" routerLink="/Manufacturers-List">
-          Manufacturer List
+      <li class="nav-parent">
+        <a>
+          Vehicle Service Log
         </a>
+        <ul class="nav nav-children">
+          <li>
+            <a class="nav-link" routerLink="/Add-Vehicle-Service-Log">
+              Add
+            </a>
+          </li>
+
+          <li>
+            <a class="nav-link" routerLink="/Vehicle-Service-Logs-List">
+              List
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-parent">
+        <a>
+          Service Program
+        </a>
+        <ul class="nav nav-children">
+          <li>
+            <a class="nav-link" routerLink="/Add-Service-Program">
+              Add
+            </a>
+          </li>
+
+          <li>
+            <a class="nav-link" routerLink="/Service-Program-List">
+              List
+            </a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
-
   <li class="nav-parent">
     <a class="nav-link" href="#">
-      <i class="fas fa-check-square" aria-hidden="true"></i>
-      <span>Models</span>
+      <i class="fas fa-users-cog" aria-hidden="true"></i>
+      <span>Inventory</span>
     </a>
     <ul class="nav nav-children">
-      <li>
-        <a class="nav-link" routerLink="/Add-Model">
-          Add Model
+      <li class="nav-parent">
+        <a>
+          Item
         </a>
-      </li>
-      <li>
-        <a class="nav-link" routerLink="/Models-List">
-          Model List
-        </a>
-      </li>
-    </ul>
-  </li>
+        <ul class="nav nav-children">
+          <li>
+            <a class="nav-link" routerLink="/Add-Item">
+              Add
+            </a>
+          </li>
 
-  <li class="nav-parent">
-    <a class="nav-link" href="#">
-      <i class="fas fa-check-square" aria-hidden="true"></i>
-      <span>Groups</span>
-    </a>
-    <ul class="nav nav-children">
-      <li>
-        <a class="nav-link" routerLink="/Add-Group">
-          Add Group
-        </a>
+          <li>
+            <a class="nav-link" routerLink="/Item-List">
+              List
+            </a>
+          </li>
+        </ul>
       </li>
-      <li>
-        <a class="nav-link" routerLink="/Group-List">
-          Group List
+      <li class="nav-parent">
+        <a>
+          Item Group
         </a>
-      </li>
-    </ul>
-  </li>
+        <ul class="nav nav-children">
+          <li>
+            <a class="nav-link" routerLink="/Add-Item-Group">
+              Add
+            </a>
+          </li>
 
-  <li class="nav-parent">
-    <a class="nav-link" href="#">
-      <i class="fas fa-check-square" aria-hidden="true"></i>
-      <span>Alerts</span>
-    </a>
-    <ul class="nav nav-children">
-      <li>
-        <a class="nav-link" routerLink="/Add-Alert">
-          Add Alert
-        </a>
+          <li>
+            <a class="nav-link" routerLink="/Item-Group-List">
+              List
+            </a>
+          </li>
+        </ul>
       </li>
-      <li>
-        <a class="nav-link" routerLink="/Alerts-List">
-          Alert List
+      <li class="nav-parent">
+        <a>
+          Stock Entry
         </a>
-      </li>
-    </ul>
-  </li>
+        <ul class="nav nav-children">
+          <li>
+            <a class="nav-link" routerLink="/Add-Entry">
+              Add
+            </a>
+          </li>
 
+          <li>
+            <a class="nav-link" routerLink="/Entries-List">
+              List
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-parent">
+        <a>
+          Stock Assignment
+        </a>
+        <ul class="nav nav-children">
+          <li>
+            <a class="nav-link" routerLink="/Add-Stock-Assignment">
+              Add
+            </a>
+          </li>
 
-
-  <li class="nav-parent">
-    <a class="nav-link" href="#">
-      <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
-      <span>Countries</span>
-    </a>
-    <ul class="nav nav-children">
-      <li>
-        <a class="nav-link" routerLink="/Add-Country">
-          Add Country
-        </a>
-      </li>
-      <li>
-        <a class="nav-link" routerLink="/Country-List">
-          Country List
-        </a>
-      </li>
-    </ul>
-  </li>
-
-  <li class="nav-parent">
-    <a class="nav-link" href="#">
-      <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
-      <span>States</span>
-    </a>
-    <ul class="nav nav-children">
-      <li>
-        <a class="nav-link" routerLink="/Add-State">
-          Add State
-        </a>
-      </li>
-      <li>
-        <a class="nav-link" routerLink="/State-List">
-          State List
-        </a>
-      </li>
-    </ul>
-  </li>
-
-  <li class="nav-parent">
-    <a class="nav-link" href="#">
-      <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
-      <span>Cities</span>
-    </a>
-    <ul class="nav nav-children">
-      <li>
-        <a class="nav-link" routerLink="/Add-City">
-          Add City
-        </a>
-      </li>
-      <li>
-        <a class="nav-link" routerLink="/City-List">
-          City List
-        </a>
+          <li>
+            <a class="nav-link" routerLink="/Stock-Assignment-List">
+              List
+            </a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
