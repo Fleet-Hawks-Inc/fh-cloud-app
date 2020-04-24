@@ -47,8 +47,8 @@ export class AddCountryComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "countryID": this.countryID,
-      "countryName": this.countryName
+      'countryID': this.countryID,
+      'countryName': this.countryName
     };
 
     this.apiService.postData('countries', data)

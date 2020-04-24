@@ -35,80 +35,59 @@
               <h2 class="card-title">Details</h2>
             </header>
             <div class="card-body">
-              <form class="form-horizontal form-bordered" method="get">
+              <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
                 <div class="form-group row">
                   <div class="col-lg-6">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >User Name</label
                     >
                     <input
                       type="text"
-                      (input)="updateValidation('userName')"
                       class="form-control"
                       name="userName"
                       [(ngModel)]="userName"
-                      [ngClass]="{
-                        redBorder: validationErrors.userName.error == true
-                      }"
+
                     />
-                    <span
-                      *ngIf="validationErrors.userName.error == true"
-                      class="red"
-                      >{{ validationErrors.userName.message }}</span
-                    >
+
                   </div>
                   <div class="col-lg-6">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Password</label
                     >
                     <input
                       type="password"
                       class="form-control"
-                      (input)="updateValidation('password')"
                       name="password"
                       [(ngModel)]="password"
-                      [ngClass]="{
-                        redBorder: validationErrors.password.error == true
-                      }"
+
                     />
-                    <span
-                      *ngIf="validationErrors.password.error == true"
-                      class="red"
-                      >{{ validationErrors.password.message }}</span
-                    >
+
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-lg-6">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >First Name</label
                     >
                     <input
                       type="text"
                       class="form-control"
                       name="firstName"
-                      (input)="updateValidation('firstName')"
                       [(ngModel)]="firstName"
-                      [ngClass]="{
-                        redBorder: validationErrors.firstName.error == true
-                      }"
+
                     />
-                    <span
-                      *ngIf="validationErrors.firstName.error == true"
-                      class="red"
-                      >{{ validationErrors.firstName.message }}</span
-                    >
+
                   </div>
                   <div class="col-lg-6">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Last Name</label
                     >
                     <input
@@ -116,48 +95,32 @@
                       class="form-control"
                       name="lastName"
                       [(ngModel)]="lastName"
-                      (input)="updateValidation('lastName')"
-                      [ngClass]="{
-                        redBorder: validationErrors.lastName.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.lastName.error == true"
-                      class="red"
-                      >{{ validationErrors.lastName.message }}</span
-                    >
+
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-lg-12">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Address</label
                     >
                     <textarea
                       class="form-control"
                       rows="3"
-                      (input)="updateValidation('address')"
                       id="textareaDefault"
                       name="address"
                       [(ngModel)]="address"
-                      [ngClass]="{
-                        redBorder: validationErrors.address.error == true
-                      }"
                     ></textarea>
-                    <span
-                      *ngIf="validationErrors.address.error == true"
-                      class="red"
-                      >{{ validationErrors.address.message }}</span
-                    >
+
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Phone</label
                     >
                     <input
@@ -165,21 +128,13 @@
                       class="form-control"
                       name="phone"
                       [(ngModel)]="phone"
-                      (input)="updateValidation('phone')"
-                      [ngClass]="{
-                        redBorder: validationErrors.phone.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.phone.error == true"
-                      class="red"
-                      >{{ validationErrors.phone.message }}</span
-                    >
+
                   </div>
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Email</label
                     >
                     <input
@@ -187,47 +142,34 @@
                       class="form-control"
                       name="email"
                       [(ngModel)]="email"
-                      (input)="updateValidation('email')"
-                      [ngClass]="{
-                        redBorder: validationErrors.email.error == true
-                      }"
+
+
                     />
-                    <span
-                      *ngIf="validationErrors.email.error == true"
-                      class="red"
-                      >{{ validationErrors.email.message }}</span
-                    >
+
                   </div>
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Group</label
                     >
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
                       name="groupID"
-                      (change)="updateValidation('groupID')"
                       [(ngModel)]="groupID"
-                      [ngClass]="{
-                        redBorder: validationErrors.groupID.error == true
-                      }"
+
                     >
                       <!-- <optgroup label=""> -->
                         <option *ngFor="let q of groups" value="{{q.groupID}}">{{q.groupName}}</option>
                       <!-- </optgroup> -->
                     </select>
-                    <span
-                      *ngIf="validationErrors.groupID.error == true"
-                      class="red"
-                      >{{ validationErrors.groupID.message }}</span
-                    >
+
                   </div>
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Login Enable</label
                     >
                     <input
@@ -242,102 +184,67 @@
                   <div class="col-lg-12">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Driver Detail</label
                     >
                   </div>
                   <div class="col-lg-12">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Driver Number</label
                     >
                     <input
                       type="text"
                       class="form-control"
                       name="driverNumber"
-                      (input)="updateValidation('driverNumber')"
                       [(ngModel)]="driverNumber"
-                      [ngClass]="{
-                        redBorder: validationErrors.driverNumber.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.driverNumber.error == true"
-                      class="red"
-                      >{{ validationErrors.driverNumber.message }}</span
-                    >
+
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Driver Licence Number</label
                     >
                     <input
                       type="text"
                       class="form-control"
                       name="driverLicenseNumber"
-                      (input)="updateValidation('driverLicenseNumber')"
                       [(ngModel)]="driverLicenseNumber"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.driverLicenseNumber.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.driverLicenseNumber.error == true"
-                      class="red"
-                      >{{ validationErrors.driverLicenseNumber.message }}</span
-                    >
+
                   </div>
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Driver Licence Type</label
                     >
                     <input
                       type="text"
                       class="form-control"
                       name="driverLicenseType"
-                      (input)="updateValidation('driverLicenseType')"
                       [(ngModel)]="driverLicenseType"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.driverLicenseType.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.driverLicenseType.error == true"
-                      class="red"
-                      >{{ validationErrors.driverLicenseType.message }}</span
-                    >
+
                   </div>
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Driver Licence Expiry</label
                     >
                     <input
                       type="date"
                       class="form-control"
-                      (input)="updateValidation('driverLicenseExpiry')"
                       name="driverLicenseExpiry"
                       [(ngModel)]="driverLicenseExpiry"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.driverLicenseExpiry.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.driverLicenseExpiry.error == true"
-                      class="red"
-                      >{{ validationErrors.driverLicenseExpiry.message }}</span
-                    >
+
 
                     <input
                       type="file"
@@ -349,7 +256,7 @@
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Driver Licence Country</label
                     >
                     <select
@@ -359,7 +266,7 @@
                       [(ngModel)]="driverLicenseCountry"
                       (change)="getStates()"
                     >
-                      <optgroup label=""> 
+                      <optgroup label="">
                         <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
                       </optgroup>
                     </select>
@@ -367,29 +274,20 @@
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Driver Licence State</label
                     >
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      name="driverLicenseStateID" 
+                      name="driverLicenseStateID"
                       [(ngModel)]="driverLicenseStateID"
-                      (change)="updateValidation('driverLicenseStateID')"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.driverLicenseStateID.error == true
-                      }"
                     >
                       <optgroup label="">
                         <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
                       </optgroup>
                     </select>
-                    <span
-                      *ngIf="validationErrors.driverLicenseStateID.error == true"
-                      class="red"
-                      >{{ validationErrors.driverLicenseStateID.message }}</span
-                    >
+
                   </div>
                 </div>
                 <div class="form-group row">
@@ -409,26 +307,15 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      name="HOSComplianceStatus"
+                      name="HOSCompliance.status"
                       [(ngModel)]="HOSCompliance.status"
-                      (change)="updateValidation('HOSCompliance', 'status')"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.HOSCompliance.status.error == true
-                      }"
                     >
                       <optgroup label="">
                         <option value="Non Exempted">Non Exempted</option>
                         <option value="Exempted">Exempted</option>
                       </optgroup>
                     </select>
-                    <span
-                      *ngIf="
-                        validationErrors.HOSCompliance.status.error == true
-                      "
-                      class="red"
-                      >{{ validationErrors.HOSCompliance.status.message }}</span
-                    >
+
                   </div>
                   <div class="col-lg-4">
                     <label
@@ -439,51 +326,33 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      name="HOSComplianceType"
+                      name="HOSCompliance.type"
                       [(ngModel)]="HOSCompliance.type"
-                      (change)="updateValidation('HOSCompliance', 'type')"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.HOSCompliance.type.error == true
-                      }"
                     >
                       <optgroup label="">
                         <option value="ELD">ELD</option>
                         <option value="Log Book">Log Book</option>
                       </optgroup>
                     </select>
-                    <span
-                      *ngIf="validationErrors.HOSCompliance.type.error == true"
-                      class="red"
-                      >{{ validationErrors.HOSCompliance.type.message }}</span
-                    >
+
                   </div>
                   <div class="col-lg-4">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Cycle</label
                     >
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      name="HOSCompliancecycleID"
+                      name="HOSCompliance.cycleID"
                       [(ngModel)]="HOSCompliance.cycleID"
-                      (change)="updateValidation('HOSCompliance', 'cycleID')"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.HOSCompliance.cycleID.error == true
-                      }"
                     >
                       <optgroup label="">
                         <option *ngFor="let cycle of cycles" value="{{cycle.cycleID}}">{{cycle.cycleName}}</option>
                       </optgroup>
                     </select>
-                    <span
-                      *ngIf="validationErrors.HOSCompliance.cycleID.error == true"
-                      class="red"
-                      >{{ validationErrors.HOSCompliance.cycleID.message }}</span
-                    >
+
                   </div>
                 </div>
                 <div class="form-group row">
@@ -500,156 +369,93 @@
                       for="inputDefault"
                       >Per Mile</label
                     >
+                    <!--(input)="updateValidation('defaultContract', 'perMile')"-->
                     <input
                       type="text"
                       class="form-control"
-                      (input)="updateValidation('defaultContract', 'perMile')"
-                      name="defaultContractPerMile"
+                      name="defaultContract.perMile"
                       [(ngModel)]="defaultContract.perMile"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.defaultContract.perMile.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="
-                        validationErrors.defaultContract.perMile.error == true
-                      "
-                      class="red"
-                      >{{
-                        validationErrors.defaultContract.perMile.message
-                      }}</span
-                    >
+
                   </div>
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Team</label
                     >
                     <input
                       type="text"
                       class="form-control"
-                      (input)="updateValidation('defaultContract', 'team')"
-                      name="defaultContractTeam"
+                      name="defaultContract.team"
                       [(ngModel)]="defaultContract.team"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.defaultContract.team.error == true
-                      }"
+
                     />
-                    <span
-                      *ngIf="
-                        validationErrors.defaultContract.team.error == true
-                      "
-                      class="red"
-                      >{{ validationErrors.defaultContract.team.message }}</span
-                    >
+
                   </div>
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Hourly</label
                     >
                     <input
                       type="text"
                       class="form-control"
-                      (input)="updateValidation('defaultContract', 'hourly')"
-                      name="defaultContractHourly"
+                      name="defaultContract.hourly"
                       [(ngModel)]="defaultContract.hourly"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.defaultContract.hourly.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="
-                        validationErrors.defaultContract.hourly.error == true
-                      "
-                      class="red"
-                      >{{
-                        validationErrors.defaultContract.hourly.message
-                      }}</span
-                    >
+
                   </div>
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Pick/Drop</label
                     >
                     <input
                       type="text"
                       class="form-control"
-                      (input)="
-                        updateValidation('defaultContract', 'pickOrDrop')
-                      "
-                      name="defaultContractpPickOrDrop"
+                      name="defaultContract.pickOrDrop"
                       [(ngModel)]="defaultContract.pickOrDrop"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.defaultContract.pickOrDrop.error ==
-                          true
-                      }"
                     />
-                    <span
-                      *ngIf="
-                        validationErrors.defaultContract.pickOrDrop.error ==
-                        true
-                      "
-                      class="red"
-                      >{{
-                        validationErrors.defaultContract.pickOrDrop.message
-                      }}</span
-                    >
+
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-lg-12">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Fixed</label
                     >
                   </div>
                   <div class="col-lg-6">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Amount</label
                     >
                     <input
                       type="text"
                       class="form-control"
-                      name="fixedAmount"
-                      (input)="updateValidation('fixed', 'amount')"
+                      name="fixed.amount"
                       [(ngModel)]="fixed.amount"
-                      [ngClass]="{
-                        redBorder: validationErrors.fixed.amount.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.fixed.amount.error == true"
-                      class="red"
-                      >{{ validationErrors.fixed.amount.message }}</span
-                    >
+
                   </div>
                   <div class="col-lg-6">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Type</label
                     >
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      name="fixedType"
+                      name="fixed.type"
                       [(ngModel)]="fixed.type"
-                      (change)="updateValidation('fixed', 'type')"
-                      [ngClass]="{
-                        redBorder: validationErrors.fixed.type.error == true
-                      }"
+
                     >
                       <optgroup label="">
                         <option value="Daily">Daily</option>
@@ -658,18 +464,14 @@
                         <option value="For Night Only">For Night Only</option>
                       </optgroup>
                     </select>
-                    <span
-                      *ngIf="validationErrors.fixed.type.error == true"
-                      class="red"
-                      >{{ validationErrors.fixed.type.message }}</span
-                    >
+
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-lg-12">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+
                       >Home Terminal</label
                     >
                     <select
@@ -677,20 +479,12 @@
                       class="form-control populate"
                       name="yardID"
                       [(ngModel)]="yardID"
-                      (input)="updateValidation('yardID')"
-                      [ngClass]="{
-                        redBorder: validationErrors.yardID.error == true
-                      }"
                     >
                       <optgroup label="">
                         <option *ngFor="let yard of yards" value="{{yard.yardID}}">{{yard.yardName}}</option>
                       </optgroup>
                     </select>
-                    <span
-                      *ngIf="validationErrors.yardID.error == true"
-                      class="red"
-                      >{{ validationErrors.yardID.message }}</span
-                    >
+
                   </div>
                 </div>
                 <div class="form-group row">

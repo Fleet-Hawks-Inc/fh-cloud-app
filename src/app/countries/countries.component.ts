@@ -35,8 +35,8 @@ export class CountriesComponent implements OnInit {
 
   deleteCountry(countryID) {
     /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable("#datatable-default")) {
-      $("#datatable-default").DataTable().clear().destroy();
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
 
