@@ -1,6 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { ApiService } from "../api.service";
+import { from, of } from "rxjs";
+import { map } from "rxjs/operators";
+import { Object } from "aws-sdk/clients/s3";
+declare var $: any;
 
 @Component({
   selector: "app-edit-item-group",
@@ -9,25 +13,15 @@ import { ApiService } from "../api.service";
 })
 export class EditItemGroupComponent implements OnInit {
   title = "Edit Item Group";
-
+  errors = {};
+  form;
+  concatArrayKeys = "";
   /********** Form Fields ***********/
   groupID = "";
   groupName = "";
   description = "";
   timeCreated = "";
   /******************/
-
-  /**
-   * Form errors prop
-   */
-  validationErrors = {
-    groupName: {
-      error: false,
-    },
-    description: {
-      error: false,
-    },
-  };
 
   response: any = "";
   hasError: boolean = false;
@@ -46,8 +40,12 @@ export class EditItemGroupComponent implements OnInit {
 
         this.groupName = result.groupName;
         this.description = result.description;
-        this.timeCreated = result.timeCreated
+        this.timeCreated = result.timeCreated;
       });
+
+    $(document).ready(() => {
+      this.form = $("#form_").validate();
+    });
   }
 
   updateGroup() {
@@ -64,9 +62,24 @@ export class EditItemGroupComponent implements OnInit {
     this.apiService.putData("itemGroups", data).subscribe({
       complete: () => {},
       error: (err) => {
-        this.mapErrors(err.error);
-        this.hasError = true;
-        this.Error = err.error;
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
         this.response = res;
@@ -75,37 +88,19 @@ export class EditItemGroupComponent implements OnInit {
       },
     });
   }
-
-  mapErrors(errors) {
-    for (var i = 0; i < errors.length; i++) {
-      let key = errors[i].path;
-      let length = key.length;
-
-      //make array of message to remove the fieldName
-      let message = errors[i].message.split(" ");
-      delete message[0];
-
-      //new message
-      let modifiedMessage = `This field${message.join(" ")}`;
-
-      if (length == 1) {
-        //single object
-        this.validationErrors[key[0]].error = true;
-        this.validationErrors[key[0]].message = modifiedMessage;
-      } else if (length == 2) {
-        //two dimensional object
-        this.validationErrors[key[0]][key[1]].error = true;
-        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
-      }
-    }
-    console.log(this.validationErrors);
+  throwErrors() {
+    this.form.showErrors(this.errors);
   }
 
-  updateValidation(first, second = "") {
-    if (second == "") {
-      this.validationErrors[first].error = false;
-    } else {
-      this.validationErrors[first][second].error = false;
+  concatArray(path) {
+    this.concatArrayKeys = "";
+    for (const i in path) {
+      this.concatArrayKeys += path[i] + ".";
     }
+    this.concatArrayKeys = this.concatArrayKeys.substring(
+      0,
+      this.concatArrayKeys.length - 1
+    );
+    return this.concatArrayKeys;
   }
 }
