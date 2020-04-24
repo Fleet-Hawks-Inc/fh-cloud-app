@@ -137,6 +137,8 @@ export class EditDriverComponent implements OnInit {
   countries = [];
   states = [];
   yards = [];
+  cycles = [];
+
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -152,6 +154,14 @@ export class EditDriverComponent implements OnInit {
     this.fetchYards();
     this.fetchUser();
     this.fetchDriver();
+    this.fetchCycles();
+  }
+
+  fetchCycles(){
+    this.apiService.getData('cycles')
+    .subscribe((result: any) => {
+      this.cycles = result.Items;
+    });
   }
 
   /**

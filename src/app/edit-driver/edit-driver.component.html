@@ -493,8 +493,7 @@
                       }"
                     >
                       <optgroup label="">
-                        <option value="cycle 1">cycle 1</option>
-                        <option value="cycle 2">cycle 2</option>
+                        <option *ngFor="let cycle of cycles" value="{{cycle.cycleID}}">{{cycle.cycleName}}</option>
                       </optgroup>
                     </select>
                     <span

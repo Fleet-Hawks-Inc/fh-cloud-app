@@ -156,6 +156,11 @@ import {EditGeofenceComponent} from './edit-geofence/edit-geofence.component';
 import {GeofenceListComponent} from './geofence-list/geofence-list.component';
 import {AddGeofenceComponent} from './add-geofence/add-geofence.component';
 
+import {EditCycleComponent} from './edit-cycle/edit-cycle.component';
+import {CycleListComponent} from './cycle-list/cycle-list.component';
+import {AddCycleComponent} from './add-cycle/add-cycle.component';
+
+
 const routes: Routes = [
   { path: "", redirectTo: "/Login", pathMatch: "full" },
   { path: "Login", component: LoginComponent },
@@ -374,6 +379,10 @@ const routes: Routes = [
   { path: "Add-Geofence", component: AddGeofenceComponent },
   { path: "Edit-Geofence/:fenceID", component: EditGeofenceComponent },
   { path: "Geofence-List", component: GeofenceListComponent },
+
+  { path: "Add-Cycle", component: AddCycleComponent },
+  { path: "Edit-Cycle/:cycleID", component: EditCycleComponent },
+  { path: "Cycle-List", component: CycleListComponent },
 
 ];
 @NgModule({

@@ -145,6 +145,9 @@ import { GeofenceListComponent } from './geofence-list/geofence-list.component';
 import { EditGeofenceComponent } from './edit-geofence/edit-geofence.component';
 import { MultiSidebarComponents } from './sidebars/multi-sidebar.component';
 import {RouterModule} from '@angular/router';
+import { AddCycleComponent } from './add-cycle/add-cycle.component';
+import { EditCycleComponent } from './edit-cycle/edit-cycle.component';
+import { CycleListComponent } from './cycle-list/cycle-list.component';
 
 
 
@@ -286,7 +289,10 @@ import {RouterModule} from '@angular/router';
     AddGeofenceComponent,
     GeofenceListComponent,
     EditGeofenceComponent,
-    MultiSidebarComponents
+    MultiSidebarComponents,
+    AddCycleComponent,
+    EditCycleComponent,
+    CycleListComponent
 
 
   ],
