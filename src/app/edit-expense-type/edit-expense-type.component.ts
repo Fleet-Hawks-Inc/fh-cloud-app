@@ -33,18 +33,20 @@ export class EditExpenseTypeComponent implements OnInit {
 
   ngOnInit() {
     this.expenseTypeID = this.route.snapshot.params["expenseTypeID"];
-   
+
     this.fetchExpenseType();
   }
 
   fetchExpenseType() {
-    this.apiService.getData("expenseTypes/" + this.expenseTypeID).subscribe((result: any) => {
-      result = result.Items[0];
+    this.apiService
+      .getData("expenseTypes/" + this.expenseTypeID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
 
-      this.expenseTypeName = result.expenseTypeName;
-      this.description = result.description;
-      this.timeCreated = result.timeCreated;
-    });
+        this.expenseTypeName = result.expenseTypeName;
+        this.description = result.description;
+        this.timeCreated = result.timeCreated;
+      });
   }
 
   ngAfterViewInit() {
@@ -63,38 +65,37 @@ export class EditExpenseTypeComponent implements OnInit {
       expenseTypeID: this.expenseTypeID,
       expenseTypeName: this.expenseTypeName,
       description: this.description,
-      timeCreated: this.timeCreated
+      timeCreated: this.timeCreated,
     };
 
-    const handleError = this.apiService
-      .putData("expenseTypes", data)
-      .pipe(
-        catchError((err) => {
-          return from(err.error);
-        }),
-        tap((val) => console.log(val)),
-        map((val: any) => {
-          val.message = val.message.replace(/".*"/, "This Field");
-          this.errors[val.path[0]] = val.message;
-        })
-      )
-      .subscribe({
-        complete: () => {},
-        error: (err) => {
-          console.log(err);
-          // this.mapErrors(err.error);
-          this.hasError = true;
-          this.Error = err.error;
-        },
-        next: (res) => {
-          if (!$.isEmptyObject(this.errors)) {
-            return this.throwErrors();
-          }
-          this.response = res;
-          this.hasSuccess = true;
-          this.Success = "Expense Type updated successfully";
-        },
-      });
+    this.apiService.putData("expenseTypes", data).subscribe({
+      complete: () => {},
+      error: (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.Success = "Expense Type updated successfully";
+      },
+    });
   }
 
   throwErrors() {

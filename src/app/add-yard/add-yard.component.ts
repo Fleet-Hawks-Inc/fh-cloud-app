@@ -24,8 +24,8 @@ export class AddYardComponent implements OnInit, AfterViewInit {
   latitude = "12";
   longitude = "34";
   geofence = "ludhiana";
-  state = "";
-  country = "";
+  stateID = "";
+  countryID = "";
 
   /******************/
   countries = [];
@@ -39,18 +39,17 @@ export class AddYardComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.fetchCountries();
-
   }
 
-  fetchCountries(){
-    this.apiService.getData('countries')
-      .subscribe((result: any) => {
-        this.countries = result.Items;
-      });
+  fetchCountries() {
+    this.apiService.getData("countries").subscribe((result: any) => {
+      this.countries = result.Items;
+    });
   }
 
-  getStates(){
-    this.apiService.getData('states/countryID/' + this.country)
+  getStates() {
+    this.apiService
+      .getData("states/countryID/" + this.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
@@ -75,42 +74,42 @@ export class AddYardComponent implements OnInit, AfterViewInit {
         longitude: this.longitude,
       },
       geofence: this.geofence,
-      state: this.state,
-      country: this.country,
+      stateID: this.stateID,
+      countryID: this.countryID,
     };
 
-    this.apiService
-      .postData("yards", data)
-      .pipe(
-        catchError((err) => {
-          return from(err.error);
-        }),
-        tap((val) => console.log(val)),
-        map((val: any) => {
-          val.message = val.message.replace(/".*"/, "This Field");
-          this.errors[val.context.key] = val.message;
-        })
-      )
-      .subscribe({
-        complete: () => {},
-        error: (err) => {
-          this.hasError = true;
-          this.Error = err.error;
-        },
-        next: (res) => {
-          if (!$.isEmptyObject(this.errors)) {
-            return this.throwErrors();
-          }
-          this.response = res;
-          this.hasSuccess = true;
-          this.Success = "Yard Added successfully";
-          this.yardName = "";
-          this.description = "";
-          this.geofence = "";
-          this.latitude = "";
-          this.longitude = "";
-        },
-      });
+    this.apiService.postData("yards", data).subscribe({
+      complete: () => {},
+      error: (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+              console.log(key);
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.Success = "Yard added successfully";
+        this.yardName = "";
+        this.countryID = "";
+        this.stateID = "";
+        this.description = "";
+      },
+    });
   }
 
   throwErrors() {

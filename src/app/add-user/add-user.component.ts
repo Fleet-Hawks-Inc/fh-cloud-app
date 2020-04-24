@@ -1,16 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {Router} from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { ApiService } from "../api.service";
+import { from, of } from "rxjs";
+import { map } from "rxjs/operators";
+import { Object } from "aws-sdk/clients/s3";
+declare var $: any;
 
 @Component({
-  selector: 'app-add-user',
-  templateUrl: './add-user.component.html',
-  styleUrls: ['./add-user.component.css']
+  selector: "app-add-user",
+  templateUrl: "./add-user.component.html",
+  styleUrls: ["./add-user.component.css"],
 })
 export class AddUserComponent implements OnInit {
-
-  parentTitle = 'Users';
+  parentTitle = "Users";
   title = "Add Fleet Manager";
+  errors = {};
+  form;
+  concatArrayKeys = "";
 
   /**
    * Form Props
@@ -26,55 +32,23 @@ export class AddUserComponent implements OnInit {
   groupID = "";
   loginEnabled = true;
 
-  /**
-   * Form errors prop
-   */
-  validationErrors = {
-    userName: {
-      error: false,
-    },
-    password: {
-      error: false,
-    },
-    firstName: {
-      error: false,
-    },
-    lastName: {
-      error: false,
-    },
-    address: {
-      error: false,
-    },
-    phone: {
-      error: false,
-    },
-    email: {
-      error: false,
-    },
-    groupID: {
-      error: false,
-    },
-    loginEnabled: {
-      error: false,
-    },
-  };
-
   groups = [];
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
   Error: string = "";
   Success: string = "";
-  constructor(private apiService: ApiService,
-              private router: Router) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
     this.fetchGroups();
+    $(document).ready(() => {
+      this.form = $("#form_").validate();
+    });
   }
 
-  fetchGroups(){
-    this.apiService.getData('groups')
-    .subscribe((result: any) => {
+  fetchGroups() {
+    this.apiService.getData("groups").subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
@@ -96,53 +70,46 @@ export class AddUserComponent implements OnInit {
     this.apiService.postData("users", data).subscribe({
       complete: () => {},
       error: (err) => {
-        this.mapErrors(err.error);
-        this.hasError = true;
-        this.Error = err.error;
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+              console.log(key);
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Manager Added successfully";
+        this.Success = "User added successfully";
       },
     });
   }
 
-  mapErrors(errors) {
-    for (var i = 0; i < errors.length; i++) {
-      let key = errors[i].path;
-      let length = key.length;
-
-      //make array of message to remove the fieldName
-      let message = errors[i].message.split(" ");
-      delete message[0];
-
-      //new message
-      let modifiedMessage = `This field${message.join(" ")}`;
-
-      if (length == 1) {
-        if(modifiedMessage == 'This field is already exists'){
-          if(key[0] == 'userName') modifiedMessage = `This User Name${message.join(" ")}`;
-          else if(key[0] == 'email') modifiedMessage = `This Email${message.join(" ")}`;                      
-        }
-
-        //single object
-        this.validationErrors[key[0]].error = true;
-        this.validationErrors[key[0]].message = modifiedMessage;
-      } else if (length == 2) {
-        //two dimensional object
-        this.validationErrors[key[0]][key[1]].error = true;
-        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
-      }
-    }
-    console.log(this.validationErrors);
+  throwErrors() {
+    this.form.showErrors(this.errors);
   }
 
-  updateValidation(first, second = "") {
-    if (second == "") {
-      this.validationErrors[first].error = false;
-    } else {
-      this.validationErrors[first][second].error = false;
+  concatArray(path) {
+    this.concatArrayKeys = "";
+    for (const i in path) {
+      this.concatArrayKeys += path[i] + ".";
     }
-  } 
+    this.concatArrayKeys = this.concatArrayKeys.substring(
+      0,
+      this.concatArrayKeys.length - 1
+    );
+    return this.concatArrayKeys;
+  }
 }

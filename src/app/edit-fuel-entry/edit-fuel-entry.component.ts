@@ -49,25 +49,20 @@ export class EditFuelEntryComponent implements OnInit {
     this.fetchTrips();
   }
 
-  
-  fetchVehicles(){
-    this.apiService.getData('vehicles')
-    .subscribe((result: any) => {
+  fetchVehicles() {
+    this.apiService.getData("vehicles").subscribe((result: any) => {
       this.vehicles = result.Items;
     });
   }
 
-  fetchTrips(){
-    this.apiService.getData('trips')
-    .subscribe((result: any) => {
+  fetchTrips() {
+    this.apiService.getData("trips").subscribe((result: any) => {
       this.trips = result.Items;
     });
   }
 
-
-  fetchVendors(){
-    this.apiService.getData('vendors')
-    .subscribe((result: any) => {
+  fetchVendors() {
+    this.apiService.getData("vendors").subscribe((result: any) => {
       this.vendors = result.Items;
     });
   }
@@ -114,38 +109,36 @@ export class EditFuelEntryComponent implements OnInit {
       date: this.date,
       price: this.price,
       volume: this.volume,
-      timeCreated: this.timeCreated
+      timeCreated: this.timeCreated,
     };
     //console.log(data);return;
-    const handleError = this.apiService
-      .putData("fuelEntries", data)
-      .pipe(
-        catchError((err) => {
-          return from(err.error);
-        }),
-        tap((val) => console.log(val)),
-        map((val: any) => {
-          val.message = val.message.replace(/".*"/, "This Field");
-          this.errors[val.path[0]] = val.message;
-        })
-      )
-      .subscribe({
-        complete: () => {},
-        error: (err) => {
-          console.log(err);
-          // this.mapErrors(err.error);
-          this.hasError = true;
-          this.Error = err.error;
-        },
-        next: (res) => {
-          if (!$.isEmptyObject(this.errors)) {
-            return this.throwErrors();
-          }
-          this.response = res;
-          this.hasSuccess = true;
-          this.Success = "Fuel entry updated successfully";
-        },
-      });
+    this.apiService.putData("fuelEntries", data).subscribe({
+      complete: () => {},
+      error: (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.Success = "Fuel entry updated successfully";
+      },
+    });
   }
 
   throwErrors() {

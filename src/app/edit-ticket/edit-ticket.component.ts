@@ -1,6 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ApiService } from "../api.service";
+import { Router, ActivatedRoute } from "@angular/router";
+import { catchError, map, mapTo, tap } from "rxjs/operators";
+import { from, of } from "rxjs";
+declare var jquery: any;
+declare var $: any;
 
 @Component({
   selector: "app-edit-ticket",
@@ -10,6 +14,8 @@ import { ApiService } from "../api.service";
 export class EditTicketComponent implements OnInit {
   title = "Edit Ticket";
   users = [];
+  errors = {};
+  form;
   /********** Form Fields ***********/
 
   ticketID = "";
@@ -21,29 +27,6 @@ export class EditTicketComponent implements OnInit {
   officeDetails = "";
   timeCreated = "";
   ticketTypes = [];
-  /**
-   * Form errors prop
-   */
-  validationErrors = {
-    userName: {
-      error: false,
-    },
-    ticketNumber: {
-      error: false,
-    },
-    ticketTypeID: {
-      error: false,
-    },
-    ticketValue: {
-      error: false,
-    },
-    description: {
-      error: false,
-    },
-    officeDetails: {
-      error: false,
-    },
-  };
 
   response: any = "";
   hasError: boolean = false;
@@ -58,15 +41,16 @@ export class EditTicketComponent implements OnInit {
     this.fetchUsers();
     this.fetchTicketTypes();
     this.fetchTicket();
-  }
-
-  fetchTicketTypes(){
-    this.apiService.getData('ticketTypes')
-    .subscribe((result: any) => {
-      this.ticketTypes = result.Items;
+    $(document).ready(() => {
+      this.form = $("#form_").validate();
     });
   }
 
+  fetchTicketTypes() {
+    this.apiService.getData("ticketTypes").subscribe((result: any) => {
+      this.ticketTypes = result.Items;
+    });
+  }
 
   fetchUsers() {
     this.apiService
@@ -105,54 +89,40 @@ export class EditTicketComponent implements OnInit {
       description: this.description,
       ticketNumber: this.ticketNumber,
       officeDetails: this.officeDetails,
-      timeCreated: this.timeCreated
+      timeCreated: this.timeCreated,
     };
 
     this.apiService.putData("tickets", data).subscribe({
       complete: () => {},
       error: (err) => {
-        this.mapErrors(err.error);
-        this.hasError = true;
-        this.Error = err.error;
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+             
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Ticket Updated successfully";
+        this.Success = "Ticket updated successfully";
       },
     });
   }
 
-  mapErrors(errors) {
-    for (var i = 0; i < errors.length; i++) {
-      let key = errors[i].path;
-      let length = key.length;
-
-      //make array of message to remove the fieldName
-      let message = errors[i].message.split(" ");
-      delete message[0];
-
-      //new message
-      let modifiedMessage = `This field${message.join(" ")}`;
-
-      if (length == 1) {
-        //single object
-        this.validationErrors[key[0]].error = true;
-        this.validationErrors[key[0]].message = modifiedMessage;
-      } else if (length == 2) {
-        //two dimensional object
-        this.validationErrors[key[0]][key[1]].error = true;
-        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
-      }
-    }
+  throwErrors() {
+    this.form.showErrors(this.errors);
   }
-
-  updateValidation(first, second = "") {
-    if (second == "") {
-      this.validationErrors[first].error = false;
-    } else {
-      this.validationErrors[first][second].error = false;
-    }
-  } 
-
 }

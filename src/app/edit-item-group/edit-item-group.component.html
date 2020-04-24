@@ -35,7 +35,12 @@
               <h2 class="card-title">Details</h2>
             </header>
             <div class="card-body">
-              <form class="form-horizontal form-bordered" method="get">
+              <form
+                class="form-horizontal form-bordered"
+                method="get"
+                name="form"
+                id="form_"
+              >
                 <div class="form-group row">
                   <div class="col-lg-12">
                     <label
@@ -49,16 +54,7 @@
                       id="inputDefault"
                       [(ngModel)]="groupName"
                       name="groupName"
-                      (input)="updateValidation('groupName')"
-                      [ngClass]="{
-                        redBorder: validationErrors.groupName.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.groupName.error == true"
-                      class="red"
-                      >{{ validationErrors.groupName.message }}</span
-                    >
                   </div>
                 </div>
 
@@ -78,16 +74,7 @@
                       id="comment"
                       [(ngModel)]="description"
                       name="description"
-                      (input)="updateValidation('description')"
-                      [ngClass]="{
-                        redBorder: validationErrors.description.error == true
-                      }"
                     ></textarea>
-                    <span
-                      *ngIf="validationErrors.description.error == true"
-                      class="red"
-                      >{{ validationErrors.description.message }}</span
-                    >
                   </div>
                 </div>
 
@@ -116,68 +103,4 @@
       </div>
     </section>
   </div>
-
-  <div id="modalAnim" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">
-            &times;
-          </button>
-          <!--<h4 class="modal-title">Assign Quantum</h4>-->
-        </div>
-        <div class="modal-body">
-          <h4 class="modal-title">Assign Quantum</h4>
-          <select
-            data-plugin-selectTwo
-            class="form-control populate"
-            [(ngModel)]="quantumSelected"
-            name="quantum info"
-            (ngModelChange)="onChange($event)"
-          >
-            <option>Quantum 1</option>
-            <option>Quantum 2</option>
-            <option>Quantum 3</option>
-            <option>Quantum 4</option>
-            <option>Quantum 5</option>
-          </select>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!--<div id="modalAnim" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">-->
-  <!--<section class="card">-->
-  <!--<header class="card-header">-->
-  <!--<h2 class="card-title">Assign Quantum</h2>-->
-  <!--</header>-->
-  <!--<div class="card-body">-->
-  <!--<div class="modal-wrapper">-->
-  <!--<select data-plugin-selectTwo class="form-control populate" [(ngModel)]="vin" name="quantum info">-->
-  <!--<optgroup label="">-->
-  <!--<option value="1">Quantum 1</option>-->
-  <!--<option >Quantum 2</option>-->
-  <!--<option >Quantum 3</option>-->
-  <!--<option value="2">Quantum 4</option>-->
-  <!--<option value="2">Quantum 5</option>-->
-  <!--</optgroup>-->
-  <!--</select>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--<footer class="card-footer">-->
-  <!--<div class="row">-->
-  <!--<div class="col-md-12 text-right">-->
-  <!--<a class="btn btn-dark modal-confirm">Submit</a>-->
-  <!--<button class="btn btn-default modal-dismiss">Cancel</button>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--</footer>-->
-  <!--</section>-->
-  <!--</div>-->
 </section>

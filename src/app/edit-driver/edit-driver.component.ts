@@ -1,6 +1,9 @@
 import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
 import { ApiService } from "../api.service";
-import { ActivatedRoute } from "@angular/router";
+import { from, of } from "rxjs";
+import { map } from "rxjs/operators";
+import { Object } from "aws-sdk/clients/s3";
 declare var $: any;
 
 @Component({
@@ -10,6 +13,9 @@ declare var $: any;
 })
 export class EditDriverComponent implements OnInit {
   title = "Edit Driver";
+  errors = {};
+  form;
+  concatArrayKeys = "";
 
   /**
    * Form Props
@@ -48,89 +54,6 @@ export class EditDriverComponent implements OnInit {
   };
   yardID = "";
   timeCreated = "";
-  /**
-   * Form errors prop
-   */
-  validationErrors = {
-    userName: {
-      error: false,
-    },
-    password: {
-      error: false,
-    },
-    firstName: {
-      error: false,
-    },
-    lastName: {
-      error: false,
-    },
-    address: {
-      error: false,
-    },
-    phone: {
-      error: false,
-    },
-    email: {
-      error: false,
-    },
-    groupID: {
-      error: false,
-    },
-    loginEnabled: {
-      error: false,
-    },
-    driverNumber: {
-      error: false,
-    },
-    driverLicenseNumber: {
-      error: false,
-    },
-    driverLicenseType: {
-      error: false,
-    },
-    driverLicenseExpiry: {
-      error: false,
-    },
-    driverLicenseStateID: {
-      error: false,
-    },
-    HOSCompliance: {
-      status: {
-        error: false,
-      },
-      type: {
-        error: false,
-      },
-      cycleID: {
-        error: false,
-      },
-    },
-    defaultContract: {
-      perMile: {
-        error: false,
-      },
-      team: {
-        error: false,
-      },
-      hourly: {
-        error: false,
-      },
-      pickOrDrop: {
-        error: false,
-      },
-    },
-    fixed: {
-      amount: {
-        error: false,
-      },
-      type: {
-        error: false,
-      },
-    },
-    yardID: {
-      error: false,
-    },
-  };
 
   driverLicenseCountry = "";
   groups = [];
@@ -155,11 +78,13 @@ export class EditDriverComponent implements OnInit {
     this.fetchUser();
     this.fetchDriver();
     this.fetchCycles();
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
+    });
   }
 
-  fetchCycles(){
-    this.apiService.getData('cycles')
-    .subscribe((result: any) => {
+  fetchCycles() {
+    this.apiService.getData("cycles").subscribe((result: any) => {
       this.cycles = result.Items;
     });
   }
@@ -167,7 +92,7 @@ export class EditDriverComponent implements OnInit {
   /**
    * fetch User data
    */
-  fetchUser(){
+  fetchUser() {
     this.apiService
       .getData(`users/${this.userName}`)
       .subscribe((result: any) => {
@@ -186,51 +111,49 @@ export class EditDriverComponent implements OnInit {
       });
   }
 
-  fetchGroups(){
-    this.apiService.getData('groups')
-    .subscribe((result: any) => {
+  fetchGroups() {
+    this.apiService.getData("groups").subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
 
-  fetchCountries(){
-    this.apiService.getData('countries')
-      .subscribe((result: any) => {
-        this.countries = result.Items;
-      });
+  fetchCountries() {
+    this.apiService.getData("countries").subscribe((result: any) => {
+      this.countries = result.Items;
+    });
   }
 
-  fetchYards(){
-    this.apiService.getData('yards')
-      .subscribe((result: any) => {
-        this.yards = result.Items;
-      });
+  fetchYards() {
+    this.apiService.getData("yards").subscribe((result: any) => {
+      this.yards = result.Items;
+    });
   }
 
-  getStates(){
-    this.apiService.getData('states/countryID/' + this.driverLicenseCountry)
+  getStates() {
+    this.apiService
+      .getData("states/countryID/" + this.driverLicenseCountry)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
   }
 
-
-  fillCountry(){
-    this.apiService.getData('states/' + this.driverLicenseStateID)
+  fillCountry() {
+    this.apiService
+      .getData("states/" + this.driverLicenseStateID)
       .subscribe((result: any) => {
         result = result.Items[0];
         this.driverLicenseCountry = result.countryID;
       });
 
-      setTimeout(() => {
-        this.getStates();
-      }, 2000)
+    setTimeout(() => {
+      this.getStates();
+    }, 2000);
   }
 
   /**
    * fetch driver data
    */
-  fetchDriver(){
+  fetchDriver() {
     this.apiService
       .getData(`drivers/userName/${this.userName}`)
       .subscribe((result: any) => {
@@ -244,7 +167,7 @@ export class EditDriverComponent implements OnInit {
         this.HOSCompliance = {
           status: result.HOSCompliance.status,
           type: result.HOSCompliance.type,
-          cycleID: result.HOSCompliance.cycleID
+          cycleID: result.HOSCompliance.cycleID,
         };
         this.defaultContract = {
           perMile: result.defaultContract.perMile,
@@ -259,14 +182,15 @@ export class EditDriverComponent implements OnInit {
         this.yardID = result.yardID;
       });
 
-      setTimeout(() => {
-        this.fillCountry();
-      }, 2000);
-
+    setTimeout(() => {
+      this.fillCountry();
+    }, 2000);
   }
 
   updateDriver() {
-    let data = {
+    this.errors = {};
+    const data = {
+      driverID: this.driverID,
       userType: this.userType,
       userName: this.userName,
       password: this.password,
@@ -277,7 +201,6 @@ export class EditDriverComponent implements OnInit {
       email: this.email,
       groupID: this.groupID,
       loginEnabled: this.loginEnabled,
-      driverID: this.driverID,
       driverNumber: this.driverNumber,
       driverLicenseNumber: this.driverLicenseNumber,
       driverLicenseType: this.driverLicenseType,
@@ -305,9 +228,24 @@ export class EditDriverComponent implements OnInit {
     this.apiService.putData("users", data).subscribe({
       complete: () => {},
       error: (err) => {
-        this.mapErrors(err.error);
-        this.hasError = true;
-        this.Error = err.error;
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
         this.response = res;
@@ -317,37 +255,19 @@ export class EditDriverComponent implements OnInit {
     });
   }
 
-  mapErrors(errors) {
-    for (var i = 0; i < errors.length; i++) {
-      let key = errors[i].path;
-      let length = key.length;
-
-      //make array of message to remove the fieldName
-      let message = errors[i].message.split(" ");
-      delete message[0];
-
-      //new message
-      let modifiedMessage = `This field${message.join(" ")}`;
-
-      if (length == 1) {
-        //single object
-        this.validationErrors[key[0]].error = true;
-        this.validationErrors[key[0]].message = modifiedMessage;
-      } else if (length == 2) {
-        //two dimensional object
-        this.validationErrors[key[0]][key[1]].error = true;
-        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
-      }
-    }
-    console.log(this.validationErrors);
+  throwErrors() {
+    this.form.showErrors(this.errors);
   }
 
-  updateValidation(first, second = "") {
-    if (second == "") {
-      this.validationErrors[first].error = false;
-    } else {
-      this.validationErrors[first][second].error = false;
+  concatArray(path) {
+    this.concatArrayKeys = "";
+    for (const i in path) {
+      this.concatArrayKeys += path[i] + ".";
     }
+    this.concatArrayKeys = this.concatArrayKeys.substring(
+      0,
+      this.concatArrayKeys.length - 1
+    );
+    return this.concatArrayKeys;
   }
 }
-

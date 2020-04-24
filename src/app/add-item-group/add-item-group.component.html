@@ -35,7 +35,12 @@
               <h2 class="card-title">Details</h2>
             </header>
             <div class="card-body">
-              <form class="form-horizontal form-bordered" method="get">
+              <form
+                class="form-horizontal form-bordered"
+                method="get"
+                name="form"
+                id="form_"
+              >
                 <div class="form-group row">
                   <div class="col-lg-12">
                     <label
@@ -49,16 +54,7 @@
                       id="inputDefault"
                       [(ngModel)]="groupName"
                       name="groupName"
-                      (input)="updateValidation('groupName')"
-                      [ngClass]="{
-                        redBorder: validationErrors.groupName.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.groupName.error == true"
-                      class="red"
-                      >{{ validationErrors.groupName.message }}</span
-                    >
                   </div>
                 </div>
 
@@ -78,16 +74,7 @@
                       id="comment"
                       [(ngModel)]="description"
                       name="description"
-                      (input)="updateValidation('description')"
-                      [ngClass]="{
-                        redBorder: validationErrors.description.error == true
-                      }"
                     ></textarea>
-                    <span
-                      *ngIf="validationErrors.description.error == true"
-                      class="red"
-                      >{{ validationErrors.description.message }}</span
-                    >
                   </div>
                 </div>
 
