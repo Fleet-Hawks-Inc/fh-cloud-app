@@ -148,6 +148,7 @@ import {RouterModule} from '@angular/router';
 import { AddCycleComponent } from './add-cycle/add-cycle.component';
 import { EditCycleComponent } from './edit-cycle/edit-cycle.component';
 import { CycleListComponent } from './cycle-list/cycle-list.component';
+import { InventoryStockStatementComponent } from './Reports/inventory-stock-statement/inventory-stock-statement.component';
 
 
 
@@ -292,7 +293,8 @@ import { CycleListComponent } from './cycle-list/cycle-list.component';
     MultiSidebarComponents,
     AddCycleComponent,
     EditCycleComponent,
-    CycleListComponent
+    CycleListComponent,
+    InventoryStockStatementComponent
 
 
   ],
