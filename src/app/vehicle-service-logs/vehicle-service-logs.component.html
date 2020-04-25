@@ -48,9 +48,9 @@
             </div>
 
             <a
-              routerLink="/Add-Documents"
+              routerLink="/Add-Vehicle-Service-Log"
               class="mb-1 mt-1 mr-1 btn btn-success"
-              ><i class="fas fa-plus"></i> Add Document</a
+              ><i class="fas fa-plus"></i> Add Vehicle Service Log</a
             >
           </div>
         </div>
@@ -69,12 +69,8 @@
               >
                 <thead>
                   <tr>
-                    <th>Vehicle Id</th>
-                    <th>Vendor ID</th>
-                    <th>Task</th>
                     <th>Description</th>
                     <th>Value</th>
-                    <th>Image</th>
                     <th>Service Type</th>
                     <th>Odometer</th>
                     <th>Edit</th>
@@ -85,12 +81,8 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let vehicelServiceLog of vehicleServiceLogs">
-                    <td>{{ vehicelServiceLog.vehicleID }}</td>
-                    <td>{{ vehicelServiceLog.vendorID }}</td>
-                    <td>{{ vehicelServiceLog.task }}</td>
-                    <td>{{ vehicelServiceLog.description }}</td>
+                    <td>{{ vehicelServiceLog.taskDescription }}</td>
                     <td>{{ vehicelServiceLog.value }}</td>
-                    <td>{{ vehicelServiceLog.image }}</td>
                     <td>{{ vehicelServiceLog.serviceType }}</td>
                     <td>{{ vehicelServiceLog.odometer }}</td>
                     <td>

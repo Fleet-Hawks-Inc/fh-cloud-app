@@ -1,0 +1,278 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+
+      <section class="card mb-4">
+        <div class="card-body">
+          <h2 class="card-title mt-3 pull-left">{{ title }}</h2>
+          <div class="pull-right">
+            <div class="btn-group flex-wrap">
+              <button
+                type="button"
+                class="mb-1 mt-1 mr-1 btn btn-default dropdown-toggle"
+                data-toggle="dropdown"
+              >
+                <i class="fas fa-ellipsis-v"></i> Action
+                <span class="caret"></span>
+              </button>
+              <div class="dropdown-menu" role="menu">
+                <a class="dropdown-item text-1" href="#">Action</a>
+                <a class="dropdown-item text-1" href="#">Another action</a>
+                <a class="dropdown-item text-1" href="#">Something else here</a>
+                <a class="dropdown-item text-1" href="#">Separated link</a>
+              </div>
+            </div>
+
+            <a routerLink="/Add-Item" class="mb-1 mt-1 mr-1 btn btn-success"
+              ><i class="fas fa-plus"></i> Add Item</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <div class="row pt-3">
+                <div class="col-md-5">
+                  <form class="form-horizontal" method="get">
+                    <div class="form-group row">
+                      <div class="col-md-3 text-right">
+                        <label class="control-label pt-2" for="inputDefault"
+                          >Select Stock Item</label
+                        >
+                      </div>
+                      <div class="col-md-6">
+                        <select
+                          data-plugin-selectTwo
+                          class="form-control populate"
+                        >
+                          <optgroup label="">
+                            <option *ngFor="let q of items" value="{{q.itemID}}">{{q.itemName}}</option>
+                        </optgroup>
+                        </select>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-md-7">
+                  <ul class="pagination pull-right justify-content-end">
+                    <li
+                      class="paginate_button page-item previous"
+                      id="datatable-editable_previous"
+                    >
+                      <a href="#" data-dt-idx="1" tabindex="0" class="page-link"
+                        ><i class="fas fa-chevron-left"></i>
+                      </a>
+                    </li>
+                    <li
+                      class="paginate_button page-item next"
+                      id="datatable-editable_next"
+                    >
+                      <a href="#" data-dt-idx="7" tabindex="0" class="page-link"
+                        ><i class="fas fa-chevron-right"></i
+                      ></a>
+                    </li>
+                  </ul>
+                  <p class="pull-right text-4 justify-content-end mr-3 pt-1">
+                    1-20 of 100
+                  </p>
+                </div>
+              </div>
+            </header>
+            <div class="card-body">
+              <table
+                class="table table-responsive-lg table-striped mb-0"
+                id="datatable-default"
+              >
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Quantity In</th>
+                    <th>Quantity Out</th>
+                    <th>Quantity In Hand</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="table-stock-qty-td" width="11%">12-June-2018</td>
+                    <td class="table-stock-qty-td" width="26%">12563462018</td>
+                    <td class="table-stock-qty-td" width="26%">1285562018</td>
+                    <td class="table-stock-qty-td" width="26%">85787562018</td>
+                    <td width="11%">
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a class="dropdown-item text-1" href="#">Edit</a>
+                          <a class="dropdown-item text-1" href="#">Delete</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="table-stock-qty-td">27-Aug-2000</td>
+                    <td class="table-stock-qty-td">12563462018</td>
+                    <td class="table-stock-qty-td">1285562018</td>
+                    <td class="table-stock-qty-td">85787562018</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a class="dropdown-item text-1" href="#">Edit</a>
+                          <a class="dropdown-item text-1" href="#">Delete</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="table-stock-qty-td">2-May-2018</td>
+                    <td class="table-stock-qty-td">12563462018</td>
+                    <td class="table-stock-qty-td">1285562018</td>
+                    <td class="table-stock-qty-td">85787562018</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a class="dropdown-item text-1" href="#">Edit</a>
+                          <a class="dropdown-item text-1" href="#">Delete</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="table-stock-qty-td">16-Jan-2017</td>
+                    <td class="table-stock-qty-td">12563462018</td>
+                    <td class="table-stock-qty-td">1285562018</td>
+                    <td class="table-stock-qty-td">85787562018</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a class="dropdown-item text-1" href="#">Edit</a>
+                          <a class="dropdown-item text-1" href="#">Delete</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="table-stock-qty-td">16-June-2016</td>
+                    <td class="table-stock-qty-td">12563462018</td>
+                    <td class="table-stock-qty-td">1285562018</td>
+                    <td class="table-stock-qty-td">85787562018</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a class="dropdown-item text-1" href="#">Edit</a>
+                          <a class="dropdown-item text-1" href="#">Delete</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="table-stock-qty-td">27-Aug-2000</td>
+                    <td class="table-stock-qty-td">12563462018</td>
+                    <td class="table-stock-qty-td">1285562018</td>
+                    <td class="table-stock-qty-td">85787562018</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a class="dropdown-item text-1" href="#">Edit</a>
+                          <a class="dropdown-item text-1" href="#">Delete</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="table-stock-qty-td">9-Nov-2018</td>
+                    <td class="table-stock-qty-td">12563462018</td>
+                    <td class="table-stock-qty-td">1285562018</td>
+                    <td class="table-stock-qty-td">85787562018</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a class="dropdown-item text-1" href="#">Edit</a>
+                          <a class="dropdown-item text-1" href="#">Delete</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

@@ -159,7 +159,7 @@ import {AddGeofenceComponent} from './add-geofence/add-geofence.component';
 import {EditCycleComponent} from './edit-cycle/edit-cycle.component';
 import {CycleListComponent} from './cycle-list/cycle-list.component';
 import {AddCycleComponent} from './add-cycle/add-cycle.component';
-
+import { InventoryStockStatementComponent } from './Reports/inventory-stock-statement/inventory-stock-statement.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "/Login", pathMatch: "full" },
@@ -383,6 +383,17 @@ const routes: Routes = [
   { path: "Add-Cycle", component: AddCycleComponent },
   { path: "Edit-Cycle/:cycleID", component: EditCycleComponent },
   { path: "Cycle-List", component: CycleListComponent },
+
+  /**
+   * Reports routes starts here
+   */
+
+  { path: "Inventory-Stock-Statement", component: InventoryStockStatementComponent }
+
+
+   /**
+    * Reports routes ends here
+    */
 
 ];
 @NgModule({
