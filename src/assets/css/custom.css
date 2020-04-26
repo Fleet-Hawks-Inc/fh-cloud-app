@@ -800,15 +800,7 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
 
     /* ********************* yard entery page classes start here ********************** */
 
-    /* geofenc map serach*/
 
-.gfmap{position: relative;}
-.gfmaps{
-width: 400px;
-position: absolute;
-right: 20px; top: 10px;
-
-}
 
     /* ********************* yard entery page classes end here ********************** */
 
