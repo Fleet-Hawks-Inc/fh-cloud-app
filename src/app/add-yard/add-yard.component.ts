@@ -1,19 +1,11 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ApiService } from "../api.service";
+import { MapBoxService } from "../map-box.service";
 import { Router } from "@angular/router";
 import { catchError, map, mapTo, tap } from "rxjs/operators";
 import { from, of } from "rxjs";
 declare var jquery: any;
-
 declare var $: any;
-
-// Mapbox Imports
-import * as mapboxgl from 'mapbox-gl';
-import * as mapboxSdk from '@mapbox/mapbox-sdk';
-import * as MapboxDraw from '@mapbox/mapbox-gl-draw';
-import * as Geocoder from '@mapbox/mapbox-gl-geocoder';
-import * as Turf from '@turf/turf';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: "app-add-yard",
@@ -30,8 +22,8 @@ export class AddYardComponent implements OnInit, AfterViewInit {
 
   yardName = "";
   description = "";
-  latitude = "12";
-  longitude = "34";
+  latitude = "";
+  longitude = "";
 
   stateID = "";
   countryID = "";
@@ -44,22 +36,20 @@ export class AddYardComponent implements OnInit, AfterViewInit {
   hasSuccess: boolean = false;
   Error: string = "";
   Success: string = "";
-
-  map: mapboxgl.Map;
-  style = 'mapbox://styles/mapbox/satellite-v9';
-  lat = -104.618896;
-  lng = 50.445210;
-  isControlAdded = false;
-  frontEndData = {};
-  mapboxDraw: MapboxDraw;
-  geoCoder: Geocoder;
-  plottedMap: {};
-  totalArea;
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(
+    private apiService: ApiService,
+    private mapBoxService: MapBoxService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.fetchCountries();
     //  this.initMapbox();
+    // this.plotGeofencing();
+  }
+
+  initMap() {
+    this.mapBoxService.initMapbox(-104.618896, 50.44521);
   }
 
   fetchCountries() {
@@ -86,21 +76,24 @@ export class AddYardComponent implements OnInit, AfterViewInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    this.getGeofenceData();
+    //  this.mapBoxService.getGeofenceData();
+
     const data = {
       yardName: this.yardName,
       description: this.description,
       geolocation: {
-        latitude: this.latitude,
-        longitude: this.longitude,
+        latitude: this.mapBoxService.latitude,
+        longitude: this.mapBoxService.longitude,
       },
-      geofence: this.plottedMap || 'No GeofenceData',
+      geofence: this.mapBoxService.plottedMap || "No GeofenceData",
       stateID: this.stateID,
       countryID: this.countryID,
     };
-    
+
+    //    let pr = JSON.parse(this.plottedMap);
+    //  console.log(pr[0]);return;
     this.apiService.postData("yards", data).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
@@ -117,8 +110,8 @@ export class AddYardComponent implements OnInit, AfterViewInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => { },
-            next: () => { },
+            error: () => {},
+            next: () => {},
           });
       },
       next: (res) => {
@@ -136,107 +129,4 @@ export class AddYardComponent implements OnInit, AfterViewInit {
   throwErrors() {
     this.form.showErrors(this.errors);
   }
-
-  /** Mapbox */
-  initMapbox() {
-    // mapboxgl.accessToken = environment.mapbox.accessToken;
-    this.map = new mapboxgl.Map({
-
-      container: 'map',
-      style: this.style,
-      zoom: 12,
-      center: [-104.618896, 50.445210,],
-      accessToken: environment.mapBox.accessToken,
-
-    });
-    // Add Geocoder
-    this.geoCoder = new Geocoder({ accessToken: environment.mapBox.accessToken, mapboxgl: this.map });
-    this.map.addControl(this.geoCoder);
-
-    //Add Navigation
-    this.map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }));
-
-    // Add geofencing controls
-    const mapboxDrawOptions = {
-      displayControlsDefault: false,
-      controls: {
-        polygon: true,
-        trash: true
-      }
-    };
-
-    this.mapboxDraw = new MapboxDraw(mapboxDrawOptions);
-
-    this.map.addControl(this.mapboxDraw, 'top-left');
-    this.geoFenceEvents();
-  }
-
-  geoFenceEvents() {
-    this.map.on('draw.create', (e) => {
-
-      //this.totalArea = `Total area geofenced  (sq. meters) ${Turf.area(e)}`;
-      this.plottedMap = JSON.stringify(e.features, null, 4);
-
-    });
-
-    // this.map.on('draw.delete', (e) => {
-    //   console.log('deleted')
-    // });
-    // this.map.on('draw.update', (e) => {
-    //   console.log('deleted')
-    // });
-
-  }
-  getGeofenceData = () => {
-    const data = this.mapboxDraw.getAll();
-    if (data.features) {
-      this.totalArea = `Total area geofenced: ${Math.round(Turf.area(data))} sq. meters`;
-      this.plottedMap = JSON.stringify(data.features, null, 4);
-
-    }
-  }
-
-  plotGeofencing() {
-    var feature = {
-      id: 'unique-id',
-      type: 'Feature',
-      properties: {},
-      geometry: {
-        type: 'Polygon', coordinates: [
-          [
-            [
-              -113.96705829367045,
-              50.98511129542845
-            ],
-            [
-              -113.96454774603279,
-              50.98509778734271
-            ],
-            [
-              -113.96463357672111,
-              50.98270003991033
-            ],
-            [
-              -113.96706902250676,
-              50.982747320634246
-            ],
-            [
-              -113.96705829367045,
-              50.98511129542845
-            ]
-          ]
-        ]
-      }
-    };
-    this.map.flyTo({
-      center: [-113.96705829367045, 50.98511129542845],
-      zoom: 16,
-      // speed:10,
-      // screenSpeed:5
-    });
-
-    var featureIds = this.mapboxDraw.add(feature);
-
-  }
-
 }

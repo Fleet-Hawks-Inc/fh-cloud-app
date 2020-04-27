@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { MapBoxService } from "../map-box.service";
 import { ApiService } from "../api.service";
 import { catchError, map, mapTo, tap } from "rxjs/operators";
 import { from, of } from "rxjs";
@@ -39,7 +40,11 @@ export class EditYardComponent implements OnInit, AfterViewInit {
   Error: string = "";
   Success: string = "";
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private mapBoxService: MapBoxService,
+    private apiService: ApiService
+  ) {}
 
   ngOnInit() {
     this.yardID = this.route.snapshot.params["yardID"];
@@ -62,7 +67,17 @@ export class EditYardComponent implements OnInit, AfterViewInit {
     }, 2000);
   }
 
-  
+  initMap() {
+    //initiate map box
+    this.mapBoxService.initMapbox(-104.618896, 50.44521);
+
+    //create polygon
+    this.mapBoxService.plotGeofencing(
+      this.geofence,
+      this.latitude,
+      this.longitude
+    );
+  }
 
   ngAfterViewInit() {
     $(document).ready(() => {
@@ -107,15 +122,16 @@ export class EditYardComponent implements OnInit, AfterViewInit {
       yardName: this.yardName,
       description: this.description,
       geolocation: {
-        latitude: this.latitude,
-        longitude: this.longitude,
+        latitude: this.mapBoxService.latitude,
+        longitude: this.mapBoxService.longitude,
       },
-      geofence: this.geofence,
+      geofence: this.mapBoxService.plottedMap,
       stateID: this.stateID,
       countryID: this.countryID,
-      timeCreated: this.timeCreated
+      timeCreated: this.timeCreated,
     };
-
+    // console.log(data);
+    // return;
     this.apiService.putData("yards", data).subscribe({
       complete: () => {},
       error: (err) => {
