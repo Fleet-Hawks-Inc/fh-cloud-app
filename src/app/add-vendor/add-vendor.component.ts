@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { ApiService } from "../api.service";
 import { from, of } from "rxjs";
 import { map } from "rxjs/operators";
+import { MapBoxService } from "../map-box.service";
 import { Object } from "aws-sdk/clients/s3";
 declare var $: any;
 
@@ -24,8 +25,8 @@ export class AddVendorComponent implements OnInit {
   vendorName = "";
   vendorType = "";
   geoLocation = {
-    latitude: "12.2",
-    longitude: "23.2",
+    latitude: "",
+    longitude: "",
   };
   address = "";
   stateID = "";
@@ -42,7 +43,7 @@ export class AddVendorComponent implements OnInit {
   hasSuccess: boolean = false;
   Error: string = "";
   Success: string = "";
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService, private mapBoxService: MapBoxService, private router: Router) {}
 
   ngOnInit() {
     this.fetchCountries();
@@ -50,6 +51,10 @@ export class AddVendorComponent implements OnInit {
     $(document).ready(() => {
       this.form = $("#form_").validate();
     });
+  }
+
+  initMap() {
+    this.mapBoxService.initMapbox(-104.618896, 50.44521);
   }
 
   fetchCountries() {
@@ -79,16 +84,17 @@ export class AddVendorComponent implements OnInit {
       vendorName: this.vendorName,
       vendorType: this.vendorType,
       geoLocation: {
-        latitude: this.geoLocation.latitude,
-        longitude: this.geoLocation.longitude,
+        latitude: this.mapBoxService.latitude,
+        longitude: this.mapBoxService.longitude,
       },
+      geofence: this.mapBoxService.plottedMap || [],
       address: this.address,
       stateID: this.stateID,
       countryID: this.countryID,
       taxID: this.taxID,
       creditDays: this.creditDays,
     };
-
+    console.log(data);
     this.apiService.postData("vendors", data).subscribe({
       complete: () => {},
       error: (err) => {
