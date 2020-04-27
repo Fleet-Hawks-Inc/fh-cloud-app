@@ -130,8 +130,7 @@ export class EditYardComponent implements OnInit, AfterViewInit {
       countryID: this.countryID,
       timeCreated: this.timeCreated,
     };
-    // console.log(data);
-    // return;
+    
     this.apiService.putData("yards", data).subscribe({
       complete: () => {},
       error: (err) => {

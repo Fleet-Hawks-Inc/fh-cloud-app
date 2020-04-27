@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { ApiService } from "../api.service";
 import { from, of } from "rxjs";
 import { map } from "rxjs/operators";
+import { MapBoxService } from "../map-box.service";
 import { Object } from "aws-sdk/clients/s3";
 declare var $: any;
 
@@ -28,6 +29,7 @@ export class EditVendorComponent implements OnInit {
     latitude: "",
     longitude: "",
   };
+  geofence = "";
   address = "";
   stateID = "";
   countryID = "";
@@ -44,13 +46,29 @@ export class EditVendorComponent implements OnInit {
   hasSuccess: boolean = false;
   Error: string = "";
   Success: string = "";
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private mapBoxService: MapBoxService,
+    private apiService: ApiService
+  ) {}
 
   ngOnInit() {
     this.vendorID = this.route.snapshot.params["vendorID"];
     this.fetchCountries();
     this.fetchAccounts();
     this.fetchVendor();
+  }
+
+  initMap() {
+    //initiate map box
+    this.mapBoxService.initMapbox(-104.618896, 50.44521);
+
+    //create polygon
+    this.mapBoxService.plotGeofencing(
+      this.geofence,
+      this.geoLocation.latitude,
+      this.geoLocation.longitude
+    );
   }
 
   fetchAccounts() {
@@ -90,7 +108,7 @@ export class EditVendorComponent implements OnInit {
           latitude: result.geoLocation.latitude,
           longitude: result.geoLocation.longitude,
         };
-        this.address = result.address;
+        (this.geofence = result.geofence), (this.address = result.address);
         this.stateID = result.stateID;
         this.countryID = result.countryID;
         this.taxID = result.taxID;
@@ -109,9 +127,10 @@ export class EditVendorComponent implements OnInit {
       vendorName: this.vendorName,
       vendorType: this.vendorType,
       geoLocation: {
-        latitude: this.geoLocation.latitude,
-        longitude: this.geoLocation.longitude,
+        latitude: this.mapBoxService.latitude,
+        longitude: this.mapBoxService.longitude,
       },
+      geofence: this.mapBoxService.plottedMap || [],
       address: this.address,
       stateID: this.stateID,
       countryID: this.countryID,

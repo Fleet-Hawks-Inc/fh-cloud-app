@@ -44,8 +44,6 @@ export class AddYardComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.fetchCountries();
-    //  this.initMapbox();
-    // this.plotGeofencing();
   }
 
   initMap() {
@@ -76,7 +74,6 @@ export class AddYardComponent implements OnInit, AfterViewInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    //  this.mapBoxService.getGeofenceData();
 
     const data = {
       yardName: this.yardName,
@@ -90,8 +87,6 @@ export class AddYardComponent implements OnInit, AfterViewInit {
       countryID: this.countryID,
     };
 
-    //    let pr = JSON.parse(this.plottedMap);
-    //  console.log(pr[0]);return;
     this.apiService.postData("yards", data).subscribe({
       complete: () => {},
       error: (err) => {
@@ -99,9 +94,7 @@ export class AddYardComponent implements OnInit, AfterViewInit {
           .pipe(
             map((val: any) => {
               const path = val.path;
-              // We Can Use This Method
               const key = val.message.match(/"([^']+)"/)[1];
-              console.log(key);
               val.message = val.message.replace(/".*"/, "This Field");
               this.errors[key] = val.message;
             })

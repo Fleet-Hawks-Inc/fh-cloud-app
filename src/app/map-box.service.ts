@@ -95,6 +95,10 @@ export class MapBoxService {
       // screenSpeed:5
     });
 
+    this.plottedMap = geofence;
+    this.latitude = latitude;
+    this.longitude = longitude;
+
     var featureIds = this.mapboxDraw.add(feature);
   }
 }
