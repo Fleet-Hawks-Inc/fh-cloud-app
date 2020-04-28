@@ -149,6 +149,7 @@ import { AddCycleComponent } from './add-cycle/add-cycle.component';
 import { EditCycleComponent } from './edit-cycle/edit-cycle.component';
 import { CycleListComponent } from './cycle-list/cycle-list.component';
 import { InventoryStockStatementComponent } from './Reports/inventory-stock-statement/inventory-stock-statement.component';
+import { NavOpenedDirective } from './directives/nav-opened.directive';
 
 
 
@@ -294,7 +295,8 @@ import { InventoryStockStatementComponent } from './Reports/inventory-stock-stat
     AddCycleComponent,
     EditCycleComponent,
     CycleListComponent,
-    InventoryStockStatementComponent
+    InventoryStockStatementComponent,
+    NavOpenedDirective
 
 
   ],

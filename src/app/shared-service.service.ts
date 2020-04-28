@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,5 +7,6 @@ import {BehaviorSubject} from 'rxjs';
 export class SharedServiceService {
 
   activeParentNav = new BehaviorSubject('fleet');
+  activeSubNav = new BehaviorSubject('');
   constructor() { }
 }

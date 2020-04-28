@@ -161,6 +161,8 @@ import {CycleListComponent} from './cycle-list/cycle-list.component';
 import {AddCycleComponent} from './add-cycle/add-cycle.component';
 import { InventoryStockStatementComponent } from './Reports/inventory-stock-statement/inventory-stock-statement.component';
 
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+
 const routes: Routes = [
   { path: "", redirectTo: "/Login", pathMatch: "full" },
   { path: "Login", component: LoginComponent },
@@ -399,6 +401,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]
 })
 @NgModule({
   declarations: [],
