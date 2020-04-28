@@ -1,18 +1,18 @@
 <ul class="nav nav-main">
-  <li>
+  <li appNavOpened [expandedNav]="'dashboard'">
     <a class="nav-link" routerLink="/Dashboard">
       <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
       <span>Dashboard</span>
     </a>
   </li>
 
-  <li>
+  <li appNavOpened [expandedNav]="'map-dashboard'">
     <a class="nav-link" routerLink="/Map-Dashboard">
       <i class="fa fa-globe" aria-hidden="true"></i>
       <span>Map Dashboard</span>
     </a>
   </li>
-  <li class="nav-parent">
+  <li class="nav-parent" appNavOpened [expandedNav]="'drivers'">
     <a class="nav-link" href="#">
       <i class="fa fa-users" aria-hidden="true"></i>
       <span>Drivers</span>
@@ -30,8 +30,8 @@
       </li>
     </ul>
   </li>
-  <li class="nav-parent">
-    <a class="nav-link" href="#">
+  <li class="nav-parent" appNavOpened [expandedNav]="'fleet-manager'">
+    <a class="nav-link" href="#" >
       <i class="fa fa-laptop" aria-hidden="true"></i>
       <span>Fleet Manager</span>
     </a>
@@ -49,7 +49,7 @@
     </ul>
   </li>
 
-  <li class="nav-parent">
+  <li class="nav-parent" appNavOpened [expandedNav]="'vehicles'">
     <a class="nav-link" href="#">
       <i class="fas fa-truck-moving" aria-hidden="true"></i>
       <span>Vehicles</span>
@@ -69,7 +69,7 @@
     </ul>
   </li>
 
-  <li class="nav-parent">
+  <li class="nav-parent" appNavOpened [expandedNav]="'yards'">
     <a class="nav-link" href="#">
       <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
       <span>Yards</span>
@@ -88,7 +88,7 @@
     </ul>
   </li>
 
-  <li class="nav-parent">
+  <li class="nav-parent" appNavOpened [expandedNav]="'assets'">
     <a class="nav-link" href="#">
       <i class="fas fa-truck-loading" aria-hidden="true"></i>
       <span>Assets</span>
@@ -107,7 +107,7 @@
     </ul>
   </li>
 
-  <li class="nav-parent">
+  <li class="nav-parent" appNavOpened [expandedNav]="'expenses'">
     <a class="nav-link" href="#">
       <i class="fas fa-money-bill" aria-hidden="true"></i>
       <span>Expenses</span>
@@ -171,7 +171,7 @@
     </ul>
   </li>
 
-  <li class="nav-parent">
+  <li class="nav-parent" appNavOpened [expandedNav]="'maintenance'">
     <a class="nav-link" href="#">
       <i class="fa fa-wrench" aria-hidden="true"></i>
       <span>Maintenance</span>
@@ -233,7 +233,7 @@
       </li>
     </ul>
   </li>
-  <li class="nav-parent">
+  <li class="nav-parent" appNavOpened [expandedNav]="'inventory'">
     <a class="nav-link" href="#">
       <i class="fas fa-boxes" aria-hidden="true"></i>
       <span>Inventory</span>
@@ -319,7 +319,7 @@
     </ul>
   </li>
 
-  <li class="nav-parent">
+  <li class="nav-parent" appNavOpened [expandedNav]="'geofencing'">
     <a class="nav-link" href="#">
       <i class="fa fa-map-marker" aria-hidden="true"></i>
       <span>Geofencing</span>
@@ -706,7 +706,7 @@
   <!--</ul>-->
   <!--</li>-->
 
-  <li class="nav-parent">
+  <li class="nav-parent" appNavOpened [expandedNav]="'action'">
     <a class="nav-link" href="#">
       <i class="fas fa-power-off" aria-hidden="true"></i>
       <span>Action</span>
