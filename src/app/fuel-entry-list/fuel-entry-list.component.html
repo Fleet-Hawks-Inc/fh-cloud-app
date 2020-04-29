@@ -71,8 +71,8 @@
                 <thead>
                   <tr>
                     <th>Vehicle Id</th>
-                    <th>Trip Id</th>
-                    <th>Odo Metere</th>
+                    <th>Volume</th>
+                    <th>Fuel Type</th>
                     <th>Location</th>
                     <th>Edit</th>
                     <th>Delete</th>
@@ -83,8 +83,8 @@
                 <tbody>
                   <tr *ngFor="let fuelList of fuelLists">
                     <td>{{ fuelList.vehicleID }}</td>
-                    <td>{{ fuelList.date }}</td>
-                    <td>{{ fuelList.odometer }}</td>
+                    <td>{{ fuelList.volume }}</td>
+                    <td>{{ fuelList.fuelType }}</td>
                     <td>{{ fuelList.location }}</td>
                     <td>
                       <a routerLink="/Edit-Fuel-Entry/{{ fuelList.entryID }}"

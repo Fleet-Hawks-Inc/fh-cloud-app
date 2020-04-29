@@ -68,9 +68,7 @@
                 <thead>
                   <tr>
                     <th>Yard Name</th>
-                    <th>Geo Location Lat</th>
-                    <th>Geo Location Long</th>
-                    <th>Geofence</th>
+                    <th>Description</th>
                     <!--<th>Address ID</th>-->
                     <!--<th>Time Zone</th>-->
 
@@ -83,9 +81,7 @@
                 <tbody>
                   <tr *ngFor="let yard of yards">
                     <td>{{ yard.yardName }}</td>
-                    <td>{{ yard.geolocation.latitude }}</td>
-                    <td>{{ yard.geolocation.longitude }}</td>
-                    <td>{{ yard.geofence }}</td>
+                    <td>{{ yard.description }}</td>
                     <!--<td>{{yard.addressID}}</td>-->
                     <!--<td>{{yard.timeZone}}</td>-->
                     <td>

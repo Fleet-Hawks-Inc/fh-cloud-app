@@ -271,7 +271,7 @@ export class EditVehicleNewComponent implements OnInit {
       ownership: this.ownership,
       additionalDetails: {
         vehicleColor: this.additionalDetails.vehicleColor,
-        bodyType: this.additionalDetails.bodySubType,
+        bodyType: this.additionalDetails.bodyType,
         bodySubType: this.additionalDetails.bodySubType,
       },
       lifeCycle: {
