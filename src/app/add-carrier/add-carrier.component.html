@@ -231,44 +231,6 @@
                 </div>
 
                 <div class="form-group row">
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Hard Breaking</label
-                    >
-                    <div class="input-group mb-3">
-                      <input
-                        type="number"
-                        class="form-control"
-                        name="hardBreaking"
-                        [(ngModel)]="hardBreaking"
-                      />
-                      <span class="input-group-append">
-                        <span class="input-group-text">m/s<sup>2</sup></span>
-                      </span>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Hard Acceleration</label
-                    >
-                    <div class="input-group mb-3">
-                      <input
-                        type="number"
-                        class="form-control"
-                        name="hardAcceleration"
-                        [(ngModel)]="hardAcceleration"
-                      />
-                      <span class="input-group-append">
-                        <span class="input-group-text">m/s<sup>2</sup></span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group row">
                   <div class="col-lg-6">
                     <label
                       class="control-label text-lg-right pt-2"
@@ -573,7 +535,7 @@
                         <span class="input-group-text">%</span>
                       </span>
                       <input
-                        type="text"
+                        type="number"
                         class="form-control"
                         name="driverPerformance.corner"
                         [(ngModel)]="driverPerformance.corner"
@@ -591,7 +553,7 @@
                         <span class="input-group-text">%</span>
                       </span>
                       <input
-                        type="text"
+                        type="number"
                         class="form-control"
                         name="driverPerformance.HOSViolations"
                         [(ngModel)]="driverPerformance.HOSViolations"

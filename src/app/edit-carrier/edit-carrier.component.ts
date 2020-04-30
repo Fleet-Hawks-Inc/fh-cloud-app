@@ -31,8 +31,6 @@ export class EditCarrierComponent implements OnInit {
     zipCode: "",
     countryID: "",
   };
-  hardBreaking = "";
-  hardAcceleration = "";
   superUserName = "";
   unitSettings = {
     distanceUnit: "",
@@ -48,11 +46,11 @@ export class EditCarrierComponent implements OnInit {
     fuelTheftAlertParameters: "",
   };
   driverPerformance = {
-    average: "",
-    HB: "",
-    HA: "",
-    corner: "",
-    HOSViolations: "",
+    average: 0,
+    HB: 0,
+    HA: 0,
+    corner: 0,
+    HOSViolations: 0,
   };
   timeCreated = "";
   /******************/
@@ -98,8 +96,6 @@ export class EditCarrierComponent implements OnInit {
         this.address.zipCode = result.address.zipCode;
         this.address.countryID = result.address.countryID;
 
-        this.hardBreaking = result.hardBreaking;
-        this.hardAcceleration = result.hardAcceleration;
         this.superUserName = result.superUserName;
 
         this.unitSettings.distanceUnit = result.unitSettings.distanceUnit;
@@ -201,6 +197,19 @@ export class EditCarrierComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
 
+    //total of driver performance must be equal to 100
+    if (
+      this.driverPerformance.average +
+        this.driverPerformance.HB +
+        this.driverPerformance.HA +
+        this.driverPerformance.corner +
+        this.driverPerformance.HOSViolations !=
+      100
+    ) {
+      alert("Sum of driver performance must be 100");
+      return false;
+    }
+
     const data = {
       carrierID: this.carrierID,
       carrierName: this.carrierName,
@@ -214,8 +223,6 @@ export class EditCarrierComponent implements OnInit {
         zipCode: this.address.zipCode,
         countryID: this.address.countryID,
       },
-      hardBreaking: this.hardBreaking,
-      hardAcceleration: this.hardAcceleration,
       superUserName: this.superUserName,
       unitSettings: {
         distanceUnit: this.unitSettings.distanceUnit,
@@ -241,7 +248,7 @@ export class EditCarrierComponent implements OnInit {
       timeCreated: this.timeCreated,
     };
     console.log(data);
-  //  return;
+    //  return;
     this.apiService.putData("carriers", data).subscribe({
       complete: () => {},
       error: (err) => {
