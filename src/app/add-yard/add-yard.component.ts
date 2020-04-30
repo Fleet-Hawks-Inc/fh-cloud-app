@@ -44,6 +44,9 @@ export class AddYardComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.fetchCountries();
+    $(document).ready(() => {
+      //$("#countryId").select2();//
+    });
   }
 
   initMap() {
