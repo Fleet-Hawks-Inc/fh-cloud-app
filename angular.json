@@ -48,6 +48,7 @@
               "src/assets/js/custom.js",
               "src/assets/js/theme.init.js",
               "src/assets/js/examples/examples.dashboard.js",
+              "src/assets/js/jquery.validate.min.js",
               "node_modules/datatables.net/js/jquery.dataTables.js"
             ]
           },
