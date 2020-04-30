@@ -30,8 +30,6 @@ export class AddCarrierComponent implements OnInit {
     zipCode: "",
     countryID: "",
   };
-  hardBreaking = "";
-  hardAcceleration = "";
   superUserName = "";
   unitSettings = {
     distanceUnit: "",
@@ -47,11 +45,11 @@ export class AddCarrierComponent implements OnInit {
     fuelTheftAlertParameters: "",
   };
   driverPerformance = {
-    average: "",
-    HB: "",
-    HA: "",
-    corner: "",
-    HOSViolations: "",
+    average: 20,
+    HB: 20,
+    HA: 20,
+    corner: 20,
+    HOSViolations: 20,
   };
   /******************/
 
@@ -141,6 +139,18 @@ export class AddCarrierComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
 
+    //total of driver performance must be equal to 100
+    if (
+      this.driverPerformance.average +
+      this.driverPerformance.HB +
+      this.driverPerformance.HA +
+      this.driverPerformance.corner +
+      this.driverPerformance.HOSViolations != 100
+    ) {
+      alert('Sum of driver performance must be 100')
+      return false;
+    }
+    
     const data = {
       carrierName: this.carrierName,
       taxID: this.taxID,
@@ -153,8 +163,6 @@ export class AddCarrierComponent implements OnInit {
         zipCode: this.address.zipCode,
         countryID: this.address.countryID,
       },
-      hardBreaking: this.hardBreaking,
-      hardAcceleration: this.hardAcceleration,
       superUserName: this.superUserName,
       unitSettings: {
         distanceUnit: this.unitSettings.distanceUnit,
@@ -215,8 +223,6 @@ export class AddCarrierComponent implements OnInit {
           zipCode: "",
           countryID: "",
         };
-        this.hardBreaking = "";
-        this.hardAcceleration = "";
         this.superUserName = "";
         this.unitSettings = {
           distanceUnit: "",
@@ -232,11 +238,11 @@ export class AddCarrierComponent implements OnInit {
           fuelTheftAlertParameters: "",
         };
         this.driverPerformance = {
-          average: "",
-          HB: "",
-          HA: "",
-          corner: "",
-          HOSViolations: "",
+          average: 20,
+          HB: 20,
+          HA: 20,
+          corner: 20,
+          HOSViolations: 20,
         };
       },
     });
