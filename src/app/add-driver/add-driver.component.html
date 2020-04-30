@@ -14,7 +14,7 @@
         <h2>{{ title }}</h2>
 
         <div class="right-wrapper text-right">
-          <ol class="breadcrumbs">
+          <ol class="breadcrumbs pr-3">
             <li>
               <a routerLink="">
                 <i class="fas fa-home"></i>
@@ -153,13 +153,7 @@
 
                       >Group</label
                     >
-                    <select
-                      data-plugin-selectTwo
-                      class="form-control populate"
-                      name="groupID"
-                      [(ngModel)]="groupID"
-
-                    >
+                    <select data-plugin-selectTwo class="form-control populate" name="groupID" [(ngModel)]="groupID">
                       <!-- <optgroup label=""> -->
                         <option *ngFor="let q of groups" value="{{q.groupID}}">{{q.groupName}}</option>
                       <!-- </optgroup> -->
