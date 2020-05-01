@@ -3,6 +3,7 @@ import { ApiService } from "../api.service";
 import { Router } from "@angular/router";
 import { from, of } from "rxjs";
 import { catchError, map, mapTo, tap } from "rxjs/operators";
+import {AwsUploadService} from '../aws-upload.service';
 declare var jquery: any;
 declare var $: any;
 
@@ -13,6 +14,9 @@ declare var $: any;
 })
 export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
   title = "Add vehicle Service Logs";
+
+  imageError = '';
+  fileName = '';
 
   errors = {};
   form;
@@ -35,11 +39,13 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
   vehicles = [];
   vendors = [];
   response: any = "";
-  hasError: boolean = false;
-  hasSuccess: boolean = false;
+  hasError = false;
+  hasSuccess = false;
   Error: string = "";
   Success: string = "";
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService,
+              private router: Router,
+              private awsUS: AwsUploadService) {}
 
   ngOnInit() {
     this.fetchVehicles();
@@ -49,7 +55,7 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -73,8 +79,8 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
 
   addItem() {
     //check item already exists in selection
-    let item = this.selectedItems.filter(
-      (selectedItem) => selectedItem.itemID == this.itemID
+    const item = this.selectedItems.filter(
+      (selectedItem) => selectedItem.itemID === this.itemID
     );
     if (item.length > 0) {
       alert(
@@ -94,11 +100,29 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
   }
 
   getItemName(itemID) {
-    let item = this.items.filter((item) => item.itemID == itemID);
+    let item = this.items.filter((item) => item.itemID === itemID);
     return item[0].itemName;
   }
 
+
+  uploadFile(event) {
+    this.imageError = '';
+    if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
+      this.fileName = this.awsUS.uploadFile('test', event.target.files.item(0));
+     } else {
+      this.fileName = '';
+      this.imageError = 'Invalid Image Format';
+    }
+  }
+
+
   addVehicleServiceLog() {
+    if (this.fileName === '') {
+      this.imageError = 'Please Choose Image To Upload';
+      return;
+    }
+
+
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
@@ -112,7 +136,7 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
       odometer: this.odometer,
       attachStockItem: this.selectedItems,
     };
-   
+
     this.apiService.postData("vehicleServiceLogs", data).subscribe({
       complete: () => {},
       error: (err) => {
@@ -156,4 +180,5 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
   throwErrors() {
     this.form.showErrors(this.errors);
   }
+
 }
