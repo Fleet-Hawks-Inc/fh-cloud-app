@@ -42,7 +42,6 @@ export class AddGeofenceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.initMap();
     $(document).ready(() => {
       this.form = $("#form_").validate();
     });
