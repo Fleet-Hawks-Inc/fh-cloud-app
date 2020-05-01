@@ -1,12 +1,12 @@
 <ul class="nav nav-main">
-  <li appNavOpened [expandedNav]="'dashboard'">
+  <li  routerLinkActive="active">
     <a class="nav-link" routerLink="/Dashboard">
       <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
       <span>Dashboard</span>
     </a>
   </li>
 
-  <li appNavOpened [expandedNav]="'map-dashboard'">
+  <li  routerLinkActive="active">
     <a class="nav-link" routerLink="/Map-Dashboard">
       <i class="fa fa-globe" aria-hidden="true"></i>
       <span>Map Dashboard</span>
@@ -107,7 +107,7 @@
     </ul>
   </li>
 
-  <li class="nav-parent" appNavOpened [expandedNav]="'expenses'">
+  <li class="nav-parent" >
     <a class="nav-link" href="#">
       <i class="fas fa-money-bill" aria-hidden="true"></i>
       <span>Expenses</span>
@@ -117,10 +117,10 @@
         <a>
           Fuel
         </a>
-        <ul class="nav nav-children">
+        <ul class="nav nav-children" routerLinkActive="active">
           <li>
-            <a class="nav-link" routerLink="/Add-Fuel-Entry">
-              Add
+            <a class="nav-link" routerLink="/Add-Fuel-Entry" r>
+
             </a>
           </li>
 
@@ -170,7 +170,7 @@
     </ul>
   </li>
 
-  <li class="nav-parent" appNavOpened [expandedNav]="'maintenance'">
+  <li class="nav-parent" >
     <a class="nav-link" href="#">
       <i class="fa fa-wrench" aria-hidden="true"></i>
       <span>Maintenance</span>
@@ -232,7 +232,7 @@
       </li>
     </ul>
   </li>
-  <li class="nav-parent" appNavOpened [expandedNav]="'inventory'">
+  <li class="nav-parent" >
     <a class="nav-link" href="#">
       <i class="fas fa-boxes" aria-hidden="true"></i>
       <span>Inventory</span>
@@ -319,17 +319,17 @@
   </li>
 
   <li class="nav-parent" appNavOpened [expandedNav]="'geofencing'">
-    <a class="nav-link" href="#">
+    <a >
       <i class="fa fa-map-marker" aria-hidden="true"></i>
       <span>Geofencing</span>
     </a>
     <ul class="nav nav-children">
-      <li>
+      <li routerLinkActive="active">
         <a class="nav-link" routerLink="/Add-Geofence">
           Add
         </a>
       </li>
-      <li>
+      <li routerLinkActive="active">
         <a class="nav-link" routerLink="/Geofence-List">
           List
         </a>
