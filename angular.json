@@ -29,7 +29,9 @@
               "node_modules/@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css",
               "node_modules/@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css",
               "node_modules/@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css",
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/vendor/select2/css/select2.css",
+              "src/assets/vendor/select2-bootstrap-theme/select2-bootstrap.min.css"
             ],
             "scripts": [
               "node_modules/mapbox-gl/dist/mapbox-gl.js",
@@ -49,7 +51,8 @@
               "src/assets/js/theme.init.js",
               "src/assets/js/examples/examples.dashboard.js",
               "src/assets/js/jquery.validate.min.js",
-              "node_modules/datatables.net/js/jquery.dataTables.js"
+              "node_modules/datatables.net/js/jquery.dataTables.js",
+              "src/assets/vendor/select2/js/select2.js"
             ]
           },
           "configurations": {
