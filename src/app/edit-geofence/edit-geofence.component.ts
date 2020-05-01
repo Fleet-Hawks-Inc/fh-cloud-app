@@ -63,10 +63,6 @@ export class EditGeofenceComponent implements OnInit {
     $(document).ready(() => {
       this.form = $("#form_").validate();
     });
-
-    setTimeout(() => {
-      this.initMap();
-    }, 2000);
   }
 
   initMap() {
