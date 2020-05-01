@@ -24,7 +24,7 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/datatables.net-dt/css/jquery.dataTables.css",
+              "src/assets/css/jquerytable.css",
               "node_modules/mapbox-gl/dist/mapbox-gl.css",
               "node_modules/@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css",
               "node_modules/@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css",
