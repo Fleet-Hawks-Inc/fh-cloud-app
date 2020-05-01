@@ -1673,7 +1673,7 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
     
     
         .positionfix{position: fixed !important;}
-        .positionsta{position: static !important;}\
+        .positionsta{position: static !important;}
     
     
     
@@ -1749,3 +1749,26 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
         }    
     
 .mapboxgl-ctrl-geocoder--icon{display: none !important;}
+
+
+/* table pagination classes */
+
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover
+{
+background: #bdbdbd !important; color: #ffffff !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
