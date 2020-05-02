@@ -45,31 +45,37 @@ export class AddYardComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.fetchCountries();
     $(document).ready(() => {
-     $('#countryId').select2();
-     $('#stateID').select2();
-     $('#countryId').on('change', () => {
-       this.countryID = $('#countryId').val();
-       //$('#stateID').empty();
-       $('#stateID').trigger('change');
-      // $('#stateID').empty();
-       this.getStates();
+      $("#countryId").select2();
+      $("#stateID").select2();
+      $("#countryId").on("change", () => {
+        this.countryID = $("#countryId").val();
+        //$('#stateID').empty();
+        $("#stateID").trigger("change");
+        // $('#stateID').empty();
+        this.getStates();
       });
-
     });
   }
 
   initMap() {
+    if ($("#map-div").is(":visible")) {
+      $("#map-div").hide("slow");
+    } else {
+      $("#map-div").show("slow");
+    }
+
     this.mapBoxService.initMapbox(-104.618896, 50.44521);
   }
 
   fetchCountries() {
     this.apiService.getData("countries").subscribe({
-      complete: () => { //$('#countryId').select2()
-         } ,
-      error : () => {} ,
-      next : (result: any) => {
-      this.countries = result.Items;
-    }
+      complete: () => {
+        //$('#countryId').select2()
+      },
+      error: () => {},
+      next: (result: any) => {
+        this.countries = result.Items;
+      },
     });
   }
 
@@ -77,11 +83,11 @@ export class AddYardComponent implements OnInit, AfterViewInit {
     this.apiService
       .getData("states/countryID/" + this.countryID)
       .subscribe((result: any) => {
-       // $('#stateID').val(null).trigger('change');
-        $('#stateID').select2('data', null);
+        // $('#stateID').val(null).trigger('change');
+        $("#stateID").select2("data", null);
         this.states = result.Items;
-        $('#stateID').select2();
-        $('#stateID').trigger('change');
+        $("#stateID").select2();
+        $("#stateID").trigger("change");
       });
   }
 

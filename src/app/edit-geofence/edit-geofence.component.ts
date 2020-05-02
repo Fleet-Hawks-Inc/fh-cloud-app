@@ -66,6 +66,12 @@ export class EditGeofenceComponent implements OnInit {
   }
 
   initMap() {
+    if ($("#map-div").is(":visible")) {
+      $("#map-div").hide("slow");
+    } else {
+      $("#map-div").show("slow");
+    }
+
     //initiate map box
     this.mapBoxService.initMapbox(-104.618896, 50.44521);
 
