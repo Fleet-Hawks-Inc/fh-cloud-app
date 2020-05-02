@@ -68,6 +68,12 @@ export class EditYardComponent implements OnInit, AfterViewInit {
   }
 
   initMap() {
+    if ($("#map-div").is(":visible")) {
+      $("#map-div").hide("slow");
+    } else {
+      $("#map-div").show("slow");
+    }
+
     //initiate map box
     this.mapBoxService.initMapbox(-104.618896, 50.44521);
 
@@ -130,7 +136,7 @@ export class EditYardComponent implements OnInit, AfterViewInit {
       countryID: this.countryID,
       timeCreated: this.timeCreated,
     };
-    
+
     this.apiService.putData("yards", data).subscribe({
       complete: () => {},
       error: (err) => {
