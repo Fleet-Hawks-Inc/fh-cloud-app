@@ -44,17 +44,6 @@ export class AddYardComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.fetchCountries();
-    $(document).ready(() => {
-      $("#countryId").select2();
-      $("#stateID").select2();
-      $("#countryId").on("change", () => {
-        this.countryID = $("#countryId").val();
-        //$('#stateID').empty();
-        $("#stateID").trigger("change");
-        // $('#stateID').empty();
-        this.getStates();
-      });
-    });
   }
 
   initMap() {
@@ -83,11 +72,7 @@ export class AddYardComponent implements OnInit, AfterViewInit {
     this.apiService
       .getData("states/countryID/" + this.countryID)
       .subscribe((result: any) => {
-        // $('#stateID').val(null).trigger('change');
-        $("#stateID").select2("data", null);
         this.states = result.Items;
-        $("#stateID").select2();
-        $("#stateID").trigger("change");
       });
   }
 
