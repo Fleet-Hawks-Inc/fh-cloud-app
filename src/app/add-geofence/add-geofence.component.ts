@@ -62,6 +62,10 @@ export class AddGeofenceComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
 
+    if(!this.mapBoxService.plottedMap){
+      alert('Please draw the geofence'); return false;
+    }
+
     const data = {
       fenceName: this.fenceName,
       location: this.location,

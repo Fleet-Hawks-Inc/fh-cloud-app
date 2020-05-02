@@ -87,6 +87,10 @@ export class AddYardComponent implements OnInit, AfterViewInit {
     this.hasError = false;
     this.hasSuccess = false;
 
+    if(!this.mapBoxService.plottedMap){
+      alert('Please draw the geofence'); return false;
+    }
+
     const data = {
       yardName: this.yardName,
       description: this.description,

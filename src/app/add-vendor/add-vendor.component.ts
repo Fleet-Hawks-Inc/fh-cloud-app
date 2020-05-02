@@ -85,6 +85,10 @@ export class AddVendorComponent implements OnInit {
   }
 
   addVendor() {
+    if(!this.mapBoxService.plottedMap){
+      alert('Please draw the geofence'); return false;
+    }
+    
     let data = {
       vendorName: this.vendorName,
       vendorType: this.vendorType,
