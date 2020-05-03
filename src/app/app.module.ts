@@ -111,7 +111,7 @@ import { AddVendorComponent } from './add-vendor/add-vendor.component';
 import { EditVendorComponent } from './edit-vendor/edit-vendor.component';
 import { VendorsListComponent } from './vendors-list/vendors-list.component';
 import { RegisterUserComponent } from './register-user/register-user.component';
-import { CognitoUtility } from './services/cognito.utility.service';
+import { CognitoUtilityService } from './services/cognito.utility.service';
 
 
 
@@ -235,7 +235,7 @@ import { CognitoUtility } from './services/cognito.utility.service';
     BrowserAnimationsModule
   ],
   providers: [
-    CognitoUtility
+    CognitoUtilityService
   ],
   bootstrap: [AppComponent]
 })

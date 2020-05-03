@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { ApiService } from "../api.service";
 import { AuthService } from "../auth.service";
-import { CognitoUtility } from '../services/cognito.utility.service';
+import { CognitoUtilityService } from '../services/cognito.utility.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
     private readonly apiService: ApiService,
     private readonly router: Router,
     private readonly authService: AuthService,
-    private readonly cognitoUtility: CognitoUtility) { }
+    private readonly cognitoUtility: CognitoUtilityService) { }
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
