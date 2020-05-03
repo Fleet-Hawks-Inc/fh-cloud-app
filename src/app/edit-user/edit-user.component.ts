@@ -1,6 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { ApiService } from "../api.service";
+import { from, of } from "rxjs";
+import { map } from "rxjs/operators";
+import { Object } from "aws-sdk/clients/s3";
+declare var $: any;
 
 @Component({
   selector: "app-edit-user",
@@ -8,7 +12,11 @@ import { ApiService } from "../api.service";
   styleUrls: ["./edit-user.component.css"],
 })
 export class EditUserComponent implements OnInit {
+  parentTitle = "Users";
   title = "Edit Fleet Manager";
+  errors = {};
+  form;
+  concatArrayKeys = "";
 
   /**
    * Form Props
@@ -21,43 +29,11 @@ export class EditUserComponent implements OnInit {
   address = "";
   phone = "";
   email = "";
-  group = "";
+  groupID = "";
   loginEnabled = true;
   timeCreated = "";
 
-  /**
-   * Form errors prop
-   */
-  validationErrors = {
-    userName: {
-      error: false,
-    },
-    password: {
-      error: false,
-    },
-    firstName: {
-      error: false,
-    },
-    lastName: {
-      error: false,
-    },
-    address: {
-      error: false,
-    },
-    phone: {
-      error: false,
-    },
-    email: {
-      error: false,
-    },
-    group: {
-      error: false,
-    },
-    loginEnabled: {
-      error: false,
-    },
-  };
-
+  groups = [];
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -69,6 +45,16 @@ export class EditUserComponent implements OnInit {
   ngOnInit() {
     this.userName = this.route.snapshot.params["userName"];
     this.fetchUser();
+    this.fetchGroups();
+    $(document).ready(() => {
+      this.form = $("#form_").validate();
+    });
+  }
+
+  fetchGroups() {
+    this.apiService.getData("groups").subscribe((result: any) => {
+      this.groups = result.Items;
+    });
   }
 
   /**
@@ -87,7 +73,7 @@ export class EditUserComponent implements OnInit {
         this.address = result.address;
         this.phone = result.phone;
         this.email = result.email;
-        this.group = result.group;
+        this.groupID = result.groupID;
         this.loginEnabled = result.loginEnabled;
         this.timeCreated = result.timeCreated;
       });
@@ -103,55 +89,53 @@ export class EditUserComponent implements OnInit {
       address: this.address,
       phone: this.phone,
       email: this.email,
-      group: this.group,
+      groupID: this.groupID,
       loginEnabled: this.loginEnabled,
       timeCreated: this.timeCreated,
     };
-    // console.log(data);return;
     this.apiService.putData("users", data).subscribe({
       complete: () => {},
       error: (err) => {
-        this.mapErrors(err.error);
-        this.hasError = true;
-        this.Error = err.error;
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+              console.log(key);
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Manager updated successfully";
+        this.Success = "User updated successfully";
       },
     });
   }
 
-  mapErrors(errors) {
-    for (var i = 0; i < errors.length; i++) {
-      let key = errors[i].path;
-      let length = key.length;
-
-      //make array of message to remove the fieldName
-      let message = errors[i].message.split(" ");
-      delete message[0];
-
-      //new message
-      let modifiedMessage = `This field${message.join(" ")}`;
-
-      if (length == 1) {
-        //single object
-        this.validationErrors[key[0]].error = true;
-        this.validationErrors[key[0]].message = modifiedMessage;
-      } else if (length == 2) {
-        //two dimensional object
-        this.validationErrors[key[0]][key[1]].error = true;
-        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
-      }
-    }
+  throwErrors() {
+    this.form.showErrors(this.errors);
   }
 
-  updateValidation(first, second = "") {
-    if (second == "") {
-      this.validationErrors[first].error = false;
-    } else {
-      this.validationErrors[first][second].error = false;
+  concatArray(path) {
+    this.concatArrayKeys = "";
+    for (const i in path) {
+      this.concatArrayKeys += path[i] + ".";
     }
+    this.concatArrayKeys = this.concatArrayKeys.substring(
+      0,
+      this.concatArrayKeys.length - 1
+    );
+    return this.concatArrayKeys;
   }
 }

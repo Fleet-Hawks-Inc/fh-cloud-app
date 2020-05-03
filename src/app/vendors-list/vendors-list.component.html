@@ -13,7 +13,7 @@
         <h2>{{ title }}</h2>
 
         <div class="right-wrapper text-right">
-          <ol class="breadcrumbs">
+          <ol class="breadcrumbs pr-3">
             <li>
               <a routerLink="">
                 <i class="fas fa-home"></i>
@@ -63,15 +63,13 @@
             <div class="card-body">
               <table
                 class="table table-bordered table-striped mb-0"
-                id="datatable-default"
+                #FhDataTable id="datatable-default"
               >
                 <thead>
                   <tr>
                     <th>Vendor Name</th>
                     <th>Vendor Type</th>
                     <th>Address</th>
-                    <th>State</th>
-                    <th>Country</th>
                     <th>Edit</th>
                     <th>Delete</th>
                     <!--<th class="d-lg-none">Operator</th>-->
@@ -83,9 +81,6 @@
                     <td>{{ vendor.vendorName }}</td>
                     <td>{{ vendor.vendorType }}</td>
                     <td>{{ vendor.address }}</td>
-                    <td>{{ vendor.state }}</td>
-                    <td>{{ vendor.country }}</td>
-
                     <td>
                       <a routerLink="/Edit-Vendor/{{ vendor.vendorID }}"
                         >Edit</a

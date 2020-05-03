@@ -30,7 +30,7 @@
 
       <div class="row">
         <div class="col">
-          <section class="card mb-4">
+          <section class="card mb-3">
             <div class="card-body">
               <h2 class="card-title mt-3 pull-left">Add New Vehicle</h2>
               <div class="pull-right">
@@ -58,7 +58,7 @@
             </div>
 
             <div class="addv_topnav">
-              <ul>
+              <ul class="pl-0 mt-2 mb-0">
                 <li
                   (click)="new_details()"
                   [ngClass]="{ active: activeTab == 'details' }"
@@ -109,12 +109,12 @@
               <header class="card-header">
                 <h2 class="card-title">Details</h2>
               </header>
-              <div class="sub-heading-new-vehicle pt-4 pb-2">
+              <div class="sub-heading-new-vehicle font-weight-bold pt-3 pb-2">
                 Identification
               </div>
               <!-- <form class="form-horizontal form-bordered" method="get"> -->
               <div class="form-group row">
-                <div class="col-lg-6">
+                <div class="col-lg-3">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -127,7 +127,7 @@
                     name="vehicleName"
                   />
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-3">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -140,7 +140,7 @@
                     name="VIN"
                   />
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -153,51 +153,51 @@
                     name="year"
                   >
                     <optgroup label="">
-                      <option value="1">1980</option>
-                      <option value="2">1981</option>
-                      <option value="2">1982</option>
-                      <option value="2">1983</option>
-                      <option value="2">1984</option>
-                      <option value="2">1985</option>
-                      <option value="2">1986</option>
-                      <option value="2">1987</option>
-                      <option value="2">1988</option>
-                      <option value="2">1989</option>
-                      <option value="2">1990</option>
-                      <option value="2">1991</option>
-                      <option value="2">1992</option>
-                      <option value="2">1993</option>
-                      <option value="2">1994</option>
-                      <option value="2">1995</option>
-                      <option value="2">1996</option>
-                      <option value="2">1997</option>
-                      <option value="2">1998</option>
-                      <option value="2">1999</option>
-                      <option value="2">2000</option>
-                      <option value="2">2001</option>
-                      <option value="2">2002</option>
-                      <option value="2">2003</option>
-                      <option value="2">2004</option>
-                      <option value="2">2005</option>
-                      <option value="2">2006</option>
-                      <option value="2">2007</option>
-                      <option value="2">2008</option>
-                      <option value="2">2009</option>
-                      <option value="2">2010</option>
-                      <option value="2">2011</option>
-                      <option value="2">2012</option>
-                      <option value="2">2013</option>
-                      <option value="2">2014</option>
-                      <option value="2">2015</option>
-                      <option value="2">2016</option>
-                      <option value="2">2017</option>
-                      <option value="2">2018</option>
-                      <option value="2">2019</option>
-                      <option value="2">2020</option>
+                      <option value="1980">1980</option>
+                      <option value="1981">1981</option>
+                      <option value="1982">1982</option>
+                      <option value="1983">1983</option>
+                      <option value="1984">1984</option>
+                      <option value="1985">1985</option>
+                      <option value="1986">1986</option>
+                      <option value="1987">1987</option>
+                      <option value="1988">1988</option>
+                      <option value="1989">1989</option>
+                      <option value="1990">1990</option>
+                      <option value="1991">1991</option>
+                      <option value="1992">1992</option>
+                      <option value="1993">1993</option>
+                      <option value="1994">1994</option>
+                      <option value="1995">1995</option>
+                      <option value="1996">1996</option>
+                      <option value="1997">1997</option>
+                      <option value="1998">1998</option>
+                      <option value="1999">1999</option>
+                      <option value="2000">2000</option>
+                      <option value="2001">2001</option>
+                      <option value="2002">2002</option>
+                      <option value="2003">2003</option>
+                      <option value="2004">2004</option>
+                      <option value="2005">2005</option>
+                      <option value="2006">2006</option>
+                      <option value="2007">2007</option>
+                      <option value="2008">2008</option>
+                      <option value="2009">2009</option>
+                      <option value="2010">2010</option>
+                      <option value="2011">2011</option>
+                      <option value="2012">2012</option>
+                      <option value="2013">2013</option>
+                      <option value="2014">2014</option>
+                      <option value="2015">2015</option>
+                      <option value="2016">2016</option>
+                      <option value="2017">2017</option>
+                      <option value="2018">2018</option>
+                      <option value="2019">2019</option>
+                      <option value="2020">2020</option>
                     </optgroup>
                   </select>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -208,23 +208,14 @@
                     class="form-control populate"
                     [(ngModel)]="make"
                     name="make"
+                    (change)="getModels()"
                   >
                     <optgroup label="">
-                      <option value="1">Tesla</option>
-                      <option value="2">BMW</option>
-                      <option value="2">GM</option>
-                      <option value="2">Ford</option>
-                      <option value="2">Fiat</option>
-                      <option value="2">Daimler</option>
-                      <option value="2">Honda</option>
-                      <option value="2">Hyundai</option>
-                      <option value="2">Kia</option>
-                      <option value="2">Nissan</option>
-                      <option value="2">Rivian</option>
+                      <option *ngFor="let val of manufacturers" value="{{val.manufacturerID}}">{{val.name}}</option>
                     </optgroup>
                   </select>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -237,21 +228,29 @@
                     name="model"
                   >
                     <optgroup label="">
-                      <option value="1">ST8189LD</option>
-                      <option value="2">ZZ0189LD</option>
-                      <option value="2">FK36189D</option>
-                      <option value="2">IT55855G</option>
-                      <option value="2">POLD2132</option>
-                      <option value="2">QJ23659W</option>
-                      <option value="2">454564564</option>
-                      <option value="2">1231231456789</option>
-                      <option value="2">789798001</option>
-                      <option value="2">0416546503</option>
-                      <option value="2">KDF2355U</option>
+                      <option *ngFor="let val of models" value="{{val.modelID}}">{{val.name}}</option>
                     </optgroup>
                   </select>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-3">
+                  <label
+                    class="control-label text-lg-right pt-2"
+                    for="inputDefault"
+                    >Country</label
+                  >
+                  <select
+                  (change)="getStates()"
+                    data-plugin-selectTwo
+                    class="form-control populate"
+                    [(ngModel)]="countryID"
+                    name="countryID"
+                  >
+                    <optgroup label="">
+                      <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
+                    </optgroup>
+                  </select>
+                </div>
+                <div class="col-lg-3">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -264,20 +263,11 @@
                     name="state"
                   >
                     <optgroup label="">
-                      <option value="1">California</option>
-                      <option value="2">Florida</option>
-                      <option value="2">New Jersey</option>
-                      <option value="2">New York</option>
-                      <option value="2">New Mexico</option>
-                      <option value="2">Texas</option>
-                      <option value="2">Washington</option>
-                      <option value="2">West Virginia</option>
-                      <option value="2">Nevada</option>
-                      <option value="2">Montana</option>
+                      <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
                     </optgroup>
                   </select>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-3">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -291,7 +281,7 @@
                   />
                 </div>
               </div>
-              <div class="sub-heading-new-vehicle py-2">
+              <div class="sub-heading-new-vehicle font-weight-bold py-1">
                 Service Information
               </div>
               <div class="form-group row">
@@ -304,20 +294,22 @@
                   <select
                     data-plugin-selectTwo
                     class="form-control populate"
-                    [(ngModel)]="serviceProgram"
-                    name="serviceProgram"
+                    [(ngModel)]="serviceProgramID"
+                    name="serviceProgramID"
                   >
                     <optgroup label="">
-                      <option value="1">Heavy Duty Maintenance</option>
-                      <option value="2">Light Duty Maintenance</option>
-                      <option value="2">Basic Vehicle Maintenance</option>
+                      <option *ngFor="let q of servicePrograms" value="{{ q.programID }}">{{
+                        q.programName
+                      }}</option>
                     </optgroup>
                   </select>
                 </div>
               </div>
-              <div class="sub-heading-new-vehicle py-2">Classification</div>
+              <div class="sub-heading-new-vehicle font-weight-bold py-1">
+                Classification
+              </div>
               <div class="form-group row">
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -330,15 +322,15 @@
                     name="currentStatus"
                   >
                     <optgroup label="">
-                      <option value="1">Active</option>
-                      <option value="2">Inactive</option>
-                      <option value="2">Out of Service</option>
-                      <option value="2">Sold</option>
-                      <option value="2">In Shop</option>
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                      <option value="Out of Service">Out of Service</option>
+                      <option value="Sold">Sold</option>
+                      <option value="In Shop">In Shop</option>
                     </optgroup>
                   </select>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -351,20 +343,11 @@
                     name="group"
                   >
                     <optgroup label="">
-                      <option value="1">California</option>
-                      <option value="2">Florida</option>
-                      <option value="2">New Jersey</option>
-                      <option value="2">New York</option>
-                      <option value="2">New Mexico</option>
-                      <option value="2">Texas</option>
-                      <option value="2">Washington</option>
-                      <option value="2">West Virginia</option>
-                      <option value="2">Nevada</option>
-                      <option value="2">Montana</option>
+                      <option *ngFor="let group of groups" value="{{group.groupID}}">{{group.groupName}}</option>
                     </optgroup>
                   </select>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -377,17 +360,19 @@
                     name="ownership"
                   >
                     <optgroup label="">
-                      <option value="1">Owned</option>
-                      <option value="2">Leased</option>
-                      <option value="2">Rented</option>
-                      <option value="2">Customer</option>
+                      <option value="Owned">Owned</option>
+                      <option value="Leased">Leased</option>
+                      <option value="Rented">Rented</option>
+                      <option value="Customer">Customer</option>
                     </optgroup>
                   </select>
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-lg-12">
-                  <div class="sub-heading-new-vehicle py-2">Quantum Info</div>
+                  <div class="sub-heading-new-vehicle font-weight-bold py-1">
+                    Quantum Info
+                  </div>
                 </div>
 
                 <div class="col-lg-6">
@@ -415,9 +400,11 @@
                   >
                 </div>
               </div>
-              <div class="sub-heading-new-vehicle py-2">Additional Details</div>
+              <div class="sub-heading-new-vehicle font-weight-bold py-1">
+                Additional Details
+              </div>
               <div class="form-group row">
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -430,7 +417,7 @@
                     name="vehicleColor"
                   />
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -443,13 +430,13 @@
                     name="bodyType"
                   >
                     <optgroup label="">
-                      <option value="1">Conventional</option>
-                      <option value="2">Full Size</option>
-                      <option value="2">Pickup</option>
+                      <option value="Conventional">Conventional</option>
+                      <option value="Full Size">Full Size</option>
+                      <option value="Pickup">Pickup</option>
                     </optgroup>
                   </select>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -462,9 +449,9 @@
                     name="bodySubType"
                   >
                     <optgroup label="">
-                      <option value="1">Cargo</option>
-                      <option value="2">Sleeper Cab</option>
-                      <option value="2">Crew Cab</option>
+                      <option value="Cargo">Cargo</option>
+                      <option value="Sleeper Cab">Sleeper Cab</option>
+                      <option value="Crew Cab">Crew Cab</option>
                     </optgroup>
                   </select>
                 </div>
@@ -475,7 +462,7 @@
                 <h2 class="card-title">Lifecycle</h2>
               </header>
 
-              <div class="sub-heading-new-vehicle py-2">
+              <div class="sub-heading-new-vehicle font-weight-bold pt-3 pb-0">
                 Vehicle Life Estimates
               </div>
               <div class="form-group row">
@@ -514,7 +501,9 @@
               <header class="card-header">
                 <h2 class="card-title">Specifications</h2>
               </header>
-              <div class="sub-heading-new-vehicle pt-4 pb-2">Dimensions</div>
+              <div class="sub-heading-new-vehicle font-weight-bold pt-3 pb-2">
+                Dimensions
+              </div>
               <div class="form-group row">
                 <div class="col-lg-3">
                   <label
@@ -621,9 +610,11 @@
                   />
                 </div>
               </div>
-              <div class="sub-heading-new-vehicle py-2">Weight</div>
+              <div class="sub-heading-new-vehicle font-weight-bold py-1">
+                Weight
+              </div>
               <div class="form-group row">
-                <div class="col-lg-6">
+                <div class="col-lg-6">`
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -650,7 +641,9 @@
                   />
                 </div>
               </div>
-              <div class="sub-heading-new-vehicle py-2">Performance</div>
+              <div class="sub-heading-new-vehicle font-weight-bold py-1">
+                Performance
+              </div>
               <div class="form-group row">
                 <div class="col-lg-6">
                   <label
@@ -679,7 +672,9 @@
                   />
                 </div>
               </div>
-              <div class="sub-heading-new-vehicle py-2">Fuel Economy</div>
+              <div class="sub-heading-new-vehicle font-weight-bold py-1">
+                Fuel Economy
+              </div>
               <div class="form-group row">
                 <div class="col-lg-4">
                   <label
@@ -728,9 +723,11 @@
               <header class="card-header">
                 <h2 class="card-title">Fluids</h2>
               </header>
-              <div class="sub-heading-new-vehicle pt-4 pb-2">Fuel</div>
+              <div class="sub-heading-new-vehicle font-weight-bold pt-3 pb-1">
+                Fuel
+              </div>
               <div class="form-group row">
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -743,15 +740,15 @@
                     name="fuelType"
                   >
                     <optgroup label="">
-                      <option value="1">CNG</option>
-                      <option value="2">Diesal</option>
-                      <option value="2">Gasoline</option>
-                      <option value="2">Propane</option>
+                      <option value="CNG">CNG</option>
+                      <option value="Diesal">Diesal</option>
+                      <option value="Gasoline">Gasoline</option>
+                      <option value="Propane">Propane</option>
                     </optgroup>
                   </select>
                 </div>
 
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -764,7 +761,7 @@
                     name="fuelTank1Capacity"
                   />
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -778,9 +775,11 @@
                   />
                 </div>
               </div>
-              <div class="sub-heading-new-vehicle py-2">Oil</div>
+              <div class="sub-heading-new-vehicle font-weight-bold py-1">
+                Oil
+              </div>
               <div class="form-group row">
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -801,9 +800,11 @@
               <header class="card-header">
                 <h2 class="card-title">Wheels & Tires</h2>
               </header>
-              <div class="sub-heading-new-vehicle pt-4 pb-2">Features</div>
+              <div class="sub-heading-new-vehicle font-weight-bold pt-3 pb-1">
+                Features
+              </div>
               <div class="form-group row">
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -816,14 +817,12 @@
                     name="breakSystem"
                   >
                     <optgroup label="">
-                      <option value="1">CNG</option>
-                      <option value="2">Diesal</option>
-                      <option value="2">Gasoline</option>
-                      <option value="2">Propane</option>
+                      <option value="Disc">Disc</option>
+                      <option value="Drum">Drum</option>
                     </optgroup>
                   </select>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -836,7 +835,7 @@
                     name="wheelBase"
                   />
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -849,7 +848,7 @@
                     name="rearAxle"
                   />
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -862,7 +861,7 @@
                     name="frontTyreType"
                   />
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -875,7 +874,7 @@
                     name="frontTrackWidth"
                   />
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -888,7 +887,7 @@
                     name="frontWheelDiameter"
                   />
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -901,7 +900,7 @@
                     name="frontTyrePSI"
                   />
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -914,7 +913,7 @@
                     name="rearTyreType"
                   />
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -927,7 +926,7 @@
                     name="rearTrackWidth"
                   />
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -940,7 +939,7 @@
                     name="rearWheelDiameter"
                   />
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -961,122 +960,119 @@
               <header class="card-header">
                 <h2 class="card-title">Settings</h2>
               </header>
-              <div class="sub-heading-new-vehicle pt-4 pb-2">Primary Meter</div>
-              <div class="form-group row">
-                <div class="col-lg-1 offset-lg-1">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        [checked]="
+
+              <div class="row mb-3">
+                <div class="col-lg-6">
+                  <div
+                    class="sub-heading-new-vehicle font-weight-bold pt-3 pb-2"
+                  >
+                    Primary Meter
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-lg-3">
+                      <div class="radio-custom">
+                        <input
+                          type="radio"
+                          id="radioExample1"
+                          [checked]="
                           settings.primaryMeter == 'miles' ? 'true' : 'false'
                         "
-                        (change)="onChangePrimaryMeter('miles')"
-                        name="primaryMeter"
-                      />
-                      Miles
-                    </label>
-                  </div>
-                </div>
-                <div class="col-lg-1">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        [checked]="
+                          (change)="onChangePrimaryMeter('miles')"
+                          name="primaryMeter"
+                        />
+                        <label for="radioExample1">Miles</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div class="radio-custom">
+                        <input
+                          type="radio"
+                          id="radioExample2"
+                          [checked]="
                           settings.primaryMeter == 'kilometers'
                             ? 'true'
                             : 'false'
                         "
-                        (change)="onChangePrimaryMeter('kilometers')"
-                        name="primaryMeter"
-                        checked
-                      />
-                      Kilometers
-                    </label>
+                          (change)="onChangePrimaryMeter('kilometers')"
+                          name="primaryMeter"
+                          checked
+                        />
+                        <label for="radioExample2">Kilometers</label>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-lg-1">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        [checked]="
-                          settings.primaryMeter == 'hours' ? 'true' : 'false'
+
+                <div class="col-lg-6">
+                  <div
+                    class="sub-heading-new-vehicle font-weight-bold pt-3 pb-3"
+                  >
+                    Fuel Unit
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-lg-3">
+                      <div class="radio-custom">
+                        <input
+                          type="radio"
+                          id="fuelUnit"
+                          [checked]="
+                          settings.fuelUnit == 'gallon (US)' ? 'true' : 'false'
                         "
-                        name="primaryMeter"
-                        (change)="onChangePrimaryMeter('hours')"
-                      />
-                      Hours
-                    </label>
+                          (change)="onChangeFuelUnit('gallon (US)')"
+                          name="fuelUnit"
+                        />
+                        <label for="fuelUnit"> Gallons (US)</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div class="radio-custom">
+                        <input
+                          type="radio"
+                          id="fuelUnit2"
+                          [checked]="
+                          settings.fuelUnit == 'gallon (CA)' ? 'true' : 'false'
+                        "
+                          (change)="onChangeFuelUnit('gallon (CA)')"
+                          name="fuelUnit"
+                        />
+                        <label for="fuelUnit2"> Gallons (CA)</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div class="radio-custom">
+                        <input
+                          type="radio"
+                          checked
+                          id="fuelUnit3"
+                          [checked]="
+                          settings.fuelUnit == 'liters' ? 'true' : 'false'
+                        "
+                          (change)="onChangeFuelUnit('liters')"
+                          name="fuelUnit"
+                        />
+                        <label for="fuelUnit3"> Litres</label>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div class="sub-heading-new-vehicle pt-4 pb-2">Fuel Unit</div>
-              <div class="form-group row">
-                <div class="col-lg-1 offset-lg-1">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        [checked]="
-                          settings.fuelUnit == 'gallon (US)' ? 'true' : 'false'
-                        "
-                        (change)="onChangeFuelUnit('gallon (US)')"
-                        name="fuelUnit"
-                      />
-                      Gallons (US)
-                    </label>
-                  </div>
-                </div>
-                <div class="col-lg-1">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        [checked]="
-                          settings.fuelUnit == 'gallon (CA)' ? 'true' : 'false'
-                        "
-                        (change)="onChangeFuelUnit('gallon (CA)')"
-                        name="fuelUnit"
-                      />
-                      Gallons (CA)
-                    </label>
-                  </div>
-                </div>
-                <div class="col-lg-1">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        [checked]="
-                          settings.fuelUnit == 'liters' ? 'true' : 'false'
-                        "
-                        (change)="onChangeFuelUnit('liters')"
-                        name="fuelUnit"
-                      />
-                      Litres
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="sub-heading-new-vehicle pt-4 pb-2">
+              <div class="sub-heading-new-vehicle font-weight-bold pt-0 pb-2">
                 Safety Parameters
               </div>
               <div class="form-group row">
-                <div class="col-lg-3 offset-lg-1">
+                <div class="col-lg-4">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
-                    >Hard Breaking Parameters
-                  </label>
+                    >Hard Breaking Parameters</label
+                  >
                   <div class="slidecontainer">
                     <input
                       type="range"
                       min="1"
-                      [value]="safetyParameters.hardBreakingParameters"
                       max="10"
+                      [value]="safetyParameters.hardBreakingParameters"
                       class="slider"
                       id="hardBreakingParameters"
                       (input)="
@@ -1087,7 +1083,7 @@
                     <p>Value: <span id="hardBreakingParametersValue"></span></p>
                   </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -1112,7 +1108,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                   <label
                     class="control-label text-lg-right pt-2"
                     for="inputDefault"
@@ -1134,42 +1130,44 @@
                   </div>
                 </div>
               </div>
-              <div class="sub-heading-new-vehicle pt-4 pb-2">
+              <div class="sub-heading-new-vehicle font-weight-bold pt-0 pb-3">
                 Measurement Unit
               </div>
               <div class="form-group row">
-                <div class="col-lg-3 offset-lg-1">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        [checked]="
-                          settings.measurementUnit == 'imperial'
-                            ? 'true'
-                            : 'false'
-                        "
-                        name="measurementUnit"
-                        (change)="onChangeMeasurementUnit('imperial')"
-                      />
-                      Imperial (inches, pounds, gallons, miles)
-                    </label>
+                <div class="col-lg-3">
+                  <div class="radio-custom">
+                    <input
+                      type="radio"
+                      [checked]="
+                      settings.measurementUnit == 'imperial'
+                        ? 'true'
+                        : 'false'
+                    "
+                      id="imperial"
+                      (change)="onChangeMeasurementUnit('imperial')"
+                      name="measurementUnit"
+                    />
+                    <label for="imperial">
+                      Imperial (inches, pounds, gallons, miles)</label
+                    >
                   </div>
                 </div>
                 <div class="col-lg-3">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        [checked]="
+                  <div class="radio-custom">
+                    <input
+                      type="radio"
+                      [checked]="
                           settings.measurementUnit == 'metric'
                             ? 'true'
                             : 'false'
                         "
-                        name="measurementUnit"
-                        (change)="onChangeMeasurementUnit('metric')"
-                      />
-                      Metric (centimeters, kilograms, liters, kilometers)
-                    </label>
+                      id="metric"
+                      (change)="onChangeMeasurementUnit('metric')"
+                      name="measurementUnit"
+                    />
+                    <label for="metric">
+                      Metric (centimeters, kilograms, liters, kilometers)</label
+                    >
                   </div>
                 </div>
               </div>
@@ -1187,7 +1185,6 @@
                 </button>
               </div>
             </div>
-
             <div class="form-group row">
               <div class="col-lg-12">
                 <p class="text text-danger" *ngIf="hasError">{{ Error }}</p>
@@ -1218,7 +1215,7 @@
         <select
           data-plugin-selectTwo
           class="form-control populate"
-          [(ngModel)]="quantum"
+          [(ngModel)]="quantumSelected"
           name="quantum info"
           (ngModelChange)="onChange($event)"
         >

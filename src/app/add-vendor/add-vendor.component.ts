@@ -1,6 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
 import { Router } from "@angular/router";
+import { ApiService } from "../api.service";
+import { from, of } from "rxjs";
+import { map } from "rxjs/operators";
+import { MapBoxService } from "../map-box.service";
+import { Object } from "aws-sdk/clients/s3";
+declare var $: any;
 
 @Component({
   selector: "app-add-vendor",
@@ -10,6 +15,9 @@ import { Router } from "@angular/router";
 export class AddVendorComponent implements OnInit {
   parentTitle = "Vendors";
   title = "Add Vendor";
+  errors = {};
+  form;
+  concatArrayKeys = "";
 
   /**
    * Form Props
@@ -21,81 +29,107 @@ export class AddVendorComponent implements OnInit {
     longitude: "",
   };
   address = "";
-  state = "";
-  country = "";
+  stateID = "";
+  countryID = "";
   taxID = "";
   creditDays = "";
 
-  /**
-   * Form errors prop
-   */
-  validationErrors = {
-    vendorName: {
-      error: false,
-    },
-    vendorType: {
-      error: false,
-    },
-    geoLocation: {
-      latitude: {
-        error: false,
-      },
-      longitude: {
-        error: false,
-      },
-    },
-    address: {
-      error: false,
-    },
-    country: {
-      error: false,
-    },
-    state: {
-      error: false,
-    },
-    taxID: {
-      error: false,
-    },
-    creditDays: {
-      error: false,
-    },
-  };
+  countries = [];
+  states = [];
+  taxAccounts = [];
 
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
   Error: string = "";
   Success: string = "";
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService, private mapBoxService: MapBoxService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchCountries();
+    this.fetchAccounts();
+    $(document).ready(() => {
+      this.form = $("#form_").validate();
+    });
+  }
+
+  initMap() {
+    if ($("#map-div").is(":visible")) {
+      $("#map-div").hide("slow");
+    } else {
+      $("#map-div").show("slow");
+    }
+    this.mapBoxService.initMapbox(-104.618896, 50.44521);
+  }
+
+  fetchCountries() {
+    this.apiService.getData("countries").subscribe((result: any) => {
+      this.countries = result.Items;
+    });
+  }
+
+  getStates() {
+    this.apiService
+      .getData(`states/countryID/${this.countryID}`)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
+
+  fetchAccounts() {
+    this.apiService
+      .getData(`accounts/accountType/Tax`)
+      .subscribe((result: any) => {
+        this.taxAccounts = result.Items;
+      });
+  }
 
   addVendor() {
+    if(!this.mapBoxService.plottedMap){
+      alert('Please draw the geofence'); return false;
+    }
+    
     let data = {
       vendorName: this.vendorName,
       vendorType: this.vendorType,
       geoLocation: {
-        latitude: this.geoLocation.latitude,
-        longitude: this.geoLocation.longitude,
+        latitude: this.mapBoxService.latitude,
+        longitude: this.mapBoxService.longitude,
       },
+      geofence: this.mapBoxService.plottedMap || [],
       address: this.address,
-      state: this.state,
-      country: this.country,
+      stateID: this.stateID,
+      countryID: this.countryID,
       taxID: this.taxID,
       creditDays: this.creditDays,
     };
-
+    console.log(data);
     this.apiService.postData("vendors", data).subscribe({
       complete: () => {},
       error: (err) => {
-        this.mapErrors(err.error);
-        this.hasError = true;
-        this.Error = err.error;
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+              console.log(key);
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Vendor Added successfully";
+        this.Success = "Vendor added successfully";
         this.vendorName = "";
         this.vendorType = "";
         this.geoLocation = {
@@ -103,44 +137,27 @@ export class AddVendorComponent implements OnInit {
           longitude: "",
         };
         this.address = "";
-        this.state = "";
-        this.country = "";
+        this.stateID = "";
+        this.countryID = "";
         this.taxID = "";
         this.creditDays = "";
       },
     });
   }
 
-  mapErrors(errors) {
-    for (var i = 0; i < errors.length; i++) {
-      let key = errors[i].path;
-      let length = key.length;
-
-      //make array of message to remove the fieldName
-      let message = errors[i].message.split(" ");
-      delete message[0];
-
-      //new message
-      let modifiedMessage = `This field${message.join(" ")}`;
-
-      if (length == 1) {
-        //single object
-        this.validationErrors[key[0]].error = true;
-        this.validationErrors[key[0]].message = modifiedMessage;
-      } else if (length == 2) {
-        //two dimensional object
-        this.validationErrors[key[0]][key[1]].error = true;
-        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
-      }
-    }
-    console.log(this.validationErrors);
+  throwErrors() {
+    this.form.showErrors(this.errors);
   }
 
-  updateValidation(first, second = "") {
-    if (second == "") {
-      this.validationErrors[first].error = false;
-    } else {
-      this.validationErrors[first][second].error = false;
+  concatArray(path) {
+    this.concatArrayKeys = "";
+    for (const i in path) {
+      this.concatArrayKeys += path[i] + ".";
     }
+    this.concatArrayKeys = this.concatArrayKeys.substring(
+      0,
+      this.concatArrayKeys.length - 1
+    );
+    return this.concatArrayKeys;
   }
 }

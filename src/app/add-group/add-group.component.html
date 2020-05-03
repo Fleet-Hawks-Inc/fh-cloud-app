@@ -1,114 +1,105 @@
 <section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
 
-    <!-- start: header -->
-    <app-header></app-header>
+  <!-- end: header -->
 
-    <!-- end: header -->
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
 
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
 
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs pr-3">
+            <li>
+              <a href="/">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li><span>Vehicles</span></li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
 
-    <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
-        <section role="main" class="content-body">
-            <header class="page-header">
-                <h2>{{title}}</h2>
-
-                <div class="right-wrapper text-right">
-                    <ol class="breadcrumbs">
-                        <li>
-                            <a href="/">
-                                <i class="fas fa-home"></i>
-                            </a>
-                        </li>
-                        <li><span>Vehicles</span></li>
-                        <li><span>{{title}}</span></li>
-                    </ol>
-
-
-                </div>
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">Details</h2>
             </header>
+            <div class="card-body">
+              <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Group Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputDefault"
+                      [(ngModel)]="groupName"
+                      name="groupName"
+                    />
 
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Group Type</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      [(ngModel)]="groupType"
+                      name="groupType"
+                    >
+                      <optgroup label="">
+                        <option>users</option>
+                        <option>vehicles</option>
+                        <option>Assets</option>
+                        <option>vendors</option>
+                      </optgroup>
+                    </select>
 
+                  </div>
+                </div>
 
-            <div class="row">
-                <div class="col">
-                    <section class="card">
-                        <header class="card-header">
+                <div class="form-group row">
+                  <div class="col-lg-12"></div>
 
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Description</label
+                    >
+                    <!-- <input type="text" class="form-control" id="inputDefault"> -->
+                    <textarea
+                      class="form-control"
+                      rows="4"
+                      id="comment"
+                      [(ngModel)]="description"
+                      name="description"
+                    ></textarea>
 
-                            <h2 class="card-title">Details</h2>
-                        </header>
-                        <div class="card-body">
-                            <form class="form-horizontal form-bordered" method="get">
+                  </div>
+                </div>
 
-                                <div class="form-group row">
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" for="inputDefault" >Group Name</label>
-                                        <input type="text" class="form-control" id="inputDefault" [(ngModel)]="groupName" name="groupName" (input)="updateValidation('groupName')"
-                                               [ngClass]="{
-                        redBorder: validationErrors.groupName.error == true
-                      }">
-                                      <span
-                                        *ngIf="validationErrors.groupName.error == true"
-                                        class="red"
-                                      >{{ validationErrors.groupName.message }}</span
-                                      >
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" for="inputDefault">Group Type</label>
-                                        <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="groupType" name="groupType" (input)="updateValidation('groupType')"
-                                                [ngClass]="{
-                        redBorder: validationErrors.groupType.error == true
-                      }">
-                                            <optgroup label="">
-                                                <option >123</option>
-                                                <option >456</option>
-                                                <option>789</option>
-                                                <option >000</option>
-                                            </optgroup>
-                                        </select>
-                                      <span
-                                        *ngIf="validationErrors.groupType.error == true"
-                                        class="red"
-                                      >{{ validationErrors.groupType.message }}</span
-                                      >
-                                    </div>
-
-
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-
-                                    </div>
-
-
-
-                                    <div class="col-lg-12">
-                                        <label class="control-label text-lg-right pt-2" for="inputDefault" >Description</label>
-                                        <!-- <input type="text" class="form-control" id="inputDefault"> -->
-                                        <textarea class="form-control" rows="4" id="comment" [(ngModel)]="description" name="description" (input)="updateValidation('description')"
-                                                  [ngClass]="{
-                        redBorder: validationErrors.description.error == true
-                      }"></textarea>
-                                      <span
-                                        *ngIf="validationErrors.description.error == true"
-                                        class="red"
-                                      >{{ validationErrors.description.message }}</span
-                                      >
-                                    </div>
-                                </div>
-
-
-
-
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                <!-- <label class="control-label text-lg-right pt-2" for="inputDefault">Status</label> -->
-                                <!-- <select data-plugin-selectTwo class="form-control populate">
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <label class="control-label text-lg-right pt-2" for="inputDefault">Status</label> -->
+                    <!-- <select data-plugin-selectTwo class="form-control populate">
                                     <optgroup label="">
                                         <option value="1">Enable</option>
                                         <option value="2">Disable</option>
@@ -116,86 +107,91 @@
 
                                     </optgroup>
                                 </select> -->
-                                        <button class="btn btn-dark mt-4 modal-confirm" (click)="addGroup()">Submit</button>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-
-                                        <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
-                                        <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
-                                    </div>
-                                </div>
-
-
-
-                        </form>
-                        </div>
-                    </section>
+                    <button
+                      class="btn btn-dark mt-4 modal-confirm"
+                      (click)="addGroup()"
+                    >
+                      Submit
+                    </button>
+                  </div>
                 </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <p class="text text-danger" *ngIf="hasError">{{ Error }}</p>
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+              </form>
             </div>
-
-        </section>
-    </div>
-
-
-
-    <div id="modalAnim" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <!--<h4 class="modal-title">Assign Quantum</h4>-->
-                </div>
-                <div class="modal-body">
-                    <h4 class="modal-title">Assign Quantum</h4>
-                    <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="quantumSelected" name="quantum info" (ngModelChange)="onChange($event)">
-                        <option >Quantum 1</option>
-                        <option >Quantum 2</option>
-                        <option >Quantum 3</option>
-                        <option >Quantum 4</option>
-                        <option >Quantum 5</option>
-
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
+          </section>
         </div>
-    </div>
+      </div>
+    </section>
+  </div>
 
-    <!--<div id="modalAnim" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">-->
-    <!--<section class="card">-->
-    <!--<header class="card-header">-->
-    <!--<h2 class="card-title">Assign Quantum</h2>-->
-    <!--</header>-->
-    <!--<div class="card-body">-->
-    <!--<div class="modal-wrapper">-->
-    <!--<select data-plugin-selectTwo class="form-control populate" [(ngModel)]="vin" name="quantum info">-->
-    <!--<optgroup label="">-->
-    <!--<option value="1">Quantum 1</option>-->
-    <!--<option >Quantum 2</option>-->
-    <!--<option >Quantum 3</option>-->
-    <!--<option value="2">Quantum 4</option>-->
-    <!--<option value="2">Quantum 5</option>-->
-    <!--</optgroup>-->
-    <!--</select>-->
+  <!--<div id="modalAnim" class="modal fade" role="dialog">-->
+    <!--<div class="modal-dialog">-->
+      <!--&lt;!&ndash; Modal content&ndash;&gt;-->
+      <!--<div class="modal-content">-->
+        <!--<div class="modal-header">-->
+          <!--<button type="button" class="close" data-dismiss="modal">-->
+            <!--&times;-->
+          <!--</button>-->
+          <!--&lt;!&ndash;<h4 class="modal-title">Assign Quantum</h4>&ndash;&gt;-->
+        <!--</div>-->
+        <!--<div class="modal-body">-->
+          <!--<h4 class="modal-title">Assign Quantum</h4>-->
+          <!--<select-->
+            <!--data-plugin-selectTwo-->
+            <!--class="form-control populate"-->
+            <!--[(ngModel)]="quantumSelected"-->
+            <!--name="quantum info"-->
+            <!--(ngModelChange)="onChange($event)"-->
+          <!--&gt;-->
+            <!--<option>Quantum 1</option>-->
+            <!--<option>Quantum 2</option>-->
+            <!--<option>Quantum 3</option>-->
+            <!--<option>Quantum 4</option>-->
+            <!--<option>Quantum 5</option>-->
+          <!--</select>-->
+        <!--</div>-->
+        <!--<div class="modal-footer">-->
+          <!--<button type="button" class="btn btn-default" data-dismiss="modal">-->
+            <!--Close-->
+          <!--</button>-->
+        <!--</div>-->
+      <!--</div>-->
     <!--</div>-->
-    <!--</div>-->
-    <!--<footer class="card-footer">-->
-    <!--<div class="row">-->
-    <!--<div class="col-md-12 text-right">-->
-    <!--<a class="btn btn-dark modal-confirm">Submit</a>-->
-    <!--<button class="btn btn-default modal-dismiss">Cancel</button>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</footer>-->
-    <!--</section>-->
-    <!--</div>-->
+  <!--</div>-->
 
-
+  <!--<div id="modalAnim" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">-->
+  <!--<section class="card">-->
+  <!--<header class="card-header">-->
+  <!--<h2 class="card-title">Assign Quantum</h2>-->
+  <!--</header>-->
+  <!--<div class="card-body">-->
+  <!--<div class="modal-wrapper">-->
+  <!--<select data-plugin-selectTwo class="form-control populate" [(ngModel)]="vin" name="quantum info">-->
+  <!--<optgroup label="">-->
+  <!--<option value="1">Quantum 1</option>-->
+  <!--<option >Quantum 2</option>-->
+  <!--<option >Quantum 3</option>-->
+  <!--<option value="2">Quantum 4</option>-->
+  <!--<option value="2">Quantum 5</option>-->
+  <!--</optgroup>-->
+  <!--</select>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<footer class="card-footer">-->
+  <!--<div class="row">-->
+  <!--<div class="col-md-12 text-right">-->
+  <!--<a class="btn btn-dark modal-confirm">Submit</a>-->
+  <!--<button class="btn btn-default modal-dismiss">Cancel</button>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</footer>-->
+  <!--</section>-->
+  <!--</div>-->
 </section>

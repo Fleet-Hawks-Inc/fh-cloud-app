@@ -243,7 +243,7 @@ html .background-color-light {
 }
 
 .page-header h2 {
-	
+	color: #333;	
 }
 
 .page-header .sidebar-right-toggle:hover {
@@ -251,8 +251,8 @@ html .background-color-light {
 }
 
 ul.nav-main > li.nav-active > a {
-	-webkit-box-shadow: 2px 0 0 #0088cc inset;
-	        box-shadow: 2px 0 0 #0088cc inset;
+	-webkit-box-shadow: 2px 0 0 #000 inset;
+	        box-shadow: 2px 0 0 #000 inset;
 }
 
 ul.nav-main > li.nav-active > i {
@@ -893,7 +893,7 @@ html .show > .btn-light.dropdown-toggle {
 .pagination > li > span:hover,
 .pagination > li > a:focus,
 .pagination > li > span:focus {
-	color: #0088cc;
+	color: #333;
 }
 
 .pagination > .active > a,
@@ -1074,7 +1074,7 @@ html.dark .timeline.timeline-simple .tm-body .tm-items > li:before {
 }
 
 .accordion .card-header a {
-	color: #0088cc;
+	color: #33353F;
 }
 
 html .accordion.accordion-primary .card-header {
@@ -1127,14 +1127,14 @@ html .accordion.accordion-light .card-header a {
 
 html .toggle-primary .toggle label {
 	color: #0088cc;
-	border-left-color: #0088cc;
+	border-left-color: #000;
 	border-right-color: #0088cc;
 }
 
 html .toggle-primary .toggle.active > label {
-	background-color: #0088cc !important;
-	border-color: #0088cc;
-	color: #ffffff;
+	background-color: #e3e3e3 !important;
+	border-color: #e3e3e3;
+	color: #ffffff; height: 46px;
 }
 
 html .toggle-primary.toggle-simple .toggle > label:after {

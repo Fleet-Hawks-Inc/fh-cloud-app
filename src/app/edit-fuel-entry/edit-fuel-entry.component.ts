@@ -1,106 +1,147 @@
-import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { ApiService } from "../api.service";
+import { ActivatedRoute } from "@angular/router";
+import { catchError, map, mapTo, tap } from "rxjs/operators";
+import { from, of } from "rxjs";
+declare var jquery: any;
+declare var $: any;
 
 @Component({
-  selector: 'app-edit-fuel-entry',
-  templateUrl: './edit-fuel-entry.component.html',
-  styleUrls: ['./edit-fuel-entry.component.css']
+  selector: "app-edit-fuel-entry",
+  templateUrl: "./edit-fuel-entry.component.html",
+  styleUrls: ["./edit-fuel-entry.component.css"],
 })
 export class EditFuelEntryComponent implements OnInit {
+  title = "Add Fuel Entry";
+
   /********** Form Fields ***********/
-
-  date = '';
-  odometer = '';
-  price = '';
-  volume = '';
-  fuelType = '';
-  location = '';
-  venderName = '';
-  expenseID = '';
-  tripID = '';
-  vehicleID = '';
-  carrierID = 'defualt';
-
-
-  fuelEntryId ='';
+  entryID: "";
+  vehicleID: "";
+  vendorID: "";
+  location: "";
+  odometer: "";
+  fuelType: "";
+  tripID: "";
+  date: "";
+  price: "";
+  volume: "";
+  timeCreated: "";
   /******************/
 
-
-  response : any ='';
-  hasError : boolean = false;
+  vehicles = [];
+  vendors = [];
+  trips = [];
+  errors = {};
+  form;
+  response: any = "";
+  hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error : string = '';
-  Success : string = '';
-  constructor(private apiService: ApiService,
-              private router: Router,
-              private route: ActivatedRoute) {}
+  Error: string = "";
+  Success: string = "";
+  constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.fuelEntryId = this.route.snapshot.params['fuelEntryId'];
+    this.entryID = this.route.snapshot.params["entryID"];
 
-    this.apiService.getData('fuelEntries/' + this.fuelEntryId)
-        .subscribe((result: any) => {
-          console.log(result);
-          result = result.Items[0];
-
-
-
-          this.date = result.date;
-          this.odometer = result.odometer;
-          this.price = result.price;
-          this.volume = result.volume;
-          this.fuelType = result.fuelType;
-          this.location = result.location;
-          this.venderName = result.venderName;
-          this.expenseID = result.expenseID;
-          this.tripID = result.tripID;
-          this.vehicleID = result.vehicleID;
-
-
-          //this.quantum = result.quantum;
-          //this.quantumSelected = result.quantumSelected;
-
-
-          //console.log(result);
-        });
-
+    this.fetchFuelEntry();
+    this.fetchVehicles();
+    this.fetchVendors();
+    this.fetchTrips();
   }
 
+  fetchVehicles() {
+    this.apiService.getData("vehicles").subscribe((result: any) => {
+      this.vehicles = result.Items;
+    });
+  }
+
+  fetchTrips() {
+    this.apiService.getData("trips").subscribe((result: any) => {
+      this.trips = result.Items;
+    });
+  }
+
+  fetchVendors() {
+    this.apiService.getData("vendors").subscribe((result: any) => {
+      this.vendors = result.Items;
+    });
+  }
+
+  fetchFuelEntry() {
+    this.apiService
+      .getData("fuelEntries/" + this.entryID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+
+        this.vehicleID = result.vehicleID;
+        this.vendorID = result.vendorID;
+        this.location = result.location;
+        this.odometer = result.odometer;
+        this.fuelType = result.fuelType;
+        this.tripID = result.tripID;
+        this.date = result.date;
+        this.price = result.price;
+        this.volume = result.volume;
+        this.timeCreated = result.timeCreated;
+      });
+  }
+
+  ngAfterViewInit() {
+    $(document).ready(() => {
+      this.form = $("#form_").validate();
+    });
+  }
 
   updateFuelEntry() {
+    this.errors = {};
+
     this.hasError = false;
     this.hasSuccess = false;
 
-    const data = {
-      "entryID": this.fuelEntryId,
-      "vehicleID": this.vehicleID,
-      "date": this.date,
-      "odometer": this.odometer,
-      "price": this.price,
-      "volume": this.volume,
-      "fuelType": this.fuelType,
-      "location": this.location,
-      "venderName": this.venderName,
-      "carrierID": this.carrierID,
-      "expenseID": this.expenseID,
-      "tripID": this.tripID
+    let data = {
+      entryID: this.entryID,
+      vehicleID: this.vehicleID,
+      vendorID: this.vendorID,
+      location: this.location,
+      odometer: this.odometer,
+      fuelType: this.fuelType,
+      tripID: this.tripID,
+      date: this.date,
+      price: this.price,
+      volume: this.volume,
+      timeCreated: this.timeCreated,
     };
-
-    this.apiService.putData('fuelEntries', data).
-    subscribe({
-      complete : () => {},
-      error : (err) => {
-        this.hasError = true;
-        this.Error = err.error;
+    //console.log(data);return;
+    this.apiService.putData("fuelEntries", data).subscribe({
+      complete: () => {},
+      error: (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = 'Fuel Entry Updated successfully';
-
-      }
+        this.Success = "Fuel entry updated successfully";
+      },
     });
   }
 
+  throwErrors() {
+    this.form.showErrors(this.errors);
+  }
 }

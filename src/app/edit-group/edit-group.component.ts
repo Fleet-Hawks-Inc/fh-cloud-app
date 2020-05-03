@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from "../api.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {from} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-group',
@@ -10,36 +12,22 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class EditGroupComponent implements OnInit {
 
   title = 'Add Group';
+  form;
+  errors = {};
 
   /********** Form Fields ***********/
   groupName = '';
   description = '';
-  carrierID = '';
   groupType = '';
   groupId = '';
-
+  timeCreated = ""
   /******************/
 
-  /**
-   * Form errors prop
-   */
-  validationErrors = {
-    groupName: {
-      error: false,
-    },
-    description: {
-      error: false,
-    },
-    groupType: {
-      error: false,
-    },
-
-  };
 
 
   response : any ='';
-  hasError : boolean = false;
-  hasSuccess: boolean = false;
+  hasError  = false;
+  hasSuccess = false;
   Error : string = '';
   Success : string = '';
   constructor(private apiService: ApiService,
@@ -56,13 +44,13 @@ export class EditGroupComponent implements OnInit {
           result = result.Items[0];
           this.groupName = result.groupName;
           this.description =  result.description;
-          this.carrierID =  result.carrierID;
           this.groupType =  result.groupType;
-
+          this.timeCreated = result.timeCreated
         });
   }
 
   updateGroup() {
+    this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
@@ -70,18 +58,33 @@ export class EditGroupComponent implements OnInit {
       "groupID": this.groupId,
       "groupName": this.groupName,
       "description": this.description,
-      "carrierID": 'default',
-      "groupType": this.groupType
+      "groupType": this.groupType,
+      timeCreated: this.timeCreated
     };
 
 
     this.apiService.putData('groups', data).
     subscribe({
       complete : () => {},
-      error : (err) => {
-        this.mapErrors(err.error);
-        this.hasError = true;
-        this.Error = err.error;
+      error: (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
         this.response = res;
@@ -94,37 +97,39 @@ export class EditGroupComponent implements OnInit {
 
 
 
-  mapErrors(errors) {
-    for (var i = 0; i < errors.length; i++) {
-      let key = errors[i].path;
-      let length = key.length;
-
-      //make array of message to remove the fieldName
-      let message = errors[i].message.split(" ");
-      delete message[0];
-
-      //new message
-      let modifiedMessage = `This field${message.join(" ")}`;
-
-      if (length == 1) {
-        //single object
-        this.validationErrors[key[0]].error = true;
-        this.validationErrors[key[0]].message = modifiedMessage;
-      } else if (length == 2) {
-        //two dimensional object
-        this.validationErrors[key[0]][key[1]].error = true;
-        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
-      }
-    }
-    console.log(this.validationErrors);
+  // mapErrors(errors) {
+  //   for (var i = 0; i < errors.length; i++) {
+  //     let key = errors[i].path;
+  //     let length = key.length;
+  //
+  //     //make array of message to remove the fieldName
+  //     let message = errors[i].message.split(" ");
+  //     delete message[0];
+  //
+  //     //new message
+  //     let modifiedMessage = `This field${message.join(" ")}`;
+  //
+  //     if (length == 1) {
+  //       //single object
+  //       this.validationErrors[key[0]].error = true;
+  //       this.validationErrors[key[0]].message = modifiedMessage;
+  //     } else if (length == 2) {
+  //       //two dimensional object
+  //       this.validationErrors[key[0]][key[1]].error = true;
+  //       this.validationErrors[key[0]][key[1]].message = modifiedMessage;
+  //     }
+  //   }
+  //   console.log(this.validationErrors);
+  // }
+  //
+  // updateValidation(first, second = "") {
+  //   if (second == "") {
+  //     this.validationErrors[first].error = false;
+  //   } else {
+  //     this.validationErrors[first][second].error = false;
+  //   }
+  // }
+  throwErrors() {
+    this.form.showErrors(this.errors);
   }
-
-  updateValidation(first, second = "") {
-    if (second == "") {
-      this.validationErrors[first].error = false;
-    } else {
-      this.validationErrors[first][second].error = false;
-    }
-  }
-
 }

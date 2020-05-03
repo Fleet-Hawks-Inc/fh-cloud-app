@@ -1,419 +1,451 @@
 <section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
 
-    <!-- start: header -->
-    <app-header></app-header>
+  <!-- end: header -->
 
-    <!-- end: header -->
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
 
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
 
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li>
+              <a href="/">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li><span>Vehicles</span></li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
 
-    <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
-        <section role="main" class="content-body">
-            <header class="page-header">
-                <h2>{{title}}</h2>
-
-                <div class="right-wrapper text-right">
-                    <ol class="breadcrumbs">
-                        <li>
-                            <a href="/">
-                                <i class="fas fa-home"></i>
-                            </a>
-                        </li>
-                        <li><span>Vehicles</span></li>
-                        <li><span>{{title}}</span></li>
-                    </ol>
-
-
-                </div>
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">Details</h2>
             </header>
+            <div class="card-body">
+              <form
+                class="form-horizontal form-bordered"
+                method="get"
+                name="form"
+                id="form_"
+              >
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Asset name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="assetName"
+                      name="assetName"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2">Vin</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="VIN"
+                      name="VIN"
+                    />
+                  </div>
 
-
-
-            <div class="row">
-                <div class="col">
-                    <section class="card">
-                        <header class="card-header">
-
-
-                            <h2 class="card-title">Details</h2>
-                        </header>
-                        <div class="card-body">
-                            <form class="form-horizontal form-bordered" method="get">
-                                <div class="form-group row">
-                                    <div class="col-lg-8">
-                                        <label class="control-label text-lg-right pt-2" >Vin</label>
-                                        <input type="text" class="form-control" id="VTN" [(ngModel)]="VTN" name="VTN" (input)="updateValidation('VTN')"
-                                               [ngClass]="{
-                        redBorder: validationErrors.VTN.error == true
-                      }">
-                                      <span
-                                        *ngIf="validationErrors.VTN.error == true"
-                                        class="red"
-                                      >{{ validationErrors.VTN.message }}</span
-                                      >
-                                    </div>
-
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Type</label>
-                                        <input type="text" class="form-control" id="type" [(ngModel)]="type" name="type" (input)="updateValidation('type')"
-                                               [ngClass]="{
-                        redBorder: validationErrors.type.error == true
-                      }">
-                                      <span
-                                        *ngIf="validationErrors.type.error == true"
-                                        class="red"
-                                      >{{ validationErrors.type.message }}</span
-                                      >
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <label class="control-label text-lg-right text-dark text-4 pt-2">Asset Info</label>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Year</label>
-                                        <select data-plugin-selectTwo class="form-control populate" id="year" [(ngModel)]="year" name="year" (input)="updateValidation('year')"
-                                                [ngClass]="{
-                        redBorder: validationErrors.year.error == true
-                      }">
-                                            <optgroup label="">
-                                                <option >1980</option>
-                                                <option >1981</option>
-                                                <option >1982</option>
-                                                <option >1983</option>
-                                                <option >1984</option>
-                                                <option >1985</option>
-                                                <option >1986</option>
-                                                <option >1987</option>
-                                                <option >1988</option>
-                                                <option >1989</option>
-                                                <option >1990</option>
-                                                <option >1991</option>
-                                                <option >1992</option>
-                                                <option >1993</option>
-                                                <option >1994</option>
-                                                <option >1995</option>
-                                                <option >1996</option>
-                                                <option >1997</option>
-                                                <option >1998</option>
-                                                <option >1999</option>
-                                                <option >2000</option>
-                                                <option >2001</option>
-                                                <option >2002</option>
-                                                <option >2003</option>
-                                                <option >2004</option>
-                                                <option >2005</option>
-                                                <option >2006</option>
-                                                <option >2007</option>
-                                                <option >2008</option>
-                                                <option >2009</option>
-                                                <option >2010</option>
-                                                <option >2011</option>
-                                                <option >2012</option>
-                                                <option >2013</option>
-                                                <option >2014</option>
-                                                <option >2015</option>
-                                                <option >2016</option>
-                                                <option >2017</option>
-                                                <option >2018</option>
-                                                <option >2019</option>
-                                                <option >2020</option>
-                                            </optgroup>
-                                        </select>
-                                      <span
-                                        *ngIf="validationErrors.year.error == true"
-                                        class="red"
-                                      >{{ validationErrors.year.message }}</span
-                                      >
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Make</label>
-                                        <select data-plugin-selectTwo class="form-control populate" id="make" [(ngModel)]="make" name="make" (input)="updateValidation('make')"
-                                                [ngClass]="{
-                        redBorder: validationErrors.make.error == true
-                      }">
-                                            <optgroup label="">
-                                                <option >Tesla</option>
-                                                <option >BMW</option>
-                                                <option >GM</option>
-                                                <option >Ford</option>
-                                                <option >Fiat</option>
-                                                <option >Daimler</option>
-                                                <option >Honda</option>
-                                                <option >Hyundai</option>
-                                                <option >Kia</option>
-                                                <option >Nissan</option>
-                                                <option >Rivian</option>
-                                            </optgroup>
-                                        </select>
-                                      <span
-                                        *ngIf="validationErrors.make.error == true"
-                                        class="red"
-                                      >{{ validationErrors.make.message }}</span
-                                      >
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Model</label>
-                                        <select data-plugin-selectTwo class="form-control populate" id="model" [(ngModel)]="model" name="model" (input)="updateValidation('model')"
-                                                [ngClass]="{
-                        redBorder: validationErrors.model.error == true
-                      }">
-                                            <optgroup label="">
-                                                <option >ST8189LD</option>
-                                                <option >ZZ0189LD</option>
-                                                <option >FK36189D</option>
-                                                <option >IT55855G</option>
-                                                <option >POLD2132</option>
-                                                <option >QJ23659W</option>
-                                                <option >454564564</option>
-                                                <option >1231231456789</option>
-                                                <option >789798001</option>
-                                                <option >0416546503</option>
-                                                <option >KDF2355U</option>
-                                            </optgroup>
-                                        </select>
-                                      <span
-                                        *ngIf="validationErrors.model.error == true"
-                                        class="red"
-                                      >{{ validationErrors.model.message }}</span
-                                      >
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-3">
-                                        <label class="control-label text-lg-right pt-2" >Length</label>
-                                        <input type="text" class="form-control" id="length" [(ngModel)]="length" name="length" (input)="updateValidation('length')"
-                                               [ngClass]="{
-                        redBorder: validationErrors.length.error == true
-                      }">
-                                      <span
-                                        *ngIf="validationErrors.length.error == true"
-                                        class="red"
-                                      >{{ validationErrors.length.message }}</span
-                                      >
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label class="control-label text-lg-right pt-2" >Axle</label>
-                                        <input type="text" class="form-control" id="axle" [(ngModel)]="axle" name="axle" (input)="updateValidation('axle')"
-                                               [ngClass]="{
-                        redBorder: validationErrors.axle.error == true
-                      }"><span
-                                      *ngIf="validationErrors.axle.error == true"
-                                      class="red"
-                                    >{{ validationErrors.axle.message }}</span
-                                    >
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label class="control-label text-lg-right pt-2" >Gross Vehicle Weight Rating (GVWR)</label>
-                                        <input type="text" class="form-control" id="GVWR" [(ngModel)]="GVWR" name="GVWR" (input)="updateValidation('GVWR')"
-                                               [ngClass]="{
-                        redBorder: validationErrors.GVWR.error == true
-                      }"><span
-                                      *ngIf="validationErrors.GVWR.error == true"
-                                      class="red"
-                                    >{{ validationErrors.GVWR.message }}</span
-                                    >
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label class="control-label text-lg-right pt-2" >Gross Axle Weight Rating (GAWR)</label>
-                                        <input type="text" class="form-control" id="GAWR" [(ngModel)]="GAWR" name="GAWR" (input)="updateValidation('GAWR')"
-                                               [ngClass]="{
-                        redBorder: validationErrors.GAWR.error == true
-                      }"><span
-                                      *ngIf="validationErrors.GAWR.error == true"
-                                      class="red"
-                                    >{{ validationErrors.GAWR.message }}</span
-                                    >
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <label class="control-label text-lg-right text-dark text-4 pt-2" >Licence</label>
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2">State</label>
-                                        <select data-plugin-selectTwo class="form-control populate" id="state" [(ngModel)]="state" name="state" (input)="updateValidation('state')"
-                                                [ngClass]="{
-                        redBorder: validationErrors.state.error == true
-                      }">
-                                            <optgroup label="">
-                                                <option value="1">California</option>
-                                                <option >Florida</option>
-                                                <option >New Jersey</option>
-                                                <option >New York</option>
-                                                <option >New Mexico</option>
-                                                <option >Texas</option>
-                                                <option >Washington</option>
-                                                <option >West Virginia</option>
-                                                <option >Nevada</option>
-                                                <option >Montana</option>
-                                            </optgroup>
-                                        </select><span
-                                      *ngIf="validationErrors.state.error == true"
-                                      class="red"
-                                    >{{ validationErrors.state.message }}</span
-                                    >
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Plate Number</label>
-                                        <input type="text" class="form-control" id="plateNumber" [(ngModel)]="plateNumber" name="plateNumber" (input)="updateValidation('plateNumber')"
-                                               [ngClass]="{
-                        redBorder: validationErrors.plateNumber.error == true
-                      }"><span
-                                      *ngIf="validationErrors.plateNumber.error == true"
-                                      class="red"
-                                    >{{ validationErrors.plateNumber.message }}</span
-                                    >
-                                    </div>
-
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Owner Ship</label>
-                                        <input class="form-control"  type="text" placeholder="Ownership" id="ownership" [(ngModel)]="ownership" name="ownership" (input)="updateValidation('ownership')"
-                                               [ngClass]="{
-                        redBorder: validationErrors.ownership.error == true
-                      }"><span
-                                      *ngIf="validationErrors.ownership.error == true"
-                                      class="red"
-                                    >{{ validationErrors.ownership.message }}</span
-                                    >
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >State</label>
-                                        <select data-plugin-selectTwo class="form-control populate" id="state2" [(ngModel)]="state2" name="state2" (input)="updateValidation('state2')"
-                                                [ngClass]="{
-                        redBorder: validationErrors.state2.error == true
-                      }">
-                                            <optgroup label="">
-                                                <option value="1">California</option>
-                                                <option >Florida</option>
-                                                <option >New Jersey</option>
-                                                <option >New York</option>
-                                                <option >New Mexico</option>
-                                                <option >Texas</option>
-                                                <option >Washington</option>
-                                                <option >West Virginia</option>
-                                                <option >Nevada</option>
-                                                <option >Montana</option>
-                                            </optgroup>
-                                        </select><span
-                                      *ngIf="validationErrors.state2.error == true"
-                                      class="red"
-                                    >{{ validationErrors.state2.message }}</span
-                                    >
-                                    </div>
-
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Remarks</label>
-                                        <textarea class="form-control" rows="3"  id="remarks" [(ngModel)]="remarks" name="remarks" (input)="updateValidation('remarks')"
-                                                  [ngClass]="{
-                        redBorder: validationErrors.remarks.error == true
-                      }"></textarea><span
-                                      *ngIf="validationErrors.remarks.error == true"
-                                      class="red"
-                                    >{{ validationErrors.remarks.message }}</span
-                                    >
-                                    </div>
-
-
-                                </div>
-
-
-
-
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <label class="control-label text-lg-right text-dark text-4 pt-2" >Quantum Info</label>
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Assigned Quantum</label>
-                                        <input class="form-control" type="text" placeholder="Quantum has been assigned" disabled="" id="UID" [(ngModel)]="UID" name="UID" >
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <a class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal" [routerLink]="" (click)="quantumModal()"><i class="fas fa-plus"></i> Assign Quantum</a>
-                                    </div>
-
-                                    <div id="modalAnim" class="modal fade" role="dialog">
-                                        <div class="modal-dialog">
-
-                                            <!-- Modal content-->
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <!--<h4 class="modal-title">Assign Quantum</h4>-->
-                                                </div>
-                                                <div class="modal-body">
-                                                    <h4 class="modal-title">Assign Quantum</h4>
-                                                    <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="quantumSelected" name="quantum info" (ngModelChange)="onChange($event)">
-                                                        <option >Quantum 1</option>
-                                                        <option >Quantum 2</option>
-                                                        <option >Quantum 3</option>
-                                                        <option >Quantum 4</option>
-                                                        <option >Quantum 5</option>
-
-                                                    </select>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Status</label>
-                                        <select data-plugin-selectTwo class="form-control populate" name="currentStatus" [(ngModel)]="currentStatus" (input)="updateValidation('currentStatus')"
-                                                [ngClass]="{
-                        redBorder: validationErrors.currentStatus.error == true
-                      }">
-                                            <optgroup label="">
-                                                <option value="1">Enable</option>
-                                                <option >Disable</option>
-                                                <option >Out of Service</option>
-
-                                            </optgroup>
-                                        </select><span
-                                      *ngIf="validationErrors.currentStatus.error == true"
-                                      class="red"
-                                    >{{ validationErrors.currentStatus.message }}</span
-                                    >
-                                        <button class="btn btn-dark mt-4 modal-confirm" (click)="updateAsset();">Submit</button>
-                                    </div>
-
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-
-                                        <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
-                                        <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
-                                    </div>
-                                </div>
-
-
-                            </form>
-                        </div>
-                    </section>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2">Type</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="assetType"
+                      name="assetType"
+                    />
+                  </div>
                 </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right text-dark text-4 pt-2"
+                      >Asset Info</label
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2">Year</label>
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="assetInfo.year"
+                      [(ngModel)]="assetInfo.year"
+                    >
+                      <optgroup label="">
+                        <option>1980</option>
+                        <option>1981</option>
+                        <option>1982</option>
+                        <option>1983</option>
+                        <option>1984</option>
+                        <option>1985</option>
+                        <option>1986</option>
+                        <option>1987</option>
+                        <option>1988</option>
+                        <option>1989</option>
+                        <option>1990</option>
+                        <option>1991</option>
+                        <option>1992</option>
+                        <option>1993</option>
+                        <option>1994</option>
+                        <option>1995</option>
+                        <option>1996</option>
+                        <option>1997</option>
+                        <option>1998</option>
+                        <option>1999</option>
+                        <option>2000</option>
+                        <option>2001</option>
+                        <option>2002</option>
+                        <option>2003</option>
+                        <option>2004</option>
+                        <option>2005</option>
+                        <option>2006</option>
+                        <option>2007</option>
+                        <option>2008</option>
+                        <option>2009</option>
+                        <option>2010</option>
+                        <option>2011</option>
+                        <option>2012</option>
+                        <option>2013</option>
+                        <option>2014</option>
+                        <option>2015</option>
+                        <option>2016</option>
+                        <option>2017</option>
+                        <option>2018</option>
+                        <option>2019</option>
+                        <option>2020</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2">Make</label>
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      id="manufacturerID"
+                      (change)="getModels()"
+                      [(ngModel)]="assetInfo.manufacturerID"
+                      name="assetInfo.manufacturerID"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let q of manufacturers"
+                          value="{{ q.manufacturerID }}"
+                          >{{ q.name }}</option
+                        >
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Model</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      id="model"
+                      [(ngModel)]="assetInfo.modelID"
+                      name="assetInfo.modelID"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let q of models"
+                          value="{{ q.modelID }}"
+                          >{{ q.name }}</option
+                        >
+                      </optgroup>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-3">
+                    <label class="control-label text-lg-right pt-2"
+                      >Length</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="length"
+                      [(ngModel)]="length"
+                      name="length"
+                    />
+                  </div>
+                  <div class="col-lg-3">
+                    <label class="control-label text-lg-right pt-2">Axle</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="axle"
+                      [(ngModel)]="axle"
+                      name="axle"
+                    />
+                  </div>
+                  <div class="col-lg-3">
+                    <label class="control-label text-lg-right pt-2"
+                      >Gross Vehicle Weight Rating (GVWR)</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="GVWR"
+                      [(ngModel)]="GVWR"
+                      name="GVWR"
+                    />
+                  </div>
+                  <div class="col-lg-3">
+                    <label class="control-label text-lg-right pt-2"
+                      >Gross Axle Weight Rating (GAWR)</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="GAWR"
+                      [(ngModel)]="GAWR"
+                      name="GAWR"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right text-dark text-4 pt-2"
+                      >Licence</label
+                    >
+                  </div>
+
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Country</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      [(ngModel)]="countryID"
+                      name="countryID"
+                      (change)="getStates()"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let q of countries"
+                          value="{{ q.countryID }}"
+                          >{{ q.countryName }}</option
+                        >
+                      </optgroup>
+                    </select>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >State</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      id="state"
+                      [(ngModel)]="license.stateID"
+                      name="license.stateID"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let q of states"
+                          value="{{ q.stateID }}"
+                          >{{ q.stateName }}</option
+                        >
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Plate Number</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="plateNumber"
+                      [(ngModel)]="license.plateNumber"
+                      name="license.plateNumber"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right text-dark text-4 pt-2"
+                      >Owner Ship</label
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2">Type</label>
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      [(ngModel)]="ownerShip"
+                      name="ownerShip"
+                    >
+                      <optgroup label="">
+                        <option>owned</option>
+                        <option>rented</option>
+                        <option>external</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Status</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      id="ownerShipStatus"
+                      [(ngModel)]="ownerShipStatus"
+                      name="ownerShipStatus"
+                    >
+                      <optgroup label="">
+                        <option>Active</option>
+                        <option>Inactive</option>
+                      </optgroup>
+                    </select>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Remarks</label
+                    >
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      id="remarks"
+                      [(ngModel)]="remarks"
+                      name="remarks"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right text-dark text-4 pt-2"
+                      >Quantum Info</label
+                    >
+                  </div>
+
+                  <div class="col-lg-6">
+                    <label class="control-label text-lg-right pt-2"
+                      >Assigned Quantum</label
+                    >
+                    <input
+                      class="form-control"
+                      type="text"
+                      placeholder="Quantum has been assigned"
+                      disabled=""
+                      id="UID"
+                      [(ngModel)]="quantumInfo.UID"
+                      name="quantumInfo.UID"
+                    />
+                  </div>
+                  <div class="col-lg-6">
+                    <a
+                      class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                      [routerLink]=""
+                      (click)="quantumModal()"
+                      ><i class="fas fa-plus"></i> Assign Quantum</a
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label class="control-label text-lg-right pt-2"
+                      >Status</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="currentStatus"
+                      [(ngModel)]="currentStatus"
+                    >
+                      <optgroup label="">
+                        <option value="Enable">Enable</option>
+                        <option value="Disable">Disable</option>
+                        <option value="Out of Service">Out of Service</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button
+                      class="btn btn-dark mt-4 modal-confirm"
+                      (click)="updateAsset()"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <p class="text text-danger" *ngIf="hasError">{{ Error }}</p> -->
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+              </form>
             </div>
-
-        </section>
-    </div>
-
-
-
-
-
-
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>
+
+<div id="modalAnim" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+        <!--<h4 class="modal-title">Assign Quantum</h4>-->
+      </div>
+      <div class="modal-body">
+        <h4 class="modal-title">Assign Quantum</h4>
+        <select
+          data-plugin-selectTwo
+          class="form-control populate"
+          [(ngModel)]="quantumSelected"
+          name="quantum info"
+          (ngModelChange)="onChange($event)"
+        >
+          <option *ngFor="let q of quantumsList" value="{{ q.quantumID }}">{{
+            q.sNo
+          }}</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

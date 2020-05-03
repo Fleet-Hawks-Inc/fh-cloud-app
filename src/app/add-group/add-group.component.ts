@@ -1,122 +1,86 @@
-import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
-import {ApiService} from "../api.service";
-
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { ApiService } from "../api.service";
+import {from} from 'rxjs';
+import {map} from 'rxjs/operators';
+declare var $: any;
 @Component({
-  selector: 'app-add-group',
-  templateUrl: './add-group.component.html',
-  styleUrls: ['./add-group.component.css']
+  selector: "app-add-group",
+  templateUrl: "./add-group.component.html",
+  styleUrls: ["./add-group.component.css"],
 })
 export class AddGroupComponent implements OnInit {
-  title = 'Add Group';
-
+  title = "Add Group";
+  form;
+  errors = {};
   /********** Form Fields ***********/
-  groupName = '';
-  description = '';
-  carrierID = '';
-  groupType = '';
+  groupName = "";
+  description = "";
+  groupType = "";
 
   /******************/
 
 
 
-  /**
-   * Form errors prop
-   */
-  validationErrors = {
-    groupName: {
-      error: false,
-    },
-    description: {
-      error: false,
-    },
-    groupType: {
-      error: false,
-    },
+  response: any = "";
+  hasError = false;
+  hasSuccess = false;
+  Error: string = "";
+  Success: string = "";
+  constructor(private apiService: ApiService, private router: Router) {}
 
-  };
-
-
-
-  response : any ='';
-  hasError : boolean = false;
-  hasSuccess: boolean = false;
-  Error : string = '';
-  Success : string = '';
-  constructor(private apiService: ApiService,
-              private router: Router) {}
-
-  ngOnInit() {}
+  ngOnInit() {
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
+    });
+  }
 
   addGroup() {
+    this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
     const data = {
-      "groupName": this.groupName,
-      "description": this.description,
-      "carrierID": "default",
-      "groupType": this.groupType
+      groupName: this.groupName,
+      description: this.description,
+      groupType: this.groupType,
     };
 
+    this.apiService.postData("groups", data).subscribe({
+      complete: () => {},
+      error: (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
 
-    this.apiService.postData('groups', data).
-    subscribe({
-      complete : () => {},
-      error : (err) => {
-        this.mapErrors(err.error);
-        this.hasError = true;
-        this.Error = err.error;
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = 'Group Added successfully';
+        this.Success = "Group Added successfully";
 
-        this.groupName = '';
-        this.description = '';
-        this.groupType = '';
-
-
-
-
-      }
+        this.groupName = "";
+        this.description = "";
+        this.groupType = "";
+      },
     });
   }
 
-
-  mapErrors(errors) {
-    for (var i = 0; i < errors.length; i++) {
-      let key = errors[i].path;
-      let length = key.length;
-
-      //make array of message to remove the fieldName
-      let message = errors[i].message.split(" ");
-      delete message[0];
-
-      //new message
-      let modifiedMessage = `This field${message.join(" ")}`;
-
-      if (length == 1) {
-        //single object
-        this.validationErrors[key[0]].error = true;
-        this.validationErrors[key[0]].message = modifiedMessage;
-      } else if (length == 2) {
-        //two dimensional object
-        this.validationErrors[key[0]][key[1]].error = true;
-        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
-      }
-    }
-    console.log(this.validationErrors);
+  throwErrors() {
+    this.form.showErrors(this.errors);
   }
-
-  updateValidation(first, second = "") {
-    if (second == "") {
-      this.validationErrors[first].error = false;
-    } else {
-      this.validationErrors[first][second].error = false;
-    }
-  }
-
-
 }

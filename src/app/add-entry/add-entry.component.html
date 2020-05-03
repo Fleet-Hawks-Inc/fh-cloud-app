@@ -14,7 +14,7 @@
         <h2>{{ title }}</h2>
 
         <div class="right-wrapper text-right">
-          <ol class="breadcrumbs">
+          <ol class="breadcrumbs pr-3">
             <li>
               <a routerLink="">
                 <i class="fas fa-home"></i>
@@ -48,17 +48,8 @@
                       for="inputDefault"
                       >Items</label
                     >
-                    <select
-                      data-plugin-selectTwo
-                      class="form-control populate"
-                      [(ngModel)]="itemID"
-                      name="itemID"
-                    >
-                      <optgroup label="">
-                        <option value="1">Item 1</option>
-                        <option value="2">Item 2</option>
-                        <option value="2">Item 3</option>
-                      </optgroup>
+                    <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="itemID" name="itemID">
+                      <option *ngFor="let item of items" value="{{item.itemID}}">{{item.itemName}}</option>
                     </select>
                   </div>
                   <div class="col-lg-6">
@@ -82,17 +73,8 @@
                       for="inputDefault"
                       >Vendor</label
                     >
-                    <select
-                      data-plugin-selectTwo
-                      class="form-control populate"
-                      [(ngModel)]="vendorID"
-                      name="vendorID"
-                    >
-                      <optgroup label="">
-                        <option value="1">V 1</option>
-                        <option value="2">V 2</option>
-                        <option value="2">V 3</option>
-                      </optgroup>
+                    <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="vendorID" name="vendorID">
+                      <option *ngFor="let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.vendorName}}</option>
                     </select>
                   </div>
                 </div>

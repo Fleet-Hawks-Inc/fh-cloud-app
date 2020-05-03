@@ -13,7 +13,7 @@
         <h2>{{ title }}</h2>
 
         <div class="right-wrapper text-right">
-          <ol class="breadcrumbs">
+          <ol class="breadcrumbs pr-3">
             <li>
               <a routerLink="">
                 <i class="fas fa-home"></i>
@@ -63,6 +63,7 @@
             <div class="card-body">
               <table
                 class="table table-bordered table-striped mb-0"
+                #FhDataTable
                 id="datatable-default"
               >
                 <thead>
@@ -82,16 +83,14 @@
                     <td>{{ item.openingStock }}</td>
                     <td>{{ item.description }}</td>
                     <td>
-                      <a routerLink="/Edit-Item/{{ item.itemID }}"
-                        >Edit</a
-                      >
+                      <a routerLink="/Edit-Item/{{ item.itemID }}">Edit</a>
                     </td>
                     <td>
                       <a [routerLink]="" (click)="deleteItem(item.itemID)"
                         >Delete</a
                       >
                     </td>
-                    
+
                     <!--<td class="center d-lg-none">4</td>-->
                     <!--<td class="center d-lg-none">X</td>-->
                   </tr>

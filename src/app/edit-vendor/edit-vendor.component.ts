@@ -1,14 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
 import { ApiService } from "../api.service";
-import { ActivatedRoute } from "@angular/router";
+import { from, of } from "rxjs";
+import { map } from "rxjs/operators";
+import { MapBoxService } from "../map-box.service";
+import { Object } from "aws-sdk/clients/s3";
+declare var $: any;
+
 @Component({
-  selector: 'app-edit-vendor',
-  templateUrl: './edit-vendor.component.html',
-  styleUrls: ['./edit-vendor.component.css']
+  selector: "app-edit-vendor",
+  templateUrl: "./edit-vendor.component.html",
+  styleUrls: ["./edit-vendor.component.css"],
 })
 export class EditVendorComponent implements OnInit {
   parentTitle = "Vendors";
   title = "Edit Vendor";
+  errors = {};
+  form;
+  concatArrayKeys = "";
 
   /**
    * Form Props
@@ -20,60 +29,77 @@ export class EditVendorComponent implements OnInit {
     latitude: "",
     longitude: "",
   };
+  geofence = "";
   address = "";
-  state = "";
-  country = "";
+  stateID = "";
+  countryID = "";
   taxID = "";
   creditDays = "";
   timeCreated = "";
-  /**
-   * Form errors prop
-   */
-  validationErrors = {
-    vendorName: {
-      error: false,
-    },
-    vendorType: {
-      error: false,
-    },
-    geoLocation: {
-      latitude: {
-        error: false,
-      },
-      longitude: {
-        error: false,
-      },
-    },
-    address: {
-      error: false,
-    },
-    country: {
-      error: false,
-    },
-    state: {
-      error: false,
-    },
-    taxID: {
-      error: false,
-    },
-    creditDays: {
-      error: false,
-    },
-  };
+
+  countries = [];
+  states = [];
+  taxAccounts = [];
 
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
   Error: string = "";
   Success: string = "";
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private mapBoxService: MapBoxService,
+    private apiService: ApiService
+  ) {}
 
   ngOnInit() {
     this.vendorID = this.route.snapshot.params["vendorID"];
+    this.fetchCountries();
+    this.fetchAccounts();
     this.fetchVendor();
   }
 
-    /**
+  initMap() {
+    if ($("#map-div").is(":visible")) {
+      $("#map-div").hide("slow");
+    } else {
+      $("#map-div").show("slow");
+    }
+
+    //initiate map box
+    this.mapBoxService.initMapbox(-104.618896, 50.44521);
+
+    //create polygon
+    this.mapBoxService.plotGeofencing(
+      this.geofence,
+      this.geoLocation.latitude,
+      this.geoLocation.longitude
+    );
+  }
+
+  fetchAccounts() {
+    this.apiService
+      .getData(`accounts/accountType/Tax`)
+      .subscribe((result: any) => {
+        this.taxAccounts = result.Items;
+      });
+  }
+
+  fetchCountries() {
+    this.apiService.getData("countries").subscribe((result: any) => {
+      this.countries = result.Items;
+    });
+  }
+
+  getStates() {
+    this.apiService
+      .getData(`states/countryID/${this.countryID}`)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
+
+  /**
    * fetch User data
    */
   fetchVendor() {
@@ -88,15 +114,18 @@ export class EditVendorComponent implements OnInit {
           latitude: result.geoLocation.latitude,
           longitude: result.geoLocation.longitude,
         };
-        this.address = result.address;
-        this.state = result.state;
-        this.country = result.country;
+        (this.geofence = result.geofence), (this.address = result.address);
+        this.stateID = result.stateID;
+        this.countryID = result.countryID;
         this.taxID = result.taxID;
         this.creditDays = result.creditDays;
         this.timeCreated = result.timeCreated;
       });
-  }
 
+    setTimeout(() => {
+      this.getStates();
+    }, 2000);
+  }
 
   updateVendor() {
     let data = {
@@ -104,23 +133,39 @@ export class EditVendorComponent implements OnInit {
       vendorName: this.vendorName,
       vendorType: this.vendorType,
       geoLocation: {
-        latitude: this.geoLocation.latitude,
-        longitude: this.geoLocation.longitude,
+        latitude: this.mapBoxService.latitude,
+        longitude: this.mapBoxService.longitude,
       },
+      geofence: this.mapBoxService.plottedMap || [],
       address: this.address,
-      state: this.state,
-      country: this.country,
+      stateID: this.stateID,
+      countryID: this.countryID,
       taxID: this.taxID,
       creditDays: this.creditDays,
-      timeCreated: this.timeCreated
+      timeCreated: this.timeCreated,
     };
 
     this.apiService.putData("vendors", data).subscribe({
       complete: () => {},
       error: (err) => {
-        this.mapErrors(err.error);
-        this.hasError = true;
-        this.Error = err.error;
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+              console.log(key);
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
         this.response = res;
@@ -130,36 +175,19 @@ export class EditVendorComponent implements OnInit {
     });
   }
 
-  mapErrors(errors) {
-    for (var i = 0; i < errors.length; i++) {
-      let key = errors[i].path;
-      let length = key.length;
-
-      //make array of message to remove the fieldName
-      let message = errors[i].message.split(" ");
-      delete message[0];
-
-      //new message
-      let modifiedMessage = `This field${message.join(" ")}`;
-
-      if (length == 1) {
-        //single object
-        this.validationErrors[key[0]].error = true;
-        this.validationErrors[key[0]].message = modifiedMessage;
-      } else if (length == 2) {
-        //two dimensional object
-        this.validationErrors[key[0]][key[1]].error = true;
-        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
-      }
-    }
+  throwErrors() {
+    this.form.showErrors(this.errors);
   }
 
-  updateValidation(first, second = "") {
-    if (second == "") {
-      this.validationErrors[first].error = false;
-    } else {
-      this.validationErrors[first][second].error = false;
+  concatArray(path) {
+    this.concatArrayKeys = "";
+    for (const i in path) {
+      this.concatArrayKeys += path[i] + ".";
     }
+    this.concatArrayKeys = this.concatArrayKeys.substring(
+      0,
+      this.concatArrayKeys.length - 1
+    );
+    return this.concatArrayKeys;
   }
-
 }

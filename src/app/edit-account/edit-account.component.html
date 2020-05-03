@@ -47,7 +47,11 @@
 
                                     <div class="col-lg-6">
                                         <label class="control-label text-lg-right pt-2" >Account Type</label>
-                                        <input type="text" class="form-control" name="accountType" [(ngModel)]="accountType" >
+                                        <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="accountType" name="accountType">
+                                            <optgroup label="">
+                                              <option>Tax</option>
+                                            </optgroup>
+                                          </select>
                                     </div>
 
                                     <div class="col-lg-6">

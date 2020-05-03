@@ -1,117 +1,289 @@
 <section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
 
-    <!-- start: header -->
-    <app-header></app-header>
+  <!-- end: header -->
 
-    <!-- end: header -->
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
 
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
 
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs pr-3">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
 
-    <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
 
-        <section role="main" class="content-body">
-            <header class="page-header">
-                <h2>{{title}}</h2>
-
-                <div class="right-wrapper text-right">
-                    <ol class="breadcrumbs">
-                        <li>
-                            <a routerLink="">
-                                <i class="fas fa-home"></i>
-                            </a>
-                        </li>
-
-                        <li><span>{{title}}</span></li>
-                    </ol>
-
-
-                </div>
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">{{ title }}</h2>
             </header>
 
-
-
-            <div class="row">
-                <div class="col">
-                    <section class="card">
-                        <header class="card-header">
-
-
-                            <h2 class="card-title">{{title}}</h2>
-                        </header>
-                        <div class="card-body">
-                            <form class="form-horizontal form-bordered" method="get">
-                                <div class="form-group row">
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Vehicle ID</label>
-                                        <input type="text" class="form-control" name="vehicleID" [(ngModel)]="vehicleID" >
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Vendor ID</label>
-                                        <input type="text" class="form-control" name="vendorID" [(ngModel)]="vendorID" >
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Task</label>
-                                        <input type="text" class="form-control" name="task" [(ngModel)]="task" >
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Description</label>
-                                        <input type="text" class="form-control" name="description" [(ngModel)]="description" >
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Value</label>
-                                        <input type="text" class="form-control" name="value" [(ngModel)]="value" >
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Image</label>
-                                        <input type="text" class="form-control" name="image" [(ngModel)]="image" >
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Service Type</label>
-                                        <input type="text" class="form-control" name="serviceType" [(ngModel)]="serviceType" >
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label class="control-label text-lg-right pt-2" >Odometer</label>
-                                        <input type="text" class="form-control" name="odometer" [(ngModel)]="odometer" >
-                                    </div>
-
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <button class="btn btn-dark mt-4 modal-confirm" (click)="addVehicleServiceLog()">Submit</button>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-
-                                        <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
-                                        <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
-                                    </div>
-                                </div>
-
-                            </form>
-                        </div>
-                    </section>
+            <div class="card-body">
+              <form
+                class="form-horizontal form-bordered"
+                method="get"
+                name="form"
+                id="form_"
+              >
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Vehicle</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="vehicleID"
+                      [(ngModel)]="vehicleID"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let vehicle of vehicles"
+                          value="{{ vehicle.vehicleID }}"
+                          >{{ vehicle.vehicleName }}</option
+                        >
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Vendor</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="vendorID"
+                      [(ngModel)]="vendorID"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let vendor of vendors"
+                          value="{{ vendor.vendorID }}"
+                          >{{ vendor.vendorName }}</option
+                        >
+                      </optgroup>
+                    </select>
+                  </div>
                 </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Task Description</label
+                    >
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      id="textareaDefault"
+                      name="taskDescription"
+                      [(ngModel)]="taskDescription"
+                    ></textarea>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Service Type</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="serviceType"
+                      [(ngModel)]="serviceType"
+                    >
+                      <optgroup label="" data-select2-id="17">
+                        <option value="Service 1">Service 1</option>
+                        <option value="Service 2">Service 2</option>
+                        <option value="Service 3">Service 3</option>
+                        <option value="Service 4">Service 4</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Value</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="value"
+                      [(ngModel)]="value"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Odometer</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputDefault"
+                      name="odometer"
+                      [(ngModel)]="odometer"
+                    />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right text-4 pt-2"
+                      for="inputDefault"
+                      >Item Information</label
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Item Name</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      [(ngModel)]="itemID"
+                      name="itemID"
+                    >
+                      <option
+                        *ngFor="let item of items"
+                        value="{{ item.itemID }}"
+                        >{{ item.itemName }}</option
+                      >
+                    </select>
+                  </div>
+                  <div class="col-lg-2">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Quantity</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      [(ngModel)]="quantity"
+                      name="quantity"
+                    />
+                  </div>
+                  <div class="col-lg-3">
+                    <button
+                      class="btn btn-dark mar-top-asg-stock-btn"
+                      (click)="addItem()"
+                    >
+                      ADD
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <table
+                    class="table table-responsive-lg table-striped mb-0"
+                    id="datatable-default"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Sr No.</th>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let selectedItem of selectedItems;
+                          let i = index
+                        "
+                      >
+                        <td class="table-stock-qty-td" width="10%">
+                          {{ i + 1 }}
+                        </td>
+                        <td class="table-stock-qty-td" width="50%">
+                          {{ getItemName(selectedItem.itemID) }}
+                        </td>
+                        <td class="table-stock-qty-td" width="30%">
+                          {{ selectedItem.quantity }}
+                        </td>
+                        <td width="10%">
+                          <button class="btn btn-dark" (click)="removeItem(i)">
+                            Remove
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right text-dark text-4 pt-2"
+                      for="inputDefault"
+                      >Image</label
+                    >
+                    <input
+                      type="file"
+                      name="fileToUpload"
+                      id="fileToUpload"
+                      class="form-control mt-2"
+                      (change)="uploadFile($event)"
+                    />
+
+                    <div>
+                      <p class="text text-danger" *ngIf="imageError !== ''">
+                        {{ imageError }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button
+                      class="btn btn-dark mt-4 modal-confirm"
+                      (click)="addVehicleServiceLog()"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <p class="text text-danger" *ngIf="hasError">{{ Error }}</p> -->
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+              </form>
             </div>
-
-        </section>
-    </div>
-
-
-
-
-
-
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>

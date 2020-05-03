@@ -14,7 +14,7 @@
         <h2>{{ title }}</h2>
 
         <div class="right-wrapper text-right">
-          <ol class="breadcrumbs">
+          <ol class="breadcrumbs pr-3">
             <li></li>
 
             <li>
@@ -30,7 +30,7 @@
               <h2 class="card-title">Item Entry Form</h2>
             </header>
             <div class="card-body">
-              <form class="form-horizontal form-bordered" method="get">
+              <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
                 <div class="form-group row">
                   <div class="col-lg-4">
                     <label
@@ -41,18 +41,9 @@
                     <input
                       type="text"
                       class="form-control"
-                      (input)="updateValidation('itemName')"
                       name="itemName"
                       [(ngModel)]="itemName"
-                      [ngClass]="{
-                        redBorder: validationErrors.itemName.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.itemName.error == true"
-                      class="red"
-                      >{{ validationErrors.itemName.message }}</span
-                    >
                   </div>
                   <div class="col-lg-4">
                     <label
@@ -63,18 +54,9 @@
                     <input
                       type="number"
                       class="form-control"
-                      (change)="updateValidation('openingStock')"
                       name="openingStock"
                       [(ngModel)]="openingStock"
-                      [ngClass]="{
-                        redBorder: validationErrors.openingStock.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.openingStock.error == true"
-                      class="red"
-                      >{{ validationErrors.openingStock.message }}</span
-                    >
                   </div>
                 </div>
                 <div class="form-group row">
@@ -87,21 +69,9 @@
                     <input
                       type="number"
                       class="form-control"
-                      (input)="updateValidation('defaultPurchasePrice')"
                       name="defaultPurchasePrice"
                       [(ngModel)]="defaultPurchasePrice"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.defaultPurchasePrice.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="
-                        validationErrors.defaultPurchasePrice.error == true
-                      "
-                      class="red"
-                      >{{ validationErrors.defaultPurchasePrice.message }}</span
-                    >
                   </div>
                   <div class="col-lg-4">
                     <label
@@ -112,30 +82,15 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      (change)="updateValidation('defaultPurchaseVendor')"
                       name="defaultPurchaseVendor"
                       [(ngModel)]="defaultPurchaseVendor"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.defaultPurchaseVendor.error == true
-                      }"
                     >
-                      <optgroup label="">
-                        <option value="1">Vendor 1</option>
-                        <option value="2">Vendor 2</option>
-                        <option value="2">Vendor 3</option>
-                        <option value="2">Vendor 4</option>
-                      </optgroup>
+                      <option
+                        *ngFor="let vendor of vendors"
+                        value="{{ vendor.vendorID }}"
+                        >{{ vendor.vendorName }}</option
+                      >
                     </select>
-                    <span
-                      *ngIf="
-                        validationErrors.defaultPurchaseVendor.error == true
-                      "
-                      class="red"
-                      >{{
-                        validationErrors.defaultPurchaseVendor.message
-                      }}</span
-                    >
                   </div>
                   <div class="col-lg-4">
                     <label
@@ -146,26 +101,17 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      (change)="updateValidation('defaultTaxAccount')"
                       name="defaultTaxAccount"
                       [(ngModel)]="defaultTaxAccount"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.defaultTaxAccount.error == true
-                      }"
                     >
                       <optgroup label="">
-                        <option value="1">Account 1</option>
-                        <option value="2">Account 2</option>
-                        <option value="2">Account 3</option>
-                        <option value="2">Account 4</option>
+                        <option
+                          *ngFor="let account of taxAccounts"
+                          value="{{ account.accountID }}"
+                          >{{ account.accountName }}</option
+                        >
                       </optgroup>
                     </select>
-                    <span
-                      *ngIf="validationErrors.defaultTaxAccount.error == true"
-                      class="red"
-                      >{{ validationErrors.defaultTaxAccount.message }}</span
-                    >
                   </div>
                 </div>
                 <div class="form-group row">
@@ -178,18 +124,9 @@
                     <textarea
                       class="form-control"
                       rows="3"
-                      (input)="updateValidation('description')"
                       name="description"
                       [(ngModel)]="description"
-                      [ngClass]="{
-                        redBorder: validationErrors.description.error == true
-                      }"
                     ></textarea>
-                    <span
-                      *ngIf="validationErrors.description.error == true"
-                      class="red"
-                      >{{ validationErrors.description.message }}</span
-                    >
                   </div>
                 </div>
                 <div class="form-group row">

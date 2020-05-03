@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ApiService } from "../api.service";
 import { Router } from "@angular/router";
-import {catchError, map, mapTo, tap} from 'rxjs/operators';
-import {from, of} from 'rxjs';
+import { catchError, map, mapTo, tap } from "rxjs/operators";
+import { from, of } from "rxjs";
 declare var jquery: any;
 declare var $: any;
 
@@ -17,13 +17,16 @@ export class AddTicketComponent implements OnInit, AfterViewInit {
   /********** Form Fields ***********/
 
   errors = {};
+  form;
+
   userName = "";
   ticketNumber = "";
-  ticketType = "";
+  ticketTypeID = "";
   ticketValue = "";
   description = "";
   officeDetails = "";
-  form;
+
+  ticketTypes = [];
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -33,20 +36,27 @@ export class AddTicketComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.fetchUsers();
-
-    }
+    this.fetchTicketTypes();
+  }
 
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      this.form = $("#form_").validate();
+    });
+  }
+
+  fetchTicketTypes() {
+    this.apiService.getData("ticketTypes").subscribe((result: any) => {
+      this.ticketTypes = result.Items;
     });
   }
 
   fetchUsers() {
-    this.apiService.getData('users/userType/driver')
-        .subscribe((result: any) => {
-          this.users = result.Items;
-        });
+    this.apiService
+      .getData("users/userType/driver")
+      .subscribe((result: any) => {
+        this.users = result.Items;
+      });
   }
 
   addTicket() {
@@ -58,40 +68,48 @@ export class AddTicketComponent implements OnInit, AfterViewInit {
     let data = {
       userName: this.userName,
       ticketNumber: this.ticketNumber,
-      ticketType: this.ticketType,
+      ticketTypeID: this.ticketTypeID,
       ticketValue: this.ticketValue,
       description: this.description,
-      officeDetails: this.officeDetails
+      officeDetails: this.officeDetails,
     };
 
-    const handleError = this.apiService.postData("tickets", data)
-      .pipe(
-        catchError((err) => {
-          return from(err.error)
-        }),
-        tap((val) => console.log(val)),
-        map((val: any) => {
-            val.message = val.message.replace(/".*"/, 'This Field');
-            this.errors[val.path[0]] = val.message ;
-        }),
-        )
-      .subscribe({
+    this.apiService.postData("tickets", data).subscribe({
       complete: () => {},
       error: (err) => {
-        console.log(err);
-        // this.mapErrors(err.error);
-        this.hasError = true;
-        this.Error = err.error;
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+              // this.errors[key] = val.message;
+              // Or We Can Use This One To Extract Key
+              // const key = this.concatArray(path);
+              // this.errors[this.concatArray(path)] = val.message;
+              // if (key.length === 2) {
+              // this.errors[val.context.key] = val.message;
+              // } else {
+              // this.errors[key] = val.message;
+              // }
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
-        if (!$.isEmptyObject(this.errors)) {
-         return this.throwErrors();
-        }
         this.response = res;
         this.hasSuccess = true;
         this.Success = "Ticket Added successfully";
         this.userName = "";
-        this.ticketType = "";
+        this.ticketTypeID = "";
         this.ticketValue = "";
         this.description = "";
         this.ticketNumber = "";
@@ -102,7 +120,5 @@ export class AddTicketComponent implements OnInit, AfterViewInit {
 
   throwErrors() {
     this.form.showErrors(this.errors);
-    }
-
-
+  }
 }

@@ -14,7 +14,7 @@
         <h2>{{ title }}</h2>
 
         <div class="right-wrapper text-right">
-          <ol class="breadcrumbs">
+          <ol class="breadcrumbs pr-3">
             <li>
               <a href="/">
                 <i class="fas fa-home"></i>
@@ -37,7 +37,12 @@
               <h2 class="card-title">Details</h2>
             </header>
             <div class="card-body">
-              <form class="form-horizontal form-bordered" method="get">
+              <form
+                class="form-horizontal form-bordered"
+                method="get"
+                name="form"
+                id="form_"
+              >
                 <div class="form-group row">
                   <div class="col-lg-6">
                     <label
@@ -47,19 +52,10 @@
                     >
                     <input
                       type="text"
-                      (input)="updateValidation('userName')"
                       class="form-control"
                       name="userName"
                       [(ngModel)]="userName"
-                      [ngClass]="{
-                        redBorder: validationErrors.userName.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.userName.error == true"
-                      class="red"
-                      >{{ validationErrors.userName.message }}</span
-                    >
                   </div>
                   <div class="col-lg-6">
                     <label
@@ -70,18 +66,9 @@
                     <input
                       type="password"
                       class="form-control"
-                      (input)="updateValidation('password')"
                       name="password"
                       [(ngModel)]="password"
-                      [ngClass]="{
-                        redBorder: validationErrors.password.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.password.error == true"
-                      class="red"
-                      >{{ validationErrors.password.message }}</span
-                    >
                   </div>
                 </div>
                 <div class="form-group row">
@@ -95,17 +82,8 @@
                       type="text"
                       class="form-control"
                       name="firstName"
-                      (input)="updateValidation('firstName')"
                       [(ngModel)]="firstName"
-                      [ngClass]="{
-                        redBorder: validationErrors.firstName.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.firstName.error == true"
-                      class="red"
-                      >{{ validationErrors.firstName.message }}</span
-                    >
                   </div>
                   <div class="col-lg-6">
                     <label
@@ -118,16 +96,7 @@
                       class="form-control"
                       name="lastName"
                       [(ngModel)]="lastName"
-                      (input)="updateValidation('lastName')"
-                      [ngClass]="{
-                        redBorder: validationErrors.lastName.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.lastName.error == true"
-                      class="red"
-                      >{{ validationErrors.lastName.message }}</span
-                    >
                   </div>
                 </div>
                 <div class="form-group row">
@@ -140,19 +109,9 @@
                     <textarea
                       class="form-control"
                       rows="3"
-                      (input)="updateValidation('address')"
-                      id="textareaDefault"
                       name="address"
                       [(ngModel)]="address"
-                      [ngClass]="{
-                        redBorder: validationErrors.address.error == true
-                      }"
                     ></textarea>
-                    <span
-                      *ngIf="validationErrors.address.error == true"
-                      class="red"
-                      >{{ validationErrors.address.message }}</span
-                    >
                   </div>
                 </div>
                 <div class="form-group row">
@@ -163,20 +122,11 @@
                       >Phone</label
                     >
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       name="phone"
                       [(ngModel)]="phone"
-                      (input)="updateValidation('phone')"
-                      [ngClass]="{
-                        redBorder: validationErrors.phone.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.phone.error == true"
-                      class="red"
-                      >{{ validationErrors.phone.message }}</span
-                    >
                   </div>
                   <div class="col-lg-3">
                     <label
@@ -185,20 +135,11 @@
                       >Email</label
                     >
                     <input
-                      type="text"
+                      type="email"
                       class="form-control"
                       name="email"
                       [(ngModel)]="email"
-                      (input)="updateValidation('email')"
-                      [ngClass]="{
-                        redBorder: validationErrors.email.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.email.error == true"
-                      class="red"
-                      >{{ validationErrors.email.message }}</span
-                    >
                   </div>
                   <div class="col-lg-3">
                     <label
@@ -209,25 +150,17 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      name="group"
-                      (change)="updateValidation('group')"
-                      [(ngModel)]="group"
-                      [ngClass]="{
-                        redBorder: validationErrors.group.error == true
-                      }"
+                      name="groupID"
+                      [(ngModel)]="groupID"
                     >
                       <optgroup label="">
-                        <option value="1">Group 1</option>
-                        <option value="2">Group 2</option>
-                        <option value="2">Group 3</option>
-                        <option value="2">Group 4</option>
+                        <option
+                          *ngFor="let group of groups"
+                          value="{{ group.groupID }}"
+                          >{{ group.groupName }}</option
+                        >
                       </optgroup>
                     </select>
-                    <span
-                      *ngIf="validationErrors.group.error == true"
-                      class="red"
-                      >{{ validationErrors.group.message }}</span
-                    >
                   </div>
                   <div class="col-lg-3">
                     <label

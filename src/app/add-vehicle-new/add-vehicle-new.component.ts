@@ -30,7 +30,7 @@ export class AddVehicleNewComponent implements OnInit {
   model = "";
   state = "";
   plateNumber = "";
-  serviceProgram = "";
+  serviceProgramID = "";
   currentStatus = "";
   group = "";
   ownership = "";
@@ -96,6 +96,13 @@ export class AddVehicleNewComponent implements OnInit {
     turningParameters: ""
   }
 
+  countryID = "";
+  servicePrograms =  [];
+  manufacturers = [];
+  models = [];
+  countries = [];
+  states = [];
+  groups = [];
 
   response : any ='';
   hasError : boolean = false;
@@ -107,6 +114,11 @@ export class AddVehicleNewComponent implements OnInit {
     private router: Router) {}
   
   ngOnInit() {
+    this.fetchServicePrograms();
+    this.fetchManufacturers();
+    this.fetchCountries();
+    this.fetchGroups();
+
     this.apiService.getData('quantums')
     .subscribe((result: any) => {
       this.quantumsList = result.Items;
@@ -124,6 +136,48 @@ export class AddVehicleNewComponent implements OnInit {
     $('#turningParametersValue').html(6);
   }
 
+  fetchServicePrograms(){
+    this.apiService.getData('servicePrograms')
+      .subscribe((result: any) => {
+        this.servicePrograms = result.Items;
+      });
+  }
+
+  fetchManufacturers(){
+    this.apiService.getData('manufacturers')
+      .subscribe((result: any) => {
+        this.manufacturers = result.Items;
+      });
+  }
+
+  fetchCountries(){
+    this.apiService.getData('countries')
+      .subscribe((result: any) => {
+        this.countries = result.Items;
+      });
+  }
+
+  fetchGroups(){
+    this.apiService.getData('groups')
+      .subscribe((result: any) => {
+        this.groups = result.Items;
+      });
+  }
+
+  getStates(){
+    this.apiService.getData('states/countryID/' + this.countryID)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
+
+  getModels(){
+    this.apiService.getData(`models/manufacturerID/${this.make}`)
+      .subscribe((result: any) => {
+        this.models = result.Items;
+      });
+  }
+
   addVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
@@ -131,13 +185,13 @@ export class AddVehicleNewComponent implements OnInit {
       vehicleName: this.vehicleName,
       VIN: this.VIN,
       year: this.year,
-      make: this.make,
-      model: this.model,
-      state: this.state,
+      manufacturerID: this.make,
+      modelID: this.model,
+      stateID: this.state,
       plateNumber: this.plateNumber,
-      serviceProgram: this.serviceProgram,
+      serviceProgramID: this.serviceProgramID,
       currentStatus: this.currentStatus,
-      group: this.group,
+      groupID: this.group,
       ownership: this.ownership,
       additionalDetails: {
         vehicleColor: this.additionalDetails.vehicleColor,

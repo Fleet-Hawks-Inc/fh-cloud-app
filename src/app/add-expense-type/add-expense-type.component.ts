@@ -1,44 +1,41 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ApiService } from "../api.service";
 import { Router } from "@angular/router";
-import {catchError, map, mapTo, tap} from 'rxjs/operators';
-import {from, of} from 'rxjs';
+import { catchError, map, mapTo, tap } from "rxjs/operators";
+import { from, of } from "rxjs";
 declare var jquery: any;
 declare var $: any;
 
 @Component({
-  selector: 'app-add-expense-type',
-  templateUrl: './add-expense-type.component.html',
-  styleUrls: ['./add-expense-type.component.css']
+  selector: "app-add-expense-type",
+  templateUrl: "./add-expense-type.component.html",
+  styleUrls: ["./add-expense-type.component.css"],
 })
 export class AddExpenseTypeComponent implements OnInit {
-  title = 'Add Expense Types';
+  title = "Add Expense Types";
 
   /********** Form Fields ***********/
-  expenseTypeName = '';
-  description = '';
+  expenseTypeName = "";
+  description = "";
 
   /******************/
 
-  errors={};
+  errors = {};
   form;
-  response : any ='';
-  hasError : boolean = false;
+  response: any = "";
+  hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error : string = '';
-  Success : string = '';
-  constructor(private apiService: ApiService,
-              private router: Router) {}
+  Error: string = "";
+  Success: string = "";
+  constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {}
 
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      this.form = $("#form_").validate();
     });
   }
-
-  
 
   addExpenseType() {
     this.errors = {};
@@ -48,34 +45,35 @@ export class AddExpenseTypeComponent implements OnInit {
 
     let data = {
       expenseTypeName: this.expenseTypeName,
-      description: this.description  };
+      description: this.description,
+    };
 
-    const handleError = this.apiService.postData("expenseTypes", data)
-      .pipe(
-        catchError((err) => {
-          return from(err.error)
-        }),
-        tap((val) => console.log(val)),
-        map((val: any) => {
-            val.message = val.message.replace(/".*"/, 'This Field');
-            this.errors[val.path[0]] = val.message ;
-        }),
-        )
-      .subscribe({
+    this.apiService.postData("expenseTypes", data).subscribe({
       complete: () => {},
       error: (err) => {
-        console.log(err);
-        // this.mapErrors(err.error);
-        this.hasError = true;
-        this.Error = err.error;
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
-        if (!$.isEmptyObject(this.errors)) {
-         return this.throwErrors();
-        }
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Ticket Added successfully";
+        this.Success = "Expense Type added successfully";
         this.expenseTypeName = "";
         this.description = "";
       },
@@ -84,6 +82,5 @@ export class AddExpenseTypeComponent implements OnInit {
 
   throwErrors() {
     this.form.showErrors(this.errors);
-    }
-
+  }
 }

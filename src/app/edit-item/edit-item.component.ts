@@ -1,6 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { ApiService } from "../api.service";
+import { from, of } from "rxjs";
+import { map } from "rxjs/operators";
+import { Object } from "aws-sdk/clients/s3";
+declare var $: any;
 
 @Component({
   selector: "app-edit-item",
@@ -9,10 +13,15 @@ import { ApiService } from "../api.service";
 })
 export class EditItemComponent implements OnInit {
   title = "Edit Item";
+  errors = {};
+  form;
+  concatArrayKeys = "";
 
   /**
    * Form props
    */
+  taxAccounts = [];
+  vendors: [];
   itemID = "";
   itemName = "";
   description = "";
@@ -22,29 +31,6 @@ export class EditItemComponent implements OnInit {
   openingStock = "";
   timeCreated = "";
 
-  /**
-   * Form errors props
-   */
-  validationErrors = {
-    itemName: {
-      error: false,
-    },
-    description: {
-      error: false,
-    },
-    defaultPurchasePrice: {
-      error: false,
-    },
-    defaultPurchaseVendor: {
-      error: false,
-    },
-    defaultTaxAccount: {
-      error: false,
-    },
-    openingStock: {
-      error: false,
-    },
-  };
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -54,8 +40,23 @@ export class EditItemComponent implements OnInit {
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
   ngOnInit() {
     this.itemID = this.route.snapshot.params["itemID"];
-
+    this.fetchVendors();
     this.fetchItem();
+    this.fetchAccounts();
+  }
+
+  fetchVendors() {
+    this.apiService.getData("vendors").subscribe((result: any) => {
+      this.vendors = result.Items;
+    });
+  }
+
+  fetchAccounts() {
+    this.apiService
+      .getData(`accounts/accountType/Tax`)
+      .subscribe((result: any) => {
+        this.taxAccounts = result.Items;
+      });
   }
 
   fetchItem() {
@@ -91,9 +92,24 @@ export class EditItemComponent implements OnInit {
     this.apiService.putData("items", data).subscribe({
       complete: () => {},
       error: (err) => {
-        this.mapErrors(err.error);
-        this.hasError = true;
-        this.Error = err.error;
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
         this.response = res;
@@ -103,35 +119,19 @@ export class EditItemComponent implements OnInit {
     });
   }
 
-  mapErrors(errors) {
-    for (var i = 0; i < errors.length; i++) {
-      let key = errors[i].path;
-      let length = key.length;
-
-      //make array of message to remove the fieldName
-      let message = errors[i].message.split(" ");
-      delete message[0];
-
-      //new message
-      let modifiedMessage = `This field${message.join(" ")}`;
-
-      if (length == 1) {
-        //single object
-        this.validationErrors[key[0]].error = true;
-        this.validationErrors[key[0]].message = modifiedMessage;
-      } else if (length == 2) {
-        //two dimensional object
-        this.validationErrors[key[0]][key[1]].error = true;
-        this.validationErrors[key[0]][key[1]].message = modifiedMessage;
-      }
-    }
+  throwErrors() {
+    this.form.showErrors(this.errors);
   }
 
-  updateValidation(first, second = "") {
-    if (second == "") {
-      this.validationErrors[first].error = false;
-    } else {
-      this.validationErrors[first][second].error = false;
+  concatArray(path) {
+    this.concatArrayKeys = "";
+    for (const i in path) {
+      this.concatArrayKeys += path[i] + ".";
     }
+    this.concatArrayKeys = this.concatArrayKeys.substring(
+      0,
+      this.concatArrayKeys.length - 1
+    );
+    return this.concatArrayKeys;
   }
 }

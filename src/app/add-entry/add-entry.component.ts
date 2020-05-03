@@ -16,6 +16,8 @@ export class AddEntryComponent implements OnInit {
 
   /********** Form Fields ***********/
 
+  items = [];
+  vendors = [];
   itemID = "";
   totalQuantity = "";
   vendorID = "";
@@ -24,19 +26,33 @@ export class AddEntryComponent implements OnInit {
   form;
   errors = {};
   response: any = "";
-  hasError: boolean = false;
-  hasSuccess: boolean = false;
+  hasError = false;
+  hasSuccess = false;
   Error: string = "";
   Success: string = "";
   constructor(private apiService: ApiService, private router: Router) {}
 
-  ngOnInit() {}
-
-  ngAfterViewInit() {
+  ngOnInit() {
+    this.fetchItems();
+    this.fetchVendors();
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
+
+  fetchItems() {
+    this.apiService.getData("items").subscribe((result: any) => {
+      this.items = result.Items;
+    });
+  }
+
+  fetchVendors() {
+    this.apiService.getData("vendors").subscribe((result: any) => {
+      this.vendors = result.Items;
+    });
+  }
+
+
 
   addStockEntry() {
     this.errors = {};
@@ -51,38 +67,38 @@ export class AddEntryComponent implements OnInit {
       description: this.description,
     };
 
-    const handleError = this.apiService
-      .postData("stockEntries", data)
-      .pipe(
-        catchError((err) => {
-          return from(err.error);
-        }),
-        tap((val) => console.log(val)),
-        map((val: any) => {
-          val.message = val.message.replace(/".*"/, "This Field");
-          this.errors[val.path[0]] = val.message;
-        })
-      )
-      .subscribe({
-        complete: () => {},
-        error: (err) => {
-          // this.mapErrors(err.error);
-          this.hasError = true;
-          this.Error = err.error;
-        },
-        next: (res) => {
-          if (!$.isEmptyObject(this.errors)) {
-            return this.throwErrors();
-          }
-          this.response = res;
-          this.hasSuccess = true;
-          this.Success = "Stock entry Added successfully";
-          this.itemID = "";
-          this.totalQuantity = "";
-          this.vendorID = "";
-          this.description = "";
-        },
-      });
+    this.apiService.postData("stockEntries", data).subscribe({
+      complete: () => {},
+      error: (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.Success = "Stock entry added successfully";
+        this.itemID = "";
+        this.totalQuantity = "";
+        this.vendorID = "";
+        this.description = "";
+      },
+    });
   }
 
   throwErrors() {

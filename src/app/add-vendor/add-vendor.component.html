@@ -14,7 +14,7 @@
         <h2>{{ title }}</h2>
 
         <div class="right-wrapper text-right">
-          <ol class="breadcrumbs">
+          <ol class="breadcrumbs pr-3">
             <li>
               <a routerLink="">
                 <i class="fas fa-home"></i>
@@ -34,7 +34,12 @@
               <h2 class="card-title">Add Vendor</h2>
             </header>
             <div class="card-body">
-              <form class="form-horizontal form-bordered" method="get">
+              <form
+                class="form-horizontal form-bordered"
+                method="get"
+                name="form"
+                id="form_"
+              >
                 <div class="form-group row">
                   <div class="col-lg-6">
                     <label
@@ -45,18 +50,9 @@
                     <input
                       type="text"
                       class="form-control"
-                      (input)="updateValidation('vendorName')"
                       name="vendorName"
                       [(ngModel)]="vendorName"
-                      [ngClass]="{
-                        redBorder: validationErrors.vendorName.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.vendorName.error == true"
-                      class="red"
-                      >{{ validationErrors.vendorName.message }}</span
-                    >
                   </div>
                   <div class="col-lg-6">
                     <label
@@ -67,97 +63,16 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      (change)="updateValidation('vendorType')"
                       name="vendorType"
                       [(ngModel)]="vendorType"
-                      [ngClass]="{
-                        redBorder: validationErrors.vendorType.error == true
-                      }"
                     >
                       <optgroup label="">
-                        <option value="1">V 1</option>
-                        <option value="2">V 2</option>
-                        <option value="2">V 3</option>
+                        <option value="Service Vendor">Service Vendor</option>
+                        <option value="Insurance Vendor"
+                          >Insurance Vendor</option
+                        >
                       </optgroup>
                     </select>
-                    <span
-                      *ngIf="validationErrors.vendorType.error == true"
-                      class="red"
-                      >{{ validationErrors.vendorType.message }}</span
-                    >
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Geo-location</label
-                    >
-                  </div>
-                  <div class="col-lg-6">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Latitude</label
-                    >
-                    <select
-                      data-plugin-selectTwo
-                      class="form-control populate"
-                      (change)="updateValidation('geoLocation', 'latitude')"
-                      name="geoLocationLatitude"
-                      [(ngModel)]="geoLocation.latitude"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.geoLocation.latitude.error == true
-                      }"
-                    >
-                      <optgroup label="">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="2">3</option>
-                      </optgroup>
-                    </select>
-                    <span
-                      *ngIf="
-                        validationErrors.geoLocation.latitude.error == true
-                      "
-                      class="red"
-                      >{{ validationErrors.geoLocation.latitude.message }}</span
-                    >
-                  </div>
-                  <div class="col-lg-6">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Longitude</label
-                    >
-                    <select
-                      data-plugin-selectTwo
-                      class="form-control populate"
-                      (change)="updateValidation('geoLocation', 'longitude')"
-                      name="geoLocationLongitude"
-                      [(ngModel)]="geoLocation.longitude"
-                      [ngClass]="{
-                        redBorder:
-                          validationErrors.geoLocation.longitude.error == true
-                      }"
-                    >
-                      <optgroup label="">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="2">3</option>
-                      </optgroup>
-                    </select>
-                    <span
-                      *ngIf="
-                        validationErrors.geoLocation.longitude.error == true
-                      "
-                      class="red"
-                      >{{
-                        validationErrors.geoLocation.longitude.message
-                      }}</span
-                    >
                   </div>
                 </div>
                 <div class="form-group row">
@@ -170,49 +85,12 @@
                     <textarea
                       class="form-control"
                       rows="3"
-                      (input)="updateValidation('address')"
                       name="address"
                       [(ngModel)]="address"
-                      [ngClass]="{
-                        redBorder: validationErrors.address.error == true
-                      }"
                     ></textarea>
-                    <span
-                      *ngIf="validationErrors.address.error == true"
-                      class="red"
-                      >{{ validationErrors.address.message }}</span
-                    >
                   </div>
                 </div>
                 <div class="form-group row">
-                  <div class="col-lg-6">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >State</label
-                    >
-                    <select
-                      data-plugin-selectTwo
-                      class="form-control populate"
-                      (change)="updateValidation('state')"
-                      name="state"
-                      [(ngModel)]="state"
-                      [ngClass]="{
-                        redBorder: validationErrors.state.error == true
-                      }"
-                    >
-                      <optgroup label="">
-                        <option value="1">State 1</option>
-                        <option value="2">State 2</option>
-                        <option value="2">State 3</option>
-                      </optgroup>
-                    </select>
-                    <span
-                      *ngIf="validationErrors.address.error == true"
-                      class="red"
-                      >{{ validationErrors.state.message }}</span
-                    >
-                  </div>
                   <div class="col-lg-6">
                     <label
                       class="control-label text-lg-right pt-2"
@@ -222,24 +100,39 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      (change)="updateValidation('country')"
-                      name="country"
-                      [(ngModel)]="country"
-                      [ngClass]="{
-                        redBorder: validationErrors.country.error == true
-                      }"
+                      name="countryID"
+                      (change)="getStates()"
+                      [(ngModel)]="countryID"
                     >
                       <optgroup label="">
-                        <option value="1">Country 1</option>
-                        <option value="2">Country 2</option>
-                        <option value="2">Country 3</option>
+                        <option
+                          *ngFor="let country of countries"
+                          value="{{ country.countryID }}"
+                          >{{ country.countryName }}</option
+                        >
                       </optgroup>
                     </select>
-                    <span
-                      *ngIf="validationErrors.country.error == true"
-                      class="red"
-                      >{{ validationErrors.country.message }}</span
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >State</label
                     >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="stateID"
+                      [(ngModel)]="stateID"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let state of states"
+                          value="{{ state.stateID }}"
+                          >{{ state.stateName }}</option
+                        >
+                      </optgroup>
+                    </select>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -252,24 +145,17 @@
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
-                      (change)="updateValidation('taxID')"
                       name="taxID"
                       [(ngModel)]="taxID"
-                      [ngClass]="{
-                        redBorder: validationErrors.taxID.error == true
-                      }"
                     >
                       <optgroup label="">
-                        <option value="1">tax 1</option>
-                        <option value="2">tax 2</option>
-                        <option value="2">tax 3</option>
+                        <option
+                          *ngFor="let account of taxAccounts"
+                          value="{{ account.accountID }}"
+                          >{{ account.accountName }}</option
+                        >
                       </optgroup>
                     </select>
-                    <span
-                      *ngIf="validationErrors.address.error == true"
-                      class="red"
-                      >{{ validationErrors.taxID.message }}</span
-                    >
                   </div>
                   <div class="col-lg-6">
                     <label
@@ -278,20 +164,55 @@
                       >Credit Days</label
                     >
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       name="creditDays"
-                      (input)="updateValidation('creditDays')"
                       [(ngModel)]="creditDays"
-                      [ngClass]="{
-                        redBorder: validationErrors.creditDays.error == true
-                      }"
                     />
-                    <span
-                      *ngIf="validationErrors.creditDays.error == true"
-                      class="red"
-                      >{{ validationErrors.creditDays.message }}</span
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Geo-location</label
                     >
+                  </div>
+
+                  <div class="col-lg-12 col-xl-12 btn" (click)="initMap()">
+                    <div class="card card-default">
+                      <div class="card-header">
+                        <h4 class="card-title m-0">
+                          <span class="pull-left">
+                            Set Geofences
+                          </span>
+                          <span class="pull-right"
+                            ><i class="fas fa-angle-down"></i
+                          ></span>
+                        </h4>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="col-lg-12 col-xl-12"
+                    id="map-div"
+                    style="display: none;"
+                  >
+                    <div class="card-body p-0">
+                      <div
+                        class="map"
+                        id="map"
+                        style="
+                          width: 100%;
+                          height: 700px;
+                          border-radius: 5px;
+                          padding: 10px;
+                        "
+                      ></div>
+                    </div>
                   </div>
                 </div>
 
