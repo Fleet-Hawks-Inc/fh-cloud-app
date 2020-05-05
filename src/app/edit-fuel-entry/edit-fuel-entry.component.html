@@ -196,7 +196,11 @@
                       name="fileToUpload"
                       id="fileToUpload"
                       class="form-control mt-2"
+                      (change)="uploadFile($event)"
                     />
+                    <p class="text text-danger" *ngIf="imageError !== ''">
+                      {{ imageError }}
+                    </p>
                   </div>
                 </div>
                 <div class="form-group row">

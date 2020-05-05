@@ -12,7 +12,7 @@ export class SidebarComponent implements OnInit {
 
   constructor(private router: Router,
               private sharedService: SharedServiceService) {
-    this.sharedService.activeParentNav.subscribe((val) =>{
+    this.sharedService.activeParentNav.subscribe((val) => {
       this.active_nav = val;
     });
   }

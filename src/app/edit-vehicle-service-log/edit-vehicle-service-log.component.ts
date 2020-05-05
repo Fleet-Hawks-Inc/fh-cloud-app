@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { ApiService } from "../api.service";
 import { from, of } from "rxjs";
 import { catchError, map, mapTo, tap } from "rxjs/operators";
+import {AwsUploadService} from '../aws-upload.service';
 declare var jquery: any;
 declare var $: any;
 
@@ -16,6 +17,10 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
 
   errors = {};
   form;
+
+
+  imageError = '';
+  fileName = '';
 
   /********** Form Fields ***********/
 
@@ -43,7 +48,9 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
   Error: string = "";
   Success: string = "";
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+  constructor(private route: ActivatedRoute,
+              private apiService: ApiService,
+              private awsUS: AwsUploadService) {}
 
   ngOnInit() {
     this.logID = this.route.snapshot.params["logID"];
@@ -121,6 +128,12 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
   }
 
   updateVehicleServiceLog() {
+
+    if (this.fileName === '') {
+      this.imageError = 'Please Choose Image To Upload';
+      return;
+    }
+
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
@@ -169,5 +182,15 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
 
   throwErrors() {
     this.form.showErrors(this.errors);
+    }
+
+  uploadFile(event) {
+    this.imageError = '';
+    if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
+      this.fileName = this.awsUS.uploadFile('test', event.target.files.item(0));
+    } else {
+      this.fileName = '';
+      this.imageError = 'Invalid Image Format';
+    }
   }
 }

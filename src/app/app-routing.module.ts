@@ -4,7 +4,6 @@ import { RouterModule, Routes } from "@angular/router";
 import { LoginComponent } from "./login/login.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { AuthService } from "./auth.service";
-import { AddDriverComponent } from "./add-driver/add-driver.component";
 import { AddVehicleComponent } from "./add-vehicle/add-vehicle.component";
 import { LeftBarComponent } from "./left-bar/left-bar.component";
 import { RFormsComponent } from "./r-forms/r-forms.component";
@@ -106,9 +105,6 @@ import { EditVehicleNewComponent } from "./edit-vehicle-new/edit-vehicle-new.com
 
 import { MapDashboardComponent } from "./map-dashboard/map-dashboard.component";
 
-import { EditDriverComponent } from "./edit-driver/edit-driver.component";
-import { DriverListComponent } from "./driver-list/driver-list.component";
-
 import { AddItemComponent } from "./add-item/add-item.component";
 import { ItemsListComponent } from "./items-list/items-list.component";
 import { EditItemComponent } from "./edit-item/edit-item.component";
@@ -162,9 +158,16 @@ import {AddCycleComponent} from './add-cycle/add-cycle.component';
 import { InventoryStockStatementComponent } from './Reports/inventory-stock-statement/inventory-stock-statement.component';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import {FleetModule} from './fleet/fleet.module';
 
 const routes: Routes = [
   { path: "", redirectTo: "/Login", pathMatch: "full" },
+
+  {
+    path: 'fleet',
+    loadChildren: () => import('./fleet/fleet.module').then(m => m.FleetModule)
+  },
+
   { path: "Login", component: LoginComponent },
   {
     path: "Dashboard",
@@ -311,9 +314,9 @@ const routes: Routes = [
   { path: "Add-Vehicle-New", component: AddVehicleNewComponent },
   { path: "Edit-Vehicle-New/:vehicleID", component: EditVehicleNewComponent },
 
-  { path: "Add-Driver", component: AddDriverComponent },
-  { path: "Edit-Driver/:userName", component: EditDriverComponent },
-  { path: "Drivers-List", component: DriverListComponent },
+  // { path: "Add-Driver", component: AddDriverComponent },
+  // { path: "Edit-Driver/:userName", component: EditDriverComponent },
+  // { path: "Drivers-List", component: DriverListComponent },
 
   { path: "Add-Item", component: AddItemComponent },
   { path: "Edit-Item/:itemID", component: EditItemComponent },

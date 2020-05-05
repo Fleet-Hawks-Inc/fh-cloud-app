@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AddDriverComponent } from './add-driver/add-driver.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { HeaderComponent } from './header/header.component';
 import {AddVehicleComponent} from './add-vehicle/add-vehicle.component';
@@ -102,8 +101,7 @@ import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.com
 import { MapDashboardComponent } from './map-dashboard/map-dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { EditDriverComponent } from './edit-driver/edit-driver.component';
-import { DriverListComponent } from './driver-list/driver-list.component';
+
 import { AddItemComponent } from './add-item/add-item.component';
 import { ItemsListComponent } from './items-list/items-list.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
@@ -151,15 +149,12 @@ import { CycleListComponent } from './cycle-list/cycle-list.component';
 import { InventoryStockStatementComponent } from './Reports/inventory-stock-statement/inventory-stock-statement.component';
 import { NavOpenedDirective } from './directives/nav-opened.directive';
 
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    AddDriverComponent,
+
     SidebarComponent,
     HeaderComponent,
     AddVehicleComponent,
@@ -250,8 +245,7 @@ import { NavOpenedDirective } from './directives/nav-opened.directive';
 
     MapDashboardComponent,
 
-    EditDriverComponent,
-    DriverListComponent,
+
     AddItemComponent,
     ItemsListComponent,
     EditItemComponent,

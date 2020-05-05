@@ -3,6 +3,7 @@ import { ApiService } from "../api.service";
 import { Router } from "@angular/router";
 import { catchError, map, mapTo, tap } from "rxjs/operators";
 import { from, of } from "rxjs";
+import {AwsUploadService} from '../aws-upload.service';
 declare var jquery: any;
 declare var $: any;
 
@@ -13,6 +14,9 @@ declare var $: any;
 })
 export class AddFuelEntryComponent implements OnInit {
   title = "Add Fuel Entry";
+
+  imageError = '';
+  fileName = '';
 
   /********** Form Fields ***********/
 
@@ -37,7 +41,9 @@ export class AddFuelEntryComponent implements OnInit {
   hasSuccess: boolean = false;
   Error: string = "";
   Success: string = "";
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService,
+              private router: Router,
+              private awsUS: AwsUploadService) {}
 
   ngOnInit() {
     this.fetchVehicles();
@@ -70,6 +76,11 @@ export class AddFuelEntryComponent implements OnInit {
   }
 
   addFuelEntry() {
+    if (this.fileName === '') {
+      this.imageError = 'Please Choose Image To Upload';
+      return;
+    }
+
     this.errors = {};
 
     this.hasError = false;
@@ -137,4 +148,15 @@ export class AddFuelEntryComponent implements OnInit {
   throwErrors() {
     this.form.showErrors(this.errors);
   }
+
+  uploadFile(event) {
+    this.imageError = '';
+    if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
+      this.fileName = this.awsUS.uploadFile('test', event.target.files.item(0));
+    } else {
+      this.fileName = '';
+      this.imageError = 'Invalid Image Format';
+    }
+  }
+
 }
