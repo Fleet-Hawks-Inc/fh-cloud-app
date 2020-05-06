@@ -25,9 +25,6 @@ import { EditQuantumComponent } from "./edit-quantum/edit-quantum.component";
 import { AddGroupComponent } from "./add-group/add-group.component";
 import { EditGroupComponent } from "./edit-group/edit-group.component";
 import { GroupListComponent } from "./group-list/group-list.component";
-import { AddAssetsComponent } from "./add-assets/add-assets.component";
-import { AssetListComponent } from "./asset-list/asset-list.component";
-import { EditAssetComponent } from "./edit-asset/edit-asset.component";
 import { AddFuelEntryComponent } from "./add-fuel-entry/add-fuel-entry.component";
 import { FuelEntryListComponent } from "./fuel-entry-list/fuel-entry-list.component";
 import { EditFuelEntryComponent } from "./edit-fuel-entry/edit-fuel-entry.component";
@@ -213,9 +210,6 @@ const routes: Routes = [
   { path: "Group-List", component: GroupListComponent },
   { path: "Edit-Group/:groupId", component: EditGroupComponent },
 
-  { path: "Add-Assets", component: AddAssetsComponent },
-  { path: "Assets-List", component: AssetListComponent },
-  { path: "Edit-Asset/:assetID", component: EditAssetComponent },
 
   { path: "Add-Fuel-Entry", component: AddFuelEntryComponent },
   { path: "Fuel-Entry-List", component: FuelEntryListComponent },

@@ -28,9 +28,9 @@ import { EditQuantumComponent } from './edit-quantum/edit-quantum.component';
 import { AddGroupComponent } from './add-group/add-group.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { EditGroupComponent } from './edit-group/edit-group.component';
-import { AddAssetsComponent } from './add-assets/add-assets.component';
-import { AssetListComponent } from './asset-list/asset-list.component';
-import { EditAssetComponent } from './edit-asset/edit-asset.component';
+// import { AddAssetsComponent } from './add-assets/add-assets.component';
+// import { AssetListComponent } from './asset-list/asset-list.component';
+// import { EditAssetComponent } from './edit-asset/edit-asset.component';
 import { AddFuelEntryComponent } from './add-fuel-entry/add-fuel-entry.component';
 import { EditFuelEntryComponent } from './edit-fuel-entry/edit-fuel-entry.component';
 import { FuelEntryListComponent } from './fuel-entry-list/fuel-entry-list.component';
@@ -172,9 +172,9 @@ import {SharedModule} from './shared/shared.module';
     AddGroupComponent,
     GroupListComponent,
     EditGroupComponent,
-    AddAssetsComponent,
-    AssetListComponent,
-    EditAssetComponent,
+    // AddAssetsComponent,
+    // AssetListComponent,
+    // EditAssetComponent,
     AddFuelEntryComponent,
     EditFuelEntryComponent,
     FuelEntryListComponent,

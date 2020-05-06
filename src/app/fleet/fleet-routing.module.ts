@@ -17,6 +17,10 @@ import {AddYardComponent} from './yards/add-yard/add-yard.component';
 import {EditYardComponent} from './yards/edit-yard/edit-yard.component';
 import {YardsComponent} from './yards/yards/yards.component';
 
+import { AddAssetsComponent } from "./assets/add-assets/add-assets.component";
+import { AssetListComponent } from "./assets/asset-list/asset-list.component";
+import { EditAssetComponent } from "./assets/edit-asset/edit-asset.component";
+
 const routes: Routes = [
   {
     path: 'drivers',
@@ -48,6 +52,14 @@ const routes: Routes = [
       { path: 'Add-Yard', component: AddYardComponent },
       { path: 'Edit-Yard/:yardID', component: EditYardComponent },
       { path: 'Yard-List', component: YardsComponent },
+    ]
+  },
+  {
+    path: 'assets',
+    children: [
+      { path: "Add-Assets", component: AddAssetsComponent },
+      { path: "Assets-List", component: AssetListComponent },
+      { path: "Edit-Asset/:assetID", component: EditAssetComponent },
     ]
   }
 
