@@ -93,7 +93,7 @@ export class EditVendorComponent implements OnInit {
 
   getStates() {
     this.apiService
-      .getData(`states/countryID/${this.countryID}`)
+      .getData(`states/country/${this.countryID}`)
       .subscribe((result: any) => {
         this.states = result.Items;
       });

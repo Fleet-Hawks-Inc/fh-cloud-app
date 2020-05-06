@@ -232,7 +232,7 @@ export class EditVehicleNewComponent implements OnInit {
 
   getStates() {
     this.apiService
-      .getData("states/countryID/" + this.countryID)
+      .getData("states/country/" + this.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
@@ -240,7 +240,7 @@ export class EditVehicleNewComponent implements OnInit {
 
   getModels() {
     this.apiService
-      .getData(`models/manufacturerID/${this.make}`)
+      .getData(`models/manufacturer/${this.make}`)
       .subscribe((result: any) => {
         this.models = result.Items;
       });
