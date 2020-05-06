@@ -25,15 +25,9 @@ import { EditQuantumComponent } from "./edit-quantum/edit-quantum.component";
 import { AddGroupComponent } from "./add-group/add-group.component";
 import { EditGroupComponent } from "./edit-group/edit-group.component";
 import { GroupListComponent } from "./group-list/group-list.component";
-import { AddFuelEntryComponent } from "./add-fuel-entry/add-fuel-entry.component";
-import { FuelEntryListComponent } from "./fuel-entry-list/fuel-entry-list.component";
-import { EditFuelEntryComponent } from "./edit-fuel-entry/edit-fuel-entry.component";
 import { AddExpensesComponent } from "./add-expenses/add-expenses.component";
 import { ExpensesListComponent } from "./expenses-list/expenses-list.component";
 import { EditExpensesComponent } from "./edit-expenses/edit-expenses.component";
-import { AddExpenseTypeComponent } from "./add-expense-type/add-expense-type.component";
-import { ExpenseTypeListComponent } from "./expense-type-list/expense-type-list.component";
-import { EditExpenseTypeComponent } from "./edit-expense-type/edit-expense-type.component";
 import { DocumentsComponent } from "./documents/documents.component";
 import { AddDocumentsComponent } from "./add-documents/add-documents.component";
 import { EditDocumentsComponent } from "./edit-documents/edit-documents.component";
@@ -87,14 +81,6 @@ import { AddAccountComponent } from "./add-account/add-account.component";
 import { AccountsComponent } from "./accounts/accounts.component";
 import { EditAccountComponent } from "./edit-account/edit-account.component";
 
-import { AddTicketComponent } from "./add-ticket/add-ticket.component";
-import { TicketsComponent } from "./tickets/tickets.component";
-import { EditTicketComponent } from "./edit-ticket/edit-ticket.component";
-
-import { AddVehicleServiceLogComponent } from "./add-vehicle-service-log/add-vehicle-service-log.component";
-import { VehicleServiceLogsComponent } from "./vehicle-service-logs/vehicle-service-logs.component";
-import { EditVehicleServiceLogComponent } from "./edit-vehicle-service-log/edit-vehicle-service-log.component";
-
 import { AddCertificateComponent } from "./add-certificate/add-certificate.component";
 import { EditCertificateComponent } from "./edit-certificate/edit-certificate.component";
 import { CertificatesComponent } from "./certificates/certificates.component";
@@ -111,13 +97,6 @@ import { MapDashboardComponent } from "./map-dashboard/map-dashboard.component";
 import { AddItemComponent } from "./add-item/add-item.component";
 import { ItemsListComponent } from "./items-list/items-list.component";
 import { EditItemComponent } from "./edit-item/edit-item.component";
-import { AddServiceProgramComponent } from "./add-service-program/add-service-program.component";
-import { EditServiceProgramComponent } from "./edit-service-program/edit-service-program.component";
-import { ServiceProgramListComponent } from "./service-program-list/service-program-list.component";
-
-import { AddVendorComponent } from "./add-vendor/add-vendor.component";
-import { EditVendorComponent } from "./edit-vendor/edit-vendor.component";
-import { VendorsListComponent } from "./vendors-list/vendors-list.component";
 
 import { AddItemGroupComponent } from "./add-item-group/add-item-group.component";
 import { EditItemGroupComponent } from "./edit-item-group/edit-item-group.component";
@@ -210,21 +189,9 @@ const routes: Routes = [
   { path: "Group-List", component: GroupListComponent },
   { path: "Edit-Group/:groupId", component: EditGroupComponent },
 
-
-  { path: "Add-Fuel-Entry", component: AddFuelEntryComponent },
-  { path: "Fuel-Entry-List", component: FuelEntryListComponent },
-  { path: "Edit-Fuel-Entry/:entryID", component: EditFuelEntryComponent },
-
   { path: "Add-Expenses", component: AddExpensesComponent },
   { path: "Expenses-List", component: ExpensesListComponent },
   { path: "Edit-Expenses/:expenseId", component: EditExpensesComponent },
-
-  { path: "Add-Expense-Type", component: AddExpenseTypeComponent },
-  { path: "Expenses-Type-List", component: ExpenseTypeListComponent },
-  {
-    path: "Edit-Expense-Type/:expenseTypeID",
-    component: EditExpenseTypeComponent,
-  },
 
   { path: "Add-Documents", component: AddDocumentsComponent },
   { path: "Documents-List", component: DocumentsComponent },
@@ -291,16 +258,6 @@ const routes: Routes = [
   { path: "Accounts-List", component: AccountsComponent },
   { path: "Edit-Account/:accountID", component: EditAccountComponent },
 
-  { path: "Add-Ticket", component: AddTicketComponent },
-  { path: "Tickets-List", component: TicketsComponent },
-  { path: "Edit-Ticket/:ticketID", component: EditTicketComponent },
-
-  { path: "Add-Vehicle-Service-Log", component: AddVehicleServiceLogComponent },
-  { path: "Vehicle-Service-Logs-List", component: VehicleServiceLogsComponent },
-  {
-    path: "Edit-Vehicle-Service-Log/:logID",
-    component: EditVehicleServiceLogComponent,
-  },
 
   { path: "Add-Certificate", component: AddCertificateComponent },
   { path: "Certificates-List", component: CertificatesComponent },
@@ -329,17 +286,6 @@ const routes: Routes = [
   { path: "Add-Item-Group", component: AddItemGroupComponent },
   { path: "Edit-Item-Group/:groupID", component: EditItemGroupComponent },
   { path: "Item-Group-List", component: ItemGroupListComponent },
-
-  { path: "Add-Service-Program", component: AddServiceProgramComponent },
-  {
-    path: "Edit-Service-Program/:programID",
-    component: EditServiceProgramComponent,
-  },
-  { path: "Service-Program-List", component: ServiceProgramListComponent },
-
-  { path: "Add-Vendor", component: AddVendorComponent },
-  { path: "Edit-Vendor/:vendorID", component: EditVendorComponent },
-  { path: "Vendors-List", component: VendorsListComponent },
 
   { path: "Add-Ticket-Type", component: AddTicketTypeComponent },
   { path: "Edit-Ticket-Type/:typeID", component: EditTicketTypeComponent },

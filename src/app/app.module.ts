@@ -28,18 +28,9 @@ import { EditQuantumComponent } from './edit-quantum/edit-quantum.component';
 import { AddGroupComponent } from './add-group/add-group.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { EditGroupComponent } from './edit-group/edit-group.component';
-// import { AddAssetsComponent } from './add-assets/add-assets.component';
-// import { AssetListComponent } from './asset-list/asset-list.component';
-// import { EditAssetComponent } from './edit-asset/edit-asset.component';
-import { AddFuelEntryComponent } from './add-fuel-entry/add-fuel-entry.component';
-import { EditFuelEntryComponent } from './edit-fuel-entry/edit-fuel-entry.component';
-import { FuelEntryListComponent } from './fuel-entry-list/fuel-entry-list.component';
 import { AddExpensesComponent } from './add-expenses/add-expenses.component';
 import { ExpensesListComponent } from './expenses-list/expenses-list.component';
 import { EditExpensesComponent } from './edit-expenses/edit-expenses.component';
-import { AddExpenseTypeComponent } from './add-expense-type/add-expense-type.component';
-import { EditExpenseTypeComponent } from './edit-expense-type/edit-expense-type.component';
-import { ExpenseTypeListComponent } from './expense-type-list/expense-type-list.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { AddDocumentsComponent } from './add-documents/add-documents.component';
 import { EditDocumentsComponent } from './edit-documents/edit-documents.component';
@@ -82,12 +73,6 @@ import { InspectionFormsComponent } from './inspection-forms/inspection-forms.co
 import { AddAccountComponent } from './add-account/add-account.component';
 import { EditAccountComponent } from './edit-account/edit-account.component';
 import { AccountsComponent } from './accounts/accounts.component';
-import { AddTicketComponent } from './add-ticket/add-ticket.component';
-import { EditTicketComponent } from './edit-ticket/edit-ticket.component';
-import { TicketsComponent } from './tickets/tickets.component';
-import { AddVehicleServiceLogComponent } from './add-vehicle-service-log/add-vehicle-service-log.component';
-import { EditVehicleServiceLogComponent } from './edit-vehicle-service-log/edit-vehicle-service-log.component';
-import { VehicleServiceLogsComponent } from './vehicle-service-logs/vehicle-service-logs.component';
 import { AddCertificateComponent } from './add-certificate/add-certificate.component';
 import { EditCertificateComponent } from './edit-certificate/edit-certificate.component';
 import { CertificatesComponent } from './certificates/certificates.component';
@@ -104,12 +89,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddItemComponent } from './add-item/add-item.component';
 import { ItemsListComponent } from './items-list/items-list.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
-import { AddServiceProgramComponent } from './add-service-program/add-service-program.component';
-import { EditServiceProgramComponent } from './edit-service-program/edit-service-program.component';
-import { ServiceProgramListComponent } from './service-program-list/service-program-list.component';
-import { AddVendorComponent } from './add-vendor/add-vendor.component';
-import { EditVendorComponent } from './edit-vendor/edit-vendor.component';
-import { VendorsListComponent } from './vendors-list/vendors-list.component';
 import { AddItemGroupComponent } from './add-item-group/add-item-group.component';
 import { EditItemGroupComponent } from './edit-item-group/edit-item-group.component';
 import { ItemGroupListComponent } from './item-group-list/item-group-list.component';
@@ -172,18 +151,11 @@ import {SharedModule} from './shared/shared.module';
     AddGroupComponent,
     GroupListComponent,
     EditGroupComponent,
-    // AddAssetsComponent,
-    // AssetListComponent,
-    // EditAssetComponent,
-    AddFuelEntryComponent,
-    EditFuelEntryComponent,
-    FuelEntryListComponent,
+
     AddExpensesComponent,
     ExpensesListComponent,
     EditExpensesComponent,
-    AddExpenseTypeComponent,
-    EditExpenseTypeComponent,
-    ExpenseTypeListComponent,
+    
     DocumentsComponent,
     AddDocumentsComponent,
     EditDocumentsComponent,
@@ -226,12 +198,6 @@ import {SharedModule} from './shared/shared.module';
     AddAccountComponent,
     EditAccountComponent,
     AccountsComponent,
-    AddTicketComponent,
-    EditTicketComponent,
-    TicketsComponent,
-    AddVehicleServiceLogComponent,
-    EditVehicleServiceLogComponent,
-    VehicleServiceLogsComponent,
     AddCertificateComponent,
     EditCertificateComponent,
     CertificatesComponent,
@@ -247,12 +213,7 @@ import {SharedModule} from './shared/shared.module';
     AddItemComponent,
     ItemsListComponent,
     EditItemComponent,
-    AddServiceProgramComponent,
-    EditServiceProgramComponent,
-    ServiceProgramListComponent,
-    AddVendorComponent,
-    EditVendorComponent,
-    VendorsListComponent,
+
     AddItemGroupComponent,
     EditItemGroupComponent,
     ItemGroupListComponent,

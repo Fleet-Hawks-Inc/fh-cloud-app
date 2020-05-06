@@ -1,0 +1,112 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs pr-3">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+
+      <section class="card mb-4">
+        <div class="card-body">
+          <h2 class="card-title mt-3 pull-left">{{ title }}</h2>
+          <div class="pull-right">
+            <div class="btn-group flex-wrap">
+              <button
+                type="button"
+                class="mb-1 mt-1 mr-1 btn btn-default dropdown-toggle"
+                data-toggle="dropdown"
+              >
+                <i class="fas fa-ellipsis-v"></i> Action
+                <span class="caret"></span>
+              </button>
+              <div class="dropdown-menu" role="menu">
+                <a class="dropdown-item text-1" href="#">Action</a>
+                <a class="dropdown-item text-1" href="#">Another action</a>
+                <a class="dropdown-item text-1" href="#">Something else here</a>
+                <a class="dropdown-item text-1" href="#">Separated link</a>
+              </div>
+            </div>
+
+            <a
+              routerLink="/fleet/maintenance/service-program/Add-Service-Program"
+              class="mb-1 mt-1 mr-1 btn btn-success"
+              ><i class="fas fa-plus"></i> Add Service Program</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">Program List</h2>
+            </header>
+            <div class="card-body">
+              <table
+                class="table table-bordered table-striped mb-0"
+                id="datatable-default"
+              >
+                <thead>
+                  <tr>
+                    <th>Program Name</th>
+                    <th>Repeat By Time</th>
+                    <th>Repeat By Odometer</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <!--<th class="d-lg-none">Operator</th>-->
+                    <!--<th class="d-lg-none">CSS grade</th>-->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let program of programs">
+                    <td>{{ program.programName }}</td>
+                    <td>{{ program.repeatByTime }}</td>
+                    <td>{{ program.repeatByOdometer }}</td>
+                    <td>
+                      <a
+                        routerLink="/fleet/maintenance/service-program/Edit-Service-Program/{{
+                          program.programID
+                        }}"
+                        >Edit</a
+                      >
+                    </td>
+                    <td>
+                      <a
+                        [routerLink]=""
+                        (click)="deleteProgram(program.programID)"
+                        >Delete</a
+                      >
+                    </td>
+                    <!--<td class="center d-lg-none">4</td>-->
+                    <!--<td class="center d-lg-none">X</td>-->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
