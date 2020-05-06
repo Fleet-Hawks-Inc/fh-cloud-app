@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { MapBoxService } from "../map-box.service";
-import { ApiService } from "../api.service";
+import { MapBoxService } from "../../../map-box.service";
+import { ApiService } from "../../../api.service";
 import { catchError, map, mapTo, tap } from "rxjs/operators";
 import { from, of } from "rxjs";
 declare var jquery: any;

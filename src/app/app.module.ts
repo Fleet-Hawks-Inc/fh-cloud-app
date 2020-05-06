@@ -9,23 +9,22 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { HeaderComponent } from './header/header.component';
-import {AddVehicleComponent} from './add-vehicle/add-vehicle.component';
+
+// import {AddVehicleComponent} from './add-vehicle/add-vehicle.component';
 import { LeftBarComponent } from './left-bar/left-bar.component';
 import { RFormsComponent } from './r-forms/r-forms.component';
 import { CompanyInfoComponent } from './company-info/company-info.component';
 import { AddQuantumComponent } from './add-quantum/add-quantum.component';
-import { AddUserComponent } from './add-user/add-user.component';
+// import { AddUserComponent } from './add-user/add-user.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
+// import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { LogoutComponent } from './logout/logout.component';
-import { EditVehicleComponent } from './edit-vehicle/edit-vehicle.component';
+// import { EditVehicleComponent } from './edit-vehicle/edit-vehicle.component';
 import { HealthcheckComponent } from './healthcheck/healthcheck.component';
 import { QuantumsComponent } from './quantums/quantums.component';
 import { EditQuantumComponent } from './edit-quantum/edit-quantum.component';
-import { UserListComponent } from './user-list/user-list.component';
-import { EditUserComponent } from './edit-user/edit-user.component';
+// import { UserListComponent } from './user-list/user-list.component';
+// import { EditUserComponent } from './edit-user/edit-user.component';
 import { AddGroupComponent } from './add-group/add-group.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { EditGroupComponent } from './edit-group/edit-group.component';
@@ -59,9 +58,9 @@ import { DailyInspectionListComponent } from './daily-inspection-list/daily-insp
 import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { EditCustomerComponent } from './edit-customer/edit-customer.component';
 import { CustomersComponent } from './customers/customers.component';
-import { AddYardComponent } from './add-yard/add-yard.component';
-import { EditYardComponent } from './edit-yard/edit-yard.component';
-import { YardsComponent } from './yards/yards.component';
+// import { AddYardComponent } from './add-yard/add-yard.component';
+// import { EditYardComponent } from './edit-yard/edit-yard.component';
+// import { YardsComponent } from './yards/yards.component';
 import { AddInsuranceComponent } from './add-insurance/add-insurance.component';
 import { EditInsuranceComponent } from './edit-insurance/edit-insurance.component';
 import { InsurancesComponent } from './insurances/insurances.component';
@@ -95,8 +94,8 @@ import { CertificatesComponent } from './certificates/certificates.component';
 import { AddCarrierComponent } from './add-carrier/add-carrier.component';
 import { EditCarrierComponent } from './edit-carrier/edit-carrier.component';
 import { CarriersComponent } from './carriers/carriers.component';
-import { AddVehicleNewComponent } from './add-vehicle-new/add-vehicle-new.component';
-import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.component';
+// import { AddVehicleNewComponent } from './add-vehicle-new/add-vehicle-new.component';
+// import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.component';
 
 import { MapDashboardComponent } from './map-dashboard/map-dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -141,13 +140,13 @@ import { AlertListComponent } from './alert-list/alert-list.component';
 import { AddGeofenceComponent } from './add-geofence/add-geofence.component';
 import { GeofenceListComponent } from './geofence-list/geofence-list.component';
 import { EditGeofenceComponent } from './edit-geofence/edit-geofence.component';
-import { MultiSidebarComponents } from './sidebars/multi-sidebar.component';
 import {RouterModule} from '@angular/router';
 import { AddCycleComponent } from './add-cycle/add-cycle.component';
 import { EditCycleComponent } from './edit-cycle/edit-cycle.component';
 import { CycleListComponent } from './cycle-list/cycle-list.component';
 import { InventoryStockStatementComponent } from './Reports/inventory-stock-statement/inventory-stock-statement.component';
 import { NavOpenedDirective } from './directives/nav-opened.directive';
+import {SharedModule} from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -155,22 +154,21 @@ import { NavOpenedDirective } from './directives/nav-opened.directive';
     LoginComponent,
     DashboardComponent,
 
-    SidebarComponent,
-    HeaderComponent,
-    AddVehicleComponent,
+
+
     LeftBarComponent,
     RFormsComponent,
     CompanyInfoComponent,
     AddQuantumComponent,
-    AddUserComponent,
-    VehicleListComponent,
+
+
     LogoutComponent,
-    EditVehicleComponent,
+
     HealthcheckComponent,
     QuantumsComponent,
     EditQuantumComponent,
-    UserListComponent,
-    EditUserComponent,
+
+
     AddGroupComponent,
     GroupListComponent,
     EditGroupComponent,
@@ -204,9 +202,9 @@ import { NavOpenedDirective } from './directives/nav-opened.directive';
     AddCustomerComponent,
     EditCustomerComponent,
     CustomersComponent,
-    AddYardComponent,
-    EditYardComponent,
-    YardsComponent,
+    // AddYardComponent,
+    // EditYardComponent,
+    // YardsComponent,
     AddInsuranceComponent,
     EditInsuranceComponent,
     InsurancesComponent,
@@ -240,8 +238,8 @@ import { NavOpenedDirective } from './directives/nav-opened.directive';
     AddCarrierComponent,
     EditCarrierComponent,
     CarriersComponent,
-    AddVehicleNewComponent,
-    EditVehicleNewComponent,
+    // AddVehicleNewComponent,
+
 
     MapDashboardComponent,
 
@@ -285,7 +283,6 @@ import { NavOpenedDirective } from './directives/nav-opened.directive';
     AddGeofenceComponent,
     GeofenceListComponent,
     EditGeofenceComponent,
-    MultiSidebarComponents,
     AddCycleComponent,
     EditCycleComponent,
     CycleListComponent,
@@ -303,7 +300,8 @@ import { NavOpenedDirective } from './directives/nav-opened.directive';
     FormsModule,
     ReactiveFormsModule,
       NgbModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

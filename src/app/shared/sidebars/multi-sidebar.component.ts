@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SharedServiceService} from '../shared-service.service';
+import {SharedServiceService} from '../../shared-service.service';
 import {Router} from '@angular/router';
 declare var $: any;
 declare var jQuery: any;

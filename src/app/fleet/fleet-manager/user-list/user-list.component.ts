@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
+import { ApiService } from "../../../api.service";
 import { Router } from "@angular/router";
 import { timer } from "rxjs";
 declare var $: any;
@@ -38,7 +38,7 @@ export class UserListComponent implements OnInit {
       $('#datatable-default').DataTable().clear().destroy();
       }
       /******************************/
-      
+
     this.apiService.deleteData("users/" + userId).subscribe((result: any) => {
       this.fetchUsers();
     });

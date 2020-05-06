@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../api.service";
+import {ApiService} from "../../../api.service";
 declare var $: any;
 declare var jQuery: any;
 @Component({

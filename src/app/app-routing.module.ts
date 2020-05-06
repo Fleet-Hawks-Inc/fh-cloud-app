@@ -4,18 +4,24 @@ import { RouterModule, Routes } from "@angular/router";
 import { LoginComponent } from "./login/login.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { AuthService } from "./auth.service";
-import { AddVehicleComponent } from "./add-vehicle/add-vehicle.component";
+
 import { LeftBarComponent } from "./left-bar/left-bar.component";
 import { RFormsComponent } from "./r-forms/r-forms.component";
 import { AddQuantumComponent } from "./add-quantum/add-quantum.component";
-import { AddUserComponent } from "./add-user/add-user.component";
-import { VehicleListComponent } from "./vehicle-list/vehicle-list.component";
-import { EditVehicleComponent } from "./edit-vehicle/edit-vehicle.component";
+
+// import { AddUserComponent } from "./add-user/add-user.component";
+// import { UserListComponent } from "./user-list/user-list.component";
+// import { EditUserComponent } from "./edit-user/edit-user.component";
+//
+// import { VehicleListComponent } from "./vehicle-list/vehicle-list.component";
+// import { EditVehicleComponent } from "./edit-vehicle/edit-vehicle.component";
+// import { AddVehicleComponent } from "./add-vehicle/add-vehicle.component";
+
+
 import { HealthcheckComponent } from "./healthcheck/healthcheck.component";
 import { QuantumsComponent } from "./quantums/quantums.component";
 import { EditQuantumComponent } from "./edit-quantum/edit-quantum.component";
-import { UserListComponent } from "./user-list/user-list.component";
-import { EditUserComponent } from "./edit-user/edit-user.component";
+
 import { AddGroupComponent } from "./add-group/add-group.component";
 import { EditGroupComponent } from "./edit-group/edit-group.component";
 import { GroupListComponent } from "./group-list/group-list.component";
@@ -52,9 +58,9 @@ import { AddCustomerComponent } from "./add-customer/add-customer.component";
 import { CustomersComponent } from "./customers/customers.component";
 import { EditCustomerComponent } from "./edit-customer/edit-customer.component";
 
-import { AddYardComponent } from "./add-yard/add-yard.component";
-import { YardsComponent } from "./yards/yards.component";
-import { EditYardComponent } from "./edit-yard/edit-yard.component";
+// import { AddYardComponent } from "./add-yard/add-yard.component";
+// import { YardsComponent } from "./yards/yards.component";
+// import { EditYardComponent } from "./edit-yard/edit-yard.component";
 
 import { AddInsuranceComponent } from "./add-insurance/add-insurance.component";
 import { InsurancesComponent } from "./insurances/insurances.component";
@@ -100,8 +106,8 @@ import { AddCarrierComponent } from "./add-carrier/add-carrier.component";
 import { EditCarrierComponent } from "./edit-carrier/edit-carrier.component";
 import { CarriersComponent } from "./carriers/carriers.component";
 
-import { AddVehicleNewComponent } from "./add-vehicle-new/add-vehicle-new.component";
-import { EditVehicleNewComponent } from "./edit-vehicle-new/edit-vehicle-new.component";
+// import { AddVehicleNewComponent } from "./add-vehicle-new/add-vehicle-new.component";
+// import { EditVehicleNewComponent } from "./edit-vehicle-new/edit-vehicle-new.component";
 
 import { MapDashboardComponent } from "./map-dashboard/map-dashboard.component";
 
@@ -162,13 +168,13 @@ import {FleetModule} from './fleet/fleet.module';
 
 const routes: Routes = [
   { path: "", redirectTo: "/Login", pathMatch: "full" },
-
+  { path: "Login", component: LoginComponent },
   {
     path: 'fleet',
     loadChildren: () => import('./fleet/fleet.module').then(m => m.FleetModule)
   },
 
-  { path: "Login", component: LoginComponent },
+
   {
     path: "Dashboard",
     component: DashboardComponent,
@@ -181,23 +187,27 @@ const routes: Routes = [
     canActivate: [AuthService],
   },
 
-  {
-    path: "Add-Vehicle",
-    component: AddVehicleComponent,
-    canActivate: [AuthService],
-  },
+  // {
+  //   path: "Add-Vehicle",
+  //   component: AddVehicleComponent,
+  //   canActivate: [AuthService],
+  // },
+
+  // { path: "Vehicle-List", component: VehicleListComponent },
+  // { path: "Edit-Vehicle/:vehicleId", component: EditVehicleComponent },
+
+
   { path: "Left-Bar", component: LeftBarComponent },
   { path: "R-Forms", component: RFormsComponent },
   { path: "Add-Quantum", component: AddQuantumComponent },
   { path: "Edit-Quantum/:quantumId", component: EditQuantumComponent },
   { path: "Quantum-List", component: QuantumsComponent },
-  { path: "Vehicle-List", component: VehicleListComponent },
-  { path: "Edit-Vehicle/:vehicleId", component: EditVehicleComponent },
+
   { path: "healthcheck", component: HealthcheckComponent },
 
-  { path: "Add-User", component: AddUserComponent },
-  { path: "User-List", component: UserListComponent },
-  { path: "Edit-User/:userName", component: EditUserComponent },
+  // { path: "Add-User", component: AddUserComponent },
+  // { path: "User-List", component: UserListComponent },
+  // { path: "Edit-User/:userName", component: EditUserComponent },
 
   { path: "Add-Group", component: AddGroupComponent },
   { path: "Group-List", component: GroupListComponent },
@@ -252,9 +262,9 @@ const routes: Routes = [
   { path: "Customer-List", component: CustomersComponent },
   { path: "Edit-Customer/:customerID", component: EditCustomerComponent },
 
-  { path: "Add-Yard", component: AddYardComponent },
-  { path: "Yard-List", component: YardsComponent },
-  { path: "Edit-Yard/:yardID", component: EditYardComponent },
+  // { path: "Add-Yard", component: AddYardComponent },
+  // { path: "Yard-List", component: YardsComponent },
+  // { path: "Edit-Yard/:yardID", component: EditYardComponent },
 
   { path: "Add-Insurance", component: AddInsuranceComponent },
   { path: "Insurance-List", component: InsurancesComponent },
@@ -311,8 +321,8 @@ const routes: Routes = [
   // {path : 'Ndashboard', component : NewDashboardComponent},
   // {path : 'temp', component : TempComponent}
 
-  { path: "Add-Vehicle-New", component: AddVehicleNewComponent },
-  { path: "Edit-Vehicle-New/:vehicleID", component: EditVehicleNewComponent },
+  // { path: "Add-Vehicle-New", component: AddVehicleNewComponent },
+  // { path: "Edit-Vehicle-New/:vehicleID", component: EditVehicleNewComponent },
 
   // { path: "Add-Driver", component: AddDriverComponent },
   // { path: "Edit-Driver/:userName", component: EditDriverComponent },

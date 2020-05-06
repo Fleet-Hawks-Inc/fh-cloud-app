@@ -12,7 +12,7 @@
       <span>Map Dashboard</span>
     </a>
   </li>
-  <li class="nav-parent" appNavOpened [expandedNav]="'drivers'">
+  <li class="nav-parent" appNavOpened >
     <a class="nav-link" href="#">
       <i class="fa fa-users" aria-hidden="true"></i>
       <span>Drivers</span>
@@ -24,71 +24,71 @@
         </a>
       </li>
       <li>
-        <a class="nav-link" routerLink="/fleet/drivers/Drivers-List">
+        <a class="nav-link" [routerLink]="['/fleet', 'drivers', 'Drivers-List']">
           List
         </a>
       </li>
     </ul>
   </li>
-  <li class="nav-parent" appNavOpened [expandedNav]="'fleet-manager'">
+  <li class="nav-parent" appNavOpened >
     <a class="nav-link" href="#" >
       <i class="fa fa-laptop" aria-hidden="true"></i>
       <span>Fleet Manager</span>
     </a>
     <ul class="nav nav-children">
       <li>
-        <a class="nav-link" routerLink="/Add-User">
+        <a class="nav-link"  [routerLink]="['/fleet', 'fleet-manager', 'Add-User']">
           Add
         </a>
       </li>
       <li>
-        <a class="nav-link" routerLink="/User-List">
+        <a class="nav-link"  [routerLink]="['/fleet', 'fleet-manager', 'User-List']">
           List
         </a>
       </li>
     </ul>
   </li>
-
-  <li class="nav-parent" appNavOpened [expandedNav]="'vehicles'">
+  <!--[expandedNav]="'vehicles'"-->
+  <li class="nav-parent" appNavOpened >
     <a class="nav-link" href="#">
       <i class="fas fa-truck-moving" aria-hidden="true"></i>
       <span>Vehicles</span>
     </a>
     <ul class="nav nav-children">
       <li>
-        <a class="nav-link" routerLink="/Add-Vehicle-New">
+        <a class="nav-link"  [routerLink]="['/fleet', 'vehicles', 'Add-Vehicle-New']">
           Add
         </a>
       </li>
 
       <li>
-        <a class="nav-link" routerLink="/Vehicle-List">
+        <a class="nav-link" [routerLink]="['/fleet', 'vehicles', 'Vehicle-List']">
           List
         </a>
       </li>
     </ul>
   </li>
 
-  <li class="nav-parent" appNavOpened [expandedNav]="'yards'">
+  <li class="nav-parent" appNavOpened>
     <a class="nav-link" href="#">
       <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
       <span>Yards</span>
     </a>
     <ul class="nav nav-children">
       <li>
-        <a class="nav-link" routerLink="/Add-Yard">
+        <a class="nav-link"  [routerLink]="['/fleet', 'yards', 'Add-Yard']">
           Add
         </a>
       </li>
       <li>
-        <a class="nav-link" routerLink="/Yard-List">
+        <a class="nav-link" [routerLink]="['/fleet', 'yards', 'Yard-List']">
          List
         </a>
       </li>
     </ul>
   </li>
 
-  <li class="nav-parent" appNavOpened [expandedNav]="'assets'">
+  <li class="nav-parent" appNavOpened >
     <a class="nav-link" href="#">
       <i class="fas fa-truck-loading" aria-hidden="true"></i>
       <span>Assets</span>
@@ -318,7 +318,7 @@
     </ul>
   </li>
 
-  <li class="nav-parent" appNavOpened [expandedNav]="'geofencing'">
+  <li class="nav-parent" appNavOpened>
     <a >
       <i class="fa fa-map-marker" aria-hidden="true"></i>
       <span>Geofencing</span>
@@ -705,7 +705,7 @@
   <!--</ul>-->
   <!--</li>-->
 
-  <li class="nav-parent" appNavOpened [expandedNav]="'action'">
+  <li class="nav-parent" appNavOpened >
     <a class="nav-link" href="#">
       <i class="fas fa-power-off" aria-hidden="true"></i>
       <span>Action</span>

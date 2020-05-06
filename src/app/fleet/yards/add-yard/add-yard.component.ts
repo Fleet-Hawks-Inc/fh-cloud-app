@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
-import { MapBoxService } from "../map-box.service";
+import { ApiService } from "../../../api.service";
+import { MapBoxService } from "../../../map-box.service";
 import { Router } from "@angular/router";
 import { catchError, map, mapTo, tap } from "rxjs/operators";
 import { from, of } from "rxjs";

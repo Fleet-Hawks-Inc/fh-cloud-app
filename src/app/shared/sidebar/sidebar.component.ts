@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {SharedServiceService} from '../shared-service.service';
+import {SharedServiceService} from '../../shared-service.service';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
