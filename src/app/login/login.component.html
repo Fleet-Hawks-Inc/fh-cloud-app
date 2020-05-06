@@ -38,9 +38,8 @@
 
           <div class="row">
 
-            <p *ngIf="haserror" class="text text-danger">{{error}}</p>
-            <p *ngIf="haserror" class="text text-danger">{{error}}</p>
-            <a *ngIf="showSigupCode" (click)='resendSignUpCode()'>Click here to send confirmation code.</a>
+            <p *ngIf="hasError" class="text text-danger">{{error}}</p>
+
           </div>
 
           <div class="row">
@@ -49,6 +48,21 @@
               <button type="submit" class="btn btn-primary btn-lg mt-2" (click)="loginAction1()">Submit</button>
             </div>
           </div>
+          <!-- <br /><br />
+          <div class="row" *ngIf="showSigupCode">
+            <div class="col-md-6">
+              <input name="verficationCodeInput" type="text" placeholder="Enter Verification code"
+                class="form-control login form-control-lg" [(ngModel)]="signUpCode" />
+            </div>
+            <div class="col-md-6">
+              <div class="col-sm-12 text-center">
+                <button type="submit" class="btn btn-primary btn-lg mt-2"
+                  (click)="submitConfirmationCode()">Submit</button>
+              </div>
+              <a href="#" (click)="resendSignUpCode()"> Click here to send code again</a>
+            </div>
+
+          </div> -->
 
 
 
