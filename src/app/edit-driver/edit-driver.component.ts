@@ -131,7 +131,7 @@ export class EditDriverComponent implements OnInit {
 
   getStates() {
     this.apiService
-      .getData("states/countryID/" + this.driverLicenseCountry)
+      .getData("states/country/" + this.driverLicenseCountry)
       .subscribe((result: any) => {
         this.states = result.Items;
       });

@@ -82,7 +82,7 @@ export class AddAssetsComponent implements OnInit {
 
   getModels() {
     this.apiService
-      .getData(`models/manufacturerID/${this.assetInfo.manufacturerID}`)
+      .getData(`vehicleModels/manufacturer/${this.assetInfo.manufacturerID}`)
       .subscribe((result: any) => {
         this.models = result.Items;
       });
@@ -96,7 +96,7 @@ export class AddAssetsComponent implements OnInit {
 
   getStates() {
     this.apiService
-      .getData(`states/countryID/${this.countryID}`)
+      .getData(`states/country/${this.countryID}`)
       .subscribe((result: any) => {
         this.states = result.Items;
       });

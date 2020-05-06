@@ -20,7 +20,7 @@ export class ModelListComponent implements OnInit {
   }
 
   fetchModels() {
-    this.apiService.getData("models").subscribe({
+    this.apiService.getData("vehicleModels").subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -39,7 +39,7 @@ export class ModelListComponent implements OnInit {
     }
     /******************************/
 
-    this.apiService.deleteData("models/" + modelID).subscribe((result: any) => {
+    this.apiService.deleteData("vehicleModels/" + modelID).subscribe((result: any) => {
       this.fetchModels();
     });
   }
