@@ -55,14 +55,14 @@ export class AddManufacturerComponent implements OnInit {
   }
 
   getStates(){
-    this.apiService.getData('states/countryID/' + this.countryID)
+    this.apiService.getData('states/country/' + this.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
   }
 
   getCities(){
-    this.apiService.getData('cities/stateID/' + this.stateID)
+    this.apiService.getData('cities/state/' + this.stateID)
       .subscribe((result: any) => {
         this.cities = result.Items;
       });

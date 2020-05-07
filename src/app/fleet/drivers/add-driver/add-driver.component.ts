@@ -106,7 +106,7 @@ export class AddDriverComponent implements OnInit {
   }
 
   getStates() {
-    this.apiService.getData('states/countryID/' + this.driverLicenseCountry)
+    this.apiService.getData('states/country/' + this.driverLicenseCountry)
       .subscribe((result: any) => {
         this.states = result.Items;
       });

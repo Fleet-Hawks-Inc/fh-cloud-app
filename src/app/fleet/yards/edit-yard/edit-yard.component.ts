@@ -112,7 +112,7 @@ export class EditYardComponent implements OnInit, AfterViewInit {
 
   getStates() {
     this.apiService
-      .getData("states/countryID/" + this.countryID)
+      .getData("states/country/" + this.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
