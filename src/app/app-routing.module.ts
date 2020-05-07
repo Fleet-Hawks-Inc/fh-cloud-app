@@ -117,14 +117,11 @@ import { ModelListComponent } from "./model-list/model-list.component";
 import { AddAlertComponent } from "./add-alert/add-alert.component";
 import { EditAlertComponent } from "./edit-alert/edit-alert.component";
 import { AlertListComponent } from "./alert-list/alert-list.component";
-import {EditGeofenceComponent} from './edit-geofence/edit-geofence.component';
-import {GeofenceListComponent} from './geofence-list/geofence-list.component';
-import {AddGeofenceComponent} from './add-geofence/add-geofence.component';
+
 
 import {EditCycleComponent} from './edit-cycle/edit-cycle.component';
 import {CycleListComponent} from './cycle-list/cycle-list.component';
 import {AddCycleComponent} from './add-cycle/add-cycle.component';
-import { InventoryStockStatementComponent } from './Reports/inventory-stock-statement/inventory-stock-statement.component';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import {FleetModule} from './fleet/fleet.module';
@@ -295,24 +292,12 @@ const routes: Routes = [
   { path: "Alerts-List", component: AlertListComponent },
 
 
-  { path: "Add-Geofence", component: AddGeofenceComponent },
-  { path: "Edit-Geofence/:fenceID", component: EditGeofenceComponent },
-  { path: "Geofence-List", component: GeofenceListComponent },
 
   { path: "Add-Cycle", component: AddCycleComponent },
   { path: "Edit-Cycle/:cycleID", component: EditCycleComponent },
   { path: "Cycle-List", component: CycleListComponent },
 
-  /**
-   * Reports routes starts here
-   */
 
-  { path: "Inventory-Stock-Statement", component: InventoryStockStatementComponent }
-
-
-   /**
-    * Reports routes ends here
-    */
 
 ];
 @NgModule({

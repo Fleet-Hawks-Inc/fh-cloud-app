@@ -344,13 +344,28 @@
         </a>
         <ul class="nav nav-children">
           <li>
-            <a class="nav-link" [routerLink]="['/fleet', 'inventory', 'item-group', 'Add-Item-Group']">
+            <a
+              class="nav-link"
+              [routerLink]="[
+                '/fleet',
+                'inventory',
+                'item-group',
+                'Add-Item-Group'
+              ]"
+            >
               Add
             </a>
           </li>
 
           <li>
-            <a class="nav-link"  [routerLink]="['/fleet', 'inventory', 'item-group', 'Item-Group-List']"
+            <a
+              class="nav-link"
+              [routerLink]="[
+                '/fleet',
+                'inventory',
+                'item-group',
+                'Item-Group-List'
+              ]"
             >
               List
             </a>
@@ -363,13 +378,24 @@
         </a>
         <ul class="nav nav-children">
           <li>
-            <a class="nav-link" [routerLink]="['/fleet', 'inventory', 'stock-entry', 'Add-Entry']">
+            <a
+              class="nav-link"
+              [routerLink]="['/fleet', 'inventory', 'stock-entry', 'Add-Entry']"
+            >
               Add
             </a>
           </li>
 
           <li>
-            <a class="nav-link" [routerLink]="['/fleet', 'inventory', 'stock-entry', 'Entries-List']">
+            <a
+              class="nav-link"
+              [routerLink]="[
+                '/fleet',
+                'inventory',
+                'stock-entry',
+                'Entries-List'
+              ]"
+            >
               List
             </a>
           </li>
@@ -381,20 +407,40 @@
         </a>
         <ul class="nav nav-children">
           <li>
-            <a class="nav-link" routerLink="/Add-Stock-Assignment" [routerLink]="['/fleet', 'inventory', 'stock-assignment', 'Add-Stock-Assignment']">
+            <a
+              class="nav-link"
+              routerLink="/Add-Stock-Assignment"
+              [routerLink]="[
+                '/fleet',
+                'inventory',
+                'stock-assignment',
+                'Add-Stock-Assignment'
+              ]"
+            >
               Add
             </a>
           </li>
 
           <li>
-            <a class="nav-link" [routerLink]="['/fleet', 'inventory', 'stock-assignment', 'Stock-Assignment-List']">
+            <a
+              class="nav-link"
+              [routerLink]="[
+                '/fleet',
+                'inventory',
+                'stock-assignment',
+                'Stock-Assignment-List'
+              ]"
+            >
               List
             </a>
           </li>
         </ul>
       </li>
       <li>
-        <a class="nav-link" routerLink="/Inventory-Stock-Statement">
+        <a
+          class="nav-link"
+          [routerLink]="['/fleet', 'inventory', 'Inventory-Stock-Statement']"
+        >
           Stock Statement
         </a>
       </li>
@@ -408,12 +454,14 @@
     </a>
     <ul class="nav nav-children">
       <li routerLinkActive="active">
-        <a class="nav-link" routerLink="/Add-Geofence">
+        <a class="nav-link" [routerLink]="['/fleet', 'geofence', 'Add-Geofence']"
+        >
           Add
         </a>
       </li>
       <li routerLinkActive="active">
-        <a class="nav-link" routerLink="/Geofence-List">
+        <a class="nav-link" [routerLink]="['/fleet', 'geofence', 'Geofence-List']"
+        >
           List
         </a>
       </li>

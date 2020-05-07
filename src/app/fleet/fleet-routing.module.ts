@@ -61,6 +61,13 @@ import { AddStockAssignmentComponent } from "./inventory/stock-assignment/add-st
 import { EditStockAssignmentComponent } from "./inventory/stock-assignment/edit-stock-assignment/edit-stock-assignment.component";
 import { StockAssignmentListComponent } from "./inventory/stock-assignment/stock-assignment-list/stock-assignment-list.component";
 
+import { InventoryStockStatementComponent } from "./inventory/inventory-stock-statement/inventory-stock-statement.component";
+
+import { AddGeofenceComponent } from "./geofence/add-geofence/add-geofence.component";
+import { EditGeofenceComponent } from "./geofence/edit-geofence/edit-geofence.component";
+import { GeofenceListComponent } from "./geofence/geofence-list/geofence-list.component";
+
+
 const routes: Routes = [
   {
     path: "drivers",
@@ -288,6 +295,18 @@ const routes: Routes = [
           },
         ],
       },
+      {
+        path: "Inventory-Stock-Statement",
+        component: InventoryStockStatementComponent
+      }
+    ],
+  },
+  {
+    path: "geofence",
+    children: [
+      { path: "Add-Geofence", component: AddGeofenceComponent },
+      { path: "Edit-Geofence/:fenceID", component: EditGeofenceComponent },
+      { path: "Geofence-List", component:GeofenceListComponent },
     ],
   },
 ];

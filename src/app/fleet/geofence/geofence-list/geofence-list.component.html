@@ -44,7 +44,7 @@
               </div>
             </div>
 
-            <a routerLink="/Add-Geofence" class="mb-1 mt-1 mr-1 btn btn-success"><i class="fas fa-plus"></i> Add GeoFence</a>
+            <a routerLink="/fleet/geofence/Add-Geofence" class="mb-1 mt-1 mr-1 btn btn-success"><i class="fas fa-plus"></i> Add GeoFence</a>
 
           </div>
         </div>
@@ -76,7 +76,7 @@
                   <td>{{geofence.fenceName}}</td>
                   <td>{{geofence.location}}</td>
                   <td>{{geofence.description}}</td>
-                  <td><a routerLink="/Edit-Geofence/{{geofence.geofenceID}}">Edit</a></td>
+                  <td><a routerLink="/fleet/geofence/Edit-Geofence/{{geofence.geofenceID}}">Edit</a></td>
                   <td><a [routerLink]="" (click)="deleteGeofence(geofence.geofenceID)" >Delete</a></td>
                   <!--<td class="center d-lg-none">4</td>-->
                   <!--<td class="center d-lg-none">X</td>-->
