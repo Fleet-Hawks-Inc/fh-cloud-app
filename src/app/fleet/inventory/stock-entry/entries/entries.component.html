@@ -47,10 +47,8 @@
               </div>
             </div>
 
-            <a
-              routerLink="/Add-Stock-Assignment"
-              class="mb-1 mt-1 mr-1 btn btn-success"
-              ><i class="fas fa-plus"></i> Add Stock Assignment</a
+            <a routerLink="/fleet/inventory/stock-entry/Add-Entry" class="mb-1 mt-1 mr-1 btn btn-success"
+              ><i class="fas fa-plus"></i> Add Stock Entry</a
             >
           </div>
         </div>
@@ -70,8 +68,10 @@
               >
                 <thead>
                   <tr>
-                    <th>Vehicle</th>
-                    <th>Quantity</th>
+                    <th>Item</th>
+                    <th>Total Quantity</th>
+                    <th>Vendor</th>
+                    <th>Description</th>
                     <th>Edit</th>
                     <th>Delete</th>
                     <!--<th class="d-lg-none">Operator</th>-->
@@ -79,23 +79,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let stockAssignment of stockAssignments">
-                    <td>{{ stockAssignment.vehicleID }}</td>
-                    <td>{{ stockAssignment.totalQuantity }}</td>
+                  <tr *ngFor="let entry of entries">
+                    <td>{{ entry.itemID }}</td>
+                    <td>{{ entry.totalQuantity }}</td>
+                    <td>{{ entry.vendorID }}</td>
+                    <td>{{ entry.description }}</td>
                     <td>
-                      <a
-                        routerLink="/Edit-Stock-Assignment/{{
-                          stockAssignment.assignmentID
-                        }}"
-                        >Edit</a
-                      >
+                      <a routerLink="/fleet/inventory/stock-entry/Edit-Entry/{{ entry.entryID }}">Edit</a>
                     </td>
                     <td>
-                      <a
-                        [routerLink]=""
-                        (click)="
-                          deleteStockAssignment(stockAssignment.assignmentID)
-                        "
+                      <a [routerLink]="" (click)="deleteEntry(entry.entryID)"
                         >Delete</a
                       >
                     </td>

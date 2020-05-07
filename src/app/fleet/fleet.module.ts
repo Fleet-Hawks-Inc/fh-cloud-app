@@ -49,6 +49,22 @@ import { AddServiceProgramComponent } from "./maintenance/service-program/add-se
 import { EditServiceProgramComponent } from "./maintenance/service-program/edit-service-program/edit-service-program.component";
 import { ServiceProgramListComponent } from "./maintenance/service-program/service-program-list/service-program-list.component";
 
+import { AddItemComponent } from "./inventory/items/add-item/add-item.component";
+import { EditItemComponent } from "./inventory/items/edit-item/edit-item.component";
+import { ItemsListComponent } from "./inventory/items/items-list/items-list.component";
+
+import { AddItemGroupComponent } from "./inventory/item-group/add-item-group/add-item-group.component";
+import { EditItemGroupComponent } from "./inventory/item-group/edit-item-group/edit-item-group.component";
+import { ItemGroupListComponent } from "./inventory/item-group/item-group-list/item-group-list.component";
+
+import { AddEntryComponent } from "./inventory/stock-entry/add-entry/add-entry.component";
+import { EditEntryComponent } from "./inventory/stock-entry/edit-entry/edit-entry.component";
+import { EntriesComponent } from "./inventory/stock-entry/entries/entries.component";
+
+import { AddStockAssignmentComponent } from "./inventory/stock-assignment/add-stock-assignment/add-stock-assignment.component";
+import { EditStockAssignmentComponent } from "./inventory/stock-assignment/edit-stock-assignment/edit-stock-assignment.component";
+import { StockAssignmentListComponent } from "./inventory/stock-assignment/stock-assignment-list/stock-assignment-list.component";
+
 @NgModule({
   imports: [FleetRoutingModule, FormsModule, CommonModule, SharedModule],
   declarations: [
@@ -94,7 +110,23 @@ import { ServiceProgramListComponent } from "./maintenance/service-program/servi
 
     AddServiceProgramComponent,
     EditServiceProgramComponent,
-    ServiceProgramListComponent
+    ServiceProgramListComponent,
+
+    AddItemComponent,
+    EditItemComponent,
+    ItemsListComponent,
+
+    AddItemGroupComponent,
+    EditItemGroupComponent,
+    ItemGroupListComponent,
+
+    AddEntryComponent,
+    EditEntryComponent,
+    EntriesComponent,
+
+    AddStockAssignmentComponent,
+    EditStockAssignmentComponent,
+    StockAssignmentListComponent
   ],
   providers: [],
 })

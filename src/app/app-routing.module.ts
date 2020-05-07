@@ -57,9 +57,6 @@ import { AddInsuranceComponent } from "./add-insurance/add-insurance.component";
 import { InsurancesComponent } from "./insurances/insurances.component";
 import { EditInsuranceComponent } from "./edit-insurance/edit-insurance.component";
 
-import { AddEntryComponent } from "./add-entry/add-entry.component";
-import { EntriesComponent } from "./entries/entries.component";
-import { EditEntryComponent } from "./edit-entry/edit-entry.component";
 
 import { AddContactComponent } from "./add-contact/add-contact.component";
 import { ContactsComponent } from "./contacts/contacts.component";
@@ -94,17 +91,7 @@ import { CarriersComponent } from "./carriers/carriers.component";
 
 import { MapDashboardComponent } from "./map-dashboard/map-dashboard.component";
 
-import { AddItemComponent } from "./add-item/add-item.component";
-import { ItemsListComponent } from "./items-list/items-list.component";
-import { EditItemComponent } from "./edit-item/edit-item.component";
 
-import { AddItemGroupComponent } from "./add-item-group/add-item-group.component";
-import { EditItemGroupComponent } from "./edit-item-group/edit-item-group.component";
-import { ItemGroupListComponent } from "./item-group-list/item-group-list.component";
-
-import { AddStockAssignmentComponent } from "./add-stock-assignment/add-stock-assignment.component";
-import { EditStockAssignmentComponent } from "./edit-stock-assignment/edit-stock-assignment.component";
-import { StockAssignmentListComponent } from "./stock-assignment-list/stock-assignment-list.component";
 
 import { AddTicketTypeComponent } from "./add-ticket-type/add-ticket-type.component";
 import { EditTicketTypeComponent } from "./edit-ticket-type/edit-ticket-type.component";
@@ -231,9 +218,7 @@ const routes: Routes = [
   { path: "Insurance-List", component: InsurancesComponent },
   { path: "Edit-Insurance/:insuranceID", component: EditInsuranceComponent },
 
-  { path: "Add-Entry", component: AddEntryComponent },
-  { path: "Entries-List", component: EntriesComponent },
-  { path: "Edit-Entry/:entryID", component: EditEntryComponent },
+
 
   { path: "Add-Contact", component: AddContactComponent },
   { path: "Contacts-List", component: ContactsComponent },
@@ -272,21 +257,6 @@ const routes: Routes = [
   // {path : 'Ndashboard', component : NewDashboardComponent},
   // {path : 'temp', component : TempComponent}
 
-  // { path: "Add-Vehicle-New", component: AddVehicleNewComponent },
-  // { path: "Edit-Vehicle-New/:vehicleID", component: EditVehicleNewComponent },
-
-  // { path: "Add-Driver", component: AddDriverComponent },
-  // { path: "Edit-Driver/:userName", component: EditDriverComponent },
-  // { path: "Drivers-List", component: DriverListComponent },
-
-  { path: "Add-Item", component: AddItemComponent },
-  { path: "Edit-Item/:itemID", component: EditItemComponent },
-  { path: "Item-List", component: ItemsListComponent },
-
-  { path: "Add-Item-Group", component: AddItemGroupComponent },
-  { path: "Edit-Item-Group/:groupID", component: EditItemGroupComponent },
-  { path: "Item-Group-List", component: ItemGroupListComponent },
-
   { path: "Add-Ticket-Type", component: AddTicketTypeComponent },
   { path: "Edit-Ticket-Type/:typeID", component: EditTicketTypeComponent },
   { path: "Ticket-Types-List", component: TicketTypeListComponent },
@@ -303,12 +273,6 @@ const routes: Routes = [
   { path: "Edit-City/:cityID", component: EditCityComponent },
   { path: "City-List", component: CitiesComponent },
 
-  { path: "Add-Stock-Assignment", component: AddStockAssignmentComponent },
-  {
-    path: "Edit-Stock-Assignment/:assignmentID",
-    component: EditStockAssignmentComponent,
-  },
-  { path: "Stock-Assignment-List", component: StockAssignmentListComponent },
   { path: "Add-Manufacturer", component: AddManufacturerComponent },
   {
     path: "Edit-Manufacturer/:manufacturerID",

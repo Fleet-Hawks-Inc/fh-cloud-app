@@ -47,8 +47,8 @@
               </div>
             </div>
 
-            <a routerLink="/Add-Entry" class="mb-1 mt-1 mr-1 btn btn-success"
-              ><i class="fas fa-plus"></i> Add Stock Entry</a
+            <a routerLink="/fleet/inventory/item/Add-Item" class="mb-1 mt-1 mr-1 btn btn-success"
+              ><i class="fas fa-plus"></i> Add Item</a
             >
           </div>
         </div>
@@ -68,9 +68,8 @@
               >
                 <thead>
                   <tr>
-                    <th>Item</th>
-                    <th>Total Quantity</th>
-                    <th>Vendor</th>
+                    <th>Item Name</th>
+                    <th>opening Stock</th>
                     <th>Description</th>
                     <th>Edit</th>
                     <th>Delete</th>
@@ -79,19 +78,19 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let entry of entries">
-                    <td>{{ entry.itemID }}</td>
-                    <td>{{ entry.totalQuantity }}</td>
-                    <td>{{ entry.vendorID }}</td>
-                    <td>{{ entry.description }}</td>
+                  <tr *ngFor="let item of items">
+                    <td>{{ item.itemName }}</td>
+                    <td>{{ item.openingStock }}</td>
+                    <td>{{ item.description }}</td>
                     <td>
-                      <a routerLink="/Edit-Entry/{{ entry.entryID }}">Edit</a>
+                      <a routerLink="/fleet/inventory/item/Edit-Item/{{ item.itemID }}">Edit</a>
                     </td>
                     <td>
-                      <a [routerLink]="" (click)="deleteEntry(entry.entryID)"
+                      <a [routerLink]="" (click)="deleteItem(item.itemID)"
                         >Delete</a
                       >
                     </td>
+
                     <!--<td class="center d-lg-none">4</td>-->
                     <!--<td class="center d-lg-none">X</td>-->
                   </tr>

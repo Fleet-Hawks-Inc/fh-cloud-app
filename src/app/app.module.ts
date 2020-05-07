@@ -55,9 +55,6 @@ import { CustomersComponent } from './customers/customers.component';
 import { AddInsuranceComponent } from './add-insurance/add-insurance.component';
 import { EditInsuranceComponent } from './edit-insurance/edit-insurance.component';
 import { InsurancesComponent } from './insurances/insurances.component';
-import { AddEntryComponent } from './add-entry/add-entry.component';
-import { EditEntryComponent } from './edit-entry/edit-entry.component';
-import { EntriesComponent } from './entries/entries.component';
 import { AddContactComponent } from './add-contact/add-contact.component';
 import { EditContactComponent } from './edit-contact/edit-contact.component';
 import { ContactsComponent } from './contacts/contacts.component';
@@ -85,16 +82,6 @@ import { CarriersComponent } from './carriers/carriers.component';
 import { MapDashboardComponent } from './map-dashboard/map-dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
-import { AddItemComponent } from './add-item/add-item.component';
-import { ItemsListComponent } from './items-list/items-list.component';
-import { EditItemComponent } from './edit-item/edit-item.component';
-import { AddItemGroupComponent } from './add-item-group/add-item-group.component';
-import { EditItemGroupComponent } from './edit-item-group/edit-item-group.component';
-import { ItemGroupListComponent } from './item-group-list/item-group-list.component';
-import { AddStockAssignmentComponent } from './add-stock-assignment/add-stock-assignment.component';
-import { EditStockAssignmentComponent } from './edit-stock-assignment/edit-stock-assignment.component';
-import { StockAssignmentListComponent } from './stock-assignment-list/stock-assignment-list.component';
 import { AddTicketTypeComponent } from './add-ticket-type/add-ticket-type.component';
 import { EditTicketTypeComponent } from './edit-ticket-type/edit-ticket-type.component';
 import { TicketTypeListComponent } from './ticket-type-list/ticket-type-list.component';
@@ -180,9 +167,7 @@ import {SharedModule} from './shared/shared.module';
     AddInsuranceComponent,
     EditInsuranceComponent,
     InsurancesComponent,
-    AddEntryComponent,
-    EditEntryComponent,
-    EntriesComponent,
+
     AddContactComponent,
     EditContactComponent,
     ContactsComponent,
@@ -209,17 +194,7 @@ import {SharedModule} from './shared/shared.module';
 
     MapDashboardComponent,
 
-
-    AddItemComponent,
-    ItemsListComponent,
-    EditItemComponent,
-
-    AddItemGroupComponent,
-    EditItemGroupComponent,
-    ItemGroupListComponent,
-    AddStockAssignmentComponent,
-    EditStockAssignmentComponent,
-    StockAssignmentListComponent,
+    
     AddTicketTypeComponent,
     EditTicketTypeComponent,
     TicketTypeListComponent,

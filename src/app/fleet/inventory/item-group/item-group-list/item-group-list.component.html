@@ -48,7 +48,7 @@
             </div>
 
             <a
-              routerLink="/Add-Item-Group"
+              routerLink="/fleet/inventory/item-group/Add-Item-Group"
               class="mb-1 mt-1 mr-1 btn btn-success"
               ><i class="fas fa-plus"></i> Add Item Group</a
             >
@@ -83,7 +83,7 @@
                     <td>{{ itemGroup.groupName }}</td>
                     <td>{{ itemGroup.description }}</td>
                     <td>
-                      <a routerLink="/Edit-Item-Group/{{ itemGroup.groupID }}"
+                      <a routerLink="/fleet/inventory/item-group/Edit-Item-Group/{{ itemGroup.groupID }}"
                         >Edit</a
                       >
                     </td>

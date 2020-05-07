@@ -1,35 +1,32 @@
 import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { ApiService } from "../api.service";
+import { Router } from "@angular/router";
+import { ApiService } from "../../../../api.service";
 import { from, of } from "rxjs";
 import { map } from "rxjs/operators";
 import { Object } from "aws-sdk/clients/s3";
 declare var $: any;
 
 @Component({
-  selector: "app-edit-item",
-  templateUrl: "./edit-item.component.html",
-  styleUrls: ["./edit-item.component.css"],
+  selector: "app-add-item",
+  templateUrl: "./add-item.component.html",
+  styleUrls: ["./add-item.component.css"],
 })
-export class EditItemComponent implements OnInit {
-  title = "Edit Item";
+export class AddItemComponent implements OnInit {
+  title = "Add Item";
   errors = {};
   form;
   concatArrayKeys = "";
-
   /**
    * Form props
    */
-  taxAccounts = [];
-  vendors: [];
-  itemID = "";
   itemName = "";
   description = "";
   defaultPurchasePrice = "";
   defaultPurchaseVendor = "";
   defaultTaxAccount = "";
   openingStock = "";
-  timeCreated = "";
+  vendors = [];
+  taxAccounts = [];
 
   response: any = "";
   hasError: boolean = false;
@@ -37,12 +34,14 @@ export class EditItemComponent implements OnInit {
   Error: string = "";
   Success: string = "";
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private router: Router) {}
+
   ngOnInit() {
-    this.itemID = this.route.snapshot.params["itemID"];
     this.fetchVendors();
-    this.fetchItem();
     this.fetchAccounts();
+    $(document).ready(() => {
+      this.form = $("#form_").validate();
+    });
   }
 
   fetchVendors() {
@@ -59,37 +58,20 @@ export class EditItemComponent implements OnInit {
       });
   }
 
-  fetchItem() {
-    this.apiService.getData("items/" + this.itemID).subscribe((result: any) => {
-      result = result.Items[0];
-
-      this.itemID = result.itemID;
-      this.itemName = result.itemName;
-      this.defaultPurchasePrice = result.defaultPurchasePrice;
-      this.defaultPurchaseVendor = result.defaultPurchaseVendor;
-      this.defaultTaxAccount = result.defaultTaxAccount;
-      this.description = result.description;
-      this.openingStock = result.openingStock;
-      this.timeCreated = result.timeCreated;
-    });
-  }
-
-  updateItem() {
+  addItem() {
     this.hasError = false;
     this.hasSuccess = false;
 
     let data = {
-      itemID: this.itemID,
       itemName: this.itemName,
       description: this.description,
       defaultPurchasePrice: this.defaultPurchasePrice,
       defaultPurchaseVendor: this.defaultPurchaseVendor,
       defaultTaxAccount: this.defaultTaxAccount,
       openingStock: this.openingStock,
-      timeCreated: this.timeCreated,
     };
 
-    this.apiService.putData("items", data).subscribe({
+    this.apiService.postData("items", data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -114,7 +96,7 @@ export class EditItemComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Item updated successfully";
+        this.Success = "Item added successfully";
       },
     });
   }

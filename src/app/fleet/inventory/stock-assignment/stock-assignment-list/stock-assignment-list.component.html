@@ -47,8 +47,10 @@
               </div>
             </div>
 
-            <a routerLink="/Add-Item" class="mb-1 mt-1 mr-1 btn btn-success"
-              ><i class="fas fa-plus"></i> Add Item</a
+            <a
+              routerLink="/fleet/inventory/stock-assignment/Add-Stock-Assignment"
+              class="mb-1 mt-1 mr-1 btn btn-success"
+              ><i class="fas fa-plus"></i> Add Stock Assignment</a
             >
           </div>
         </div>
@@ -68,9 +70,8 @@
               >
                 <thead>
                   <tr>
-                    <th>Item Name</th>
-                    <th>opening Stock</th>
-                    <th>Description</th>
+                    <th>Vehicle</th>
+                    <th>Quantity</th>
                     <th>Edit</th>
                     <th>Delete</th>
                     <!--<th class="d-lg-none">Operator</th>-->
@@ -78,19 +79,26 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of items">
-                    <td>{{ item.itemName }}</td>
-                    <td>{{ item.openingStock }}</td>
-                    <td>{{ item.description }}</td>
+                  <tr *ngFor="let stockAssignment of stockAssignments">
+                    <td>{{ stockAssignment.vehicleID }}</td>
+                    <td>{{ stockAssignment.totalQuantity }}</td>
                     <td>
-                      <a routerLink="/Edit-Item/{{ item.itemID }}">Edit</a>
+                      <a
+                        routerLink="/fleet/inventory/stock-assignment/Edit-Stock-Assignment/{{
+                          stockAssignment.assignmentID
+                        }}"
+                        >Edit</a
+                      >
                     </td>
                     <td>
-                      <a [routerLink]="" (click)="deleteItem(item.itemID)"
+                      <a
+                        [routerLink]=""
+                        (click)="
+                          deleteStockAssignment(stockAssignment.assignmentID)
+                        "
                         >Delete</a
                       >
                     </td>
-
                     <!--<td class="center d-lg-none">4</td>-->
                     <!--<td class="center d-lg-none">X</td>-->
                   </tr>

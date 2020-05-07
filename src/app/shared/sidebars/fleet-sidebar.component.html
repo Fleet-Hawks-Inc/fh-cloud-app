@@ -320,13 +320,19 @@
         </a>
         <ul class="nav nav-children">
           <li>
-            <a class="nav-link" routerLink="/Add-Item">
+            <a
+              class="nav-link"
+              [routerLink]="['/fleet', 'inventory', 'item', 'Add-Item']"
+            >
               Add
             </a>
           </li>
 
           <li>
-            <a class="nav-link" routerLink="/Item-List">
+            <a
+              class="nav-link"
+              [routerLink]="['/fleet', 'inventory', 'item', 'Item-List']"
+            >
               List
             </a>
           </li>
@@ -338,13 +344,14 @@
         </a>
         <ul class="nav nav-children">
           <li>
-            <a class="nav-link" routerLink="/Add-Item-Group">
+            <a class="nav-link" [routerLink]="['/fleet', 'inventory', 'item-group', 'Add-Item-Group']">
               Add
             </a>
           </li>
 
           <li>
-            <a class="nav-link" routerLink="/Item-Group-List">
+            <a class="nav-link"  [routerLink]="['/fleet', 'inventory', 'item-group', 'Item-Group-List']"
+            >
               List
             </a>
           </li>
@@ -356,13 +363,13 @@
         </a>
         <ul class="nav nav-children">
           <li>
-            <a class="nav-link" routerLink="/Add-Entry">
+            <a class="nav-link" [routerLink]="['/fleet', 'inventory', 'stock-entry', 'Add-Entry']">
               Add
             </a>
           </li>
 
           <li>
-            <a class="nav-link" routerLink="/Entries-List">
+            <a class="nav-link" [routerLink]="['/fleet', 'inventory', 'stock-entry', 'Entries-List']">
               List
             </a>
           </li>
@@ -374,13 +381,13 @@
         </a>
         <ul class="nav nav-children">
           <li>
-            <a class="nav-link" routerLink="/Add-Stock-Assignment">
+            <a class="nav-link" routerLink="/Add-Stock-Assignment" [routerLink]="['/fleet', 'inventory', 'stock-assignment', 'Add-Stock-Assignment']">
               Add
             </a>
           </li>
 
           <li>
-            <a class="nav-link" routerLink="/Stock-Assignment-List">
+            <a class="nav-link" [routerLink]="['/fleet', 'inventory', 'stock-assignment', 'Stock-Assignment-List']">
               List
             </a>
           </li>

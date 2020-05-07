@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { ApiService } from "../api.service";
+import { ApiService } from "../../../../api.service";
 import { catchError, map, mapTo, tap, retry } from "rxjs/operators";
 import { from, of } from "rxjs";
 declare var jquery: any;

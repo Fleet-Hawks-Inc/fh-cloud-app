@@ -1,46 +1,48 @@
 import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
+import { ApiService } from "../../../../api.service";
 import { Router } from "@angular/router";
 import { timer } from "rxjs";
 declare var $: any;
 
 @Component({
-  selector: "app-items-list",
-  templateUrl: "./items-list.component.html",
-  styleUrls: ["./items-list.component.css"],
+  selector: "app-entries",
+  templateUrl: "./entries.component.html",
+  styleUrls: ["./entries.component.css"],
 })
-export class ItemsListComponent implements OnInit {
-  title = "Items List";
-  items = [];
+export class EntriesComponent implements OnInit {
+  title = "Entries List";
+  entries;
 
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
-    this.fetchItems();
+    this.fetchEntries();
   }
 
-  fetchItems() {
-    this.apiService.getData("items").subscribe({
+  fetchEntries() {
+    this.apiService.getData("stockEntries").subscribe({
       complete: () => {
         this.initDataTable();
       },
       error: () => {},
       next: (result: any) => {
         console.log(result);
-        this.items = result.Items;
+        this.entries = result.Items;
       },
     });
   }
 
-  deleteItem(itemID) {
+  deleteEntry(documentId) {
     /******** Clear DataTable ************/
     if ($.fn.DataTable.isDataTable("#datatable-default")) {
       $("#datatable-default").DataTable().clear().destroy();
     }
     /******************************/
-    this.apiService.deleteData("items/" + itemID).subscribe((result: any) => {
-      this.fetchItems();
-    });
+    this.apiService
+      .deleteData("StockEntries/" + documentId)
+      .subscribe((result: any) => {
+        this.fetchEntries();
+      });
   }
 
   initDataTable() {
