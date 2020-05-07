@@ -266,6 +266,22 @@ export class FleetSidebarComponent extends CommonSideBarComponent {
 }
 
 @Component({
+  selector: 'hos-sidebar',
+  templateUrl: './hos-sidebar.component.html'
+})
+export class HosSidebarComponent extends CommonSideBarComponent {
+  constructor(private router: Router) {
+    super();
+  }
+  //super(router: Router) { }
+  Logout() {
+    localStorage.removeItem('LoggedIn');
+    localStorage.removeItem('jwt');
+    this.router.navigate(['/Login']);
+  }
+}
+
+@Component({
   selector: 'alert-sidebar',
   templateUrl: './alert-sidebar.component.html'
 })
@@ -285,4 +301,4 @@ export class DispatchSidebarComponent extends CommonSideBarComponent { }
 
 
 export const MultiSidebarComponents =
-  [ FleetSidebarComponent, AlertSidebarComponent, SettingSidebarComponent, DispatchSidebarComponent ];
+  [ FleetSidebarComponent, HosSidebarComponent, AlertSidebarComponent, SettingSidebarComponent, DispatchSidebarComponent ];

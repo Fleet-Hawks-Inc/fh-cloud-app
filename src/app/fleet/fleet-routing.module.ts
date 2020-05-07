@@ -67,7 +67,6 @@ import { AddGeofenceComponent } from "./geofence/add-geofence/add-geofence.compo
 import { EditGeofenceComponent } from "./geofence/edit-geofence/edit-geofence.component";
 import { GeofenceListComponent } from "./geofence/geofence-list/geofence-list.component";
 
-
 const routes: Routes = [
   {
     path: "drivers",
@@ -291,14 +290,14 @@ const routes: Routes = [
           },
           {
             path: "Edit-Stock-Assignment/:assignmentID",
-            component: EditStockAssignmentComponent
+            component: EditStockAssignmentComponent,
           },
         ],
       },
       {
         path: "Inventory-Stock-Statement",
-        component: InventoryStockStatementComponent
-      }
+        component: InventoryStockStatementComponent,
+      },
     ],
   },
   {
@@ -306,7 +305,7 @@ const routes: Routes = [
     children: [
       { path: "Add-Geofence", component: AddGeofenceComponent },
       { path: "Edit-Geofence/:fenceID", component: EditGeofenceComponent },
-      { path: "Geofence-List", component:GeofenceListComponent },
+      { path: "Geofence-List", component: GeofenceListComponent },
     ],
   },
 ];
