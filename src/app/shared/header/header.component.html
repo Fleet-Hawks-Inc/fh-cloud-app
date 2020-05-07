@@ -16,6 +16,11 @@
                                 Fleet
                             </a>
                         </li>
+                        <li class="" [class.active]="navSelected === 'hos'">
+                            <a class="nav-link" [routerLink]="" (click)="onNavSelected('hos')">
+                                HOS
+                            </a>
+                        </li>
                         <li class="" [class.active]="navSelected === 'alert'">
                             <a class="nav-link" [routerLink]="" (click)="onNavSelected('alert')">
                                 Alert

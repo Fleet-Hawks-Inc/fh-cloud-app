@@ -191,7 +191,6 @@ import {SharedModule} from './shared/shared.module';
 
     MapDashboardComponent,
 
-    
     AddTicketTypeComponent,
     EditTicketTypeComponent,
     TicketTypeListComponent,
