@@ -29,7 +29,6 @@
       <section class="card mb-4">
         <div class="card-body">
           <h2 class="card-title mt-2 mb-3">Driver Logs</h2>
-
           <form class="form-horizontal form-bordered" method="get">
             <div class="form-group row">
               <div class="col-lg-4">
@@ -39,10 +38,35 @@
                       ><i class="fas fa-search"></i
                     ></span>
                   </span>
+                  <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      [(ngModel)]="userName"
+                      name="userName"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let driver of drivers"
+                          value="{{ driver.userName }}"
+                          >{{ driver.userName }}</option
+                        >
+                      </optgroup>
+                    </select>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="input-group mb-1">
+                  <span class="input-group-prepend positionsta">
+                    <span class="input-group-text"
+                      ><i class="fas fa-calendar-alt"></i
+                    ></span>
+                  </span>
                   <input
-                    type="text"
+                    type="date"
                     class="form-control"
-                    placeholder="Search By Drivers"
+                    placeholder="From Date"
+                    [(ngModel)]="fromDate"
+                    name="fromDate"
                   />
                 </div>
               </div>
@@ -54,26 +78,24 @@
                     ></span>
                   </span>
                   <input
-                    type="text"
-                    data-plugin-datepicker
+                    type="date"
                     class="form-control"
-                    placeholder="Search By Date"
+                    placeholder="To Date"
+                    [(ngModel)]="toDate"
+                    name="toDate"
                   />
                 </div>
               </div>
-              <div class="col-lg-4">
-                <div class="input-group mb-1">
-                  <span class="input-group-prepend positionsta">
-                    <span class="input-group-text"
-                      ><i class="fas fa-search"></i
-                    ></span>
-                  </span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Search Logs"
-                  />
-                </div>
+             
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <button
+                  class="btn btn-dark mar-top-asg-stock-btn pull-right"
+                  (click)="getLogs()"
+                >
+                  Find
+                </button>
               </div>
             </div>
           </form>
@@ -94,33 +116,30 @@
               >
                 <thead>
                   <tr>
-                    <th>Yard Name</th>
-                    <th>Description</th>
-                    <!--<th>Address ID</th>-->
-                    <!--<th>Time Zone</th>-->
-
-                    <th>Edit</th>
-                    <th>Delete</th>
-                    <!--<th class="d-lg-none">Operator</th>-->
-                    <!--<th class="d-lg-none">CSS grade</th>-->
+                    <th>Date</th>
+                    <th>On Duty Hours</th>
+                    <th>Drive Hours</th>
+                    <th>Break Hours</th>
+                    <th>Violation</th>
+                    <th>Distance</th>
+                    <th>Detail View</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let yard of yards">
-                    <td>{{ yard.yardName }}</td>
-                    <td>{{ yard.description }}</td>
-                    <!--<td>{{yard.addressID}}</td>-->
-                    <!--<td>{{yard.timeZone}}</td>-->
+                  <tr *ngFor="let log of logs">
+                    <td>{{ log.date }}</td>
+                    <td>{{ log.onDuty * 1000 | date: "H:mm:ss":"UTC" }}</td>
+                    <td>{{ log.onDrive * 1000 | date: "H:mm:ss":"UTC" }}</td>
+                    <td>{{ log.onBreak * 1000 | date: "H:mm:ss":"UTC" }}</td>
+                    <td><span class="cirgrn">&nbsp;</span> No Violation</td>
+                    <td>877 mi</td>
                     <td>
-                      <a routerLink="/Edit-Yard/{{ yard.yardID }}">Edit</a>
-                    </td>
-                    <td>
-                      <a [routerLink]="" (click)="deleteYard(yard.yardID)"
-                        >Delete</a
+                      <a class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        routerLink="/hos/compliance/detail/{{userName}}/{{ log.date }}"
+                        >Detail View</a
                       >
                     </td>
-                    <!--<td class="center d-lg-none">4</td>-->
-                    <!--<td class="center d-lg-none">X</td>-->
+
                   </tr>
                 </tbody>
               </table>

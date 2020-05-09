@@ -1,0 +1,412 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs pr-3">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+
+      <section class="card mb-4">
+        <div class="card-body mb-4">
+          <div class="row">
+            <div class="col-md-6">
+              <h4 class="font-weight-bold mb-0 text-dark">
+                Date: <span class="colorgrey">28/04/2020</span>
+              </h4>
+              <h4 class="font-weight-bold text-dark">
+                Drvier Name: <span class="colorgrey">Jack</span>
+              </h4>
+              <h5 class="font-weight-bold text-dark">
+                <span class="onduty">ON</span>
+                <span class="colorgrey">13:50 ON</span>
+              </h5>
+              <h5 class="font-weight-bold text-dark">
+                <span class="sbduty">SB</span>
+                <span class="colorgrey">08:10 SB</span>
+              </h5>
+              <h5 class="font-weight-bold text-dark">
+                <span class="dutyonly">D</span>
+                <span class="colorgrey">10:25 D</span>
+              </h5>
+            </div>
+
+            <div class="col-md-6 text-right">
+              <h5 class="font-weight-bold text-dark">
+                Cycle:
+                <span class="colorgrey">
+                  Lakshmi Colony, Toronto, Canada<br />
+                  70Hr/8Day</span
+                >
+              </h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <h2 class="card-title font-weight-bold mt-2 mb-3">Driver Logs</h2>
+
+          <div class="col-md-12 mt-4">
+            <div class="hosgmainbox2">
+              <div class="hosgrightbox2 text-left">
+                <h5 class="font-weight-bold text-dark">12:20:10</h5>
+                <h5 class="pt-5 font-weight-bold text-dark">0:00:00</h5>
+                <h5 class="pt-5 font-weight-bold text-dark">0:00:00</h5>
+                <h5 class="pt-5 font-weight-bold text-dark">0:00:00</h5>
+              </div>
+
+              <div class="hosgbox2">
+                <svg style="height: 100%; width: 100%;">
+                  <!-- OFf duty line -->
+                  <line
+                    x1="0"
+                    y1="40"
+                    x2="200"
+                    y2="40"
+                    style="stroke: rgb(0, 0, 0); stroke-width: 4;"
+                  />
+
+                  <!-- 1st divder starting from 37 -->
+                  <line
+                    x1="200"
+                    y1="116"
+                    x2="200"
+                    y2="38"
+                    style="stroke: rgb(0, 0, 0); stroke-width: 4;"
+                  />
+
+                  <!-- SB duty line -->
+                  <line
+                    x1="200"
+                    y1="114"
+                    x2="300"
+                    y2="114"
+                    style="stroke: rgb(0, 0, 0); stroke-width: 4;"
+                  />
+
+                  <!-- 2nd divder starting from 109 -->
+                  <line
+                    x1="300"
+                    y1="188"
+                    x2="300"
+                    y2="112"
+                    style="stroke: rgb(0, 0, 0); stroke-width: 4;"
+                  />
+
+                  <!-- Driving line -->
+                  <line
+                    x1="300"
+                    y1="186"
+                    x2="600"
+                    y2="186"
+                    style="stroke: rgb(0, 0, 0); stroke-width: 4;"
+                  />
+
+                  <!-- 3rd divder starting from 182 -->
+                  <line
+                    x1="600"
+                    y1="266"
+                    x2="600"
+                    y2="184"
+                    style="stroke: rgb(0, 0, 0); stroke-width: 4;"
+                  />
+
+                  <!-- ON duty line -->
+                  <line
+                    x1="600"
+                    y1="264"
+                    x2="800"
+                    y2="264"
+                    style="stroke: rgb(0, 0, 0); stroke-width: 4;"
+                  />
+
+                  <!-- 1st divder for go to off duty -->
+                  <line
+                    x1="800"
+                    y1="266"
+                    x2="800"
+                    y2="38"
+                    style="stroke: rgb(0, 0, 0); stroke-width: 4;"
+                  />
+
+                  <!-- OFf duty line -->
+                  <line
+                    x1="800"
+                    y1="40"
+                    x2="1050"
+                    y2="40"
+                    style="stroke: rgb(0, 0, 0); stroke-width: 4;"
+                  />
+
+                  <!-- 1st divder for go to off duty -->
+                  <line
+                    x1="1050"
+                    y1="266"
+                    x2="1050"
+                    y2="38"
+                    style="stroke: rgb(0, 0, 0); stroke-width: 4;"
+                  />
+
+                  <!-- ON duty line -->
+                  <line
+                    x1="1052"
+                    y1="264"
+                    x2="1294"
+                    y2="264"
+                    style="stroke: rgb(0, 0, 0); stroke-width: 4;"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <div class="">
+                <a
+                  href="#"
+                  class="btn btn-success pull-right btn-sm mt-0 modal-confirm"
+                  >+</a
+                >
+              </div>
+
+              <h2 class="card-title">Events</h2>
+            </header>
+            <div class="card-body">
+              <table
+                class="table table-bordered table-striped mb-0"
+                id="datatable-default"
+              >
+                <thead>
+                  <tr>
+                    <th>Sr. No.</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Type</th>
+                    <th>Remarks</th>
+                    <th>Location</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>Brampton</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>Massachusetts</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>Indiana</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>4</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>New Mexico</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>Montana</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>Columbia</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>7</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>Washington</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>8</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>New Jersey</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>9</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>Nevada</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>9</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>Louisiana</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>10</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>Toronto</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>11</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>BC</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>12</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>Alberta</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>13</td>
+                    <td>01:00</td>
+                    <td>05:00</td>
+                    <td>ON</td>
+                    <td>i wast on duty</td>
+                    <td>Hamilton</td>
+                    <td>
+                      <a href="#" class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        >Edit</a
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

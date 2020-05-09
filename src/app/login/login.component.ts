@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
         this.response = res;
         localStorage.setItem('jwt', this.response.jwt);
         localStorage.setItem('LoggedIn', 'true');
-        this.router.navigate(['/Dashboard']);
+        this.router.navigate(['/Map-Dashboard']);
       }
     });
   }
