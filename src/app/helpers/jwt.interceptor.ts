@@ -22,13 +22,15 @@ export class JwtInterceptor implements HttpInterceptor {
     return from(Auth.currentSession())
       .pipe(
         switchMap((auth: any) => { // switchMap() is used instead of map().
+          console.log(auth);
+          const jwt = auth.idToken;
 
-          const jwt = auth.accessToken.jwtToken;
           const withAuthRequest = request.clone({
             setHeaders: {
               Authorization: `Bearer ${jwt}`
             }
           });
+          console.log('JST', jwt);
           console.log("Cloned", withAuthRequest);
           return next.handle(withAuthRequest);
         }),

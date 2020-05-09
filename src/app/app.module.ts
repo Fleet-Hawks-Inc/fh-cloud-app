@@ -148,10 +148,11 @@ import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { VehicleServiceLogsComponent } from './vehicle-service-logs/vehicle-service-logs.component';
 import { VendorsListComponent } from './vendors-list/vendors-list.component';
 import { YardsComponent } from './yards/yards.component';
+import { HttpInterceptorProviders } from './helpers/interceptor.provider';
 
 
 // JWT interceptors
-import { HttpInterceptorProviders } from './interceptors/interceptor-provider';
+
 
 
 
@@ -315,11 +316,12 @@ import { HttpInterceptorProviders } from './interceptors/interceptor-provider';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    BrowserAnimationsModule,
-    HttpInterceptorProviders
+    BrowserAnimationsModule
+
   ],
   providers: [
-    AmplifyService
+    AmplifyService,
+    HttpInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })
