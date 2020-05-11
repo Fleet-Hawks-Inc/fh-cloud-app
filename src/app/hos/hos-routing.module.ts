@@ -1,20 +1,22 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from "@angular/router";
 import { SummaryComponent } from "./compliance/summary/summary.component";
-import { DetailComponent } from "./compliance/detail/detail.component";
+import { EditComponent } from "./compliance/edit/edit.component";
+import { DetailedComponent } from "./compliance/detailed/detailed.component";
 
 const routes: Routes = [
   {
     path: "compliance",
     children: [
       { path: "summary", component: SummaryComponent },
-      { path: "detail/:userName/:date", component: DetailComponent }
+      { path: "edit/:userName/:eventDate", component: EditComponent },
+      { path: "detailed", component: DetailedComponent },
     ],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class HosRoutingModule { }
+export class HosRoutingModule {}
