@@ -110,6 +110,7 @@ import { EditCycleComponent } from './edit-cycle/edit-cycle.component';
 import { CycleListComponent } from './cycle-list/cycle-list.component';
 import { NavOpenedDirective } from './directives/nav-opened.directive';
 import {SharedModule} from './shared/shared.module';
+import {ChartsModule} from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -139,7 +140,6 @@ import {SharedModule} from './shared/shared.module';
     AddExpensesComponent,
     ExpensesListComponent,
     EditExpensesComponent,
-    
     DocumentsComponent,
     AddDocumentsComponent,
     EditDocumentsComponent,
@@ -219,6 +219,7 @@ import {SharedModule} from './shared/shared.module';
     NavOpenedDirective
 
 
+
   ],
   imports: [
     CommonModule,
@@ -230,7 +231,10 @@ import {SharedModule} from './shared/shared.module';
     ReactiveFormsModule,
       NgbModule,
     BrowserAnimationsModule,
+    ChartsModule,
     SharedModule
+
+
   ],
   providers: [],
   bootstrap: [AppComponent]
