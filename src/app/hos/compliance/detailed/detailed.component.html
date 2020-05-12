@@ -260,16 +260,16 @@
                               <div class="hosgmainbox2">
                                 <div class="hosgrightbox2 text-left">
                                   <h5 class="font-weight-bold text-dark">
-                                    12:20:10
+                                    {{ accumulatedOFF * 1000 | date: "H:mm:ss":"UTC" }}
                                   </h5>
                                   <h5 class="pt-5 font-weight-bold text-dark">
-                                    0:00:00
+                                    {{accumulatedSB * 1000 | date: "H:mm:ss":"UTC"}}
                                   </h5>
                                   <h5 class="pt-5 font-weight-bold text-dark">
-                                    0:00:00
+                                    {{accumulatedD * 1000 | date: "H:mm:ss":"UTC"}}
                                   </h5>
                                   <h5 class="pt-5 font-weight-bold text-dark">
-                                    0:00:00
+                                    {{accumulatedON * 1000 | date: "H:mm:ss":"UTC"}}
                                   </h5>
                                 </div>
 
