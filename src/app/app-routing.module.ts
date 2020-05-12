@@ -122,12 +122,15 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { FleetModule } from './fleet/fleet.module';
 import { HosModule } from './hos/hos.module';
 import {ChartsModule} from 'ng2-charts';
+import {Role} from '../objects/objects';
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: 'Login', component: LoginComponent },
   {
     path: 'fleet',
+    canActivate: [AuthService],
+    data: { roles: [Role.Admin] },
     loadChildren: () =>
       import('./fleet/fleet.module').then((m) => m.FleetModule),
   },

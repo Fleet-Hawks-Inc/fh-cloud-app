@@ -27,12 +27,13 @@ export class SummaryComponent implements OnInit {
     this.apiService.getData("users/userType/driver").subscribe((result: any) => {
       this.drivers = result.Items;
     });
-    console.log(this.drivers);
+    //console.log(this.drivers);
   }
 
   getLogs() {
     let from  = moment(this.fromDate).format('DD-MM-YYYY');
     let to = moment(this.toDate).format('DD-MM-YYYY');
+    console.log(from);
 
     this.apiService.getData(`eventLogs/HOSSummary?userName=${this.userName}&fromDate=${from}&toDate=${to}`).subscribe((result: any) => {
       this.logs = result;
