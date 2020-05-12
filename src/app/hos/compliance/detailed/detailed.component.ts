@@ -12,6 +12,7 @@ declare var $: any;
   styleUrls: ["./detailed.component.css"],
 })
 export class DetailedComponent implements OnInit {
+  //graph general props
   coordinates = 1292 / 24 / 60;
   types = {
     OFF: 40,
@@ -25,17 +26,21 @@ export class DetailedComponent implements OnInit {
   lastEvent: any = {};
   logs = [];
   drivers = [];
-  userName = "driveruser1";
-  fromDate = "05-08-2020";
-  toDate = "05-09-2020";
+  userName = "";
+  fromDate = "";
+  toDate = "";
   selectedDate = "";
   duties = [];
   eventList = [];
+  accumulatedOFF = 0;
+  accumulatedSB = 0;
+  accumulatedD = 0;
+  accumulatedON = 0;
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.fetchDrivers();
-//    this.getLogs();
+    //this.getLogs();
   }
 
   fetchDrivers() {
@@ -61,6 +66,7 @@ export class DetailedComponent implements OnInit {
 
   getData(date: string) {
     this.duties = [];
+    this.accumulatedD = this.accumulatedOFF = this.accumulatedON = this.accumulatedSB = 0;
     $(".toggle-content").hide("slow");
     if ($("#" + date).is(":visible")) {
       $("#" + date).hide("slow");
@@ -97,24 +103,13 @@ export class DetailedComponent implements OnInit {
             if (result[i].hasOwnProperty(key)) {
               //add event list localy
               this.eventList = result[i][key].eventList;
-              let length = result[i][key].eventList.length;
-              //add current event localy
-              // this.currentEvent = {
-              //   id: result[i][key].eventList[length - 1].id,
-              //   type: this.setType(result[i][key].eventList[length - 1].type),
-              // };
 
               //Add duty status data
               this.refineDutyStatusData(result[i][key].dutyCycleChanges);
 
               //Add accumulated data
-              // this.refineAccumlatedData(result[i][key].accumlatedHOS);
+              this.refineAccumlatedData(result[i][key].accumlatedHOS);
 
-              // //add yesterday last event accumulated
-              // this.addYesterdayLastEventAccumulated();
-
-              // //decide last/current event accumulated data
-              // this.lastEventAccumulatedData();
             }
           }
         }
@@ -140,7 +135,6 @@ export class DetailedComponent implements OnInit {
 
   refineDutyStatusData(data: any) {
     //get the time difference from the beginning of the day to the first event
-
     let diff = this.calculateTimeDiffInMinutes(
       `${this.selectedDate} 00:00:00`,
       this.eventList[0].dateTime
@@ -165,7 +159,7 @@ export class DetailedComponent implements OnInit {
       if (_.isEmpty(this.lastEvent) && j == 0) {
         this.duties.push({
           type: this.setType(data[j].type),
-          time: diff, 
+          time: diff,
           nextStart,
         });
       } else {
@@ -177,7 +171,6 @@ export class DetailedComponent implements OnInit {
       }
     }
 
-    //console.log(this.duties);
   }
 
   calculateTimeDiffInMinutes(start: any, end: any) {
@@ -187,4 +180,56 @@ export class DetailedComponent implements OnInit {
     let diff = duration.asMinutes();
     return diff;
   }
+
+  refineAccumlatedData(data: any) {
+    //get the time difference from the beginning of the day to the first event of the today in seconds to calculate accumulated data
+    if (!_.isEmpty(this.lastEvent)){
+      let lastDayAccumulated = {
+        type: this.setType(this.lastEvent.HOSEventDescription),
+        time:this.calculateTimeDiffInSeconds(
+          `${this.selectedDate} 00:00:00`,
+          this.eventList[0].dateTime
+        )
+      }
+      this.updateAccumulated(lastDayAccumulated);
+    }
+    
+
+    //set types
+    let refine = data.map((m) => {
+      return {
+        type: this.setType(m.type),
+        time: m.time,
+      };
+    });
+
+    //sum the same types
+    let sum = _(refine)
+      .groupBy("type")
+      .map((objs, key) => ({
+        type: key,
+        time: _.sumBy(objs, "time"),
+      }))
+      .value();
+
+    for (var i = 0; i < sum.length; i++) {
+      this.updateAccumulated(sum[i]);
+    }
+  }
+
+  updateAccumulated(data: any) {
+    if (data.type == "OFF") this.accumulatedOFF += data.time;
+    if (data.type == "SB") this.accumulatedSB += data.time;
+    if (data.type == "D") this.accumulatedD += data.time;
+    if (data.type == "ON") this.accumulatedON += data.time;
+  }
+
+  calculateTimeDiffInSeconds(start: any, end: any) {
+    let start_date = moment(start, "DD-MM-YYYY HH:mm:ss");
+    let end_date = moment(end, "DD-MM-YYYY HH:mm:ss");
+    let duration = moment.duration(end_date.diff(start_date));
+    let diff = duration.asSeconds();
+    return diff;
+  }
+
 }
