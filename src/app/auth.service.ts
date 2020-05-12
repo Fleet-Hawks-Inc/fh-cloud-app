@@ -3,6 +3,8 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '
 import {Observable} from 'rxjs/index';
 import {ApiService} from './api.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import {AuthenticateService} from './authenticate.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,8 @@ export class AuthService implements CanActivate {
   private message: string;
   private jwtHelper = new JwtHelperService();
   constructor(private _router: Router,
-  private apiService: ApiService) { }
+              private apiService: ApiService,
+              private authenticate: AuthenticateService) { }
 
   /**
    * this is used to clear anything that needs to be removed
@@ -36,10 +39,23 @@ export class AuthService implements CanActivate {
   }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+
+    const currentUser = this.authenticate.currentUserValue;
+    if (currentUser) {
+      // check if route is restricted by role
+      if (next.data.roles && next.data.roles.indexOf(currentUser.role) === -1) {
+        // role not authorised so redirect to home page
+        this._router.navigate(['/Login']);
+        return false;
+      }
+    }
+
+
     if (this.isAuthenticated()) {
       this.apiService.jwtDecoded = this.decode();
       return true;
     }
+
     // navigate to login page
     this._router.navigate(['/Login']);
     // you can save redirect url so after authing we can move them back to the page they requested

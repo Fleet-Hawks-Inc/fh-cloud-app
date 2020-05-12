@@ -261,6 +261,7 @@ export class FleetSidebarComponent extends CommonSideBarComponent {
   Logout() {
     localStorage.removeItem('LoggedIn');
     localStorage.removeItem('jwt');
+    localStorage.removeItem('user');
     this.router.navigate(['/Login']);
   }
 }

@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {ApiService} from "../api.service";
 import {AuthService} from "../auth.service";
 import {Observable} from "rxjs/index";
+import {Role, User} from '../../objects/objects';
 
 @Component({
   selector: 'app-login',
@@ -41,9 +42,17 @@ export class LoginComponent implements OnInit {
        // console.log("clickes");
       },
       next: (res) => {
+        const user : User =   { id: '1',
+          username: 'admin',
+          firstName: 'Admin',
+          lastName: 'User',
+          role: Role.FleetManager };
+
         this.response = res;
         localStorage.setItem('jwt', this.response.jwt);
         localStorage.setItem('LoggedIn', 'true');
+        /************set the role from server **********/
+        localStorage.setItem('user', JSON.stringify(user) );
         this.router.navigate(['/Map-Dashboard']);
       }
     });

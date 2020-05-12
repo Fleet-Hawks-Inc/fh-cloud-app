@@ -6,9 +6,10 @@ import { HosRoutingModule } from "./hos-routing.module";
 import { SummaryComponent } from "./compliance/summary/summary.component";
 import { EditComponent } from "./compliance/edit/edit.component";
 import { DetailedComponent } from './compliance/detailed/detailed.component';
+import {NgbDateAdapter, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  imports: [CommonModule, HosRoutingModule, FormsModule, SharedModule],
+  imports: [CommonModule, HosRoutingModule, FormsModule, SharedModule, NgbModule],
   declarations: [SummaryComponent, EditComponent, DetailedComponent],
 })
 export class HosModule {}
