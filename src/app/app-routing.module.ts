@@ -129,8 +129,8 @@ const routes: Routes = [
   { path: 'Login', component: LoginComponent },
   {
     path: 'fleet',
-    canActivate: [AuthService],
-    data: { roles: [Role.Admin] },
+    // canActivate: [AuthService],
+    // data: { roles: [Role.Admin] },
     loadChildren: () =>
       import('./fleet/fleet.module').then((m) => m.FleetModule),
   },
