@@ -40,15 +40,15 @@ export class AuthService implements CanActivate {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
-    const currentUser = this.authenticate.currentUserValue;
-    if (currentUser) {
-      // check if route is restricted by role
-      if (next.data.roles && next.data.roles.indexOf(currentUser.role) === -1) {
-        // role not authorised so redirect to home page
-        this._router.navigate(['/Login']);
-        return false;
-      }
-    }
+    // const currentUser = this.authenticate.currentUserValue;
+    // if (currentUser) {
+    //   // check if route is restricted by role
+    //   if (next.data.roles && next.data.roles.indexOf(currentUser.role) === -1) {
+    //     // role not authorised so redirect to home page
+    //     this._router.navigate(['/Login']);
+    //     return false;
+    //   }
+    // }
 
 
     if (this.isAuthenticated()) {
