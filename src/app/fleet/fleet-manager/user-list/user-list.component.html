@@ -47,7 +47,7 @@
               </div>
             </div>
 
-            <a routerLink="/Add-User" class="mb-1 mt-1 mr-1 btn btn-success"
+            <a routerLink="/fleet/fleet-manager/Add-User" class="mb-1 mt-1 mr-1 btn btn-success"
               ><i class="fas fa-plus"></i> Add Fleet Manager</a
             >
           </div>
@@ -87,7 +87,7 @@
                     <td>{{ user.userType }}</td>
 
                     <td>
-                      <a routerLink="/Edit-User/{{ user.userName }}">Edit</a>
+                      <a routerLink="/fleet/fleet-manager/Edit-User/{{ user.userName }}">Edit</a>
                     </td>
                     <td>
                       <a [routerLink]="" (click)="deleteUser(user.userName)"

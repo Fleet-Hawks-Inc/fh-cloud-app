@@ -15,7 +15,11 @@
 
         <div class="right-wrapper text-right">
           <ol class="breadcrumbs pr-3">
-            <li></li>
+            <li>
+              <a href="/">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
 
             <li>
               <span>{{ title }}</span>
@@ -56,6 +60,8 @@
                       class="form-control"
                       name="openingStock"
                       [(ngModel)]="openingStock"
+                      min="1"
+                      max="100000"
                     />
                   </div>
                 </div>
@@ -71,6 +77,8 @@
                       class="form-control"
                       name="defaultPurchasePrice"
                       [(ngModel)]="defaultPurchasePrice"
+                      min="1"
+                      max="1000000"
                     />
                   </div>
                   <div class="col-lg-4">

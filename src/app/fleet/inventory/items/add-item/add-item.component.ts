@@ -59,6 +59,7 @@ export class AddItemComponent implements OnInit {
   }
 
   addItem() {
+    this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
@@ -89,14 +90,23 @@ export class AddItemComponent implements OnInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
         this.Success = "Item added successfully";
+
+        this.itemName = "";
+        this.description = "";
+        this.defaultPurchasePrice = "";
+        this.defaultPurchaseVendor = "";
+        this.defaultTaxAccount = "";
+        this.openingStock = "";
+        this.vendors = [];
+        this.taxAccounts = [];
       },
     });
   }

@@ -12,7 +12,7 @@ declare var $: any;
   styleUrls: ["./edit-user.component.css"],
 })
 export class EditUserComponent implements OnInit {
-  parentTitle = "Users";
+  parentTitle = "Fleet Managers";
   title = "Edit Fleet Manager";
   errors = {};
   form;
@@ -118,7 +118,7 @@ export class EditUserComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "User updated successfully";
+        this.Success = "Fleet manager updated successfully";
       },
     });
   }
