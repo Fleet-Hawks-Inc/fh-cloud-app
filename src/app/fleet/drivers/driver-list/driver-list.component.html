@@ -47,7 +47,7 @@
               </div>
             </div>
 
-            <a routerLink="/Add-Driver" class="mb-1 mt-1 mr-1 btn btn-success"
+            <a routerLink="/fleet/drivers/Add-Driver" class="mb-1 mt-1 mr-1 btn btn-success"
               ><i class="fas fa-plus"></i> Add Driver</a
             >
           </div>
@@ -87,7 +87,7 @@
                     <td>{{ user.userType }}</td>
 
                     <td>
-                      <a routerLink="/Edit-Driver/{{ user.userName }}">Edit</a>
+                      <a routerLink="/fleet/drivers/Edit-Driver/{{ user.userName }}">Edit</a>
                     </td>
                     <td>
                       <a [routerLink]="" (click)="deleteUser(user.userName)"

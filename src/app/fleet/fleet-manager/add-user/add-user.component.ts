@@ -12,7 +12,7 @@ declare var $: any;
   styleUrls: ["./add-user.component.css"],
 })
 export class AddUserComponent implements OnInit {
-  parentTitle = "Users";
+  parentTitle = "Fleet Managers";
   title = "Add Fleet Manager";
   errors = {};
   form;
@@ -54,6 +54,7 @@ export class AddUserComponent implements OnInit {
   }
 
   addDriver() {
+    this.errors = {};
     let data = {
       userType: this.userType,
       userName: this.userName,
@@ -84,6 +85,7 @@ export class AddUserComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.Success = "";
             },
             error: () => {},
             next: () => {},
@@ -92,7 +94,17 @@ export class AddUserComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "User added successfully";
+        this.Success = "Fleet manager added successfully";
+
+        this.userName = "";
+        this.password = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.address = "";
+        this.phone = "";
+        this.email = "";
+        this.groupID = "";
+        this.groups = [];
       },
     });
   }

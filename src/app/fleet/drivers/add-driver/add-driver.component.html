@@ -20,7 +20,11 @@
                 <i class="fas fa-home"></i>
               </a>
             </li>
-
+            <li>
+              <a routerLink="/fleet/drivers/Drivers-List">
+                Driver List
+              </a>
+            </li>
             <li>
               <span>{{ title }}</span>
             </li>
@@ -48,7 +52,7 @@
                       class="form-control"
                       name="userName"
                       [(ngModel)]="userName"
-
+                      minlength="8"
                     />
 
                   </div>
@@ -63,6 +67,8 @@
                       class="form-control"
                       name="password"
                       [(ngModel)]="password"
+                      minlength="6"
+                      maxlength="20"
 
                     />
 
@@ -80,6 +86,7 @@
                       class="form-control"
                       name="firstName"
                       [(ngModel)]="firstName"
+                      maxlength="50"
 
                     />
 
@@ -95,6 +102,7 @@
                       class="form-control"
                       name="lastName"
                       [(ngModel)]="lastName"
+                      maxlength="50"
                     />
 
                   </div>
@@ -112,6 +120,8 @@
                       id="textareaDefault"
                       name="address"
                       [(ngModel)]="address"
+                      minlength="10"
+                      maxlength="500"
                     ></textarea>
 
                   </div>
@@ -128,6 +138,9 @@
                       class="form-control"
                       name="phone"
                       [(ngModel)]="phone"
+                      min="1"
+                      minlength ="5"
+                      maxlength="15"
                     />
 
                   </div>
@@ -142,17 +155,15 @@
                       class="form-control"
                       name="email"
                       [(ngModel)]="email"
-
-
+                      maxlength="100"
                     />
 
                   </div>
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-
-                      >Group</label
-                    >
+                      >Group
+                    </label>
                     <select data-plugin-selectTwo class="form-control populate" name="groupID" [(ngModel)]="groupID">
                       <!-- <optgroup label=""> -->
                         <option *ngFor="let q of groups" value="{{q.groupID}}">{{q.groupName}}</option>
@@ -193,6 +204,8 @@
                       class="form-control"
                       name="driverNumber"
                       [(ngModel)]="driverNumber"
+                      minlength="3"
+                      maxlength="15"
                     />
 
                   </div>
@@ -209,6 +222,8 @@
                       class="form-control"
                       name="driverLicenseNumber"
                       [(ngModel)]="driverLicenseNumber"
+                      minlength="5"
+                      maxlength="20"
                     />
 
                   </div>
@@ -223,6 +238,8 @@
                       class="form-control"
                       name="driverLicenseType"
                       [(ngModel)]="driverLicenseType"
+                      minlength="2"
+                      maxlength="10"
                     />
 
                   </div>
@@ -237,8 +254,8 @@
                       class="form-control"
                       name="driverLicenseExpiry"
                       [(ngModel)]="driverLicenseExpiry"
+                      [min]="getToday()"
                     />
-
 
                     <input
                       type="file"
@@ -369,6 +386,7 @@
                       class="form-control"
                       name="defaultContract.perMile"
                       [(ngModel)]="defaultContract.perMile"
+                      maxlength="10"
                     />
 
                   </div>
@@ -383,6 +401,7 @@
                       class="form-control"
                       name="defaultContract.team"
                       [(ngModel)]="defaultContract.team"
+                      maxlength="10"
 
                     />
 
@@ -412,6 +431,7 @@
                       class="form-control"
                       name="defaultContract.pickOrDrop"
                       [(ngModel)]="defaultContract.pickOrDrop"
+                      maxlength="10"
                     />
 
                   </div>
@@ -435,6 +455,7 @@
                       class="form-control"
                       name="fixed.amount"
                       [(ngModel)]="fixed.amount"
+                      maxlength="10"
                     />
 
                   </div>

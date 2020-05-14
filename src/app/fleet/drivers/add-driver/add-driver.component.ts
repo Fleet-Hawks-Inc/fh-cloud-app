@@ -72,6 +72,7 @@ export class AddDriverComponent implements OnInit {
     this.fetchCountries();
     this.fetchYards();
     this.fetchCycles();
+    this.getToday();
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
@@ -112,6 +113,9 @@ export class AddDriverComponent implements OnInit {
       });
   }
 
+  getToday(): string {
+    return new Date().toISOString().split('T')[0]
+  }
   addDriver() {
     this.errors = {};
     const data = {
@@ -173,6 +177,7 @@ export class AddDriverComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.Success = "";
             },
             error: () => { },
             next: () => { }
@@ -182,6 +187,43 @@ export class AddDriverComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.Success = "Driver Added successfully";
+
+        this.userName = "";
+        this.password = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.address = "";
+        this.phone = "";
+        this.email = "";
+        this.groupID = "";
+        this.loginEnabled = true;
+        this.driverNumber = "";
+        this.driverLicenseNumber = "";
+        this.driverLicenseType = "";
+        this.driverLicenseExpiry = "";
+        this.driverLicenseStateID = "";
+        this.HOSCompliance = {
+          status: "",
+          type: "",
+          cycleID: "",
+        };
+        this.defaultContract = {
+          perMile: "",
+          team: "",
+          hourly: "",
+          pickOrDrop: "",
+        };
+        this.fixed = {
+          amount: "",
+          type: "",
+        };
+        this.yardID = "";
+        this.driverLicenseCountry = "";
+        this.groups = [];
+        this.countries = [];
+        this.states = [];
+        this.yards = [];
+        this.cycles = [];
       },
     });
   }

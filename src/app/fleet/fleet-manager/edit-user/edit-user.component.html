@@ -14,14 +14,16 @@
         <h2>{{ title }}</h2>
 
         <div class="right-wrapper text-right">
-          <ol class="breadcrumbs">
+          <ol class="breadcrumbs pr-3">
             <li>
-              <a href="/">
+              <a routerLink="/">
                 <i class="fas fa-home"></i>
               </a>
             </li>
             <li>
-              <span>{{ parentTitle }}</span>
+              <a routerLink="/fleet/fleet-manager/User-List">
+                <span>{{ parentTitle }}</span>
+              </a>
             </li>
             <li>
               <span>{{ title }}</span>
@@ -56,6 +58,7 @@
                       class="form-control"
                       name="userName"
                       [(ngModel)]="userName"
+                      maxlength="15"
                     />
                   </div>
                   <div class="col-lg-6">
@@ -69,6 +72,8 @@
                       class="form-control"
                       name="password"
                       [(ngModel)]="password"
+                      minlength="6"
+                      maxlength="20"
                     />
                   </div>
                 </div>
@@ -84,6 +89,7 @@
                       class="form-control"
                       name="firstName"
                       [(ngModel)]="firstName"
+                      maxlength="50"
                     />
                   </div>
                   <div class="col-lg-6">
@@ -97,6 +103,7 @@
                       class="form-control"
                       name="lastName"
                       [(ngModel)]="lastName"
+                      maxlength="50"
                     />
                   </div>
                 </div>
@@ -112,6 +119,8 @@
                       rows="3"
                       name="address"
                       [(ngModel)]="address"
+                      minlength="10"
+                      maxlength="1000"
                     ></textarea>
                   </div>
                 </div>
@@ -127,6 +136,9 @@
                       class="form-control"
                       name="phone"
                       [(ngModel)]="phone"
+                      min="1"
+                      minlength="5"
+                      maxlength="15"
                     />
                   </div>
                   <div class="col-lg-3">
@@ -141,6 +153,7 @@
                       class="form-control"
                       name="email"
                       [(ngModel)]="email"
+                      maxlength="50"
                     />
                   </div>
                   <div class="col-lg-3">
