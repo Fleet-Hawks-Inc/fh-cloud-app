@@ -32,6 +32,10 @@ export class EditComponent implements OnInit {
   accumulatedD = 0;
   accumulatedON = 0;
   currentDate = moment().utc().format("DD-MM-YYYY");
+
+  eventID = "";
+  fromTime = "";
+  toTime = ""
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
@@ -122,12 +126,14 @@ export class EditComponent implements OnInit {
         this.duties.push({
           type: this.setType(data[j].type),
           time: diff,
+          status: data[j].status,
           nextStart,
         });
       } else {
         this.duties.push({
           type: this.setType(data[j].type),
           time: Math.round(data[j].time / 60), //convert to minutes
+          status: data[j].status,
           nextStart,
         });
       }
@@ -190,5 +196,28 @@ export class EditComponent implements OnInit {
     let duration = moment.duration(end_date.diff(start_date));
     let diff = duration.asSeconds();
     return diff;
+  }
+
+  deleteModal(eventID) {
+    this.eventID = eventID;
+    
+    $( document ).ready(function() {
+      $('#deleteEventModal').modal('show');
+    });
+  }
+
+  //update the status to "INACTIVE_CHANGE_REQUESTED: 3"
+  deleteEvent(){
+    this.apiService.getData("eventLogs/HOSUpdateStatus/" + this.eventID).subscribe((result: any) => {
+      this.lastDayEvent();
+    });  
+  }
+
+  editModal(from, to){
+    $( document ).ready(function() {
+      $('#editEventModal').modal('show');
+    });
+
+
   }
 }
