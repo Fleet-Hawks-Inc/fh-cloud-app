@@ -35,7 +35,7 @@ export class EditComponent implements OnInit {
 
   eventID = "";
   fromTime = "";
-  toTime = ""
+  toTime = "";
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
@@ -200,24 +200,48 @@ export class EditComponent implements OnInit {
 
   deleteModal(eventID) {
     this.eventID = eventID;
-    
-    $( document ).ready(function() {
-      $('#deleteEventModal').modal('show');
+
+    $(document).ready(function () {
+      $("#deleteEventModal").modal("show");
     });
   }
 
   //update the status to "INACTIVE_CHANGE_REQUESTED: 3"
-  deleteEvent(){
-    this.apiService.getData("eventLogs/HOSUpdateStatus/" + this.eventID).subscribe((result: any) => {
-      this.lastDayEvent();
-    });  
+  deleteEvent() {
+    this.apiService
+      .getData("eventLogs/HOSUpdateStatus/" + this.eventID)
+      .subscribe((result: any) => {
+        this.lastDayEvent();
+      });
   }
 
-  editModal(from, to){
-    $( document ).ready(function() {
-      $('#editEventModal').modal('show');
+  editModal(from, to) {
+    $(document).ready(function () {
+      $("#editEventModal").modal("show");
     });
+  }
+
+  addEvent() {
+    //check if entered time clashes with others
+    this.isTimeClashes();
+  }
+
+  isTimeClashes() {
+    if (this.toTime < this.fromTime) {
+      alert("To time must be greater than From time");
+      return false;
+    } else if (this.fromTime === this.toTime) {
+      alert("From and To must not be equal.");
+      return false;
+    }
+
+    console.log(this.fromTime);
+    console.log(this.toTime);
+    let list = this.eventList;
+    for (var i = 0; i < list.length; i++) {
 
 
+     console.log('you need to remove between '+ list[i].time + ' ' + list[i].toTime);
+    }
   }
 }

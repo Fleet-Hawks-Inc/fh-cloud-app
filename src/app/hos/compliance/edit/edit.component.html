@@ -305,11 +305,11 @@
       <div class="form-group row">
         <div class="col-lg-6">
           <label class="control-label text-lg-right pt-2" for="inputDefault">From Time</label>
-          <input type="time" class="form-control"  [(ngModel)]="fromTime" name="fromTime">
+          <input type="time" step="1" class="form-control"  [(ngModel)]="fromTime" name="fromTime">
         </div>
         <div class="col-lg-6">
           <label class="control-label text-lg-right pt-2" for="inputDefault">To Time</label>
-          <input type="time" class="form-control"  [(ngModel)]="toTime" name="toTime">
+          <input type="time" step="1" class="form-control"  [(ngModel)]="toTime" name="toTime">
         </div>
       </div>
       <div class="modal-footer">
@@ -320,7 +320,7 @@
           [routerLink]=""
           (click)="addEvent()"
         >
-          Delete
+          Submit
         </button>
         <button type="button" class="btn btn-default" data-dismiss="modal">
           Close
