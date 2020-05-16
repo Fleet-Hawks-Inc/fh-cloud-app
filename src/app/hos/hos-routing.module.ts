@@ -6,11 +6,11 @@ import { DetailedComponent } from "./compliance/detailed/detailed.component";
 
 const routes: Routes = [
   {
-    path: "compliance",
+    path: 'compliance',
     children: [
-      { path: "summary", component: SummaryComponent },
-      { path: "edit/:userName/:eventDate", component: EditComponent },
-      { path: "detailed", component: DetailedComponent },
+      { path: 'summary', component: SummaryComponent },
+      { path: 'edit/:userName/:eventDate', component: EditComponent },
+      { path: 'detailed', component: DetailedComponent },
     ],
   },
 ];

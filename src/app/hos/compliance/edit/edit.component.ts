@@ -1,9 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
 import { ApiService } from "../../../api.service";
 import { from, of } from "rxjs";
 import * as moment from "moment";
 import * as _ from "lodash";
+import {map, shareReplay, tap} from 'rxjs/operators';
 declare var $: any;
 
 @Component({
@@ -11,7 +12,7 @@ declare var $: any;
   templateUrl: "./edit.component.html",
   styleUrls: ["./edit.component.css"],
 })
-export class EditComponent implements OnInit {
+export class EditComponent implements OnInit, OnDestroy {
   //graph general props
   coordinates = 1292 / 24 / 60;
   types = {
@@ -36,7 +37,23 @@ export class EditComponent implements OnInit {
   eventID = "";
   fromTime = "";
   toTime = "";
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+
+
+
+  /**
+   * New Vars
+   *
+   ***/
+    initialDayTime = '';
+    endDayTime = '';
+    sharedData$;
+    @ViewChild('fromtime_', {static: false}) fromTime_: ElementRef;
+    @ViewChild('toTime_', {static: false}) toTime_: ElementRef;
+
+
+
+  constructor(private route: ActivatedRoute,
+              private apiService: ApiService) {}
 
   ngOnInit() {
     this.userName = this.route.snapshot.params["userName"];
@@ -60,32 +77,153 @@ export class EditComponent implements OnInit {
   }
 
   getGraphData() {
-    this.apiService
+
+    this.sharedData$ = this.apiService
       .getData(
         `eventLogs/HOSDetail?userName=${this.userName}&eventDate=${this.selectedDate}`
       )
-      .subscribe((result: any) => {
-        for (var i = 0; i < result.length; i++) {
-          for (var key in result[i]) {
-            if (result[i].hasOwnProperty(key)) {
-              //add event list localy
-              this.eventList = result[i][key].eventList;
-              console.log(this.eventList);
-              //Add duty status data
-              this.refineDutyStatusData(result[i][key].dutyCycleChanges);
+      .pipe(
+        tap((r) => this.eventList = r[0][this.selectedDate].eventList),
+        shareReplay(0));
 
-              //Add accumulated data
-              this.refineAccumlatedData(result[i][key].accumlatedHOS);
-            }
-          }
-        }
+
+    /**
+     * For refineDutyStatusData()
+     */
+    this.sharedData$
+      .pipe(map((result) => {
+        return result[0][this.selectedDate].dutyCycleChanges;
+      }))
+      .subscribe((result) => {
+        this.refineDutyStatusData(result);
+        });
+
+
+    /**
+     * For refineAccumlatedData()
+     */
+    this.sharedData$
+      .pipe(map((result) => {
+        return result[0][this.selectedDate].accumlatedHOS;
+      }))
+      .subscribe((result) => {
+        this.refineAccumlatedData(result);
+        });
+
+
+    /**
+     * For initdaytime and EndDayTime
+     **/
+    this.sharedData$
+      .pipe(map((result) => {
+        return result[0][this.selectedDate].eventList;
+      }))
+      .subscribe((result) => {
+        /****
+         * Set Both Times
+         *****/
+        this.initialDayTime = result[0].time;
+        this.endDayTime = result[result.length - 1 ].time
+        /********************************/
+
       });
+
+
+
+
+
+
+    // this.sharedData$.subscribe((result) => {
+    //   console.log(result);
+    //
+    //   for (let i = 0; i < result.length; i++) {
+    //     for (const key in result[i]) {
+    //       if (result[i].hasOwnProperty(key)) {
+    //         //add event list localy
+    //         //this.eventList = result[i][key].eventList;
+    //         //console.log(this.eventList);
+    //         //Add duty status data
+    //         this.refineDutyStatusData(result[i][key].dutyCycleChanges);
+    //
+    //         //Add accumulated data
+    //         this.refineAccumlatedData(result[i][key].accumlatedHOS);
+    //       }
+    //     }
+    //   }
+    // });
+
+
+
+
+
+
+       // map((result) =>  result.time ) )
+      //.subscribe((result: any) => {
+      //  console.log(result);
+
+
+
+        // for (let i = 0; i < result.length; i++) {
+        //   for (const key in result[i]) {
+        //     if (result[i].hasOwnProperty(key)) {
+        //       //add event list localy
+        //       this.eventList = result[i][key].eventList;
+        //       //console.log(this.eventList);
+        //       //Add duty status data
+        //       this.refineDutyStatusData(result[i][key].dutyCycleChanges);
+        //
+        //       //Add accumulated data
+        //       this.refineAccumlatedData(result[i][key].accumlatedHOS);
+        //     }
+        //   }
+        // }
+
+       //
+
+
+     // });
+
+
   }
 
+  isTimeClashes_() {
+
+    //console.log(this.fromTime_.nativeElement.value + ' ' + this.toTime_.nativeElement.value);
+    this.fromTime = $('#fromTime').val();
+    this.toTime = $('#toTime').val();
+    /*
+    ** Moment Instance
+     */
+    let format = 'hh:mm:ss';
+    let tt = moment(this.toTime, format);
+    let ft = moment(this.fromTime, format);
+    let iTt = moment(this.initialDayTime , format);
+    let eFt = moment(this.endDayTime , format);
+    /******************/
+
+    /**
+     * If The Dates Are Valid From The User
+     */
+    if (!tt.isBetween(iTt, eFt) || !ft.isBetween(iTt, eFt)) {
+      console.log('dates true');
+    }
+    /**
+     * If The Dates Are InValid From The User
+     */
+    else {
+      console.log('dates false');
+    }
+
+  }
+
+
+
+
+
   changeFormat(newDate: any) {
-    var day = newDate.format("DD");
-    var month = newDate.format("MM");
-    var year = newDate.format("YYYY");
+    let day = newDate.format("DD");
+    let month = newDate.format("MM");
+    let year = newDate.format("YYYY");
     return `${day}-${month}-${year}`;
   }
 
@@ -94,10 +232,14 @@ export class EditComponent implements OnInit {
    * @param type : string
    */
   setType(type: string) {
-    if (type == "YM") return "ON";
-    else if (type == "PC") return "OFF";
-    return type;
-  }
+    if (type === 'YM') {
+      return 'ON';
+    } else if (type === 'PC') {
+      return 'OFF';
+    } else {
+      return type;
+    }
+    }
 
   refineDutyStatusData(data: any) {
     //get the time difference from the beginning of the day to the first event
@@ -223,8 +365,12 @@ export class EditComponent implements OnInit {
 
   addEvent() {
     //check if entered time clashes with others
-    this.isTimeClashes();
+    this.isTimeClashes_();
   }
+
+
+
+
 
   isTimeClashes() {
     if (this.toTime < this.fromTime) {
@@ -244,4 +390,10 @@ export class EditComponent implements OnInit {
      console.log('you need to remove between '+ list[i].time + ' ' + list[i].toTime);
     }
   }
+
+  ngOnDestroy() {
+    this.sharedData$.unsubscribe();
+  }
+
+
 }
