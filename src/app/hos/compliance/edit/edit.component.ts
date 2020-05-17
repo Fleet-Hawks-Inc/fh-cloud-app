@@ -1,10 +1,11 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
 import { ApiService } from "../../../api.service";
-import { from, of } from "rxjs";
+import {BehaviorSubject, combineLatest, from, of, zip} from 'rxjs';
 import * as moment from "moment";
 import * as _ from "lodash";
-import {map, shareReplay, tap} from 'rxjs/operators';
+import {concatAll, concatMap, filter, isEmpty, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
+import {bool} from 'aws-sdk/clients/signer';
 declare var $: any;
 
 @Component({
@@ -44,9 +45,12 @@ export class EditComponent implements OnInit, OnDestroy {
    * New Vars
    *
    ***/
+    timeClash : bool = true;
     initialDayTime = '';
     endDayTime = '';
     sharedData$;
+    startTimes : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+    endTimes : BehaviorSubject <any[]> = new BehaviorSubject<any[]>([]);
     @ViewChild('fromtime_', {static: false}) fromTime_: ElementRef;
     @ViewChild('toTime_', {static: false}) toTime_: ElementRef;
 
@@ -123,15 +127,20 @@ export class EditComponent implements OnInit, OnDestroy {
          * Set Both Times
          *****/
         this.initialDayTime = result[0].time;
-        this.endDayTime = result[result.length - 1 ].time
+        this.endDayTime = result[result.length - 1 ].time;
         /********************************/
 
+
+        /**
+         * Keep a track of all the start and end times
+         */
+        const allValues$ = from(result);
+        allValues$.subscribe((r: any) => {
+          this.startTimes.next(r.time);
+          this.endTimes.next(r.toTime);
+          });
+        /******************************/
       });
-
-
-
-
-
 
     // this.sharedData$.subscribe((result) => {
     //   console.log(result);
@@ -187,32 +196,59 @@ export class EditComponent implements OnInit, OnDestroy {
   }
 
   isTimeClashes_() {
-
+    this.timeClash = false;
     //console.log(this.fromTime_.nativeElement.value + ' ' + this.toTime_.nativeElement.value);
     this.fromTime = $('#fromTime').val();
     this.toTime = $('#toTime').val();
     /*
     ** Moment Instance
      */
-    let format = 'hh:mm:ss';
+    const format = 'hh:mm:ss';
     let tt = moment(this.toTime, format);
     let ft = moment(this.fromTime, format);
     let iTt = moment(this.initialDayTime , format);
     let eFt = moment(this.endDayTime , format);
     /******************/
 
+
     /**
+     * First Logic
      * If The Dates Are Valid From The User
      */
     if (!tt.isBetween(iTt, eFt) || !ft.isBetween(iTt, eFt)) {
-      console.log('dates true');
+      console.log('E2E dates true');
     }
     /**
      * If The Dates Are InValid From The User
      */
     else {
-      console.log('dates false');
+      console.log('E2E dates false');
     }
+
+
+    /**
+     * Second Logic
+     * Iterate Over All The Values
+     */
+
+    zip(this.startTimes , this.endTimes)
+      .subscribe((v) => {
+        if (moment(v[0] , 'hh:mm:ss').isValid() && moment(v[1] , 'hh:mm:ss').isValid()) {
+
+          /*
+          ** Moment Instance
+          */
+          const iTt_ = moment(v[0] , format);
+          const eFt_ = moment(v[1] , format);
+
+
+          if (tt.isBetween(iTt_, eFt_) || ft.isBetween(iTt_, eFt_)) {
+            this.timeClash = true;
+            }
+            }
+      });
+
+    console.log('V2V ' +  ((this.timeClash) ? 'false': 'true'));
 
   }
 
