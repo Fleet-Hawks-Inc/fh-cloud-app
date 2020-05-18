@@ -1,25 +1,25 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {HttpClientModule} from '@angular/common/http';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
-// import {AddVehicleComponent} from './add-vehicle/add-vehicle.component';
+
 import { LeftBarComponent } from './left-bar/left-bar.component';
 import { RFormsComponent } from './r-forms/r-forms.component';
 import { CompanyInfoComponent } from './company-info/company-info.component';
 import { AddQuantumComponent } from './add-quantum/add-quantum.component';
 // import { AddUserComponent } from './add-user/add-user.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { LogoutComponent } from './logout/logout.component';
-// import { EditVehicleComponent } from './edit-vehicle/edit-vehicle.component';
+
 import { HealthcheckComponent } from './healthcheck/healthcheck.component';
 import { QuantumsComponent } from './quantums/quantums.component';
 import { EditQuantumComponent } from './edit-quantum/edit-quantum.component';
@@ -104,13 +104,15 @@ import { AddAlertComponent } from './add-alert/add-alert.component';
 import { EditAlertComponent } from './edit-alert/edit-alert.component';
 import { AlertListComponent } from './alert-list/alert-list.component';
 
-import {RouterModule} from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AddCycleComponent } from './add-cycle/add-cycle.component';
 import { EditCycleComponent } from './edit-cycle/edit-cycle.component';
 import { CycleListComponent } from './cycle-list/cycle-list.component';
 import { NavOpenedDirective } from './directives/nav-opened.directive';
-import {SharedModule} from './shared/shared.module';
-import {ChartsModule} from 'ng2-charts';
+import { SharedModule } from './shared/shared.module';
+import { ChartsModule } from 'ng2-charts';
+import { AddVehicleComponent } from './fleet/vehicles/add-vehicle/add-vehicle.component';
+import { EditVehicleComponent } from './fleet/vehicles/edit-vehicle/edit-vehicle.component';
 
 @NgModule({
   declarations: [
@@ -188,7 +190,8 @@ import {ChartsModule} from 'ng2-charts';
     CarriersComponent,
     // AddVehicleNewComponent,
 
-
+    AddVehicleComponent,
+    EditVehicleComponent,
     MapDashboardComponent,
 
     AddTicketTypeComponent,
@@ -229,7 +232,7 @@ import {ChartsModule} from 'ng2-charts';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-      NgbModule,
+    NgbModule,
     BrowserAnimationsModule,
     ChartsModule,
     SharedModule

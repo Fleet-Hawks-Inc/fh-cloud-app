@@ -14,8 +14,7 @@ import { AddQuantumComponent } from './add-quantum/add-quantum.component';
 // import { EditUserComponent } from './edit-user/edit-user.component';
 //
 // import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
-// import { EditVehicleComponent } from './edit-vehicle/edit-vehicle.component';
-// import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
+
 
 import { HealthcheckComponent } from './healthcheck/healthcheck.component';
 import { QuantumsComponent } from './quantums/quantums.component';
@@ -121,8 +120,10 @@ import { AddCycleComponent } from './add-cycle/add-cycle.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { FleetModule } from './fleet/fleet.module';
 import { HosModule } from './hos/hos.module';
-import {ChartsModule} from 'ng2-charts';
-import {Role} from '../objects/objects';
+import { ChartsModule } from 'ng2-charts';
+import { Role } from '../objects/objects';
+import { EditVehicleComponent } from './fleet/vehicles/edit-vehicle/edit-vehicle.component';
+import { AddVehicleComponent } from './fleet/vehicles/add-vehicle/add-vehicle.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
@@ -151,14 +152,14 @@ const routes: Routes = [
     canActivate: [AuthService],
   },
 
-  // {
-  //   path: 'Add-Vehicle',
-  //   component: AddVehicleComponent,
-  //   canActivate: [AuthService],
-  // },
+  {
+    path: 'Add-Vehicle',
+    component: AddVehicleComponent,
+    canActivate: [AuthService],
+  },
 
   // { path: 'Vehicle-List', component: VehicleListComponent },
-  // { path: 'Edit-Vehicle/:vehicleId', component: EditVehicleComponent },
+  { path: 'Edit-Vehicle/:vehicleId', component: EditVehicleComponent },
 
   { path: 'Left-Bar', component: LeftBarComponent },
   { path: 'R-Forms', component: RFormsComponent },
@@ -303,6 +304,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [],
   imports: [CommonModule,
-  ChartsModule],
+    ChartsModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

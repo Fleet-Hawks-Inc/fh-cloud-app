@@ -32,11 +32,11 @@ export class EditComponent implements OnInit {
   accumulatedD = 0;
   accumulatedON = 0;
   currentDate = moment().utc().format("DD-MM-YYYY");
-
+  eventType: "";
   eventID = "";
   fromTime = "";
   toTime = "";
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+  constructor(private route: ActivatedRoute, private apiService: ApiService) { }
 
   ngOnInit() {
     this.userName = this.route.snapshot.params["userName"];
@@ -241,7 +241,7 @@ export class EditComponent implements OnInit {
     for (var i = 0; i < list.length; i++) {
 
 
-     console.log('you need to remove between '+ list[i].time + ' ' + list[i].toTime);
+      console.log('you need to remove between ' + list[i].time + ' ' + list[i].toTime);
     }
   }
 }
