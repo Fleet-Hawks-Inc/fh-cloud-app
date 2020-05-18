@@ -10,7 +10,7 @@ import { ApiService } from "../api.service";
 })
 export class LoginComponent implements OnInit {
 
-  email: string;
+  userName: string;
   password: string;
   response: any = '';
   hasError = false;
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
   /** Cognito user action */
   resendSignUpCode = async () => {
     try {
-      await Auth.resendSignUp(this.email);
+      await Auth.resendSignUp(this.userName);
 
     } catch (err) {
       this.hasError = true;
@@ -41,8 +41,16 @@ export class LoginComponent implements OnInit {
   /** Cognito user action */
   loginAction1 = async () => {
     try {
-
-      await Auth.signIn(this.email, this.password);
+      // This should go in Register component
+      // await Auth.signUp({
+      //   password: this.password,
+      //   username: this.userName,
+      //   attributes: {
+      //     email: 'kunal@fleethawks.com',
+      //     phone_number: '+919860766659'
+      //   }
+      // });
+      await Auth.signIn(this.userName, this.password);
       const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
       if (!isActivatedUser.carrier_id) {
         this.hasError = true;

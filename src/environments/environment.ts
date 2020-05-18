@@ -12,9 +12,9 @@ export const environment = {
     accessToken: 'pk.eyJ1Ijoia3VuYWxmbGVldGhhd2tzIiwiYSI6ImNrNzRuZW9qdjA1bHkzcW5ra3hjejNzenoifQ.CeUFzFnbOiG-XP6FRqiqtQ'
   },
   congitoConfig: {
-    USER_POOL_ID: 'us-east-2_6z3fwf3Sb',
+    USER_POOL_ID: 'us-east-2_eGDgFKKM7',
     REGION: 'us-east-2',
-    APP_CLIENT_ID: 'sv4ub5bgvcp2he5nj2skf7g59'
+    APP_CLIENT_ID: '76l88g289vcgrd8jf54pbedgqq'
   },
   awsBucket: {
     bucketName: 'fh-dashboard-assets',
