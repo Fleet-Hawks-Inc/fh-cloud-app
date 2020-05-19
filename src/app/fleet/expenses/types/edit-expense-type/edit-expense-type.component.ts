@@ -12,7 +12,7 @@ declare var $: any;
   styleUrls: ["./edit-expense-type.component.css"],
 })
 export class EditExpenseTypeComponent implements OnInit {
-  title = "Edit Expense Types";
+  title = "Edit Type";
 
   /********** Form Fields ***********/
   expenseTypeID = "";

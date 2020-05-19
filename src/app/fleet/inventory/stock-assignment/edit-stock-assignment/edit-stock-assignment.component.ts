@@ -12,7 +12,7 @@ declare var $: any;
   styleUrls: ["./edit-stock-assignment.component.css"],
 })
 export class EditStockAssignmentComponent implements OnInit {
-  title = "Add Stock Assignment";
+  title = "Edit Stock Assignment";
 
   errors = {};
   form;
@@ -85,10 +85,12 @@ export class EditStockAssignmentComponent implements OnInit {
       return false;
     }
 
-    this.selectedItems.push({
-      itemID: this.itemID,
-      quantity: this.quantity,
-    });
+    if(this.itemID && this.quantity){
+      this.selectedItems.push({
+        itemID: this.itemID,
+        quantity: this.quantity,
+      });
+    }
 
     //update total quantity
     this.totalQuantity += this.quantity;

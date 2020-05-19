@@ -10,7 +10,7 @@ declare var $: any;
   styleUrls: ["./entries.component.css"],
 })
 export class EntriesComponent implements OnInit {
-  title = "Entries List";
+  title = "Stock Entry List";
   entries;
 
   constructor(private apiService: ApiService, private router: Router) {}

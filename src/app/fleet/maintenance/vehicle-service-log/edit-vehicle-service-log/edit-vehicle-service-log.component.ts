@@ -105,11 +105,12 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
       );
       return false;
     }
-
-    this.selectedItems.push({
-      itemID: this.itemID,
-      quantity: this.quantity,
-    });
+    if(this.itemID && this.quantity){
+      this.selectedItems.push({
+        itemID: this.itemID,
+        quantity: this.quantity,
+      });
+    }
   }
 
   removeItem(index) {

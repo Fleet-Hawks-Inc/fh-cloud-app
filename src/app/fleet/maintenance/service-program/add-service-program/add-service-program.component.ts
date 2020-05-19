@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
+import { Router } from "@angular/router";
 import {ApiService} from "../../../../api.service";
 import {catchError, map, mapTo, tap} from 'rxjs/operators';
 import {from, of} from 'rxjs';
@@ -33,8 +34,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   Error : string = '';
   Success : string = '';
 
-  constructor(private route: ActivatedRoute,
-              private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private router: Router) {}
 
 
   ngOnInit() {}
@@ -53,27 +53,43 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     this.hasSuccess = false;
 
     const data = {
-      "programName": this.programName,
-      "repeatByTime" : this.repeatByTime,
-      "repeatByOdometer": this.repeatByOdometer,
-      "description": this.description,
+      programName: this.programName,
+      repeatByTime : this.repeatByTime,
+      repeatByOdometer: this.repeatByOdometer,
+      description: this.description,
     };
 
-    this.apiService.postData('servicePrograms', data)
-      .subscribe({
+    this.apiService.postData('servicePrograms', data).subscribe({
         complete : () => {},
-        error : (err) => {
+        error: (err) => {
           from(err.error)
             .pipe(
               map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              }),
+                const path = val.path;
+                // We Can Use This Method
+                const key = val.message.match(/"([^']+)"/)[1];
+                // console.log(key);
+                // this.errors[key] = val.message;
+                // Or We Can Use This One To Extract Key
+                // const key = this.concatArray(path);
+                // this.errors[this.concatArray(path)] = val.message;
+                // if (key.length === 2) {
+                // this.errors[val.context.key] = val.message;
+                // } else {
+                // this.errors[key] = val.message;
+                // }
+                val.message = val.message.replace(/".*"/, "This Field");
+                this.errors[key] = val.message;
+                // console.log(this.errors);
+              })
             )
-            .subscribe((val) => {
-              this.throwErrors();
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+              },
+              error: () => {},
+              next: () => {},
             });
-
         },
         next: (res) => {
           this.programName = '';

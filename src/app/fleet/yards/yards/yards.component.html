@@ -47,7 +47,7 @@
               </div>
             </div>
 
-            <a routerLink="/Add-Yard" class="mb-1 mt-1 mr-1 btn btn-success"
+            <a routerLink="/fleet/yards/Add-Yard" class="mb-1 mt-1 mr-1 btn btn-success"
               ><i class="fas fa-plus"></i> Add yard</a
             >
           </div>
@@ -85,7 +85,7 @@
                     <!--<td>{{yard.addressID}}</td>-->
                     <!--<td>{{yard.timeZone}}</td>-->
                     <td>
-                      <a routerLink="/Edit-Yard/{{ yard.yardID }}">Edit</a>
+                      <a routerLink="/fleet/yards/Edit-Yard/{{ yard.yardID }}">Edit</a>
                     </td>
                     <td>
                       <a [routerLink]="" (click)="deleteYard(yard.yardID)"

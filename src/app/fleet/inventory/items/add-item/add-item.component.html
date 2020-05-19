@@ -16,11 +16,18 @@
         <div class="right-wrapper text-right">
           <ol class="breadcrumbs pr-3">
             <li>
-              <a href="/">
+              <a routerLink="">
                 <i class="fas fa-home"></i>
               </a>
             </li>
-
+            <li>
+              <span>Inventory</span>
+            </li>
+            <li>
+              <a routerLink="/fleet/inventory/item/Item-List">
+                <span>Item List</span>
+              </a>
+            </li>
             <li>
               <span>{{ title }}</span>
             </li>
@@ -31,7 +38,7 @@
         <div class="col">
           <section class="card">
             <header class="card-header">
-              <h2 class="card-title">Item Entry Form</h2>
+              <h2 class="card-title">Add Item</h2>
             </header>
             <div class="card-body">
               <form class="form-horizontal form-bordered" method="get" name="form" id="form_">

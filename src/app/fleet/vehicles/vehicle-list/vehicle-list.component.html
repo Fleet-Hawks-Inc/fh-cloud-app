@@ -15,7 +15,7 @@
         <div class="right-wrapper text-right">
           <ol class="breadcrumbs pr-3">
             <li>
-              <a routerLink="">
+              <a routerLink="/">
                 <i class="fas fa-home"></i>
               </a>
             </li>
@@ -47,7 +47,7 @@
               </div>
             </div>
 
-            <a routerLink="/Add-Vehicle-New" class="mb-1 mt-1 mr-1 btn btn-success"
+            <a routerLink="/fleet/vehicles/Add-Vehicle-New" class="mb-1 mt-1 mr-1 btn btn-success"
               ><i class="fas fa-plus"></i> Add Vehicle</a
             >
           </div>
@@ -58,7 +58,7 @@
         <div class="col">
           <section class="card">
             <header class="card-header">
-              <h2 class="card-title">Vechile List</h2>
+              <h2 class="card-title">Vehicle List</h2>
             </header>
             <div class="card-body">
               <table
@@ -82,7 +82,7 @@
                     <td>{{ vehicle.VIN }}</td>
                     <td>{{ vehicle.ownership }}</td>
                     <td>
-                      <a routerLink="/Edit-Vehicle-New/{{ vehicle.vehicleID }}"
+                      <a routerLink="/fleet/vehicles/Edit-Vehicle-New/{{ vehicle.vehicleID }}"
                         >Edit</a
                       >
                     </td>

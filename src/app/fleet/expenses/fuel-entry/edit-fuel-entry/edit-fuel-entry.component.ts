@@ -13,7 +13,7 @@ declare var $: any;
   styleUrls: ["./edit-fuel-entry.component.css"],
 })
 export class EditFuelEntryComponent implements OnInit {
-  title = "Add Fuel Entry";
+  title = "Edit Fuel Entry";
 
   imageError = '';
   fileName = '';
