@@ -57,7 +57,7 @@ export class AddModelComponent implements OnInit {
       name: this.name,
     };
 
-    this.apiService.postData("models", data).subscribe({
+    this.apiService.postData("vehicleModels", data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)

@@ -97,7 +97,7 @@ export class AddCarrierComponent implements OnInit {
 
   getStates() {
     this.apiService
-      .getData("states/countryID/" + this.address.countryID)
+      .getData("states/country/" + this.address.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
@@ -105,7 +105,7 @@ export class AddCarrierComponent implements OnInit {
 
   getCities() {
     this.apiService
-      .getData("cities/stateID/" + this.address.stateID)
+      .getData("cities/state/" + this.address.stateID)
       .subscribe((result: any) => {
         this.cities = result.Items;
       });
