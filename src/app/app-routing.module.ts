@@ -27,9 +27,9 @@ import { GroupListComponent } from './group-list/group-list.component';
 import { AddExpensesComponent } from './add-expenses/add-expenses.component';
 import { ExpensesListComponent } from './expenses-list/expenses-list.component';
 import { EditExpensesComponent } from './edit-expenses/edit-expenses.component';
-import { DocumentsComponent } from './documents/documents.component';
-import { AddDocumentsComponent } from './add-documents/add-documents.component';
-import { EditDocumentsComponent } from './edit-documents/edit-documents.component';
+// import { DocumentsComponent } from './documents/documents.component';
+// import { AddDocumentsComponent } from './add-documents/add-documents.component';
+// import { EditDocumentsComponent } from './edit-documents/edit-documents.component';
 import { AddTripsComponent } from './add-trips/add-trips.component';
 import { TripsListComponent } from './trips-list/trips-list.component';
 import { EditTripComponent } from './edit-trip/edit-trip.component';
@@ -56,25 +56,25 @@ import { AddInsuranceComponent } from './add-insurance/add-insurance.component';
 import { InsurancesComponent } from './insurances/insurances.component';
 import { EditInsuranceComponent } from './edit-insurance/edit-insurance.component';
 
-import { AddContactComponent } from './add-contact/add-contact.component';
-import { ContactsComponent } from './contacts/contacts.component';
-import { EditContactComponent } from './edit-contact/edit-contact.component';
+// import { AddContactComponent } from './add-contact/add-contact.component';
+// import { ContactsComponent } from './contacts/contacts.component';
+// import { EditContactComponent } from './edit-contact/edit-contact.component';
 
 import { AddReceiverComponent } from './add-receiver/add-receiver.component';
 import { ReceiversComponent } from './receivers/receivers.component';
 import { EditReceiverComponent } from './edit-receiver/edit-receiver.component';
 
-import { AddAddressComponent } from './add-address/add-address.component';
-import { AddressesComponent } from './addresses/addresses.component';
-import { EditAddressComponent } from './edit-address/edit-address.component';
+// import { AddAddressComponent } from './add-address/add-address.component';
+// import { AddressesComponent } from './addresses/addresses.component';
+// import { EditAddressComponent } from './edit-address/edit-address.component';
 
 import { AddInspectionFormComponent } from './add-inspection-form/add-inspection-form.component';
 import { InspectionFormsComponent } from './inspection-forms/inspection-forms.component';
 import { EditInspectionFormComponent } from './edit-inspection-form/edit-inspection-form.component';
 
-import { AddAccountComponent } from './add-account/add-account.component';
-import { AccountsComponent } from './accounts/accounts.component';
-import { EditAccountComponent } from './edit-account/edit-account.component';
+// import { AddAccountComponent } from './add-account/add-account.component';
+// import { AccountsComponent } from './accounts/accounts.component';
+// import { EditAccountComponent } from './edit-account/edit-account.component';
 
 import { AddCertificateComponent } from './add-certificate/add-certificate.component';
 import { EditCertificateComponent } from './edit-certificate/edit-certificate.component';
@@ -185,9 +185,9 @@ const routes: Routes = [
   { path: 'Expenses-List', component: ExpensesListComponent },
   { path: 'Edit-Expenses/:expenseId', component: EditExpensesComponent },
 
-  { path: 'Add-Documents', component: AddDocumentsComponent },
-  { path: 'Documents-List', component: DocumentsComponent },
-  { path: 'Edit-Doucments/:documentId', component: EditDocumentsComponent },
+  // { path: 'Add-Documents', component: AddDocumentsComponent },
+  // { path: 'Documents-List', component: DocumentsComponent },
+  // { path: 'Edit-Doucments/:documentId', component: EditDocumentsComponent },
 
   { path: 'Add-Trip', component: AddTripsComponent },
   { path: 'Trips-List', component: TripsListComponent },
@@ -223,17 +223,17 @@ const routes: Routes = [
   { path: 'Insurance-List', component: InsurancesComponent },
   { path: 'Edit-Insurance/:insuranceID', component: EditInsuranceComponent },
 
-  { path: 'Add-Contact', component: AddContactComponent },
-  { path: 'Contacts-List', component: ContactsComponent },
-  { path: 'Edit-Contact/:contactID', component: EditContactComponent },
+  // { path: 'Add-Contact', component: AddContactComponent },
+  // { path: 'Contacts-List', component: ContactsComponent },
+  // { path: 'Edit-Contact/:contactID', component: EditContactComponent },
 
   { path: 'Add-Receiver', component: AddReceiverComponent },
   { path: 'Receivers-List', component: ReceiversComponent },
   { path: 'Edit-Receiver/:receiverID', component: EditReceiverComponent },
 
-  { path: 'Add-Address', component: AddAddressComponent },
-  { path: 'Addresses-List', component: AddressesComponent },
-  { path: 'Edit-Address/:addressID', component: EditAddressComponent },
+  // { path: 'Add-Address', component: AddAddressComponent },
+  // { path: 'Addresses-List', component: AddressesComponent },
+  // { path: 'Edit-Address/:addressID', component: EditAddressComponent },
 
   { path: 'Add-Inspection-Form', component: AddInspectionFormComponent },
   { path: 'Inspection-Form-List', component: InspectionFormsComponent },
@@ -242,9 +242,9 @@ const routes: Routes = [
     component: EditInspectionFormComponent,
   },
 
-  { path: 'Add-Account', component: AddAccountComponent },
-  { path: 'Accounts-List', component: AccountsComponent },
-  { path: 'Edit-Account/:accountID', component: EditAccountComponent },
+  // { path: 'Add-Account', component: AddAccountComponent },
+  // { path: 'Accounts-List', component: AccountsComponent },
+  // { path: 'Edit-Account/:accountID', component: EditAccountComponent },
 
   { path: 'Add-Certificate', component: AddCertificateComponent },
   { path: 'Certificates-List', component: CertificatesComponent },

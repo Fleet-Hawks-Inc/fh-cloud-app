@@ -195,7 +195,7 @@ export class AddFactoringCompanyComponent implements OnInit {
         longitude: this.lng,
       }    
      };
-     console.log("Address Data",dataAddress, "Factoring Company Data",dataFactoringCompany); return;
+     console.log("Address Data",dataAddress, "Factoring Company Data",dataFactoringCompany); 
      this.apiService.postData('addresses', dataAddress).
     subscribe({
       complete : () => {},

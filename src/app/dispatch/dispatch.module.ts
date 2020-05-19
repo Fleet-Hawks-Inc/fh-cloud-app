@@ -20,6 +20,22 @@ import { AddFactoringCompanyComponent } from './factoring-company/add-factoring-
 import { FactoringCompanyListComponent } from './factoring-company/factoring-company-list/factoring-company-list.component';
 import { EditFactoringCompanyComponent } from './factoring-company/edit-factoring-company/edit-factoring-company.component';
 
+import { AddAddressComponent } from './address/add-address/add-address.component';
+import { EditAddressComponent } from './address/edit-address/edit-address.component';
+import { AddressesComponent } from './address/addresses/addresses.component';
+
+import { AddContactComponent } from './contact/add-contact/add-contact.component';
+import { ContactsComponent } from './contact/contacts/contacts.component';
+import { EditContactComponent } from './contact/edit-contact/edit-contact.component';
+
+import { AddAccountComponent } from './account/add-account/add-account.component';
+import { EditAccountComponent } from './account/edit-account/edit-account.component';
+import { AccountsComponent } from './account/accounts/accounts.component';
+
+import { AddDocumentsComponent } from './document/add-documents/add-documents.component';
+import { EditDocumentsComponent } from './document/edit-documents/edit-documents.component';
+import { DocumentsComponent } from './document/documents/documents.component';
+
 
 @NgModule({
   imports: [CommonModule, DispatchRoutingModule, SharedModule, FormsModule],
@@ -36,7 +52,19 @@ import { EditFactoringCompanyComponent } from './factoring-company/edit-factorin
     EditReceiverComponent,
     AddFactoringCompanyComponent,
     FactoringCompanyListComponent,
-    EditFactoringCompanyComponent
+    EditFactoringCompanyComponent,
+    AddAddressComponent,
+    EditAddressComponent,
+    AddressesComponent,
+    AddContactComponent,
+    ContactsComponent,
+    EditContactComponent,
+    AddAccountComponent,
+    EditAccountComponent,
+    AccountsComponent,
+    AddDocumentsComponent,
+    EditDocumentsComponent,
+    DocumentsComponent
   ],
 })
 export class DispatchModule {}

@@ -193,7 +193,7 @@ export class AddReceiverComponent implements OnInit {
         longitude: this.lng,
       }
     };
-    console.log("Address Data",dataAddress, "Receiver Data",dataReceiver); return;
+    console.log("Address Data",dataAddress, "Receiver Data",dataReceiver); 
     //ADD INPUT INTO ADDRESS TABLE
          this.apiService.postData('addresses', dataAddress).
     subscribe({

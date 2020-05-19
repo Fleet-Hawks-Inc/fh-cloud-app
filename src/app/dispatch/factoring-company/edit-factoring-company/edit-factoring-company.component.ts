@@ -225,7 +225,7 @@ export class EditFactoringCompanyComponent implements OnInit {
         longitude: this.lng,
       }    
      };
-     console.log("Address Data",dataAddress, "Factoring Company Data",dataFactoringCompany); return;
+     console.log("Address Data",dataAddress, "Factoring Company Data",dataFactoringCompany);
      this.apiService.putData('addresses', dataAddress).
     subscribe({
       complete : () => {},

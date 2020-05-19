@@ -197,7 +197,7 @@ export class AddCustomerComponent implements OnInit {
         longitude: this.lng,
       }
     };
-    console.log("Address Data",dataAddress, "Customer Data",dataCustomer); return;
+    console.log("Address Data",dataAddress, "Customer Data",dataCustomer); 
     //ADD INPUT INTO ADDRESS TABLE
          this.apiService.postData('addresses', dataAddress).
     subscribe({
