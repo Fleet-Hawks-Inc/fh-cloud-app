@@ -112,6 +112,11 @@ import { NavOpenedDirective } from './directives/nav-opened.directive';
 import { SharedModule } from './shared/shared.module';
 import { ChartsModule } from 'ng2-charts';
 
+// Authentication
+import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
+// JWT interceptors
+import { HttpInterceptorProviders } from './helpers/interceptor.provider';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -222,6 +227,7 @@ import { ChartsModule } from 'ng2-charts';
 
   ],
   imports: [
+    AmplifyAngularModule,
     CommonModule,
     BrowserModule,
     RouterModule,
@@ -232,11 +238,8 @@ import { ChartsModule } from 'ng2-charts';
     NgbModule,
     BrowserAnimationsModule,
     ChartsModule,
-    SharedModule
-
-
-  ],
-  providers: [],
+    SharedModule],
+  providers: [AmplifyService, HttpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule {
