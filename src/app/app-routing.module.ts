@@ -121,6 +121,7 @@ import { AddCycleComponent } from './add-cycle/add-cycle.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { FleetModule } from './fleet/fleet.module';
 import { HosModule } from './hos/hos.module';
+import { DispatchModule } from './dispatch/dispatch.module';
 import {ChartsModule} from 'ng2-charts';
 import {Role} from '../objects/objects';
 
@@ -137,6 +138,10 @@ const routes: Routes = [
   {
     path: 'hos',
     loadChildren: () => import('./hos/hos.module').then((m) => m.HosModule),
+  },
+  {
+    path: 'dispatch',
+    loadChildren: () => import('./dispatch/dispatch.module').then((m) => m.DispatchModule),
   },
 
   {
