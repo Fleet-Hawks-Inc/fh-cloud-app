@@ -121,8 +121,8 @@ import { AddCycleComponent } from './add-cycle/add-cycle.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { FleetModule } from './fleet/fleet.module';
 import { HosModule } from './hos/hos.module';
-import { ChartsModule } from 'ng2-charts';
-import { Role } from '../objects/objects';
+import {ChartsModule} from 'ng2-charts';
+import {Role} from '../objects/objects';
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
@@ -303,6 +303,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [],
   imports: [CommonModule,
-    ChartsModule],
+  ChartsModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

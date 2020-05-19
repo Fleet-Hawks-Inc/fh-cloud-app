@@ -112,10 +112,6 @@ import { NavOpenedDirective } from './directives/nav-opened.directive';
 import { SharedModule } from './shared/shared.module';
 import { ChartsModule } from 'ng2-charts';
 
-// JWT interceptors
-import { HttpInterceptorProviders } from './helpers/interceptor.provider';
-import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -226,7 +222,6 @@ import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 
   ],
   imports: [
-    AmplifyAngularModule,
     CommonModule,
     BrowserModule,
     RouterModule,
@@ -241,9 +236,7 @@ import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 
 
   ],
-  providers: [
-    AmplifyService,
-    HttpInterceptorProviders],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
