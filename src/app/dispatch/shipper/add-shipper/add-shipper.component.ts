@@ -197,7 +197,7 @@ export class AddShipperComponent implements OnInit,AfterViewInit {
         longitude: this.lng,
       }    
      };
-     console.log("Address Data",dataAddress, "Shipper Data",dataShipper); return;
+     console.log("Address Data",dataAddress, "Shipper Data",dataShipper); 
      this.apiService.postData('addresses', dataAddress).
     subscribe({
       complete : () => {},

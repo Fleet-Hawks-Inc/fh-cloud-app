@@ -2,30 +2,32 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ApiService} from "../../../api.service";
 import { from, of } from "rxjs";
-import {map} from 'rxjs/operators';
+import { map } from "rxjs/operators";
 import { MapBoxService } from "../../../map-box.service";
 import * as MapboxDraw from '@mapbox/mapbox-gl-draw';
 import * as mapboxClient from '@mapbox/mapbox-sdk';
 import * as mapboxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment';
-declare var $: any;
+import * as Geocoder from "@mapbox/mapbox-gl-geocoder";
+import { center } from '@turf/turf';
+
+declare var $: any
 
 @Component({
-  selector: 'app-edit-receiver',
-  templateUrl: './edit-receiver.component.html',
-  styleUrls: ['./edit-receiver.component.css']
+  selector: 'app-edit-address',
+  templateUrl: './edit-address.component.html',
+  styleUrls: ['./edit-address.component.css']
 })
-export class EditReceiverComponent implements OnInit {
-  title = 'Edit Receiver';
+export class EditAddressComponent implements OnInit {
+  title = 'Edit Address';
   errors = {};
   form;
   concatArrayKeys = '';
 
-
   /********** Form Fields ***********/
-  receiverID = "";
-  receiverName = "";
+  addressID = "";
+  addressType = "";
   streetNumber = "";
   streetName = "";
   cityID = "";
@@ -43,48 +45,78 @@ export class EditReceiverComponent implements OnInit {
   countries = [];
   states = [];
   cities = [];
-  coordinates = [];
   response : any ="";
   hasError : boolean = false;
   hasSuccess: boolean = false;
   Error : string = "";
   Success : string = "";
+   // MAP BOX Integration
+   map: mapboxgl.Map;
+   style = 'mapbox://styles/mapbox/streets-v9';
+   lng = -104.618896;
+   lat = 50.445210;
+   mapboxDraw: MapboxDraw;
+   
+   address = "";
+   countryName ="";
+   cityName = "";
+   stateName = "";
 
-
-  // MAP BOX Integration
-  map: mapboxgl.Map;
-  style = 'mapbox://styles/mapbox/streets-v9';
-  lng = -104.618896;
-  lat = 50.445210;
-  mapboxDraw: MapboxDraw;
-  
-  address = "";
-  countryName ="";
-  cityName = "";
-  stateName = "";
-
-
-  constructor(private route: ActivatedRoute,
-              private apiService: ApiService) { }
-
+  constructor(private apiService: ApiService,
+              private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.receiverID = this.route.snapshot.params['receiverID'];
-    this.fetchReceiver();
+    this.addressID = this.route.snapshot.params['addressID'];
     this.fetchCountries();
     this.fetchAddress();
     this.fetchCities();
     $(document).ready(() => {
       this.form = $('#form_').validate();
-    });  
-    
+    }); 
     this.map = new mapboxgl.Map({
       container: 'map',
       style: this.style,
       zoom: 12,
       center: [-104.618896, 50.445210],
       accessToken: environment.mapBox.accessToken,
-    });
+    }); 
+   }
+  fetchCountries(){
+    this.apiService.getData('countries')
+      .subscribe((result: any) => {
+        this.countries = result.Items;
+      });
+  }
+  getStates(){
+    this.apiService.getData('states/country/' + this.countryID)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
+
+  getCities(){
+    this.apiService.getData('cities/state/' + this.stateID)
+      .subscribe((result: any) => {
+        this.cities = result.Items;
+      });
+  }
+  fillCountry() {
+    this.apiService
+      .getData("states/" + this.stateID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+        this.countryID = result.countryID;
+      });
+
+    setTimeout(() => {
+      this.getStates();
+    }, 2000);
+  }
+  fetchCities(){
+    this.apiService.getData('cities')
+      .subscribe((result: any) => {
+        this.cities = result.Items;
+      });
   }
   initMap() {
     this.countryName = this.countries.filter(country => country.countryID == this.countryID)[0].countryName;
@@ -124,6 +156,7 @@ export class EditReceiverComponent implements OnInit {
         this.lng = +JSON.stringify(match.features[0].geometry.coordinates[0]);
         this.lat = +JSON.stringify(match.features[0].geometry.coordinates[1]);
         console.log("old longitude", this.lng);
+        console.log("old latitude", this.lat);
          var marker = new mapboxgl.Marker({
           draggable: true
         })
@@ -143,64 +176,25 @@ export class EditReceiverComponent implements OnInit {
         });
       });
   }
-  fetchCountries() {
-    this.apiService.getData("countries").subscribe((result: any) => {
-      this.countries = result.Items;
-    });
-  }
-  getStates() {
-    this.apiService
-      .getData("states/country/" + this.countryID)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
-  }
-  getCities(){
-    this.apiService.getData('cities/state/' + this.stateID)
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-      });
-  }
-
-  fetchCities(){
-    this.apiService.getData('cities')
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-      });
-  }
-
-  fillCountry() {
-    this.apiService
-      .getData("states/" + this.countryID)
-      .subscribe((result: any) => {
-        result = result.Items[0];
-        this.countryID = result.countryID;
-      });
-
-    setTimeout(() => {
-      this.getStates();
-    }, 2000);
-  }
-  fetchReceiver()
-  {
-    this.apiService.getData('receivers/' + this.receiverID)
+  fetchShipper(){
+    this.apiService.getData('shippers/' + this.addressID)
     .subscribe((result: any) => {
+      //console.log(result);
       result = result.Items[0];
-
-      this.receiverName = result.receiverName;
-      this.phone = result.phone;
+      this.addressType = result.addressType;
+      this.phone =  result.phone;
+      this.email =  result.email;
       this.fax = result.fax;
-      this.email = result.email;
       this.taxID = result.taxID;
     });
-
   }
+  
   fetchAddress()
   {
-    this.apiService.getData('addresses/' + this.receiverID)
+    this.apiService.getData('addresses/' + this.addressID)
     .subscribe((result: any) => {
       result = result.Items[0];
-
+      this.addressType = result.addressType,
       this.streetNumber = result.streetNumber;
       this.streetName = result.streetName;
       this.cityID = result.cityID;
@@ -209,37 +203,24 @@ export class EditReceiverComponent implements OnInit {
       this.addressZip = result.addressZip;
     });
   }
+  updateShipper() {
+    this.errors = {};
 
-
-
-
-  updateReceiver() {
-    this.errors= {};
     this.hasError = false;
     this.hasSuccess = false;
 
-    const dataReceiver = {
-      name: this.receiverName,
-      phone: this.phone,
-      fax: this.fax,
-      email: this.email,
-      taxID: this.taxID
-    };
-    const dataAddress ={
+   const dataAddress ={
+      addressType: this.addressType,
       streetNumber: this.streetNumber,
       streetName: this.streetName,
       cityID: this.cityID,
       stateID: this.stateID,
       countryID: this.countryID,
       addressZip : this.addressZip,
-      geoLocation: {
-        latitude: this.lat,
-        longitude: this.lng,
-      }
-    };
-    console.log("Address Data",dataAddress, "Receiver Data",dataReceiver);
-    //ADD INPUT INTO ADDRESS TABLE
-         this.apiService.putData('addresses', dataAddress).
+  
+    }
+   console.log(dataAddress);
+    this.apiService.putData('addresses', dataAddress).
     subscribe({
       complete : () => {},
       error : (err) =>  {
@@ -249,6 +230,15 @@ export class EditReceiverComponent implements OnInit {
                 const path = val.path;
                 // We Can Use This Method
                 const key = val.message.match(/"([^']+)"/)[1];
+                // this.errors[key] = val.message;
+                // Or We Can Use This One To Extract Key
+                // const key = this.concatArray(path);
+                // this.errors[this.concatArray(path)] = val.message;
+                // if (key.length === 2) {
+                // this.errors[val.context.key] = val.message;
+                // } else {
+                // this.errors[key] = val.message;
+                // }
                 val.message = val.message.replace(/".*"/, 'This Field');
                 this.errors[key] = val.message;
               }),
@@ -263,7 +253,9 @@ export class EditReceiverComponent implements OnInit {
         },
       next: (res) => {
         this.response = res;
-        // this.hasSuccess = true;
+        this.hasSuccess = true;
+        this.Success = 'Address Updated successfully'
+        this.addressType = "";
         this.streetNumber = "";
         this.streetName = "";
         this.cityID = "";
@@ -272,41 +264,8 @@ export class EditReceiverComponent implements OnInit {
         this.addressZip = "";
       }
     });
-    this.apiService.putData('receivers', dataReceiver).
-    subscribe({
-      complete : () => {},
-      error : (err) =>  {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
-                 val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[key] = val.message;
-              }),
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => { },
-            next: () => { }
-          });
-        },
-      next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
-        this.Success = 'Receiver Updated successfully';
-        this.receiverName = '';
-        this.phone = '';
-        this.fax = '';
-        this.email = '';
-        this.taxID = '';
-      }
-    });
-  }
 
+  }
   throwErrors() {
     this.form.showErrors(this.errors);
   }
@@ -319,4 +278,5 @@ export class EditReceiverComponent implements OnInit {
     this.concatArrayKeys = this.concatArrayKeys.substring(0, this.concatArrayKeys.length - 1);
     return this.concatArrayKeys;
   }
+
 }

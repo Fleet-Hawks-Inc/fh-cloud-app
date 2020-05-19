@@ -227,7 +227,8 @@ export class EditShipperComponent implements OnInit {
       addressZip : this.addressZip,
   
     }
-   
+    console.log("Address Data",dataAddress, "Shipper Data",dataShipper); 
+
     this.apiService.putData('addresses', dataAddress).
     subscribe({
       complete : () => {},

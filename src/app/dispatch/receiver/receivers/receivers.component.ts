@@ -11,7 +11,7 @@ declare var $: any;
 })
 export class ReceiversComponent implements OnInit {
 
-  title = 'Receivers List';
+  title = 'Receiver List';
   receivers = [];
 
   constructor(private apiService: ApiService,
