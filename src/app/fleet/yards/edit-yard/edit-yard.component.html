@@ -14,13 +14,17 @@
         <h2>{{ title }}</h2>
 
         <div class="right-wrapper text-right">
-          <ol class="breadcrumbs">
+          <ol class="breadcrumbs pr-3">
             <li>
-              <a routerLink="">
+              <a routerLink="/">
                 <i class="fas fa-home"></i>
               </a>
             </li>
-
+            <li>
+              <a routerLink="/fleet/yards/Yard-List">
+                Yards List
+              </a>
+            </li>
             <li>
               <span>{{ title }}</span>
             </li>
@@ -55,6 +59,7 @@
                       id="inputDefault"
                       [(ngModel)]="yardName"
                       name="yardName"
+                      maxlength="100"
                     />
                   </div>
                   <div class="col-lg-4">

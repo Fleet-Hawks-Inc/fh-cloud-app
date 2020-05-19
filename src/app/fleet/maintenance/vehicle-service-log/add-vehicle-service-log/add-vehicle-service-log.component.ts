@@ -13,7 +13,7 @@ declare var $: any;
   styleUrls: ["./add-vehicle-service-log.component.css"],
 })
 export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
-  title = "Add vehicle Service Logs";
+  title = "Add vehicle Service Log";
 
   imageError = '';
   fileName = '';
@@ -89,10 +89,14 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
       return false;
     }
 
-    this.selectedItems.push({
-      itemID: this.itemID,
-      quantity: this.quantity,
-    });
+    // console.log(this.itemID);
+    // console.log(this.quantity);
+    if(this.itemID && this.quantity){
+      this.selectedItems.push({
+        itemID: this.itemID,
+        quantity: this.quantity,
+      });
+    } 
   }
 
   removeItem(index) {

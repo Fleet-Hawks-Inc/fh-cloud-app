@@ -25,6 +25,7 @@ export class AddGeofenceComponent implements OnInit {
     latitude: "",
     longitude: "",
   };
+  geofence = "";
 
   /******************/
 
@@ -103,6 +104,9 @@ export class AddGeofenceComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.Success = "Geofence Added successfully";
+        this.initMap();
+        this.mapBoxService.plottedMap = '';
+        
       },
     });
   }

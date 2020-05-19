@@ -52,7 +52,10 @@ export class EditYardComponent implements OnInit, AfterViewInit {
 
     this.apiService.getData("yards/" + this.yardID).subscribe((result: any) => {
       result = result.Items[0];
+      // console.log(result);
       this.yardName = result.yardName;
+      this.countryID = result.countryID;
+      this.stateID = result.stateID;
       this.description = result.description;
       this.latitude = result.geolocation.latitude;
       this.longitude = result.geolocation.longitude;
@@ -95,6 +98,7 @@ export class EditYardComponent implements OnInit, AfterViewInit {
     this.apiService
       .getData("states/" + this.stateID)
       .subscribe((result: any) => {
+        console.log(result);
         result = result.Items[0];
         this.countryID = result.countryID;
       });

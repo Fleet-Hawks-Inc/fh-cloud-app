@@ -55,7 +55,10 @@ export class EditVehicleComponent implements OnInit {
 
     this.apiService.getData('vehicles/' + this.vehicleID)
         .subscribe((result: any) => {
+            
             result = result.Items[0];
+             //console.log(result); 
+            // this.abc = result['0'];
 
             //     'vehicleID': this.vehicleID,
         //         'vin': this.vin,

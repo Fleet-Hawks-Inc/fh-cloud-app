@@ -114,6 +114,7 @@ export class AddAssetsComponent implements OnInit {
   }
 
   addAsset() {
+    this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
@@ -160,6 +161,7 @@ export class AddAssetsComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.Success = '';
             },
             error: () => {},
             next: () => {},
