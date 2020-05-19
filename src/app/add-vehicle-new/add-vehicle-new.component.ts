@@ -165,14 +165,14 @@ export class AddVehicleNewComponent implements OnInit {
   }
 
   getStates(){
-    this.apiService.getData('states/countryID/' + this.countryID)
+    this.apiService.getData('states/country/' + this.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
   }
 
   getModels(){
-    this.apiService.getData(`models/manufacturerID/${this.make}`)
+    this.apiService.getData(`vehicleModels/manufacturer/${this.make}`)
       .subscribe((result: any) => {
         this.models = result.Items;
       });

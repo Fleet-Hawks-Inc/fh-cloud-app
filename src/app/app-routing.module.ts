@@ -4,34 +4,29 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthService } from './auth.service';
-import { AddDriverComponent } from './add-driver/add-driver.component';
-import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
+
 import { LeftBarComponent } from './left-bar/left-bar.component';
 import { RFormsComponent } from './r-forms/r-forms.component';
 import { AddQuantumComponent } from './add-quantum/add-quantum.component';
-import { AddUserComponent } from './add-user/add-user.component';
-import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
-import { EditVehicleComponent } from './edit-vehicle/edit-vehicle.component';
+
+// import { AddUserComponent } from './add-user/add-user.component';
+// import { UserListComponent } from './user-list/user-list.component';
+// import { EditUserComponent } from './edit-user/edit-user.component';
+//
+// import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
+// import { EditVehicleComponent } from './edit-vehicle/edit-vehicle.component';
+// import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
+
 import { HealthcheckComponent } from './healthcheck/healthcheck.component';
 import { QuantumsComponent } from './quantums/quantums.component';
 import { EditQuantumComponent } from './edit-quantum/edit-quantum.component';
-import { UserListComponent } from './user-list/user-list.component';
-import { EditUserComponent } from './edit-user/edit-user.component';
+
 import { AddGroupComponent } from './add-group/add-group.component';
 import { EditGroupComponent } from './edit-group/edit-group.component';
 import { GroupListComponent } from './group-list/group-list.component';
-import { AddAssetsComponent } from './add-assets/add-assets.component';
-import { AssetListComponent } from './asset-list/asset-list.component';
-import { EditAssetComponent } from './edit-asset/edit-asset.component';
-import { AddFuelEntryComponent } from './add-fuel-entry/add-fuel-entry.component';
-import { FuelEntryListComponent } from './fuel-entry-list/fuel-entry-list.component';
-import { EditFuelEntryComponent } from './edit-fuel-entry/edit-fuel-entry.component';
 import { AddExpensesComponent } from './add-expenses/add-expenses.component';
 import { ExpensesListComponent } from './expenses-list/expenses-list.component';
 import { EditExpensesComponent } from './edit-expenses/edit-expenses.component';
-import { AddExpenseTypeComponent } from './add-expense-type/add-expense-type.component';
-import { ExpenseTypeListComponent } from './expense-type-list/expense-type-list.component';
-import { EditExpenseTypeComponent } from './edit-expense-type/edit-expense-type.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { AddDocumentsComponent } from './add-documents/add-documents.component';
 import { EditDocumentsComponent } from './edit-documents/edit-documents.component';
@@ -53,17 +48,13 @@ import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { CustomersComponent } from './customers/customers.component';
 import { EditCustomerComponent } from './edit-customer/edit-customer.component';
 
-import { AddYardComponent } from './add-yard/add-yard.component';
-import { YardsComponent } from './yards/yards.component';
-import { EditYardComponent } from './edit-yard/edit-yard.component';
+// import { AddYardComponent } from './add-yard/add-yard.component';
+// import { YardsComponent } from './yards/yards.component';
+// import { EditYardComponent } from './edit-yard/edit-yard.component';
 
 import { AddInsuranceComponent } from './add-insurance/add-insurance.component';
 import { InsurancesComponent } from './insurances/insurances.component';
 import { EditInsuranceComponent } from './edit-insurance/edit-insurance.component';
-
-import { AddEntryComponent } from './add-entry/add-entry.component';
-import { EntriesComponent } from './entries/entries.component';
-import { EditEntryComponent } from './edit-entry/edit-entry.component';
 
 import { AddContactComponent } from './add-contact/add-contact.component';
 import { ContactsComponent } from './contacts/contacts.component';
@@ -85,14 +76,6 @@ import { AddAccountComponent } from './add-account/add-account.component';
 import { AccountsComponent } from './accounts/accounts.component';
 import { EditAccountComponent } from './edit-account/edit-account.component';
 
-import { AddTicketComponent } from './add-ticket/add-ticket.component';
-import { TicketsComponent } from './tickets/tickets.component';
-import { EditTicketComponent } from './edit-ticket/edit-ticket.component';
-
-import { AddVehicleServiceLogComponent } from './add-vehicle-service-log/add-vehicle-service-log.component';
-import { VehicleServiceLogsComponent } from './vehicle-service-logs/vehicle-service-logs.component';
-import { EditVehicleServiceLogComponent } from './edit-vehicle-service-log/edit-vehicle-service-log.component';
-
 import { AddCertificateComponent } from './add-certificate/add-certificate.component';
 import { EditCertificateComponent } from './edit-certificate/edit-certificate.component';
 import { CertificatesComponent } from './certificates/certificates.component';
@@ -101,32 +84,10 @@ import { AddCarrierComponent } from './add-carrier/add-carrier.component';
 import { EditCarrierComponent } from './edit-carrier/edit-carrier.component';
 import { CarriersComponent } from './carriers/carriers.component';
 
-import { AddVehicleNewComponent } from './add-vehicle-new/add-vehicle-new.component';
-import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.component';
+// import { AddVehicleNewComponent } from './add-vehicle-new/add-vehicle-new.component';
+// import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.component';
 
 import { MapDashboardComponent } from './map-dashboard/map-dashboard.component';
-
-import { EditDriverComponent } from './edit-driver/edit-driver.component';
-import { DriverListComponent } from './driver-list/driver-list.component';
-
-import { AddItemComponent } from './add-item/add-item.component';
-import { ItemsListComponent } from './items-list/items-list.component';
-import { EditItemComponent } from './edit-item/edit-item.component';
-import { AddServiceProgramComponent } from './add-service-program/add-service-program.component';
-import { EditServiceProgramComponent } from './edit-service-program/edit-service-program.component';
-import { ServiceProgramListComponent } from './service-program-list/service-program-list.component';
-
-import { AddVendorComponent } from './add-vendor/add-vendor.component';
-import { EditVendorComponent } from './edit-vendor/edit-vendor.component';
-import { VendorsListComponent } from './vendors-list/vendors-list.component';
-
-import { AddItemGroupComponent } from './add-item-group/add-item-group.component';
-import { EditItemGroupComponent } from './edit-item-group/edit-item-group.component';
-import { ItemGroupListComponent } from './item-group-list/item-group-list.component';
-
-import { AddStockAssignmentComponent } from './add-stock-assignment/add-stock-assignment.component';
-import { EditStockAssignmentComponent } from './edit-stock-assignment/edit-stock-assignment.component';
-import { StockAssignmentListComponent } from './stock-assignment-list/stock-assignment-list.component';
 
 import { AddTicketTypeComponent } from './add-ticket-type/add-ticket-type.component';
 import { EditTicketTypeComponent } from './edit-ticket-type/edit-ticket-type.component';
@@ -152,21 +113,32 @@ import { ModelListComponent } from './model-list/model-list.component';
 import { AddAlertComponent } from './add-alert/add-alert.component';
 import { EditAlertComponent } from './edit-alert/edit-alert.component';
 import { AlertListComponent } from './alert-list/alert-list.component';
-import { EditGeofenceComponent } from './edit-geofence/edit-geofence.component';
-import { GeofenceListComponent } from './geofence-list/geofence-list.component';
-import { AddGeofenceComponent } from './add-geofence/add-geofence.component';
 
 import { EditCycleComponent } from './edit-cycle/edit-cycle.component';
 import { CycleListComponent } from './cycle-list/cycle-list.component';
 import { AddCycleComponent } from './add-cycle/add-cycle.component';
-import { InventoryStockStatementComponent } from './Reports/inventory-stock-statement/inventory-stock-statement.component';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { RegisterUserComponent } from './register-user/register-user.component';
+import { FleetModule } from './fleet/fleet.module';
+import { HosModule } from './hos/hos.module';
+import {ChartsModule} from 'ng2-charts';
+import {Role} from '../objects/objects';
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: 'Login', component: LoginComponent },
+  {
+    path: 'fleet',
+    // canActivate: [AuthService],
+    // data: { roles: [Role.Admin] },
+    loadChildren: () =>
+      import('./fleet/fleet.module').then((m) => m.FleetModule),
+  },
+  {
+    path: 'hos',
+    loadChildren: () => import('./hos/hos.module').then((m) => m.HosModule),
+  },
+
   {
     path: 'Dashboard',
     component: DashboardComponent,
@@ -179,90 +151,73 @@ const routes: Routes = [
     canActivate: [AuthService],
   },
 
-  {
-    path: 'Add-Vehicle',
-    component: AddVehicleComponent,
-    canActivate: [AuthService],
-  },
+  // {
+  //   path: 'Add-Vehicle',
+  //   component: AddVehicleComponent,
+  //   canActivate: [AuthService],
+  // },
+
+  // { path: 'Vehicle-List', component: VehicleListComponent },
+  // { path: 'Edit-Vehicle/:vehicleId', component: EditVehicleComponent },
+
   { path: 'Left-Bar', component: LeftBarComponent },
   { path: 'R-Forms', component: RFormsComponent },
-  { path: 'Add-Quantum', component: AddQuantumComponent, canActivate: [AuthService] },
-  { path: 'Edit-Quantum/:quantumId', component: EditQuantumComponent, canActivate: [AuthService] },
-  { path: 'Quantum-List', component: QuantumsComponent, canActivate: [AuthService] },
-  { path: 'Vehicle-List', component: VehicleListComponent, canActivate: [AuthService] },
-  { path: 'Edit-Vehicle/:vehicleId', component: EditVehicleComponent, canActivate: [AuthService] },
-  { path: 'healthcheck', component: HealthcheckComponent, canActivate: [AuthService] },
+  { path: 'Add-Quantum', component: AddQuantumComponent },
+  { path: 'Edit-Quantum/:quantumId', component: EditQuantumComponent },
+  { path: 'Quantum-List', component: QuantumsComponent },
 
-  { path: 'Add-User', component: AddUserComponent, canActivate: [AuthService] },
-  { path: 'User-List', component: UserListComponent, canActivate: [AuthService] },
-  { path: 'Edit-User/:userName', component: EditUserComponent, canActivate: [AuthService] },
+  { path: 'healthcheck', component: HealthcheckComponent },
 
-  { path: 'Add-Group', component: AddGroupComponent, canActivate: [AuthService] },
-  { path: 'Group-List', component: GroupListComponent, canActivate: [AuthService] },
-  { path: 'Edit-Group/:groupId', component: EditGroupComponent, canActivate: [AuthService] },
+  // { path: 'Add-User', component: AddUserComponent },
+  // { path: 'User-List', component: UserListComponent },
+  // { path: 'Edit-User/:userName', component: EditUserComponent },
 
-  { path: 'Add-Assets', component: AddAssetsComponent, canActivate: [AuthService] },
-  { path: 'Assets-List', component: AssetListComponent, canActivate: [AuthService] },
-  { path: 'Edit-Asset/:assetID', component: EditAssetComponent, canActivate: [AuthService] },
+  { path: 'Add-Group', component: AddGroupComponent },
+  { path: 'Group-List', component: GroupListComponent },
+  { path: 'Edit-Group/:groupId', component: EditGroupComponent },
 
-  { path: 'Add-Fuel-Entry', component: AddFuelEntryComponent, canActivate: [AuthService] },
-  { path: 'Fuel-Entry-List', component: FuelEntryListComponent, canActivate: [AuthService] },
-  { path: 'Edit-Fuel-Entry/:entryID', component: EditFuelEntryComponent, canActivate: [AuthService] },
+  { path: 'Add-Expenses', component: AddExpensesComponent },
+  { path: 'Expenses-List', component: ExpensesListComponent },
+  { path: 'Edit-Expenses/:expenseId', component: EditExpensesComponent },
 
-  { path: 'Add-Expenses', component: AddExpensesComponent, canActivate: [AuthService] },
-  { path: 'Expenses-List', component: ExpensesListComponent, canActivate: [AuthService] },
-  { path: 'Edit-Expenses/:expenseId', component: EditExpensesComponent, canActivate: [AuthService] },
+  { path: 'Add-Documents', component: AddDocumentsComponent },
+  { path: 'Documents-List', component: DocumentsComponent },
+  { path: 'Edit-Doucments/:documentId', component: EditDocumentsComponent },
 
-  { path: 'Add-Expense-Type', component: AddExpenseTypeComponent, canActivate: [AuthService] },
-  { path: 'Expenses-Type-List', component: ExpenseTypeListComponent, canActivate: [AuthService] },
-  {
-    path: 'Edit-Expense-Type/:expenseTypeID',
-    component: EditExpenseTypeComponent,
-    canActivate: [AuthService]
-  },
+  { path: 'Add-Trip', component: AddTripsComponent },
+  { path: 'Trips-List', component: TripsListComponent },
+  { path: 'Edit-Trip/:tripId', component: EditTripComponent },
 
-  { path: 'Add-Documents', component: AddDocumentsComponent, canActivate: [AuthService] },
-  { path: 'Documents-List', component: DocumentsComponent, canActivate: [AuthService] },
-  { path: 'Edit-Doucments/:documentId', component: EditDocumentsComponent, canActivate: [AuthService] },
+  { path: 'Add-Shipper', component: AddShipperComponent },
+  { path: 'Shipper-List', component: ShipperListComponent },
+  { path: 'Edit-Shipper/:shipperId', component: EditShipperComponent },
 
-  { path: 'Add-Trip', component: AddTripsComponent, canActivate: [AuthService] },
-  { path: 'Trips-List', component: TripsListComponent, canActivate: [AuthService] },
-  { path: 'Edit-Trip/:tripId', component: EditTripComponent, canActivate: [AuthService] },
-
-  { path: 'Add-Shipper', component: AddShipperComponent, canActivate: [AuthService] },
-  { path: 'Shipper-List', component: ShipperListComponent, canActivate: [AuthService] },
-  { path: 'Edit-Shipper/:shipperId', component: EditShipperComponent, canActivate: [AuthService] },
-
-  { path: 'Add-Service-Vendor', component: AddServiceVendorComponent, canActivate: [AuthService] },
-  { path: 'Service-Vendor-List', component: ServiceVendorListComponent, canActivate: [AuthService] },
+  { path: 'Add-Service-Vendor', component: AddServiceVendorComponent },
+  { path: 'Service-Vendor-List', component: ServiceVendorListComponent },
   {
     path: 'Edit-Service-Vendor/:serviceVendorId',
-    component: EditServiceVendorComponent, canActivate: [AuthService]
+    component: EditServiceVendorComponent,
   },
 
-  { path: 'Add-Daily-Inspection', component: AddDailyInspectionComponent, canActivate: [AuthService] },
-  { path: 'Daily-Inspection-List', component: DailyInspectionListComponent, canActivate: [AuthService] },
+  { path: 'Add-Daily-Inspection', component: AddDailyInspectionComponent },
+  { path: 'Daily-Inspection-List', component: DailyInspectionListComponent },
   {
     path: 'Edit-Daily-Inspection/:inspectionID',
     component: EditDailyInspectionComponent,
     canActivate: [AuthService]
   },
 
-  { path: 'Add-Customer', component: AddCustomerComponent, canActivate: [AuthService] },
-  { path: 'Customer-List', component: CustomersComponent, canActivate: [AuthService] },
-  { path: 'Edit-Customer/:customerID', component: EditCustomerComponent, canActivate: [AuthService] },
+  { path: 'Add-Customer', component: AddCustomerComponent },
+  { path: 'Customer-List', component: CustomersComponent },
+  { path: 'Edit-Customer/:customerID', component: EditCustomerComponent },
 
-  { path: 'Add-Yard', component: AddYardComponent },
-  { path: 'Yard-List', component: YardsComponent },
-  { path: 'Edit-Yard/:yardID', component: EditYardComponent },
+  // { path: 'Add-Yard', component: AddYardComponent },
+  // { path: 'Yard-List', component: YardsComponent },
+  // { path: 'Edit-Yard/:yardID', component: EditYardComponent },
 
   { path: 'Add-Insurance', component: AddInsuranceComponent },
   { path: 'Insurance-List', component: InsurancesComponent },
   { path: 'Edit-Insurance/:insuranceID', component: EditInsuranceComponent },
-
-  { path: 'Add-Entry', component: AddEntryComponent },
-  { path: 'Entries-List', component: EntriesComponent },
-  { path: 'Edit-Entry/:entryID', component: EditEntryComponent },
 
   { path: 'Add-Contact', component: AddContactComponent },
   { path: 'Contacts-List', component: ContactsComponent },
@@ -287,17 +242,6 @@ const routes: Routes = [
   { path: 'Accounts-List', component: AccountsComponent },
   { path: 'Edit-Account/:accountID', component: EditAccountComponent },
 
-  { path: 'Add-Ticket', component: AddTicketComponent },
-  { path: 'Tickets-List', component: TicketsComponent },
-  { path: 'Edit-Ticket/:ticketID', component: EditTicketComponent },
-
-  { path: 'Add-Vehicle-Service-Log', component: AddVehicleServiceLogComponent },
-  { path: 'Vehicle-Service-Logs-List', component: VehicleServiceLogsComponent },
-  {
-    path: 'Edit-Vehicle-Service-Log/:logID',
-    component: EditVehicleServiceLogComponent,
-  },
-
   { path: 'Add-Certificate', component: AddCertificateComponent },
   { path: 'Certificates-List', component: CertificatesComponent },
   {
@@ -310,32 +254,6 @@ const routes: Routes = [
   { path: 'Edit-Carrier/:carrierID', component: EditCarrierComponent },
   // {path : 'Ndashboard', component : NewDashboardComponent},
   // {path : 'temp', component : TempComponent}
-
-  { path: 'Add-Vehicle-New', component: AddVehicleNewComponent },
-  { path: 'Edit-Vehicle-New/:vehicleID', component: EditVehicleNewComponent },
-
-  { path: 'Add-Driver', component: AddDriverComponent },
-  { path: 'Edit-Driver/:userName', component: EditDriverComponent },
-  { path: 'Drivers-List', component: DriverListComponent },
-
-  { path: 'Add-Item', component: AddItemComponent },
-  { path: 'Edit-Item/:itemID', component: EditItemComponent },
-  { path: 'Item-List', component: ItemsListComponent },
-
-  { path: 'Add-Item-Group', component: AddItemGroupComponent },
-  { path: 'Edit-Item-Group/:groupID', component: EditItemGroupComponent },
-  { path: 'Item-Group-List', component: ItemGroupListComponent },
-
-  { path: 'Add-Service-Program', component: AddServiceProgramComponent },
-  {
-    path: 'Edit-Service-Program/:programID',
-    component: EditServiceProgramComponent,
-  },
-  { path: 'Service-Program-List', component: ServiceProgramListComponent },
-
-  { path: 'Add-Vendor', component: AddVendorComponent },
-  { path: 'Edit-Vendor/:vendorID', component: EditVendorComponent },
-  { path: 'Vendors-List', component: VendorsListComponent },
 
   { path: 'Add-Ticket-Type', component: AddTicketTypeComponent },
   { path: 'Edit-Ticket-Type/:typeID', component: EditTicketTypeComponent },
@@ -353,12 +271,6 @@ const routes: Routes = [
   { path: 'Edit-City/:cityID', component: EditCityComponent },
   { path: 'City-List', component: CitiesComponent },
 
-  { path: 'Add-Stock-Assignment', component: AddStockAssignmentComponent },
-  {
-    path: 'Edit-Stock-Assignment/:assignmentID',
-    component: EditStockAssignmentComponent,
-  },
-  { path: 'Stock-Assignment-List', component: StockAssignmentListComponent },
   { path: 'Add-Manufacturer', component: AddManufacturerComponent },
   {
     path: 'Edit-Manufacturer/:manufacturerID',
@@ -380,36 +292,18 @@ const routes: Routes = [
   },
   { path: 'Alerts-List', component: AlertListComponent },
 
-
-  { path: 'Add-Geofence', component: AddGeofenceComponent },
-  { path: 'Edit-Geofence/:fenceID', component: EditGeofenceComponent },
-  { path: 'Geofence-List', component: GeofenceListComponent },
-
   { path: 'Add-Cycle', component: AddCycleComponent },
   { path: 'Edit-Cycle/:cycleID', component: EditCycleComponent },
   { path: 'Cycle-List', component: CycleListComponent },
-
-  { path: 'register', component: RegisterUserComponent },
-
-  /**
-   * Reports routes starts here
-   */
-
-  { path: 'Inventory-Stock-Statement', component: InventoryStockStatementComponent }
-
-
-  /**
-   * Reports routes ends here
-   */
-
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }]
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
 })
 @NgModule({
   declarations: [],
-  imports: [CommonModule],
+  imports: [CommonModule,
+  ChartsModule],
 })
 export class AppRoutingModule { }
