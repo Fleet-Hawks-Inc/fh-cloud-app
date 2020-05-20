@@ -12,7 +12,7 @@ declare var $: any;
   styleUrls: ["./add-expense-type.component.css"],
 })
 export class AddExpenseTypeComponent implements OnInit {
-  title = "Add Expense Types";
+  title = "Add Type";
 
   /********** Form Fields ***********/
   expenseTypeName = "";

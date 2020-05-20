@@ -11,6 +11,7 @@ const routes: Routes = [
       { path: 'summary', component: SummaryComponent },
       { path: 'edit/:userName/:eventDate', component: EditComponent },
       { path: 'detailed', component: DetailedComponent },
+      { path: 'uncertified', component: SummaryComponent },
     ],
   },
 ];

@@ -1760,8 +1760,10 @@ background: #bdbdbd !important; color: #ffffff !important;
 }
 
 
-
-
+/* add button class */
+.add-btnn{
+  margin-top:17%;
+}
 
 
 
