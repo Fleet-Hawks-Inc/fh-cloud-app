@@ -168,7 +168,13 @@
         <div class="col">
           <section class="card">
             <header class="card-header">
-              <h2 class="card-title">Events</h2>
+              <h2 class="card-title">Events <a
+                [routerLink]=""
+                (click)="editModal()"
+                class="btn btn-success btn-sm mt-0 modal-confirm margin-right-10 pull-right"
+              >+</a
+              ></h2>
+
             </header>
             <div class="card-body">
               <table
@@ -217,17 +223,8 @@
                     <td>{{ event.eventComment }}</td>
                     <td>location</td>
                     <td>
-                      <a
-                        href="#"
-                        class="btn btn-success btn-sm mt-0 modal-confirm margin-right-10"
-                        >+</a
-                      >
-                      <a
-                        [routerLink]=""
-                        (click)="editModal(event.time, event.toTime)"
-                        class="btn btn-dark btn-sm mt-0 modal-confirm margin-right-10"
-                        >Edit</a
-                      >
+
+
                       <a
                         *ngIf="event.type != 'D'"
                         [routerLink]=""
@@ -293,7 +290,7 @@
       </div>
       <div class="modal-body">
         <label class="control-label text-lg-right pt-2" for="inputDefault">Type</label>
-        <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="eventType" name="eventType">
+        <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="eventType" name="eventType" id="eventType">
           <optgroup label="">
               <option value="SB">SB</option>
               <option value="YM">YM</option>

@@ -111,6 +111,7 @@ import { CycleListComponent } from './cycle-list/cycle-list.component';
 import { NavOpenedDirective } from './directives/nav-opened.directive';
 import {SharedModule} from './shared/shared.module';
 import {ChartsModule} from 'ng2-charts';
+import {ToastrModule} from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -232,7 +233,8 @@ import {ChartsModule} from 'ng2-charts';
       NgbModule,
     BrowserAnimationsModule,
     ChartsModule,
-    SharedModule
+    SharedModule,
+    ToastrModule.forRoot()
 
 
   ],
