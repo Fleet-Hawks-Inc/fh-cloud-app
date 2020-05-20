@@ -28,10 +28,12 @@ import { EditContactComponent } from './contact/edit-contact/edit-contact.compon
 import { AddAccountComponent } from './account/add-account/add-account.component';
 import { EditAccountComponent } from './account/edit-account/edit-account.component';
 import { AccountsComponent } from './account/accounts/accounts.component';
+
 import { AddDocumentsComponent } from './document/add-documents/add-documents.component';
 import { EditDocumentsComponent } from './document/edit-documents/edit-documents.component';
 import { DocumentsComponent } from './document/documents/documents.component';
 
+import {CreateLoadComponent} from "./create-load/create-load.component";
 
 const routes: Routes = [
   {
@@ -97,6 +99,10 @@ const routes: Routes = [
       { path: "Edit-document/:documentID", component: EditDocumentsComponent},
       { path: "Document-List", component: DocumentsComponent }
     ]
+  },
+  {
+    path: "create-load",
+    component: CreateLoadComponent
   }
 ];
 

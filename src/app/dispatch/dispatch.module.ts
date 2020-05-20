@@ -35,6 +35,7 @@ import { AccountsComponent } from './account/accounts/accounts.component';
 import { AddDocumentsComponent } from './document/add-documents/add-documents.component';
 import { EditDocumentsComponent } from './document/edit-documents/edit-documents.component';
 import { DocumentsComponent } from './document/documents/documents.component';
+import { CreateLoadComponent } from './create-load/create-load.component';
 
 
 @NgModule({
@@ -64,7 +65,8 @@ import { DocumentsComponent } from './document/documents/documents.component';
     AccountsComponent,
     AddDocumentsComponent,
     EditDocumentsComponent,
-    DocumentsComponent
+    DocumentsComponent,
+    CreateLoadComponent
   ],
 })
 export class DispatchModule {}
