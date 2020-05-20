@@ -6,24 +6,24 @@
     </a>
   </li> -->
 
-  <li routerLinkActive="active">
+  <li routerLinkActive="nav-active">
     <a class="nav-link" routerLink="/Map-Dashboard">
       <i class="fa fa-globe" aria-hidden="true"></i>
       <span>Map Dashboard</span>
     </a>
   </li>
-  <li class="nav-parent" appNavOpened>
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
     <a class="nav-link" href="#">
       <i class="fa fa-users" aria-hidden="true"></i>
       <span>Drivers</span>
     </a>
     <ul class="nav nav-children">
-      <li>
+      <li routerLinkActive="nav-active">
         <a class="nav-link" [routerLink]="['/fleet', 'drivers', 'Add-Driver']">
           Add
         </a>
       </li>
-      <li>
+      <li routerLinkActive="nav-active">
         <a
           class="nav-link"
           [routerLink]="['/fleet', 'drivers', 'Drivers-List']"
@@ -33,13 +33,13 @@
       </li>
     </ul>
   </li>
-  <li class="nav-parent" appNavOpened>
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
     <a class="nav-link" href="#">
       <i class="fa fa-laptop" aria-hidden="true"></i>
       <span>Fleet Manager</span>
     </a>
     <ul class="nav nav-children">
-      <li>
+      <li routerLinkActive="nav-active">
         <a
           class="nav-link"
           [routerLink]="['/fleet', 'fleet-manager', 'Add-User']"
@@ -47,7 +47,7 @@
           Add
         </a>
       </li>
-      <li>
+      <li routerLinkActive="nav-active">
         <a
           class="nav-link"
           [routerLink]="['/fleet', 'fleet-manager', 'User-List']"
@@ -58,13 +58,13 @@
     </ul>
   </li>
   <!--[expandedNav]="'vehicles'"-->
-  <li class="nav-parent" appNavOpened>
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
     <a class="nav-link" href="#">
       <i class="fas fa-truck-moving" aria-hidden="true"></i>
       <span>Vehicles</span>
     </a>
     <ul class="nav nav-children">
-      <li>
+      <li routerLinkActive="nav-active">
         <a
           class="nav-link"
           [routerLink]="['/fleet', 'vehicles', 'Add-Vehicle-New']"
@@ -73,7 +73,7 @@
         </a>
       </li>
 
-      <li>
+      <li routerLinkActive="nav-active">
         <a
           class="nav-link"
           [routerLink]="['/fleet', 'vehicles', 'Vehicle-List']"
@@ -84,18 +84,18 @@
     </ul>
   </li>
 
-  <li class="nav-parent" appNavOpened>
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
     <a class="nav-link" href="#">
       <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
       <span>Yards</span>
     </a>
     <ul class="nav nav-children">
-      <li>
+      <li routerLinkActive="nav-active">
         <a class="nav-link" [routerLink]="['/fleet', 'yards', 'Add-Yard']">
           Add
         </a>
       </li>
-      <li>
+      <li routerLinkActive="nav-active">
         <a class="nav-link" [routerLink]="['/fleet', 'yards', 'Yard-List']">
           List
         </a>
@@ -103,18 +103,18 @@
     </ul>
   </li>
 
-  <li class="nav-parent" appNavOpened>
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
     <a class="nav-link" href="#">
       <i class="fas fa-truck-loading" aria-hidden="true"></i>
       <span>Assets</span>
     </a>
     <ul class="nav nav-children">
-      <li>
+      <li routerLinkActive="nav-active">
         <a class="nav-link" [routerLink]="['/fleet', 'assets', 'Add-Assets']">
           Add
         </a>
       </li>
-      <li>
+      <li routerLinkActive="nav-active">
         <a class="nav-link" [routerLink]="['/fleet', 'assets', 'Assets-List']">
           List
         </a>
@@ -122,18 +122,18 @@
     </ul>
   </li>
 
-  <li class="nav-parent">
+  <li class="nav-parent" routerLinkActive="nav-expanded">
     <a class="nav-link" href="#">
       <i class="fas fa-money-bill" aria-hidden="true"></i>
       <span>Expenses</span>
     </a>
     <ul class="nav nav-children">
-      <li class="nav-parent">
+      <li class="nav-parent" routerLinkActive="nav-expanded">
         <a>
           Fuel
         </a>
-        <ul class="nav nav-children" routerLinkActive="active">
-          <li>
+        <ul class="nav nav-children" >
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="['/fleet', 'expenses', 'fuel', 'Add-Fuel-Entry']"
@@ -142,7 +142,7 @@
             </a>
           </li>
 
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="['/fleet', 'expenses', 'fuel', 'Fuel-Entry-List']"
@@ -152,12 +152,12 @@
           </li>
         </ul>
       </li>
-      <li class="nav-parent">
+      <li class="nav-parent" routerLinkActive="nav-expanded">
         <a>
           Ticket
         </a>
         <ul class="nav nav-children">
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="['/fleet', 'expenses', 'tickets', 'Add-Ticket']"
@@ -166,7 +166,7 @@
             </a>
           </li>
 
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="['/fleet', 'expenses', 'tickets', 'Tickets-List']"
@@ -176,12 +176,12 @@
           </li>
         </ul>
       </li>
-      <li class="nav-parent">
+      <li class="nav-parent" routerLinkActive="nav-expanded">
         <a>
           Types
         </a>
         <ul class="nav nav-children">
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="['/fleet', 'expenses', 'types', 'Add-Expense-Type']"
@@ -190,7 +190,7 @@
             </a>
           </li>
 
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="[
@@ -208,18 +208,18 @@
     </ul>
   </li>
 
-  <li class="nav-parent">
+  <li class="nav-parent" routerLinkActive="nav-expanded">
     <a class="nav-link" href="#">
       <i class="fa fa-wrench" aria-hidden="true"></i>
       <span>Maintenance</span>
     </a>
     <ul class="nav nav-children">
-      <li class="nav-parent">
+      <li class="nav-parent" routerLinkActive="nav-expanded">
         <a>
           Vendor
         </a>
         <ul class="nav nav-children">
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="['/fleet', 'maintenance', 'vendor', 'Add-Vendor']"
@@ -228,7 +228,7 @@
             </a>
           </li>
 
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="['/fleet', 'maintenance', 'vendor', 'Vendors-List']"
@@ -238,12 +238,12 @@
           </li>
         </ul>
       </li>
-      <li class="nav-parent">
+      <li class="nav-parent" routerLinkActive="nav-expanded">
         <a>
           Vehicle Service Log
         </a>
         <ul class="nav nav-children">
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="[
@@ -257,7 +257,7 @@
             </a>
           </li>
 
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="[
@@ -272,12 +272,12 @@
           </li>
         </ul>
       </li>
-      <li class="nav-parent">
+      <li class="nav-parent" routerLinkActive="nav-expanded">
         <a>
           Service Program
         </a>
         <ul class="nav nav-children">
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="[
@@ -291,7 +291,7 @@
             </a>
           </li>
 
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="[
@@ -308,18 +308,18 @@
       </li>
     </ul>
   </li>
-  <li class="nav-parent">
+  <li class="nav-parent" routerLinkActive="nav-expanded">
     <a class="nav-link" href="#">
       <i class="fas fa-boxes" aria-hidden="true"></i>
       <span>Inventory</span>
     </a>
     <ul class="nav nav-children">
-      <li class="nav-parent">
+      <li class="nav-parent" routerLinkActive="nav-expanded">
         <a>
           Item
         </a>
         <ul class="nav nav-children">
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="['/fleet', 'inventory', 'item', 'Add-Item']"
@@ -328,7 +328,7 @@
             </a>
           </li>
 
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="['/fleet', 'inventory', 'item', 'Item-List']"
@@ -338,12 +338,12 @@
           </li>
         </ul>
       </li>
-      <li class="nav-parent">
+      <li class="nav-parent" routerLinkActive="nav-expanded">
         <a>
           Item Group
         </a>
         <ul class="nav nav-children">
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="[
@@ -357,7 +357,7 @@
             </a>
           </li>
 
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="[
@@ -372,12 +372,12 @@
           </li>
         </ul>
       </li>
-      <li class="nav-parent">
+      <li class="nav-parent" routerLinkActive="nav-expanded">
         <a>
           Stock Entry
         </a>
         <ul class="nav nav-children">
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="['/fleet', 'inventory', 'stock-entry', 'Add-Entry']"
@@ -386,7 +386,7 @@
             </a>
           </li>
 
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="[
@@ -401,15 +401,14 @@
           </li>
         </ul>
       </li>
-      <li class="nav-parent">
+      <li class="nav-parent" routerLinkActive="nav-expanded" >
         <a>
           Stock Assignment
         </a>
         <ul class="nav nav-children">
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
-              routerLink="/Add-Stock-Assignment"
               [routerLink]="[
                 '/fleet',
                 'inventory',
@@ -421,7 +420,7 @@
             </a>
           </li>
 
-          <li>
+          <li routerLinkActive="nav-active">
             <a
               class="nav-link"
               [routerLink]="[
@@ -436,7 +435,7 @@
           </li>
         </ul>
       </li>
-      <li>
+      <li routerLinkActive="nav-active">
         <a
           class="nav-link"
           [routerLink]="['/fleet', 'inventory', 'Inventory-Stock-Statement']"
@@ -447,19 +446,19 @@
     </ul>
   </li>
 
-  <li class="nav-parent" appNavOpened>
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
     <a>
       <i class="fa fa-map-marker" aria-hidden="true"></i>
       <span>Geofencing</span>
     </a>
     <ul class="nav nav-children">
-      <li routerLinkActive="active">
+      <li routerLinkActive="nav-active">
         <a class="nav-link" [routerLink]="['/fleet', 'geofence', 'Add-Geofence']"
         >
           Add
         </a>
       </li>
-      <li routerLinkActive="active">
+      <li routerLinkActive="nav-active">
         <a class="nav-link" [routerLink]="['/fleet', 'geofence', 'Geofence-List']"
         >
           List

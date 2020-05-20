@@ -1,22 +1,22 @@
 <ul class="nav nav-main">
 
-  <li class="nav-parent" appNavOpened>
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
     <a class="nav-link" href="#">
       <i class="fas fa-truck-loading" aria-hidden="true"></i>
       <span>Compliance</span>
     </a>
     <ul class="nav nav-children">
-      <li>
+      <li routerLinkActive="nav-active">
         <a class="nav-link" [routerLink]="['/hos', 'compliance', 'summary']">
           Summary
         </a>
       </li>
-      <li>
+      <li routerLinkActive="nav-active">
         <a class="nav-link" [routerLink]="['/hos', 'compliance', 'detailed']">
           Detailed
         </a>
       </li>
-      <li>
+      <li routerLinkActive="nav-active">
         <a class="nav-link" [routerLink]="['/hos', 'compliance', 'uncertified']">
           Uncertified
         </a>
