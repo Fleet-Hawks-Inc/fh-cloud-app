@@ -200,7 +200,7 @@ export class AddFactoringCompanyComponent implements OnInit {
     };
      console.log("Factoring Company Data",dataFactoringCompany); 
 
-     this.apiService.postData('factoring-company', dataFactoringCompany).
+     this.apiService.postData('factoringCompanies', dataFactoringCompany).
     subscribe({
       complete : () => {},
       error : (err) =>  {
