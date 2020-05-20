@@ -28,15 +28,17 @@ export class AddShipperComponent implements OnInit,AfterViewInit {
 
   /********** Form Fields ***********/
   shipperName = "";
-  streetNumber = "";
-  streetName = "";
-  cityID = "";
-  stateID = "";
-  countryID = "";
-  addressZip = "";
-  geoLocation = {
-    latitude: "",
-    longitude: "",
+  shipperAddress = {
+    streetNumber : "",
+    streetName : "",
+    cityID : "",
+    stateID : "",
+    countryID : "",
+    addressZip : "",
+    geoLocation : {
+      latitude: "",
+      longitude: "",
+    }
   };
   phone = "";
   email = "";
@@ -86,11 +88,11 @@ export class AddShipperComponent implements OnInit,AfterViewInit {
     });
   }
   initMap() {
-    this.countryName = this.countries.filter(country => country.countryID == this.countryID)[0].countryName;
-    this.stateName = this.states.filter(state => state.stateID == this.stateID)[0].stateName;
-    this.cityName = this.cities.filter(city => city.cityID == this.cityID)[0].cityName;
+    this.countryName = this.countries.filter(country => country.countryID == this.shipperAddress.countryID)[0].countryName;
+    this.stateName = this.states.filter(state => state.stateID == this.shipperAddress.stateID)[0].stateName;
+    this.cityName = this.cities.filter(city => city.cityID == this.shipperAddress.cityID)[0].cityName;
 
-    this.address = this.streetName + "," + this.streetNumber +","+ this.addressZip + ","+ this.cityName+" , " + this.stateName+ " , " + this.countryName;
+    this.address = this.shipperAddress.streetName + "," + this.shipperAddress.streetNumber +","+ this.shipperAddress.addressZip + ","+ this.cityName+" , " + this.stateName+ " , " + this.countryName;
      if ($("#map-div").is(":visible")) {
       $("#map-div").hide("slow");
     } else {
@@ -123,6 +125,7 @@ export class AddShipperComponent implements OnInit,AfterViewInit {
         this.lng = +JSON.stringify(match.features[0].geometry.coordinates[0]);
         this.lat = +JSON.stringify(match.features[0].geometry.coordinates[1]);
         console.log("old longitude", this.lng);
+        console.log("old latitude", this.lat);
          var marker = new mapboxgl.Marker({
           draggable: true
         })
@@ -151,14 +154,14 @@ export class AddShipperComponent implements OnInit,AfterViewInit {
   }
 
   getStates(){
-    this.apiService.getData('states/country/' + this.countryID)
+    this.apiService.getData('states/country/' + this.shipperAddress.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
   }
 
   getCities(){
-    this.apiService.getData('cities/state/' + this.stateID)
+    this.apiService.getData('cities/state/' + this.shipperAddress.stateID)
       .subscribe((result: any) => {
         this.cities = result.Items;
       });
@@ -183,55 +186,66 @@ export class AddShipperComponent implements OnInit,AfterViewInit {
       email: this.email,
       fax : this.fax,
       taxID: this.taxID,
-     
-    };
-    const dataAddress ={
-      streetNumber: this.streetNumber,
-      streetName: this.streetName,
-      cityID: this.cityID,
-      stateID: this.stateID,
-      countryID: this.countryID,
-      addressZip : this.addressZip,
-      geoLocation: {
-        latitude: this.lat,
-        longitude: this.lng,
-      }    
-     };
-     console.log("Address Data",dataAddress, "Shipper Data",dataShipper); 
-     this.apiService.postData('addresses', dataAddress).
-    subscribe({
-      complete : () => {},
-      error : (err) =>  {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[key] = val.message;
-              }),
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => {},
-            next: () => {}
-          });
-        },
-      next: (res) => {
-        this.response = res;
-        // this.hasSuccess = true;
-
-        this.streetNumber = "";
-        this.streetName = "";
-        this.cityID = "";
-        this.stateID = "";
-        this.countryID = "";
-        this.addressZip = "";
+      shipperAddress:{
+        streetNumber: this.shipperAddress.streetNumber,
+        streetName: this.shipperAddress.streetName,
+        cityID: this.shipperAddress.cityID,
+        stateID: this.shipperAddress.stateID,
+        countryID: this.shipperAddress.countryID,
+        addressZip : this.shipperAddress.addressZip,
+        geoLocation: {
+          latitude: this.lat,
+          longitude: this.lng,
+        }
       }
-    });
+    };
+    // const dataAddress ={
+    //   streetNumber: this.streetNumber,
+    //   streetName: this.streetName,
+    //   cityID: this.cityID,
+    //   stateID: this.stateID,
+    //   countryID: this.countryID,
+    //   addressZip : this.addressZip,
+    //   geoLocation: {
+    //     latitude: this.lat,
+    //     longitude: this.lng,
+    //   }    
+    //  };
+     console.log("Shipper Data",dataShipper); 
+    //  this.apiService.postData('addresses', dataAddress).
+    // subscribe({
+    //   complete : () => {},
+    //   error : (err) =>  {
+    //     from(err.error)
+    //       .pipe(
+    //         map((val: any) => {
+    //             const path = val.path;
+    //             // We Can Use This Method
+    //             const key = val.message.match(/"([^']+)"/)[1];
+    //             val.message = val.message.replace(/".*"/, 'This Field');
+    //             this.errors[key] = val.message;
+    //           }),
+    //       )
+    //       .subscribe({
+    //         complete: () => {
+    //           this.throwErrors();
+    //         },
+    //         error: () => {},
+    //         next: () => {}
+    //       });
+    //     },
+    //   next: (res) => {
+    //     this.response = res;
+    //     // this.hasSuccess = true;
+
+    //     this.streetNumber = "";
+    //     this.streetName = "";
+    //     this.cityID = "";
+    //     this.stateID = "";
+    //     this.countryID = "";
+    //     this.addressZip = "";
+    //   }
+    // });
 
      this.apiService.postData('shippers', dataShipper).
     subscribe({
@@ -265,6 +279,12 @@ export class AddShipperComponent implements OnInit,AfterViewInit {
         this.phone = "";
         this.email = "";
         this.taxID = "";
+        this.shipperAddress.streetNumber = "";
+        this.shipperAddress.streetName = "";
+        this.shipperAddress.cityID = "";
+        this.shipperAddress.stateID = "";
+        this.shipperAddress.countryID = "";
+        this.shipperAddress.addressZip = "";
       }
     });
 

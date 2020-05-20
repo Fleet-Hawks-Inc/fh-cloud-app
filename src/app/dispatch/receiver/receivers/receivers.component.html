@@ -44,7 +44,7 @@
                             </div>
                         </div>
 
-                        <a routerLink="/Add-Documents" class="mb-1 mt-1 mr-1 btn btn-success"><i class="fas fa-plus"></i> Add Document</a>
+                        <a routerLink="/dispatch/receiver/Add-Receiver" class="mb-1 mt-1 mr-1 btn btn-success"><i class="fas fa-plus"></i> Add Receiver</a>
 
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                                     <td>{{receiver.phone}}</td>
                                     <td>{{receiver.email}}</td>
                                     <td>{{receiver.fax}}</td>
-                                    <td><a routerLink="/Edit-Receiver/{{receiver.receiverID}}">Edit</a></td>
+                                    <td><a routerLink="/dispatch/receiver/Edit-Receiver/{{receiver.receiverID}}">Edit</a></td>
                                     <td><a [routerLink]="" (click)="deleteReceiver(receiver.receiverID)" >Delete</a></td>
                                 </tr>
                                 </tbody>

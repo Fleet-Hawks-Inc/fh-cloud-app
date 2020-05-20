@@ -69,14 +69,14 @@ export class AddContactComponent implements OnInit {
                 const key = val.message.match(/"([^']+)"/)[1];
                 val.message = val.message.replace(/".*"/, 'This Field');
                 this.errors[key] = val.message;
-              }),
+              })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
             },
             error: () => {},
-            next: () => {}
+            next: () => {},
           });
         },
       next: (res) => {

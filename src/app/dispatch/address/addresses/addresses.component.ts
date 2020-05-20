@@ -30,8 +30,8 @@ export class AddressesComponent implements OnInit {
 
 
 
-  deleteAddress(documentId) {
-    this.apiService.deleteData('addresses/' + documentId)
+  deleteAddress(addressID) {
+    this.apiService.deleteData('addresses/' + addressID)
         .subscribe((result: any) => {
           this.fetchAddresses();
         })
