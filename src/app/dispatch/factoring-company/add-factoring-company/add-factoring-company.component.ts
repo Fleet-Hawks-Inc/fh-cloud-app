@@ -28,15 +28,17 @@ export class AddFactoringCompanyComponent implements OnInit {
 
   /********** Form Fields ***********/
   factoringCompanyName = "";
-  streetNumber = "";
-  streetName = "";
-  cityID = "";
-  stateID = "";
-  countryID = "";
-  addressZip = "";
-  geoLocation = {
-    latitude: "",
-    longitude: "",
+  factoringCompanyAddress = {
+    streetNumber : "",
+    streetName : "",
+    cityID : "",
+    stateID : "",
+    countryID : "",
+    addressZip : "",
+    geoLocation : {
+      latitude: "",
+      longitude: "",
+    }
   };
   phone = "";
   email = "";
@@ -85,11 +87,11 @@ export class AddFactoringCompanyComponent implements OnInit {
     });
   }
   initMap() {
-    this.countryName = this.countries.filter(country => country.countryID == this.countryID)[0].countryName;
-    this.stateName = this.states.filter(state => state.stateID == this.stateID)[0].stateName;
-    this.cityName = this.cities.filter(city => city.cityID == this.cityID)[0].cityName;
+    this.countryName = this.countries.filter(country => country.countryID == this.factoringCompanyAddress.countryID)[0].countryName;
+    this.stateName = this.states.filter(state => state.stateID == this.factoringCompanyAddress.stateID)[0].stateName;
+    this.cityName = this.cities.filter(city => city.cityID == this.factoringCompanyAddress.cityID)[0].cityName;
 
-    this.address = this.streetName + "," + this.streetNumber +","+ this.addressZip + ","+ this.cityName+" , " + this.stateName+ " , " + this.countryName;
+    this.address = this.factoringCompanyAddress.streetName + "," + this.factoringCompanyAddress.streetNumber +","+ this.factoringCompanyAddress.addressZip + ","+ this.cityName+" , " + this.stateName+ " , " + this.countryName;
      if ($("#map-div").is(":visible")) {
       $("#map-div").hide("slow");
     } else {
@@ -122,6 +124,7 @@ export class AddFactoringCompanyComponent implements OnInit {
         this.lng = +JSON.stringify(match.features[0].geometry.coordinates[0]);
         this.lat = +JSON.stringify(match.features[0].geometry.coordinates[1]);
         console.log("old longitude", this.lng);
+        console.log("old latitude", this.lat);
          var marker = new mapboxgl.Marker({
           draggable: true
         })
@@ -150,14 +153,14 @@ export class AddFactoringCompanyComponent implements OnInit {
   }
 
   getStates(){
-    this.apiService.getData('states/country/' + this.countryID)
+    this.apiService.getData('states/country/' + this.factoringCompanyAddress.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
   }
 
   getCities(){
-    this.apiService.getData('cities/state/' + this.stateID)
+    this.apiService.getData('cities/state/' + this.factoringCompanyAddress.stateID)
       .subscribe((result: any) => {
         this.cities = result.Items;
       });
@@ -181,57 +184,23 @@ export class AddFactoringCompanyComponent implements OnInit {
       phone: this.phone,
       email: this.email,
       fax : this.fax,
+      factoringCompanyAddress:{
+        streetNumber: this.factoringCompanyAddress.streetNumber,
+        streetName: this.factoringCompanyAddress.streetName,
+        cityID: this.factoringCompanyAddress.cityID,
+        stateID: this.factoringCompanyAddress.stateID,
+        countryID: this.factoringCompanyAddress.countryID,
+        addressZip : this.factoringCompanyAddress.addressZip,
+        geoLocation: {
+          latitude: this.lat,
+          longitude: this.lng,
+        }
+      }
    
     };
-    const dataAddress ={
-      streetNumber: this.streetNumber,
-      streetName: this.streetName,
-      cityID: this.cityID,
-      stateID: this.stateID,
-      countryID: this.countryID,
-      addressZip : this.addressZip,
-      geoLocation: {
-        latitude: this.lat,
-        longitude: this.lng,
-      }    
-     };
-     console.log("Address Data",dataAddress, "Factoring Company Data",dataFactoringCompany); 
-     this.apiService.postData('addresses', dataAddress).
-    subscribe({
-      complete : () => {},
-      error : (err) =>  {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[key] = val.message;
-              }),
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => {},
-            next: () => {}
-          });
-        },
-      next: (res) => {
-        this.response = res;
-        // this.hasSuccess = true;
+     console.log("Factoring Company Data",dataFactoringCompany); 
 
-        this.streetNumber = "";
-        this.streetName = "";
-        this.cityID = "";
-        this.stateID = "";
-        this.countryID = "";
-        this.addressZip = "";
-      }
-    });
-
-     this.apiService.postData('shippers', dataFactoringCompany).
+     this.apiService.postData('factoring-company', dataFactoringCompany).
     subscribe({
       complete : () => {},
       error : (err) =>  {
@@ -256,13 +225,18 @@ export class AddFactoringCompanyComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = 'Shipper Added successfully';
+        this.Success = 'Factoring Company Added Successfully';
 
         this.factoringCompanyName = "";
         this.fax = "";
         this.phone = "";
         this.email = "";
-
+        this.factoringCompanyAddress.streetNumber = "";
+        this.factoringCompanyAddress.streetName = "";
+        this.factoringCompanyAddress.cityID = "";
+        this.factoringCompanyAddress.stateID = "";
+        this.factoringCompanyAddress.countryID = "";
+        this.factoringCompanyAddress.addressZip = "";
       }
     });
 

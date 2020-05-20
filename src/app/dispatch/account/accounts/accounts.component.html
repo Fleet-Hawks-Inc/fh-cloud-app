@@ -66,8 +66,6 @@
                                     <th>Account Name</th>
                                     <th>Edit</th>
                                     <th>Delete</th>
-                                    <!--<th class="d-lg-none">Operator</th>-->
-                                    <!--<th class="d-lg-none">CSS grade</th>-->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -75,10 +73,8 @@
 
                                     <td>{{account.accountType}}</td>
                                     <td>{{account.accountName}}</td>
-                                    <td><a routerLink="/Edit-Account/{{account.accountID}}">Edit</a></td>
+                                    <td><a routerLink="/dispatch/account/Edit-Account/{{account.accountID}}">Edit</a></td>
                                     <td><a [routerLink]="" (click)="deleteAccount(account.accountID)" >Delete</a></td>
-                                    <!--<td class="center d-lg-none">4</td>-->
-                                    <!--<td class="center d-lg-none">X</td>-->
                                 </tr>
 
 

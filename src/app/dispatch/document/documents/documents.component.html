@@ -44,7 +44,7 @@
                             </div>
                         </div>
 
-                        <a routerLink="/Add-Documents" class="mb-1 mt-1 mr-1 btn btn-success"><i class="fas fa-plus"></i> Add Document</a>
+                        <a routerLink="/dispatch/document/Add-Document" class="mb-1 mt-1 mr-1 btn btn-success"><i class="fas fa-plus"></i> Add Document</a>
 
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                                 <tr *ngFor="let document of documents">
 
                                     <td>{{document.documentType}}</td>
-                                    <td><a routerLink="/Edit-Doucments/{{document.docID}}">Edit</a></td>
+                                    <td><a routerLink="/dispatch/document/Edit-Document/{{document.docID}}">Edit</a></td>
                                     <td><a [routerLink]="" (click)="deleteDocument(document.docID)" >Delete</a></td>
 
                                 </tr>

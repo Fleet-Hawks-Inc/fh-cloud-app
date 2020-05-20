@@ -54,9 +54,9 @@
                                     <select
                                     data-plugin-selectTwo
                                     class="form-control populate"
-                                    name="countryID"
+                                    name="factoringCompanyAddress.countryID"
                                     (change)="getStates()"
-                                    [(ngModel)]="countryID"
+                                    [(ngModel)]="factoringCompanyAddress.countryID"
                                   >
                                     <option
                                       *ngFor="let country of countries"
@@ -70,9 +70,9 @@
                                         <select
                                         data-plugin-selectTwo
                                         class="form-control populate"
-                                        name="stateID"
+                                        name="factoringCompanyAddress.stateID"
                                         (change)="getCities()"
-                                        [(ngModel)]="stateID"
+                                        [(ngModel)]="factoringCompanyAddress.stateID"
                                       >
                                         <option
                                           *ngFor="let state of states"
@@ -87,8 +87,8 @@
                                         <select
                                         data-plugin-selectTwo
                                         class="form-control populate"
-                                        name="cityID"
-                                        [(ngModel)]="cityID"
+                                        name="factoringCompanyAddress.cityID"
+                                        [(ngModel)]="factoringCompanyAddress.cityID"
                                       >
                                         <option
                                           *ngFor="let city of cities"
@@ -98,15 +98,15 @@
                                      </div>
                                      <div class="col-lg-4">
                                         <label class="control-label text-lg-right pt-2">Zip Code</label>
-                                        <input type="text" class="form-control" [(ngModel)] = "addressZip" name="addressZip" (ngModelChange) = "addressZip = $event.toUpperCase()"/>
+                                        <input type="text" class="form-control" [(ngModel)] = "factoringCompanyAddress.addressZip" name="factoringCompanyAddress.addressZip" (ngModelChange) = "factoringCompanyAddress.addressZip = $event.toUpperCase()"/>
                                         </div>
                                         <div class="col-lg-4">
                                            <label class="control-label text-lg-right pt-2">Street Number</label>
-                                           <input type="text" class="form-control" [(ngModel)] = "streetNumber" name="streetNumber">
+                                           <input type="text" class="form-control" [(ngModel)] = "factoringCompanyAddress.streetNumber" name="factoringCompanyAddress.streetNumber">
                                         </div>
                                         <div class="col-lg-4">
                                            <label class="control-label text-lg-right pt-2">Street Name</label>
-                                           <input type="text" class="form-control" [(ngModel)] = "streetName" name="streetName">
+                                           <input type="text" class="form-control" [(ngModel)] = "factoringCompanyAddress.streetName" name="factoringCompanyAddress.streetName">
                                         </div>
                                </div>
                                

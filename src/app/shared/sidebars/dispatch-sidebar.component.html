@@ -14,11 +14,17 @@
         <li>
           <a
             class="nav-link"
-            [routerLink]="['/dispatch', 'shipper', 'Shippers-List']"
-          >
+            [routerLink]="['/dispatch', 'shipper', 'Shippers-List']">
             List
           </a>
-        </li>        
+        </li>   
+        <li>
+          <a
+            class="nav-link"
+            [routerLink]="['/dispatch', 'shipper', 'Shipper-Address-List']">
+            Address List
+          </a>
+        </li>      
       </ul>
     </li>
     <li class="nav-parent" appNavOpened>
@@ -38,6 +44,13 @@
             [routerLink]="['/dispatch', 'customer', 'Customers-List']"
           >
             List
+          </a>
+        </li>
+        <li>
+          <a
+            class="nav-link"
+            [routerLink]="['/dispatch', 'customer', 'Customer-Address-List']">
+            Address List
           </a>
         </li>
       </ul>
@@ -61,6 +74,13 @@
             List
           </a>
         </li>
+        <li>
+          <a
+            class="nav-link"
+            [routerLink]="['/dispatch', 'receiver', 'Receiver-Address-List']">
+            Address List
+          </a>
+        </li>  
       </ul>
     </li>
     <li class="nav-parent" appNavOpened>
@@ -75,11 +95,13 @@
           </a>
         </li>
         <li>
+          <a class="nav-link" [routerLink]="['/dispatch', 'factoring-company', 'Factoring-Company-List']"> List</a>
+        </li>
+        <li>
           <a
             class="nav-link"
-            [routerLink]="['/dispatch', 'factoring-company', 'Factoring-Company-List']"
-          >
-            List
+            [routerLink]="['/dispatch', 'factoring-company', 'Factoring-Company-Address-List']">
+            Address List
           </a>
         </li>
       </ul>

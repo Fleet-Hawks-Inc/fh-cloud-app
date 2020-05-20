@@ -62,7 +62,7 @@ fetchAccount(){
     };
 
  console.log(data);
-    this.apiService.postData('accounts', data).
+    this.apiService.putData('accounts', data).
     subscribe({
       complete : () => {},
       error : (err) => {
