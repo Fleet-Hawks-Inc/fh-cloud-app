@@ -38,6 +38,7 @@ export class EditComponent implements OnInit, OnDestroy {
   eventID = "";
   fromTime = "";
   toTime = "";
+  eventType = "";
 
 
 
@@ -401,7 +402,20 @@ export class EditComponent implements OnInit, OnDestroy {
 
   addEvent() {
     //check if entered time clashes with others
-    this.isTimeClashes_();
+    let data = {
+      HOSEventDescription: this.eventType,
+      fromTime: this.fromTime_,
+      toTime: this.toTime_,
+      eventDate: this.selectedDate,
+      userName: this.userName,
+      timeStamp : 'create'
+    }
+
+    this.apiService
+    .postData("eventLogs/HOSAddAndModify/", data)
+    .subscribe((result: any) => {
+    });
+
   }
 
 
