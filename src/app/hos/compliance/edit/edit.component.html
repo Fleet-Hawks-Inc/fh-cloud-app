@@ -94,7 +94,7 @@
                       attr.y1="{{ types[duty.type] }}"
                       attr.x2="{{ duty.time * coordinates }}"
                       attr.y2="{{ types[duty.type] }}"
-                      [ngStyle]="{'stroke': duty.status == 1 ? 'rgb(0, 0, 0)' : 'rgb(255, 165, 0)', 'stroke-width': 2}"
+                      style="stroke: rgb(0, 0, 0); stroke-width: 2;"
                     />
                     <line
                       *ngIf="
@@ -118,7 +118,7 @@
                       attr.y1="{{ types[duty.type] }}"
                       attr.x2="{{ duty.nextStart * coordinates }}"
                       attr.y2="{{ types[duty.type] }}"
-                      [ngStyle]="{'stroke': duty.status == 1 ? 'rgb(0, 0, 0)' : 'rgb(255, 165, 0)', 'stroke-width': 2}"
+                      style="stroke: rgb(0, 0, 0); stroke-width: 2;"
                     />
                     <line
                       *ngIf="
@@ -142,7 +142,7 @@
                         (duties[i - 1].nextStart + duty.time) * coordinates
                       }}"
                       attr.y2="{{ types[duty.type] }}"
-                      [ngStyle]="{'stroke': duty.status == 1 ? 'rgb(0, 0, 0)' : 'rgb(255, 165, 0)', 'stroke-width': 2}"
+                      style="stroke: rgb(0, 0, 0); stroke-width: 2;"
                     />
                     <line
                       *ngIf="i != 0 && duties[i + 1] != undefiend"
