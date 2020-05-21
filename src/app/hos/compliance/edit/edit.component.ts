@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { ApiService } from "../../../api.service";
-import {BehaviorSubject, from, zip} from 'rxjs';
-import {map, shareReplay, tap} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, from, merge, of, zip} from 'rxjs';
+import {concatAll, concatMap, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
 import {  ActivatedRoute } from "@angular/router";
 // import {ToastrService} from 'ngx-toastr';
 import * as moment from "moment";
@@ -50,10 +50,12 @@ export class EditComponent implements OnInit, OnDestroy {
     initialDayTime = '';
     endDayTime = '';
     sharedData$;
-    startTimes : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-    endTimes : BehaviorSubject <any[]> = new BehaviorSubject<any[]>([]);
-    @ViewChild('fromtime_', {static: false}) fromTime_: ElementRef;
-    @ViewChild('toTime_', {static: false}) toTime_: ElementRef;
+    //startTimes : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+    //endTimes : BehaviorSubject <any[]> = new BehaviorSubject<any[]>([]);
+    startTimes  = [];
+    endTimes  = [];
+    @ViewChild('fromtime_', {static: false}) fromTime_ : ElementRef;
+    @ViewChild('toTime_', {static: false}) toTime_ : ElementRef;
     fromTimeStamp;
     toTimeStamp;
 
@@ -139,8 +141,8 @@ export class EditComponent implements OnInit, OnDestroy {
          */
         const allValues$ = from(result);
         allValues$.subscribe((r: any) => {
-          this.startTimes.next(r.time);
-          this.endTimes.next(r.toTime);
+          this.startTimes.push(r.time);
+          this.endTimes.push(r.toTime);
           });
         /******************************/
       });
@@ -204,11 +206,12 @@ export class EditComponent implements OnInit, OnDestroy {
     this.eventType = $('#eventType').val();
     this.fromTime = $('#fromTime').val();
     this.toTime = $('#toTime').val();
-
-    if (this.eventType === '' || this.fromTime === '' || this.toTime === '') {
+    if (this.eventType === null || this.fromTime === '' || this.toTime === '') {
       // this.toastr.error('Error', 'Please Choose Event Type', {
       //   timeOut: 3000
       // });
+      alert('Please Fill All The Fields');
+
       return true;
     }
 
@@ -217,11 +220,11 @@ export class EditComponent implements OnInit, OnDestroy {
     /*
     ** Moment Instance
      */
-    const format = 'hh:mm:ss';
-    let tt = moment(this.toTime, format);
+    const format = 'HH:mm:ss';
+    let tt = moment(this.toTime , format);
     let ft = moment(this.fromTime, format);
-    let iTt = moment(this.initialDayTime , format);
-    let eFt = moment(this.endDayTime , format);
+    let iTt = moment(this.initialDayTime, format);
+    let eFt = moment(this.endDayTime, format);
     /******************/
 
 
@@ -251,28 +254,29 @@ export class EditComponent implements OnInit, OnDestroy {
      * Iterate Over All The Values
      */
 
-    zip(this.startTimes , this.endTimes)
+    merge(of(this.startTimes) , of(this.endTimes))
       .subscribe(
         (v) => {
-        if (moment(v[0] , 'hh:mm:ss').isValid() && moment(v[1] , 'hh:mm:ss').isValid()) {
+          if (moment(v[0] , format).isValid() && moment(v[1] , format).isValid()) {
 
           /*
           ** Moment Instance
           */
-          const iTt_ = moment(v[0] , format);
-          const eFt_ = moment(v[1] , format);
-
+          const iTt_ = moment(v[0], format);
+          const eFt_ = moment(v[1], format);
 
           if (tt.isBetween(iTt_, eFt_) || ft.isBetween(iTt_, eFt_)) {
             this.timeClash = true;
-            }
-            }
+          }
+          }
       });
 
     if (this.timeClash) {
       // this.toastr.error('Error', 'Time Is Clashing With Other Events', {
       //   timeOut: 3000
       // });
+      alert('Your Time Clashing Is Clashing With Your Logs, Please Remove Old Logs.');
+
     }
 
 
@@ -330,10 +334,6 @@ export class EditComponent implements OnInit, OnDestroy {
     }
 
   }
-
-
-
-
 
 
   changeFormat(newDate: any) {
