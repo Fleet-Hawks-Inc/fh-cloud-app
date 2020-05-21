@@ -19,7 +19,7 @@ export class EditReceiverComponent implements OnInit {
 
   /********** Form Fields ***********/
   receiverID = "";
-  receiverName = "";
+  name = "";
   phone = "";
   email = "";
   fax = "";
@@ -50,7 +50,7 @@ export class EditReceiverComponent implements OnInit {
     .subscribe((result: any) => {
       result = result.Items[0];
 
-      this.receiverName = result.receiverName;
+      this.name = result.name;
       this.phone = result.phone;
       this.fax = result.fax;
       this.email = result.email;
@@ -64,7 +64,7 @@ export class EditReceiverComponent implements OnInit {
     this.hasSuccess = false;
 
     const dataReceiver = {
-      name: this.receiverName,
+      name: this.name,
       phone: this.phone,
       fax: this.fax,
       email: this.email,
@@ -98,7 +98,7 @@ export class EditReceiverComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.Success = 'Receiver Updated successfully';
-        this.receiverName = '';
+        this.name = '';
         this.phone = '';
         this.fax = '';
         this.email = '';

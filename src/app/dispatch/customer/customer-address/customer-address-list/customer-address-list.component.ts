@@ -16,13 +16,41 @@ export class CustomerAddressListComponent implements OnInit {
   addresses = [];
   customers = [];
   customerID = "";
+  countries = [];
+  states = [];
+  cities = [];
+  countryName = "";
+  cityName = "";
+  stateName = "";
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.fetchcustomers();
     this.getAddress();
+    this.fetchCountries();
+  }
+  fetchCountries(){
+    this.apiService.getData('countries')
+      .subscribe((result: any) => {
+        this.countries = result.Items;
+      });
+  }
+  getStates(){
+    this.apiService.getData('states/country/' + this.addresses[0].countryID)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+        this.countryName = this.countries.filter(country => country.countryID == this.addresses[0].countryID)[0].countryName;
+       this.stateName = this.states.filter(state => state.stateID == this.addresses[0].stateID)[0].stateName;
+      });
   }
 
+  getCities(){
+    this.apiService.getData('cities/state/' + this.addresses[0].stateID)
+      .subscribe((result: any) => {
+        this.cities = result.Items;
+        this.cityName = this.cities.filter(city => city.cityID == this.addresses[0].cityID)[0].cityName;
+      });
+ }
   fetchcustomers() {
     this.apiService.getData("customers").subscribe((result: any) => {
       this.customers = result.Items;
@@ -38,7 +66,7 @@ export class CustomerAddressListComponent implements OnInit {
   // }
 
   getAddress() {
-    this.apiService.getData('addresses?docID=${this.customerID}')
+    this.apiService.getData(`addresses/document/${this.customerID}`)
         .subscribe({
           complete: () => {
             this.initDataTable();
@@ -47,6 +75,8 @@ export class CustomerAddressListComponent implements OnInit {
           next: (result: any) => {
             console.log(result);
             this.addresses = result.Items;
+            this.getStates();
+            this.getCities();
           },
         });
   }

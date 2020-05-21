@@ -16,39 +16,63 @@ export class ShipperAddressListComponent implements OnInit {
   addresses = [];
   shippers = [];
   shipperID = "";
+  countries = [];
+  states = [];
+  cities = [];
+  countryName = "";
+  cityName = "";
+  stateName = "";
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.fetchShippers();
     this.getAddress();
+    this.fetchCountries();
   }
+  fetchCountries(){
+      this.apiService.getData('countries')
+        .subscribe((result: any) => {
+          this.countries = result.Items;
+        });
+    }
+    getStates(){
+      this.apiService.getData('states/country/' + this.addresses[0].countryID)
+        .subscribe((result: any) => {
+          this.states = result.Items;
+          this.countryName = this.countries.filter(country => country.countryID == this.addresses[0].countryID)[0].countryName;
+         this.stateName = this.states.filter(state => state.stateID == this.addresses[0].stateID)[0].stateName;
+        });
+    }
+  
+    getCities(){
+      this.apiService.getData('cities/state/' + this.addresses[0].stateID)
+        .subscribe((result: any) => {
+          this.cities = result.Items;
+          this.cityName = this.cities.filter(city => city.cityID == this.addresses[0].cityID)[0].cityName;
+        });
+   }
 
   fetchShippers() {
     this.apiService.getData("shippers").subscribe((result: any) => {
       this.shippers = result.Items;
     });
-    //console.log(this.drivers);
   }
 
-  // getAddress() {
-  //   this.apiService.getData(`eventLogs/HOSSummary?userName=${this.userName}&fromDate=${from}&toDate=${to}`).subscribe((result: any) => {
-  //     this.addresses = result;
-  //   });
-  //   console.log(this.addresses);
-  // }
-
   getAddress() {
-    this.apiService.getData('addresses?docID=${this.shipperID}')
+    this.apiService.getData(`addresses/document/${this.shipperID}`)
         .subscribe({
           complete: () => {
             this.initDataTable();
           },
           error: () => {},
           next: (result: any) => {
-            console.log(result);
             this.addresses = result.Items;
+            this.getStates();
+            this.getCities();
           },
         });
+        // this.getStates();
+        // this.getCities();
   }
 
   deleteAddress(addressID) {

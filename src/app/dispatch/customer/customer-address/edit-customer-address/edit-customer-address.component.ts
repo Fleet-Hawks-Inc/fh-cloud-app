@@ -21,7 +21,6 @@ declare var $: any
 })
 export class EditCustomerAddressComponent implements OnInit {
 
-
   title = 'Edit Address';
   errors = {};
   form;
@@ -29,7 +28,8 @@ export class EditCustomerAddressComponent implements OnInit {
 
   /********** Form Fields ***********/
   addressID = "";
-  addressType = "";
+  documentID = "";
+  parent = "";
   streetNumber = "";
   streetName = "";
   cityID = "";
@@ -67,7 +67,6 @@ export class EditCustomerAddressComponent implements OnInit {
     this.addressID = this.route.snapshot.params['addressID'];
     this.fetchCountries();
     this.fetchAddress();
-    this.fetchCities();
     $(document).ready(() => {
       this.form = $('#form_').validate();
     }); 
@@ -108,13 +107,11 @@ export class EditCustomerAddressComponent implements OnInit {
 
     setTimeout(() => {
       this.getStates();
-    }, 2000);
-  }
-  fetchCities(){
-    this.apiService.getData('cities')
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-      });
+    }, 1000);
+    setTimeout(() => {
+      this.getCities();
+    }, 1000);
+
   }
   initMap() {
     this.countryName = this.countries.filter(country => country.countryID == this.countryID)[0].countryName;
@@ -180,14 +177,24 @@ export class EditCustomerAddressComponent implements OnInit {
     this.apiService.getData('addresses/' + this.addressID)
     .subscribe((result: any) => {
       result = result.Items[0];
-      this.addressType = result.addressType,
+      // console.log("result address edit shipper address",result);
+      this.parent = result.parent,
+      this.documentID = result.documentID,
       this.streetNumber = result.streetNumber;
       this.streetName = result.streetName;
       this.cityID = result.cityID;
       this.stateID = result.stateID;
       this.countryID = result.countryID;
       this.addressZip = result.addressZip;
+      this.geoLocation = {
+          latitude : result.geoLocation.latitude,
+          longitude : result.geoLocation.longitude
+      };
     });
+    
+    setTimeout(() => {
+      this.fillCountry();
+    }, 1000);
   }
   updateAddress() {
     this.errors = {};
@@ -196,7 +203,9 @@ export class EditCustomerAddressComponent implements OnInit {
     this.hasSuccess = false;
 
    const dataAddress ={
-      addressType: this.addressType,
+      addressID: this.addressID,
+      documentID : this.documentID,
+      parent : this.parent,
       streetNumber: this.streetNumber,
       streetName: this.streetName,
       cityID: this.cityID,
@@ -208,7 +217,7 @@ export class EditCustomerAddressComponent implements OnInit {
         longitude: this.lng,
       } 
     }
-   console.log(dataAddress);
+   console.log("address data",dataAddress);
     this.apiService.putData('addresses', dataAddress).
     subscribe({
       complete : () => {},
@@ -235,7 +244,6 @@ export class EditCustomerAddressComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.Success = 'Address Updated successfully'
-        this.addressType = "";
         this.streetNumber = "";
         this.streetName = "";
         this.cityID = "";

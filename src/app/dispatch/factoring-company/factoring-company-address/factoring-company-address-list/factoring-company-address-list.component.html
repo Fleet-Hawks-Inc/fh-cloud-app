@@ -36,11 +36,11 @@
                                     <span class="input-group-prepend positionsta">
                                         <span class="input-group-text"><i class="fas fa-search"></i></span>
                                     </span>
-                                    <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="factoring-companyID"
-                                        name="factoring-companyID">
+                                    <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="factoringCompanyID"
+                                        name="factoringCompanyID">
                                         <optgroup label="">
-                                            <option *ngFor="let fCompany of factoringCompany" value="{{ fCompany.factoring-companyID }}">
-                                                {{ fCompany.factoring-companyName }}</option>
+                                            <option *ngFor="let fCompany of factoringCompany" value="{{ fCompany.factoringCompanyID }}">
+                                                {{ fCompany.factoringCompanyName }}</option>
                                         </optgroup>
                                     </select>
                                 </div>
@@ -79,13 +79,13 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let address of addresses">
-                                        <td>{{address.stNo}}</td>
-                                        <td>{{address.stName}}</td>
-                                        <td>{{address.city}}</td>
-                                        <td>{{address.state}}</td>
-                                        <td>{{address.zipCode}}</td>
-                                        <td>{{address.country}}</td>
-                                        <td><a routerLink="dispatch/factoring-company/factoring-company-address/Edit-Factoring-Company-Address/{{address.addressID}}">Edit</a>
+                                        <td>{{address.streetNumber}}</td>
+                                        <td>{{address.streetName}}</td>
+                                        <td>{{cityName}}</td>
+                                        <td>{{stateName}}</td>
+                                        <td>{{address.addressZip}}</td>
+                                        <td>{{countryName}}</td>
+                                        <td><a routerLink="/dispatch/factoring-company/factoring-company-address/Edit-Factoring-Company-Address/{{address.addressID}}">Edit</a>
                                         </td>
                                         <td><a [routerLink]="" (click)="deleteAddress(address.addressID)">Delete</a>
                                         </td>

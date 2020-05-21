@@ -79,13 +79,13 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let address of addresses">
-                                        <td>{{address.stNo}}</td>
-                                        <td>{{address.stName}}</td>
-                                        <td>{{address.city}}</td>
-                                        <td>{{address.state}}</td>
-                                        <td>{{address.zipCode}}</td>
-                                        <td>{{address.country}}</td>
-                                        <td><a routerLink="dispatch/shipper/shipper-address/Edit-Shipper-Address/{{address.addressID}}">Edit</a>
+                                        <td>{{address.streetNumber}}</td>
+                                        <td>{{address.streetName}}</td>
+                                        <td>{{cityName}}</td>
+                                        <td>{{stateName}}</td>
+                                        <td>{{address.addressZip}}</td>
+                                        <td>{{countryName}}</td>
+                                        <td><a routerLink="/dispatch/shipper/shipper-address/Edit-Shipper-Address/{{address.addressID}}">Edit</a>
                                         </td>
                                         <td><a [routerLink]="" (click)="deleteAddress(address.addressID)">Delete</a>
                                         </td>

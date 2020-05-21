@@ -53,7 +53,7 @@ const routes: Routes = [
       { path: "Edit-Shipper/:shipperID", component: EditShipperComponent },
       { path: "Shippers-List", component: ShipperListComponent },
       { path: "Shipper-Address-List", component: ShipperAddressListComponent },
-      { path: "Edit-Shipper-Address", component: EditShipperAddressComponent }
+      { path: "shipper-address/Edit-Shipper-Address/:addressID", component: EditShipperAddressComponent }
     ]
   },
   {
@@ -63,7 +63,7 @@ const routes: Routes = [
       { path: "Edit-Customer/:customerID", component: EditCustomerComponent},
       { path: "Customers-List", component: CustomersComponent },
       { path: "Customer-Address-List", component: CustomerAddressListComponent },
-      { path: "Edit-Customer-Address", component: EditCustomerAddressComponent }
+      { path: "customer-address/Edit-Customer-Address/:addressID", component: EditCustomerAddressComponent }
     ]
   },
   {
@@ -73,7 +73,7 @@ const routes: Routes = [
       { path: "Edit-Receiver/:receiverID", component: EditReceiverComponent},
       { path: "Receivers-List", component: ReceiversComponent },
       { path: "Receiver-Address-List", component: ReceiverAddressListComponent },
-      { path: "Edit-Receiver-Address", component: EditReceiverAddressComponent }
+      { path: "receiver-address/Edit-Receiver-Address/:addressID", component: EditReceiverAddressComponent }
     ]
   },
   {
@@ -83,7 +83,7 @@ const routes: Routes = [
       { path: "Edit-Factoring-Company/:factoringCompanyID", component: EditFactoringCompanyComponent},
       { path: "Factoring-Company-List", component: FactoringCompanyListComponent },
       { path: "Factoring-Company-Address-List", component: FactoringCompanyAddressListComponent},
-      { path: "Edit-Factoring-Company-Address", component: EditFactoringCompanyAddressComponent }
+      { path: "factoring-company-address/Edit-Factoring-Company-Address/:addressID", component: EditFactoringCompanyAddressComponent }
     ]
   },
   {
