@@ -26,7 +26,7 @@ export class AddReceiverComponent implements OnInit {
 
 
   /********** Form Fields ***********/
-  receiverName = "";
+  name = "";
   receiverAddress = {
     streetNumber : "",
     streetName : "",
@@ -178,7 +178,7 @@ export class AddReceiverComponent implements OnInit {
     this.hasSuccess = false;
 
     const dataReceiver = {
-      name: this.receiverName,
+      name: this.name,
       phone: this.phone,
       fax: this.fax,
       email: this.email,
@@ -225,7 +225,7 @@ export class AddReceiverComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.Success = 'Receiver Added successfully';
-        this.receiverName = '';
+        this.name = '';
         this.phone = '';
         this.fax = '';
         this.email = '';
