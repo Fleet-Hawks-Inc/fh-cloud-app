@@ -22,7 +22,7 @@ export class FactoringCompanyListComponent implements OnInit {
   }
 
   fetchFactoringCompany() {
-    this.apiService.getData('factoringCompany')
+    this.apiService.getData('factoringCompanies')
         .subscribe({
           complete: () => {
             this.initDataTable();
@@ -43,7 +43,7 @@ export class FactoringCompanyListComponent implements OnInit {
           }
           /******************************/
 
-    this.apiService.deleteData('factoringCompany/' + factoringCompanyID)
+    this.apiService.deleteData('factoringCompanies/' + factoringCompanyID)
         .subscribe((result: any) => {
           this.fetchFactoringCompany();
         });

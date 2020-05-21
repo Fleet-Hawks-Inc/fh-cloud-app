@@ -16,13 +16,41 @@ export class ReceiverAddressListComponent implements OnInit {
   addresses = [];
   receivers = [];
   receiverID = "";
+  countries = [];
+  states = [];
+  cities = [];
+  countryName = "";
+  cityName = "";
+  stateName = "";
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.fetchreceivers();
     this.getAddress();
+    this.fetchCountries();
+  }
+  fetchCountries(){
+    this.apiService.getData('countries')
+      .subscribe((result: any) => {
+        this.countries = result.Items;
+      });
+  }
+  getStates(){
+    this.apiService.getData('states/country/' + this.addresses[0].countryID)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+        this.countryName = this.countries.filter(country => country.countryID == this.addresses[0].countryID)[0].countryName;
+       this.stateName = this.states.filter(state => state.stateID == this.addresses[0].stateID)[0].stateName;
+      });
   }
 
+  getCities(){
+    this.apiService.getData('cities/state/' + this.addresses[0].stateID)
+      .subscribe((result: any) => {
+        this.cities = result.Items;
+        this.cityName = this.cities.filter(city => city.cityID == this.addresses[0].cityID)[0].cityName;
+      });
+ }
   fetchreceivers() {
     this.apiService.getData("receivers").subscribe((result: any) => {
       this.receivers = result.Items;
@@ -30,15 +58,8 @@ export class ReceiverAddressListComponent implements OnInit {
     //console.log(this.drivers);
   }
 
-  // getAddress() {
-  //   this.apiService.getData(`eventLogs/HOSSummary?userName=${this.userName}&fromDate=${from}&toDate=${to}`).subscribe((result: any) => {
-  //     this.addresses = result;
-  //   });
-  //   console.log(this.addresses);
-  // }
-
   getAddress() {
-    this.apiService.getData('addresses?docID=${this.receiverID}')
+    this.apiService.getData(`addresses/document/${this.receiverID}`)
         .subscribe({
           complete: () => {
             this.initDataTable();
@@ -47,6 +68,8 @@ export class ReceiverAddressListComponent implements OnInit {
           next: (result: any) => {
             console.log(result);
             this.addresses = result.Items;
+            this.getStates();
+            this.getCities();
           },
         });
   }

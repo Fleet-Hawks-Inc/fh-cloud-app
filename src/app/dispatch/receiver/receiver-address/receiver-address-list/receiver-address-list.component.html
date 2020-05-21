@@ -40,7 +40,7 @@
                                         name="receiverID">
                                         <optgroup label="">
                                             <option *ngFor="let receiver of receivers" value="{{ receiver.receiverID }}">
-                                                {{ receiver.receiverName }}</option>
+                                                {{ receiver.name }}</option>
                                         </optgroup>
                                     </select>
                                 </div>
@@ -79,13 +79,13 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let address of addresses">
-                                        <td>{{address.stNo}}</td>
-                                        <td>{{address.stName}}</td>
-                                        <td>{{address.city}}</td>
-                                        <td>{{address.state}}</td>
-                                        <td>{{address.zipCode}}</td>
-                                        <td>{{address.country}}</td>
-                                        <td><a routerLink="dispatch/receiver/receiver-address/Edit-Receiver-Address/{{address.addressID}}">Edit</a></td>
+                                        <td>{{address.streetNumber}}</td>
+                                        <td>{{address.streetName}}</td>
+                                        <td>{{cityName}}</td>
+                                        <td>{{stateName}}</td>
+                                        <td>{{address.addressZip}}</td>
+                                        <td>{{countryName}}</td>
+                                        <td><a routerLink="/dispatch/receiver/receiver-address/Edit-Receiver-Address/{{address.addressID}}">Edit</a></td>
                                         <td><a [routerLink]="" (click)="deleteAddress(address.addressID)">Delete</a>
                                         </td>
                                     </tr>

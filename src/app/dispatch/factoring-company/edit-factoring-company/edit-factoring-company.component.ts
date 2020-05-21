@@ -20,7 +20,7 @@ declare var $: any;
 })
 export class EditFactoringCompanyComponent implements OnInit {
 
-  title = 'Add Factoring Company';
+  title = 'Edit Factoring Company';
   errors = {};
   form;
   concatArrayKeys = '';
@@ -52,7 +52,7 @@ export class EditFactoringCompanyComponent implements OnInit {
     });
   }
   fetchFactoringCompany(){
-    this.apiService.getData('factoring-company/' + this.factoringCompanyID)
+    this.apiService.getData('factoringCompanies/' + this.factoringCompanyID)
     .subscribe((result: any) => {
       //console.log(result);
       result = result.Items[0];
@@ -80,7 +80,7 @@ export class EditFactoringCompanyComponent implements OnInit {
      console.log("Factoring Company Data",dataFactoringCompany);
 
 
-     this.apiService.putData('factoring-company', dataFactoringCompany).
+     this.apiService.putData('factoringCompanies', dataFactoringCompany).
     subscribe({
       complete : () => {},
       error : (err) =>  {

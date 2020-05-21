@@ -20,7 +20,7 @@ export class EditCustomerComponent implements OnInit {
 
   /********** Form Fields ***********/
   customerID = "";
-  customerName = "";
+  name = "";
   customerCompanyNo = "";
   phone = "";
   email = "";
@@ -54,7 +54,7 @@ export class EditCustomerComponent implements OnInit {
     .subscribe((result: any) => {
       result = result.Items[0];
 
-      this.customerName = result.name;
+      this.name = result.name;
       this.phone = result.phone;
       this.fax = result.fax;
       this.email = result.email;
@@ -70,7 +70,7 @@ export class EditCustomerComponent implements OnInit {
     this.hasSuccess = false;
 
     const dataCustomer = {
-      name: this.customerName,
+      name: this.name,
       phone: this.phone,
       fax: this.fax,
       email: this.email,
@@ -106,7 +106,7 @@ export class EditCustomerComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.Success = 'Customer Updated successfully';
-        this.customerName = '';
+        this.name = '';
         this.phone = '';
         this.fax = '';
         this.email = '';
