@@ -1,11 +1,12 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
 import { ApiService } from "../../../api.service";
-import {BehaviorSubject, combineLatest, from, of, zip} from 'rxjs';
+import {BehaviorSubject, combineLatest, from, Observable, of, zip} from 'rxjs';
 import * as moment from "moment";
 import * as _ from "lodash";
 import {concatAll, concatMap, filter, isEmpty, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
 import {bool} from 'aws-sdk/clients/signer';
+import {ToastrService} from 'ngx-toastr';
 declare var $: any;
 
 @Component({
@@ -57,7 +58,8 @@ export class EditComponent implements OnInit, OnDestroy {
 
 
   constructor(private route: ActivatedRoute,
-              private apiService: ApiService) {}
+              private apiService: ApiService,
+              private toastr: ToastrService) {}
 
   ngOnInit() {
     this.userName = this.route.snapshot.params["userName"];
@@ -198,8 +200,19 @@ export class EditComponent implements OnInit, OnDestroy {
   isTimeClashes_() {
     this.timeClash = false;
     //console.log(this.fromTime_.nativeElement.value + ' ' + this.toTime_.nativeElement.value);
+    this.eventType = $('#eventType').val();
     this.fromTime = $('#fromTime').val();
     this.toTime = $('#toTime').val();
+
+    if (this.eventType === '' || this.fromTime === '' || this.toTime === '') {
+      this.toastr.error('Error', 'Please Choose Event Type', {
+        timeOut: 3000
+      });
+      return true;
+    }
+
+
+
     /*
     ** Moment Instance
      */
@@ -211,19 +224,25 @@ export class EditComponent implements OnInit, OnDestroy {
     /******************/
 
 
-    /**
-     * First Logic
-     * If The Dates Are Valid From The User
-     */
-    if (!tt.isBetween(iTt, eFt) || !ft.isBetween(iTt, eFt)) {
-      console.log('E2E dates true');
-    }
-    /**
-     * If The Dates Are InValid From The User
-     */
-    else {
-      console.log('E2E dates false');
-    }
+
+
+    // /*********E2E LOGIC *************/
+    //
+    // /**
+    //  * First Logic
+    //  * If The Dates Are Valid From The User
+    //  */
+    // if (!tt.isBetween(iTt, eFt) || !ft.isBetween(iTt, eFt)) {
+    //   console.log('E2E dates true');
+    // }
+    // /**
+    //  * If The Dates Are InValid From The User
+    //  */
+    // else {
+    //   console.log('E2E dates false');
+    // }
+    //
+    // /*********************************/
 
 
     /**
@@ -232,7 +251,8 @@ export class EditComponent implements OnInit, OnDestroy {
      */
 
     zip(this.startTimes , this.endTimes)
-      .subscribe((v) => {
+      .subscribe(
+        (v) => {
         if (moment(v[0] , 'hh:mm:ss').isValid() && moment(v[1] , 'hh:mm:ss').isValid()) {
 
           /*
@@ -248,9 +268,45 @@ export class EditComponent implements OnInit, OnDestroy {
             }
       });
 
-    console.log('V2V ' +  ((this.timeClash) ? 'false': 'true'));
+    if (this.timeClash) {
+      this.toastr.error('Error', 'Time Is Clashing With Other Events', {
+        timeOut: 3000
+      });
+    }
+
+
+    return this.timeClash;
 
   }
+
+  addEvent() {
+    //check if entered time clashes with others
+
+    if (!this.isTimeClashes_()) {
+      this.toastr.success('Success', 'Event Successfully Saved', {
+        timeOut: 3000
+      });
+
+      const data = {
+        HOSEventDescription: this.eventType,
+        fromTime: this.fromTime,
+        toTime: this.toTime,
+        eventDate: this.selectedDate,
+        userName: this.userName,
+        timeStamp : 'create'
+      };
+
+      this.apiService
+        .postData('eventLogs/HOSAddAndModify/', data)
+        .subscribe((result: any) => {
+        });
+
+      $('#editEventModal').modal('hide');
+
+    }
+
+  }
+
 
 
 
@@ -393,29 +449,13 @@ export class EditComponent implements OnInit, OnDestroy {
       });
   }
 
-  editModal(from, to) {
+  editModal() {
     $(document).ready(function () {
-      $("#editEventModal").modal("show");
+      $('#editEventModal').modal('show');
     });
   }
 
-  addEvent() {
-    //check if entered time clashes with others
-    this.isTimeClashes_();
-    let data = {
-      HOSEventDescription: this.eventType,
-      fromTime: this.fromTime_,
-      toTime: this.toTime_,
-      eventDate: this.selectedDate,
-      userName: this.userName,
-      timeStamp : 'create'
-    }
 
-    this.apiService
-    .postData("eventLogs/HOSAddAndModify/", data)
-    .subscribe((result: any) => {
-    });
-  }
 
 
 
@@ -441,7 +481,7 @@ export class EditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sharedData$.unsubscribe();
+    //this.sharedData$.unsubscribe();
   }
 
 
