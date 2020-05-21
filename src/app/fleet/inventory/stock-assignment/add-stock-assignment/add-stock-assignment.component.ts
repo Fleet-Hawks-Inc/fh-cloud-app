@@ -65,11 +65,12 @@ export class AddStockAssignmentComponent implements OnInit {
       );
       return false;
     }
-
-    this.selectedItems.push({
-      itemID: this.itemID,
-      quantity: this.quantity,
-    });
+    if(this.itemID && this.quantity){
+      this.selectedItems.push({
+        itemID: this.itemID,
+        quantity: this.quantity,
+      });
+    }
 
     //update total quantity
     this.totalQuantity += this.quantity;
@@ -124,6 +125,10 @@ export class AddStockAssignmentComponent implements OnInit {
         this.quantity = "";
         this.hasSuccess = true;
         this.Success = "Stock Assignment Added successfully";
+
+        this.selectedItems = [];
+        this.totalQuantity = 0;
+        this.itemID = '';
       },
     });
   }

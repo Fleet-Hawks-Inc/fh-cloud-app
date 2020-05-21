@@ -32,6 +32,7 @@ export class EditAssetComponent implements OnInit {
   GVWR = "";
   GAWR = "";
   license = {
+    countryID: '',
     stateID: "",
     plateNumber: "",
   };
@@ -115,7 +116,7 @@ export class EditAssetComponent implements OnInit {
       .getData("assets/" + this.assetID)
       .subscribe((result: any) => {
         result = result.Items[0];
-
+       // console.log(result);
         this.assetName = result.assetName;
         this.VIN = result.VIN;
         this.assetType = result.assetType;
@@ -126,6 +127,7 @@ export class EditAssetComponent implements OnInit {
         this.axle = result.axle;
         this.GVWR = result.GVWR;
         this.GAWR = result.GAWR;
+        this.license.countryID = result.license.countryID;
         this.license.stateID = result.license.stateID;
         this.license.plateNumber = result.license.plateNumber;
         this.ownerShip = result.ownerShip;

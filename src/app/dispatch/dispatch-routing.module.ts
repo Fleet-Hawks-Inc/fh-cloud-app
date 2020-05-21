@@ -41,6 +41,7 @@ import { AddDocumentsComponent } from './document/add-documents/add-documents.co
 import { EditDocumentsComponent } from './document/edit-documents/edit-documents.component';
 import { DocumentsComponent } from './document/documents/documents.component';
 
+import {CreateLoadComponent} from "./create-load/create-load.component";
 
 
 
@@ -116,6 +117,10 @@ const routes: Routes = [
       { path: "Edit-Document/:documentID", component: EditDocumentsComponent},
       { path: "Document-List", component: DocumentsComponent }
     ]
+  },
+  {
+    path: "create-load",
+    component: CreateLoadComponent
   }
 ];
 

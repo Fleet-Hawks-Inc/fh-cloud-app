@@ -11,7 +11,7 @@ declare var $: any;
 })
 export class GeofenceListComponent implements OnInit {
 
-  title = 'GeoFence List';
+  title = 'Geofence List';
   geofences;
 
   constructor(private apiService: ApiService,

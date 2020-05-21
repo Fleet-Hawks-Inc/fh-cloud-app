@@ -12,7 +12,7 @@ declare var $: any;
   styleUrls: ['./edit-service-program.component.css']
 })
 export class EditServiceProgramComponent implements OnInit, AfterViewInit {
-  title = 'Edit Yard';
+  title = 'Edit Service Program';
 
   errors = {};
   form;

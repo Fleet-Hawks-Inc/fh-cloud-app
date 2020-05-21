@@ -13,10 +13,18 @@
         <h2>{{ title }}</h2>
 
         <div class="right-wrapper text-right">
-          <ol class="breadcrumbs">
+          <ol class="breadcrumbs pr-3">
             <li>
               <a routerLink="">
                 <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li>
+              <span>Inventory</span>
+            </li>
+            <li>
+              <a routerLink="/fleet/inventory/stock-assignment/Stock-Assignment-List">
+                Stock Assignment List
               </a>
             </li>
             <li>
@@ -26,7 +34,7 @@
         </div>
       </header>
 
-      <section class="card mb-4">
+      <!-- <section class="card mb-4">
         <div class="card-body">
           <h2 class="card-title mt-3 pull-left">{{ title }}</h2>
           <div class="pull-right">
@@ -52,7 +60,7 @@
             >
           </div>
         </div>
-      </section>
+      </section> -->
 
       <div class="row">
         <div class="col">
@@ -127,7 +135,7 @@
                       </div>
                       <div class="col-lg-3">
                         <button
-                          class="btn btn-dark mar-top-asg-stock-btn"
+                          class="btn btn-dark mar-top-asg-stock-btn add-btnn"
                           (click)="addItem()"
                         >
                           ADD

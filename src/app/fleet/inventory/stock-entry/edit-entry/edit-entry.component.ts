@@ -11,7 +11,7 @@ declare var $: any;
   styleUrls: ["./edit-entry.component.css"],
 })
 export class EditEntryComponent implements OnInit {
-  title = "Add Stock Entry";
+  title = "Edit Stock Entry";
 
   /********** Form Fields ***********/
   items = [];

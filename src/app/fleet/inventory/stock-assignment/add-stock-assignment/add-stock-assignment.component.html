@@ -20,13 +20,21 @@
               </a>
             </li>
             <li>
+              <span>Inventory</span>
+            </li>
+            <li>
+              <a routerLink="/fleet/inventory/stock-assignment/Stock-Assignment-List">
+                Stock Assignment List
+              </a>
+            </li>
+            <li>
               <span>{{ title }}</span>
             </li>
           </ol>
         </div>
       </header>
 
-      <section class="card mb-4">
+      <!-- <section class="card mb-4">
         <div class="card-body">
           <h2 class="card-title mt-3 pull-left">{{ title }}</h2>
           <div class="pull-right">
@@ -52,13 +60,13 @@
             >
           </div>
         </div>
-      </section>
+      </section> -->
 
       <div class="row">
         <div class="col">
           <section class="card">
             <header class="card-header">
-              <h2 class="card-title">Stock Assignment Form</h2>
+              <h2 class="card-title">Add Stock Assignment</h2>
             </header>
             <div class="card-body">
               <div class="row">
@@ -119,7 +127,7 @@
                         />
                       </div>
                       <div class="col-lg-3">
-                        <button class="btn btn-dark mar-top-asg-stock-btn" (click)="addItem()">
+                        <button class="btn btn-dark mar-top-asg-stock-btn add-btnn" (click)="addItem()">
                           ADD
                         </button>
                       </div>
