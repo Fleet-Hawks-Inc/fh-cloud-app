@@ -202,20 +202,20 @@
                         >Receiver Address</label
                       >
                       <select
-                      data-plugin-selectTwo
-                      class="form-control populate"
-                      name="receiverInfo.addressID"
-                      [(ngModel)]="receiverInfo.addressID"
-                    >
-                      <optgroup label="">
-                        <option
-                          *ngFor="let address of receiverAddress"
-                          value="{{ address.addressID }}"
-                          >{{ address.streetName }}
-                          {{ address.streetNumber }}</option
-                        >
-                      </optgroup>
-                    </select>
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="receiverInfo.addressID"
+                        [(ngModel)]="receiverInfo.addressID"
+                      >
+                        <optgroup label="">
+                          <option
+                            *ngFor="let address of receiverAddress"
+                            value="{{ address.addressID }}"
+                            >{{ address.streetName }}
+                            {{ address.streetNumber }}</option
+                          >
+                        </optgroup>
+                      </select>
                     </div>
                     <div class="col-lg-2">
                       <a
@@ -244,13 +244,15 @@
                       <select
                         data-plugin-selectTwo
                         class="form-control populate"
+                        name="mapAssets.vehicleID"
+                        [(ngModel)]="mapAssets.vehicleID"
                       >
                         <optgroup label="">
-                          <option value="1">Ford F-650</option>
-                          <option value="2">Peterbilt 386</option>
-                          <option value="2">G-3 Resources LLC Truck</option>
-                          <option value="2">7400 SBA Dump Truck</option>
-                          <option value="2">Kenworth T660</option>
+                          <option
+                            *ngFor="let vehicle of vehicles"
+                            value="{{ vehicle.vehicleID }}"
+                            >{{ vehicle.vehicleName }}</option
+                          >
                         </optgroup>
                       </select>
                     </div>
@@ -265,16 +267,14 @@
                       <select
                         data-plugin-selectTwo
                         class="form-control populate"
+                        (change)="assetChange($event)"
                       >
                         <optgroup label="">
-                          <option value="2">Asset 1</option>
-                          <option value="2">Asset 2</option>
-                          <option value="2">Asset 3</option>
-                          <option value="1">Asset 4</option>
-                          <option value="2">Asset 5</option>
-                          <option value="2">Asset 6</option>
-                          <option value="2">Asset 7</option>
-                          <option value="2">Asset 8</option>
+                          <option
+                            *ngFor="let asset of assets"
+                            value="{{ asset.assetID }}"
+                            >{{ asset.assetName }}</option
+                          >
                         </optgroup>
                       </select>
                       <p class="mb-0">Selected Assets</p>
@@ -331,16 +331,14 @@
                       <select
                         data-plugin-selectTwo
                         class="form-control populate"
+                        (change)="driverChange($event)"
                       >
                         <optgroup label="">
-                          <option value="2">Brista</option>
-                          <option value="2">Carry</option>
-                          <option value="2">Laila</option>
-                          <option value="2">Manjot</option>
-                          <option value="2">Heera</option>
-                          <option value="2">Sagar</option>
-                          <option value="1">Kristof</option>
-                          <option value="2">Harry</option>
+                          <option
+                            *ngFor="let driver of drivers"
+                            value="{{ driver.driverID }}"
+                            >{{ driver.firstName }} {{ driver.lastName }}</option
+                          >
                         </optgroup>
                       </select>
                       <p class="mb-0">Selected Drivers</p>

@@ -25,13 +25,13 @@ export class CreateLoadComponent implements OnInit {
     receiverID: "",
     addressID: ""
   };
-  mapAssets: {
+  mapAssets = {
     vehicleID: "",
     assets: [],
     drivers: []
   };
-  loadType: "";
-  remperatureRequired : {
+  loadType = "";
+  remperatureRequired = {
     fromTemp: "",
     toTemp: ""
   };
@@ -43,8 +43,8 @@ export class CreateLoadComponent implements OnInit {
     pointOfContact: "",
     cargoValue: ""
   }
-  loadDetails: [];
-  dropDetails: [];
+  loadDetails = [];
+  dropDetails = [];
 
 
 
@@ -56,6 +56,8 @@ export class CreateLoadComponent implements OnInit {
   receivers = [];
   receiverAddress = [];
   drivers = [];
+  vehicles = [];
+  assets = [];
 
   constructor(private apiService: ApiService) { }
 
@@ -64,6 +66,26 @@ export class CreateLoadComponent implements OnInit {
     this.fetchShippers();
     this.fetchReceivers();
     this.fetchDrivers();
+    this.fetchVehicles();
+    this.fetchAssets();
+  }
+
+  fetchVehicles(){
+    this.apiService.getData('vehicles')
+    .subscribe((result: any) => {
+      this.vehicles = result.Items;
+    });
+  }
+
+  fetchAssets(){
+    this.apiService.getData('assets')
+    .subscribe((result: any) => {
+      this.assets = result.Items;
+    });
+  }
+
+  assetChange(val){
+    console.log(val);
   }
 
   fetchCustomers(){
