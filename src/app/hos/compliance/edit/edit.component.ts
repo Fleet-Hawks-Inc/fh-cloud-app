@@ -1,12 +1,11 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { Router, ActivatedRoute } from "@angular/router";
 import { ApiService } from "../../../api.service";
-import {BehaviorSubject, combineLatest, from, Observable, of, zip} from 'rxjs';
+import {BehaviorSubject, from, zip} from 'rxjs';
+import {map, shareReplay, tap} from 'rxjs/operators';
+import {  ActivatedRoute } from "@angular/router";
+// import {ToastrService} from 'ngx-toastr';
 import * as moment from "moment";
 import * as _ from "lodash";
-import {concatAll, concatMap, filter, isEmpty, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
-import {bool} from 'aws-sdk/clients/signer';
-import {ToastrService} from 'ngx-toastr';
 declare var $: any;
 
 @Component({
@@ -46,7 +45,7 @@ export class EditComponent implements OnInit, OnDestroy {
    * New Vars
    *
    ***/
-    timeClash : bool = true;
+    timeClash : boolean = true;
     initialDayTime = '';
     endDayTime = '';
     sharedData$;
@@ -58,8 +57,7 @@ export class EditComponent implements OnInit, OnDestroy {
 
 
   constructor(private route: ActivatedRoute,
-              private apiService: ApiService,
-              private toastr: ToastrService) {}
+              private apiService: ApiService) {}
 
   ngOnInit() {
     this.userName = this.route.snapshot.params["userName"];
@@ -205,9 +203,9 @@ export class EditComponent implements OnInit, OnDestroy {
     this.toTime = $('#toTime').val();
 
     if (this.eventType === '' || this.fromTime === '' || this.toTime === '') {
-      this.toastr.error('Error', 'Please Choose Event Type', {
-        timeOut: 3000
-      });
+      // this.toastr.error('Error', 'Please Choose Event Type', {
+      //   timeOut: 3000
+      // });
       return true;
     }
 
@@ -269,9 +267,9 @@ export class EditComponent implements OnInit, OnDestroy {
       });
 
     if (this.timeClash) {
-      this.toastr.error('Error', 'Time Is Clashing With Other Events', {
-        timeOut: 3000
-      });
+      // this.toastr.error('Error', 'Time Is Clashing With Other Events', {
+      //   timeOut: 3000
+      // });
     }
 
 
@@ -283,9 +281,9 @@ export class EditComponent implements OnInit, OnDestroy {
     //check if entered time clashes with others
 
     if (!this.isTimeClashes_()) {
-      this.toastr.success('Success', 'Event Successfully Saved', {
-        timeOut: 3000
-      });
+      // this.toastr.success('Success', 'Event Successfully Saved', {
+      //   timeOut: 3000
+      // });
 
       const data = {
         HOSEventDescription: this.eventType,
