@@ -14,9 +14,120 @@ declare var $: any;
 export class CreateLoadComponent implements OnInit {
   title = "Create Load";
   activeTab = "general";
-  constructor() { }
+
+  //From props
+  customerID = "";
+  shipperInfo = {
+    shipperID: "",
+    addressID: ""
+  };
+  receiverInfo = {
+    receiverID: "",
+    addressID: ""
+  };
+  mapAssets = {
+    vehicleID: "",
+    assets: [],
+    drivers: []
+  };
+  loadType = "";
+  remperatureRequired = {
+    fromTemp: "",
+    toTemp: ""
+  };
+  deliveryTime: {
+    date: "",
+    time: "",
+    estimatedLengthRequired: "",
+    estimatedWeightRequired: "",
+    pointOfContact: "",
+    cargoValue: ""
+  }
+  loadDetails = [];
+  dropDetails = [];
+
+
+
+
+  //for dropdowns
+  customers = [];
+  shippers = [];
+  shipperAddress = [];
+  receivers = [];
+  receiverAddress = [];
+  drivers = [];
+  vehicles = [];
+  assets = [];
+
+  constructor(private apiService: ApiService) { }
 
   ngOnInit() {
+    this.fetchCustomers();
+    this.fetchShippers();
+    this.fetchReceivers();
+    this.fetchDrivers();
+    this.fetchVehicles();
+    this.fetchAssets();
+  }
+
+  fetchVehicles(){
+    this.apiService.getData('vehicles')
+    .subscribe((result: any) => {
+      this.vehicles = result.Items;
+    });
+  }
+
+  fetchAssets(){
+    this.apiService.getData('assets')
+    .subscribe((result: any) => {
+      this.assets = result.Items;
+    });
+  }
+
+  assetChange(val){
+    console.log(val);
+  }
+
+  fetchCustomers(){
+    this.apiService.getData('customers')
+    .subscribe((result: any) => {
+      this.customers = result.Items;
+    });
+  }
+
+  fetchShippers(){
+    this.apiService.getData('shippers')
+    .subscribe((result: any) => {
+      this.shippers = result.Items;
+    });
+  }
+
+  fetchReceivers(){
+    this.apiService.getData('receivers')
+    .subscribe((result: any) => {
+      this.receivers = result.Items;
+    });
+  }
+
+  fetchDrivers(){
+    this.apiService.getData('users/userType/driver')
+      .subscribe((result: any) => {
+        this.drivers = result.Items;
+      });
+  }
+
+  getShipperAddress(){
+    this.apiService.getData(`addresses/document/${this.shipperInfo.shipperID}`)
+      .subscribe((result: any) => {
+        this.shipperAddress = result.Items;
+      });
+  }
+
+  getReceiverAddress(){
+    this.apiService.getData(`addresses/document/${this.receiverInfo.receiverID}`)
+      .subscribe((result: any) => {
+        this.receiverAddress = result.Items;
+      });
   }
 
   general() {
