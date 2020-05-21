@@ -6,6 +6,7 @@ import {  ActivatedRoute } from "@angular/router";
 // import {ToastrService} from 'ngx-toastr';
 import * as moment from "moment";
 import * as _ from "lodash";
+import {split} from 'ts-node';
 declare var $: any;
 
 @Component({
@@ -53,6 +54,8 @@ export class EditComponent implements OnInit, OnDestroy {
     endTimes : BehaviorSubject <any[]> = new BehaviorSubject<any[]>([]);
     @ViewChild('fromtime_', {static: false}) fromTime_: ElementRef;
     @ViewChild('toTime_', {static: false}) toTime_: ElementRef;
+    fromTimeStamp;
+    toTimeStamp;
 
 
 
@@ -280,7 +283,29 @@ export class EditComponent implements OnInit, OnDestroy {
   addEvent() {
     //check if entered time clashes with others
 
+    //console.log(this.selectedDate);
+
     if (!this.isTimeClashes_()) {
+
+      //  /**
+     //  *Unix
+     // */
+     //  moment(explodedDate[2] + '-' + explodedDate[1] + '-' + explodedDate[0] + ' ' + this.fromTime).format('X');
+     //
+     //  /**
+     //   *With MilliSecconds
+     //   */
+     //  moment(explodedDate[2] + '-' + explodedDate[1] + '-' + explodedDate[0] + ' ' + this.fromTime).unix('x');
+
+      const explodedDate = this.selectedDate.split('-');
+
+      this.fromTimeStamp = moment(explodedDate[2] + '-' + explodedDate[1] + '-' + explodedDate[0] + ' ' + this.fromTime).unix();
+
+      this.toTimeStamp = moment(explodedDate[2] + '-' + explodedDate[1] + '-' + explodedDate[0] + ' ' + this.toTime).unix();
+
+      console.log('from unix timestamp ' + this.fromTimeStamp);
+      console.log('to unix timestamp ' + this.toTimeStamp);
+
       // this.toastr.success('Success', 'Event Successfully Saved', {
       //   timeOut: 3000
       // });
@@ -291,15 +316,16 @@ export class EditComponent implements OnInit, OnDestroy {
         toTime: this.toTime,
         eventDate: this.selectedDate,
         userName: this.userName,
-        timeStamp : 'create'
+        fromTimeStamp : this.fromTimeStamp,
+        toTimeStamp: this.toTimeStamp
       };
 
-      this.apiService
-        .postData('eventLogs/HOSAddAndModify/', data)
-        .subscribe((result: any) => {
-        });
+      // this.apiService
+      //   .postData('eventLogs/HOSAddAndModify/', data)
+      //   .subscribe((result: any) => {
+      //   });
 
-      $('#editEventModal').modal('hide');
+     // $('#editEventModal').modal('hide');
 
     }
 
