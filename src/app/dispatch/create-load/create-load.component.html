@@ -65,1022 +65,1051 @@
             <div class="card-body">
               <form class="form-horizontal form-bordered" method="get">
                 <div class="card-body" id="general">
+                  <div class="form-group row">
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Customer Name</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="customerID"
+                        [(ngModel)]="customerID"
+                      >
+                        <optgroup label="">
+                          <option
+                            *ngFor="let customer of customers"
+                            value="{{ customer.customerID }}"
+                            >{{ customer.name }}</option
+                          >
+                        </optgroup>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Shipper Info</label
+                      >
+                    </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Shipper Name</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="shipperInfo.shipperID"
+                        [(ngModel)]="shipperInfo.shipperID"
+                        (change)="getShipperAddress()"
+                      >
+                        <optgroup label="">
+                          <option
+                            *ngFor="let shipper of shippers"
+                            value="{{ shipper.shipperID }}"
+                            >{{ shipper.shipperName }}</option
+                          >
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-2">
+                      <a
+                        class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
 
-                <div class="form-group row">
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Customer Name</label
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Shipper Address</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="shipperInfo.addressID"
+                        [(ngModel)]="shipperInfo.addressID"
+                      >
+                        <optgroup label="">
+                          <option
+                            *ngFor="let address of shipperAddress"
+                            value="{{ address.addressID }}"
+                            >{{ address.streetName }}
+                            {{ address.streetNumber }}</option
+                          >
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-2">
+                      <a
+                        class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Receiver Info</label
+                      >
+                    </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Receiver Name</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="receiverInfo.receiverID"
+                        [(ngModel)]="receiverInfo.receiverID"
+                        (change)="getReceiverAddress()"
+                      >
+                        <optgroup label="">
+                          <option
+                            *ngFor="let receiver of receivers"
+                            value="{{ receiver.receiverID }}"
+                            >{{ receiver.name }}</option
+                          >
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-2">
+                      <a
+                        class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Receiver Address</label
+                      >
+                      <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="receiverInfo.addressID"
+                      [(ngModel)]="receiverInfo.addressID"
                     >
-                    <select data-plugin-selectTwo class="form-control populate">
                       <optgroup label="">
-                        <option value="1">Kristof</option>
-                        <option value="2">Harry</option>
-                        <option value="2">Brista</option>
-                        <option value="2">Carry</option>
-                        <option value="2">Laila</option>
-                        <option value="2">Manjot</option>
-                        <option value="2">Heera</option>
-                        <option value="2">Sagar</option>
+                        <option
+                          *ngFor="let address of receiverAddress"
+                          value="{{ address.addressID }}"
+                          >{{ address.streetName }}
+                          {{ address.streetNumber }}</option
+                        >
                       </optgroup>
                     </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label text-lg-right text-dark text-4 pt-2"
-                      for="inputDefault"
-                      >Shipper Info</label
-                    >
-                  </div>
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Shipper Name</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">Kristof</option>
-                        <option value="2">Harry</option>
-                        <option value="2">Brista</option>
-                        <option value="2">Carry</option>
-                        <option value="2">Laila</option>
-                        <option value="2">Manjot</option>
-                        <option value="2">Heera</option>
-                        <option value="2">Sagar</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-2">
-                    <a
-                      class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
-                      href="#"
-                      ><i class="fas fa-plus"></i
-                    ></a>
+                    </div>
+                    <div class="col-lg-2">
+                      <a
+                        class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
                   </div>
 
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Shipper Address</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">Kingston, Toronto, ON K7L 5K4</option>
-                        <option value="2"
-                          >Crescent Road Vancouver, BC V6T 1Z2</option
-                        >
-                        <option value="2">Crt Brampton ON L6Z 3G4</option>
-                        <option value="2"
-                          >McCallum Ave Regina SK S4S 0S4</option
-                        >
-                        <option value="2"
-                          >80 Washington Street, Hudson MA 1749</option
-                        >
-                        <option value="2"
-                          >101 Sanford Farm Shpg Center, Amsterdam NY
-                          12010</option
-                        >
-                        <option value="2"
-                          >4300 Lakeville Road, Geneseo NY 14454</option
-                        >
-                        <option value="2">288 Larkin, Monroe NY 10950</option>
-                        <option value="2"
-                          >474 Boston Post Road, North Windham CT 6256</option
-                        >
-                        <option value="2"
-                          >1501 Skyland Blvd E, Tuscaloosa AL 35405</option
-                        >
-                        <option value="2"
-                          >1180 Fall River Avenue, Seekonk MA 2771</option
-                        >
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-2">
-                    <a
-                      class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
-                      href="#"
-                      ><i class="fas fa-plus"></i
-                    ></a>
-                  </div>
-                </div>
+                  <div class="form-group row">
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Map Assets</label
+                      >
+                    </div>
 
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label text-lg-right text-dark text-4 pt-2"
-                      for="inputDefault"
-                      >Receiver Info</label
-                    >
-                  </div>
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Receiver Name</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2">Manjot</option>
-                        <option value="2">Heera</option>
-                        <option value="2">Sagar</option>
-                        <option value="1">Kristof</option>
-                        <option value="2">Harry</option>
-                        <option value="2">Brista</option>
-                        <option value="2">Carry</option>
-                        <option value="2">Laila</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-2">
-                    <a
-                      class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
-                      href="#"
-                      ><i class="fas fa-plus"></i
-                    ></a>
-                  </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Vehicle Information</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="1">Ford F-650</option>
+                          <option value="2">Peterbilt 386</option>
+                          <option value="2">G-3 Resources LLC Truck</option>
+                          <option value="2">7400 SBA Dump Truck</option>
+                          <option value="2">Kenworth T660</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-8"></div>
 
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Receiver Address</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2"
-                          >474 Boston Post Road, North Windham CT 6256</option
-                        >
-                        <option value="2"
-                          >1501 Skyland Blvd E, Tuscaloosa AL 35405</option
-                        >
-                        <option value="2"
-                          >1180 Fall River Avenue, Seekonk MA 2771</option
-                        >
-                        <option value="1">Kingston, Toronto, ON K7L 5K4</option>
-                        <option value="2"
-                          >Crescent Road Vancouver, BC V6T 1Z2</option
-                        >
-                        <option value="2">Crt Brampton ON L6Z 3G4</option>
-                        <option value="2"
-                          >McCallum Ave Regina SK S4S 0S4</option
-                        >
-                        <option value="2"
-                          >80 Washington Street, Hudson MA 1749</option
-                        >
-                        <option value="2"
-                          >101 Sanford Farm Shpg Center, Amsterdam NY
-                          12010</option
-                        >
-                        <option value="2"
-                          >4300 Lakeville Road, Geneseo NY 14454</option
-                        >
-                        <option value="2">288 Larkin, Monroe NY 10950</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-2">
-                    <a
-                      class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
-                      href="#"
-                      ><i class="fas fa-plus"></i
-                    ></a>
-                  </div>
-                </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Assets</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">Asset 1</option>
+                          <option value="2">Asset 2</option>
+                          <option value="2">Asset 3</option>
+                          <option value="1">Asset 4</option>
+                          <option value="2">Asset 5</option>
+                          <option value="2">Asset 6</option>
+                          <option value="2">Asset 7</option>
+                          <option value="2">Asset 8</option>
+                        </optgroup>
+                      </select>
+                      <p class="mb-0">Selected Assets</p>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        Asset 1 <i class="fas fa-times"></i>
+                      </button>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        Asset No 2nd <i class="fas fa-times"></i>
+                      </button>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        Asset Number 3 <i class="fas fa-times"></i>
+                      </button>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        4th Asset <i class="fas fa-times"></i>
+                      </button>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        5 No Asset Detail <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                    <div class="col-lg-2">
+                      <a
+                        class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
 
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label text-lg-right text-dark text-4 pt-2"
-                      for="inputDefault"
-                      >Map Assets</label
-                    >
-                  </div>
-
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Vehicle Information</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">Ford F-650</option>
-                        <option value="2">Peterbilt 386</option>
-                        <option value="2">G-3 Resources LLC Truck</option>
-                        <option value="2">7400 SBA Dump Truck</option>
-                        <option value="2">Kenworth T660</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-8"></div>
-
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Assets</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2">Asset 1</option>
-                        <option value="2">Asset 2</option>
-                        <option value="2">Asset 3</option>
-                        <option value="1">Asset 4</option>
-                        <option value="2">Asset 5</option>
-                        <option value="2">Asset 6</option>
-                        <option value="2">Asset 7</option>
-                        <option value="2">Asset 8</option>
-                      </optgroup>
-                    </select>
-                    <p class="mb-0">Selected Assets</p>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      Asset 1 <i class="fas fa-times"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      Asset No 2nd <i class="fas fa-times"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      Asset Number 3 <i class="fas fa-times"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      4th Asset <i class="fas fa-times"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      5 No Asset Detail <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                  <div class="col-lg-2">
-                    <a
-                      class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
-                      href="#"
-                      ><i class="fas fa-plus"></i
-                    ></a>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Drivers</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">Brista</option>
+                          <option value="2">Carry</option>
+                          <option value="2">Laila</option>
+                          <option value="2">Manjot</option>
+                          <option value="2">Heera</option>
+                          <option value="2">Sagar</option>
+                          <option value="1">Kristof</option>
+                          <option value="2">Harry</option>
+                        </optgroup>
+                      </select>
+                      <p class="mb-0">Selected Drivers</p>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        Manjot <i class="fas fa-times"></i>
+                      </button>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        Heera <i class="fas fa-times"></i>
+                      </button>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        Harry <i class="fas fa-times"></i>
+                      </button>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        Sagar <i class="fas fa-times"></i>
+                      </button>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        Laila <i class="fas fa-times"></i>
+                      </button>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        Kristof <i class="fas fa-times"></i>
+                      </button>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        Brista <i class="fas fa-times"></i>
+                      </button>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        Jhon <i class="fas fa-times"></i>
+                      </button>
+                      <button
+                        type="button"
+                        onClick="this.style.visibility= 'hidden';"
+                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                      >
+                        Gurjot <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                    <div class="col-lg-2">
+                      <a
+                        class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
                   </div>
 
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Drivers</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2">Brista</option>
-                        <option value="2">Carry</option>
-                        <option value="2">Laila</option>
-                        <option value="2">Manjot</option>
-                        <option value="2">Heera</option>
-                        <option value="2">Sagar</option>
-                        <option value="1">Kristof</option>
-                        <option value="2">Harry</option>
-                      </optgroup>
-                    </select>
-                    <p class="mb-0">Selected Drivers</p>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      Manjot <i class="fas fa-times"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      Heera <i class="fas fa-times"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      Harry <i class="fas fa-times"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      Sagar <i class="fas fa-times"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      Laila <i class="fas fa-times"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      Kristof <i class="fas fa-times"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      Brista <i class="fas fa-times"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      Jhon <i class="fas fa-times"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onClick="this.style.visibility= 'hidden';"
-                      class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
-                    >
-                      Gurjot <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                  <div class="col-lg-2">
-                    <a
-                      class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
-                      href="#"
-                      ><i class="fas fa-plus"></i
-                    ></a>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Load Type</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">Food</option>
-                        <option value="2">Bakery Load</option>
-                        <option value="2">Stationary</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label text-lg-right text-dark text-4 pt-2"
-                      for="inputDefault"
-                      >Temperature Required</label
-                    >
-                  </div>
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >From</label
-                    >
-                    <input type="text" class="form-control" id="inputDefault" />
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >&nbsp;</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2">°C</option>
-                        <option value="2">°F</option>
-                      </optgroup>
-                    </select>
+                  <div class="form-group row">
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Load Type</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="1">Food</option>
+                          <option value="2">Bakery Load</option>
+                          <option value="2">Stationary</option>
+                        </optgroup>
+                      </select>
+                    </div>
                   </div>
 
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >To</label
-                    >
-                    <input type="text" class="form-control" id="inputDefault" />
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >&nbsp;</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2">°C</option>
-                        <option value="2">°F</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label text-lg-right text-dark text-4 pt-2"
-                      for="inputDefault"
-                      >Delivery Time</label
-                    >
-                  </div>
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Date</label
-                    >
-                    <input
-                      type="text"
-                      data-plugin-datepicker=""
-                      class="form-control"
-                    />
-                  </div>
-
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Time</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2">00:00</option>
-                        <option value="2">00:15</option>
-                        <option value="2">00:30</option>
-                        <option value="2">00:45</option>
-                        <option value="2">01:00</option>
-                        <option value="2">01:15</option>
-                        <option value="2">01:30</option>
-                        <option value="2">01:45</option>
-                        <option value="2">02:00</option>
-                        <option value="2">02:15</option>
-                        <option value="2">02:30</option>
-                        <option value="2">02:45</option>
-                        <option value="2">03:00</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-lg-3">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Estimated Length Required</label
-                    >
-                    <input type="text" class="form-control" />
-                  </div>
-
-                  <div class="col-lg-3">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Estimated Weight Required</label
-                    >
-                    <input type="text" class="form-control" />
-                  </div>
-
-                  <div class="col-lg-3">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Point of Contact</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2">Yes</option>
-                        <option value="2">No</option>
-                      </optgroup>
-                    </select>
-                  </div>
-
-                  <div class="col-lg-3">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Cargo Value</label
-                    >
-                    <div class="input-group mb-3">
-                      <span class="input-group-prepend positionsta">
-                        <span class="input-group-text">$</span>
-                      </span>
+                  <div class="form-group row">
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Temperature Required</label
+                      >
+                    </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >From</label
+                      >
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Username"
+                        id="inputDefault"
                       />
                     </div>
-                  </div>
-                </div>
-            </div>
-            <div class="card-body" id="pickUp">
+                    <div class="col-lg-2">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >&nbsp;</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">°C</option>
+                          <option value="2">°F</option>
+                        </optgroup>
+                      </select>
+                    </div>
 
-                <div class="form-group row">
-                  <div class="col-lg-6">
-                    <label
-                      class="control-label text-lg-right text-dark text-4 pt-2"
-                      for="inputDefault"
-                      >Pickup Instruction</label
-                    >
-                  </div>
-                  <div class="col-lg-6 text-right">
-                    <a
-                      class="mr-1 btn btn-success modal-with-zoom-anim ws-normal"
-                      href="#"
-                      ><i class="fas fa-plus"></i
-                    ></a>
-                  </div>
-
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Reference Number</label
-                    >
-                    <input type="text" class="form-control" />
-                  </div>
-
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Pickup Date</label
-                    >
-                    <input
-                      type="text"
-                      data-plugin-datepicker=""
-                      class="form-control"
-                    />
-                  </div>
-
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Pickup Time</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2">00:00</option>
-                        <option value="2">00:15</option>
-                        <option value="2">00:30</option>
-                        <option value="2">00:45</option>
-                        <option value="2">01:00</option>
-                        <option value="2">01:15</option>
-                        <option value="2">01:30</option>
-                        <option value="2">01:45</option>
-                        <option value="2">02:00</option>
-                        <option value="2">02:15</option>
-                        <option value="2">02:30</option>
-                        <option value="2">02:45</option>
-                        <option value="2">03:00</option>
-                      </optgroup>
-                    </select>
-                  </div>
-
-                  <div class="col-lg-12 col-xl-12 mt-3">
-                    <div class="accordion" id="accordion2Quaternary">
-                      <div class="card card-default">
-                        <div class="card-header">
-                          <h4 class="card-title m-0">
-                            <a
-                              class="accordion-toggle"
-                              data-toggle="collapse"
-                              data-parent="#accordion2Quaternary"
-                              href="#collapse2QuaternaryOne"
-                            >
-                              Mark Pickup Location
-                              <span class="pull-right"
-                                ><i class="fas fa-angle-down"></i
-                              ></span>
-                            </a>
-                          </h4>
-                        </div>
-                        <div id="collapse2QuaternaryOne" class="collapse">
-                          <div class="card-body p-0 gfmap">
-                            <div class="gfmaps">
-                              <form action="#" class="search nav-form">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="q"
-                                    id="q"
-                                    placeholder="Search geofence location here..."
-                                  />
-                                  <span class="input-group-append">
-                                    <button
-                                      class="btn btn-default"
-                                      type="submit"
-                                    >
-                                      <i class="fas fa-search"></i>
-                                    </button>
-                                  </span>
-                                </div>
-                              </form>
-                            </div>
-
-                            <iframe
-                              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15125141.447846191!2d-96.44470702054707!3d49.12262240661983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1587377009062!5m2!1sen!2sin"
-                              width="100%"
-                              height="650"
-                              frameborder="0"
-                              style="border: 0;"
-                              allowfullscreen=""
-                              aria-hidden="false"
-                              tabindex="0"
-                            ></iframe>
-                          </div>
-                        </div>
-                      </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >To</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="inputDefault"
+                      />
+                    </div>
+                    <div class="col-lg-2">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >&nbsp;</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">°C</option>
+                          <option value="2">°F</option>
+                        </optgroup>
+                      </select>
                     </div>
                   </div>
 
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Will Driver Load ?</label
-                    >
+                  <div class="form-group row">
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Delivery Time</label
+                      >
+                    </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Date</label
+                      >
+                      <input
+                        type="text"
+                        data-plugin-datepicker=""
+                        class="form-control"
+                      />
+                    </div>
 
-                    <div class="row">
-                      <div class="col-lg-3">
-                        <div class="radio-custom">
-                          <input
-                            type="radio"
-                            id="radioExample1"
-                            (change)="onChangePrimaryMeter('miles')"
-                            name="primaryMeter"
-                          />
-                          <label for="radioExample1">Yes</label>
-                        </div>
-                      </div>
-
-                      <div class="col-lg-3">
-                        <div class="radio-custom">
-                          <input
-                            type="radio"
-                            id="radioExample2"
-                            (change)="onChangePrimaryMeter('kilometers')"
-                            name="primaryMeter"
-                            checked
-                          />
-                          <label for="radioExample2">No</label>
-                        </div>
-                      </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Time</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">00:00</option>
+                          <option value="2">00:15</option>
+                          <option value="2">00:30</option>
+                          <option value="2">00:45</option>
+                          <option value="2">01:00</option>
+                          <option value="2">01:15</option>
+                          <option value="2">01:30</option>
+                          <option value="2">01:45</option>
+                          <option value="2">02:00</option>
+                          <option value="2">02:15</option>
+                          <option value="2">02:30</option>
+                          <option value="2">02:45</option>
+                          <option value="2">03:00</option>
+                        </optgroup>
+                      </select>
                     </div>
                   </div>
 
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Bill of Lading BOL</label
-                    >
+                  <div class="form-group row">
+                    <div class="col-lg-3">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Estimated Length Required</label
+                      >
+                      <input type="text" class="form-control" />
+                    </div>
 
-                    <div
-                      class="fileupload fileupload-new"
-                      data-provides="fileupload"
-                    >
-                      <div class="input-append">
-                        <div class="uneditable-input">
-                          <i class="fas fa-file fileupload-exists"></i>
-                          <span class="fileupload-preview"></span>
-                        </div>
-                        <span class="btn btn-default btn-file">
-                          <span class="fileupload-exists">Change</span>
-                          <span class="fileupload-new">Select file</span>
-                          <input type="file" />
+                    <div class="col-lg-3">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Estimated Weight Required</label
+                      >
+                      <input type="text" class="form-control" />
+                    </div>
+
+                    <div class="col-lg-3">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Point of Contact</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">Yes</option>
+                          <option value="2">No</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-3">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Cargo Value</label
+                      >
+                      <div class="input-group mb-3">
+                        <span class="input-group-prepend positionsta">
+                          <span class="input-group-text">$</span>
                         </span>
-                        <a
-                          href="#"
-                          class="btn btn-default fileupload-exists"
-                          data-dismiss="fileupload"
-                          >Remove</a
-                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Username"
+                        />
                       </div>
                     </div>
                   </div>
-
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Cargo Type</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2">Individual</option>
-                        <option value="2">Group</option>
-                      </optgroup>
-                    </select>
-                  </div>
-
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Remarks</label
-                    >
-                    <textarea
-                      class="form-control"
-                      rows="3"
-                      id="textareaDefault"
-                    ></textarea>
-                  </div>
                 </div>
-            </div>
-            <div class="card-body" id="drop">
+                <div class="card-body" id="pickUp">
+                  <div class="form-group row">
+                    <div class="col-lg-6">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Pickup Instruction</label
+                      >
+                    </div>
+                    <div class="col-lg-6 text-right">
+                      <a
+                        class="mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
 
-                <div class="form-group row mt-3">
-                  <div class="col-lg-6">
-                    <label
-                      class="control-label text-lg-right text-dark text-4 pt-2"
-                      for="inputDefault"
-                      >Drop Instruction</label
-                    >
-                  </div>
-                  <div class="col-lg-6 text-right">
-                    <a
-                      class="mr-1 btn btn-success modal-with-zoom-anim ws-normal"
-                      href="#"
-                      ><i class="fas fa-plus"></i
-                    ></a>
-                  </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Reference Number</label
+                      >
+                      <input type="text" class="form-control" />
+                    </div>
 
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Reference Number</label
-                    >
-                    <input type="text" class="form-control" />
-                  </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Pickup Date</label
+                      >
+                      <input
+                        type="text"
+                        data-plugin-datepicker=""
+                        class="form-control"
+                      />
+                    </div>
 
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Drop Date</label
-                    >
-                    <input
-                      type="text"
-                      data-plugin-datepicker=""
-                      class="form-control"
-                    />
-                  </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Pickup Time</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">00:00</option>
+                          <option value="2">00:15</option>
+                          <option value="2">00:30</option>
+                          <option value="2">00:45</option>
+                          <option value="2">01:00</option>
+                          <option value="2">01:15</option>
+                          <option value="2">01:30</option>
+                          <option value="2">01:45</option>
+                          <option value="2">02:00</option>
+                          <option value="2">02:15</option>
+                          <option value="2">02:30</option>
+                          <option value="2">02:45</option>
+                          <option value="2">03:00</option>
+                        </optgroup>
+                      </select>
+                    </div>
 
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Drop Time</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2">00:00</option>
-                        <option value="2">00:15</option>
-                        <option value="2">00:30</option>
-                        <option value="2">00:45</option>
-                        <option value="2">01:00</option>
-                        <option value="2">01:15</option>
-                        <option value="2">01:30</option>
-                        <option value="2">01:45</option>
-                        <option value="2">02:00</option>
-                        <option value="2">02:15</option>
-                        <option value="2">02:30</option>
-                        <option value="2">02:45</option>
-                        <option value="2">03:00</option>
-                      </optgroup>
-                    </select>
-                  </div>
+                    <div class="col-lg-12 col-xl-12 mt-3">
+                      <div class="accordion" id="accordion2Quaternary">
+                        <div class="card card-default">
+                          <div class="card-header">
+                            <h4 class="card-title m-0">
+                              <a
+                                class="accordion-toggle"
+                                data-toggle="collapse"
+                                data-parent="#accordion2Quaternary"
+                                href="#collapse2QuaternaryOne"
+                              >
+                                Mark Pickup Location
+                                <span class="pull-right"
+                                  ><i class="fas fa-angle-down"></i
+                                ></span>
+                              </a>
+                            </h4>
+                          </div>
+                          <div id="collapse2QuaternaryOne" class="collapse">
+                            <div class="card-body p-0 gfmap">
+                              <div class="gfmaps">
+                                <form action="#" class="search nav-form">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="q"
+                                      id="q"
+                                      placeholder="Search geofence location here..."
+                                    />
+                                    <span class="input-group-append">
+                                      <button
+                                        class="btn btn-default"
+                                        type="submit"
+                                      >
+                                        <i class="fas fa-search"></i>
+                                      </button>
+                                    </span>
+                                  </div>
+                                </form>
+                              </div>
 
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label text-lg-right text-dark text-4 pt-2"
-                      for="inputDefault"
-                      >Temperature Required</label
-                    >
-                  </div>
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >From</label
-                    >
-                    <input type="text" class="form-control" id="inputDefault" />
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >&nbsp;</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2">°C</option>
-                        <option value="2">°F</option>
-                      </optgroup>
-                    </select>
-                  </div>
-
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >To</label
-                    >
-                    <input type="text" class="form-control" id="inputDefault" />
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >&nbsp;</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2">°C</option>
-                        <option value="2">°F</option>
-                      </optgroup>
-                    </select>
-                  </div>
-
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Delivery Date</label
-                    >
-                    <input
-                      type="text"
-                      data-plugin-datepicker=""
-                      class="form-control"
-                    />
-                  </div>
-
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Delivery Time</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="2">00:00</option>
-                        <option value="2">00:15</option>
-                        <option value="2">00:30</option>
-                        <option value="2">00:45</option>
-                        <option value="2">01:00</option>
-                        <option value="2">01:15</option>
-                        <option value="2">01:30</option>
-                        <option value="2">01:45</option>
-                        <option value="2">02:00</option>
-                        <option value="2">02:15</option>
-                        <option value="2">02:30</option>
-                        <option value="2">02:45</option>
-                        <option value="2">03:00</option>
-                      </optgroup>
-                    </select>
-                  </div>
-
-                  <div class="col-lg-12 col-xl-12 mt-3">
-                    <div class="accordion" id="accordion2Quaternary">
-                      <div class="card card-default">
-                        <div class="card-header">
-                          <h4 class="card-title m-0">
-                            <a
-                              class="accordion-toggle"
-                              data-toggle="collapse"
-                              data-parent="#accordion2Quaternary"
-                              href="#collapse2QuaternaryOne"
-                            >
-                              Mark Drop Location
-                              <span class="pull-right"
-                                ><i class="fas fa-angle-down"></i
-                              ></span>
-                            </a>
-                          </h4>
-                        </div>
-                        <div id="collapse2QuaternaryOne" class="collapse">
-                          <div class="card-body p-0 gfmap">
-                            <div class="gfmaps">
-                              <form action="#" class="search nav-form">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="q"
-                                    id="q"
-                                    placeholder="Search geofence location here..."
-                                  />
-                                  <span class="input-group-append">
-                                    <button
-                                      class="btn btn-default"
-                                      type="submit"
-                                    >
-                                      <i class="fas fa-search"></i>
-                                    </button>
-                                  </span>
-                                </div>
-                              </form>
+                              <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15125141.447846191!2d-96.44470702054707!3d49.12262240661983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1587377009062!5m2!1sen!2sin"
+                                width="100%"
+                                height="650"
+                                frameborder="0"
+                                style="border: 0;"
+                                allowfullscreen=""
+                                aria-hidden="false"
+                                tabindex="0"
+                              ></iframe>
                             </div>
-
-                            <iframe
-                              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15125141.447846191!2d-96.44470702054707!3d49.12262240661983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1587377009062!5m2!1sen!2sin"
-                              width="100%"
-                              height="650"
-                              frameborder="0"
-                              style="border: 0;"
-                              allowfullscreen=""
-                              aria-hidden="false"
-                              tabindex="0"
-                            ></iframe>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div class="col-lg-4">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Will Driver Unload ?</label
-                    >
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Will Driver Load ?</label
+                      >
 
-                    <div class="row">
-                      <div class="col-lg-3">
-                        <div class="radio-custom">
-                          <input
-                            type="radio"
-                            id="radioExample3"
-                            (change)="onChangePrimaryMeter('yes')"
-                            name="yes"
-                          />
-                          <label for="radioExample1">Yes</label>
+                      <div class="row">
+                        <div class="col-lg-3">
+                          <div class="radio-custom">
+                            <input
+                              type="radio"
+                              id="radioExample1"
+                              (change)="onChangePrimaryMeter('miles')"
+                              name="primaryMeter"
+                            />
+                            <label for="radioExample1">Yes</label>
+                          </div>
                         </div>
-                      </div>
 
-                      <div class="col-lg-3">
-                        <div class="radio-custom">
-                          <input
-                            type="radio"
-                            id="radioExample4"
-                            (change)="onChangePrimaryMeter('no')"
-                            name="no"
-                          />
-                          <label for="radioExample2">No</label>
+                        <div class="col-lg-3">
+                          <div class="radio-custom">
+                            <input
+                              type="radio"
+                              id="radioExample2"
+                              (change)="onChangePrimaryMeter('kilometers')"
+                              name="primaryMeter"
+                              checked
+                            />
+                            <label for="radioExample2">No</label>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Remarks</label
-                    >
-                    <textarea
-                      class="form-control"
-                      rows="3"
-                      id="textareaDefault"
-                    ></textarea>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Bill of Lading BOL</label
+                      >
+
+                      <div
+                        class="fileupload fileupload-new"
+                        data-provides="fileupload"
+                      >
+                        <div class="input-append">
+                          <div class="uneditable-input">
+                            <i class="fas fa-file fileupload-exists"></i>
+                            <span class="fileupload-preview"></span>
+                          </div>
+                          <span class="btn btn-default btn-file">
+                            <span class="fileupload-exists">Change</span>
+                            <span class="fileupload-new">Select file</span>
+                            <input type="file" />
+                          </span>
+                          <a
+                            href="#"
+                            class="btn btn-default fileupload-exists"
+                            data-dismiss="fileupload"
+                            >Remove</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Cargo Type</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">Individual</option>
+                          <option value="2">Group</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Remarks</label
+                      >
+                      <textarea
+                        class="form-control"
+                        rows="3"
+                        id="textareaDefault"
+                      ></textarea>
+                    </div>
                   </div>
                 </div>
-            </div>
+                <div class="card-body" id="drop">
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-6">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Drop Instruction</label
+                      >
+                    </div>
+                    <div class="col-lg-6 text-right">
+                      <a
+                        class="mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Reference Number</label
+                      >
+                      <input type="text" class="form-control" />
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Drop Date</label
+                      >
+                      <input
+                        type="text"
+                        data-plugin-datepicker=""
+                        class="form-control"
+                      />
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Drop Time</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">00:00</option>
+                          <option value="2">00:15</option>
+                          <option value="2">00:30</option>
+                          <option value="2">00:45</option>
+                          <option value="2">01:00</option>
+                          <option value="2">01:15</option>
+                          <option value="2">01:30</option>
+                          <option value="2">01:45</option>
+                          <option value="2">02:00</option>
+                          <option value="2">02:15</option>
+                          <option value="2">02:30</option>
+                          <option value="2">02:45</option>
+                          <option value="2">03:00</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Temperature Required</label
+                      >
+                    </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >From</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="inputDefault"
+                      />
+                    </div>
+                    <div class="col-lg-2">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >&nbsp;</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">°C</option>
+                          <option value="2">°F</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >To</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="inputDefault"
+                      />
+                    </div>
+                    <div class="col-lg-2">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >&nbsp;</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">°C</option>
+                          <option value="2">°F</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Delivery Date</label
+                      >
+                      <input
+                        type="text"
+                        data-plugin-datepicker=""
+                        class="form-control"
+                      />
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Delivery Time</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">00:00</option>
+                          <option value="2">00:15</option>
+                          <option value="2">00:30</option>
+                          <option value="2">00:45</option>
+                          <option value="2">01:00</option>
+                          <option value="2">01:15</option>
+                          <option value="2">01:30</option>
+                          <option value="2">01:45</option>
+                          <option value="2">02:00</option>
+                          <option value="2">02:15</option>
+                          <option value="2">02:30</option>
+                          <option value="2">02:45</option>
+                          <option value="2">03:00</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-12 col-xl-12 mt-3">
+                      <div class="accordion" id="accordion2Quaternary">
+                        <div class="card card-default">
+                          <div class="card-header">
+                            <h4 class="card-title m-0">
+                              <a
+                                class="accordion-toggle"
+                                data-toggle="collapse"
+                                data-parent="#accordion2Quaternary"
+                                href="#collapse2QuaternaryOne"
+                              >
+                                Mark Drop Location
+                                <span class="pull-right"
+                                  ><i class="fas fa-angle-down"></i
+                                ></span>
+                              </a>
+                            </h4>
+                          </div>
+                          <div id="collapse2QuaternaryOne" class="collapse">
+                            <div class="card-body p-0 gfmap">
+                              <div class="gfmaps">
+                                <form action="#" class="search nav-form">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="q"
+                                      id="q"
+                                      placeholder="Search geofence location here..."
+                                    />
+                                    <span class="input-group-append">
+                                      <button
+                                        class="btn btn-default"
+                                        type="submit"
+                                      >
+                                        <i class="fas fa-search"></i>
+                                      </button>
+                                    </span>
+                                  </div>
+                                </form>
+                              </div>
+
+                              <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15125141.447846191!2d-96.44470702054707!3d49.12262240661983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1587377009062!5m2!1sen!2sin"
+                                width="100%"
+                                height="650"
+                                frameborder="0"
+                                style="border: 0;"
+                                allowfullscreen=""
+                                aria-hidden="false"
+                                tabindex="0"
+                              ></iframe>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Will Driver Unload ?</label
+                      >
+
+                      <div class="row">
+                        <div class="col-lg-3">
+                          <div class="radio-custom">
+                            <input
+                              type="radio"
+                              id="radioExample3"
+                              (change)="onChangePrimaryMeter('yes')"
+                              name="yes"
+                            />
+                            <label for="radioExample1">Yes</label>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                          <div class="radio-custom">
+                            <input
+                              type="radio"
+                              id="radioExample4"
+                              (change)="onChangePrimaryMeter('no')"
+                              name="no"
+                            />
+                            <label for="radioExample2">No</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Remarks</label
+                      >
+                      <textarea
+                        class="form-control"
+                        rows="3"
+                        id="textareaDefault"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
                 <div class="form-group row">
                   <div class="col-lg-12">
                     <button class="btn btn-dark mt-1 modal-confirm">
