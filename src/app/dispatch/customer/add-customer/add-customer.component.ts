@@ -26,7 +26,7 @@ export class AddCustomerComponent implements OnInit {
 
 
   /********** Form Fields ***********/
-  customerName = "";
+  name = "";
   customerCompanyNo = "";
   customerAddress = {
     streetNumber : "",
@@ -181,7 +181,7 @@ export class AddCustomerComponent implements OnInit {
     this.hasSuccess = false;
 
     const dataCustomer = {
-      name: this.customerName,
+      name: this.name,
       phone: this.phone,
       fax: this.fax,
       email: this.email,
@@ -228,7 +228,7 @@ export class AddCustomerComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.Success = 'Customer Added successfully';
-        this.customerName = '';
+        this.name = '';
         this.phone = '';
         this.fax = '';
         this.email = '';
