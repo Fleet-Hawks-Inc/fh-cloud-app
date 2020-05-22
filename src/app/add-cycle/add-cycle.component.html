@@ -20,7 +20,11 @@
                 <i class="fas fa-home"></i>
               </a>
             </li>
-            <li><span>Vehicles</span></li>
+            <li>
+              <a routerLink="/Cycle-List">
+                Cycle List
+              </a>
+            </li>
             <li>
               <span>{{ title }}</span>
             </li>
@@ -32,7 +36,7 @@
         <div class="col">
           <section class="card">
             <header class="card-header">
-              <h2 class="card-title">Details</h2>
+              <h2 class="card-title">{{ title }}</h2>
             </header>
             <div class="card-body">
               <form
@@ -59,7 +63,7 @@
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+                      for="inputDefault1"
                       >Continuous Drive Time</label
                     >
                     <input
@@ -73,13 +77,13 @@
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+                      for="inputDefault2"
                       >Minimum SubBreak Time</label
                     >
                     <input
                       type="text"
                       class="form-control"
-                      id="inputDefault1"
+                      id="inputDefault2"
                       [(ngModel)]="minimumSubBreakTime"
                       name="minimumSubBreakTime"
                     />
@@ -87,13 +91,13 @@
                   <div class="col-lg-3">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+                      for="inputDefault3"
                       >Total Days</label
                     >
                     <input
                       type="text"
                       class="form-control"
-                      id="inputDefault1"
+                      id="inputDefault3"
                       [(ngModel)]="totalDays"
                       name="totalDays"
                     />
@@ -104,13 +108,13 @@
                     <div class="col-lg-3">
                       <label
                         class="control-label text-lg-right pt-2"
-                        for="inputDefault"
+                        for="inputDefault4"
                         >Continuous Break</label
                       >
                       <input
                         type="text"
                         class="form-control"
-                        id="inputDefault"
+                        id="inputDefault4"
                         [(ngModel)]="continuousBreak"
                         name="continuousBreak"
                       />
@@ -118,13 +122,13 @@
                     <div class="col-lg-3">
                       <label
                         class="control-label text-lg-right pt-2"
-                        for="inputDefault"
+                        for="inputDefault5"
                         >Total Drive Time</label
                       >
                       <input
                         type="text"
                         class="form-control"
-                        id="inputDefault1"
+                        id="inputDefault5"
                         [(ngModel)]="totalDriveTime"
                         name="totalDriveTime"
                       />
@@ -132,13 +136,13 @@
                     <div class="col-lg-3">
                       <label
                         class="control-label text-lg-right pt-2"
-                        for="inputDefault"
+                        for="inputDefault6"
                         >Cycle Change Break Hours</label
                       >
                       <input
                         type="text"
                         class="form-control"
-                        id="inputDefault1"
+                        id="inputDefault6"
                         [(ngModel)]="cycleChangeBreakHours"
                         name="cycleChangeBreakHours"
                       />
@@ -146,13 +150,13 @@
                     <div class="col-lg-3">
                       <label
                         class="control-label text-lg-right pt-2"
-                        for="inputDefault"
+                        for="inputDefault7"
                         >Total Cycle Drive Time</label
                       >
                       <input
                         type="text"
                         class="form-control"
-                        id="inputDefault1"
+                        id="inputDefault7"
                         [(ngModel)]="totalCycleDriveTime"
                         name="totalCycleDriveTime"
                       />
@@ -163,13 +167,13 @@
                     <div class="col-lg-3">
                       <label
                         class="control-label text-lg-right pt-2"
-                        for="inputDefault"
+                        for="inputDefault8"
                         >Total OnDuty Time</label
                       >
                       <input
                         type="text"
                         class="form-control"
-                        id="inputDefault"
+                        id="inputDefault8"
                         [(ngModel)]="totalOnDutyTime"
                         name="totalOnDutyTime"
                       />
@@ -177,13 +181,13 @@
                     <div class="col-lg-3">
                       <label
                         class="control-label text-lg-right pt-2"
-                        for="inputDefault"
+                        for="inputDefault9"
                         >Total Cycle OnDuty Time</label
                       >
                       <input
                         type="text"
                         class="form-control"
-                        id="inputDefault1"
+                        id="inputDefault9"
                         [(ngModel)]="totalCycleOnDutyTime"
                         name="totalCycleOnDutyTime"
                       />
@@ -191,13 +195,13 @@
                     <div class="col-lg-3">
                       <label
                         class="control-label text-lg-right pt-2"
-                        for="inputDefault"
+                        for="inputDefault10"
                         >Geofence Params</label
                       >
                       <input
                         type="text"
                         class="form-control"
-                        id="inputDefault1"
+                        id="inputDefault10"
                         [(ngModel)]="geofenceParams"
                         name="geofenceParams"
                       />

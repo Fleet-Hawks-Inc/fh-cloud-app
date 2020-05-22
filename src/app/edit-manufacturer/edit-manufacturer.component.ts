@@ -44,14 +44,19 @@ export class EditManufacturerComponent implements OnInit {
     this.manufacturerID = this.route.snapshot.params["manufacturerID"];
     this.fetchCountries();
     this.fetchManufacturer();
+    // this.getStates();
+
+    console.log(this.states);
     $(document).ready(() => {
       this.form = $("#form_").validate();
     });
+
   }
 
   fetchManufacturer() {
     this.apiService.getData("manufacturers/" + this.manufacturerID).subscribe((result: any) => {
       result = result.Items[0];
+      // console.log(result);
       this.manufacturerType = result.manufacturerType;
       this.name = result.name;
       this.cityID = result.cityID;
@@ -67,6 +72,10 @@ export class EditManufacturerComponent implements OnInit {
     this.apiService.getData("countries").subscribe((result: any) => {
       this.countries = result.Items;
     });
+
+    setTimeout(() => {
+      this.getStates();
+    }, 2000);
   }
 
   getStates(){
@@ -74,6 +83,10 @@ export class EditManufacturerComponent implements OnInit {
       .subscribe((result: any) => {
         this.states = result.Items;
       });
+    
+      setTimeout(() => {
+        this.getCities();
+      }, 2000);
   }
 
   getCities(){
