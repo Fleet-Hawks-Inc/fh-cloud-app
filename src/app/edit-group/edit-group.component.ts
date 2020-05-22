@@ -11,7 +11,7 @@ import {map} from 'rxjs/operators';
 })
 export class EditGroupComponent implements OnInit {
 
-  title = 'Add Group';
+  title = 'Edit Group';
   form;
   errors = {};
 

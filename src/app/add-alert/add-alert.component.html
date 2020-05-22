@@ -16,11 +16,15 @@
         <div class="right-wrapper text-right">
           <ol class="breadcrumbs pr-3">
             <li>
-              <a href="/">
+              <a routerLink="/">
                 <i class="fas fa-home"></i>
               </a>
             </li>
-            <li><span>Vehicles</span></li>
+            <li>
+              <a routerLink="/Alerts-List">
+                Alert List
+              </a>
+            </li>
             <li>
               <span>{{ title }}</span>
             </li>
@@ -32,7 +36,7 @@
         <div class="col">
           <section class="card">
             <header class="card-header">
-              <h2 class="card-title">Alert</h2>
+              <h2 class="card-title">{{ title }}</h2>
             </header>
             <div class="card-body">
               <form class="form-horizontal form-bordered" method="get" name="form" id="form_">

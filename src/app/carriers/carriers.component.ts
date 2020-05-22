@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
 })
 export class CarriersComponent implements OnInit {
 
-  title = 'Carriers List';
+  title = 'Carrier List';
   carriers;
 
   constructor(private apiService: ApiService,

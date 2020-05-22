@@ -136,6 +136,7 @@ export class AddCarrierComponent implements OnInit {
   }
 
   addCarrier() {
+    this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
@@ -150,6 +151,23 @@ export class AddCarrierComponent implements OnInit {
       alert('Sum of driver performance must be 100')
       return false;
     }
+    // console.log('----------------------');
+    // console.log(this.carrierName);
+
+    // if(!this.carrierName && !this.taxID && !this.companyNumber && !this.address.streetNo && !this.address.streetName && !this.address.cityID && !this.address.stateID && !this.address.zipCode && !this.address.countryID && !this.superUserName){
+    //     return false;
+
+    // } else if(!this.unitSettings.distanceUnit && !this.unitSettings.liquidUnit && !this.unitSettings.locale && !this.unitSettings.weightUnit && !this.unitSettings.temperatureUnit){
+    //     this.unit_settings();
+    //     return false;
+
+    // } else if(!this.assetSettings.hardBreakingParameters && !this.assetSettings.hardAccelerationParameters && !this.assetSettings.corner && !this.assetSettings.fuelTheftAlertParameters){
+    //       this.asset_settings();
+    //       return false;
+          
+    // } else if(!this.driverPerformance.average && !this.driverPerformance.HB && !this.driverPerformance.HA && !this.driverPerformance.corner && !this.driverPerformance.HOSViolations){
+    //   this.driver_performance();
+    // }
     
     const data = {
       carrierName: this.carrierName,
@@ -202,7 +220,26 @@ export class AddCarrierComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
+              console.log(this.errors);
               this.throwErrors();
+              // console.log('-----------errore=======');
+              // console.log(this.errors['carrierName']);
+
+              if(this.errors['carrierName'] && this.errors['taxID'] && this.errors['companyNumber'] && this.errors['address.streetNo'] && this.errors['address.streetName'] && this.errors['address.cityID'] && this.errors['address.stateID'] && this.errors['address.zipCode'] && this.errors['address.countryID'] && this.errors['superUserName']){
+                  this.company_settings();
+                  // alert('stay here');
+                  return false;
+              } else if(this.errors['unitSettings.distanceUnit'] && this.errors['unitSettings.liquidUnit'] && this.errors['unitSettings.locale'] && this.errors['unitSettings.weightUnit'] && this.errors['unitSettings.temperatureUnit']){
+                    this.unit_settings();
+                    return false;
+              } 
+              // else if(this.errors['assetSettings.hardBreakingParameters'] && this.errors['assetSettings.hardAccelerationParameters'] && this.errors['assetSettings.corner'] && this.errors['assetSettings.fuelTheftAlertParameters']){
+              //       this.asset_settings();
+              //       return false;
+                    
+              // } else if(this.errors['driverPerformance.average'] && this.errors['driverPerformance.HB'] && this.errors['driverPerformance.HA'] && this.errors['driverPerformance.corner'] && this.errors['driverPerformance.HOSViolations']){
+              //   this.driver_performance();
+              // }
             },
             error: () => {},
             next: () => {},

@@ -14,13 +14,17 @@
           <h2>{{ title }}</h2>
   
           <div class="right-wrapper text-right">
-            <ol class="breadcrumbs">
+            <ol class="breadcrumbs pr-3">
               <li>
                 <a href="/">
                   <i class="fas fa-home"></i>
                 </a>
               </li>
-              <li><span>Vehicles</span></li>
+              <li>
+                <a routerLink="/Cycle-List">
+                  Cycle List
+                </a>
+              </li>
               <li>
                 <span>{{ title }}</span>
               </li>
@@ -32,7 +36,7 @@
           <div class="col">
             <section class="card">
               <header class="card-header">
-                <h2 class="card-title">Details</h2>
+                <h2 class="card-title">{{ title }}</h2>
               </header>
               <div class="card-body">
                 <form

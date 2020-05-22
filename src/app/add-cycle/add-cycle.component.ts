@@ -11,7 +11,7 @@ declare var $: any;
   styleUrls: ["./add-cycle.component.css"],
 })
 export class AddCycleComponent implements OnInit {
-  title = "Add Cycles";
+  title = "Add Cycle";
 
   errors = {};
   form;

@@ -16,14 +16,16 @@
         <div class="right-wrapper text-right">
           <ol class="breadcrumbs pr-3">
             <li>
-              <a href="/">
+              <a routerLink="/">
                 <i class="fas fa-home"></i>
               </a>
             </li>
-            <li><span>Vehicles</span></li>
             <li>
-              <span>{{ title }}</span>
+              <a routerLink="/Group-List">
+                Group List
+              </a>
             </li>
+            <li><span>{{title}}</span></li>
           </ol>
         </div>
       </header>
@@ -32,7 +34,7 @@
         <div class="col">
           <section class="card">
             <header class="card-header">
-              <h2 class="card-title">Details</h2>
+              <h2 class="card-title">{{title}}</h2>
             </header>
             <div class="card-body">
               <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
@@ -49,6 +51,7 @@
                       id="inputDefault"
                       [(ngModel)]="groupName"
                       name="groupName"
+                      maxlength="100"
                     />
 
                   </div>
