@@ -72,6 +72,14 @@ export class EditComponent implements OnInit, OnDestroy {
   }
 
   lastDayEvent() {
+    this.lastEvent =  {};
+  
+    this.duties = [];
+    this.eventList = [];
+    this.accumulatedOFF = 0;
+    this.accumulatedSB = 0;
+    this.accumulatedD = 0;
+    this.accumulatedON = 0;
     let newDate = moment(this.selectedDate, "DD-MM-YYYY").subtract("days", 1);
     let lastDayDate = this.changeFormat(newDate);
 
@@ -275,7 +283,7 @@ export class EditComponent implements OnInit, OnDestroy {
       // this.toastr.error('Error', 'Time Is Clashing With Other Events', {
       //   timeOut: 3000
       // });
-      alert('Your Time Clashing Is Clashing With Your Logs, Please Remove Old Logs.');
+      alert('Your Time is Clashing With Your Logs, Please Remove Logs that are coming in between.');
 
     }
 
@@ -324,10 +332,13 @@ export class EditComponent implements OnInit, OnDestroy {
         toTimeStamp: this.toTimeStamp
       };
 
-      // this.apiService
-      //   .postData('eventLogs/HOSAddAndModify/', data)
-      //   .subscribe((result: any) => {
-      //   });
+      console.log(data);
+      this.apiService
+        .postData('eventLogs/HOSAddAndModify', data)
+        .subscribe((result: any) => {
+          $('#editEventModal').modal('hide');
+          this.lastDayEvent();
+        });
 
      // $('#editEventModal').modal('hide');
 
@@ -469,6 +480,7 @@ export class EditComponent implements OnInit, OnDestroy {
     this.apiService
       .getData("eventLogs/HOSUpdateStatus/" + this.eventID)
       .subscribe((result: any) => {
+        $("#deleteEventModal").modal("hide");
         this.lastDayEvent();
       });
   }
