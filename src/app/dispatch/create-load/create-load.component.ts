@@ -59,9 +59,12 @@ export class CreateLoadComponent implements OnInit {
   selectedDrivers = [];
 
 
-  hosForm : FormGroup;
-  hosRepeater = [];
+  dropForm : FormGroup;
+  dropRepeater = [];
 
+
+  pickupForm : FormGroup;
+  pickupRepeater = [];
 
   constructor(private apiService: ApiService,
               private formBuilder: FormBuilder) {}
@@ -75,20 +78,29 @@ export class CreateLoadComponent implements OnInit {
     this.fetchAssets();
 
 
-    this.hosForm = this.formBuilder.group({
+    this.dropForm = this.formBuilder.group({
+      formArrays: new FormArray([])
+    });
+
+    this.pickupForm = this.formBuilder.group({
       formArrays: new FormArray([])
     });
 
     this.addFields();
+    this.addPickupFields();
 
   }
 
-  get fC() { return this.hosForm.controls; }
+  get pC() { return this.pickupForm.controls; }
+  get pA() { return this.pC.formArrays as FormArray; }
+
+
+  get fC() { return this.dropForm.controls; }
   get fA() { return this.fC.formArrays as FormArray; }
 
   addFields() {
-    const numberOfHosRepeater =  this.hosRepeater.length;
-    this.hosRepeater.push(numberOfHosRepeater + 1);
+    const numberOfHosRepeater =  this.dropRepeater.length;
+    this.dropRepeater.push(numberOfHosRepeater + 1);
     if (this.fA.length < numberOfHosRepeater) {
       for (let i = this.fA.length; i < numberOfHosRepeater; i++) {
         this.fA.push(this.formBuilder.group({
@@ -105,13 +117,30 @@ export class CreateLoadComponent implements OnInit {
     }
 
 
+  addPickupFields() {
+    const numberPickupRepeater =  this.pickupRepeater.length;
+    this.pickupRepeater.push(numberPickupRepeater + 1);
+    if (this.pA.length < numberPickupRepeater) {
+      for (let i = this.pA.length; i < numberPickupRepeater; i++) {
+        this.pA.push(this.formBuilder.group({
+          refrenceNumber: ['', Validators.required],
+          pickupDate: ['', Validators.required],
+          remarks: ['', Validators.required]
+        }));
+      }
+    }
+
+  }
+
+
+
     submitForm() {
 
       // if (this.hosForm.invalid) {
       //   return;
       // }
 
-      alert( JSON.stringify(this.hosForm.value,null, 5));
+      alert( JSON.stringify(this.dropForm.value, null, 5) + JSON.stringify(this.pickupForm.value, null, 5));
     }
 
 
