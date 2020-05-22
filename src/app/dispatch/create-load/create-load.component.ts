@@ -1,15 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ApiService } from "../../api.service";
-import { from, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { Object } from "aws-sdk/clients/s3";
 declare var $: any;
 
 @Component({
-  selector: 'app-create-load',
-  templateUrl: './create-load.component.html',
-  styleUrls: ['./create-load.component.css']
+  selector: "app-create-load",
+  templateUrl: "./create-load.component.html",
+  styleUrls: ["./create-load.component.css"],
 })
 export class CreateLoadComponent implements OnInit {
   title = "Create Load";
@@ -19,35 +16,34 @@ export class CreateLoadComponent implements OnInit {
   customerID = "";
   shipperInfo = {
     shipperID: "",
-    addressID: ""
+    addressID: "",
   };
   receiverInfo = {
     receiverID: "",
-    addressID: ""
+    addressID: "",
   };
   mapAssets = {
     vehicleID: "",
     assets: [],
-    drivers: []
+    drivers: [],
   };
   loadType = "";
-  remperatureRequired = {
+  temperatureRequired = {
     fromTemp: "",
-    toTemp: ""
+    fromTempScale: "",
+    toTemp: "",
+    toTempScale: ""
   };
-  deliveryTime: {
+  delivery = {
     date: "",
     time: "",
     estimatedLengthRequired: "",
     estimatedWeightRequired: "",
     pointOfContact: "",
     cargoValue: ""
-  }
+  };
   loadDetails = [];
   dropDetails = [];
-
-
-
 
   //for dropdowns
   customers = [];
@@ -58,8 +54,9 @@ export class CreateLoadComponent implements OnInit {
   drivers = [];
   vehicles = [];
   assets = [];
-
-  constructor(private apiService: ApiService) { }
+  selectedAssets = [];
+  selectedDrivers = [];
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.fetchCustomers();
@@ -70,61 +67,105 @@ export class CreateLoadComponent implements OnInit {
     this.fetchAssets();
   }
 
-  fetchVehicles(){
-    this.apiService.getData('vehicles')
-    .subscribe((result: any) => {
+  fetchVehicles() {
+    this.apiService.getData("vehicles").subscribe((result: any) => {
       this.vehicles = result.Items;
     });
   }
 
-  fetchAssets(){
-    this.apiService.getData('assets')
-    .subscribe((result: any) => {
+  fetchAssets() {
+    this.apiService.getData("assets").subscribe((result: any) => {
       this.assets = result.Items;
     });
   }
 
-  assetChange(val){
-    console.log(val);
+  assetChange(val) {
+    let arr = val.split(",");
+
+    //check if its already seleceted
+    let isSelected = this.selectedAssets.filter(
+      (asset) => asset.assetID == arr[0]
+    );
+    if (isSelected.length > 0) {
+      alert("Already selected");
+      return false;
+    }
+
+    this.selectedAssets.push({
+      assetID: arr[0],
+      assetName: arr[1],
+    });
   }
 
-  fetchCustomers(){
-    this.apiService.getData('customers')
-    .subscribe((result: any) => {
+  removeAsset(assetID) {
+    const index = this.selectedAssets.findIndex(
+      (asset) => asset.assetID == assetID
+    );
+    this.selectedAssets.splice(index, 1);
+  }
+
+  driverChange(val) {
+    let arr = val.split(",");
+    console.log(val);
+    //check if its already seleceted
+    let isSelected = this.selectedDrivers.filter(
+      (driver) => driver.userName == arr[0]
+    );
+    if (isSelected.length > 0) {
+      alert("Already selected");
+      return false;
+    }
+
+    this.selectedDrivers.push({
+      userName: arr[0],
+      driverName: arr[1],
+    });
+  }
+
+  removeDriver(userName) {
+    const index = this.selectedDrivers.findIndex(
+      (driver) => driver.userName == userName
+    );
+    this.selectedDrivers.splice(index, 1);
+  }
+
+  fetchCustomers() {
+    this.apiService.getData("customers").subscribe((result: any) => {
       this.customers = result.Items;
     });
   }
 
-  fetchShippers(){
-    this.apiService.getData('shippers')
-    .subscribe((result: any) => {
+  fetchShippers() {
+    this.apiService.getData("shippers").subscribe((result: any) => {
       this.shippers = result.Items;
     });
   }
 
-  fetchReceivers(){
-    this.apiService.getData('receivers')
-    .subscribe((result: any) => {
+  fetchReceivers() {
+    this.apiService.getData("receivers").subscribe((result: any) => {
       this.receivers = result.Items;
     });
   }
 
-  fetchDrivers(){
-    this.apiService.getData('users/userType/driver')
+  fetchDrivers() {
+    this.apiService
+      .getData("users/userType/driver")
       .subscribe((result: any) => {
         this.drivers = result.Items;
       });
   }
 
-  getShipperAddress(){
-    this.apiService.getData(`addresses/document/${this.shipperInfo.shipperID}`)
+  getShipperAddress() {
+    this.apiService
+      .getData(`addresses/document/${this.shipperInfo.shipperID}`)
       .subscribe((result: any) => {
         this.shipperAddress = result.Items;
       });
   }
 
-  getReceiverAddress(){
-    this.apiService.getData(`addresses/document/${this.receiverInfo.receiverID}`)
+  getReceiverAddress() {
+    this.apiService
+      .getData(`addresses/document/${this.receiverInfo.receiverID}`)
       .subscribe((result: any) => {
         this.receiverAddress = result.Items;
       });
@@ -140,7 +181,6 @@ export class CreateLoadComponent implements OnInit {
     this.activeTab = "pickUp";
     $("#pickUp").show();
     $("#general, #drop").hide();
-
   }
 
   drop() {
@@ -148,5 +188,4 @@ export class CreateLoadComponent implements OnInit {
     $("#drop").show();
     $("#general, #pickUp").hide();
   }
-
 }
