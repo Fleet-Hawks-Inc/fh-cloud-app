@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ApiService } from "../../api.service";
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 declare var $: any;
 
 @Component({
@@ -56,7 +57,14 @@ export class CreateLoadComponent implements OnInit {
   assets = [];
   selectedAssets = [];
   selectedDrivers = [];
-  constructor(private apiService: ApiService) {}
+
+
+  hosForm : FormGroup;
+  hosRepeater = [];
+
+
+  constructor(private apiService: ApiService,
+              private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.fetchCustomers();
@@ -65,7 +73,49 @@ export class CreateLoadComponent implements OnInit {
     this.fetchDrivers();
     this.fetchVehicles();
     this.fetchAssets();
+
+
+    this.hosForm = this.formBuilder.group({
+      formArrays: new FormArray([])
+    });
+
+    this.addFields();
+
   }
+
+  get fC() { return this.hosForm.controls; }
+  get fA() { return this.fC.formArrays as FormArray; }
+
+  addFields() {
+    const numberOfHosRepeater =  this.hosRepeater.length;
+    this.hosRepeater.push(numberOfHosRepeater + 1);
+    if (this.fA.length < numberOfHosRepeater) {
+      for (let i = this.fA.length; i < numberOfHosRepeater; i++) {
+        this.fA.push(this.formBuilder.group({
+          refrenceNumber: ['', Validators.required],
+          dropdate: ['', Validators.required],
+          fromTemp: ['', Validators.required],
+          toTemp: ['', Validators.required],
+          deliveryDate: ['', Validators.required],
+          remarks: ['', Validators.required],
+        }));
+      }
+    }
+
+    }
+
+
+    submitForm() {
+
+      // if (this.hosForm.invalid) {
+      //   return;
+      // }
+
+      alert( JSON.stringify(this.hosForm.value,null, 5));
+    }
+
+
+
 
   fetchVehicles() {
     this.apiService.getData("vehicles").subscribe((result: any) => {
