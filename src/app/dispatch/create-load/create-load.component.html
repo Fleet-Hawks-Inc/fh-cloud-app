@@ -540,6 +540,9 @@
                     </div>
                   </div>
                 </div>
+              </form>
+
+              <form [formGroup]="pickupForm" class="form-horizontal form-bordered">
                 <div class="card-body" id="pickUp">
                   <div class="form-group row">
                     <div class="col-lg-6">
@@ -552,10 +555,13 @@
                     <div class="col-lg-6 text-right">
                       <a
                         class="mr-1 btn btn-success modal-with-zoom-anim ws-normal"
-                        href="#"
+                        [routerLink]=""
+                        (click)="addPickupFields()"
                         ><i class="fas fa-plus"></i
                       ></a>
                     </div>
+
+                    <div *ngFor="let pickupArray of pA.controls; let i = index" class="row" [formGroup]="pickupArray">
 
                     <div class="col-lg-4">
                       <label
@@ -563,8 +569,17 @@
                         for="inputDefault"
                         >Reference Number</label
                       >
-                      <input type="text" class="form-control" />
+                      <input type="text" class="form-control"
+                             formControlName="refrenceNumber"
+                             [ngClass]="{ 'is-invalid': (pickupArray.controls.refrenceNumber.dirty ||
+                        pickupArray.controls.refrenceNumber.touched) && pickupArray.controls.refrenceNumber.errors }"  required
+                      />
+                      <div *ngIf="(pickupArray.controls.refrenceNumber.dirty ||
+                        pickupArray.controls.refrenceNumber.touched) && pickupArray.controls.refrenceNumber.errors" class="invalid-field">
+                        <div *ngIf="pickupArray.controls.refrenceNumber.errors.required">Reference Number is required</div>
+                      </div>
                     </div>
+
 
                     <div class="col-lg-4">
                       <label
@@ -576,7 +591,15 @@
                         type="text"
                         data-plugin-datepicker=""
                         class="form-control"
+                        formControlName="pickupDate"
+                        [ngClass]="{ 'is-invalid': (pickupArray.controls.pickupDate.dirty ||
+                        pickupArray.controls.pickupDate.touched) && pickupArray.controls.pickupDate.errors }"  required
                       />
+                      <div *ngIf="(pickupArray.controls.pickupDate.dirty ||
+                        pickupArray.controls.pickupDate.touched) && pickupArray.controls.pickupDate.errors" class="invalid-field">
+                        <div *ngIf="pickupArray.controls.pickupDate.errors.required">Pickup Date is required</div>
+                      </div>
+
                     </div>
 
                     <div class="col-lg-4">
@@ -758,12 +781,24 @@
                         class="form-control"
                         rows="3"
                         id="textareaDefault"
+                        formControlName="remarks"
+                        [ngClass]="{ 'is-invalid': (pickupArray.controls.remarks.dirty ||
+                        pickupArray.controls.remarks.touched) && pickupArray.controls.remarks.errors }"  required
                       ></textarea>
+
+                      <div *ngIf="(pickupArray.controls.remarks.dirty ||
+                        pickupArray.controls.remarks.touched) && pickupArray.controls.remarks.errors" class="invalid-field">
+                        <div *ngIf="pickupArray.controls.remarks.errors.required">Remarks required</div>
+                      </div>
+
+                    </div>
+
                     </div>
                   </div>
                 </div>
               </form>
-              <form [formGroup]="hosForm" class="form-horizontal form-bordered" >
+
+              <form [formGroup]="dropForm" class="form-horizontal form-bordered" >
                 <div class="card-body" id="drop">
                   <div class="form-group row mt-3">
                     <div class="col-lg-6">
@@ -782,7 +817,7 @@
                     </div>
 
 
-                    <div *ngFor="let hosArray of fA.controls; let i = index" class="row" [formGroup]="hosArray">
+                    <div *ngFor="let dropArray of fA.controls; let i = index" class="row" [formGroup]="dropArray">
 
 
                       <div class="col-lg-4">
@@ -791,12 +826,14 @@
                         for="inputDefault"
                         >Reference Number</label
                       >
-                      <input type="text" class="form-control" formControlName="refrenceNumber" [ngClass]="{ 'is-invalid': (hosArray.controls.refrenceNumber.dirty ||
-                        hosArray.controls.refrenceNumber.touched) && hosArray.controls.refrenceNumber.errors }"  required/>
+                      <input type="text" class="form-control"
+                             formControlName="refrenceNumber"
+                             [ngClass]="{ 'is-invalid': (dropArray.controls.refrenceNumber.dirty ||
+                        dropArray.controls.refrenceNumber.touched) && dropArray.controls.refrenceNumber.errors }"  required/>
 
-                        <div *ngIf="(hosArray.controls.refrenceNumber.dirty ||
-                        hosArray.controls.refrenceNumber.touched) && hosArray.controls.refrenceNumber.errors" class="invalid-field">
-                          <div *ngIf="hosArray.controls.refrenceNumber.errors.required">Reference Number is required</div>
+                        <div *ngIf="(dropArray.controls.refrenceNumber.dirty ||
+                        dropArray.controls.refrenceNumber.touched) && dropArray.controls.refrenceNumber.errors" class="invalid-field">
+                          <div *ngIf="dropArray.controls.refrenceNumber.errors.required">Reference Number is required</div>
                         </div>
 
 
@@ -814,13 +851,13 @@
                         data-plugin-datepicker=""
                         class="form-control"
                         formControlName="dropdate"
-                        [ngClass]="{ 'is-invalid': (hosArray.controls.dropdate.dirty ||
-                        hosArray.controls.dropdate.touched) && hosArray.controls.dropdate.errors }"
+                        [ngClass]="{ 'is-invalid': (dropArray.controls.dropdate.dirty ||
+                        dropArray.controls.dropdate.touched) && dropArray.controls.dropdate.errors }"
                         required
                       />
-                      <div *ngIf="(hosArray.controls.dropdate.dirty ||
-                        hosArray.controls.dropdate.touched) && hosArray.controls.dropdate.errors" class="invalid-field">
-                        <div *ngIf="hosArray.controls.dropdate.errors.required">Drop Date is required</div>
+                      <div *ngIf="(dropArray.controls.dropdate.dirty ||
+                        dropArray.controls.dropdate.touched) && dropArray.controls.dropdate.errors" class="invalid-field">
+                        <div *ngIf="dropArray.controls.dropdate.errors.required">Drop Date is required</div>
                       </div>
 
                     </div>
@@ -870,14 +907,14 @@
                         type="text"
                         class="form-control"
                         formControlName="fromTemp"
-                        [ngClass]="{ 'is-invalid': (hosArray.controls.fromTemp.dirty ||
-                        hosArray.controls.fromTemp.touched) && hosArray.controls.fromTemp.errors }"
+                        [ngClass]="{ 'is-invalid': (dropArray.controls.fromTemp.dirty ||
+                        dropArray.controls.fromTemp.touched) && dropArray.controls.fromTemp.errors }"
                         required
                       />
 
-                      <div *ngIf="(hosArray.controls.fromTemp.dirty ||
-                        hosArray.controls.fromTemp.touched) && hosArray.controls.fromTemp.errors" class="invalid-field">
-                        <div *ngIf="hosArray.controls.fromTemp.errors.required">From Temp is required</div>
+                      <div *ngIf="(dropArray.controls.fromTemp.dirty ||
+                        dropArray.controls.fromTemp.touched) && dropArray.controls.fromTemp.errors" class="invalid-field">
+                        <div *ngIf="dropArray.controls.fromTemp.errors.required">From Temp is required</div>
                       </div>
 
                     </div>
@@ -912,16 +949,16 @@
                         class="form-control"
 
                         formControlName="toTemp"
-                        [ngClass]="{ 'is-invalid': (hosArray.controls.toTemp.dirty ||
-                        hosArray.controls.toTemp.touched) && hosArray.controls.toTemp.errors }"
+                        [ngClass]="{ 'is-invalid': (dropArray.controls.toTemp.dirty ||
+                        dropArray.controls.toTemp.touched) && dropArray.controls.toTemp.errors }"
                         required
 
 
                       />
 
-                      <div *ngIf="(hosArray.controls.toTemp.dirty ||
-                        hosArray.controls.toTemp.touched) && hosArray.controls.toTemp.errors" class="invalid-field">
-                        <div *ngIf="hosArray.controls.toTemp.errors.required">To Temp is required</div>
+                      <div *ngIf="(dropArray.controls.toTemp.dirty ||
+                        dropArray.controls.toTemp.touched) && dropArray.controls.toTemp.errors" class="invalid-field">
+                        <div *ngIf="dropArray.controls.toTemp.errors.required">To Temp is required</div>
                       </div>
 
                     </div>
@@ -953,15 +990,15 @@
                         data-plugin-datepicker=""
                         class="form-control"
                         formControlName="deliveryDate"
-                        [ngClass]="{ 'is-invalid': (hosArray.controls.deliveryDate.dirty ||
-                        hosArray.controls.deliveryDate.touched) && hosArray.controls.deliveryDate.errors }"
+                        [ngClass]="{ 'is-invalid': (dropArray.controls.deliveryDate.dirty ||
+                        dropArray.controls.deliveryDate.touched) && dropArray.controls.deliveryDate.errors }"
                         required
 
                       />
 
-                      <div *ngIf="(hosArray.controls.toTemp.dirty ||
-                        hosArray.controls.deliveryDate.touched) && hosArray.controls.deliveryDate.errors" class="invalid-field">
-                        <div *ngIf="hosArray.controls.deliveryDate.errors.required">Delivery Date is required</div>
+                      <div *ngIf="(dropArray.controls.toTemp.dirty ||
+                        dropArray.controls.deliveryDate.touched) && dropArray.controls.deliveryDate.errors" class="invalid-field">
+                        <div *ngIf="dropArray.controls.deliveryDate.errors.required">Delivery Date is required</div>
                       </div>
 
                     </div>
@@ -1096,14 +1133,14 @@
                         class="form-control"
                         rows="3"
                         formControlName="remarks"
-                        [ngClass]="{ 'is-invalid': (hosArray.controls.remarks.dirty ||
-                        hosArray.controls.remarks.touched) && hosArray.controls.remarks.errors }"
+                        [ngClass]="{ 'is-invalid': (dropArray.controls.remarks.dirty ||
+                        dropArray.controls.remarks.touched) && dropArray.controls.remarks.errors }"
                         required
                       ></textarea>
 
-                      <div *ngIf="(hosArray.controls.remarks.dirty ||
-                        hosArray.controls.remarks.touched) && hosArray.controls.remarks.errors" class="invalid-field">
-                        <div *ngIf="hosArray.controls.remarks.errors.required">Remarks required</div>
+                      <div *ngIf="(dropArray.controls.remarks.dirty ||
+                        dropArray.controls.remarks.touched) && dropArray.controls.remarks.errors" class="invalid-field">
+                        <div *ngIf="dropArray.controls.remarks.errors.required">Remarks required</div>
                       </div>
 
                     </div>
