@@ -45,12 +45,8 @@
                                     </select>
                                 </div>
                             </div>
-
-
                             <div class="col-lg-4">
-                                <button class="btn btn-dark mar-top-asg-stock-btn" (click)="getAddress()">
-                                    Find
-                                </button>
+                                <button class="btn btn-dark mar-top-asg-stock-btn" (click)="getAddress()">Find</button>
                             </div>
                         </div>
                     </form>
@@ -85,10 +81,8 @@
                                         <td>{{stateName}}</td>
                                         <td>{{address.addressZip}}</td>
                                         <td>{{countryName}}</td>
-                                        <td><a routerLink="/dispatch/shipper/shipper-address/Edit-Shipper-Address/{{address.addressID}}">Edit</a>
-                                        </td>
-                                        <td><a [routerLink]="" (click)="deleteAddress(address.addressID)">Delete</a>
-                                        </td>
+                                        <td><a routerLink="/dispatch/address/Edit-Address/{{address.addressID}}">Edit</a></td>
+                                        <td><a [routerLink]="" (click)="deleteAddress(address.addressID)">Delete</a></td>
                                     </tr>
                                 </tbody>
                             </table>

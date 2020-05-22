@@ -26,7 +26,6 @@ export class ReceiverAddressListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchreceivers();
-    this.getAddress();
     this.fetchCountries();
   }
   fetchCountries(){

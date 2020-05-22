@@ -16,6 +16,7 @@ export class CustomerAddressListComponent implements OnInit {
   addresses = [];
   customers = [];
   customerID = "";
+  countryID = "";
   countries = [];
   states = [];
   cities = [];
@@ -26,7 +27,6 @@ export class CustomerAddressListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchcustomers();
-    this.getAddress();
     this.fetchCountries();
   }
   fetchCountries(){
@@ -35,8 +35,34 @@ export class CustomerAddressListComponent implements OnInit {
         this.countries = result.Items;
       });
   }
+
+  fetchcustomers() {
+    this.apiService.getData("customers").subscribe((result: any) => {
+      this.customers = result.Items;
+    });
+    //console.log(this.drivers);
+  }
+
+  getAddress() {
+    this.apiService.getData(`addresses/document/${this.customerID}`)
+        .subscribe({
+          complete: () => {
+            this.initDataTable();
+          },
+          error: () => {},
+          next: (result: any) => {
+            console.log("Result of fetching data after button click",result);
+            this.addresses = result.Items;
+            // this.countryID = this.addresses[0].countryID;
+            this.getStates();
+            this.getCities();
+          },
+        });
+        // this.getStates();
+        // this.getCities();
+  }
   getStates(){
-    this.apiService.getData('states/country/' + this.addresses[0].countryID)
+    this.apiService.getData('states/country/' +this.addresses[0].countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
         this.countryName = this.countries.filter(country => country.countryID == this.addresses[0].countryID)[0].countryName;
@@ -51,36 +77,6 @@ export class CustomerAddressListComponent implements OnInit {
         this.cityName = this.cities.filter(city => city.cityID == this.addresses[0].cityID)[0].cityName;
       });
  }
-  fetchcustomers() {
-    this.apiService.getData("customers").subscribe((result: any) => {
-      this.customers = result.Items;
-    });
-    //console.log(this.drivers);
-  }
-
-  // getAddress() {
-  //   this.apiService.getData(`eventLogs/HOSSummary?userName=${this.userName}&fromDate=${from}&toDate=${to}`).subscribe((result: any) => {
-  //     this.addresses = result;
-  //   });
-  //   console.log(this.addresses);
-  // }
-
-  getAddress() {
-    this.apiService.getData(`addresses/document/${this.customerID}`)
-        .subscribe({
-          complete: () => {
-            this.initDataTable();
-          },
-          error: () => {},
-          next: (result: any) => {
-            console.log(result);
-            this.addresses = result.Items;
-            this.getStates();
-            this.getCities();
-          },
-        });
-  }
-
   deleteAddress(addressID) {
 
              /******** Clear DataTable ************/

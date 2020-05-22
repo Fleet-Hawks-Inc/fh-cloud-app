@@ -27,7 +27,6 @@ export class FactoringCompanyAddressListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchfactoringCompany();
-    this.getAddress();
     this.fetchCountries();
   }
   fetchCountries(){
