@@ -762,6 +762,8 @@
                     </div>
                   </div>
                 </div>
+              </form>
+              <form [formGroup]="hosForm" class="form-horizontal form-bordered" >
                 <div class="card-body" id="drop">
                   <div class="form-group row mt-3">
                     <div class="col-lg-6">
@@ -774,18 +776,31 @@
                     <div class="col-lg-6 text-right">
                       <a
                         class="mr-1 btn btn-success modal-with-zoom-anim ws-normal"
-                        href="#"
+                        [routerLink]="" (click)="addFields()"
                         ><i class="fas fa-plus"></i
                       ></a>
                     </div>
 
-                    <div class="col-lg-4">
+
+                    <div *ngFor="let hosArray of fA.controls; let i = index" class="row" [formGroup]="hosArray">
+
+
+                      <div class="col-lg-4">
                       <label
                         class="control-label text-lg-right pt-2"
                         for="inputDefault"
                         >Reference Number</label
                       >
-                      <input type="text" class="form-control" />
+                      <input type="text" class="form-control" formControlName="refrenceNumber" [ngClass]="{ 'is-invalid': (hosArray.controls.refrenceNumber.dirty ||
+                        hosArray.controls.refrenceNumber.touched) && hosArray.controls.refrenceNumber.errors }"  required/>
+
+                        <div *ngIf="(hosArray.controls.refrenceNumber.dirty ||
+                        hosArray.controls.refrenceNumber.touched) && hosArray.controls.refrenceNumber.errors" class="invalid-field">
+                          <div *ngIf="hosArray.controls.refrenceNumber.errors.required">Reference Number is required</div>
+                        </div>
+
+
+
                     </div>
 
                     <div class="col-lg-4">
@@ -798,7 +813,16 @@
                         type="text"
                         data-plugin-datepicker=""
                         class="form-control"
+                        formControlName="dropdate"
+                        [ngClass]="{ 'is-invalid': (hosArray.controls.dropdate.dirty ||
+                        hosArray.controls.dropdate.touched) && hosArray.controls.dropdate.errors }"
+                        required
                       />
+                      <div *ngIf="(hosArray.controls.dropdate.dirty ||
+                        hosArray.controls.dropdate.touched) && hosArray.controls.dropdate.errors" class="invalid-field">
+                        <div *ngIf="hosArray.controls.dropdate.errors.required">Drop Date is required</div>
+                      </div>
+
                     </div>
 
                     <div class="col-lg-4">
@@ -845,8 +869,17 @@
                       <input
                         type="text"
                         class="form-control"
-                        id="inputDefault"
+                        formControlName="fromTemp"
+                        [ngClass]="{ 'is-invalid': (hosArray.controls.fromTemp.dirty ||
+                        hosArray.controls.fromTemp.touched) && hosArray.controls.fromTemp.errors }"
+                        required
                       />
+
+                      <div *ngIf="(hosArray.controls.fromTemp.dirty ||
+                        hosArray.controls.fromTemp.touched) && hosArray.controls.fromTemp.errors" class="invalid-field">
+                        <div *ngIf="hosArray.controls.fromTemp.errors.required">From Temp is required</div>
+                      </div>
+
                     </div>
                     <div class="col-lg-2">
                       <label
@@ -863,6 +896,9 @@
                           <option value="2">°F</option>
                         </optgroup>
                       </select>
+
+
+
                     </div>
 
                     <div class="col-lg-4">
@@ -874,8 +910,20 @@
                       <input
                         type="text"
                         class="form-control"
-                        id="inputDefault"
+
+                        formControlName="toTemp"
+                        [ngClass]="{ 'is-invalid': (hosArray.controls.toTemp.dirty ||
+                        hosArray.controls.toTemp.touched) && hosArray.controls.toTemp.errors }"
+                        required
+
+
                       />
+
+                      <div *ngIf="(hosArray.controls.toTemp.dirty ||
+                        hosArray.controls.toTemp.touched) && hosArray.controls.toTemp.errors" class="invalid-field">
+                        <div *ngIf="hosArray.controls.toTemp.errors.required">To Temp is required</div>
+                      </div>
+
                     </div>
                     <div class="col-lg-2">
                       <label
@@ -904,7 +952,18 @@
                         type="text"
                         data-plugin-datepicker=""
                         class="form-control"
+                        formControlName="deliveryDate"
+                        [ngClass]="{ 'is-invalid': (hosArray.controls.deliveryDate.dirty ||
+                        hosArray.controls.deliveryDate.touched) && hosArray.controls.deliveryDate.errors }"
+                        required
+
                       />
+
+                      <div *ngIf="(hosArray.controls.toTemp.dirty ||
+                        hosArray.controls.deliveryDate.touched) && hosArray.controls.deliveryDate.errors" class="invalid-field">
+                        <div *ngIf="hosArray.controls.deliveryDate.errors.required">Delivery Date is required</div>
+                      </div>
+
                     </div>
 
                     <div class="col-lg-4">
@@ -1027,7 +1086,7 @@
                       </div>
                     </div>
 
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 ">
                       <label
                         class="control-label text-lg-right pt-2"
                         for="inputDefault"
@@ -1036,19 +1095,39 @@
                       <textarea
                         class="form-control"
                         rows="3"
-                        id="textareaDefault"
+                        formControlName="remarks"
+                        [ngClass]="{ 'is-invalid': (hosArray.controls.remarks.dirty ||
+                        hosArray.controls.remarks.touched) && hosArray.controls.remarks.errors }"
+                        required
                       ></textarea>
+
+                      <div *ngIf="(hosArray.controls.remarks.dirty ||
+                        hosArray.controls.remarks.touched) && hosArray.controls.remarks.errors" class="invalid-field">
+                        <div *ngIf="hosArray.controls.remarks.errors.required">Remarks required</div>
+                      </div>
+
                     </div>
+                      <div class="col-lg-12 mb-5">
+                        <hr>
+                      </div>
+
+                    </div>
+
+
+
+
+
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-lg-12">
-                    <button (click)="addLoad()" class="btn btn-dark mt-1 modal-confirm">
+                    <button (click)="submitForm()" class="btn btn-dark mt-1 modal-confirm">
                       Submit
                     </button>
                   </div>
                 </div>
               </form>
+
             </div>
           </section>
         </div>

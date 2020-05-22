@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { DispatchRoutingModule } from "./dispatch-routing.module";
 import { SharedModule } from "../shared/shared.module";
-import { FormsModule } from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { AddShipperComponent } from './shipper/add-shipper/add-shipper.component';
 import { ShipperListComponent } from './shipper/shipper-list/shipper-list.component';
@@ -45,7 +45,7 @@ import { CreateLoadComponent } from './create-load/create-load.component';
 
 
 @NgModule({
-  imports: [CommonModule, DispatchRoutingModule, SharedModule, FormsModule],
+  imports: [CommonModule, DispatchRoutingModule, SharedModule, FormsModule, ReactiveFormsModule],
 
   declarations: [
     AddShipperComponent,
@@ -79,12 +79,12 @@ import { CreateLoadComponent } from './create-load/create-load.component';
     AddAccountComponent,
     EditAccountComponent,
     AccountsComponent,
-    
+
     AddDocumentsComponent,
     EditDocumentsComponent,
     DocumentsComponent,
 
-  
+
     CreateLoadComponent
   ],
 })
