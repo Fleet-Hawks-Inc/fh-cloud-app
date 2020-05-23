@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import {ApiService} from '../api.service';
+import {ApiService} from '../../../api.service';
 import {Router} from '@angular/router';
 declare var $: any;
 
@@ -41,7 +41,7 @@ export class AddVehicleNewComponent implements OnInit {
   }
   lifeCycle = {
     estimatedServiceLifeInMonths: "",
-    estimatedServiceLifeInMiles: "" 
+    estimatedServiceLifeInMiles: ""
   }
   dimensions = {
     width: "",
@@ -59,7 +59,7 @@ export class AddVehicleNewComponent implements OnInit {
   }
   performace = {
     towingCapacity: "",
-    maxPayload:  "" 
+    maxPayload:  ""
   }
   fuelEconomy = {
     EPACity: "",
@@ -83,7 +83,7 @@ export class AddVehicleNewComponent implements OnInit {
     rearTyreType: "",
     rearTrackWidth: "",
     rearWheelDiameter: "",
-    rearTyrePSI: "" 
+    rearTyrePSI: ""
   }
   settings = {
     primaryMeter: "",
@@ -112,7 +112,7 @@ export class AddVehicleNewComponent implements OnInit {
 
   constructor(private apiService: ApiService,
     private router: Router) {}
-  
+
   ngOnInit() {
     this.fetchServicePrograms();
     this.fetchManufacturers();
@@ -223,7 +223,7 @@ export class AddVehicleNewComponent implements OnInit {
       fuelEconomy: {
         EPACity: this.fuelEconomy.EPACity,
         EPAHighway: this.fuelEconomy.EPAHighway,
-        EPACombined: this.fuelEconomy.EPACombined  
+        EPACombined: this.fuelEconomy.EPACombined
       },
       fuel: {
         fuelType: this.fuel.fuelType,
@@ -254,7 +254,7 @@ export class AddVehicleNewComponent implements OnInit {
         hardAccelrationParameters: this.safetyParameters.hardAccelrationParameters,
         turningParameters: this.safetyParameters.turningParameters,
       },
-      quantumInfo: this.quantum 
+      quantumInfo: this.quantum
   };
 
 console.log(data);
@@ -356,7 +356,7 @@ console.log(data);
 
   onChangeMeasurementUnit(value: any){
     this.settings.measurementUnit = value;
-  } 
+  }
 
   onChangeHardBreakingParameters(value: any){
     this.safetyParameters.hardBreakingParameters = value;

@@ -5,7 +5,10 @@ import { AddDriverComponent } from './drivers/add-driver/add-driver.component';
 import { EditDriverComponent } from './drivers/edit-driver/edit-driver.component';
 import { DriverListComponent } from './drivers/driver-list/driver-list.component';
 
-import { AddVehicleNewComponent } from '../add-vehicle-new/add-vehicle-new.component';
+import { AddVehicleComponent } from './vehicles/add-vehicle/add-vehicle.component';
+import { EditVehicleComponent } from './vehicles/edit-vehicle/edit-vehicle.component';
+
+import { AddVehicleNewComponent } from './vehicles/add-vehicle-new/add-vehicle-new.component';
 import { EditVehicleNewComponent } from './vehicles/edit-vehicle-new/edit-vehicle-new.component';
 import { VehicleListComponent } from './vehicles/vehicle-list/vehicle-list.component';
 
