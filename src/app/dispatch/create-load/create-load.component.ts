@@ -184,6 +184,7 @@ export class CreateLoadComponent implements OnInit {
   }
 
   driverChange(val) {
+    if(this.selectedDrivers.length == 2){alert('More than 2 drivers are not allowed.'); return false;}
     let arr = val.split(",");
     console.log(val);
     //check if its already seleceted
