@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ApiService } from "../../api.service";
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import {from, of } from 'rxjs';
+import {map} from 'rxjs/operators';
 declare var $: any;
 
 @Component({
@@ -58,6 +60,15 @@ export class CreateLoadComponent implements OnInit {
   selectedAssets = [];
   selectedDrivers = [];
 
+  form;
+  response : any = '';
+  hasError =  false;
+  hasSuccess =   false;
+  Error : string = '';
+  Success : string = '';
+  errors = [];
+
+
 
   dropForm : FormGroup;
   dropRepeater = [];
@@ -67,7 +78,9 @@ export class CreateLoadComponent implements OnInit {
   pickupRepeater = [];
 
   constructor(private apiService: ApiService,
-              private formBuilder: FormBuilder) {}
+              private formBuilder: FormBuilder) {
+                
+              }
 
   ngOnInit() {
     this.fetchCustomers();
@@ -77,26 +90,36 @@ export class CreateLoadComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAssets();
 
+    // this.generalForm = this.formBuilder.group({
+    //   dropArray: new FormArray([])
+    // });
+
+
 
     this.dropForm = this.formBuilder.group({
-      formArrays: new FormArray([])
+      dropArray: new FormArray([])
     });
 
     this.pickupForm = this.formBuilder.group({
-      formArrays: new FormArray([])
+      pickupArray: new FormArray([])
     });
 
     this.addFields();
     this.addPickupFields();
+    this.addFields();
+    this.addPickupFields();
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
+    });
 
   }
 
   get pC() { return this.pickupForm.controls; }
-  get pA() { return this.pC.formArrays as FormArray; }
+  get pA() { return this.pC.pickupArray as FormArray; }
 
 
   get fC() { return this.dropForm.controls; }
-  get fA() { return this.fC.formArrays as FormArray; }
+  get fA() { return this.fC.dropArray as FormArray; }
 
   addFields() {
     const numberOfHosRepeater =  this.dropRepeater.length;
@@ -136,14 +159,100 @@ export class CreateLoadComponent implements OnInit {
 
     submitForm() {
 
-      // if (this.hosForm.invalid) {
-      //   return;
-      // }
+      if (this.dropForm.invalid) {
+        alert('invalid drop form');
+        return;
+      }
 
-      alert( JSON.stringify(this.dropForm.value, null, 5) + JSON.stringify(this.pickupForm.value, null, 5));
+      if (this.pickupForm.invalid) {
+        alert('invalid pickup form');
+        return;
+      }
+
+
+
+
+
+      const data = {
+  customerID : this.customerID,
+  shipperInfo : {
+    shipperID: this.shipperInfo.shipperID,
+    addressID: this.shipperInfo.addressID,
+  },
+  receiverInfo : {
+    receiverID: this.receiverInfo.receiverID,
+    addressID: this.receiverInfo.addressID,
+  },
+  mapAssets : {
+    vehicleID: this.mapAssets.vehicleID,
+    assets: this.selectedAssets,
+    drivers: this.selectedDrivers,
+  },
+  loadType : this.loadType,
+  temperatureRequired : {
+    fromTemp: this.temperatureRequired.fromTemp,
+    fromTempScale: this.temperatureRequired.fromTempScale,
+    toTemp: this.temperatureRequired.toTemp,
+    toTempScale: this.temperatureRequired.toTempScale
+  },
+  delivery : {
+    date: this.delivery.date,
+    time: this.delivery.time,
+    estimatedLengthRequired: this.delivery.estimatedLengthRequired,
+    estimatedWeightRequired: this.delivery.estimatedWeightRequired,
+    pointOfContact: this.delivery.pointOfContact,
+    cargoValue: this.delivery.cargoValue
+  },
+  pickUpDetails : [JSON.stringify(this.dropForm.value)],
+  dropDetails : [JSON.stringify(this.dropForm.value)]
+}
+console.log(data);
+
+this.apiService.postData('loads', data).
+    subscribe({
+      complete : () => {},
+      error : (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+                const path = val.path;
+                // We Can Use This Method
+                const key = val.message.match(/"([^']+)"/)[1];
+                 val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[key] = val.message;
+              }),
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { }
+          });
+        },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.Success = 'Load Added successfully';
+        
+      }
+    });
+
+
+
+
+
+
+
+
+      // alert( JSON.stringify(this.dropForm.value, null, 5) + JSON.stringify(this.pickupForm.value, null, 5));
     }
 
 
+    throwErrors() {
+      this.form.showErrors(this.errors);
+    }
+  
 
 
   fetchVehicles() {
