@@ -42,6 +42,7 @@ import { DocumentsComponent } from "./document/documents/documents.component";
 import { CreateLoadComponent } from "./create-load/create-load.component";
 import { LoadBoardComponent } from "./load-board/load-board.component";
 import { LoadDetailComponent } from './load-detail/load-detail.component';
+import {HttpInterceptorProviders} from "../helpers/interceptor.provider";
 
 @NgModule({
   imports: [
@@ -95,5 +96,6 @@ import { LoadDetailComponent } from './load-detail/load-detail.component';
 
     LoadDetailComponent,
   ],
+  providers: [HttpInterceptorProviders],
 })
 export class DispatchModule {}

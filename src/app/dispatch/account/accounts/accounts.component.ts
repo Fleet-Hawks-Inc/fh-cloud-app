@@ -31,7 +31,7 @@ export class AccountsComponent implements OnInit {
           },
           error: () => {},
           next: (result: any) => {
-            console.log(result);
+            console.log("account result" + result);
             this.accounts = result.Items;
           },
         });
