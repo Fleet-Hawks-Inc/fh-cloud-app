@@ -113,6 +113,11 @@ import {SharedModule} from './shared/shared.module';
 import {ChartsModule} from 'ng2-charts';
 import {ToastrModule} from 'ngx-toastr';
 
+// Authentication
+import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
+// JWT interceptors
+import { HttpInterceptorProviders } from './helpers/interceptor.provider';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -223,6 +228,7 @@ import {ToastrModule} from 'ngx-toastr';
 
   ],
   imports: [
+    AmplifyAngularModule,
     CommonModule,
     BrowserModule,
     RouterModule,
@@ -238,7 +244,7 @@ import {ToastrModule} from 'ngx-toastr';
 
 
   ],
-  providers: [],
+  providers: [AmplifyService, HttpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule {
