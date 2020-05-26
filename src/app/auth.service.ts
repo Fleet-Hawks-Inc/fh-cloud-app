@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/index';
 import {ApiService} from './api.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import {AuthenticateService} from './authenticate.service';
-
+import { Auth } from 'aws-amplify';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +38,19 @@ export class AuthService implements CanActivate {
     //return localStorage.getItem('token') != null && !this.isTokenExpired();
   }
 
+
+
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    return Auth.currentAuthenticatedUser().then(() => {
+      return true;
+    }).catch(() => {
+      this._router.navigate(['/Login']);
+      return false;
+    });
+
+  }
+
+  _canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     // const currentUser = this.authenticate.currentUserValue;
     // if (currentUser) {

@@ -17,7 +17,7 @@
                             <div class="logiconm mr-3">
                                 <i class="fas fa-user logicon text-5"></i>
                             </div>
-                            <input name="username" type="text" placeholder="Email ID or Username" class="form-control login form-control-lg" [(ngModel)]="email" />
+                            <input name="username" type="text" placeholder="Email ID or Username" class="form-control login form-control-lg" [(ngModel)]="userName" />
 
                         </div>
                     </div>
@@ -42,7 +42,9 @@
                     <div class="row">
 
                         <div class="col-sm-12 text-center">
-                            <button type="submit" class="btn btn-primary btn-lg mt-2" (click)="LoginAction()">Submit</button>
+                            <!--<button type="submit" class="btn btn-primary btn-lg mt-2" (click)="LoginAction()">Submit</button>-->
+                            <button type="submit" class="btn btn-primary btn-lg mt-2" (click)="loginAction()">Submit</button>
+
                         </div>
                     </div>
 
