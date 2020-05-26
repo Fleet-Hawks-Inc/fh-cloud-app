@@ -50,7 +50,7 @@ export class AuthService implements CanActivate {
 
   }
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+  _canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     // const currentUser = this.authenticate.currentUserValue;
     // if (currentUser) {

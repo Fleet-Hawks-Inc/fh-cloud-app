@@ -97,6 +97,7 @@ export class LoginComponent implements OnInit {
         this.error = 'User has not active devices';
 
       } else {
+        console.log("user logged In");
 
         /**
          * For the Role Management
@@ -123,7 +124,7 @@ export class LoginComponent implements OnInit {
       this.error = err.message || 'Error during login';
     }
 
-  }
+  };
   submitConfirmationCode = async () => {
     if (this.signUpCode !== '') {
       await Auth.verifyCurrentUserAttributeSubmit('email', this.signUpCode);
