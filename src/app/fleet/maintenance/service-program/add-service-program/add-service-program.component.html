@@ -23,7 +23,14 @@
                 <i class="fas fa-home"></i>
               </a>
             </li>
-
+            <li>
+              <span>Maintenance</span>
+            </li>
+            <li>
+              <a routerLink="/fleet/maintenance/service-program/Service-Program-List">
+                <span>Service Program List</span>
+              </a>
+            </li>
             <li><span>{{title}}</span></li>
           </ol>
 
@@ -49,10 +56,10 @@
                 </div>
                 <div class="form-group row">
                   <div class="col-lg-6">
-                    <label class="control-label text-lg-right pt-2" for="inputDefault">Repeat By Time</label>
+                    <label class="control-label text-lg-right pt-2" for="inputDefault1">Repeat By Time</label>
                     <div class="row">
                       <div class="col-lg-9">
-                        <input type="text" class="form-control" id="inputDefault" name="repeatByTime" [(ngModel)]="repeatByTime">
+                        <input type="text" class="form-control" id="inputDefault1" name="repeatByTime" [(ngModel)]="repeatByTime">
                       </div>
                       <div class="col-lg-3">
                         <select data-plugin-selecttwo="" class="form-control populate" >
@@ -66,14 +73,14 @@
                     </div>
                   </div>
                   <div class="col-lg-6">
-                    <label class="control-label text-lg-right pt-2" for="inputDefault">Repeat By Odometer</label>
-                    <input type="text" class="form-control" id="inputDefault" name="repeatByOdometer" [(ngModel)]="repeatByOdometer">
+                    <label class="control-label text-lg-right pt-2" for="inputDefault2">Repeat By Odometer</label>
+                    <input type="text" class="form-control" id="inputDefault2" name="repeatByOdometer" [(ngModel)]="repeatByOdometer">
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-lg-12">
-                    <label class="control-label text-lg-right pt-2" for="inputDefault">Description</label>
-                    <textarea class="form-control" rows="3" id="textareaDefault" name="description" [(ngModel)]="description"></textarea>
+                    <label class="control-label text-lg-right pt-2" for="inputDefault3">Description</label>
+                    <textarea class="form-control" rows="3" id="textareaDefault3" name="description" [(ngModel)]="description"></textarea>
                   </div>
                 </div>
                 <div class="form-group row">

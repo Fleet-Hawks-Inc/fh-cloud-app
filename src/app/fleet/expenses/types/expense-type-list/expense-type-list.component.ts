@@ -10,7 +10,7 @@ declare var $: any;
   styleUrls: ["./expense-type-list.component.css"],
 })
 export class ExpenseTypeListComponent implements OnInit {
-  title = "Expense Type List";
+  title = "Type List";
   expenseTypes;
 
   constructor(private apiService: ApiService, private router: Router) {}

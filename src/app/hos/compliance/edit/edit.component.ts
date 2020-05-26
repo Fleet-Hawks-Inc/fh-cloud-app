@@ -1,11 +1,12 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { Router, ActivatedRoute } from "@angular/router";
 import { ApiService } from "../../../api.service";
-import {BehaviorSubject, combineLatest, from, of, zip} from 'rxjs';
+import {BehaviorSubject, combineLatest, from, merge, of, zip} from 'rxjs';
+import {concatAll, concatMap, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
+import {  ActivatedRoute } from "@angular/router";
+// import {ToastrService} from 'ngx-toastr';
 import * as moment from "moment";
 import * as _ from "lodash";
-import {concatAll, concatMap, filter, isEmpty, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
-import {bool} from 'aws-sdk/clients/signer';
+import {split} from 'ts-node';
 declare var $: any;
 
 @Component({
@@ -38,21 +39,25 @@ export class EditComponent implements OnInit, OnDestroy {
   eventID = "";
   fromTime = "";
   toTime = "";
-
+  eventType = "";
 
 
   /**
    * New Vars
    *
    ***/
-    timeClash : bool = true;
+    timeClash : boolean = true;
     initialDayTime = '';
     endDayTime = '';
     sharedData$;
-    startTimes : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-    endTimes : BehaviorSubject <any[]> = new BehaviorSubject<any[]>([]);
-    @ViewChild('fromtime_', {static: false}) fromTime_: ElementRef;
-    @ViewChild('toTime_', {static: false}) toTime_: ElementRef;
+    //startTimes : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+    //endTimes : BehaviorSubject <any[]> = new BehaviorSubject<any[]>([]);
+    startTimes  = [];
+    endTimes  = [];
+    @ViewChild('fromtime_', {static: false}) fromTime_ : ElementRef;
+    @ViewChild('toTime_', {static: false}) toTime_ : ElementRef;
+    fromTimeStamp;
+    toTimeStamp;
 
 
 
@@ -67,6 +72,14 @@ export class EditComponent implements OnInit, OnDestroy {
   }
 
   lastDayEvent() {
+    this.lastEvent =  {};
+  
+    this.duties = [];
+    this.eventList = [];
+    this.accumulatedOFF = 0;
+    this.accumulatedSB = 0;
+    this.accumulatedD = 0;
+    this.accumulatedON = 0;
     let newDate = moment(this.selectedDate, "DD-MM-YYYY").subtract("days", 1);
     let lastDayDate = this.changeFormat(newDate);
 
@@ -136,8 +149,8 @@ export class EditComponent implements OnInit, OnDestroy {
          */
         const allValues$ = from(result);
         allValues$.subscribe((r: any) => {
-          this.startTimes.next(r.time);
-          this.endTimes.next(r.toTime);
+          this.startTimes.push(r.time);
+          this.endTimes.push(r.toTime);
           });
         /******************************/
       });
@@ -198,32 +211,50 @@ export class EditComponent implements OnInit, OnDestroy {
   isTimeClashes_() {
     this.timeClash = false;
     //console.log(this.fromTime_.nativeElement.value + ' ' + this.toTime_.nativeElement.value);
+    this.eventType = $('#eventType').val();
     this.fromTime = $('#fromTime').val();
     this.toTime = $('#toTime').val();
+    if (this.eventType === null || this.fromTime === '' || this.toTime === '') {
+      // this.toastr.error('Error', 'Please Choose Event Type', {
+      //   timeOut: 3000
+      // });
+      alert('Please Fill All The Fields');
+
+      return true;
+    }
+
+
+
     /*
     ** Moment Instance
      */
-    const format = 'hh:mm:ss';
-    let tt = moment(this.toTime, format);
+    const format = 'HH:mm:ss';
+    let tt = moment(this.toTime , format);
     let ft = moment(this.fromTime, format);
-    let iTt = moment(this.initialDayTime , format);
-    let eFt = moment(this.endDayTime , format);
+    let iTt = moment(this.initialDayTime, format);
+    let eFt = moment(this.endDayTime, format);
     /******************/
 
 
-    /**
-     * First Logic
-     * If The Dates Are Valid From The User
-     */
-    if (!tt.isBetween(iTt, eFt) || !ft.isBetween(iTt, eFt)) {
-      console.log('E2E dates true');
-    }
-    /**
-     * If The Dates Are InValid From The User
-     */
-    else {
-      console.log('E2E dates false');
-    }
+
+
+    // /*********E2E LOGIC *************/
+    //
+    // /**
+    //  * First Logic
+    //  * If The Dates Are Valid From The User
+    //  */
+    // if (!tt.isBetween(iTt, eFt) || !ft.isBetween(iTt, eFt)) {
+    //   console.log('E2E dates true');
+    // }
+    // /**
+    //  * If The Dates Are InValid From The User
+    //  */
+    // else {
+    //   console.log('E2E dates false');
+    // }
+    //
+    // /*********************************/
 
 
     /**
@@ -231,29 +262,89 @@ export class EditComponent implements OnInit, OnDestroy {
      * Iterate Over All The Values
      */
 
-    zip(this.startTimes , this.endTimes)
-      .subscribe((v) => {
-        if (moment(v[0] , 'hh:mm:ss').isValid() && moment(v[1] , 'hh:mm:ss').isValid()) {
+    merge(of(this.startTimes) , of(this.endTimes))
+      .subscribe(
+        (v) => {
+          if (moment(v[0] , format).isValid() && moment(v[1] , format).isValid()) {
 
           /*
           ** Moment Instance
           */
-          const iTt_ = moment(v[0] , format);
-          const eFt_ = moment(v[1] , format);
-
+          const iTt_ = moment(v[0], format);
+          const eFt_ = moment(v[1], format);
 
           if (tt.isBetween(iTt_, eFt_) || ft.isBetween(iTt_, eFt_)) {
             this.timeClash = true;
-            }
-            }
+          }
+          }
       });
 
-    console.log('V2V ' +  ((this.timeClash) ? 'false': 'true'));
+    if (this.timeClash) {
+      // this.toastr.error('Error', 'Time Is Clashing With Other Events', {
+      //   timeOut: 3000
+      // });
+      alert('Your Time is Clashing With Your Logs, Please Remove Logs that are coming in between.');
+
+    }
+
+
+    return this.timeClash;
 
   }
 
+  addEvent() {
+    //check if entered time clashes with others
 
+    //console.log(this.selectedDate);
 
+    if (!this.isTimeClashes_()) {
+
+      //  /**
+     //  *Unix
+     // */
+     //  moment(explodedDate[2] + '-' + explodedDate[1] + '-' + explodedDate[0] + ' ' + this.fromTime).format('X');
+     //
+     //  /**
+     //   *With MilliSecconds
+     //   */
+     //  moment(explodedDate[2] + '-' + explodedDate[1] + '-' + explodedDate[0] + ' ' + this.fromTime).unix('x');
+
+      const explodedDate = this.selectedDate.split('-');
+
+      this.fromTimeStamp = moment(explodedDate[2] + '-' + explodedDate[1] + '-' + explodedDate[0] + ' ' + this.fromTime).unix();
+
+      this.toTimeStamp = moment(explodedDate[2] + '-' + explodedDate[1] + '-' + explodedDate[0] + ' ' + this.toTime).unix();
+
+      console.log('from unix timestamp ' + this.fromTimeStamp);
+      console.log('to unix timestamp ' + this.toTimeStamp);
+
+      // this.toastr.success('Success', 'Event Successfully Saved', {
+      //   timeOut: 3000
+      // });
+
+      const data = {
+        HOSEventDescription: this.eventType,
+        fromTime: this.fromTime,
+        toTime: this.toTime,
+        eventDate: this.selectedDate,
+        userName: this.userName,
+        fromTimeStamp : this.fromTimeStamp,
+        toTimeStamp: this.toTimeStamp
+      };
+
+      console.log(data);
+      this.apiService
+        .postData('eventLogs/HOSAddAndModify', data)
+        .subscribe((result: any) => {
+          $('#editEventModal').modal('hide');
+          this.lastDayEvent();
+        });
+
+     // $('#editEventModal').modal('hide');
+
+    }
+
+  }
 
 
   changeFormat(newDate: any) {
@@ -389,20 +480,18 @@ export class EditComponent implements OnInit, OnDestroy {
     this.apiService
       .getData("eventLogs/HOSUpdateStatus/" + this.eventID)
       .subscribe((result: any) => {
+        $("#deleteEventModal").modal("hide");
         this.lastDayEvent();
       });
   }
 
-  editModal(from, to) {
+  editModal() {
     $(document).ready(function () {
-      $("#editEventModal").modal("show");
+      $('#editEventModal').modal('show');
     });
   }
 
-  addEvent() {
-    //check if entered time clashes with others
-    this.isTimeClashes_();
-  }
+
 
 
 
@@ -428,7 +517,7 @@ export class EditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sharedData$.unsubscribe();
+    //this.sharedData$.unsubscribe();
   }
 
 

@@ -10,7 +10,7 @@ declare var $: any;
   styleUrls: ["./edit-country.component.css"],
 })
 export class EditCountryComponent implements OnInit {
-  title = "Edit Countries";
+  title = "Edit Country";
 
   errors = {};
   form;

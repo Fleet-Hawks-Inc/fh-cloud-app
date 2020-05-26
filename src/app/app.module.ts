@@ -31,9 +31,9 @@ import { EditGroupComponent } from './edit-group/edit-group.component';
 import { AddExpensesComponent } from './add-expenses/add-expenses.component';
 import { ExpensesListComponent } from './expenses-list/expenses-list.component';
 import { EditExpensesComponent } from './edit-expenses/edit-expenses.component';
-import { DocumentsComponent } from './documents/documents.component';
-import { AddDocumentsComponent } from './add-documents/add-documents.component';
-import { EditDocumentsComponent } from './edit-documents/edit-documents.component';
+// import { DocumentsComponent } from './documents/documents.component';
+// import { AddDocumentsComponent } from './add-documents/add-documents.component';
+// import { EditDocumentsComponent } from './edit-documents/edit-documents.component';
 import { AddTripsComponent } from './add-trips/add-trips.component';
 import { TripsListComponent } from './trips-list/trips-list.component';
 import { EditTripComponent } from './edit-trip/edit-trip.component';
@@ -55,21 +55,21 @@ import { CustomersComponent } from './customers/customers.component';
 import { AddInsuranceComponent } from './add-insurance/add-insurance.component';
 import { EditInsuranceComponent } from './edit-insurance/edit-insurance.component';
 import { InsurancesComponent } from './insurances/insurances.component';
-import { AddContactComponent } from './add-contact/add-contact.component';
-import { EditContactComponent } from './edit-contact/edit-contact.component';
-import { ContactsComponent } from './contacts/contacts.component';
+// import { AddContactComponent } from './add-contact/add-contact.component';
+// import { EditContactComponent } from './edit-contact/edit-contact.component';
+// import { ContactsComponent } from './contacts/contacts.component';
 import { AddReceiverComponent } from './add-receiver/add-receiver.component';
 import { EditReceiverComponent } from './edit-receiver/edit-receiver.component';
 import { ReceiversComponent } from './receivers/receivers.component';
-import { AddAddressComponent } from './add-address/add-address.component';
-import { EditAddressComponent } from './edit-address/edit-address.component';
-import { AddressesComponent } from './addresses/addresses.component';
+// import { AddAddressComponent } from './add-address/add-address.component';
+// import { EditAddressComponent } from './edit-address/edit-address.component';
+// import { AddressesComponent } from './addresses/addresses.component';
 import { AddInspectionFormComponent } from './add-inspection-form/add-inspection-form.component';
 import { EditInspectionFormComponent } from './edit-inspection-form/edit-inspection-form.component';
 import { InspectionFormsComponent } from './inspection-forms/inspection-forms.component';
-import { AddAccountComponent } from './add-account/add-account.component';
-import { EditAccountComponent } from './edit-account/edit-account.component';
-import { AccountsComponent } from './accounts/accounts.component';
+// import { AddAccountComponent } from './add-account/add-account.component';
+// import { EditAccountComponent } from './edit-account/edit-account.component';
+// import { AccountsComponent } from './accounts/accounts.component';
 import { AddCertificateComponent } from './add-certificate/add-certificate.component';
 import { EditCertificateComponent } from './edit-certificate/edit-certificate.component';
 import { CertificatesComponent } from './certificates/certificates.component';
@@ -145,9 +145,9 @@ import { HttpInterceptorProviders } from './helpers/interceptor.provider';
     AddExpensesComponent,
     ExpensesListComponent,
     EditExpensesComponent,
-    DocumentsComponent,
-    AddDocumentsComponent,
-    EditDocumentsComponent,
+    // DocumentsComponent,
+    // AddDocumentsComponent,
+    // EditDocumentsComponent,
     AddTripsComponent,
     TripsListComponent,
     EditTripComponent,
@@ -170,21 +170,21 @@ import { HttpInterceptorProviders } from './helpers/interceptor.provider';
     EditInsuranceComponent,
     InsurancesComponent,
 
-    AddContactComponent,
-    EditContactComponent,
-    ContactsComponent,
+    // AddContactComponent,
+    // EditContactComponent,
+    // ContactsComponent,
     AddReceiverComponent,
     EditReceiverComponent,
     ReceiversComponent,
-    AddAddressComponent,
-    EditAddressComponent,
-    AddressesComponent,
+    // AddAddressComponent,
+    // EditAddressComponent,
+    // AddressesComponent,
     AddInspectionFormComponent,
     EditInspectionFormComponent,
     InspectionFormsComponent,
-    AddAccountComponent,
-    EditAccountComponent,
-    AccountsComponent,
+    // AddAccountComponent,
+    // EditAccountComponent,
+    // AccountsComponent,
     AddCertificateComponent,
     EditCertificateComponent,
     CertificatesComponent,

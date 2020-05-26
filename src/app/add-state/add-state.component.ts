@@ -56,13 +56,12 @@ export class AddStateComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "countryID": this.country,
-      "stateName": this.stateName,
-      "stateCode": this.stateCode
+      countryID: this.country,
+      stateName: this.stateName,
+      stateCode: this.stateCode
     };
 
-    this.apiService.postData('states', data)
-      .subscribe({
+    this.apiService.postData('states', data).subscribe({
         complete : () => {},
         error : (err) => {
           from(err.error)
@@ -90,6 +89,7 @@ export class AddStateComponent implements OnInit {
   }
 
   throwErrors() {
+    console.log('on here');
     this.form.showErrors(this.errors);
   }
 

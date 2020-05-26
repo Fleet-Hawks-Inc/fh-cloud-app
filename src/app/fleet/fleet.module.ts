@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 
-import { AddVehicleNewComponent } from '../add-vehicle-new/add-vehicle-new.component';
+import { AddVehicleNewComponent } from './vehicles/add-vehicle-new/add-vehicle-new.component';
 import { EditVehicleNewComponent } from './vehicles/edit-vehicle-new/edit-vehicle-new.component';
 import { VehicleListComponent } from './vehicles/vehicle-list/vehicle-list.component';
 
@@ -74,6 +74,8 @@ import { GeofenceListComponent } from './geofence/geofence-list/geofence-list.co
 
 import {GraphComponent} from './graphs/graph/graph.component';
 import {ChartsModule} from 'ng2-charts';
+import {AddVehicleComponent} from './vehicles/add-vehicle/add-vehicle.component';
+import {EditVehicleComponent} from './vehicles/edit-vehicle/edit-vehicle.component';
 
 @NgModule({
   imports: [
@@ -88,6 +90,9 @@ import {ChartsModule} from 'ng2-charts';
     AddDriverComponent,
     EditDriverComponent,
     DriverListComponent,
+
+    AddVehicleComponent,
+    EditVehicleComponent,
 
     AddVehicleNewComponent,
     EditVehicleNewComponent,

@@ -88,7 +88,7 @@ export class AddVendorComponent implements OnInit {
     if(!this.mapBoxService.plottedMap){
       alert('Please draw the geofence'); return false;
     }
-    
+    this.errors = {};
     let data = {
       vendorName: this.vendorName,
       vendorType: this.vendorType,
@@ -121,6 +121,7 @@ export class AddVendorComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.Success = '';
             },
             error: () => {},
             next: () => {},
@@ -130,6 +131,7 @@ export class AddVendorComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.Success = "Vendor added successfully";
+        this.initMap();
         this.vendorName = "";
         this.vendorType = "";
         this.geoLocation = {

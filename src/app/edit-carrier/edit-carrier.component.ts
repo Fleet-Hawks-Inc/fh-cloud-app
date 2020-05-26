@@ -145,6 +145,10 @@ export class EditCarrierComponent implements OnInit {
     this.apiService.getData("countries").subscribe((result: any) => {
       this.countries = result.Items;
     });
+
+    setTimeout(() => {
+      this.getStates();
+    }, 2000)
   }
 
   fetchUsers() {
@@ -159,6 +163,10 @@ export class EditCarrierComponent implements OnInit {
       .subscribe((result: any) => {
         this.states = result.Items;
       });
+
+    setTimeout(() => {
+      this.getCities();
+    }, 2000)
   }
 
   getCities() {

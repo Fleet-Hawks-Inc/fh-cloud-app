@@ -14,13 +14,17 @@
         <h2>{{ title }}</h2>
 
         <div class="right-wrapper text-right">
-          <ol class="breadcrumbs">
+          <ol class="breadcrumbs pr-3">
             <li>
-              <a href="/">
+              <a routerLink="/">
                 <i class="fas fa-home"></i>
               </a>
             </li>
-            <li><span>Carriers</span></li>
+            <li>
+              <a routerLink="/Carriers-List">
+                Carrier List
+              </a>
+            </li>
             <li>
               <span>{{ title }}</span>
             </li>
@@ -34,7 +38,7 @@
             <div class="addv_topnav">
               <ul class="pl-0 mt-2 mb-0">
                 <li
-                  (click)="company_settings('')"
+                  (click)="company_settings()"
                   [ngClass]="{ active: activeTab == 'company_settings' }"
                   class="btn"
                 >
@@ -79,39 +83,42 @@
                   <div class="col-lg-4">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+                      for="carrierInput"
                       >Carrier Name</label
                     >
                     <input
                       type="text"
                       class="form-control"
                       name="carrierName"
+                      id="carrierInput"
                       [(ngModel)]="carrierName"
                     />
                   </div>
                   <div class="col-lg-4">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+                      for="taxIdInput"
                       >Tax ID</label
                     >
                     <input
                       type="text"
                       class="form-control"
                       name="taxID"
+                      id="taxIdInput"
                       [(ngModel)]="taxID"
                     />
                   </div>
                   <div class="col-lg-4">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+                      for="numberinput"
                       >Company Number</label
                     >
                     <input
                       type="text"
                       class="form-control"
                       name="companyNumber"
+                      id="numberinput"
                       [(ngModel)]="companyNumber"
                     />
                   </div>
@@ -120,46 +127,48 @@
                   <div class="col-lg-12">
                     <label
                       class="control-label text-lg-right text-4 pt-2"
-                      for="inputDefault"
                       >Address</label
                     >
                   </div>
                   <div class="col-lg-4">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+                      for="streetInput"
                       >Street No</label
                     >
                     <input
                       type="text"
                       class="form-control"
                       name="address.streetNo"
+                      id="streetInput"
                       [(ngModel)]="address.streetNo"
                     />
                   </div>
                   <div class="col-lg-4">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+                      for="streetNameInput"
                       >Street Name</label
                     >
                     <input
                       type="text"
                       class="form-control"
                       name="address.streetName"
+                      id="streetNameInput"
                       [(ngModel)]="address.streetName"
                     />
                   </div>
                   <div class="col-lg-4">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+                      for="countryInput"
                       >Country</label
                     >
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
                       name="address.countryID"
+                      id="countryInput"
                       [(ngModel)]="address.countryID"
                       (change)="getStates()"
                     >
@@ -175,7 +184,7 @@
                   <div class="col-lg-4">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+                      for="stateInput"
                       >State</label
                     >
                     <select
@@ -184,6 +193,7 @@
                       name="address.stateID"
                       [(ngModel)]="address.stateID"
                       (change)="getCities()"
+                      id="stateInput"
                     >
                       <optgroup label="">
                         <option
@@ -197,7 +207,7 @@
                   <div class="col-lg-4">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+                      for="cityInput"
                       >City</label
                     >
                     <select
@@ -205,6 +215,7 @@
                       class="form-control populate"
                       name="address.cityID"
                       [(ngModel)]="address.cityID"
+                      id="cityInput"
                     >
                       <optgroup label="">
                         <option
@@ -218,13 +229,16 @@
                   <div class="col-lg-4">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+                      for="zipInput"
                       >Zip Code</label
                     >
                     <input
                       type="number"
                       class="form-control"
                       name="address.zipCode"
+                      id="zipInput"
+                      min="1"
+                      maxlength="100"
                       [(ngModel)]="address.zipCode"
                     />
                   </div>
@@ -234,13 +248,14 @@
                   <div class="col-lg-6">
                     <label
                       class="control-label text-lg-right pt-2"
-                      for="inputDefault"
+                      for="superUserInput"
                       >Super User Name</label
                     >
                     <select
                       data-plugin-selectTwo
                       class="form-control populate"
                       name="superUserName"
+                      id="superUserInput"
                       [(ngModel)]="superUserName"
                     >
                       <optgroup label="">

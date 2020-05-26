@@ -14,13 +14,20 @@
         <h2>{{ title }}</h2>
 
         <div class="right-wrapper text-right">
-          <ol class="breadcrumbs">
+          <ol class="breadcrumbs pr-3">
             <li>
-              <a href="/">
+              <a routerLink="/">
                 <i class="fas fa-home"></i>
               </a>
             </li>
-            <li><span>Vehicles</span></li>
+            <li>
+              <span>Inventory</span>
+            </li>
+            <li>
+              <a routerLink="/fleet/inventory/item-group/Item-Group-List">
+                <span>Item Group List</span>
+              </a>
+            </li>
             <li>
               <span>{{ title }}</span>
             </li>

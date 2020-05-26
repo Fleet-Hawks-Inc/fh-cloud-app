@@ -5170,7 +5170,7 @@ h6 .inverted {
 }
 
 .text-5 {
-	font-size: 1.50em !important;
+	font-size: 1.30em !important;
 }
 
 .text-6 {
@@ -7740,7 +7740,7 @@ html.dark .colorpicker:after {
 }
 /* Filter */
 .dataTables_wrapper .dataTables_filter label {
-	width: 100%;
+	width: 50%;
 }
 
 .dataTables_wrapper .dataTables_filter input {
@@ -8209,8 +8209,6 @@ select {
 	border: 1px solid #E5E7E9;
 	border-radius: 6px;
 	outline: none;
-	min-width: 100px;
-    padding: 4px 2px;
 }
 
 .label {
@@ -13256,23 +13254,23 @@ html.dark .table .actions-hover a {
 }
 
 .nav-tabs li .nav-link {
-	border-radius: 5px 5px 0 0;
-	font-size: 14px;
-	margin-right: 1px;
+	border-radius: 0px;
+	font-size: 13px;
+	margin-right: 2px; margin-left: 2px;
 }
 
 .nav-tabs li .nav-link, .nav-tabs li .nav-link:hover {
-	background: #F4F4F4;
+	background: #f0f0f0;
 	border-bottom: none;
-	border-left: 1px solid #EEE;
-	border-right: 1px solid #EEE;
-	border-top: 3px solid #EEE;
+	border-left: 1px solid #ababab;
+	border-right: 1px solid #ababab;
+	border-top: 1px solid #ababab;
 	color: #CCC;
 }
 
 .nav-tabs li .nav-link:hover {
 	border-bottom-color: transparent;
-	border-top: 3px solid #CCC;
+	border-top: 1px solid #CCC;
 	-webkit-box-shadow: none;
 	        box-shadow: none;
 }
@@ -13294,7 +13292,7 @@ html.dark .table .actions-hover a {
 	background: #FFF;
 	border-left-color: #EEE;
 	border-right-color: #EEE;
-	border-top: 3px solid #CCC;
+	border-top: 1px solid #CCC;
 	color: #CCC;
 }
 

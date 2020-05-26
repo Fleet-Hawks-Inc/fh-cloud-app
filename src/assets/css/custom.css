@@ -560,23 +560,23 @@ float:  left;
 
 .drivermain{position: relative;}
 .drivelist{
-  position: absolute; width: 400px;
+  position: absolute; width: 417px;
   background: #f5f5f5; height: 100%; padding-bottom: 100px;
-  position: fixed;
+  position: fixed;  z-index: 99999;
   right:0px; top: 110px; 
 }
 
-.driverdetail{float: left; background: #f5f5f5; width: 100%;
+.driverdetail{float: left; background: #fff; width: 100%;
   border-bottom: 1px solid #bec8d1;}
 
-.driverdetail a{display: block; height: 425px; text-decoration:none; padding:10px 10px;}
-.driverdetail a:hover{background: #fff; text-decoration:none;}
+.driverdetail a{display: block; height: 425px; text-decoration:none; border: solid 3px #fff; padding:10px 10px;}
+.driverdetail a:hover{background: #f0f0f0; text-decoration:none; border: solid 3px #000;}
 .driverstatus{width: 100%;}
 .curtime{width: 120px; margin-right: 10px; float: left; border-right:solid 1px #333;}
 .curcycle{width: 130px; float: left;  }
 
 .iconR{position: absolute;
-  right:400px; 
+  right:417px; 
   top: 370px;
   }
 
@@ -613,27 +613,56 @@ position: absolute; left: 0; top: 60px; z-index: 100;}
   position: absolute; left: 0; top: 60px; z-index: 500;
 }
 
- .tripdot1{width: 16px; height: 16px; border-radius: 50%;
+.tripbar1{width:100px; height: 3px; background: #727272;
+  position: absolute; left: 0; top: 60px; z-index: 100;}
+
+.tripbarfinish1{width:100px; height: 3px; background: #0fd50a;
+    position: absolute; left: 0; top: 60px; z-index: 500;
+  }
+
+ .tripdot1{width: 12px; height: 12px; border-radius: 50%;
   background: #141414; z-index: 999; position: absolute;
   left: 0; top: 55px;}
 
-.tripdot2{width: 16px; height: 16px; border-radius: 50%;
+
+
+.tripbar2{width:100px; height: 3px; background: #000000;
+    position: absolute; left: 100px; top: 60px; z-index: 400;}
+  
+.tripbarfinish2{width:100px; height: 3px; background: #0fd50a;
+      position: absolute; left: 100px; top: 60px; z-index: 500;
+}
+
+.tripbarred2{width:100px; height: 3px; background: #ff0000;
+  position: absolute; left: 100px; top: 60px; z-index: 500;
+}
+
+
+.tripdot2{width: 12px; height: 12px; border-radius: 50%;
     background: #141414; z-index: 999; position: absolute;
     left: 100px; top: 55px;}
 
-.tripdot3{width: 16px; height: 16px; border-radius: 50%;
+
+    .tripbar3{width:100px; height: 3px; border: dashed 1px #000000;
+      position: absolute; left: 200px; top: 60px; z-index: 400;}
+    
+  .tripbarfinish3{width:100px; height: 3px; background: #0fd50a;
+        position: absolute; left: 100px; top: 60px; z-index: 500;
+      }
+
+.tripdot3{width: 12px; height: 12px; border-radius: 50%;
       background: #141414; z-index: 999; position: absolute;
       left: 200px; top: 55px;}
 
-.tripdot4{width: 16px; height: 16px; border-radius: 50%;
+.tripdot4{width: 12px; height: 12px; border-radius: 50%;
         background: #141414; z-index: 999; position: absolute;
         left: 300px; top: 55px;}
 
-.tripdot5{width: 16px; height: 16px; border-radius: 50%;
+.tripdot5{width: 12px; height: 12px; border-radius: 50%;
           background: #141414; z-index: 999; position: absolute;
           left: 400px; top: 55px;}
 
-.tripdot6{width: 16px; height: 16px; border-radius: 50%;
+.tripdot6{width: 12px; height: 12px; border-radius: 50%;
             background: #ff0000; z-index: 999; position: absolute;
             left: 472px; top: 55px;}
 
@@ -653,6 +682,33 @@ position: absolute; left: 0; top: 60px; z-index: 100;}
 .triploc4{z-index: 999; width: 50px; position: absolute;left: 280px; top: 80px; text-align: center;}
 .triploc5{z-index: 999; width: 50px; position: absolute;left: 380px; top: 80px; text-align: center;}
 .triploc6{z-index: 999; width: 50px;   position: absolute;left: 445px; top: 80px; text-align: center;}
+
+
+
+/* trip info new classes with new style 18.05.20 , trip info vertical */
+
+.tripsmain{height:130px; width: 100%; margin-top: 0px; position: relative;}
+
+.tripvertibar{width:2px; height:110px; border: dashed 1px #000;
+  position: absolute; left: 4px; top:0px; z-index: 500;}
+.tripvertifinish{width:2px; height:80px; background: #0fd50a;
+    position: absolute; left: 4px; top:0px; z-index: 500; }
+
+.tripvertiyellow{width:2px; height:80px; background: #ffa800;
+      position: absolute; left: 4px; top:0px; z-index: 500; }
+
+.tripvertired{width:2px; height:30px; background: #ff0000;
+        position: absolute; left: 4px; top:10px; z-index: 500; }
+
+.tripcirlce{width:10px; height:10px; border-radius: 50%;background: #141414;}
+
+.trip1{z-index:999; width: 100%;  position: absolute; left: 0; top: 30px;}
+.trip1 p{width: 100%; display: block; position: absolute; left: 20px; top:-10px;}
+
+.trip2{z-index:999; width: 100%;  position: absolute; left: 0; top: 70px;}
+.trip2 p{width: 100%; display: block; position: absolute; left: 20px; top:-10px;}
+  
+
 
 
 /* HOS driver insight classes di mean drive insite rejected */
@@ -800,7 +856,15 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
 
     /* ********************* yard entery page classes start here ********************** */
 
+    /* geofenc map serach*/
 
+.gfmap{position: relative;}
+.gfmaps{
+width: 400px;
+position: absolute;
+right: 20px; top: 10px;
+
+}
 
     /* ********************* yard entery page classes end here ********************** */
 
@@ -830,854 +894,14 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
       width: 20px; height: 20px; background: #333;  cursor: pointer;
     }
 
-    .qtumbtn{margin-top: 38px !important;}
+    /* ********************* vehicle new page classes end here ********************** */
 
 
-    /*
-    ::-webkit-scrollbar {
-        width: 8px;
-      }
-     */
-     ::-webkit-scrollbar {
-      width: 2px;
-    }
-     
-    ::-webkit-scrollbar:horizontal {
-      width: 2px;
-    }
-    
-    
-      /* Track */
-      ::-webkit-scrollbar-track {
-        background: #fff; 
-      }
-       
-      /* Handle */
-      ::-webkit-scrollbar-thumb {
-        background: #dedede ; 
-      }
-      
-      /* Handle on hover */
-      ::-webkit-scrollbar-thumb:hover {
-        background: #5c5c5c; 
-      }
-    
-      
-      
-      /* chat classes start from here*/
-    .chat-menu{float: left;}
-    .chat-icon {
-        display: block;
-        transition: all .2s;
-        opacity: 1; float: left;
-        width: 20%;
-    }
-    
-    .chat-icon img {
-      border-radius: 50px !important ;  
-      width: 44px;
-      height: 44px;
-    }
-    
-    .chat-name {
-      display: block;
-      float:  right;
-      width: 75%;
-    }
-    
-    .chat-name p{margin-bottom: 0px; font-weight: 600; line-height: 14px; color: #000;}
-    .chat-name span{margin:0px 0 2px 0; font-size: 0.8em; line-height: 10px; color: #a8a8a8;}
-    
-    /*Name*/
-    .chat-hdicon {
-      display: block;
-      transition: all .2s;
-      opacity: 1; float: left;
-      margin-right: 20px;
-    }
-    
-    .chat-hdicon img {
-    border-radius: 50px !important ;  
-    width: 44px;
-    height: 44px;
-    }
-    
-    .chat-headname {
-    display: block;
-    float:  left;
-    }
-    
-    .chat-headname p{margin-bottom: 0px; font-weight: 600; line-height: 14px; color: #000;}
-    .chat-headname span{margin:0px 0 2px 0; font-size: 0.8em; line-height: 10px; color: #a8a8a8;}
-    
-    .chat-body{padding: 20px; background: #f2f2f2;}
-    
-    .chat-day{text-align: center; margin-bottom: 10px;}
-    .chat-daytext{text-transform: uppercase; display: block; margin: auto;}
-    .chatdaybg{background: #fafafa; padding: 5px; font-size: 0.8em;}
-    
-    .chat-message{margin-bottom: 15px;}
-    .chat-message-own{text-align: right;}
-    
-    .chat-message-own .chat-message-text {
-      background-color: #2e353e;
-      color: #ffffff; display: inline-block;
-      text-align: left; padding: 5px; border-radius: 5px;
-    }
-    
-    
-    /*attachment in chat*/
-    .media .media-body {
-      word-break: break-word;
-    }
-    
-    .message-document {
-      margin: 5px 0;
-    }
-    
-    .message-document li {border-bottom: 0px !important; color: #fff;}
-    .message-document li:hover{background: none !important; text-decoration: none !important; border-bottom: 0px !important;}
-    
-    .message-document h5 a {
-      color: #ffffff !important; text-decoration: none;
-    }
-    
-    
-    .message-document p {
-      text-align: left;
-      margin-bottom: 0;
-    }
-    
-    .message-document h5 {
-      font-size: 15px;
-      margin-bottom: 5px;
-      margin-top: 5px;
-    }
-    
-    
-    .chat-message-other{text-align: left;}
-    
-    .chat-message-other .chat-message-texto {
-      background-color: #fff;
-      color: #333; display: inline-block;
-      text-align: left; padding: 5px; border-radius: 5px;
-    }
-    
-    
-    
-    .chat-footer {
-      background-color: #fff;
-      padding: 5px 10px;
-      border-top: 1px solid rgba(0, 0, 0, 0.03);
-      border-left: 1px solid rgba(0, 0, 0, 0.03);
-      float: right;
-      bottom: 0;
-      left: 0;
-      position: absolute;
-      right: 0;
-        
-    }
-    
-    
-    .chatinput-group {
-      position: relative;
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-      -ms-flex-align: stretch;
-      align-items: stretch;
-      width: 100%;
-    }
-    
-    .chatinput{width: 96% !important; margin-left: 4%; margin-right: 3%; border-radius: 60px;}
-    
-    @media (max-width:1720px){
-    .chatinput{width: 91% !important; margin-left: 5%;}
-    }
-    
-    @media (max-width:1600px){
-      .chatinput{width: 90% !important; margin-left: 6%;}
-      }
-    
-    @media (max-width:1440px){
-        .chatinput{width: 89% !important; margin-left: 7%;}
-      }
-    
-      @media (max-width:1000px){
-        .chatinput{width: 87% !important; margin-left: 9%;}
-      }
-    
-    @media (max-width:900px){
-        .chatinput{width: 84% !important; margin-left: 10%;}
-      }
-    
-      @media (max-width:768px){
-        .chatinput{width: 82% !important; margin-left: 11%;}
-      }
-    
-      @media (max-width:568px){
-        .chatinput{width: 80% !important; margin-left: 12%;}
-      }
-    
-      @media (max-width:468px){
-        .chatinput{width: 80% !important; margin-left: 12%;}
-      }
-    
-    
-        
-    .input-group-prepend {
-      position: absolute; top: 5px; left: 5px;
-    }
-    
-    .chat-messagebar .chatinput-group .input-group-prepend a {
-      font-size: 20px;
-      color: #4c595f;
-      margin-top: 5px;
-    }
-    
-    .input-group-prepend2 {
-      position: absolute; top: 5px; right: 5px;
-    }
-    
-    .chat-messagebar .chatinput-group .input-group-prepend2 a {
-      font-size: 20px;
-      color: #4c595f;
-      margin-top: 5px; margin-right: 5px;
-    }
-    
-    /*geo fencing classes*/
-    #map {
-      height: 100%;
-    }
-    
-    
-    
-    /*mis class*/
-    
-    .topnav{float: left; margin-top: 20px; padding: 0px;}
-    .topnav ul{list-style-type: none; float: left; margin: 0; padding: 0;}
-    .topnav ul li{float: left;}
-    .topnav ul li a{color: #2e353e; text-decoration: none; font-weight: 600; padding:6px 15px; border-radius: 50px; margin: 0 4px;}
-    .topnav ul li a:hover{color: #000; background: #fff;; text-decoration: none;}
-    .topnav ul li a.active{color: #000; background: #fff;; text-decoration: none;}
-    
-    .colorgrey{color:#555555;}
-    
-    /* Violation classes */
-    
-    .cirred{background:#cc0019; margin-top: 5px; margin-right: 5px; float: left; border-radius: 50px; width: 12px;  height: 12px;}
-    .ciryel{background:#ffce0c; margin-top: 5px; margin-right: 5px; float: left; border-radius: 50px; width: 12px;  height: 12px;}
-    .cirgrn{background:#47a447; margin-top: 5px; margin-right: 5px; float: left; border-radius: 50px; width: 12px;  height: 12px;}
-    
-    
-    /* duty status classes */
-    
-    
-    
-    
-    
-    /* profile pic classes*/
-    
-    .profile-img .file {
-      position: relative;
-      overflow: hidden;
-      margin-top: -17%;
-      width: 100%;
-      border: none;
-      border-radius: 0;
-      font-size: 15px; color: #fff;
-      background: #212529b8;
-     
-    }
-    
-    .profile-img .file input {
-      position: absolute;
-      opacity: 0;
-      right: 0;
-      top: 0;
-    }
-    
-    
-    /* map classes */
-    .mapclass{
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      
-    }
-    
-    .mapclass .mapclassmain{ 
-        height:100%;
-        width:100%;
-        position: fixed !important; 
-    
-    }
-    
-    /*driver list classes*/
-    .onduty{
-      background: #1a621a;
-      float:left;
-      border-radius:50px;
-      font-size: 10px;
-      padding:0px 15px;
-      text-align: center;
-      color: #fff;;
-      margin-right: 5px;
-    }
-    
-    .offduty{
-      background: #3f3f3f;
-      float:left;
-      border-radius:50px;
-      font-size: 10px;
-      padding:0px 15px;
-      text-align: center;
-      color: #fff;;
-      margin-right: 5px;
-    }
-    
-    .sbduty{
-      background: #878787;
-      float:left;
-      border-radius:50px;
-      font-size: 10px;
-      padding:0px 15px;
-      text-align: center;
-      color: #fff;;
-      margin-right: 5px;
-    }
-    
-    .dutyonly{
-      background: #47a447;
-      float:left;
-      border-radius:50px;
-      font-size: 10px;
-      padding:0px 15px;
-      text-align: center;
-      color: #fff;;
-      margin-right: 5px;
-    
-      
-    }
-    
-    
-    .pcduty{
-      background: #0d6bbb;
-      float:left;
-      border-radius:50px;
-      font-size: 10px;
-      padding:0px 15px;
-      text-align: center;
-      color: #fff;;
-      margin-right: 5px;
-    }
-    
-    
-    .ymduty{
-      background: #0d6bbb;
-      float:left;
-      border-radius:50px;
-      font-size: 10px;
-      padding:0px 15px;
-      text-align: center;
-      color: #fff;;
-      margin-right: 5px;
-    }
-    
-    
-    
-    
-    
-    /* graph page classes */
-    .gmainbox{float: left;}
-    .gleftbox{float: left; padding-top: 60px; padding-right: 10px;}
-    .gbox{background: url(../graph/graph.png) #fff; float: left; border: solid 2px #777576; width: 1296px; height: 304px;}
-    .gtime{float: left; width: 1296px;}
-    .gtime ul{list-style: none; float: left; padding-left: 0px;}
-    .gtime ul li{float: left; font-size: 15px; font-weight: 600; color: #000;}
-    .gtime ul li.one{padding-right: 44px;}
-    .gtime ul li.two{padding-right: 45px;}
-    .gtime ul li.three{padding-right: 40px;}
-    .gtime ul li.four{padding-right: 30px;}
-    .grightbox{float: left; padding-top: 60px; padding-left: 10px;}
-    
-    
-    
-    
-    /* graph page 2 classes */
-    .gmainbox2{float: left;}
-    .gbox2{background: url(../graph/graph2.png) #fff; float: left; width: 1334px; height: 343px; padding: 40px 0 0 40px;}
-    .gtime{float: left; width: 1296px;}
-    .grightbox2{position: fixed; right: 0px; padding-top: 60px;}
-    
-    
-    @media (max-width:2560px)
-    {
-      .grightbox2{right:240px;}
-    
-    }
-    
-    @media (max-width:1920px)
-    {
-      .grightbox2{right:210px;}
-    }
-    
-    @media (max-width:1880px)
-    {
-      .grightbox2{right:150px;}
-    }
-    
-    @media (max-width:1820px)
-    {
-      .grightbox2{right:120px;}
-    }
-    
-    @media (max-width:1790px)
-    {
-      .grightbox2{right:80px;}
-    }
-    
-    @media (max-width:1750px)
-    {
-      .grightbox2{right:40px;}
-    }
-    
-    @media (max-width:1684px)
-    {
-      .grightbox2{right:0px;}
-    }
-    
-    
-    
-    @media (max-width:1680px)
-    {
-      .grightbox2{right:0px;}
-      .gmainbox2{float: left; overflow-x:scroll; width:1290px;}
-    }
-    
-    
-    @media (max-width:1620px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:1250px;}
-    }
-    
-    @media (max-width:1584px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:1200px;}
-    }
-    
-    @media (max-width:1540px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:1150px;}
-    }
-    
-    @media (max-width:1486px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:1100px;}
-    }
-    
-    @media (max-width:1440px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:1050px;}
-    }
-    
-    @media (max-width:1384px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:1000px;}
-    }
-    
-    
-    @media (max-width:1334px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:940px;}
-    }
-    
-    @media (max-width:1278px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:880px;}
-    }
-    
-    
-    @media (max-width:1220px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:800px;}
-    }
-    
-    @media (max-width:1140px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:760px;}
-    }
-    
-    
-    @media (max-width:1096px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:700px;}
-    }
-    
-    
-    @media (max-width:1040px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:650px;}
-    }
-    
-    @media (max-width:990px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:600px;}
-    }
-    
-    @media (max-width:940px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:560px;}
-    }
-    
-    @media (max-width:896px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:500px;}
-    }
-    
-    @media (max-width:838px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:450px;}
-    }
-    
-    @media (max-width:788px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:430px;}
-    }
-    
-    @media (max-width:768px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:660px;}
-    }
-    
-    @media (max-width:730px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:600px;}
-    }
-    
-    @media (max-width:668px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:500px;}
-    }
-    
-    @media (max-width:570px)
-    {
-      .gmainbox2{float: left; overflow-x:scroll; width:420px;}
-    }
-    
-    
-    
-    
-    
-    /* hos report class*/
-    .hosvalue{min-width: 14%; float: left;}
-    
-    .hoshvalue{background: #c4c4c4; min-height: 40px;
-      line-height: 40px;
-      margin-bottom: 0px;}
-    
-    
-    
-    .hosgmainbox2{float: left; width: 100%;}
-    .hosgbox2{background: url(../graph/graph2.png) #fff; float: left; width: 1334px; height: 343px; padding: 40px 0 0 40px;}
-    .gtime{float: left; width: 1296px;}
-    .hosgrightbox2{float: right; padding-top: 60px; margin-right: 5%;}
-    
-    
-    
-    /*dashboard drive list classes*/
-    
-    .drivermain{position: relative;}
-    .drivelist{
-      position: absolute; width: 400px;
-      background: #f5f5f5; height: 100%; padding-bottom: 100px;
-      position: fixed;
-      right:0px; top: 110px; 
-    }
-    
-    .driverdetail{float: left; background: #f5f5f5; width: 100%;
-      border-bottom: 1px solid #bec8d1;}
-    
-    .driverdetail a{display: block; height: 425px; text-decoration:none; padding:10px 10px;}
-    .driverdetail a:hover{background: #fff; text-decoration:none;}
-    .driverstatus{width: 100%;}
-    .curtime{width: 120px; margin-right: 10px; float: left; border-right:solid 1px #333;}
-    .curcycle{width: 130px; float: left;  }
-    
-    .iconR{position: absolute;
-      right:400px; 
-      top: 370px;
-      }
-    
-      .iconR a{background: #fff; padding: 10px;}
-      .iconR a{background: #ebebeb;}
-    
-      .iconL{position: absolute;
-        right:0px; 
-        top: 370px;
-        }
-      
-        .iconL a{background: #fff; padding: 10px;}
-        .iconL a{background: #ebebeb;}
-    
-        
-        /*dashboard drive detail classes*/
-        .driverdetail2{float: left; background: #f5f5f5; width: 100%;
-          border-bottom: 1px solid #bec8d1; padding:10px 10px;}
-     
-    .vinfo{background: :#fff; border:solid 1px #dcdcdc;
-    min-height:200px; border-radius:6px; margin-top:20px;
-    margin-bottom:20px;
-    }
-    .vinfo .vdetail{padding: 10px;}
-    
-    
-    /* trip  info*/
-    
-    .tripscrolbar{height: 150px; margin-top: 0px; position: relative;}
-    
-    .tripbar{width:500px; height: 5px; background: #727272;
-    position: absolute; left: 0; top: 60px; z-index: 100;}
-    .tripbarfinish{width:200px; height: 5px; background: #0fd50a;
-      position: absolute; left: 0; top: 60px; z-index: 500;
-    }
-    
-     .tripdot1{width: 16px; height: 16px; border-radius: 50%;
-      background: #141414; z-index: 999; position: absolute;
-      left: 0; top: 55px;}
-    
-    .tripdot2{width: 16px; height: 16px; border-radius: 50%;
-        background: #141414; z-index: 999; position: absolute;
-        left: 100px; top: 55px;}
-    
-    .tripdot3{width: 16px; height: 16px; border-radius: 50%;
-          background: #141414; z-index: 999; position: absolute;
-          left: 200px; top: 55px;}
-    
-    .tripdot4{width: 16px; height: 16px; border-radius: 50%;
-            background: #141414; z-index: 999; position: absolute;
-            left: 300px; top: 55px;}
-    
-    .tripdot5{width: 16px; height: 16px; border-radius: 50%;
-              background: #141414; z-index: 999; position: absolute;
-              left: 400px; top: 55px;}
-    
-    .tripdot6{width: 16px; height: 16px; border-radius: 50%;
-                background: #ff0000; z-index: 999; position: absolute;
-                left: 472px; top: 55px;}
-    
-    /* trip info date time */
-    
-    .tripdt1{z-index: 999; width: 50px; position: absolute;left: -10px  ; top: 10px; text-align: center;}
-    .tripdt2{z-index: 999; width: 50px; position: absolute;left: 80px; top: 10px; text-align: center;}
-    .tripdt3{z-index: 999; width: 50px; position: absolute;left: 180px; top: 10px; text-align: center;}
-    .tripdt4{z-index: 999; width: 50px; position: absolute;left: 280px; top: 10px; text-align: center;}
-    .tripdt5{z-index: 999; width: 50px; position: absolute;left: 380px; top: 10px; text-align: center;}
-    .tripdt6{z-index: 999; width: 50px;   position: absolute;left: 445px; top: 10px; text-align: center;}
-    
-    /* trip info location */
-    .triploc1{z-index: 999; width: 50px; position: absolute;left: 0px  ; top: 80px; text-align: center;}
-    .triploc2{z-index: 999; width: 50px; position: absolute;left: 80px; top: 80px; text-align: center;}
-    .triploc3{z-index: 999; width: 50px; position: absolute;left: 180px; top: 80px; text-align: center;}
-    .triploc4{z-index: 999; width: 50px; position: absolute;left: 280px; top: 80px; text-align: center;}
-    .triploc5{z-index: 999; width: 50px; position: absolute;left: 380px; top: 80px; text-align: center;}
-    .triploc6{z-index: 999; width: 50px;   position: absolute;left: 445px; top: 80px; text-align: center;}
-    
-    
-    /* HOS driver insight classes di mean drive insite rejected */
-    
-    
-    .dionduty{border: solid 2px #f0bd0b; float: left;
-    width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
-    }
-    
-    .didriving{border: solid 2px #167efa; float: left;
-      width: 100%; padding:2% 5%; font-size: 20px; color:#167efa;
-      }
-      .dioffduty{border: solid 2px #fc3142; float: left;
-        width: 100%; padding:2% 5%; font-size: 20px; color:#fc3142;
-        }
-    
-    /* HOS driver insight classes di mean drive insite rejected end */
-    
-    
-    /* HOS driver insight classes di mean drive insite rejected end */
-    .maindriverbox{border:solid 1px #dedede; float: left; width: 100%; padding: 3%;}
-    .maindriverbox2{border-left:solid 2px #545454; background: #fff; float: left; width: 100%; padding: 3%;}
-    .driverbar{float: left; width: 100%;}
-    .ditotald{font-size: 50px; float: left; color: #000;
-      padding-top: 10px; font-weight: 600;}
-      
-    
-    
-    
-      /* widget classes dispatch dashboard classed start */
-    .widgetmain{background: #fff; height: 400px;}
-    .widgettopbar{background: #f6f6f6; width: 100%; float: left; padding:0px   10px;}
-    .widgettopbar2{background: #000; width: 100%; float: left; padding: 10px;}
-    
-    .wtopnav{float: left; margin:10px 0; padding: 0px; width: 100%;}
-    .wtopnav ul{list-style-type: none; float: left; margin: 0; padding:0 10px;}
-    .wtopnav ul li{float: left;}
-    .wtopnav ul li a{color: #2e353e; text-decoration: none; font-weight:600; padding:6px 15px; border-radius: 50px; margin: 0 4px;}
-    .wtopnav ul li a:hover{color: #000; background: #c4c4c4;; text-decoration: none;}
-    .wtopnav ul li a.active{color: #000; background: #c4c4c4;; text-decoration: none;}
-    
-    .wleft{width: 50%; float: left; margin-bottom: 10px;}
-    .wright{width: 50%; float: right; margin-bottom: 10px;}
-    
-    .widgetinfo{float: left; width: 100%; background: #fff;
-      height:400px; padding: 10px;}
-    
-      .widgetchid{float: left; width: 100%; border-bottom: solid 1px #ddd;
-      margin-bottom: 10px;}
-    
-      .minwidth60{min-width: 60px;}
-      .minwidth127{min-width: 127px;}
-    
-    
-    
-    
-    /* ********************* dashboard chat main box classes start here ********************** */
-      
-      .dchatmb{
-        width: 280px; height: 460px;
-        position: absolute; background: #fff; border-radius:7px 7px 0 0;
-        left: 0px; bottom: 0px; z-index: 99999 !important;
-      }
-    
-      /* Button used to open the chat form */
-    .open-button {
-      background-color: #333; z-index:9999;
-      color: #fff; padding: 10px 20px;
-      border: none; cursor: pointer;
-      position: fixed; bottom: 0px;
-      left: 0px; width: 280px;
-    }
-    
-    /* The popup chat - hidden by default */
-    .chat-popup {
-      display: none; bottom: 0; right: 15px;
-      
-    }
-    
-    .dchathead{
-      background: #333; width: 100%;
-      height: 50px; border-radius:7px 7px 0 0;}
-    
-    
-      /* chat input of all chat boxes */
-      .dcinput{
-        width: 73% !important;
-        margin-left: 17%;
-        border-radius: 60px;}
-    
-     
-    
-    
-    /* chat box 1*/
-      .dchatb1{
-        width: 280px; height: 460px; display: none;
-        position: absolute; background: #fff; border-radius:7px 7px 0 0;
-        left: 281px; bottom: 0px; z-index: 99999 !important;
-      }
-    
-      .dchathead1{
-        background: #f6f6f6; width: 100%;
-        height: 50px; border-radius:7px 7px 0 0;}
-    
-    
-        /* chat box 2*/
-      .dchatb2{
-        width: 280px; height: 460px; display: none;
-        position: absolute; background: #fff; border-radius:7px 7px 0 0;
-        left: 562px; bottom: 0px; z-index: 99999 !important;
-      }
-    
-      .dchathead2{
-        background: #f6f6f6; width: 100%;
-        height: 50px; border-radius:7px 7px 0 0;}
-    
-    
-          /* chat box 3*/
-      .dchatb3{
-        width: 280px; height: 460px; display: none;
-        position: absolute; background: #fff; border-radius:7px 7px 0 0;
-        left: 843px; bottom: 0px; z-index: 99999 !important;
-      }
-    
-      .dchathead3{
-        background: #f6f6f6; width: 100%;
-        height: 50px; border-radius:7px 7px 0 0;}
-    
-         /* chat box 4*/
-      .dchatb4{
-        width: 280px; height: 460px; display: none;
-        position: absolute; background: #fff; border-radius:7px 7px 0 0;
-        left: 1124px; bottom: 0px; z-index: 99999 !important;
-      }
-    
-      .dchathead4{
-        background: #f6f6f6; width: 100%;
-        height: 50px; border-radius:7px 7px 0 0;}
-    
-    
-        /* ********************* chat classes end here ********************** */
-    
-    
-    
-    
-        /* ********************* yard entery page classes start here ********************** */
-    
-        /* geofenc map serach*/
-    
-    .gfmap{position: relative;}
-    .gfmaps{
-    width: 400px;
-    position: absolute;
-    right: 20px; top: 10px;
-    
-    }
-    
-        /* ********************* yard entery page classes end here ********************** */
-    
-    
-    /* ********************* vehicle new page classes start here ********************** */
-    
-    /* Safety Parameters */
-    
-        .slidecontainer {width: 100%;}
-        
-        .slider {
-          -webkit-appearance: none;
-          width: 100%; height: 10px; background: #d3d3d3;
-          outline: none;  opacity: 1;
-          -webkit-transition: .2s; transition: opacity .2s;
-        }
-        
-        .slider:hover { opacity: 1;}
-        
-        .slider::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          appearance: none;  width: 20px; height: 20px;
-          background: #000; cursor: pointer;
-        }
-        
-        .slider::-moz-range-thumb {
-          width: 20px; height: 20px; background: #333;  cursor: pointer;
-        }
-    
-        /* ********************* vehicle new page classes end here ********************** */
-    
-    
-        .positionfix{position: fixed !important;}
-        .positionsta{position: static !important;}
-    
-    
-    
+    .positionfix{position: fixed !important;}
+    .positionsta{position: static !important;}
 
+
+    
   /* make borde red for validation */
   .redBorder {
     border: solid 1px #C10000;
@@ -1687,7 +911,7 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
     color:#C10000;
   }
   
-  /**Mapbox CSS**/
+  /* Mapbox CSS */
   
         #map {
           height:800px;
@@ -1751,24 +975,68 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
 .mapboxgl-ctrl-geocoder--icon{display: none !important;}
 
 
-/* table pagination classes */
 
 
-.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover
-{
-background: #bdbdbd !important; color: #ffffff !important;
+
+
+
+/* full bottom part */
+
+.mainbtmsec {
+  position: absolute; padding:10px 60px;
+  width: 100%;
+  background:#fff;
+  background-size: cover;
+  height: 247px;
+  z-index: 9999;
+  left: 0px;
+  bottom: 0px;
+}
+.tempgraph{
+  background:url(../img/temp-graph.png);
+  width: 1100px; height: 149px; float: left;
 }
 
 
+/* full top part */
+
+.maintopsec {
+  padding:10px 20px;
+  width: 100%;
+  background:#fff;
+  background-size: cover;
+  
+}
+
+
+.speedgraph{
+  background:url(../img/speed-graph.png) 10px 0 no-repeat;
+  width: 990px; height: 149px; float: left;
+}
+
+/* trip info on dashbaord with stops */
+
+.tripondash{float: left; background: #f5f5f5; width: 100%;
+  border-bottom: 1px solid #bec8d1;}
+
+.tripondash a{display: block; text-decoration:none; padding:10px 10px;}
+.tripondash a:hover{background: #fff; text-decoration:none;}
 
 
 
 
+/* load board classes start */
+
+td.loadid a{color:#ff0000 !important;}
+
+.delload{background: #ffd3d3 !important;}
+.compload{background: #e6ffe8 !important;}
+.penload{background: #fff1e6 !important;}
+.orload{background: #e6f5ff !important;}
 
 
-
-
-
-
-
-
+/* load board dashboard */
+.widgetload{background: #fff;}
+.widgettbload{background: #f6f6f6; width: 100%; float: left; padding:0px   10px;}
+.widgetlinfo{float: left; width: 100%; background: #fff;
+  min-height:240px; padding: 10px;}

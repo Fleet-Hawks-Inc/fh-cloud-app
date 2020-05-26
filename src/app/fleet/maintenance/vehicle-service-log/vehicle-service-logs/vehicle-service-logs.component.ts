@@ -10,7 +10,7 @@ declare var $: any;
   styleUrls: ["./vehicle-service-logs.component.css"],
 })
 export class VehicleServiceLogsComponent implements OnInit {
-  title = "Vehilce Service Logs List";
+  title = "Vehicle Service Log List";
   vehicleServiceLogs;
 
   constructor(private apiService: ApiService, private router: Router) {}

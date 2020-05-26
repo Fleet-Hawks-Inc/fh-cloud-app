@@ -16,11 +16,18 @@
         <div class="right-wrapper text-right">
           <ol class="breadcrumbs pr-3">
             <li>
-              <a href="/">
+              <a routerLink="/">
                 <i class="fas fa-home"></i>
               </a>
             </li>
-            <li><span>Vehicles</span></li>
+            <li>
+              <span>Inventory</span>
+            </li>
+            <li>
+              <a routerLink="/fleet/inventory/item-group/Item-Group-List">
+                <span>Item Group List</span>
+              </a>
+            </li>
             <li>
               <span>{{ title }}</span>
             </li>
@@ -32,7 +39,7 @@
         <div class="col">
           <section class="card">
             <header class="card-header">
-              <h2 class="card-title">Details</h2>
+              <h2 class="card-title">Add Item Group</h2>
             </header>
             <div class="card-body">
               <form

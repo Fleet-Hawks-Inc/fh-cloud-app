@@ -31,7 +31,8 @@
               "node_modules/@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css",
               "src/styles.css",
               "src/assets/vendor/select2/css/select2.css",
-              "src/assets/vendor/select2-bootstrap-theme/select2-bootstrap.min.css"
+              "src/assets/vendor/select2-bootstrap-theme/select2-bootstrap.min.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "node_modules/mapbox-gl/dist/mapbox-gl.js",

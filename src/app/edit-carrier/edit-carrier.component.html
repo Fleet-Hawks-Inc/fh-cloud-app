@@ -14,13 +14,17 @@
         <h2>{{ title }}</h2>
 
         <div class="right-wrapper text-right">
-          <ol class="breadcrumbs">
+          <ol class="breadcrumbs pr-3">
             <li>
-              <a href="/">
+              <a routerLink="/">
                 <i class="fas fa-home"></i>
               </a>
             </li>
-            <li><span>Carriers</span></li>
+            <li>
+              <a routerLink="/Carriers-List">
+                Carrier List
+              </a>
+            </li>
             <li>
               <span>{{ title }}</span>
             </li>
@@ -34,7 +38,7 @@
             <div class="addv_topnav">
               <ul class="pl-0 mt-2 mb-0">
                 <li
-                  (click)="company_settings('')"
+                  (click)="company_settings()"
                   [ngClass]="{ active: activeTab == 'company_settings' }"
                   class="btn"
                 >

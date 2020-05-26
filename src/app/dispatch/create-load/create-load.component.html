@@ -1,0 +1,1185 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li>
+              <a href="/">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li><span>Vehicles</span></li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+
+      <section class="card mb-4">
+        <div class="topnav">
+          <ul>
+            <li
+              (click)="general()"
+              [ngClass]="{ active: activeTab == 'general' }"
+              class="btn"
+            >
+              General
+            </li>
+            <li
+              (click)="pickUp()"
+              [ngClass]="{ active: activeTab == 'pickUp' }"
+              class="btn"
+            >
+              Pick Up
+            </li>
+            <li
+              (click)="drop()"
+              [ngClass]="{ active: activeTab == 'drop' }"
+              class="btn"
+            >
+              Drop
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">Loads Details</h2>
+            </header>
+            <div class="card-body">
+              <form  class="form-horizontal form-bordered" id="form_">
+                <div class="card-body" id="general">
+                  <div class="form-group row">
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Customer Name</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="customerID"
+                        [(ngModel)]="customerID"
+                      >
+                        <optgroup label="">
+                          <option
+                            *ngFor="let customer of customers"
+                            value="{{ customer.customerID }}"
+                            >{{ customer.name }}</option
+                          >
+                        </optgroup>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Shipper Info</label
+                      >
+                    </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Shipper Name</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="shipperInfo.shipperID"
+                        [(ngModel)]="shipperInfo.shipperID"
+                        (change)="getShipperAddress()"
+                      >
+                        <optgroup label="">
+                          <option
+                            *ngFor="let shipper of shippers"
+                            value="{{ shipper.shipperID }}"
+                            >{{ shipper.shipperName }}</option
+                          >
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-2">
+                      <a
+                        class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Shipper Address</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="shipperInfo.addressID"
+                        [(ngModel)]="shipperInfo.addressID"
+                      >
+                        <optgroup label="">
+                          <option
+                            *ngFor="let address of shipperAddress"
+                            value="{{ address.addressID }}"
+                            >{{ address.streetName }}
+                            {{ address.streetNumber }}</option
+                          >
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-2">
+                      <a
+                        class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Receiver Info</label
+                      >
+                    </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Receiver Name</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="receiverInfo.receiverID"
+                        [(ngModel)]="receiverInfo.receiverID"
+                        (change)="getReceiverAddress()"
+                      >
+                        <optgroup label="">
+                          <option
+                            *ngFor="let receiver of receivers"
+                            value="{{ receiver.receiverID }}"
+                            >{{ receiver.name }}</option
+                          >
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-2">
+                      <a
+                        class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Receiver Address</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="receiverInfo.addressID"
+                        [(ngModel)]="receiverInfo.addressID"
+                      >
+                        <optgroup label="">
+                          <option
+                            *ngFor="let address of receiverAddress"
+                            value="{{ address.addressID }}"
+                            >{{ address.streetName }}
+                            {{ address.streetNumber }}</option
+                          >
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-2">
+                      <a
+                        class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Map Assets</label
+                      >
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Vehicle Information</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="mapAssets.vehicleID"
+                        [(ngModel)]="mapAssets.vehicleID"
+                      >
+                        <optgroup label="">
+                          <option
+                            *ngFor="let vehicle of vehicles"
+                            value="{{ vehicle.vehicleID }}"
+                            >{{ vehicle.vehicleName }}</option
+                          >
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-8"></div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Assets</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        (change)="assetChange($event.target.value)"
+                      >
+                        <optgroup label="">
+                          <option
+                            *ngFor="let asset of assets"
+                            value="{{ asset.assetID }}, {{ asset.assetName }}"
+                            >{{ asset.assetName }}</option
+                          >
+                        </optgroup>
+                      </select>
+                      <p class="mb-0">Selected Assets</p>
+                      <ng-container *ngFor="let asset of selectedAssets">
+                        <button
+                          type="button"
+                          (click)="removeAsset(asset.assetID)"
+                          class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                        >
+                          {{ asset.assetName }} <i class="fas fa-times"></i>
+                        </button>
+                      </ng-container>
+                    </div>
+                    <div class="col-lg-2">
+                      <a
+                        class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Drivers</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        (change)="driverChange($event.target.value)"
+                      >
+                        <optgroup label="">
+                          <option
+                            *ngFor="let driver of drivers"
+                            value="{{ driver.userName }}, {{
+                              driver.firstName
+                            }}"
+                            >{{ driver.firstName }}
+                            {{ driver.lastName }}</option
+                          >
+                        </optgroup>
+                      </select>
+                      <p class="mb-0">Selected Drivers</p>
+                      <ng-container *ngFor="let driver of selectedDrivers">
+                        <button
+                          type="button"
+                          (click)="removeDriver(driver.userName)"
+                          class="mb-1 mt-1 mr-1 btn btn-xs btn-default"
+                        >
+                          {{ driver.driverName }} <i class="fas fa-times"></i>
+                        </button>
+                      </ng-container>
+                    </div>
+                    <div class="col-lg-2">
+                      <a
+                        class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        href="#"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Load Type</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="loadType"
+                        [(ngModel)]="loadType"
+                      >
+                        <optgroup label="">
+                          <option>Food</option>
+                          <option>Bakery Load</option>
+                          <option>Stationary</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Temperature Required</label
+                      >
+                    </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >From</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="temperatureRequired.fromTemp"
+                        [(ngModel)]="temperatureRequired.fromTemp"
+                      />
+                    </div>
+                    <div class="col-lg-2">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >&nbsp;</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="temperatureRequired.fromTempScale"
+                        [(ngModel)]="temperatureRequired.fromTempScale"
+                      >
+                        <optgroup label="">
+                          <option>°C</option>
+                          <option>°F</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >To</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="inputDefault"
+                        name="temperatureRequired.toTemp"
+                        [(ngModel)]="temperatureRequired.toTemp"
+                      />
+                    </div>
+                    <div class="col-lg-2">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >&nbsp;</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="temperatureRequired.toTempScale"
+                        [(ngModel)]="temperatureRequired.toTempScale"
+                      >
+                        <optgroup label="">
+                          <option>°C</option>
+                          <option>°F</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Delivery Time</label
+                      >
+                    </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Date</label
+                      >
+                      <input
+                        type="date"
+                        class="form-control"
+                        name="delivery.date"
+                        [(ngModel)]="delivery.date"
+                      />
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Time</label
+                      >
+                      <input
+                        type="time"
+                        class="form-control"
+                        name="delivery.time"
+                        [(ngModel)]="delivery.time"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-lg-3">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Estimated Length Required</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="delivery.estimatedLengthRequired"
+                        [(ngModel)]="delivery.estimatedLengthRequired"
+                      />
+                    </div>
+
+                    <div class="col-lg-3">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Estimated Weight Required</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="delivery.estimatedWeightRequired"
+                        [(ngModel)]="delivery.estimatedWeightRequired"
+                      />
+                    </div>
+
+                    <div class="col-lg-3">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Point of Contact</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                        name="delivery.pointOfContact"
+                        [(ngModel)]="delivery.pointOfContact"
+                      >
+                        <optgroup label="">
+                          <option>Yes</option>
+                          <option>No</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-3">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Cargo Value</label
+                      >
+                      <div class="input-group mb-3">
+                        <span class="input-group-prepend positionsta">
+                          <span class="input-group-text">$</span>
+                        </span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="cargo value"
+                          name="delivery.cargoValue"
+                          [(ngModel)]="delivery.cargoValue"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <form [formGroup]="pickupForm" class="form-horizontal form-bordered">
+                <div class="card-body" id="pickUp">
+                  <div class="form-group row">
+                    <div class="col-lg-6">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Pickup Instruction</label
+                      >
+                    </div>
+                    <div class="col-lg-6 text-right">
+                      <a
+                        class="mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        [routerLink]=""
+                        (click)="addPickupFields()"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
+
+                    <div *ngFor="let pickupArray of pA.controls; let i = index" class="row" [formGroup]="pickupArray">
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Reference Number</label
+                      >
+                      <input type="text" class="form-control"
+                             formControlName="refrenceNumber"
+                             [ngClass]="{ 'is-invalid': (pickupArray.controls.refrenceNumber.dirty ||
+                        pickupArray.controls.refrenceNumber.touched) && pickupArray.controls.refrenceNumber.errors }"  required
+                      />
+                      <div *ngIf="(pickupArray.controls.refrenceNumber.dirty ||
+                        pickupArray.controls.refrenceNumber.touched) && pickupArray.controls.refrenceNumber.errors" class="invalid-field">
+                        <div *ngIf="pickupArray.controls.refrenceNumber.errors.required">Reference Number is required</div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Pickup Date</label
+                      >
+                      <input
+                        type="text"
+                        data-plugin-datepicker=""
+                        class="form-control"
+                        formControlName="pickupDate"
+                        [ngClass]="{ 'is-invalid': (pickupArray.controls.pickupDate.dirty ||
+                        pickupArray.controls.pickupDate.touched) && pickupArray.controls.pickupDate.errors }"  required
+                      />
+                      <div *ngIf="(pickupArray.controls.pickupDate.dirty ||
+                        pickupArray.controls.pickupDate.touched) && pickupArray.controls.pickupDate.errors" class="invalid-field">
+                        <div *ngIf="pickupArray.controls.pickupDate.errors.required">Pickup Date is required</div>
+                      </div>
+
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Pickup Time</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">00:00</option>
+                          <option value="2">00:15</option>
+                          <option value="2">00:30</option>
+                          <option value="2">00:45</option>
+                          <option value="2">01:00</option>
+                          <option value="2">01:15</option>
+                          <option value="2">01:30</option>
+                          <option value="2">01:45</option>
+                          <option value="2">02:00</option>
+                          <option value="2">02:15</option>
+                          <option value="2">02:30</option>
+                          <option value="2">02:45</option>
+                          <option value="2">03:00</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-12 col-xl-12 mt-3">
+                      <div class="accordion" id="accordion2Quaternary">
+                        <div class="card card-default">
+                          <div class="card-header">
+                            <h4 class="card-title m-0">
+                              <a
+                                class="accordion-toggle"
+                                data-toggle="collapse"
+                                data-parent="#accordion2Quaternary"
+                                href="#collapse2QuaternaryOne"
+                              >
+                                Mark Pickup Location
+                                <span class="pull-right"
+                                  ><i class="fas fa-angle-down"></i
+                                ></span>
+                              </a>
+                            </h4>
+                          </div>
+                          <div id="collapse2QuaternaryOne" class="collapse">
+                            <div class="card-body p-0 gfmap">
+                              <div class="gfmaps">
+                                <form action="#" class="search nav-form">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="q"
+                                      id="q"
+                                      placeholder="Search geofence location here..."
+                                    />
+                                    <span class="input-group-append">
+                                      <button
+                                        class="btn btn-default"
+                                        type="submit"
+                                      >
+                                        <i class="fas fa-search"></i>
+                                      </button>
+                                    </span>
+                                  </div>
+                                </form>
+                              </div>
+
+                              <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15125141.447846191!2d-96.44470702054707!3d49.12262240661983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1587377009062!5m2!1sen!2sin"
+                                width="100%"
+                                height="650"
+                                frameborder="0"
+                                style="border: 0;"
+                                allowfullscreen=""
+                                aria-hidden="false"
+                                tabindex="0"
+                              ></iframe>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Will Driver Load ?</label
+                      >
+
+                      <div class="row">
+                        <div class="col-lg-3">
+                          <div class="radio-custom">
+                            <input
+                              type="radio"
+                              id="radioExample1"
+                              name="primaryMeter"
+                            />
+                            <!--(change)="onChangePrimaryMeter('miles')"-->
+                            <label for="radioExample1">Yes</label>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                          <div class="radio-custom">
+                            <input
+                              type="radio"
+                              id="radioExample2"
+                              name="primaryMeter"
+                              checked
+                            />
+                            <!--(change)="onChangePrimaryMeter('kilometers')"-->
+                            <label for="radioExample2">No</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Bill of Lading BOL</label
+                      >
+
+                      <div
+                        class="fileupload fileupload-new"
+                        data-provides="fileupload"
+                      >
+                        <div class="input-append">
+                          <div class="uneditable-input">
+                            <i class="fas fa-file fileupload-exists"></i>
+                            <span class="fileupload-preview"></span>
+                          </div>
+                          <span class="btn btn-default btn-file">
+                            <span class="fileupload-exists">Change</span>
+                            <span class="fileupload-new">Select file</span>
+                            <input type="file" />
+                          </span>
+                          <a
+                            href="#"
+                            class="btn btn-default fileupload-exists"
+                            data-dismiss="fileupload"
+                            >Remove</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Cargo Type</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">Individual</option>
+                          <option value="2">Group</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Remarks</label
+                      >
+                      <textarea
+                        class="form-control"
+                        rows="3"
+                        id="textareaDefault"
+                        formControlName="remarks"
+                        [ngClass]="{ 'is-invalid': (pickupArray.controls.remarks.dirty ||
+                        pickupArray.controls.remarks.touched) && pickupArray.controls.remarks.errors }"  required
+                      ></textarea>
+
+                      <div *ngIf="(pickupArray.controls.remarks.dirty ||
+                        pickupArray.controls.remarks.touched) && pickupArray.controls.remarks.errors" class="invalid-field">
+                        <div *ngIf="pickupArray.controls.remarks.errors.required">Remarks required</div>
+                      </div>
+
+                    </div>
+
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <form [formGroup]="dropForm" class="form-horizontal form-bordered" >
+                <div class="card-body" id="drop">
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-6">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Drop Instruction</label
+                      >
+                    </div>
+                    <div class="col-lg-6 text-right">
+                      <a
+                        class="mr-1 btn btn-success modal-with-zoom-anim ws-normal"
+                        [routerLink]="" (click)="addFields()"
+                        ><i class="fas fa-plus"></i
+                      ></a>
+                    </div>
+
+
+                    <div *ngFor="let dropArray of fA.controls; let i = index" class="row" [formGroup]="dropArray">
+
+
+                      <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Reference Number</label
+                      >
+                      <input type="text" class="form-control"
+                             formControlName="refrenceNumber"
+                             [ngClass]="{ 'is-invalid': (dropArray.controls.refrenceNumber.dirty ||
+                        dropArray.controls.refrenceNumber.touched) && dropArray.controls.refrenceNumber.errors }"  required/>
+
+                        <div *ngIf="(dropArray.controls.refrenceNumber.dirty ||
+                        dropArray.controls.refrenceNumber.touched) && dropArray.controls.refrenceNumber.errors" class="invalid-field">
+                          <div *ngIf="dropArray.controls.refrenceNumber.errors.required">Reference Number is required</div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Drop Date</label
+                      >
+                      <input
+                        type="text"
+                        data-plugin-datepicker=""
+                        class="form-control"
+                        formControlName="dropdate"
+                        [ngClass]="{ 'is-invalid': (dropArray.controls.dropdate.dirty ||
+                        dropArray.controls.dropdate.touched) && dropArray.controls.dropdate.errors }"
+                        required
+                      />
+                      <div *ngIf="(dropArray.controls.dropdate.dirty ||
+                        dropArray.controls.dropdate.touched) && dropArray.controls.dropdate.errors" class="invalid-field">
+                        <div *ngIf="dropArray.controls.dropdate.errors.required">Drop Date is required</div>
+                      </div>
+
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Drop Time</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">00:00</option>
+                          <option value="2">00:15</option>
+                          <option value="2">00:30</option>
+                          <option value="2">00:45</option>
+                          <option value="2">01:00</option>
+                          <option value="2">01:15</option>
+                          <option value="2">01:30</option>
+                          <option value="2">01:45</option>
+                          <option value="2">02:00</option>
+                          <option value="2">02:15</option>
+                          <option value="2">02:30</option>
+                          <option value="2">02:45</option>
+                          <option value="2">03:00</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label text-lg-right text-dark text-4 pt-2"
+                        for="inputDefault"
+                        >Temperature Required</label
+                      >
+                    </div>
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >From</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="fromTemp"
+                        [ngClass]="{ 'is-invalid': (dropArray.controls.fromTemp.dirty ||
+                        dropArray.controls.fromTemp.touched) && dropArray.controls.fromTemp.errors }"
+                        required
+                      />
+
+                      <div *ngIf="(dropArray.controls.fromTemp.dirty ||
+                        dropArray.controls.fromTemp.touched) && dropArray.controls.fromTemp.errors" class="invalid-field">
+                        <div *ngIf="dropArray.controls.fromTemp.errors.required">From Temp is required</div>
+                      </div>
+
+                    </div>
+                    <div class="col-lg-2">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >&nbsp;</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">°C</option>
+                          <option value="2">°F</option>
+                        </optgroup>
+                      </select>
+
+
+
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >To</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+
+                        formControlName="toTemp"
+                        [ngClass]="{ 'is-invalid': (dropArray.controls.toTemp.dirty ||
+                        dropArray.controls.toTemp.touched) && dropArray.controls.toTemp.errors }"
+                        required
+
+
+                      />
+
+                      <div *ngIf="(dropArray.controls.toTemp.dirty ||
+                        dropArray.controls.toTemp.touched) && dropArray.controls.toTemp.errors" class="invalid-field">
+                        <div *ngIf="dropArray.controls.toTemp.errors.required">To Temp is required</div>
+                      </div>
+
+                    </div>
+                    <div class="col-lg-2">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >&nbsp;</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">°C</option>
+                          <option value="2">°F</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Delivery Date</label
+                      >
+                      <input
+                        type="text"
+                        data-plugin-datepicker=""
+                        class="form-control"
+                        formControlName="deliveryDate"
+                        [ngClass]="{ 'is-invalid': (dropArray.controls.deliveryDate.dirty ||
+                        dropArray.controls.deliveryDate.touched) && dropArray.controls.deliveryDate.errors }"
+                        required
+
+                      />
+
+                      <div *ngIf="(dropArray.controls.toTemp.dirty ||
+                        dropArray.controls.deliveryDate.touched) && dropArray.controls.deliveryDate.errors" class="invalid-field">
+                        <div *ngIf="dropArray.controls.deliveryDate.errors.required">Delivery Date is required</div>
+                      </div>
+
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Delivery Time</label
+                      >
+                      <select
+                        data-plugin-selectTwo
+                        class="form-control populate"
+                      >
+                        <optgroup label="">
+                          <option value="2">00:00</option>
+                          <option value="2">00:15</option>
+                          <option value="2">00:30</option>
+                          <option value="2">00:45</option>
+                          <option value="2">01:00</option>
+                          <option value="2">01:15</option>
+                          <option value="2">01:30</option>
+                          <option value="2">01:45</option>
+                          <option value="2">02:00</option>
+                          <option value="2">02:15</option>
+                          <option value="2">02:30</option>
+                          <option value="2">02:45</option>
+                          <option value="2">03:00</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-12 col-xl-12 mt-3">
+                      <div class="accordion" id="accordion2Quaternary">
+                        <div class="card card-default">
+                          <div class="card-header">
+                            <h4 class="card-title m-0">
+                              <a
+                                class="accordion-toggle"
+                                data-toggle="collapse"
+                                data-parent="#accordion2Quaternary"
+                                href="#collapse2QuaternaryOne"
+                              >
+                                Mark Drop Location
+                                <span class="pull-right"
+                                  ><i class="fas fa-angle-down"></i
+                                ></span>
+                              </a>
+                            </h4>
+                          </div>
+                          <div id="collapse2QuaternaryOne" class="collapse">
+                            <div class="card-body p-0 gfmap">
+                              <div class="gfmaps">
+                                <form action="#" class="search nav-form">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="q"
+                                      id="q"
+                                      placeholder="Search geofence location here..."
+                                    />
+                                    <span class="input-group-append">
+                                      <button
+                                        class="btn btn-default"
+                                        type="submit"
+                                      >
+                                        <i class="fas fa-search"></i>
+                                      </button>
+                                    </span>
+                                  </div>
+                                </form>
+                              </div>
+
+                              <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15125141.447846191!2d-96.44470702054707!3d49.12262240661983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1587377009062!5m2!1sen!2sin"
+                                width="100%"
+                                height="650"
+                                frameborder="0"
+                                style="border: 0;"
+                                allowfullscreen=""
+                                aria-hidden="false"
+                                tabindex="0"
+                              ></iframe>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Will Driver Unload ?</label
+                      >
+
+                      <div class="row">
+                        <div class="col-lg-3">
+                          <div class="radio-custom">
+                            <input
+                              type="radio"
+                              id="radioExample3"
+                              name="yes"
+                            />
+                            <!--(change)="onChangePrimaryMeter('yes')"-->
+                            <label for="radioExample1">Yes</label>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                          <div class="radio-custom">
+                            <input
+                              type="radio"
+                              id="radioExample4"
+                              name="no"
+                            />
+                            <!--(change)="onChangePrimaryMeter('no')"-->
+                            <label for="radioExample2">No</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-12 ">
+                      <label
+                        class="control-label text-lg-right pt-2"
+                        for="inputDefault"
+                        >Remarks</label
+                      >
+                      <textarea
+                        class="form-control"
+                        rows="3"
+                        formControlName="remarks"
+                        [ngClass]="{ 'is-invalid': (dropArray.controls.remarks.dirty ||
+                        dropArray.controls.remarks.touched) && dropArray.controls.remarks.errors }"
+                        required
+                      ></textarea>
+
+                      <div *ngIf="(dropArray.controls.remarks.dirty ||
+                        dropArray.controls.remarks.touched) && dropArray.controls.remarks.errors" class="invalid-field">
+                        <div *ngIf="dropArray.controls.remarks.errors.required">Remarks required</div>
+                      </div>
+
+                    </div>
+                      <div class="col-lg-12 mb-5">
+                        <hr>
+                      </div>
+
+                    </div>
+
+
+
+
+
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button (click)="submitForm()" class="btn btn-dark mt-1 modal-confirm">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <p class="text text-danger" *ngIf="hasError">{{ Error }}</p> -->
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+
+
+              </form>
+
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
