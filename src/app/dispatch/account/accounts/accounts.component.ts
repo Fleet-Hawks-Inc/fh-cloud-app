@@ -24,9 +24,11 @@ export class AccountsComponent implements OnInit {
   }
 
   fetchAccounts() {
+
     this.apiService.getData('accounts')
         .subscribe({
           complete: () => {
+              console.log('test');
             this.initDataTable();
           },
           error: () => {},

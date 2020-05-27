@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 
@@ -117,6 +117,7 @@ import {ToastrModule} from 'ngx-toastr';
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 // JWT interceptors
 import { HttpInterceptorProviders } from './helpers/interceptor.provider';
+import {JwtInterceptor} from "./helpers/jwt.interceptor";
 
 @NgModule({
   declarations: [
@@ -244,7 +245,8 @@ import { HttpInterceptorProviders } from './helpers/interceptor.provider';
 
 
   ],
-  providers: [AmplifyService, HttpInterceptorProviders],
+  providers: [AmplifyService
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

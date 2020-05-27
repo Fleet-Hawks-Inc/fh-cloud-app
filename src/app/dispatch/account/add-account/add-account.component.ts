@@ -31,7 +31,11 @@ export class AddAccountComponent implements OnInit {
   constructor(private apiService: ApiService,
               private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+      $(document).ready(() => {
+          this.form = $('#form_').validate();
+      });
+  }
 
 
 

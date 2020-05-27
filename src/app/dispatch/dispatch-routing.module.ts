@@ -40,7 +40,7 @@ import { DocumentsComponent } from './document/documents/documents.component';
 import {CreateLoadComponent} from "./create-load/create-load.component";
 import {LoadBoardComponent} from "./load-board/load-board.component";
 import {LoadDetailComponent} from "./load-detail/load-detail.component";
-import {HttpInterceptorProviders} from "../helpers/interceptor.provider";
+
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer 
 
@@ -130,6 +130,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: [HttpInterceptorProviders],
+
 })
 export class DispatchRoutingModule { }

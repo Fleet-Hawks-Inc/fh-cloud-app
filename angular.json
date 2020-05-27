@@ -151,5 +151,8 @@
       }
     }
   },
-  "defaultProject": "fleethawks-dashboard"
+  "defaultProject": "fleethawks-dashboard",
+  "cli": {
+    "analytics": "acb93201-6c0f-42b0-b193-a2570c85821e"
+  }
 }
