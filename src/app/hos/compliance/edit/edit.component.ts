@@ -407,6 +407,9 @@ export class EditComponent implements OnInit, OnDestroy {
         });
       }
     }
+
+    console.log(this.duties);
+    console.log(this.lastEvent);
   }
 
   calculateTimeDiffInMinutes(start: any, end: any) {
