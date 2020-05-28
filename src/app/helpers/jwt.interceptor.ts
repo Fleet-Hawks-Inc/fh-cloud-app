@@ -21,17 +21,6 @@ export class JwtInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        // const withAuthRequest = request.clone({
-        //     headers: request.headers.set('Authorization', `Bearer`),
-        // });
-
-
-        //const withAuthRequest = request.clone({ headers: request.headers.set('current', 'test') });
-
-
-        //return next.handle(withAuthRequest);
-
-
         return from(Auth.currentSession())
             .pipe(
                 switchMap((auth: any) => { // switchMap() is used instead of map().
