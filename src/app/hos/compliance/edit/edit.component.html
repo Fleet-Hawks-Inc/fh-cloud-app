@@ -86,76 +86,19 @@
                 <svg style="height: 100%; width: 100%;">
                   <ng-container *ngFor="let duty of duties; let i = index">
                     <!-- When index is 0  and there is last event-->
-                    <line
-                      *ngIf="
-                        i == 0 && lastEvent.HOSEventDescription !== 'undefiend'
-                      "
-                      x1="0"
-                      attr.y1="{{ types[duty.type] }}"
-                      attr.x2="{{ duty.time * coordinates }}"
-                      attr.y2="{{ types[duty.type] }}"
-                      style="stroke: rgb(0, 0, 0); stroke-width: 2;"
-                    />
-                    <line
-                      *ngIf="
-                        i == 0 &&
-                        duties[i + 1] !== 'undefiend' &&
-                        lastEvent.HOSEventDescription !== 'undefiend'
-                      "
-                      attr.x1="{{ duty.time * coordinates }}"
-                      attr.y1="{{ types[duties[i + 1].type] }}"
-                      attr.x2="{{ duty.time * coordinates }}"
-                      attr.y2="{{ types[duty.type] }}"
-                      style="stroke: rgb(0, 0, 0); stroke-width: 2;"
-                    />
+<line *ngIf="i == 0 && lastEvent.HOSEventDescription !== 'undefiend'" x1="0"  attr.y1="{{ types[duty.type] }}" attr.x2="{{ duty.time * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;"/>
+<line *ngIf="i == 0 && duties[i + 1] !== 'undefiend' && lastEvent.HOSEventDescription !== 'undefiend'" attr.x1="{{ duty.time * coordinates }}" attr.y1="{{ types[duties[i + 1].type] }}" attr.x2="{{ duty.time * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;"/>
 
                     <!-- When index is 0 and there is no last event-->
-                    <line
-                      *ngIf="
-                        i == 0 && lastEvent.HOSEventDescription === 'undefiend'
-                      "
-                      attr.x1="{{ duty.time * coordinates }}"
-                      attr.y1="{{ types[duty.type] }}"
-                      attr.x2="{{ duty.nextStart * coordinates }}"
-                      attr.y2="{{ types[duty.type] }}"
-                      style="stroke: rgb(0, 0, 0); stroke-width: 2;"
-                    />
-                    <line
-                      *ngIf="
-                        i == 0 &&
-                        duties[i + 1] !== 'undefiend' &&
-                        lastEvent.HOSEventDescription === 'undefiend'
-                      "
-                      attr.x1="{{ duty.nextStart * coordinates }}"
-                      attr.y1="{{ types[duties[i + 1].type] }}"
-                      attr.x2="{{ duty.nextStart * coordinates }}"
-                      attr.y2="{{ types[duty.type] }}"
-                      style="stroke: rgb(0, 0, 0); stroke-width: 2;"
-                    />
-
+<line *ngIf=" i == 0 && lastEvent.HOSEventDescription === 'undefiend'" attr.x1="{{ duty.time * coordinates }}" attr.y1="{{ types[duty.type] }}" attr.x2="{{ duty.nextStart * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;" />
+<line  *ngIf=" i == 0 &&  duties[i + 1] !== 'undefiend' &&  lastEvent.HOSEventDescription === 'undefiend'"  attr.x1="{{ duty.nextStart * coordinates }}" attr.y1="{{ types[duties[i + 1].type] }}" attr.x2="{{ duty.nextStart * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;"/>         
+                       
                     <!-- When index is not 0 -->
-                    <line
-                      *ngIf="i != 0"
-                      attr.x1="{{ duties[i - 1].nextStart * coordinates }}"
-                      attr.y1="{{ types[duty.type] }}"
-                      attr.x2="{{
-                        (duties[i - 1].nextStart + duty.time) * coordinates
-                      }}"
-                      attr.y2="{{ types[duty.type] }}"
-                      style="stroke: rgb(0, 0, 0); stroke-width: 2;"
-                    />
-                    <line
-                      *ngIf="i != 0 && duties[i + 1] !== 'undefiend'"
-                      attr.x1="{{
-                        (duties[i - 1].nextStart + duty.time) * coordinates
-                      }}"
-                      attr.y1="{{ types[duties[i + 1].type] }}"
-                      attr.x2="{{
-                        (duties[i - 1].nextStart + duty.time) * coordinates
-                      }}"
-                      attr.y2="{{ types[duty.type] }}"
-                      style="stroke: rgb(0, 0, 0); stroke-width: 2;"
-                    />
+<line *ngIf="i != 0" attr.x1="{{ duties[i - 1].nextStart * coordinates }}" attr.y1="{{ types[duty.type] }}" attr.x2="{{ (duties[i - 1].nextStart + duty.time) * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;" />
+<line *ngIf="i != 0 && duties[i + 1] !== 'undefiend'" attr.x1="{{ (duties[i - 1].nextStart + duty.time) * coordinates}}" attr.y1="{{ types[duties[i + 1].type] }}" attr.x2="{{ (duties[i - 1].nextStart + duty.time) * coordinates}}" attr.y2="{{ types[duty.type] }}"  style="stroke: rgb(0, 0, 0); stroke-width: 2;" style="stroke: rgb(0, 0, 0); stroke-width: 2;" />
+                      
+                     
+                    
                   </ng-container>
                 </svg>
               </div>

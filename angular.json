@@ -77,8 +77,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -151,5 +151,8 @@
       }
     }
   },
-  "defaultProject": "fleethawks-dashboard"
+  "defaultProject": "fleethawks-dashboard",
+  "cli": {
+    "analytics": "acb93201-6c0f-42b0-b193-a2570c85821e"
+  }
 }

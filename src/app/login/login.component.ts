@@ -92,7 +92,8 @@ export class LoginComponent implements OnInit {
       // });
       await Auth.signIn(this.userName, this.password);
       const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
-      if (!isActivatedUser.carrier_id) {
+      //if (!isActivatedUser.carrierID) {
+      if (!isActivatedUser.carrierID) {
         this.hasError = true;
         this.error = 'User has not active devices';
 

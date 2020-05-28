@@ -31,7 +31,11 @@ export class AddAccountComponent implements OnInit {
   constructor(private apiService: ApiService,
               private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+      $(document).ready(() => {
+          this.form = $('#form_').validate();
+      });
+  }
 
 
 
@@ -45,7 +49,7 @@ export class AddAccountComponent implements OnInit {
       accountName: this.accountName
     };
 
- console.log(data);
+    console.log(data);
     this.apiService.postData('accounts', data).
     subscribe({
       complete : () => {},

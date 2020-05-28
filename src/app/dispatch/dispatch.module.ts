@@ -43,6 +43,7 @@ import { CreateLoadComponent } from "./create-load/create-load.component";
 import { LoadBoardComponent } from "./load-board/load-board.component";
 import { LoadDetailComponent } from './load-detail/load-detail.component';
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -95,5 +96,6 @@ import { LoadDetailComponent } from './load-detail/load-detail.component';
 
     LoadDetailComponent,
   ],
+
 })
 export class DispatchModule {}

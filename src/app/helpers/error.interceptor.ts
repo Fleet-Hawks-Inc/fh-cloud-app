@@ -14,7 +14,6 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     constructor() { }
 
-
     /**
      * Intercepter intercepts the responses, and then process based on the received status code
      */

@@ -41,7 +41,9 @@ import {CreateLoadComponent} from "./create-load/create-load.component";
 import {LoadBoardComponent} from "./load-board/load-board.component";
 import {LoadDetailComponent} from "./load-detail/load-detail.component";
 
+
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer 
+
 
 const routes: Routes = [
   {
@@ -128,6 +130,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+
 })
 export class DispatchRoutingModule { }
