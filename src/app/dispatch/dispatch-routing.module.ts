@@ -44,6 +44,7 @@ import {LoadDetailComponent} from "./load-detail/load-detail.component";
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer 
 
+
 const routes: Routes = [
   {
     path: "shipper",

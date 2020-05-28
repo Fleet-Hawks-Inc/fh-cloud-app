@@ -15,7 +15,6 @@ import { catchError, switchMap } from 'rxjs/operators';
  */
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-
     headers;
     withRequest;
     constructor() { }

@@ -24,8 +24,7 @@ export class AccountsComponent implements OnInit {
   }
 
   fetchAccounts() {
-
-    this.apiService.getData('accounts')
+      this.apiService.getData('accounts')
         .subscribe({
           complete: () => {
               console.log('test');

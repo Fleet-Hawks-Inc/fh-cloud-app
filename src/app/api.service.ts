@@ -87,7 +87,6 @@ export class ApiService {
     return this.http.put<any>(this.BaseUrl + url , data , this.httpOptions);
 
   }
-
   getData(url: string) {
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})

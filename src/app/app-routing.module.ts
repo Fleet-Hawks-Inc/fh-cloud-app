@@ -311,3 +311,4 @@ const routes: Routes = [
   ChartsModule],
 })
 export class AppRoutingModule {}
+

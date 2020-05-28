@@ -20,7 +20,6 @@ export class EditAccountComponent implements OnInit {
     accountType = '';
     accountName = '';
     /******************/
-
     accountID = '';
     response: any = '';
     hasError: boolean = false;

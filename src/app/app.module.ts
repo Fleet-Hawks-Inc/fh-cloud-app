@@ -126,7 +126,6 @@ import {JwtInterceptor} from "./helpers/jwt.interceptor";
     DashboardComponent,
 
 
-
     LeftBarComponent,
     RFormsComponent,
     CompanyInfoComponent,

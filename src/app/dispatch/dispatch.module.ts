@@ -44,7 +44,6 @@ import { LoadBoardComponent } from "./load-board/load-board.component";
 import { LoadDetailComponent } from './load-detail/load-detail.component';
 
 
-
 @NgModule({
   imports: [
     CommonModule,

@@ -49,7 +49,7 @@ export class AddAccountComponent implements OnInit {
       accountName: this.accountName
     };
 
- console.log(data);
+    console.log(data);
     this.apiService.postData('accounts', data).
     subscribe({
       complete : () => {},
