@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-log    "build": "ng build",
-    "buildPreprod": "ng build --prod --configuration preprod",
+    "start": "ng serve",
+    "build": "ng build",
+    "buildPreprod": "ng build --prod --configuration preprod ",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
