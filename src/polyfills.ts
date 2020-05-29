@@ -62,12 +62,12 @@ import '@angular/localize/init';
  */
 // import * as buffer from 'buffer';
 
-// (window as any).Buffer = buffer;
-// (window as any).global = window;
-// (window as any).process = {
-//     env: { DEBUG: undefined },
-// };
- import 'zone.js/dist/zone';  // Included with Angular CLI.
+(window as any).global = window;
+(window as any).process = {
+  env: { DEBUG: undefined },
+};
+
+import 'zone.js/dist/zone';  // Included with Angular CLI.
 
 
 /***************************************************************************************************
