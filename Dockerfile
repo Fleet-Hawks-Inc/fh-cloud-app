@@ -1,14 +1,12 @@
-
-
-FROM nginx:stable-alpine
-
-WORKDIR /app
-
+FROM node:12.7-alpine AS build
+WORKDIR /usr/src/app
+COPY package.json ./
+RUN npm install
 COPY . .
-RUN apk add --update nodejs npm
-RUN  npm install && npm run build --production && ls dist
+RUN npm run buildPreprod
 
-RUN cd dist/fleethawks-dashboard && cp -r * /usr/share/nginx/html
+### STAGE 2: Run ###
+FROM nginx:1.17.1-alpine
+COPY --from=build /usr/src/app/dist/fleethawks-dashboard /usr/share/nginx/html
 
-RUN ls /usr/share/nginx/html
 EXPOSE 80
