@@ -6,6 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "buildPreprod": "ng build --prod --configuration preprod --base-href . ",
+    "buildProd": "ng build --prod --base-href . ",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -55,7 +56,6 @@
     "stream": "0.0.2",
     "tslib": "1.10.0",
     "zone.js": "0.9.1"
-
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.803.23",
