@@ -89,6 +89,7 @@ export class EditComponent implements OnInit, OnDestroy {
       )
       .subscribe((result: any) => {
         this.lastEvent = result;
+        console.log(this.lastEvent);
         this.getGraphData();
       });
   }
