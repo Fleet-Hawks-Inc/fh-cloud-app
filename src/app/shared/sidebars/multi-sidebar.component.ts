@@ -272,10 +272,10 @@ export class FleetSidebarComponent extends CommonSideBarComponent {
 }
 
 @Component({
-  selector: 'hos-sidebar',
-  templateUrl: './hos-sidebar.component.html'
+  selector: 'compliance-sidebar',
+  templateUrl: './compliance-sidebar.component.html'
 })
-export class HosSidebarComponent extends CommonSideBarComponent {
+export class ComplianceSidebarComponent extends CommonSideBarComponent {
   constructor(private router: Router) {
     super();
   }
@@ -307,4 +307,4 @@ export class DispatchSidebarComponent extends CommonSideBarComponent { }
 
 
 export const MultiSidebarComponents =
-  [ FleetSidebarComponent, HosSidebarComponent, AlertSidebarComponent, SettingSidebarComponent, DispatchSidebarComponent ];
+  [ FleetSidebarComponent, ComplianceSidebarComponent, AlertSidebarComponent, SettingSidebarComponent, DispatchSidebarComponent ];

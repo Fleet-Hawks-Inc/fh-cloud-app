@@ -6,11 +6,11 @@ import * as moment from "moment";
 declare var $: any;
 
 @Component({
-  selector: "app-summary",
-  templateUrl: "./summary.component.html",
-  styleUrls: ["./summary.component.css"],
+  selector: "app-logs",
+  templateUrl: "./logs.component.html",
+  styleUrls: ["./logs.component.css"],
 })
-export class SummaryComponent implements OnInit {
+export class LogsComponent implements OnInit {
   title = "Logs";
   logs = [];
   drivers = [];

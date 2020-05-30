@@ -1,0 +1,36 @@
+<ul class="nav nav-main">
+
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
+    <a class="nav-link" href="#">
+      <i class="fas fa-truck-loading" aria-hidden="true"></i>
+      <span>HOS</span>
+    </a>
+    <ul class="nav nav-children">
+      <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/compliance', 'hos', 'summary']">
+          Summary
+        </a>
+      </li>
+      <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/compliance', 'hos', 'daily-inspection']">
+          Daily Inspection
+        </a>
+      </li>
+      <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/compliance', 'hos', 'logs']">
+          Logs
+        </a>
+      </li>
+      <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/compliance', 'hos', 'detailed']">
+          Detailed
+        </a>
+      </li>
+      <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/compliance', 'hos', 'uncertified']">
+          Uncertified
+        </a>
+      </li>
+    </ul>
+  </li>
+</ul>

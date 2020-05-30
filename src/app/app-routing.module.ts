@@ -120,7 +120,7 @@ import { AddCycleComponent } from './add-cycle/add-cycle.component';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { FleetModule } from './fleet/fleet.module';
-import { HosModule } from './hos/hos.module';
+import { ComplianceModule } from './compliance/compliance.module';
 import { DispatchModule } from './dispatch/dispatch.module';
 import {ChartsModule} from 'ng2-charts';
 import {Role} from '../objects/objects';
@@ -136,8 +136,8 @@ const routes: Routes = [
       import('./fleet/fleet.module').then((m) => m.FleetModule),
   },
   {
-    path: 'hos',
-    loadChildren: () => import('./hos/hos.module').then((m) => m.HosModule),
+    path: 'compliance',
+    loadChildren: () => import('./compliance/compliance.module').then((m) => m.ComplianceModule),
   },
   {
     path: 'dispatch',
