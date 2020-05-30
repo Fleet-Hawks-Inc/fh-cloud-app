@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit {
       //if (!isActivatedUser.carrierID) {
       if (!isActivatedUser.carrierID) {
         this.hasError = true;
-        this.error = 'User has not active devices';
+        this.Error = 'User has not active devices';
 
       } else {
         console.log("user logged In");
@@ -122,7 +122,7 @@ export class LoginComponent implements OnInit {
 
 
       this.hasError = true;
-      this.error = err.message || 'Error during login';
+      this.Error = err.message || 'Error during login';
     }
 
   };
@@ -130,7 +130,7 @@ export class LoginComponent implements OnInit {
     if (this.signUpCode !== '') {
       await Auth.verifyCurrentUserAttributeSubmit('email', this.signUpCode);
     } else {
-      this.error = 'Invalid Sigup Code';
+      this.Error = 'Invalid Sigup Code';
     }
   }
 

@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {SharedServiceService} from '../../shared-service.service';
 import {Router} from '@angular/router';
+import {Auth} from 'aws-amplify';
 declare var $: any;
 declare var jQuery: any;
+
 
 
 export class CommonSideBarComponent implements OnInit {
@@ -240,12 +242,12 @@ export class CommonSideBarComponent implements OnInit {
 
     });
   }
-  // Logout() {
-  //   console.log("clicked");
-  //   localStorage.removeItem('LoggedIn');
-  //   localStorage.removeItem('jwt');
-  //   this.router.navigate(['/Login']);
-  // }
+  Logout() {
+    //console.log("clicked");
+    // localStorage.removeItem('LoggedIn');
+   // localStorage.removeItem('jwt');
+    //this.router.navigate(['/Login']);
+  }
 }
 
 
@@ -259,10 +261,13 @@ export class FleetSidebarComponent extends CommonSideBarComponent {
   }
   //super(router: Router) { }
   Logout() {
-    localStorage.removeItem('LoggedIn');
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('user');
+    Auth.signOut();
     this.router.navigate(['/Login']);
+
+    // localStorage.removeItem('LoggedIn');
+    // localStorage.removeItem('jwt');
+    // localStorage.removeItem('user');
+
   }
 }
 
@@ -275,11 +280,11 @@ export class HosSidebarComponent extends CommonSideBarComponent {
     super();
   }
   //super(router: Router) { }
-  Logout() {
-    localStorage.removeItem('LoggedIn');
-    localStorage.removeItem('jwt');
-    this.router.navigate(['/Login']);
-  }
+  // Logout() {
+  //   localStorage.removeItem('LoggedIn');
+  //   localStorage.removeItem('jwt');
+  //   this.router.navigate(['/Login']);
+  // }
 }
 
 @Component({
