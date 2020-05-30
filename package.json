@@ -5,8 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "buildPreprod": "node --max_old_space_size=16384 ./node_modules/@angular/cli/bin/ng build --prod --configuration preprod ",
-    "buildProd": "ng build --prod ",
+    "buildPreprod": "ng build --prod --configuration preprod --base-href . ",
+    "buildProd": "ng build --prod --base-href . ",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

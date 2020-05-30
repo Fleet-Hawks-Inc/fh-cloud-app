@@ -132,8 +132,7 @@ const routes: Routes = [
     path: 'fleet',
     // canActivate: [AuthService],
     // data: { roles: [Role.Admin] },
-    loadChildren: () =>
-      import('./fleet/fleet.module').then((m) => m.FleetModule),
+    loadChildren: () => import('./fleet/fleet.module').then((m) => m.FleetModule) ,
   },
   {
     path: 'hos',

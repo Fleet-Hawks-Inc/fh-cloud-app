@@ -26,8 +26,8 @@ export class ApiService {
 
   constructor(private http: HttpClient) {
     this.jwt = localStorage.getItem('jwt');
-    console.log('auth session');
-    console.log(Auth.currentSession());
+   // console.log('auth session');
+   // console.log(Auth.currentSession());
     // from(Auth.currentSession())
     //     .pipe(
     //         switchMap((auth: any) => { // switchMap() is used instead of map().
@@ -45,23 +45,23 @@ export class ApiService {
 
 
 
-    from(Auth.currentSession())
-        .pipe(
-            map((auth: any) => { // switchMap() is used instead of map().
-              console.log('auth');
-              console.log(auth);
-
-              const jwt = auth.accessToken.jwtToken;
-              //console.log('jwt' , jwt);
-              this.httpOptions = {
-                          headers: new HttpHeaders({
-                            'Authorization': `Bearer ${jwt}`,
-                            'Content-Type': 'application/json'
-                          })
-                        };
-
-            })
-        ).subscribe();
+    // from(Auth.currentSession())
+    //     .pipe(
+    //         map((auth: any) => { // switchMap() is used instead of map().
+    //           console.log('auth');
+    //           console.log(auth);
+    //
+    //           const jwt = auth.accessToken.jwtToken;
+    //           //console.log('jwt' , jwt);
+    //           this.httpOptions = {
+    //                       headers: new HttpHeaders({
+    //                         'Authorization': `Bearer ${jwt}`,
+    //                         'Content-Type': 'application/json'
+    //                       })
+    //                     };
+    //
+    //         })
+    //     ).subscribe();
 
 
 
@@ -77,33 +77,40 @@ export class ApiService {
 
 
   postData(url: string, data) {
-    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
-      'x-auth-token': this.jwt})
+    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.http.post(this.BaseUrl + url , data , this.httpOptions);
+    // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
+    //   'x-auth-token': this.jwt})
+    // };
+    return this.http.post(this.BaseUrl + url , data , headers);
 
   }
 
   putData(url: string, data) {
-    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
-      'x-auth-token': this.jwt})
+    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.http.put<any>(this.BaseUrl + url , data , this.httpOptions);
+    // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
+    //   'x-auth-token': this.jwt})
+    // };
+    return this.http.put<any>(this.BaseUrl + url , data , headers);
 
   }
   getData(url: string) {
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
-    console.log(this.httpOptions);
-    return this.http.get<any>(this.BaseUrl + url , this.httpOptions);
+    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
+    };
+    return this.http.get<any>(this.BaseUrl + url , headers);
   }
 
   deleteData(url: string) {
-    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
-      'x-auth-token': this.jwt})
+    // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
+    //   'x-auth-token': this.jwt})
+    // };
+    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.http.delete<any>(this.BaseUrl + url , this.httpOptions);
+    return this.http.delete<any>(this.BaseUrl + url , headers);
   }
 
 
