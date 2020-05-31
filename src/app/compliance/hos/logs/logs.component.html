@@ -1,0 +1,159 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs pr-3">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+
+      <section class="card mb-4">
+        <div class="card-body">
+          <h2 class="card-title mt-2 mb-3">Driver Logs</h2>
+          <form class="form-horizontal form-bordered" method="get">
+            <div class="form-group row">
+              <div class="col-lg-4">
+                <div class="input-group mb-1">
+                  <span class="input-group-prepend positionsta">
+                    <span class="input-group-text"
+                      ><i class="fas fa-search"></i
+                    ></span>
+                  </span>
+                  <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      [(ngModel)]="userName"
+                      name="userName"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let driver of drivers"
+                          value="{{ driver.userName }}"
+                          >{{ driver.userName }}</option
+                        >
+                      </optgroup>
+                    </select>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="input-group mb-1">
+                  <span class="input-group-prepend positionsta">
+                    <span class="input-group-text" (click)="from.toggle()"
+                      ><i class="fas fa-calendar-alt"></i
+                    ></span>
+                  </span>
+
+
+
+                  <input
+                    ngbDatepicker #from="ngbDatepicker"
+                    readonly
+                    type="text"
+                    class="form-control"
+                    placeholder="From Date"
+                    [(ngModel)]="fromDate"
+                    name="fromDate"
+                  />
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="input-group mb-1">
+                  <span class="input-group-prepend positionsta">
+                    <span class="input-group-text" (click)="to.toggle()"
+                      ><i class="fas fa-calendar-alt"></i
+                    ></span>
+                  </span>
+                  <input
+                    readonly
+                    type="text"
+                    class="form-control"
+                    placeholder="To Date"
+                    [(ngModel)]="toDate"
+                    name="toDate"
+                    ngbDatepicker #to="ngbDatepicker"
+                  />
+                </div>
+              </div>
+
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <button
+                  class="btn btn-dark mar-top-asg-stock-btn pull-right"
+                  (click)="getLogs()"
+                >
+                  Find
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">{{ title }}</h2>
+            </header>
+            <div class="card-body">
+              <table
+                class="table table-bordered table-striped mb-0"
+                #FhDataTable
+                id="datatable-default"
+              >
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>On Duty Hours</th>
+                    <th>Drive Hours</th>
+                    <th>Break Hours</th>
+                    <th>Violation</th>
+                    <th>Distance</th>
+                    <th>Detail View</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let log of logs">
+                    <td>{{ log.date }}</td>
+                    <td>{{ log.onDuty * 1000 | date: "H:mm:ss":"UTC" }}</td>
+                    <td>{{ log.onDrive * 1000 | date: "H:mm:ss":"UTC" }}</td>
+                    <td>{{ log.onBreak * 1000 | date: "H:mm:ss":"UTC" }}</td>
+                    <td><span class="cirgrn">&nbsp;</span> No Violation</td>
+                    <td>877 mi</td>
+                    <td>
+                      <a class="btn btn-dark btn-sm mt-0 modal-confirm"
+                        routerLink="/compliance/hos/edit/{{userName}}/{{ log.date }}"
+                        >Detail View</a
+                      >
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

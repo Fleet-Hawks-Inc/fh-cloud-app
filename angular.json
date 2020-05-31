@@ -24,37 +24,89 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/assets/css/jquerytable.css",
+              "node_modules/mapbox-gl/dist/mapbox-gl.css",
+              "node_modules/@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css",
+              "node_modules/@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css",
+              "node_modules/@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css",
+              "src/styles.css",
+              "src/assets/vendor/select2/css/select2.css",
+              "src/assets/vendor/select2-bootstrap-theme/select2-bootstrap.min.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/mapbox-gl/dist/mapbox-gl.js",
+              "node_modules/@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.js",
+              "src/assets/vendor/modernizr/modernizr.min.js",
+              "src/assets/vendor/jquery/jquery.js",
+              "src/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js",
+              "src/assets/vendor/popper/umd/popper.min.js",
+              "src/assets/vendor/bootstrap/js/bootstrap.js",
+              "src/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js",
+              "src/assets/vendor/common/common.js",
+              "src/assets/vendor/nanoscroller/nanoscroller.js",
+              "src/assets/vendor/magnific-popup/jquery.magnific-popup.js",
+              "src/assets/vendor/jquery-placeholder/jquery.placeholder.js",
+              "src/assets/js/theme.js",
+              "src/assets/js/custom.js",
+              "src/assets/js/theme.init.js",
+              "src/assets/js/examples/examples.dashboard.js",
+              "src/assets/js/jquery.validate.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js",
+              "src/assets/vendor/select2/js/select2.js",
+              "node_modules/chart.js/dist/Chart.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.ts"
+              }],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
+              "aot": false,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
+              "buildOptimizer": false,
+              "budgets": [{
                   "type": "initial",
-                  "maximumWarning": "4mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "100kb",
-                  "maximumError": "100kb"
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
+            "preprod": {
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.preprod.ts"
+              }],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "budgets": [{
+                  "type": "initial",
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
                 }
               ]
             }
@@ -120,6 +172,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "fleethawks-dashboard"
+    }
+  },
+  "defaultProject": "fleethawks-dashboard",
+  "cli": {
+    "analytics": "acb93201-6c0f-42b0-b193-a2570c85821e"
+  }
 }

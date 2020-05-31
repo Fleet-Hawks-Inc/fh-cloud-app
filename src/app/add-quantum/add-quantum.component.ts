@@ -21,6 +21,10 @@ export class AddQuantumComponent implements OnInit {
   simSerial = '';
   phoneNumber = '';
   serviceProvider = '';
+  currentFirmwareVersion = '';
+  applicationVersion = '';
+  lastCertificateRotation = '';
+  apiURL = '';
 
   /******************/
 
@@ -39,25 +43,42 @@ export class AddQuantumComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
 
+    // const data = {
+    //   "userName" : "test",
+    //   "password": "12345678",
+    //   "address": "ludhiana",
+    //   "phone": "9876543210",
+    //   "carrierID": "kodebuilders",
+    //   "firstName": "Amritpal",
+    //   "lastName": "Singh",
+    //   "email": "amrit@fleethawks.com",
+    //   "userType": "ADMIN",
+    //   "currentStatus": "ENABLED",
+    //   "userPrivileges": {
+    //     "apiKeys": "FULL",
+    //     "users": "FULL"
+    //   }
+    // };
+
+
     const data = {
-      "userName" : "test",
-      "password": "12345678",
-      "address": "ludhiana",
-      "phone": "9876543210",
-      "carrierID": "kodebuilders",
-      "firstName": "Amritpal",
-      "lastName": "Singh",
-      "email": "amrit@fleethawks.com",
-      "userType": "ADMIN",
-      "currentStatus": "ENABLED",
-      "userPrivileges": {
-        "apiKeys": "FULL",
-        "users": "FULL"
-      }
-    };
-
-
-
+          "sNo": this.serialNo,
+        "macID": this.macId,
+        "status": {
+      "year": this.year,
+          "model": this.model
+    },
+    "carrierID": this.carrierID,
+        "simDetails": {
+      "simNo": this.simSerial,
+          "phoneNo": this.phoneNumber
+    },
+    "currentFirmwareVersion": this.currentFirmwareVersion,
+        "applicationVersion": this.applicationVersion,
+        "lastCertificateRotation": this.lastCertificateRotation,
+        "apiURL": this.apiURL,
+        "currentStatus": this.status
+  };
     this.apiService.postData('quantums', data).
     subscribe({
       complete : () => {},
@@ -70,27 +91,24 @@ export class AddQuantumComponent implements OnInit {
         this.hasSuccess = true;
         this.Success = 'Quantum Added successfully';
 
-        // this.vehicleID = '';
-        // this.vin = '';
-        // this.year = '';
-        // this.make = '';
-        // this.model = '';
-        // this.fuelType = '';
-        // this.state = '';
-        // this.plateNumber = '';
-        // this.inspectionFormID = '';
-        // this.UID = '';
-        // this.status = 'Active';
-        // this.driverUserName = '';
-        // this.currentStatus = 'Active';
-        // this.companyID = '';
-        // this.lastServiceTime = '';
-        // this.quantum = '';
-        // this.quantumSelected = '';
+        this.serialNo = '';
+        this.macId = '';
+        this.status = '';
+        this.year = '';
+        this.model = '';
+        this.carrierID = '';
+        this.simSerial = '';
+        this.phoneNumber = '';
+        this.serviceProvider = '';
+        this.currentFirmwareVersion = '';
+        this.applicationVersion = '';
+        this.lastCertificateRotation = '';
+        this.apiURL = '';
 
 
 
       }
     });
   }
+
 }

@@ -1,3 +1,7 @@
+![build passing](https://codebuild.us-east-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoia1JFWE05cVozNEdYd21mKzJ4MmxRUXpBa2JacWZCbUs4c3RlMGptZnk1NjU2dGFWNTE5dXVhdUV0Zm1XeTNCQTlDYklwYWhrQmdPMkVLU2NHQ3JBeWZvPSIsIml2UGFyYW1ldGVyU3BlYyI6IlNjYjUzUEdBNUtNa0k0aTUiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=develop)
+[![Known Vulnerabilities](https://snyk.io/package/npm/snyk/badge.svg)](https://snyk.io/package/npm/snyk)
+
+
 # FleethawksDashboard
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.23.

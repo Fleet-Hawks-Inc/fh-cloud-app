@@ -1,0 +1,200 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs pr-3">
+            <li>
+              <a routerLink="/">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li>
+              <a routerLink="/Manufacturers-List">
+                Manufacturer List
+              </a>
+            </li>
+            <li><span>{{title}}</span></li>
+          </ol>
+        </div>
+      </header>
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">{{title}}</h2>
+            </header>
+            <div class="card-body">
+              <form
+                class="form-horizontal form-bordered"
+                method="get"
+                name="form"
+                id="form_"
+              >
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Type</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="manufacturerType"
+                      [(ngModel)]="manufacturerType"
+                    >
+                      <optgroup label="">
+                        <option value="Asset">Asset</option>
+                        <option value="tractor">Tractor</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputDefault1"
+                      [(ngModel)]="name"
+                      name="name"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Country</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="countryID"
+                      (change)="getStates()"
+                      [(ngModel)]="countryID"
+                    >
+                      <option
+                        *ngFor="let country of countries"
+                        value="{{ country.countryID }}"
+                        >{{ country.countryName }}</option
+                      >
+                    </select>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >State</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="stateID"
+                      (change)="getCities()"
+                      [(ngModel)]="stateID"
+                    >
+                      <option
+                        *ngFor="let state of states"
+                        value="{{ state.stateID }}"
+                        >{{ state.stateName }}</option
+                      >
+                    </select>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >City</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="cityID"
+                      [(ngModel)]="cityID"
+                    >
+                      <option
+                        *ngFor="let city of cities"
+                        value="{{ city.cityID }}"
+                        >{{ city.cityName }}</option
+                      >
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Customer Care Phone</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      [(ngModel)]="customerCarePhone"
+                      name="customerCarePhone"
+                    />
+                  </div>
+
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Customer Care Email</label
+                    >
+                    <input
+                      type="email"
+                      class="form-control"
+                      [(ngModel)]="customerCareEmail"
+                      name="customerCareEmail"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button
+                      class="btn btn-dark mt-4 modal-confirm"
+                      (click)="updateManufacturer()"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <p class="text text-danger" *ngIf="hasError">{{ Error }}</p> -->
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

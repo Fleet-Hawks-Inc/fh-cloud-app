@@ -1,0 +1,269 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs pr-3">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+
+      <section class="card mb-4">
+        <div class="card-body mb-4">
+          <div class="row">
+            <div class="col-md-6">
+              <h4 class="font-weight-bold mb-0 text-dark">
+                Date: <span class="colorgrey">{{ selectedDate }}</span>
+              </h4>
+              <h4 class="font-weight-bold text-dark">
+                Drvier Name: <span class="colorgrey">{{ userName }}</span>
+              </h4>
+              <h5 class="font-weight-bold text-dark">
+                <span class="onduty">ON</span>
+                <span class="colorgrey">13:50 ON</span>
+              </h5>
+              <h5 class="font-weight-bold text-dark">
+                <span class="sbduty">SB</span>
+                <span class="colorgrey">08:10 SB</span>
+              </h5>
+              <h5 class="font-weight-bold text-dark">
+                <span class="dutyonly">D</span>
+                <span class="colorgrey">10:25 D</span>
+              </h5>
+            </div>
+
+            <div class="col-md-6 text-right">
+              <h5 class="font-weight-bold text-dark">
+                Cycle:
+                <span class="colorgrey">
+                  Lakshmi Colony, Toronto, Canada<br />
+                  70Hr/8Day</span
+                >
+              </h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <h2 class="card-title font-weight-bold mt-2 mb-3">Driver Logs</h2>
+
+          <div class="col-md-12 mt-4">
+            <div class="hosgmainbox2">
+              <div class="hosgrightbox2 text-left">
+                <h5 class="font-weight-bold text-dark">
+                  {{ accumulatedOFF * 1000 | date: "H:mm:ss":"UTC" }}
+                </h5>
+                <h5 class="pt-5 font-weight-bold text-dark">
+                  {{ accumulatedSB * 1000 | date: "H:mm:ss":"UTC" }}
+                </h5>
+                <h5 class="pt-5 font-weight-bold text-dark">
+                  {{ accumulatedD * 1000 | date: "H:mm:ss":"UTC" }}
+                </h5>
+                <h5 class="pt-5 font-weight-bold text-dark">
+                  {{ accumulatedON * 1000 | date: "H:mm:ss":"UTC" }}
+                </h5>
+              </div>
+
+              <div class="hosgbox2">
+                <svg style="height: 100%; width: 100%;">
+                  <ng-container *ngFor="let duty of duties; let i = index">
+                    <!-- When index is 0  and there is last event-->
+<line *ngIf="i == 0 && lastEvent.HOSEventDescription != undefined" x1="0"  attr.y1="{{ types[duty.type] }}" attr.x2="{{ duty.time * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;"/>
+<line *ngIf="i == 0 && duties[i + 1] != undefined && lastEvent.HOSEventDescription != undefined" attr.x1="{{ duty.time * coordinates }}" attr.y1="{{ types[duties[i + 1].type] }}" attr.x2="{{ duty.time * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;"/>
+
+                    <!-- When index is 0 and there is no last event-->
+<line *ngIf=" i == 0 && lastEvent.HOSEventDescription === undefined" attr.x1="{{ duty.time * coordinates }}" attr.y1="{{ types[duty.type] }}" attr.x2="{{ duty.nextStart * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;" />
+<line  *ngIf=" i == 0 &&  duties[i + 1] != undefined &&  lastEvent.HOSEventDescription === undefined"  attr.x1="{{ duty.nextStart * coordinates }}" attr.y1="{{ types[duties[i + 1].type] }}" attr.x2="{{ duty.nextStart * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;"/>         
+                       
+                    <!-- When index is not 0 -->
+<line *ngIf="i != 0" attr.x1="{{ duties[i - 1].nextStart * coordinates }}" attr.y1="{{ types[duty.type] }}" attr.x2="{{ (duties[i - 1].nextStart + duty.time) * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;" />
+<line *ngIf="i != 0 && duties[i + 1] != undefined" attr.x1="{{ (duties[i - 1].nextStart + duty.time) * coordinates}}" attr.y1="{{ types[duties[i + 1].type] }}" attr.x2="{{ (duties[i - 1].nextStart + duty.time) * coordinates}}" attr.y2="{{ types[duty.type] }}"  style="stroke: rgb(0, 0, 0); stroke-width: 2;" style="stroke: rgb(0, 0, 0); stroke-width: 2;" />
+                     
+                    
+                  </ng-container>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">Events <a
+                [routerLink]=""
+                (click)="editModal()"
+                class="btn btn-success btn-sm mt-0 modal-confirm margin-right-10 pull-right"
+              >+</a
+              ></h2>
+
+            </header>
+            <div class="card-body">
+              <table
+                class="table table-bordered table-striped mb-0"
+                id="datatable-default"
+              >
+                <thead>
+                  <tr>
+                    <th>Sr. No.</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Type</th>
+                    <th>Remarks</th>
+                    <th>Location</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let event of eventList; let i = index"
+                    [ngStyle]="{
+                      'background-color':
+                        event.eventRecordStatus != 1 ? 'orange' : 'none'
+                    }"
+                  >
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ event.time }}</td>
+                    <td *ngIf="eventList[i + 1] != undefined">
+                      {{ eventList[i + 1].time }}
+                    </td>
+                    <td
+                      *ngIf="
+                        eventList[i + 1] === undefined &&
+                        selectedDate != currentDate
+                      "
+                    >
+                      23:59:59
+                    </td>
+                    <td
+                      *ngIf="
+                        eventList[i + 1] === undefined &&
+                        selectedDate == currentDate
+                      "
+                    ></td>
+                    <td>{{ event.type }}</td>
+                    <td>{{ event.eventComment }}</td>
+                    <td>location</td>
+                    <td>
+
+
+                      <a
+                        *ngIf="event.type !== 'D'"
+                        [routerLink]=""
+                        (click)="deleteModal(event.eventID)"
+                        class="btn btn-danger btn-sm mt-0"
+                        >Delete</a
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- Delete Modal -->
+<div id="deleteEventModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+        <!--<h4 class="modal-title">Assign Quantum</h4>-->
+      </div>
+      <div class="modal-body">
+        <h4 class="modal-title">Are you sure to delete this event.</h4>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          data-dismiss="modal"
+          class="btn btn-danger"
+          [routerLink]=""
+          (click)="deleteEvent()"
+        >
+          Delete
+        </button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div id="editEventModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        Edit Event
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+        <!--<h4 class="modal-title">Assign Quantum</h4>-->
+      </div>
+      <div class="modal-body">
+        <label class="control-label text-lg-right pt-2" for="inputDefault">Type</label>
+        <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="eventType" name="eventType" id="eventType">
+          <optgroup label="">
+              <option value="SB">SB</option>
+              <option value="YM">YM</option>
+              <option value="OFF">OFF</option>
+              <option value="ON">ON</option>
+              <option value="PC" >PC</option>
+          </optgroup>
+      </select>
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label class="control-label text-lg-right pt-2" for="inputDefault">From Time</label>
+          <input type="time" step="1" class="form-control"  [(ngModel)]="fromTime" name="fromTime" #fromTime_ id="fromTime">
+        </div>
+        <div class="col-lg-6">
+          <label class="control-label text-lg-right pt-2" for="inputDefault">To Time</label>
+          <input type="time" step="1" class="form-control"  [(ngModel)]="toTime" name="toTime" #toTime_ id="toTime">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-dark"
+          [routerLink]=""
+          (click)="addEvent()"
+        >
+          Submit
+        </button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

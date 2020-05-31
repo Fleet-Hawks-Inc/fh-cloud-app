@@ -1,0 +1,15 @@
+
+FROM node:12.7.0-alpine as build
+
+WORKDIR /usr/src/app
+COPY package.json ./
+RUN npm install
+COPY . .
+RUN npm run buildProd
+
+
+### STAGE 2: Run ###
+FROM nginx:1.17.1-alpine
+COPY --from=build /usr/src/app/dist/fleethawks-dashboard /usr/share/nginx/html
+RUN ls /usr/src/app/dist/fleethawks-dashboard
+EXPOSE 80
