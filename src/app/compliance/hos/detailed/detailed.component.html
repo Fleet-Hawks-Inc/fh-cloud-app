@@ -57,11 +57,13 @@
               <div class="col-lg-4">
                 <div class="input-group mb-1">
                   <span class="input-group-prepend positionsta">
-                    <span class="input-group-text"
+                    <span class="input-group-text" (click)="from.toggle()"
                       ><i class="fas fa-calendar-alt"></i
                     ></span>
                   </span>
                   <input
+                    readonly
+                    ngbDatepicker #from="ngbDatepicker"
                     type="date"
                     class="form-control"
                     placeholder="From Date"
@@ -74,15 +76,18 @@
                 <div class="input-group mb-1">
                   <span class="input-group-prepend positionsta">
                     <span class="input-group-text"
+                          (click)="to.toggle()"
                       ><i class="fas fa-calendar-alt"></i
                     ></span>
                   </span>
                   <input
+                    readonly
                     type="date"
                     class="form-control"
                     placeholder="To Date"
                     [(ngModel)]="toDate"
                     name="toDate"
+                    ngbDatepicker #to="ngbDatepicker"
                   />
                 </div>
               </div>
@@ -91,7 +96,7 @@
               <div class="col-lg-12">
                 <button
                   class="btn btn-dark mar-top-asg-stock-btn pull-right"
-                  (click)="getLogs()"
+                  (click)="getFilteredLogs()"
                 >
                   Find
                 </button>
