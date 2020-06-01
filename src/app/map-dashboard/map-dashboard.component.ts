@@ -107,11 +107,11 @@ export class MapDashboardComponent implements OnInit {
       const latLang = new mapboxgl.LngLat(driver.location[0], driver.location[1]);
       const el = document.createElement('div');
       //  el.className = 'marker';
-      el.style.backgroundImage = 'url(../../assets/img/truck_mapbox_marker.png)';
+      el.style.backgroundImage = 'url(../../assets/img/map-arrow.png)';
       el.style.backgroundSize = 'cover';
       // el.style.backgroundColor = 'red';
-      el.style.width = '64px';
-      el.style.height = '64px';
+      el.style.width = '32px';
+      el.style.height = '32px';
 
 
       el.id = 'marker';
