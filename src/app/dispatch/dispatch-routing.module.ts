@@ -40,6 +40,7 @@ import { DocumentsComponent } from './document/documents/documents.component';
 import {CreateLoadComponent} from "./create-load/create-load.component";
 import {LoadBoardComponent} from "./load-board/load-board.component";
 import {LoadDetailComponent} from "./load-detail/load-detail.component";
+import {CreateLoadNewComponent} from "./create-load-new/create-load-new.component";
 
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer 
@@ -116,7 +117,7 @@ const routes: Routes = [
   },
   {
     path: "create-load",
-    component: CreateLoadComponent
+    component: CreateLoadNewComponent
   },
   {
     path: "load-board",

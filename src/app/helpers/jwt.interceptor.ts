@@ -2,7 +2,7 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpHeaders, HttpR
 import { Injectable } from '@angular/core';
 import { Auth } from 'aws-amplify';
 
-import { from, Observable } from 'rxjs';
+import {EMPTY, from, Observable} from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 
 
@@ -28,15 +28,15 @@ export class JwtInterceptor implements HttpInterceptor {
                     const jwt = auth.accessToken.jwtToken;
                     console.log(auth);
 
-                    // const withAuthRequest = request.clone({
-                    //     setHeaders: {
-                    //         Authorization: `Bearer ${jwt}`
-                    //     }
-                    // });
-
                     const withAuthRequest = request.clone({
-                        headers: request.headers.set('Authorization', `Bearer ${jwt}`),
+                        setHeaders: {
+                            Authorization: `Bearer ${jwt}`
+                        }
                     });
+
+                    // const withAuthRequest = request.clone({
+                    //     headers: request.headers.set('Authorization', `Bearer ${jwt}`),
+                    // });
 
                     //console.log('JST', jwt);
                     console.log('Cloned', withAuthRequest);
@@ -44,7 +44,8 @@ export class JwtInterceptor implements HttpInterceptor {
                 }),
                 catchError((err) => {
                     console.log('Error ', err);
-                    return next.handle(request);
+                    return EMPTY;
+                   // return next.handle(request);
                 })
             );
 
