@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/Dashboard']);
+      this.router.navigate(['/Map-Dashboard']);
     }
   }
 
@@ -116,7 +116,7 @@ export class LoginComponent implements OnInit {
          **/
 
         localStorage.setItem('LoggedIn', 'true');
-        await this.router.navigate(['/Dashboard']);
+        await this.router.navigate(['/Map-Dashboard']);
       }
     } catch (err) {
 

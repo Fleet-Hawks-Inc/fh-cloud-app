@@ -5,6 +5,8 @@ import { timer } from "rxjs";
 import * as moment from "moment";
 import * as _ from "lodash";
 declare var $: any;
+import {NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: "app-detailed",
@@ -27,8 +29,8 @@ export class DetailedComponent implements OnInit {
   logs = [];
   drivers = [];
   userName = "";
-  fromDate = "";
-  toDate = "";
+  fromDate: any  = "";
+  toDate: any = "";
   selectedDate = "";
   duties = [];
   eventList = [];
@@ -36,11 +38,41 @@ export class DetailedComponent implements OnInit {
   accumulatedSB = 0;
   accumulatedD = 0;
   accumulatedON = 0;
-  constructor(private apiService: ApiService) {}
+
+  formattedFromDate: any = "";
+  formattedToDate: any = "";
+
+  constructor(private apiService: ApiService,
+              private parserFormatter: NgbDateParserFormatter,
+              private datePipe: DatePipe) {
+
+    this.formattedToDate = this.datePipe.transform(new Date(),  'dd-MM-yyyy');
+    this.formattedFromDate = moment(this.datePipe.transform(new Date(), 'yyyy-MM-dd').toString()).subtract(30 , 'days').format('DD-MM-YYYY');
+
+    this.getInitialLogs();
+
+
+  }
 
   ngOnInit() {
     this.fetchDrivers();
     //this.getLogs();
+  }
+
+
+
+  getInitialLogs() {
+    this.getLogs();
+  }
+
+
+  getFilteredLogs() {
+    /**
+     * this.fromDate and this.toDate are objects need to format them
+     */
+    this.formattedFromDate  = moment(this.parserFormatter.format(this.fromDate)).format('DD-MM-YYYY');
+    this.formattedToDate = moment(this.parserFormatter.format(this.toDate)).format('DD-MM-YYYY');
+    this.getLogs();
   }
 
   fetchDrivers() {
@@ -51,13 +83,13 @@ export class DetailedComponent implements OnInit {
       });
   }
 
-  getLogs() {
-    let from = moment(this.fromDate).format("DD-MM-YYYY");
-    let to = moment(this.toDate).format("DD-MM-YYYY");
+  private getLogs() {
+    // let from = moment(this.fromDate).format("DD-MM-YYYY");
+    // let to = moment(this.toDate).format("DD-MM-YYYY");
 
     this.apiService
       .getData(
-        `eventLogs/HOSSummary?userName=${this.userName}&fromDate=${from}&toDate=${to}`
+        `eventLogs/HOSSummary?userName=${this.userName}&fromDate=${this.formattedFromDate}&toDate=${this.formattedToDate}`
       )
       .subscribe((result: any) => {
         this.logs = result;
