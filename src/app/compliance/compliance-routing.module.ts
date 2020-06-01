@@ -6,6 +6,7 @@ import { DetailedComponent } from "./hos/detailed/detailed.component";
 import { SummaryComponent } from "./hos/summary/summary.component";
 import { DailyInspectionComponent } from "./hos/daily-inspection/daily-inspection.component";
 import { InspectionDetailComponent } from "./hos/inspection-detail/inspection-detail.component";
+import {DriverHosComponent} from "./hos/driver-hos/driver-hos.component";
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
       { path: 'summary', component: SummaryComponent },
       { path: 'daily-inspection', component: DailyInspectionComponent },
       { path: 'inspection-detail', component: InspectionDetailComponent },
+      { path: 'driver-hos', component: DriverHosComponent },
     ],
   },
 ];

@@ -10,9 +10,10 @@ import {NgbDateAdapter, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { SummaryComponent } from './hos/summary/summary.component';
 import { DailyInspectionComponent } from './hos/daily-inspection/daily-inspection.component';
 import { InspectionDetailComponent } from './hos/inspection-detail/inspection-detail.component';
+import { DriverHosComponent } from './hos/driver-hos/driver-hos.component';
 
 @NgModule({
   imports: [CommonModule, ComplianceRoutingModule, FormsModule, SharedModule, NgbModule],
-  declarations: [LogsComponent, EditComponent, DetailedComponent, SummaryComponent, DailyInspectionComponent, InspectionDetailComponent],
+  declarations: [LogsComponent, EditComponent, DetailedComponent, SummaryComponent, DailyInspectionComponent, InspectionDetailComponent, DriverHosComponent],
 })
 export class ComplianceModule {}
