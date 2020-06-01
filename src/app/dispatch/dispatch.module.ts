@@ -43,6 +43,8 @@ import { CreateLoadComponent } from "./create-load/create-load.component";
 import { LoadBoardComponent } from "./load-board/load-board.component";
 import { LoadDetailComponent } from './load-detail/load-detail.component';
 
+import { CreateLoadNewComponent } from './create-load-new/create-load-new.component';
+
 
 @NgModule({
   imports: [
@@ -95,6 +97,8 @@ import { LoadDetailComponent } from './load-detail/load-detail.component';
     LoadBoardComponent,
 
     LoadDetailComponent,
+
+    CreateLoadNewComponent,
   ],
 
 })

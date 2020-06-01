@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
  // import * as AwsIot from 'aws-iot-device-sdk';
 // declare var fs: any;
 // import { mqtt, io, iot } from 'aws-crt';
@@ -18,7 +19,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
   device;
-  constructor() {
+  constructor(private router: Router) {
 
     // this.device = new AwsIot.device({
     //   keyPath: "./certs/db04d92e19-private.pem.key",
@@ -35,6 +36,8 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.router.navigate(['/Map-Dashboard']);
 
     // this.device.on("connect", function() {
     //   console.log("connect");
