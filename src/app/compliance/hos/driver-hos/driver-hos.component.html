@@ -1,0 +1,615 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>Drivers</h2>
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs pr-3">
+            <li>
+              <a href="index.html">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li><span>Drivers</span></li>
+          </ol>
+        </div>
+      </header>
+      <section class="card mb-4">
+        <div class="card-body">
+          <h2 class="card-title mt-3 pull-left">Drivers</h2>
+          <div class="pull-right">
+            <div class="btn-group flex-wrap">
+              <button
+                type="button"
+                class="mb-1 mt-1 mr-1 btn btn-default dropdown-toggle"
+                data-toggle="dropdown"
+              >
+                <i class="fas fa-ellipsis-v"></i> Action
+                <span class="caret"></span>
+              </button>
+              <div class="dropdown-menu" role="menu">
+                <a class="dropdown-item text-1" href="#">Reset All Password</a>
+                <a class="dropdown-item text-1" href="#">Upload CSV</a>
+                <a class="dropdown-item text-1" href="#">Download CSV</a>
+              </div>
+            </div>
+            <a href="driver.html" class="mb-1 mt-1 mr-1 btn btn-success"
+              ><i class="fas fa-plus"></i> Add Driver</a
+            >
+          </div>
+        </div>
+
+        <div class="topnav">
+          <ul>
+            <li><a href="driver-list.html" class="active">All</a></li>
+            <li><a href="on-duty.html">On Duty</a></li>
+            <li><a href="off-duty.html">Off Duty</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <div class="card-actions">
+                <a
+                  href="#"
+                  class="card-action card-action-toggle"
+                  data-card-toggle
+                ></a>
+                <a
+                  href="#"
+                  class="card-action card-action-dismiss"
+                  data-card-dismiss
+                ></a>
+              </div>
+
+              <h2 class="card-title">Driver</h2>
+            </header>
+            <div class="card-body">
+              <table
+                class="table table-bordered table-striped mb-0"
+                id="datatable-default"
+              >
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>HOS</th>
+                    <th>Tags</th>
+                    <th>Current Vehicle</th>
+                    <th>Assets Attached</th>
+                    <th>Phone</th>
+
+                    <th>DL State</th>
+                    <th>DL Number</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td onclick="window.location='employee-profile.html';">
+                      Aman Verma<br />
+                      <span class="onduty">ON</span> Toronto
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      davidt
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      David
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      &nbsp;
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      1234567890
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      davindthomas@live.com
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      NY
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      22232005
+                    </td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td onclick="window.location='employee-profile.html';">
+                      Arya Singh<br />
+                      <span class="onduty">ON</span> Toronto
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      davidt
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      David
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      &nbsp;
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      1234567890
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      davindthomas@live.com
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      NY
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      22232005
+                    </td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td onclick="window.location='employee-profile.html';">
+                      Amit Thukral<br />
+                      <span class="onduty">ON</span> Toronto
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      davidt
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      David
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      &nbsp;
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      1234567890
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      davindthomas@live.com
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      NY
+                    </td>
+                    <td onclick="window.location='employee-profile.html';">
+                      22232005
+                    </td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Vivek Kapoor<br />
+                      <span class="offduty">OFF</span> Brampton
+                    </td>
+                    <td>ricky</td>
+                    <td>Ricky</td>
+                    <td>&nbsp;</td>
+                    <td>1234567890</td>
+                    <td>rickyclark@hotmail.com</td>
+                    <td>ON</td>
+                    <td>856011</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Johar Singh<br /><span class="sbduty">SB</span> BC</td>
+                    <td>davidt</td>
+                    <td>David</td>
+                    <td>&nbsp;</td>
+                    <td>1234567890</td>
+                    <td>davindthomas@live.com</td>
+                    <td>NY</td>
+                    <td>22232005</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Mandi <br /><span class="dutyonly">D</span> Surrey</td>
+                    <td>ricky</td>
+                    <td>Ricky</td>
+                    <td>&nbsp;</td>
+                    <td>1234567890</td>
+                    <td>rickyclark@hotmail.com</td>
+                    <td>ON</td>
+                    <td>856011</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Baljit Singh <br /><span class="pcduty">PC</span> Regina
+                    </td>
+                    <td>davidt</td>
+                    <td>David</td>
+                    <td>&nbsp;</td>
+                    <td>1234567890</td>
+                    <td>davindthomas@live.com</td>
+                    <td>NY</td>
+                    <td>22232005</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Ricky Clerk <br /><span class="ymduty">YM</span> Winnipeg
+                    </td>
+                    <td>ricky</td>
+                    <td>Ricky</td>
+                    <td>&nbsp;</td>
+                    <td>1234567890</td>
+                    <td>rickyclark@hotmail.com</td>
+                    <td>ON</td>
+                    <td>856011</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Prabhjot <br /><span class="ymduty">YM</span> Winnipeg
+                    </td>
+                    <td>ricky</td>
+                    <td>Ricky</td>
+                    <td>&nbsp;</td>
+                    <td>1234567890</td>
+                    <td>rickyclark@hotmail.com</td>
+                    <td>ON</td>
+                    <td>856011</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Garry <br /><span class="ymduty">YM</span> Winnipeg</td>
+                    <td>ricky</td>
+                    <td>Ricky</td>
+                    <td>&nbsp;</td>
+                    <td>1234567890</td>
+                    <td>rickyclark@hotmail.com</td>
+                    <td>ON</td>
+                    <td>856011</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Michal <br /><span class="ymduty">YM</span> Winnipeg
+                    </td>
+                    <td>ricky</td>
+                    <td>Ricky</td>
+                    <td>&nbsp;</td>
+                    <td>1234567890</td>
+                    <td>rickyclark@hotmail.com</td>
+                    <td>ON</td>
+                    <td>856011</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Manjot <br /><span class="ymduty">YM</span> Winnipeg
+                    </td>
+                    <td>ricky</td>
+                    <td>Ricky</td>
+                    <td>&nbsp;</td>
+                    <td>1234567890</td>
+                    <td>rickyclark@hotmail.com</td>
+                    <td>ON</td>
+                    <td>856011</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Harpreet Singh <br /><span class="ymduty">YM</span>
+                      Winnipeg
+                    </td>
+                    <td>ricky</td>
+                    <td>Ricky</td>
+                    <td>&nbsp;</td>
+                    <td>1234567890</td>
+                    <td>rickyclark@hotmail.com</td>
+                    <td>ON</td>
+                    <td>856011</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Gaurav <br /><span class="ymduty">YM</span> Winnipeg
+                    </td>
+                    <td>ricky</td>
+                    <td>Ricky</td>
+                    <td>&nbsp;</td>
+                    <td>1234567890</td>
+                    <td>rickyclark@hotmail.com</td>
+                    <td>ON</td>
+                    <td>856011</td>
+                    <td>
+                      <div class="btn-group flex-wrap">
+                        <button
+                          type="button"
+                          class="mb-1 mt-1 mr-1 btn"
+                          data-toggle="dropdown"
+                        >
+                          <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a
+                            class="dropdown-item text-1"
+                            href="driver-edit.html"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item text-1" href="#"
+                            >Deactivate</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
