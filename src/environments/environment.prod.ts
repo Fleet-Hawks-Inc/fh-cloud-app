@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  BaseUrl: 'https://fleetservice.us-east-1.fleethawks.com/api/v1/',
+  BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
   temp: 'search',
   LoginUrl: 'users/login',
   ApiKey: '',
@@ -13,9 +13,9 @@ export const environment = {
   //   APP_CLIENT_ID: '77ihpijtlrk6kt7e2ufma285il'
   // },
   congitoConfig: {
-    USER_POOL_ID: 'us-east-1_DRqr66hNv',
-    REGION: 'us-east-1',
-    APP_CLIENT_ID: '2nhajo6baui3pb2e5cd6itij05'
+    USER_POOL_ID: 'us-east-2_eGDgFKKM7',
+    REGION: 'us-east-2',
+    APP_CLIENT_ID: '76l88g289vcgrd8jf54pbedgqq'
   },
   awsBucket: {
     bucketName: 'fh-dashboard-assets',
