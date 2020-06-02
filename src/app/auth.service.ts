@@ -20,7 +20,6 @@ export class AuthService implements CanActivate {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     return this.isAuthenticated();
-
   }
 
   public isAuthenticated = () => {
@@ -45,6 +44,7 @@ export class AuthService implements CanActivate {
   login(): void {
 
     this.router.navigate(['/Dashboard']);
+
   }
 
   /**
