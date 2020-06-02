@@ -244,8 +244,7 @@ import {JwtInterceptor} from "./helpers/jwt.interceptor";
 
 
   ],
-  providers: [AmplifyService,
-      HttpInterceptorProviders
+  providers: [AmplifyService
     ],
   bootstrap: [AppComponent]
 })

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../environments/environment';
 import { Auth } from 'aws-amplify';
-import {from} from "rxjs/index";
+import {EMPTY, from} from "rxjs/index";
 import {catchError, map, switchMap} from "rxjs/internal/operators";
 @Injectable({
   providedIn: 'root'
@@ -44,55 +44,35 @@ export class ApiService {
     //     ).subscribe();
 
 
-
-    // from(Auth.currentSession())
-    //     .pipe(
-    //         map((auth: any) => { // switchMap() is used instead of map().
-    //           console.log('auth');
-    //           console.log(auth);
-    //
-    //           const jwt = auth.accessToken.jwtToken;
-    //           //console.log('jwt' , jwt);
-    //           this.httpOptions = {
-    //                       headers: new HttpHeaders({
-    //                         'Authorization': `Bearer ${jwt}`,
-    //                         'Content-Type': 'application/json'
-    //                       })
-    //                     };
-    //
-    //         })
-    //     ).subscribe();
-
-
-
-
   }
 
   getJwt(url: string, data) {
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.http.post(this.BaseUrl + url , data , headers);
+    return this.http.post(this.BaseUrl + url , data , this.httpOptions);
 
   }
 
 
   postData(url: string, data) {
+    this.getHeaders();
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
-    return this.http.post(this.BaseUrl + url , data , headers);
+    return this.http.post(this.BaseUrl + url , data , this.httpOptions);
 
   }
 
   putData(url: string, data) {
+    this.getHeaders();
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
-    return this.http.put<any>(this.BaseUrl + url , data , headers);
+    return this.http.put<any>(this.BaseUrl + url , data , this.httpOptions);
 
   }
   getData(url: string) {
@@ -101,18 +81,40 @@ export class ApiService {
     // };
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.http.get<any>(this.BaseUrl + url , headers);
+    return this.http.get<any>(this.BaseUrl + url , this.httpOptions);
   }
 
   deleteData(url: string) {
+    this.getHeaders();
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.http.delete<any>(this.BaseUrl + url , headers);
+    return this.http.delete<any>(this.BaseUrl + url , this.httpOptions);
   }
 
+
+  getHeaders() {
+    from(Auth.currentSession())
+        .pipe(
+            switchMap((auth: any) => { // switchMap() is used instead of map().
+              console.log('auth');
+              console.log(auth);
+
+              const jwt = auth.accessToken.jwtToken;
+              //console.log('jwt' , jwt);
+              this.httpOptions = {
+                headers: new HttpHeaders({
+                  'Authorization': `Bearer ${jwt}`,
+                  'Content-Type': 'application/json'
+                })
+              };
+              return EMPTY;
+
+            })
+        ).subscribe();
+  }
 
 
 
