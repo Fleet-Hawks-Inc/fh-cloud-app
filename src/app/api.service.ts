@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../environments/environment';
 import { Auth } from 'aws-amplify';
-import {EMPTY, from} from "rxjs/index";
-import {catchError, map, switchMap} from "rxjs/internal/operators";
+import {EMPTY, from} from 'rxjs/index';
+import {catchError, map, switchMap} from 'rxjs/internal/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -55,24 +55,24 @@ export class ApiService {
 
 
   postData(url: string, data) {
-    this.getHeaders();
+    // this.getHeaders();
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
-    return this.http.post(this.BaseUrl + url , data , this.httpOptions);
+    return this.http.post(this.BaseUrl + url , data , headers);
 
   }
 
   putData(url: string, data) {
-    this.getHeaders();
+    // this.getHeaders();
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
-    return this.http.put<any>(this.BaseUrl + url , data , this.httpOptions);
+    return this.http.put<any>(this.BaseUrl + url , data , headers);
 
   }
   getData(url: string) {
@@ -81,17 +81,17 @@ export class ApiService {
     // };
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.http.get<any>(this.BaseUrl + url , this.httpOptions);
+    return this.http.get<any>(this.BaseUrl + url , headers);
   }
 
   deleteData(url: string) {
-    this.getHeaders();
+    // this.getHeaders();
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.http.delete<any>(this.BaseUrl + url , this.httpOptions);
+    return this.http.delete<any>(this.BaseUrl + url , headers);
   }
 
 

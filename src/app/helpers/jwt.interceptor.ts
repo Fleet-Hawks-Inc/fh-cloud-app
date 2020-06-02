@@ -30,6 +30,7 @@ export class JwtInterceptor implements HttpInterceptor {
 
                     const withAuthRequest = request.clone({
                         setHeaders: {
+                            'Content-Type': 'application/json',
                             Authorization: `Bearer ${jwt}`
                         }
                     });
@@ -41,12 +42,13 @@ export class JwtInterceptor implements HttpInterceptor {
                     //console.log('JST', jwt);
                     console.log('Cloned', withAuthRequest);
                     return next.handle(withAuthRequest);
-                }),
-                catchError((err) => {
-                    console.log('Error ', err);
-                    return EMPTY;
-                   // return next.handle(request);
                 })
+                // ,
+                // catchError((err) => {
+                //     console.log('Error ', err);
+                //     //return EMPTY;
+                //     return next.handle(request);
+                // })
             );
 
 
