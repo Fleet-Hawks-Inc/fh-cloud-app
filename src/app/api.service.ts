@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../environments/environment';
 import { Auth } from 'aws-amplify';
-import {EMPTY, from} from "rxjs/index";
-import {catchError, map, switchMap} from "rxjs/internal/operators";
+import {EMPTY, from} from 'rxjs/index';
+import {catchError, map, switchMap} from 'rxjs/internal/operators';
 @Injectable({
   providedIn: 'root'
 })

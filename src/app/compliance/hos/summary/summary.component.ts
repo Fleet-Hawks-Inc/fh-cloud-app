@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ApiService} from "../../../api.service";
+import {Observable} from "rxjs/Rx";
 
 @Component({
   selector: 'app-summary',
@@ -7,9 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SummaryComponent implements OnInit {
 
-  constructor() { }
+  //summary = [];
+  summary$: Observable<any>;
+  testValue =  50;
+
+
+  constructor(private apiService: ApiService) { }
 
   ngOnInit() {
+    this.fetchSummary();
+  }
+
+  fetchSummary() {
+    // this.apiService.getData("eventLogs/HOSDriverSummary/").subscribe((result: any) => {
+    //   this.summary(result);
+    // });
+    //console.log(this.drivers);
+    this.summary$ = this.apiService.getData("eventLogs/HOSDriverSummary/");
   }
 
 }
