@@ -229,7 +229,7 @@
                         {{summary.timeToBreak.current*100/summary.timeToBreak.max  }}%
                       </div>
                     </div>
-                    <div class="text-right">{{summary.timeToBreak.max | date:'HH:mm:ss'}}</div>
+                    <div class="text-right">{{summary.timeToBreak.max * 1000 | date:'HH:mm:ss'}}</div>
                   </td>
                   <td>
                     <div class="progress progress-xs progress-squared light">
@@ -244,7 +244,7 @@
                         {{summary.cycleDriveTimeRemaining.current*100/summary.cycleDriveTimeRemaining.max  }}%
                       </div>
                     </div>
-                    <div class="text-right">{{summary.cycleDriveTimeRemaining.max | date:'HH:mm:ss'}}</div>
+                    <div class="text-right">{{summary.cycleDriveTimeRemaining.max * 1000 | date:'HH:mm:ss'}}</div>
                   </td>
                   <td>
                     <div class="progress progress-xs progress-squared light">
@@ -259,7 +259,7 @@
                         {{summary.dailyDriveTimeRemaining.current*100/summary.dailyDriveTimeRemaining.max  }}%
                       </div>
                     </div>
-                    <div class="text-right">{{summary.dailyDriveTimeRemaining.max | date:'HH:mm:ss'}}</div>
+                    <div class="text-right">{{summary.dailyDriveTimeRemaining.max * 1000 | date:'HH:mm:ss'}}</div>
                   </td>
 
                 </tr>
