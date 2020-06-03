@@ -104,54 +104,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr *ngFor="let inspection of dailyInspections">
                     <td>Trailer</td>
                     <td>28/04/2020</td>
                     <td><span class="cirgrn">&nbsp;</span> No issue</td>
                     <td>
-                      <button class="btn btn-dark btn-sm mt-0 modal-confirm">
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Trailer</td>
-                    <td>07/02/2020</td>
-                    <td><span class="cirred">&nbsp;</span> Cluth Break</td>
-                    <td>
-                      <button class="btn btn-dark btn-sm mt-0 modal-confirm">
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Trailer</td>
-                    <td>26/01/2020</td>
-                    <td>
-                      <span class="cirred">&nbsp;</span> Back Glass Brokenr
-                    </td>
-                    <td>
-                      <button class="btn btn-dark btn-sm mt-0 modal-confirm">
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Trailer</td>
-                    <td>13/02/2020</td>
-                    <td><span class="cirgrn">&nbsp;</span> No issue</td>
-                    <td>
-                      <button class="btn btn-dark btn-sm mt-0 modal-confirm">
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Trailer</td>
-                    <td>01/01/2020</td>
-                    <td><span class="cirgrn">&nbsp;</span> No issue</td>
-                    <td>
-                      <button class="btn btn-dark btn-sm mt-0 modal-confirm">
+                      <button
+                        routerLink="/compliance/hos/inspection-detail"
+                        class="btn btn-dark btn-sm mt-0 modal-confirm"
+                      >
                         View
                       </button>
                     </td>
