@@ -1,0 +1,153 @@
+<ul class="nav nav-main">
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
+    <a class="nav-link" href="#">
+      <i class="fa fa-users" aria-hidden="true"></i>
+      <span>Accounts</span>
+    </a>
+    <ul class="nav nav-children">
+      <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/fleet', 'drivers', 'Add-Driver']">
+          Chart of Accoounts
+        </a>
+      </li>
+      <li routerLinkActive="nav-active">
+        <a
+          class="nav-link"
+          [routerLink]="['/fleet', 'drivers', 'Drivers-List']"
+        >
+          Income Transactions
+        </a>
+      </li>
+      <li class="nav-parent" routerLinkActive="nav-expanded">
+        <a>
+          Expenses
+        </a>
+        <ul class="nav nav-children">
+          <li routerLinkActive="nav-active">
+            <a
+              class="nav-link"
+              [routerLink]="['/fleet', 'expenses', 'fuel', 'Add-Fuel-Entry']"
+            >
+              Expense Transactions
+            </a>
+          </li>
+
+          <li routerLinkActive="nav-active">
+            <a
+              class="nav-link"
+              [routerLink]="['/fleet', 'expenses', 'fuel', 'Fuel-Entry-List']"
+            >
+              Recurring Transactions
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li routerLinkActive="nav-active">
+        <a
+          class="nav-link"
+          [routerLink]="['/fleet', 'drivers', 'Drivers-List']"
+        >
+          Receive Payments
+        </a>
+      </li>
+    </ul>
+  </li>
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
+    <a class="nav-link" href="#">
+      <i class="fa fa-users" aria-hidden="true"></i>
+      <Span>Invoices</Span>
+    </a>
+    <ul class="nav nav-children">
+      <li routerLinkActive="nav-active">
+        <a
+          class="nav-link"
+          [routerLink]="['/fleet', 'expenses', 'fuel', 'Add-Fuel-Entry']"
+        >
+          Open Invoices
+        </a>
+      </li>
+
+      <li routerLinkActive="nav-active">
+        <a
+          class="nav-link"
+          [routerLink]="['/fleet', 'expenses', 'fuel', 'Fuel-Entry-List']"
+        >
+          Emailed Invoices
+        </a>
+      </li>
+      <li routerLinkActive="nav-active">
+        <a
+          class="nav-link"
+          [routerLink]="['/fleet', 'expenses', 'fuel', 'Fuel-Entry-List']"
+        >
+          Paid Invoices
+        </a>
+      </li>
+      <li routerLinkActive="nav-active">
+        <a
+          class="nav-link"
+          [routerLink]="['/fleet', 'expenses', 'fuel', 'Fuel-Entry-List']"
+        >
+          Partially Paid Invoices
+        </a>
+      </li>
+      <li routerLinkActive="nav-active">
+        <a
+          class="nav-link"
+          [routerLink]="['/fleet', 'expenses', 'fuel', 'Fuel-Entry-List']"
+        >
+          Voided Invoices
+        </a>
+      </li>
+      <li routerLinkActive="nav-active">
+        <a
+          class="nav-link"
+          [routerLink]="['/fleet', 'expenses', 'fuel', 'Fuel-Entry-List']"
+        >
+          All Invoices
+        </a>
+      </li>
+      <li routerLinkActive="nav-active">
+        <a
+          class="nav-link"
+          [routerLink]="['/fleet', 'expenses', 'fuel', 'Fuel-Entry-List']"
+        >
+          Aging Report
+        </a>
+      </li>
+    </ul>
+  </li>
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
+    <a class="nav-link" href="#">
+      <i class="fa fa-users" aria-hidden="true"></i>
+      <Span>Driver Settlements</Span>
+    </a>
+    <ul class="nav nav-children">
+      <li routerLinkActive="nav-active">
+        <a
+          class="nav-link"
+          [routerLink]="['/fleet', 'expenses', 'fuel', 'Add-Fuel-Entry']"
+        >
+          Driver Non-Settled
+        </a>
+      </li>
+
+      <li routerLinkActive="nav-active">
+        <a
+          class="nav-link"
+          [routerLink]="['/fleet', 'expenses', 'fuel', 'Fuel-Entry-List']"
+        >
+          Driver Payments
+        </a>
+      </li>
+      <li routerLinkActive="nav-active">
+        <a
+          class="nav-link"
+          [routerLink]="['/fleet', 'expenses', 'fuel', 'Fuel-Entry-List']"
+        >
+          Recurring Deductions
+        </a>
+      </li>
+    </ul>
+  </li>
+</ul>

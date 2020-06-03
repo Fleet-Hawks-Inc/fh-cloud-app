@@ -122,6 +122,9 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { FleetModule } from './fleet/fleet.module';
 import { ComplianceModule } from './compliance/compliance.module';
 import { DispatchModule } from './dispatch/dispatch.module';
+import { AccountsModule } from './accounts/accounts.module';
+import { SafetyModule } from './safety/safety.module';
+
 import {ChartsModule} from 'ng2-charts';
 import {Role} from '../objects/objects';
 
@@ -142,7 +145,14 @@ const routes: Routes = [
     path: 'dispatch',
     loadChildren: () => import('./dispatch/dispatch.module').then((m) => m.DispatchModule),
   },
-
+  {
+    path: 'accounts',
+    loadChildren: () => import('./accounts/accounts.module').then((m) => m.AccountsModule),
+  },
+  {
+    path: 'safety',
+    loadChildren: () => import('./safety/safety.module').then((m) => m.SafetyModule),
+  },
   {
     path: 'Dashboard',
     component: DashboardComponent,
