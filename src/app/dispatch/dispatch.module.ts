@@ -44,6 +44,15 @@ import { LoadBoardComponent } from "./load-board/load-board.component";
 import { LoadDetailComponent } from './load-detail/load-detail.component';
 
 import { CreateLoadNewComponent } from './create-load-new/create-load-new.component';
+import { RoutePlannerComponent } from './routing/route-planner/route-planner.component';
+import { RoutePlaybackComponent } from './routing/route-playback/route-playback.component';
+import { AllLoadsComponent } from './loads/all-loads/all-loads.component';
+import { AllDispatchComponent } from './dispatch/all-dispatch/all-dispatch.component';
+import { DispatchPlannerComponent } from './dispatch/dispatch-planner/dispatch-planner.component';
+import { AceManifestComponent } from './cross-border/ace-manifest/ace-manifest.component';
+import { AciEmanifestComponent } from './cross-border/aci-emanifest/aci-emanifest.component';
+import { MyDocumentsComponent } from './documents/my-documents/my-documents.component';
+import { CompanyDocumentsComponent } from './documents/company-documents/company-documents.component';
 
 
 @NgModule({
@@ -99,6 +108,24 @@ import { CreateLoadNewComponent } from './create-load-new/create-load-new.compon
     LoadDetailComponent,
 
     CreateLoadNewComponent,
+
+    RoutePlannerComponent,
+
+    RoutePlaybackComponent,
+
+    AllLoadsComponent,
+
+    AllDispatchComponent,
+
+    DispatchPlannerComponent,
+
+    AceManifestComponent,
+
+    AciEmanifestComponent,
+
+    MyDocumentsComponent,
+
+    CompanyDocumentsComponent,
   ],
 
 })
