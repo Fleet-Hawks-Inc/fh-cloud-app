@@ -124,10 +124,12 @@ import { ComplianceModule } from './compliance/compliance.module';
 import { DispatchModule } from './dispatch/dispatch.module';
 import {ChartsModule} from 'ng2-charts';
 import {Role} from '../objects/objects';
+import {RegisterComponent} from './register/register.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: 'Login', component: LoginComponent },
+  { path: 'Register', component: RegisterComponent },
   {
     path: 'fleet',
     // canActivate: [AuthService],
