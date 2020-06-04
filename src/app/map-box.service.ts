@@ -13,7 +13,7 @@ import { environment } from "src/environments/environment";
 })
 export class MapBoxService {
   map: mapboxgl.Map;
-  style = "mapbox://styles/mapbox/satellite-v9";
+  style = "mapbox://styles/kunalfleethawks/ck86yfrzp0g3z1illpdp9hs3g";
   isControlAdded = false;
   frontEndData = {};
   mapboxDraw: MapboxDraw;
