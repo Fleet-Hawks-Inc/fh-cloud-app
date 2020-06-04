@@ -36,7 +36,7 @@ export class MapDashboardComponent implements OnInit {
   lng = 50.445210;
   isControlAdded = false;
   frontEndData = {
-    drivers : {}
+    drivers: {}
   };
 
 
@@ -76,12 +76,13 @@ export class MapDashboardComponent implements OnInit {
       container: 'map',
       style: this.style,
       zoom: 3,
-      center: [-104.618896, 50.445210,],
+      center: [-104.618896, 50.445210],
       accessToken: environment.mapBox.accessToken
     });
 
     // Add Navigation
     this.map.addControl(new mapboxgl.NavigationControl());
+
 
     const mapboxClient = mapboxSdk({ accessToken: environment.mapBox.accessToken });
     const geocodingService = geocoding(mapboxClient);
@@ -107,7 +108,7 @@ export class MapDashboardComponent implements OnInit {
       const latLang = new mapboxgl.LngLat(driver.location[0], driver.location[1]);
       const el = document.createElement('div');
       //  el.className = 'marker';
-      el.style.backgroundImage = 'url(../../assets/img/map-arrow.png)';
+      el.style.backgroundImage = 'url(../../assets/img/cirlce-stroke.png)';
       el.style.backgroundSize = 'cover';
       // el.style.backgroundColor = 'red';
       el.style.width = '32px';
