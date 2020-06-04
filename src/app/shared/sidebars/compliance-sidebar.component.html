@@ -38,4 +38,50 @@
       </li>
     </ul>
   </li>
+
+
+
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
+    <a class="nav-link" href="#">
+      <i class="fa fa-users" aria-hidden="true"></i>
+      <Span>DVIR</Span>
+    </a>
+    <ul class="nav nav-children">
+      <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/compliance', 'dvir', 'Inspection-Summary']">
+          Inspection Summary
+        </a>
+      </li>
+
+      <li routerLinkActive="nav-active">
+          <a class="nav-link" [routerLink]="['/compliance', 'dvir', 'Inspection-Report']">
+            Inspection Report
+          </a>
+        </li>
+    </ul>
+  </li>
+
+
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
+    <a class="nav-link" href="#">
+      <i class="fa fa-users" aria-hidden="true"></i>
+      <Span>IFTA</Span>
+    </a>
+    <ul class="nav nav-children">
+      <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/compliance', 'ifta', 'Mileage']">
+          Mileage
+        </a>
+      </li>
+
+        <li routerLinkActive="nav-active">
+          <a class="nav-link" [routerLink]="['/compliance', 'ifta', 'Report']">
+            Report
+          </a>
+      </li>
+    </ul>
+  </li>
+
+
+
 </ul>

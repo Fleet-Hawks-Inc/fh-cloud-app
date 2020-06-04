@@ -11,9 +11,12 @@ import { SummaryComponent } from './hos/summary/summary.component';
 import { DailyInspectionComponent } from './hos/daily-inspection/daily-inspection.component';
 import { InspectionDetailComponent } from './hos/inspection-detail/inspection-detail.component';
 import { DriverHosComponent } from './hos/driver-hos/driver-hos.component';
+import { InspectionReportComponent } from './dvir/inspection-report/inspection-report.component';
+import { MileageComponent } from './ifta/mileage/mileage.component';
+import { ReportComponent } from './ifta/report/report.component';
 
 @NgModule({
   imports: [CommonModule, ComplianceRoutingModule, FormsModule, SharedModule, NgbModule],
-  declarations: [LogsComponent, EditComponent, DetailedComponent, SummaryComponent, DailyInspectionComponent, InspectionDetailComponent, DriverHosComponent],
+  declarations: [LogsComponent, EditComponent, DetailedComponent, SummaryComponent, DailyInspectionComponent, InspectionDetailComponent, DriverHosComponent, InspectionReportComponent, MileageComponent, ReportComponent],
 })
 export class ComplianceModule {}
