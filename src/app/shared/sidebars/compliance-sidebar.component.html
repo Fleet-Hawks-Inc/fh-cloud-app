@@ -39,41 +39,49 @@
     </ul>
   </li>
 
+
+
   <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
     <a class="nav-link" href="#">
-      <i class="fas fa-truck-loading" aria-hidden="true"></i>
-      <span>DVIR</span>
+      <i class="fa fa-users" aria-hidden="true"></i>
+      <Span>DVIR</Span>
     </a>
     <ul class="nav nav-children">
       <li routerLinkActive="nav-active">
-        <a class="nav-link" [routerLink]="['/compliance', 'hos', 'summary']">
+        <a class="nav-link" [routerLink]="['/compliance', 'dvir', 'Inspection-Summary']">
           Inspection Summary
         </a>
       </li>
+
       <li routerLinkActive="nav-active">
-        <a class="nav-link" [routerLink]="['/compliance', 'hos', 'daily-inspection']">
-          Inspection Report
+          <a class="nav-link" [routerLink]="['/compliance', 'dvir', 'Inspection-Report']">
+            Inspection Report
+          </a>
+        </li>
+    </ul>
+  </li>
+
+
+  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
+    <a class="nav-link" href="#">
+      <i class="fa fa-users" aria-hidden="true"></i>
+      <Span>IFTA</Span>
+    </a>
+    <ul class="nav nav-children">
+      <li routerLinkActive="nav-active">
+        <a class="nav-link" [routerLink]="['/compliance', 'ifta', 'Mileage']">
+          Mileage
         </a>
+      </li>
+
+        <li routerLinkActive="nav-active">
+          <a class="nav-link" [routerLink]="['/compliance', 'ifta', 'Report']">
+            Report
+          </a>
       </li>
     </ul>
   </li>
 
-  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
-    <a class="nav-link" href="#">
-      <i class="fas fa-truck-loading" aria-hidden="true"></i>
-      <span>IFTA</span>
-    </a>
-    <ul class="nav nav-children">
-      <li routerLinkActive="nav-active">
-        <a class="nav-link" [routerLink]="['/compliance', 'hos', 'summary']">
-          Mileage
-        </a>
-      </li>
-      <li routerLinkActive="nav-active">
-        <a class="nav-link" [routerLink]="['/compliance', 'hos', 'daily-inspection']">
-          Report
-        </a>
-      </li>
-    </ul>
-  </li>
+
+
 </ul>

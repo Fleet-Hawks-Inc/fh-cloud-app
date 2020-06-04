@@ -7,6 +7,9 @@ import { SummaryComponent } from "./hos/summary/summary.component";
 import { DailyInspectionComponent } from "./hos/daily-inspection/daily-inspection.component";
 import { InspectionDetailComponent } from "./hos/inspection-detail/inspection-detail.component";
 import {DriverHosComponent} from "./hos/driver-hos/driver-hos.component";
+import {InspectionReportComponent} from "./dvir/inspection-report/inspection-report.component";
+import {MileageComponent} from "./ifta/mileage/mileage.component";
+import {ReportComponent} from "./ifta/report/report.component";
 
 const routes: Routes = [
   {
@@ -20,6 +23,20 @@ const routes: Routes = [
       { path: 'daily-inspection', component: DailyInspectionComponent },
       { path: 'inspection-detail', component: InspectionDetailComponent },
       { path: 'driver-hos', component: DriverHosComponent },
+    ],
+  },
+  {
+    path: 'dvir',
+    children: [
+      { path: 'Inspection-Report', component: InspectionReportComponent },
+      { path: 'Inspection-Summary', component: InspectionReportComponent },
+    ],
+  },
+  {
+    path: 'ifta',
+    children: [
+      { path: 'Mileage', component: MileageComponent },
+      { path: 'Report', component: ReportComponent },
     ],
   },
 ];
