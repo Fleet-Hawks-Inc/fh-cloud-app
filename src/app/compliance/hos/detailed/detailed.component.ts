@@ -44,12 +44,12 @@ export class DetailedComponent implements OnInit {
 
   constructor(private apiService: ApiService,
               private parserFormatter: NgbDateParserFormatter,
-              private datePipe: DatePipe) {
+              ) {
 
-    this.formattedToDate = this.datePipe.transform(new Date(),  'dd-MM-yyyy');
-    this.formattedFromDate = moment(this.datePipe.transform(new Date(), 'yyyy-MM-dd').toString()).subtract(15 , 'days').format('DD-MM-YYYY');
+    // this.formattedToDate = this.datePipe.transform(new Date(),  'dd-MM-yyyy');
+    // this.formattedFromDate = moment(this.datePipe.transform(new Date(), 'yyyy-MM-dd').toString()).subtract(15 , 'days').format('DD-MM-YYYY');
 
-    this.getInitialLogs();
+    //this.getInitialLogs();
 
 
   }

@@ -7,43 +7,43 @@
     width: 8px;
   }
  */
-::-webkit-scrollbar {
+ ::-webkit-scrollbar {
   width: 2px;
 }
-
+ 
 ::-webkit-scrollbar:horizontal {
   width: 2px;
 }
 
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: #fff;
-}
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #fff; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #dedede ; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #5c5c5c; 
+  }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #dedede ;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #5c5c5c;
-}
-
-
-
-/* chat classes start from here*/
+  
+  
+  /* chat classes start from here*/
 .chat-menu{float: left;}
 .chat-icon {
-  display: block;
-  transition: all .2s;
-  opacity: 1; float: left;
-  width: 20%;
+    display: block;
+    transition: all .2s;
+    opacity: 1; float: left;
+    width: 20%;
 }
 
 .chat-icon img {
-  border-radius: 50px !important ;
+  border-radius: 50px !important ;  
   width: 44px;
   height: 44px;
 }
@@ -66,14 +66,14 @@
 }
 
 .chat-hdicon img {
-  border-radius: 50px !important ;
-  width: 44px;
-  height: 44px;
+border-radius: 50px !important ;  
+width: 44px;
+height: 44px;
 }
 
 .chat-headname {
-  display: block;
-  float:  left;
+display: block;
+float:  left;
 }
 
 .chat-headname p{margin-bottom: 0px; font-weight: 600; line-height: 14px; color: #000;}
@@ -141,10 +141,10 @@
   border-left: 1px solid rgba(0, 0, 0, 0.03);
   float: right;
   bottom: 0;
-  left: 0;
-  position: absolute;
-  right: 0;
-
+	left: 0;
+	position: absolute;
+	right: 0;
+    
 }
 
 
@@ -162,42 +162,42 @@
 .chatinput{width: 96% !important; margin-left: 4%; margin-right: 3%; border-radius: 60px;}
 
 @media (max-width:1720px){
-  .chatinput{width: 91% !important; margin-left: 5%;}
+.chatinput{width: 91% !important; margin-left: 5%;}
 }
 
 @media (max-width:1600px){
   .chatinput{width: 90% !important; margin-left: 6%;}
-}
+  }
 
 @media (max-width:1440px){
-  .chatinput{width: 89% !important; margin-left: 7%;}
-}
+    .chatinput{width: 89% !important; margin-left: 7%;}
+  }
 
-@media (max-width:1000px){
-  .chatinput{width: 87% !important; margin-left: 9%;}
-}
+  @media (max-width:1000px){
+    .chatinput{width: 87% !important; margin-left: 9%;}
+  }
 
 @media (max-width:900px){
-  .chatinput{width: 84% !important; margin-left: 10%;}
-}
+    .chatinput{width: 84% !important; margin-left: 10%;}
+  }
 
-@media (max-width:768px){
-  .chatinput{width: 82% !important; margin-left: 11%;}
-}
+  @media (max-width:768px){
+    .chatinput{width: 82% !important; margin-left: 11%;}
+  }
 
-@media (max-width:568px){
-  .chatinput{width: 80% !important; margin-left: 12%;}
-}
+  @media (max-width:568px){
+    .chatinput{width: 80% !important; margin-left: 12%;}
+  }
 
-@media (max-width:468px){
-  .chatinput{width: 80% !important; margin-left: 12%;}
-}
+  @media (max-width:468px){
+    .chatinput{width: 80% !important; margin-left: 12%;}
+  }
 
 
 
-/*
+  /*
 .input-group-prepend {
-position: absolute; top: 5px; left: 5px;
+  position: absolute; top: 5px; left: 5px;
 }
 */
 
@@ -263,7 +263,7 @@ position: absolute; top: 5px; left: 5px;
   border-radius: 0;
   font-size: 15px; color: #fff;
   background: #212529b8;
-
+ 
 }
 
 .profile-img .file input {
@@ -276,17 +276,17 @@ position: absolute; top: 5px; left: 5px;
 
 /* map classes */
 .mapclass{
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  
 }
 
-.mapclass .mapclassmain{
-  height:100%;
-  width:100%;
-  position: fixed !important;
+.mapclass .mapclassmain{ 
+    height:100%;
+    width:100%;
+    position: fixed !important; 
 
 }
 
@@ -334,7 +334,7 @@ position: absolute; top: 5px; left: 5px;
   color: #fff;;
   margin-right: 5px;
 
-
+  
 }
 
 
@@ -569,7 +569,7 @@ position: absolute; top: 5px; left: 5px;
   position: absolute; width: 518px;
   background: #f5f5f5; height: 100%; padding-bottom: 100px;
   position: fixed;  z-index: 99999;
-  right:0px; top: 110px;
+  right:0px; top: 110px; 
 }
 
 .driverdetail{float: left; background: #fff; width: 100%;
@@ -582,30 +582,30 @@ position: absolute; top: 5px; left: 5px;
 .curcycle{width: 130px; float: left;  }
 
 .iconR{position: absolute;
-  right:518px;
+  right:518px; 
   top: 370px;
-}
+  }
 
-.iconR a{background: #fff; padding: 10px;}
-.iconR a{background: #ebebeb;}
+  .iconR a{background: #fff; padding: 10px;}
+  .iconR a{background: #ebebeb;}
 
-.iconL{position: absolute;
-  right:0px;
-  top: 370px;
-}
+  .iconL{position: absolute;
+    right:0px; 
+    top: 370px;
+    }
+  
+    .iconL a{background: #fff; padding: 10px;}
+    .iconL a{background: #ebebeb;}
 
-.iconL a{background: #fff; padding: 10px;}
-.iconL a{background: #ebebeb;}
-
-
-/*dashboard drive detail classes*/
-.driverdetail2{float: left; background: #f5f5f5; width: 100%;
-  border-bottom: 1px solid #bec8d1; padding:10px 10px;}
-
-.vinfo{background:#fff; border:solid 1px #dcdcdc;
-  min-height:200px; border-radius:6px; margin-top:20px;
-  margin-bottom:20px;}
-.vinfo .vdetail{padding: 10px;}
+    
+    /*dashboard drive detail classes*/
+    .driverdetail2{float: left; background: #f5f5f5; width: 100%;
+      border-bottom: 1px solid #bec8d1; padding:10px 10px;}
+ 
+      .vinfo{background:#fff; border:solid 1px #dcdcdc;
+        min-height:200px; border-radius:6px; margin-top:20px;
+        margin-bottom:20px;}
+        .vinfo .vdetail{padding: 10px;}
 
 
 /* trip  info*/
@@ -613,7 +613,7 @@ position: absolute; top: 5px; left: 5px;
 .tripscrolbar{height: 150px; margin-top: 0px; position: relative;}
 
 .tripbar{width:500px; height: 5px; background: #727272;
-  position: absolute; left: 0; top: 60px; z-index: 100;}
+position: absolute; left: 0; top: 60px; z-index: 100;}
 .tripbarfinish{width:200px; height: 5px; background: #0fd50a;
   position: absolute; left: 0; top: 60px; z-index: 500;
 }
@@ -622,20 +622,20 @@ position: absolute; top: 5px; left: 5px;
   position: absolute; left: 0; top: 60px; z-index: 100;}
 
 .tripbarfinish1{width:100px; height: 3px; background: #0fd50a;
-  position: absolute; left: 0; top: 60px; z-index: 500;
-}
+    position: absolute; left: 0; top: 60px; z-index: 500;
+  }
 
-.tripdot1{width: 12px; height: 12px; border-radius: 50%;
+ .tripdot1{width: 12px; height: 12px; border-radius: 50%;
   background: #141414; z-index: 999; position: absolute;
   left: 0; top: 55px;}
 
 
 
 .tripbar2{width:100px; height: 3px; background: #000000;
-  position: absolute; left: 100px; top: 60px; z-index: 400;}
-
+    position: absolute; left: 100px; top: 60px; z-index: 400;}
+  
 .tripbarfinish2{width:100px; height: 3px; background: #0fd50a;
-  position: absolute; left: 100px; top: 60px; z-index: 500;
+      position: absolute; left: 100px; top: 60px; z-index: 500;
 }
 
 .tripbarred2{width:100px; height: 3px; background: #ff0000;
@@ -644,32 +644,32 @@ position: absolute; top: 5px; left: 5px;
 
 
 .tripdot2{width: 12px; height: 12px; border-radius: 50%;
-  background: #141414; z-index: 999; position: absolute;
-  left: 100px; top: 55px;}
+    background: #141414; z-index: 999; position: absolute;
+    left: 100px; top: 55px;}
 
 
-.tripbar3{width:100px; height: 3px; border: dashed 1px #000000;
-  position: absolute; left: 200px; top: 60px; z-index: 400;}
-
-.tripbarfinish3{width:100px; height: 3px; background: #0fd50a;
-  position: absolute; left: 100px; top: 60px; z-index: 500;
-}
+    .tripbar3{width:100px; height: 3px; border: dashed 1px #000000;
+      position: absolute; left: 200px; top: 60px; z-index: 400;}
+    
+  .tripbarfinish3{width:100px; height: 3px; background: #0fd50a;
+        position: absolute; left: 100px; top: 60px; z-index: 500;
+      }
 
 .tripdot3{width: 12px; height: 12px; border-radius: 50%;
-  background: #141414; z-index: 999; position: absolute;
-  left: 200px; top: 55px;}
+      background: #141414; z-index: 999; position: absolute;
+      left: 200px; top: 55px;}
 
 .tripdot4{width: 12px; height: 12px; border-radius: 50%;
-  background: #141414; z-index: 999; position: absolute;
-  left: 300px; top: 55px;}
+        background: #141414; z-index: 999; position: absolute;
+        left: 300px; top: 55px;}
 
 .tripdot5{width: 12px; height: 12px; border-radius: 50%;
-  background: #141414; z-index: 999; position: absolute;
-  left: 400px; top: 55px;}
+          background: #141414; z-index: 999; position: absolute;
+          left: 400px; top: 55px;}
 
 .tripdot6{width: 12px; height: 12px; border-radius: 50%;
-  background: #ff0000; z-index: 999; position: absolute;
-  left: 472px; top: 55px;}
+            background: #ff0000; z-index: 999; position: absolute;
+            left: 472px; top: 55px;}
 
 /* trip info date time */
 
@@ -697,13 +697,13 @@ position: absolute; top: 5px; left: 5px;
 .tripvertibar{width:2px; height:110px; border: dashed 1px #000;
   position: absolute; left: 4px; top:0px; z-index: 500;}
 .tripvertifinish{width:2px; height:80px; background: #0fd50a;
-  position: absolute; left: 4px; top:0px; z-index: 500; }
+    position: absolute; left: 4px; top:0px; z-index: 500; }
 
 .tripvertiyellow{width:2px; height:80px; background: #ffa800;
-  position: absolute; left: 4px; top:0px; z-index: 500; }
+      position: absolute; left: 4px; top:0px; z-index: 500; }
 
 .tripvertired{width:2px; height:30px; background: #ff0000;
-  position: absolute; left: 4px; top:10px; z-index: 500; }
+        position: absolute; left: 4px; top:10px; z-index: 500; }
 
 .tripcirlce{width:10px; height:10px; border-radius: 50%;background: #141414;}
 
@@ -712,7 +712,7 @@ position: absolute; top: 5px; left: 5px;
 
 .trip2{z-index:999; width: 100%;  position: absolute; left: 0; top: 70px;}
 .trip2 p{width: 100%; display: block; position: absolute; left: 20px; top:-10px;}
-
+  
 
 
 
@@ -720,15 +720,15 @@ position: absolute; top: 5px; left: 5px;
 
 
 .dionduty{border: solid 2px #f0bd0b; float: left;
-  width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
+width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
 }
 
 .didriving{border: solid 2px #167efa; float: left;
   width: 100%; padding:2% 5%; font-size: 20px; color:#167efa;
-}
-.dioffduty{border: solid 2px #fc3142; float: left;
-  width: 100%; padding:2% 5%; font-size: 20px; color:#fc3142;
-}
+  }
+  .dioffduty{border: solid 2px #fc3142; float: left;
+    width: 100%; padding:2% 5%; font-size: 20px; color:#fc3142;
+  }
 
 /* HOS driver insight classes di mean drive insite rejected end */
 
@@ -739,11 +739,11 @@ position: absolute; top: 5px; left: 5px;
 .driverbar{float: left; width: 100%;}
 .ditotald{font-size: 50px; float: left; color: #000;
   padding-top: 10px; font-weight: 600;}
+  
 
 
 
-
-/* widget classes dispatch dashboard classed start */
+  /* widget classes dispatch dashboard classed start */
 .widgetmain{background: #fff; height: 400px;}
 .widgettopbar{background: #f6f6f6; width: 100%; float: left; padding:0px   10px;}
 .widgettopbar2{background: #000; width: 100%; float: left; padding: 10px;}
@@ -761,24 +761,24 @@ position: absolute; top: 5px; left: 5px;
 .widgetinfo{float: left; width: 100%; background: #fff;
   height:400px; padding: 10px;}
 
-.widgetchid{float: left; width: 100%; border-bottom: solid 1px #ddd;
+  .widgetchid{float: left; width: 100%; border-bottom: solid 1px #ddd;
   margin-bottom: 10px;}
 
-.minwidth60{min-width: 60px;}
-.minwidth127{min-width: 127px;}
+  .minwidth60{min-width: 60px;}
+  .minwidth127{min-width: 127px;}
 
 
 
 
 /* ********************* dashboard chat main box classes start here ********************** */
+  
+  .dchatmb{
+    width: 280px; height: 460px;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    left: 0px; bottom: 0px; z-index: 99999 !important;
+  }
 
-.dchatmb{
-  width: 280px; height: 460px;
-  position: absolute; background: #fff; border-radius:7px 7px 0 0;
-  left: 0px; bottom: 0px; z-index: 99999 !important;
-}
-
-/* Button used to open the chat form */
+  /* Button used to open the chat form */
 .open-button {
   background-color: #333; z-index:9999;
   color: #fff; padding: 10px 20px;
@@ -790,7 +790,7 @@ position: absolute; top: 5px; left: 5px;
 /* The popup chat - hidden by default */
 .chat-popup {
   display: none; bottom: 0; right: 15px;
-
+  
 }
 
 .dchathead{
@@ -798,183 +798,183 @@ position: absolute; top: 5px; left: 5px;
   height: 50px; border-radius:7px 7px 0 0;}
 
 
-/* chat input of all chat boxes */
-.dcinput{
-  width: 73% !important;
-  margin-left: 17%;
-  border-radius: 60px;}
+  /* chat input of all chat boxes */
+  .dcinput{
+    width: 73% !important;
+    margin-left: 17%;
+    border-radius: 60px;}
 
-
+ 
 
 
 /* chat box 1*/
-.dchatb1{
-  width: 280px; height: 460px; display: none;
-  position: absolute; background: #fff; border-radius:7px 7px 0 0;
-  left: 281px; bottom: 0px; z-index: 99999 !important;
-}
+  .dchatb1{
+    width: 280px; height: 460px; display: none;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    left: 281px; bottom: 0px; z-index: 99999 !important;
+  }
 
-.dchathead1{
-  background: #f6f6f6; width: 100%;
-  height: 50px; border-radius:7px 7px 0 0;}
-
-
-/* chat box 2*/
-.dchatb2{
-  width: 280px; height: 460px; display: none;
-  position: absolute; background: #fff; border-radius:7px 7px 0 0;
-  left: 562px; bottom: 0px; z-index: 99999 !important;
-}
-
-.dchathead2{
-  background: #f6f6f6; width: 100%;
-  height: 50px; border-radius:7px 7px 0 0;}
+  .dchathead1{
+    background: #f6f6f6; width: 100%;
+    height: 50px; border-radius:7px 7px 0 0;}
 
 
-/* chat box 3*/
-.dchatb3{
-  width: 280px; height: 460px; display: none;
-  position: absolute; background: #fff; border-radius:7px 7px 0 0;
-  left: 843px; bottom: 0px; z-index: 99999 !important;
-}
+    /* chat box 2*/
+  .dchatb2{
+    width: 280px; height: 460px; display: none;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    left: 562px; bottom: 0px; z-index: 99999 !important;
+  }
 
-.dchathead3{
-  background: #f6f6f6; width: 100%;
-  height: 50px; border-radius:7px 7px 0 0;}
-
-/* chat box 4*/
-.dchatb4{
-  width: 280px; height: 460px; display: none;
-  position: absolute; background: #fff; border-radius:7px 7px 0 0;
-  left: 1124px; bottom: 0px; z-index: 99999 !important;
-}
-
-.dchathead4{
-  background: #f6f6f6; width: 100%;
-  height: 50px; border-radius:7px 7px 0 0;}
+  .dchathead2{
+    background: #f6f6f6; width: 100%;
+    height: 50px; border-radius:7px 7px 0 0;}
 
 
-/* ********************* chat classes end here ********************** */
+      /* chat box 3*/
+  .dchatb3{
+    width: 280px; height: 460px; display: none;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    left: 843px; bottom: 0px; z-index: 99999 !important;
+  }
+
+  .dchathead3{
+    background: #f6f6f6; width: 100%;
+    height: 50px; border-radius:7px 7px 0 0;}
+
+     /* chat box 4*/
+  .dchatb4{
+    width: 280px; height: 460px; display: none;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    left: 1124px; bottom: 0px; z-index: 99999 !important;
+  }
+
+  .dchathead4{
+    background: #f6f6f6; width: 100%;
+    height: 50px; border-radius:7px 7px 0 0;}
+
+
+    /* ********************* chat classes end here ********************** */
 
 
 
 
-/* ********************* yard entery page classes start here ********************** */
+    /* ********************* yard entery page classes start here ********************** */
 
-/* geofenc map serach*/
+    /* geofenc map serach*/
 
 .gfmap{position: relative;}
 .gfmaps{
-  width: 400px;
-  position: absolute;
-  right: 20px; top: 10px;
+width: 400px;
+position: absolute;
+right: 20px; top: 10px;
 
 }
 
-/* ********************* yard entery page classes end here ********************** */
+    /* ********************* yard entery page classes end here ********************** */
 
 
 /* ********************* vehicle new page classes start here ********************** */
 
 /* Safety Parameters */
 
-.slidecontainer {width: 100%;}
+    .slidecontainer {width: 100%;}
+    
+    .slider {
+      -webkit-appearance: none;
+      width: 100%; height: 10px; background: #d3d3d3;
+      outline: none;  opacity: 1;
+      -webkit-transition: .2s; transition: opacity .2s;
+    }
+    
+    .slider:hover { opacity: 1;}
+    
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;  width: 20px; height: 20px;
+      background: #000; cursor: pointer;
+    }
+    
+    .slider::-moz-range-thumb {
+      width: 20px; height: 20px; background: #333;  cursor: pointer;
+    }
 
-.slider {
-  -webkit-appearance: none;
-  width: 100%; height: 10px; background: #d3d3d3;
-  outline: none;  opacity: 1;
-  -webkit-transition: .2s; transition: opacity .2s;
-}
-
-.slider:hover { opacity: 1;}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;  width: 20px; height: 20px;
-  background: #000; cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-  width: 20px; height: 20px; background: #333;  cursor: pointer;
-}
-
-/* ********************* vehicle new page classes end here ********************** */
-
-
-.positionfix{position: fixed !important;}
-.positionsta{position: static !important;}
+    /* ********************* vehicle new page classes end here ********************** */
 
 
-
-/* make borde red for validation */
-.redBorder {
-  border: solid 1px #C10000;
-}
+    .positionfix{position: fixed !important;}
+    .positionsta{position: static !important;}
 
 
-
-/* Mapbox CSS */
-
-#map {
-  height:800px;
-  top: 10;
-  bottom: 0;
-  width: 100%;
-}
-.match-parent {
-  width: 100%;
-  height: 100%;
-}
-
-.filter-group {
-  font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
-  font-weight: 600;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1;
-  border-radius: 3px;
-  width: 120px;
-  color: #fff;
-}
-
-.filter-group input[type="checkbox"]:first-child + label {
-  border-radius: 3px 3px 0 0;
-}
-
-.filter-group label:last-child {
-  border-radius: 0 0 3px 3px;
-  border: none;
-}
-
-.filter-group input[type="checkbox"] {
-  display: none;
-}
-
-.filter-group input[type="checkbox"] + label {
-  background-color: #3386c0;
-  display: block;
-  cursor: pointer;
-  padding: 10px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-}
-
-.filter-group input[type="checkbox"] + label {
-  background-color: #3386c0;
-  text-transform: capitalize;
-}
-
-.filter-group input[type="checkbox"] + label:hover,
-.filter-group input[type="checkbox"]:checked + label {
-  background-color: #4ea0da;
-}
-
-.filter-group input[type="checkbox"]:checked + label:before {
-  content: "âœ”";
-  margin-right: 5px;
-}
-
+    
+  /* make borde red for validation */
+  .redBorder {
+    border: solid 1px #C10000;
+  }
+  
+ 
+  
+  /* Mapbox CSS */
+  
+        #map {
+          height:800px;
+          top: 10;
+          bottom: 0;
+          width: 100%;
+        }
+        .match-parent {
+          width: 100%;
+          height: 100%;
+        }
+  
+        .filter-group {
+          font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+          font-weight: 600;
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          z-index: 1;
+          border-radius: 3px;
+          width: 120px;
+          color: #fff;
+        }
+  
+        .filter-group input[type="checkbox"]:first-child + label {
+          border-radius: 3px 3px 0 0;
+        }
+  
+        .filter-group label:last-child {
+          border-radius: 0 0 3px 3px;
+          border: none;
+        }
+  
+        .filter-group input[type="checkbox"] {
+          display: none;
+        }
+  
+        .filter-group input[type="checkbox"] + label {
+          background-color: #3386c0;
+          display: block;
+          cursor: pointer;
+          padding: 10px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+        }
+  
+        .filter-group input[type="checkbox"] + label {
+          background-color: #3386c0;
+          text-transform: capitalize;
+        }
+  
+        .filter-group input[type="checkbox"] + label:hover,
+        .filter-group input[type="checkbox"]:checked + label {
+          background-color: #4ea0da;
+        }
+  
+        .filter-group input[type="checkbox"]:checked + label:before {
+          content: "✔";
+          margin-right: 5px;
+        }    
+    
 .mapboxgl-ctrl-geocoder--icon{display: none !important;}
 
 
@@ -1008,7 +1008,7 @@ position: absolute; top: 5px; left: 5px;
   width: 100%;
   background:#fff;
   background-size: cover;
-
+  
 }
 
 
@@ -1082,6 +1082,320 @@ td.loadid a{color:#ff0000 !important;}
 
 
 
+/*****************  har classes start  *********************************/
+
+
+/* safety page classes */
+.border_bottom
+{
+  border-bottom: 1px solid #777;
+}
+.border_top
+{
+  border-top: 1px solid #777;
+}
+.font_1rem
+{
+  font-size: 1rem;
+}
+.pad_0
+{
+    padding: 0px !important;
+}
+.alert_icon_safety
+{
+    height: 25px;
+    width: 25px;
+    line-height: 25px;
+    background-color: #777;
+    border-radius: 50%;
+    color: white;
+}
+
+.safety_icon_size
+{
+    font-size: 20px;
+}
+.height_70p
+{
+    height: 70px;
+}
+
+.safety_card_height
+{
+    max-height: 380px !important;
+    overflow: scroll;
+}
+
+/* cycle table cell width */
+.cell_width
+{
+   min-width:350px;
+}
+
+/* ADD NEW VEHICLE TOP NAV BAR */
+
+.addv_topnav{float: left; margin-top: 20px; padding: 0px;}
+.addv_topnav ul{list-style-type: none; float: left; margin: 0; padding: 0;}
+/* .addv_topnav ul li{float: left;} */
+.addv_topnav ul li {float: left;color: #2e353e; text-decoration: none; font-weight: 600; padding:6px 15px; border-radius: 50px; margin: 0 4px;}
+.addv_topnav ul li:hover{color: #000; background: #fff;; text-decoration: none;}
+.addv_topnav ul li.active{color: #000; background: #fff;; text-decoration: none;}
+
+/* ADD VEHICLE INFORMATION */
+#vehicle_new_details
+{
+  display: block;
+}
+#vehicle_new_lifecycle,
+#vehicle_new_specifications,
+#vehicle_new_wheels,
+#vehicle_new_engine,
+#vehicle_new_settings,
+#vehicle_new_fluids
+{
+display: none;
+}
+
+.sub-heading-new-vehicle
+{
+font-size: 1rem;
+color: black;
+}
+
+/* Stock Quantity */
+.table-stock-qty-td
+{
+  vertical-align: middle!important;
+}
+
+/* Stock Assignment Add button setting */
+.mar-top-asg-stock-btn
+{
+     margin-top: 37px;
+}
+
+.mar-top-30
+{
+     margin-top: 30px;
+}
+.mar-top-37
+{
+     margin-top: 37px;
+}
+
+
+
+/* BUSINESS PAGE CSS */
+  .business_image_style{
+    height: 250px;
+    width: 250px;
+    border-radius: 5%;
+  }
+  .margin_50
+  {
+    margin-top: 50px;
+  }
+
+  /* TEXT UNDERLINE */
+  .text-underline{
+    text-decoration: underline;
+  }
+
+.businessmaps{width: 200px;position: absolute;right: 20px;top: 10px;}
+
+.wizard-tabs ul > li.active .badge {
+  background-color: #000!important;
+}
+
+.business-radio-box
+{
+  border: 0.5px solid;
+    padding: inherit;
+}
+
+.account-body{
+  margin: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+/* PRICE PLAN */
+.price-plan{
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.price-card{
+  border: 1px solid #AAA;
+  border-radius: 5px;
+  color: #444;
+  font-family: auto;
+  transition: transform 0.4s;
+
+}
+.price-card:hover{
+  transform: scale(1.1);
+}
+.price-card:active{
+  transform: scale(1.05);
+}
+.price-card-header, .price-card-footer
+{
+  font-size: 25px;
+  height: 50px;
+  background: #aaa;
+  font-weight: bolder;
+  padding-top: 10px;
+
+}
+.price-card-body{
+  height: fit-content;
+  text-align: center;
+  margin: 15px;;
+}
+.price-tag{
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  /* background-color: #f96f52; */
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  margin: auto;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+.price-button{
+  height: 30px;
+  width: 150px;
+  /* background-color: orange; */
+  margin:auto;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 10px;
+  color: white;
+}
+.contact-price{
+  font-size: 22px;
+}
+
+.owner-color{
+  background-color: #F96F52;
+}
+.small-color{
+  background-color:#41A18A;
+}
+.medium-color{
+  background-color: #CF73A9;
+}
+.large-color{
+  background-color: #4E8DD3;
+}
+
+/* IFTA PAGE */
+.ifta-tabs{
+  font-size: 15px;
+}
+.ifta-tabs ul{
+  margin: 5px;
+}
+.ifta-tabs ul li{
+  display: inline;
+  padding: 7px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.ifta-tabs ul li:hover{
+color: black;
+text-decoration: underline;
+}
+.ifta-tabs ul li:active{
+  color: black;
+  text-decoration: underline;
+  }
+
+  #summary-div
+  {
+    display: block;
+  }
+  #trip-reports-div
+  {
+    display: none;
+  }
+  #fuel-purchases-div
+  {
+    display: none;
+  }
+
+  .margin-left-35{
+    margin-left: 35px;
+  }
+
+
+  /* DOCUMENTS PAGE */
+  .document_box{
+    height: 300px;
+    width: auto;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    box-shadow: 2px 2px 1px #aaa;
+    text-align: center;
+    margin: 10px;
+  }
+  .document_box_title
+  {
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px;
+    font-family: inherit;
+  }
+
+  .document-top-box
+  {
+    border: 0.5px solid #aaa;
+    border-radius: 5px;
+    box-shadow: 2px 2px 1px #aaa;
+    padding: 30px;
+    margin: 10px;
+    margin-bottom: 20px;
+  }
+  .document-type-image{
+    height: 40px;
+    width: 40px;
+  }
+
+  .social-icons
+  {
+    height: 25px;
+    width: 25px;
+  }
+
+
+  .ifta-label
+  {
+    width: 50px;
+    border: 0.4px solid #ddd;
+    border-radius: 10%;
+    text-align: center;
+  }
+
+  .ifta-icon-size
+  {
+    font-size: 25px;
+  }
+
+  .card-border
+  {
+    border: 0.4px solid #ddd;
+  }
+
+
+
+/*****************  har classes end  *********************************/
 
 
 
@@ -1089,46 +1403,46 @@ td.loadid a{color:#ff0000 !important;}
 
 
 
-/*****************  common classes  *********************************/
+  /*****************  common classes  *********************************/
 
-/* border solid */
-.bordall{border: solid 1px #dddddd;}
-.bordleft{border-left: solid 1px #dddddd;}
-.bordright{border-right: solid 1px #dddddd;}
-.bordtop{border-top: solid 1px #dddddd;}
-.bordbtm{border-bottom: solid 1px #dddddd;}
+  /* border solid */
+  .bordall{border: solid 1px #dddddd;}
+  .bordleft{border-left: solid 1px #dddddd;}
+  .bordright{border-right: solid 1px #dddddd;}
+  .bordtop{border-top: solid 1px #dddddd;}
+  .bordbtm{border-bottom: solid 1px #dddddd;}
 
-/* border dashed */
-.bordtopdas{border-top: dashed 1px #aaa;}
+  /* border dashed */
+  .bordtopdas{border-top: dashed 1px #aaa;}
 
-/* box */
-.boxshadow1{box-shadow: 0 0 0 3px #f6f6f6;}
+  /* box */
+  .boxshadow1{box-shadow: 0 0 0 3px #f6f6f6;}
 
-/* width */
-.w100{width: 100%;}
-.w150px{width: 150px;}
+  /* width */
+  .w100{width: 100%;}
+  .w150px{width: 150px;}
 
-/* color */
-.blue1{color: #1c79c8;}
-.colorgrey{color:#555555;}
+  /* color */
+  .blue1{color: #1c79c8;}
+  .colorgrey{color:#555555;}
 
-.red{ color:#C10000;}
-.red1{ color:#fe4e37;}
+  .red{ color:#C10000;}
+  .red1{ color:#fe4e37;}
 
-.green1{color: #1eb54f;}
-
-
-/* bg color */
-.bgcol1{background: #f0f0f0;}
-.bgcol2{background: #dcdcdc;}
-
-/* line height */
-.LH16{line-height: 16px !important;}
-
-/* cursor */
-.cursorpoint{cursor: pointer;}
+  .green1{color: #1eb54f;}
 
 
-.divcenter{display: flex; justify-content: center;}
+  /* bg color */
+  .bgcol1{background: #f0f0f0;}
+  .bgcol2{background: #dcdcdc;}
+
+  /* line height */
+  .LH16{line-height: 16px !important;}
+
+  /* cursor */
+  .cursorpoint{cursor: pointer;}
+
+
+  .divcenter{display: flex; justify-content: center;}
 
 
