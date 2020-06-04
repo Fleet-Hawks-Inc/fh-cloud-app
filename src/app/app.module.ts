@@ -119,6 +119,11 @@ import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { HttpInterceptorProviders } from './helpers/interceptor.provider';
 import {JwtInterceptor} from "./helpers/jwt.interceptor";
 
+
+
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -222,7 +227,12 @@ import {JwtInterceptor} from "./helpers/jwt.interceptor";
     AddCycleComponent,
     EditCycleComponent,
     CycleListComponent,
-    NavOpenedDirective
+    NavOpenedDirective,
+   
+  
+   
+
+
 
 
 
