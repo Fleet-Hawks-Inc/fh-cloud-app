@@ -1,0 +1,237 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header">
+        <h2>Dashboard</h2>
+        <div class="right-wrapper pull-right text-right">
+          <div class="pull-left mr-4">
+            <a href="#" class="mb-1 mt-2 mr-2 pl-3 pr-3 btn btn-sm btn-default"
+              >ON</a
+            >
+            <a href="#" class="mb-1 mt-2 mr-2 pl-3 pr-3 btn btn-sm btn-default"
+              >OFF</a
+            >
+            <a href="#" class="mb-1 mt-2 mr-2 pl-3 pr-3 btn btn-sm btn-default"
+              >SB</a
+            >
+            <a href="#" class="mb-1 mt-2 mr-2 pl-3 pr-3 btn btn-sm btn-default"
+              >D</a
+            >
+          </div>
+
+          <ol class="breadcrumbs pr-3">
+            <li>
+              <a href="index.html">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li><span>Dashboard</span></li>
+          </ol>
+        </div>
+      </header>
+
+      <div class="mapclass drivermain">
+        <div class="map"
+        id="map" class="mapclassmain"></div>
+
+        <div class="iconR" id="arrowR">
+          <a href="#"><i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="iconL" id="arrowL" style="display: none;">
+          <a href="#"><i class="fas fa-arrow-left"></i></a>
+        </div>
+
+        <div
+          class="drivelist"
+          style="overflow-y: scroll; overflow-x: hidden; height: 100%;"
+          id="driverList"
+        >
+        <form>
+            <input type="text" name="msg" [(ngModel)]="msg" placeholder="enter message" >
+            <button (click)="sendmsg()">send</button>
+        </form>
+        <!-- <div #msglog> -->
+
+          <div class="driverdetail2">
+            <p class="driverstatus mb-0">Driver Name</p>
+            <p class="mb-0 text-5 font-weight-semibold text-dark">
+              <span class="onduty pull-right">ON</span> Manjit Singh
+            </p>
+            <hr class="solid mt-2 mb-2" />
+            <p class="mb-0 text-4 font-weight-semibold text-dark">
+              Cycle <span class="text-5">10D</span>
+            </p>
+            <p class="driverstatus mb-0">Kingston, Toronto, ON K7L 5K4</p>
+            <hr class="solid mt-2 mb-2" />
+
+            <p class="driverstatus mb-0">Vehicle NumberVehicle Number</p>
+            <p class="mb-0 text-4 font-weight-semibold text-dark">
+              <span class="pull-right text-center text-1"
+                ><span class="text-9">39</span><br />MPH (60 Limit)</span
+              >
+              835539
+            </p>
+            <p class="driverstatus mb-0">Freightliner Sprinter</p>
+
+            <p class="mb-0 mt-3 text-4 font-weight-semibold text-dark">
+              Trip Info
+            </p>
+            <div
+              class="tripscrolbar"
+              style="overflow-x: scroll; overflow-y: hidden; width: 400px;"
+            >
+              <div class="tripbar1"></div>
+              <div class="tripbarfinish1"></div>
+              <div class="tripdot1"></div>
+              <div class="tripdt1">
+                <p class="line-height-xs text-2 font-weight-bold">
+                  Day 1<br />00:00
+                </p>
+              </div>
+              <div class="triploc1">
+                <p class="line-height-xs text-2 font-weight-bold">Location 1</p>
+              </div>
+
+              <div class="tripdot2"></div>
+              <div class="tripbarred2"></div>
+              <div class="tripdot2"></div>
+              <div class="tripdt2">
+                <p class="line-height-xs text-2 font-weight-bold">
+                  Day 2<br />00:00
+                </p>
+              </div>
+              <div class="triploc2">
+                <p class="line-height-xs text-2 font-weight-bold">Location 2</p>
+              </div>
+
+              <div class="tripbar3"></div>
+              <div class=""></div>
+              <div class="tripdot3"></div>
+              <div class="tripdt3">
+                <p class="line-height-xs text-2 font-weight-bold">
+                  Day 3<br />00:00
+                </p>
+              </div>
+              <div class="triploc3">
+                <p class="line-height-xs text-2 font-weight-bold">Location 3</p>
+              </div>
+
+              <div class="tripbar4"></div>
+              <div class="tripbarfinish4"></div>
+              <div class="tripdot4"></div>
+              <div class="tripdt4">
+                <p class="line-height-xs text-2 font-weight-bold">
+                  Day 4<br />00:00
+                </p>
+              </div>
+              <div class="triploc4">
+                <p class="line-height-xs text-2 font-weight-bold">Location 4</p>
+              </div>
+            </div>
+
+            <div class="vinfo">
+              <p class="mb-0 text-4 font-weight-semibold text-dark pl-3 pt-2">
+                Vehicle Information
+              </p>
+              <hr class="solid mt-2 mb-2" />
+              <div class="vdetail">
+                <p class="mb-0 text-3 font-weight-semibold text-dark">
+                  VIN<span class="pull-right">XJKDF853269522230000</span>
+                </p>
+                <hr class="solid mt-2 mb-2" />
+
+                <p class="mb-0 text-3 font-weight-semibold text-dark">
+                  Engine<span class="pull-right">Running</span>
+                </p>
+                <hr class="solid mt-2 mb-2" />
+
+                <p class="mb-0 text-3 font-weight-semibold text-dark">
+                  Engiine Load<span class="pull-right">35%</span>
+                </p>
+                <hr class="solid mt-2 mb-2" />
+
+                <p class="mb-0 text-3 font-weight-semibold text-dark">
+                  Engne Speed<span class="pull-right">2280 RPM</span>
+                </p>
+                <hr class="solid mt-2 mb-2" />
+
+                <p class="mb-0 text-3 font-weight-semibold text-dark">
+                  Battery Voltage<span class="pull-right">14.12 V</span>
+                </p>
+                <hr class="solid mt-2 mb-2" />
+
+                <p class="mb-0 text-3 font-weight-semibold text-dark">
+                  Coolant Temp<span class="pull-right">180 F</span>
+                </p>
+                <hr class="solid mt-2 mb-2" />
+
+                <p class="mb-0 text-3 font-weight-semibold text-dark">
+                  Fuel Rate<span class="pull-right">3.33 Gallons/Hour</span>
+                </p>
+                <hr class="solid mt-2 mb-2" />
+
+                <p class="mb-0 text-3 font-weight-semibold text-dark">
+                  Engine Check Light<span class="pull-right">On</span>
+                </p>
+                <hr class="solid mt-2 mb-2" />
+
+                <p class="mb-0 text-3 font-weight-semibold text-dark">
+                  Ambient Air Temp<span class="pull-right">69.7 F</span>
+                </p>
+                <hr class="solid mt-2 mb-2" />
+
+                <p class="mb-0 text-3 font-weight-semibold text-dark">
+                  Barometer<span class="pull-right">17.11 Psi</span>
+                </p>
+                <hr class="solid mt-2 mb-2" />
+
+                <p class="mb-0 text-3 font-weight-semibold text-dark">
+                  Odometer<span class="pull-right">0953250</span>
+                </p>
+              </div>
+            </div>
+
+            <p class="mb-0 text-4 font-weight-semibold text-dark">
+              Todays Milege<span class="pull-right">500 Kms</span>
+            </p>
+            <hr class="solid mt-2 mb-2" />
+            <p class="mb-0 text-4 font-weight-semibold text-dark">
+              Temperature Requirements
+              <span class="pull-right text-right"
+                >-10<sup>o</sup>C C to -20<sup>o</sup></span
+              >
+            </p>
+            <hr class="solid mt-2 mb-2" />
+            <p class="mb-0 text-4 font-weight-semibold text-dark">
+              Schedule Requirements
+              <span class="pull-right"
+                ><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">
+                  On Time
+                </button></span
+              >
+            </p>
+
+            <hr class="solid mt-2 mb-2" />
+            <p class="mb-0 text-4 font-weight-semibold text-dark">
+              Load Status
+              <span class="pull-right"
+                ><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">
+                  Partial
+                </button></span
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
