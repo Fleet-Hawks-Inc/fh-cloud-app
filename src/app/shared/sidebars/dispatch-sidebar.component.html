@@ -3,207 +3,111 @@
     <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
       <a class="nav-link" href="#">
         <i class="fas fa-truck" aria-hidden="true"></i>
-        <span>Shipper</span>
+        <span>Routing</span>
       </a>
       <ul class="nav nav-children" >
         <li routerLinkActive="nav-active">
-          <a class="nav-link" [routerLink]="['/dispatch', 'shipper', 'Add-Shipper']">
-            Add
+          <a class="nav-link" [routerLink]="['/dispatch', 'routing', 'Route-Planner']">
+            Route Planner
           </a>
         </li>
         <li routerLinkActive="nav-active">
           <a
             class="nav-link"
-            [routerLink]="['/dispatch', 'shipper', 'Shippers-List']">
-            List
-          </a>
-        </li>
-        <li routerLinkActive="nav-active">
-          <a
-            class="nav-link"
-            [routerLink]="['/dispatch', 'shipper', 'Shipper-Address-List']">
-            Address
+            [routerLink]="['/dispatch', 'routing', 'Route-Playback']">
+            Route Playback
           </a>
         </li>
       </ul>
     </li>
     <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
       <a class="nav-link" href="#">
-        <i class="fas fa-user-friends" aria-hidden="true"></i>
-        <span>Customer</span>
+        <i class="fas fa-truck-loading" aria-hidden="true"></i>
+        <span>Loads</span>
       </a>
       <ul class="nav nav-children">
         <li routerLinkActive="nav-active">
-          <a class="nav-link" [routerLink]="['/dispatch', 'customer', 'Add-Customer']">
-            Add
+          <a class="nav-link" [routerLink]="['/dispatch', 'loads', 'All-Loads']">
+            All Loads
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
+      <a class="nav-link" href="#">
+        <i class="fas fa-file-import" aria-hidden="true"></i>
+        <span>Dispatch</span>
+      </a>
+      <ul class="nav nav-children">
+        <li routerLinkActive="nav-active">
+          <a class="nav-link" [routerLink]="['/dispatch', 'dispatch', 'All-Dispatch']">
+            All Dispatch
           </a>
         </li>
         <li routerLinkActive="nav-active">
           <a
             class="nav-link"
-            [routerLink]="['/dispatch', 'customer', 'Customers-List']"
+            [routerLink]="['/dispatch', 'dispatch', 'Dispatch-Planner']"
           >
-            List
-          </a>
-        </li>
-        <li routerLinkActive="nav-active">
-          <a
-            class="nav-link"
-            [routerLink]="['/dispatch', 'customer', 'Customer-Address-List']">
-            Address
+            Dispatch Planner 
           </a>
         </li>
       </ul>
     </li>
     <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
       <a class="nav-link" href="#">
-        <i class="fas fa-people-carry" aria-hidden="true"></i>
-        <span>Receiver</span>
+        <i class="fas fa-map-signs" aria-hidden="true"></i>
+        <span>Cross Border</span>
       </a>
       <ul class="nav nav-children">
         <li routerLinkActive="nav-active">
-          <a class="nav-link" [routerLink]="['/dispatch', 'receiver', 'Add-Receiver']">
-            Add
+          <a class="nav-link" [routerLink]="['/dispatch', 'cross-border', 'ACE-eManifest']">
+            ACE eManifest
           </a>
         </li>
         <li routerLinkActive="nav-active">
           <a
             class="nav-link"
-            [routerLink]="['/dispatch', 'receiver', 'Receivers-List']"
+            [routerLink]="['/dispatch', 'cross-border', 'ACI-eManifest']"
           >
-            List
-          </a>
-        </li>
-        <li routerLinkActive="nav-active">
-          <a
-            class="nav-link"
-            [routerLink]="['/dispatch', 'receiver', 'Receiver-Address-List']">
-            Address
-          </a>
-        </li>
-      </ul>
-    </li>
-    <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
-      <a class="nav-link" href="#">
-        <i class="fas fa-industry" aria-hidden="true"></i>
-        <span>Factoring Company</span>
-      </a>
-      <ul class="nav nav-children">
-        <li routerLinkActive="nav-active">
-          <a class="nav-link" [routerLink]="['/dispatch', 'factoring-company', 'Add-Factoring-Company']">
-            Add
-          </a>
-        </li>
-        <li routerLinkActive="nav-active">
-          <a class="nav-link" [routerLink]="['/dispatch', 'factoring-company', 'Factoring-Company-List']"> List</a>
-        </li>
-        <li routerLinkActive="nav-active">
-          <a
-            class="nav-link"
-            [routerLink]="['/dispatch', 'factoring-company', 'Factoring-Company-Address-List']">
-            Address
-          </a>
-        </li>
-      </ul>
-    </li>
-    <!-- <li class="nav-parent" appNavOpened>
-    <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
-      <a class="nav-link" href="#">
-        <i class="fa fa-address-book" aria-hidden="true"></i>
-        <span>Address</span>
-      </a>
-      <ul class="nav nav-children">
-        <li routerLinkActive="nav-active">
-          <a class="nav-link" [routerLink]="['/dispatch', 'address', 'Add-Address']">
-            Add
-          </a>
-        </li>
-        <li routerLinkActive="nav-active">
-          <a
-            class="nav-link"
-            [routerLink]="['/dispatch', 'address', 'Address-List']"
-          >
-            List
-          </a>
-        </li>
-      </ul>
-    </li> -->
-    <li class="nav-parent" appNavOpened>
-    </li>
-    <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
-      <a class="nav-link" href="#">
-        <i class="fas fa-book" aria-hidden="true"></i>
-        <span>Contact</span>
-      </a>
-      <ul class="nav nav-children">
-        <li routerLinkActive="nav-active">
-          <a class="nav-link" [routerLink]="['/dispatch', 'contact', 'Add-Contact']">
-            Add
-          </a>
-        </li>
-        <li routerLinkActive="nav-active">
-          <a
-            class="nav-link"
-            [routerLink]="['/dispatch', 'contact', 'Contact-List']"
-          >
-            List
-          </a>
-        </li>
-      </ul>
-    </li>
-    <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
-      <a class="nav-link" href="#">
-        <i class="fas fa-file-invoice" aria-hidden="true"></i>
-        <span>Account</span>
-      </a>
-      <ul class="nav nav-children">
-        <li routerLinkActive="nav-active">
-          <a class="nav-link" [routerLink]="['/dispatch', 'account', 'Add-Account']">
-            Add
-          </a>
-        </li>
-        <li routerLinkActive="nav-active">
-          <a
-            class="nav-link"
-            [routerLink]="['/dispatch', 'account', 'Account-List']"
-          >
-            List
-          </a>
-        </li>
-      </ul>
-    </li>
-    <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
-      <a class="nav-link" href="#">
-        <i class="fas fa-file-alt" aria-hidden="true"></i>
-        <span>Document</span>
-      </a>
-      <ul class="nav nav-children">
-        <li routerLinkActive="nav-active">
-          <a class="nav-link" [routerLink]="['/dispatch', 'document', 'Add-Document']">
-            Add
-          </a>
-        </li>
-        <li routerLinkActive="nav-active">
-          <a
-            class="nav-link"
-            [routerLink]="['/dispatch', 'document', 'Document-List']"
-          >
-            List
+          ACI eManifest
           </a>
         </li>
       </ul>
     </li>
     <li routerLinkActive="nav-active">
+      <a class="nav-link" [routerLink]="['/dispatch', 'load-board']">
+        <i class="fas fa-clipboard-list" aria-hidden="true"></i>
+        <span>Load Board</span>
+      </a>
+    </li>
+    <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
+      <a class="nav-link" href="#">
+        <i class="fas fa-file-alt" aria-hidden="true"></i>
+        <span>Documents</span>
+      </a>
+      <ul class="nav nav-children">
+        <li routerLinkActive="nav-active">
+          <a class="nav-link" [routerLink]="['/dispatch', 'documents', 'My-Documents']">
+            My Documents
+          </a>
+        </li>
+        <li routerLinkActive="nav-active">
+          <a
+            class="nav-link"
+            [routerLink]="['/dispatch', 'documents', 'Company-Documents']"
+          >
+            Company Documents
+          </a>
+        </li>
+      </ul>
+    </li>
+    <!-- <li routerLinkActive="nav-active">
       <a class="nav-link" [routerLink]="['/dispatch', 'create-load']">
         <i class="fas fa-file-alt" aria-hidden="true"></i>
         <span>Create Load</span>
       </a>
-    </li>
-    <li routerLinkActive="nav-active">
-      <a class="nav-link" [routerLink]="['/dispatch', 'load-board']">
-        <i class="fas fa-file-alt" aria-hidden="true"></i>
-        <span>Load Board</span>
-      </a>
-    </li>
+    </li> -->
+
  </ul>
 

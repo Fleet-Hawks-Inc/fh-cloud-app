@@ -8,8 +8,277 @@
     <!-- start: sidebar -->
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
-
     <section role="main" class="content-body">
+      <header class="page-header">
+         <h2>Load Board</h2>
+         <div class="right-wrapper text-right">
+            <ol class="breadcrumbs pr-3">
+               <li>
+                  <a href="index.html">
+                  <i class="fas fa-home"></i>
+                  </a>
+               </li>
+               <li><span>Load</span></li>
+            </ol>
+         </div>
+      </header>
+      <div class="row">
+         <div class="col">
+            <section class="card">
+               <header class="card-header">
+                  <h2 class="card-title">Load Board</h2>
+               </header>
+               <div class="card-body">
+                  <form class="form-horizontal form-bordered" method="get">
+                     <div class="form-group row">
+                       <div class="col-lg-12">
+                           <label class="control-label text-lg-right text-dark text-4 text-underline pt-2">Search DAT for loads here. Use the advanced search option to restrict search criteria.</label>
+                        </div>
+                         <div class="col-lg-9">
+                           <div class="row">
+                               <div class="col-lg-3">
+                                   <label class="control-label text-lg-right pt-2" for="inputDefault">Truck</label>
+                                   <select data-plugin-selectTwo class="form-control populate">
+                                      <optgroup label="Select Truck">
+                                         <option value="1">Truck 1</option>
+                                         <option value="2">Truck 2</option>
+                                         <option value="2">Truck 3</option>
+                                         <option value="2">Truck 4</option>
+                                         <!-- <option value="2"><a href="test-vehicle.html">Add New Truck</a></option> -->
+                                      </optgroup>
+                                   </select>
+                               </div>
+                               <div class="col-lg-3">
+                                   <label class="control-label text-lg-right pt-2" for="inputDefault">Equipment Type</label>                                   
+                                    <select data-plugin-selectTwo class="form-control populate">
+                                      <optgroup label="Select Origin">
+                                         <option value="1">Container</option>
+                                         <option value="2">Low Boy</option>
+                                         <option value="2">Step Deck</option>
+                                         <option value="">Double Drop</option>
+                                         <option value="">Dump Trailer</option>
+                                         <option value="">Flatbed Hotshot</option>
+                                      </optgroup>
+                                   </select>
+                                       <!--
+                                         <div>
+                                           <select class="form-control" multiple="multiple" data-plugin-multiselect="" data-plugin-options="{ &quot;maxHeight&quot;: 200 }" id="ms_example0" style="display: none;">
+                                           <option value="Container">Container</option>
+                                           <option value="Low Boy" selected="">Low Boy</option>
+                                           <option value="mozarella" selected="">Step Deck</option>
+                                           <option value="mushrooms">Double Drop</option>
+                                           <option value="pepperoni">Dump Trailer</option>
+                                           <option value="onions">Flatbed Hotshot</option>
+                                       </select> 
+                                   </div>-->
+
+                                </div>
+                                <div class="col-lg-3">
+                                   <label class="control-label text-lg-right pt-2" for="inputDefault">Date</label>
+                                   <div class="input-daterange input-group" data-plugin-datepicker="">
+                                       <span class="input-group-prepend">
+                                           <span class="input-group-text">
+                                               <i class="fas fa-calendar-alt"></i>
+                                           </span>
+                                       </span>
+                                       <input type="text" class="form-control" name="start">
+                                       <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                           to
+                                       </span>
+                                       <input type="text" class="form-control" name="end">
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-lg-3">
+                                   <label class="control-label text-lg-right pt-2" for="inputDefault">Origin</label>
+                                   <select data-plugin-selectTwo class="form-control populate">
+                                      <optgroup label="Select Origin">
+                                         <option value="1">City,State</option>
+                                         <option value="2">Anywhere</option>
+                                         <option value="2">Region</option>
+                                         <option value="2">Zip Code</option>
+                                      </optgroup>
+                                   </select>
+                               </div>
+                               <div class="col-lg-3">
+                                   <label class="control-label text-lg-right pt-2" for="inputDefault">Enter Location</label>
+                                   <input type="text" class="form-control" id="inputDefault">
+                                </div>
+                                <div class="col-lg-3">
+                                   <label class="control-label text-lg-right pt-2" for="inputDefault">Destination</label>
+                                   <select data-plugin-selectTwo class="form-control populate">
+                                       <optgroup label="Select Origin">
+                                          <option value="1">City,State</option>
+                                          <option value="2">Anywhere</option>
+                                          <option value="2">Region</option>
+                                          <option value="2">Zip Code</option>
+                                       </optgroup>
+                                    </select>
+                               </div>
+                                <div class="col-lg-3">
+                                   <label class="control-label text-lg-right pt-2" for="inputDefault">Enter Location</label>
+                                   <input type="text" class="form-control" id="inputDefault">
+                                </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-lg-12 my-4 cursor_pointer" id="show_ad_options">
+                                   Show Advanced Search Options
+                               </div>
+                               <div class="col-lg-12 my-4 cursor_pointer" id="hide_ad_options" style="display: none;">
+                                   Hide Advanced Search Options
+                               </div>
+                               <!-- <span id="ad_options_box"> -->
+                                   <div class="col-lg-3">
+                                       <label class="control-label text-lg-right pt-2" for="inputDefault">Max. Deadhead Origin</label>
+                                        <input type="text" class="form-control">
+                                   </div>
+                                   <div class="col-lg-3">
+                                       <label class="control-label text-lg-right pt-2" for="inputDefault">Max. Deadhead Destination</label>
+                                       <input type="text" class="form-control" id="inputDefault">
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <div class="row">
+                                           <div class="col-lg-3">
+                                               <label class="control-label text-lg-right pt-2" for="inputDefault">Load Type</label>
+                                               <select data-plugin-selectTwo class="form-control populate">
+                                                   <optgroup label="Select Origin">
+                                                      <option value="1">FTL</option>
+                                                      <option value="2">LTL</option>
+                                                      <option value="2">Both</option>
+                                                   </optgroup>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-3">
+                                               <label class="control-label text-lg-right pt-2" for="inputDefault">Equipment Length</label>
+                                               <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3">
+                                               <label class="control-label text-lg-right pt-2" for="inputDefault">Equipment Weight</label>
+                                               <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3">
+                                               <label class="control-label text-lg-right pt-2" for="inputDefault">Equipment Height</label>
+                                               <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                       </div>
+                                    </div>
+                                   <!-- </span>                                         -->
+                           </div>
+                         </div>
+                         <div class="col-lg-3">
+                           <div class="form-group row">
+                               <div class="col-lg-12 text-center">
+                                   <label class="text-4">Not Connected to DAT!</label>                                            
+                               </div>
+                               <div class="col-lg-12 text-center">
+                                   <label class="label_style">D</label>
+                                   <label class="label_style">A</label>
+                                   <label class="label_style">T</label>
+                               </div>
+                               <div class="col-lg-12 text-center mt-4">
+                               <a href="https://web.loadlink.ca"><img src="/assets/img/load-board/loadlink.png" width="170px" height="55px"></a>
+                               </div>
+                               <div class="col-lg-12 text-center mt-4">
+                                   <a href="https://www.123loadboard.com/"><img src="assets/img/load-board/123loadboard.png" width="170px" height="45px"></a>
+                               </div>
+                           </div>
+                         </div>
+                     </div>
+                       <div class="form-group row">
+                         <div class="col-lg-12 text-center">
+                           <button type="reset" class="btn  btn-default mx-1">Reset</button>
+                           <button type="submit" class="btn  btn-dark mx-1">Search</button>
+
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                       <label class="col-lg-3 control-label text-lg-right">Max. Posting Age(hrs)</label>
+                       <div class="col-lg-6">
+                           <div class="m-md slider-dark ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content" data-plugin-slider="" data-plugin-options="{ &quot;value&quot;: 10, &quot;range&quot;: &quot;min&quot;, &quot;max&quot;: 96 }" data-plugin-slider-output="#listenSlider">
+                               <input id="listenSlider" type="hidden" value="10">
+                           <div class="ui-slider-range ui-corner-all ui-widget-header ui-slider-range-min" style="width: 10%;"></div><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 10%;"></span></div>
+                           <p class="output">The current <code>value</code> is: <b>10</b></p>
+                       </div>
+                   </div>
+                      <div class="form-group row">
+                       <table class="table table-responsive-md table-striped mb-0" id="addressTable">
+                           <thead>
+                               <tr>
+                                   <th>Age</th>
+                                   <th>Date</th>
+                                   <th>Load Type</th>
+                                   <th>Company</th>
+                                   <th>Credit Score</th>
+                                   <th>DHO</th>
+                                   <th>Origin</th>
+                                   <th>Destination</th>
+                                   <th>Trip</th>
+                                   <th>Length</th>
+                                   <th>Weight</th>
+                                   <th>Height</th>
+                                   <th>Price</th>
+
+                               </tr>
+                           </thead>
+                           <tbody>
+
+                             <tr>
+                                 <td>22</td>
+                                 <td>May 4,2020</td>
+                                 <td>FTL</td>
+                                 <td>Sandhar Inc</td>
+                                 <td>569</td>
+                                 <td></td>
+                                 <td>Calgary,Alberta</td>
+                                 <td>Vancouver, British Columbia</td>
+                                 <td></td>
+                                 <td>300 miles</td>
+                                 <td>200 lbs</td>
+                                 <td>44 ft</td>
+                                 <td>CAD 5500</td>
+                             </tr>
+                             <tr>
+                              <td>34</td>
+                              <td>APR 5,2020</td>
+                              <td>LTL</td>
+                              <td>Bhullar Inc</td>
+                              <td>679</td>
+                              <td></td>
+                              <td>Calgary,Alberta</td>
+                              <td>Vancouver, British Columbia</td>
+                              <td></td>
+                              <td>300 miles</td>
+                              <td>200 lbs</td>
+                              <td>44 ft</td>
+                              <td>CAD 5500</td>
+                          </tr>
+                          <tr>
+                            <td>12</td>
+                            <td>May 6,2020</td>
+                            <td>LTL</td>
+                            <td>Pandey Inc</td>
+                            <td>549</td>
+                            <td></td>
+                            <td>Toronto,Ontario</td>
+                            <td>Regina, Saskatchewan</td>
+                            <td></td>
+                            <td>200 miles</td>
+                            <td>200 lbs</td>
+                            <td>44 ft</td>
+                            <td>CAD 5500</td>
+                        </tr>
+                           </tbody>
+                       </table>
+                     </div> 
+                  </form>
+               </div>
+            </section>
+         </div>
+      </div>
+   </section>
+
+    <!-- <section role="main" class="content-body">
       <header class="page-header">
         <h2>Loadboard Dashboard</h2>
         <div class="right-wrapper text-right">
@@ -475,6 +744,6 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
   </div>
 </section>

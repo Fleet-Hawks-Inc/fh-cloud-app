@@ -54,6 +54,13 @@ import { AciEmanifestComponent } from './cross-border/aci-emanifest/aci-emanifes
 import { MyDocumentsComponent } from './documents/my-documents/my-documents.component';
 import { CompanyDocumentsComponent } from './documents/company-documents/company-documents.component';
 
+import { AceShipmentComponent } from './cross-border/ace-documents/ace-shipment/ace-shipment.component';
+import { AceCommodityComponent } from './cross-border/ace-documents/ace-commodity/ace-commodity.component';
+import { NewAceManifestComponent } from './cross-border/ace-documents/new-ace-manifest/new-ace-manifest.component';
+import { NewAciManifestComponent } from './cross-border/aci-documents/new-aci-manifest/new-aci-manifest.component';
+import { AciShipmentComponent } from './cross-border/aci-documents/aci-shipment/aci-shipment.component';
+import { AciCommodityComponent } from './cross-border/aci-documents/aci-commodity/aci-commodity.component';
+
 
 @NgModule({
   imports: [
@@ -116,16 +123,24 @@ import { CompanyDocumentsComponent } from './documents/company-documents/company
     AllLoadsComponent,
 
     AllDispatchComponent,
-
     DispatchPlannerComponent,
 
-    AceManifestComponent,
+    
 
     AciEmanifestComponent,
+    NewAciManifestComponent,
+    AciShipmentComponent,
+    AciCommodityComponent,
 
     MyDocumentsComponent,
-
     CompanyDocumentsComponent,
+
+
+    AceManifestComponent,
+    AceShipmentComponent,
+    AceCommodityComponent,
+    NewAceManifestComponent
+   
   ],
 
 })

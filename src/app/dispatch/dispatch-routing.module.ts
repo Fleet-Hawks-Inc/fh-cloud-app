@@ -42,87 +42,81 @@ import {LoadBoardComponent} from "./load-board/load-board.component";
 import {LoadDetailComponent} from "./load-detail/load-detail.component";
 import {CreateLoadNewComponent} from "./create-load-new/create-load-new.component";
 
+import { AceManifestComponent } from './cross-border/ace-manifest/ace-manifest.component';
+import { NewAceManifestComponent } from './cross-border/ace-documents/new-ace-manifest/new-ace-manifest.component';
+import { AceShipmentComponent } from './cross-border/ace-documents/ace-shipment/ace-shipment.component';
+import { AceCommodityComponent } from './cross-border/ace-documents/ace-commodity/ace-commodity.component'; 
+
+import { AciEmanifestComponent } from './cross-border/aci-emanifest/aci-emanifest.component';
+import { NewAciManifestComponent } from './cross-border/aci-documents/new-aci-manifest/new-aci-manifest.component';
+import { AciShipmentComponent } from './cross-border/aci-documents/aci-shipment/aci-shipment.component';
+import { AciCommodityComponent } from './cross-border/aci-documents/aci-commodity/aci-commodity.component';
+
+import { MyDocumentsComponent } from './documents/my-documents/my-documents.component';
+import { CompanyDocumentsComponent } from './documents/company-documents/company-documents.component';
+
+import { AllDispatchComponent } from './dispatch/all-dispatch/all-dispatch.component';
+import { DispatchPlannerComponent } from './dispatch/dispatch-planner/dispatch-planner.component';
+import { AllLoadsComponent } from './loads/all-loads/all-loads.component';
+import { RoutePlannerComponent } from './routing/route-planner/route-planner.component';
+import { RoutePlaybackComponent } from './routing/route-playback/route-playback.component';
+
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer 
 
 
 const routes: Routes = [
   {
-    path: "shipper",
+    path: "routing",
     children: [
-      { path: "Add-Shipper", component:  AddShipperComponent },
-      { path: "Edit-Shipper/:shipperID", component: EditShipperComponent },
-      { path: "Shippers-List", component: ShipperListComponent },
-      { path: "Shipper-Address-List", component: ShipperAddressListComponent },
+      { path: "Route-Planner", component:  RoutePlannerComponent },
+      { path: "Route-Playback", component: RoutePlaybackComponent}
+     
     ]
   },
   {
-    path: "customer",
+    path: "loads",
     children: [
-      { path: "Add-Customer", component:  AddCustomerComponent },
-      { path: "Edit-Customer/:customerID", component: EditCustomerComponent},
-      { path: "Customers-List", component: CustomersComponent },
-      { path: "Customer-Address-List", component: CustomerAddressListComponent },
+      { path: "All-Loads", component:  AllLoadsComponent }
     ]
   },
   {
-    path: "receiver",
+    path: "dispatch",
     children: [
-      { path: "Add-Receiver", component:  AddReceiverComponent },
-      { path: "Edit-Receiver/:receiverID", component: EditReceiverComponent},
-      { path: "Receivers-List", component: ReceiversComponent },
-      { path: "Receiver-Address-List", component: ReceiverAddressListComponent },
+      { path: "All-Dispatch", component:  AllDispatchComponent },
+      { path: "Dispatch-Planner", component: DispatchPlannerComponent }
+        ]
+  },
+  {
+    path: "cross-border",
+    children: [
+      {path: "ACE-eManifest",component: AceManifestComponent},
+      {path: "ACE-new-eManifest",component: NewAceManifestComponent},
+      {path: "ACE-shipment",component: AceShipmentComponent},
+      {path: "ACE-commodity",component: AceCommodityComponent},
+
+      {path: "ACI-eManifest",component: AciEmanifestComponent},
+      {path: "ACI-new-eManifest",component: NewAciManifestComponent},
+      {path: "ACI-shipment",component: AciShipmentComponent},
+      {path: "ACI-commodity",component: AciCommodityComponent}
     ]
   },
   {
-    path: "factoring-company",
-    children: [
-      { path: "Add-Factoring-Company", component:  AddFactoringCompanyComponent },
-      { path: "Edit-Factoring-Company/:factoringCompanyID", component: EditFactoringCompanyComponent},
-      { path: "Factoring-Company-List", component: FactoringCompanyListComponent },
-      { path: "Factoring-Company-Address-List", component: FactoringCompanyAddressListComponent},
-    ]
+    path: "load-board",
+    component: LoadBoardComponent
   },
   {
-    path: "address",
+    path: "documents",
     children: [
-      { path: "Add-Address", component:  AddAddressComponent },
-      { path: "Edit-Address/:addressID", component: EditAddressComponent},
-      { path: "Address-List", component: AddressesComponent }
-    ]
-  },
-  {
-    path: "contact",
-    children: [
-      { path: "Add-Contact", component:  AddContactComponent },
-      { path: "Edit-Contact/:contactID", component: EditContactComponent},
-      { path: "Contact-List", component: ContactsComponent }
-    ]
-  },
-  {
-    path: "account",
-    children: [
-      { path: "Add-Account", component:  AddAccountComponent },
-      { path: "Edit-Account/:accountID", component: EditAccountComponent},
-      { path: "Account-List", component: AccountsComponent }
-    ]
-  },
-  {
-    path: "document",
-    children: [
-      { path: "Add-Document", component:  AddDocumentsComponent},
-      { path: "Edit-Document/:documentID", component: EditDocumentsComponent},
-      { path: "Document-List", component: DocumentsComponent }
+      { path: "My-Documents", component: MyDocumentsComponent},
+      { path: "Company-Documents", component: CompanyDocumentsComponent }
     ]
   },
   {
     path: "create-load",
     component: CreateLoadNewComponent
   },
-  {
-    path: "load-board",
-    component: LoadBoardComponent
-  },
+
   {
     path: "load-detail",
     component: LoadDetailComponent
