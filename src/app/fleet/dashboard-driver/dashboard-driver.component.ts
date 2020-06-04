@@ -40,8 +40,8 @@ export class DashboardDriverComponent implements OnInit {
   // Mapbox Integration
   map: mapboxgl.Map;
   style = "mapbox://styles/kunalfleethawks/ck86yfrzp0g3z1illpdp9hs3g";
-  lat = -104.618896;
-  lng = 50.44521;
+  lat = 30.880339;
+  lng = 75.769954;
   isControlAdded = false;
   frontEndData = {
     drivers: {},
@@ -79,7 +79,7 @@ export class DashboardDriverComponent implements OnInit {
       container: "map",
       style: this.style,
       zoom: 10,
-      center: [-104.618896, 50.44521],
+      center: [75.769954, 30.900965],
       accessToken: environment.mapBox.accessToken,
     });
 
@@ -105,7 +105,7 @@ export class DashboardDriverComponent implements OnInit {
 
       const popup = new mapboxgl.Popup({ offset: 25 })
         .setHTML(`<h6>${driver.driverName}</h6>
-        Load: ${driver.loadCapacity}</br>
+        Load: ${driver.loadCapacity}</ br>
         Speed: ${driver.speed}<br>
         Location: ${data.body.features[0].place_name}
       `);
@@ -138,7 +138,7 @@ export class DashboardDriverComponent implements OnInit {
           driverName: "Luca Steele",
           loadCapacity: "1001 tonnes",
           speed: "50 mile/hr",
-          location: [-104.618896, 50.44521],  
+          location: [this.lng, this.lat]  
         }
       ]
     };
@@ -166,7 +166,21 @@ export class DashboardDriverComponent implements OnInit {
       // let latParse = arr[0];
       // let latArr = latParse.split(':');
       //let finalLat = latArr[1];
-     console.log(coordi);
+    //  console.log(coordi);
+    // let jsonGeo = JSON.parse(coordi);
+    let arr = coordi.split(',');
+    let lat = arr[0];
+    let lng = arr[1];
+    lat = parseFloat(lat);
+    lng = parseFloat(lng);
+      console.log(parseFloat(lat));
+     if(lat && lng) {
+      this.flyToDriver(lng, lat);
+      this.lat = lat;
+      this.lng = lng;
+      this.getDriverData();
+     }
+      //  this.flyToDriver(parseFloat(lat), parseFloat(lng));
      // this.logMsg('Message: ' + message.payload.toString() + '<br> for topic: ' + message.topic);
     });
    // this.logMsg('subscribed to topic: ' + this.topicname)
