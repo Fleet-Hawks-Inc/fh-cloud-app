@@ -61,7 +61,7 @@ import { AllLoadsComponent } from './loads/all-loads/all-loads.component';
 import { RoutePlannerComponent } from './routing/route-planner/route-planner.component';
 import { RoutePlaybackComponent } from './routing/route-playback/route-playback.component';
 
-
+import {LoadDashboardComponent} from "./load-dashboard/load-dashboard.component";
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer 
 
 
@@ -73,6 +73,10 @@ const routes: Routes = [
       { path: "Route-Playback", component: RoutePlaybackComponent}
      
     ]
+  },
+  {
+    path: "load-dashboard",
+    component: LoadDashboardComponent
   },
   {
     path: "loads",

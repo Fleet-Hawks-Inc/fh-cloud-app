@@ -60,6 +60,7 @@ import { NewAceManifestComponent } from './cross-border/ace-documents/new-ace-ma
 import { NewAciManifestComponent } from './cross-border/aci-documents/new-aci-manifest/new-aci-manifest.component';
 import { AciShipmentComponent } from './cross-border/aci-documents/aci-shipment/aci-shipment.component';
 import { AciCommodityComponent } from './cross-border/aci-documents/aci-commodity/aci-commodity.component';
+import { LoadDashboardComponent } from './load-dashboard/load-dashboard.component';
 
 
 @NgModule({
@@ -139,7 +140,8 @@ import { AciCommodityComponent } from './cross-border/aci-documents/aci-commodit
     AceManifestComponent,
     AceShipmentComponent,
     AceCommodityComponent,
-    NewAceManifestComponent
+    NewAceManifestComponent,
+    LoadDashboardComponent
    
   ],
 
