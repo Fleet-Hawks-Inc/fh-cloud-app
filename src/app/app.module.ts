@@ -119,6 +119,16 @@ import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { HttpInterceptorProviders } from './helpers/interceptor.provider';
 import {JwtInterceptor} from "./helpers/jwt.interceptor";
 
+//mqtt
+import {MqttModule, IMqttServiceOptions} from 'ngx-mqtt';
+import {environment} from "../environments/environment";
+
+export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+  hostname: environment.HOSTNAME,
+  port: environment.PORT,
+  path: environment.MQTTPATH
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -222,7 +232,7 @@ import {JwtInterceptor} from "./helpers/jwt.interceptor";
     AddCycleComponent,
     EditCycleComponent,
     CycleListComponent,
-    NavOpenedDirective
+    NavOpenedDirective,
 
 
 
@@ -240,7 +250,9 @@ import {JwtInterceptor} from "./helpers/jwt.interceptor";
     BrowserAnimationsModule,
     ChartsModule,
     SharedModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
+
 
 
   ],
