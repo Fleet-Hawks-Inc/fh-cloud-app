@@ -60,6 +60,8 @@ import { DispatchPlannerComponent } from './dispatch/dispatch-planner/dispatch-p
 import { AllLoadsComponent } from './loads/all-loads/all-loads.component';
 import { RoutePlannerComponent } from './routing/route-planner/route-planner.component';
 import { RoutePlaybackComponent } from './routing/route-playback/route-playback.component';
+import { AddLoadComponent } from './loads/add-load/add-load.component';
+import { AddDispatchComponent } from './dispatch/add-dispatch/add-dispatch.component';
 
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer 
@@ -77,14 +79,16 @@ const routes: Routes = [
   {
     path: "loads",
     children: [
-      { path: "All-Loads", component:  AllLoadsComponent }
+      { path: "All-Loads", component:  AllLoadsComponent },
+      { path: "Add-Load", component:  AddLoadComponent }
     ]
   },
   {
     path: "dispatch",
     children: [
       { path: "All-Dispatch", component:  AllDispatchComponent },
-      { path: "Dispatch-Planner", component: DispatchPlannerComponent }
+      { path: "Dispatch-Planner", component: DispatchPlannerComponent },
+      { path: "Add-Dispatch", component: AddDispatchComponent }
         ]
   },
   {
