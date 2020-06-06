@@ -85,6 +85,13 @@ export class DashboardDriverComponent implements OnInit {
 
     // Add Navigation
     this.map.addControl(new mapboxgl.NavigationControl());
+    var marker = new mapboxgl.Marker();
+    marker.setLngLat([
+      this.lng,
+      this.lat
+      ]);
+
+      marker.addTo(this.map);
 
     const mapboxClient = mapboxSdk({
       accessToken: environment.mapBox.accessToken,
@@ -146,10 +153,11 @@ export class DashboardDriverComponent implements OnInit {
     return mockData;
   }
 
-  flyToDriver(lat, long) {
+  flyToDriver(lat, long) {console.log('hello');
     this.map.flyTo({
       center: [lat, long],
       zoom: 15,
+      popup: "url(../../assets/img/map-arrow.png)"
     });
   }
 
