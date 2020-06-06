@@ -41,7 +41,9 @@ export class JwtInterceptor implements HttpInterceptor {
 
                     //console.log('JST', jwt);
                     console.log('Cloned', withAuthRequest);
-                    return next.handle(withAuthRequest);
+                    //return next.handle(withAuthRequest);
+
+                    return false;
                 })
                 // ,
                 // catchError((err) => {
