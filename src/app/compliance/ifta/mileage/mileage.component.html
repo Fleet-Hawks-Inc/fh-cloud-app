@@ -30,9 +30,9 @@
                 <div class="col-lg-6">
                   <div class="ifta-tabs">
                     <ul>
-                      <li id="summary-tab" class="active">Summary</li>
-                      <li id="trip-reports-tab">Trip Reports</li>
-                      <li id="fuel-purchases-tab">Fuel Purchases</li>
+                      <li id="summary-tab"  [class.active]="displayDiv==='summaryDiv'" (click)="switchAction('summaryDiv')">Summary</li>
+                      <li id="trip-reports-tab" [class.active]="displayDiv==='tripDiv'" (click)="switchAction('tripDiv')">Trip Reports</li>
+                      <li id="fuel-purchases-tab" [class.active]="displayDiv==='fuelDiv'" (click)="switchAction('fuelDiv')">Fuel Purchases</li>
                     </ul>
                   </div>
                 </div>
@@ -51,7 +51,7 @@
                 </div>
               </div>
             </header>
-            <div id="summary-div" class="card-body">
+            <div id="summary-div" class="card-body" *ngIf="displayDiv==='summaryDiv'" >
               <form class="form-horizontal form-bordered" method="get">
                 <div class="form-group row margin-left-35">
                   <div class="col-lg-2">
@@ -218,7 +218,7 @@
               </form>
             </div>
 
-            <div id="trip-reports-div" class="card-body">
+            <div id="trip-reports-div" class="card-body"  *ngIf="displayDiv==='tripDiv'" style="display: block" >
               <form class="form-horizontal form-bordered" method="get">
                 <div class="form-group row margin-left-35">
                   <div class="col-lg-2">
@@ -407,7 +407,7 @@
               </form>
             </div>
 
-            <div id="fuel-purchases-div" class="card-body">
+            <div id="fuel-purchases-div" class="card-body"  *ngIf="displayDiv==='fuelDiv'" style="display: block"  >
               <form class="form-horizontal form-bordered" method="get">
                 <div class="form-group row margin-left-35">
                   <div class="col-lg-2">

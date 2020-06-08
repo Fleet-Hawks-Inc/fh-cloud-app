@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MileageComponent implements OnInit {
 
+  displayDiv = 'summaryDiv';
   constructor() { }
 
   ngOnInit() {
+  }
+
+  switchAction(displayDiv: string) {
+    console.log(displayDiv);
+    this.displayDiv = displayDiv;
   }
 
 }
