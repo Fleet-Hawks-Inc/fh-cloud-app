@@ -76,6 +76,7 @@ import {GraphComponent} from './graphs/graph/graph.component';
 import {ChartsModule} from 'ng2-charts';
 import {AddVehicleComponent} from './vehicles/add-vehicle/add-vehicle.component';
 import {EditVehicleComponent} from './vehicles/edit-vehicle/edit-vehicle.component';
+import { DashboardDriverComponent } from './dashboard-driver/dashboard-driver.component';
 
 @NgModule({
   imports: [
@@ -156,7 +157,9 @@ import {EditVehicleComponent} from './vehicles/edit-vehicle/edit-vehicle.compone
     EditGeofenceComponent,
     GeofenceListComponent,
 
-    GraphComponent
+    GraphComponent,
+
+    DashboardDriverComponent
   ],
   providers: [],
 })

@@ -118,6 +118,17 @@ import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 // JWT interceptors
 import { HttpInterceptorProviders } from './helpers/interceptor.provider';
 import {JwtInterceptor} from "./helpers/jwt.interceptor";
+
+//mqtt
+import {MqttModule, IMqttServiceOptions} from 'ngx-mqtt';
+import {environment} from "../environments/environment";
+
+export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+  hostname: environment.HOSTNAME,
+  port: environment.PORT,
+  path: environment.MQTTPATH
+}
+
 import { RegisterComponent } from './register/register.component';
 @NgModule({
   declarations: [
@@ -237,7 +248,9 @@ import { RegisterComponent } from './register/register.component';
     BrowserAnimationsModule,
     ChartsModule,
     SharedModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
+
 
 
   ],

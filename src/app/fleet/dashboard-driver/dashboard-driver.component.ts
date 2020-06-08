@@ -40,12 +40,10 @@ export class DashboardDriverComponent implements OnInit {
   // Mapbox Integration
   map: mapboxgl.Map;
   style = "mapbox://styles/kunalfleethawks/ck86yfrzp0g3z1illpdp9hs3g";
-  lat = -104.618896;
-  lng = 50.44521;
+  lat = 0;
+  lng = 0;
   isControlAdded = false;
-  frontEndData = {
-    drivers: {},
-  };
+
 
 
   center = { lat: 30.900965, lng: 75.857277 };
@@ -62,7 +60,11 @@ export class DashboardDriverComponent implements OnInit {
 
   ngOnInit() {
     this.mapboxInit();
-    this.subscribeNewTopic();
+   // this.subscribeNewTopic();
+
+  
+   setInterval(() => {this.animateMarker(Date.now()), 1000});
+
 
   }
 
@@ -78,78 +80,46 @@ export class DashboardDriverComponent implements OnInit {
     this.map = new mapboxgl.Map({
       container: "map",
       style: this.style,
-      zoom: 10,
-      center: [-104.618896, 50.44521],
+      zoom: 2,
+      center: [0, 0],
       accessToken: environment.mapBox.accessToken,
     });
 
-    // Add Navigation
-    this.map.addControl(new mapboxgl.NavigationControl());
 
-    const mapboxClient = mapboxSdk({
-      accessToken: environment.mapBox.accessToken,
-    });
-    const geocodingService = geocoding(mapboxClient);
-    const mockData = this.getDriverData();
-    const processData = mockData;
-    console.log(mockData);
-    this.frontEndData = processData;
-    processData.drivers.forEach(async (driver) => {
-      const data = await geocodingService
-        .reverseGeocode({
-          query: driver.location,
-          limit: 1,
-          types: ["region"],
-        })
-        .send();
-
-      const popup = new mapboxgl.Popup({ offset: 25 })
-        .setHTML(`<h6>${driver.driverName}</h6>
-        Load: ${driver.loadCapacity}</br>
-        Speed: ${driver.speed}<br>
-        Location: ${data.body.features[0].place_name}
-      `);
-      const latLang = new mapboxgl.LngLat(
-        driver.location[0],
-        driver.location[1]
-      );
-      const el = document.createElement("div");
-      //  el.className = 'marker';
-      el.style.backgroundImage = "url(../../assets/img/map-arrow.png)";
-      el.style.backgroundSize = "cover";
-      // el.style.backgroundColor = 'red';
-      el.style.width = "32px";
-      el.style.height = "32px";
-
-      el.id = "marker";
-
-      new mapboxgl.Marker(el)
-        .setLngLat(latLang)
-        .setPopup(popup) // sets a popup on this marker
-        .addTo(this.map);
-    });
+    this.marker = new mapboxgl.Marker();
+    this.marker.setLngLat([
+      this.lng,
+      this.lat
+      ]);   
+  
   };
 
-  /** MOCK DATA:  This data will be from service */
-  getDriverData() {
-    const mockData = {
-      drivers: [
-        {
-          driverName: "Luca Steele",
-          loadCapacity: "1001 tonnes",
-          speed: "50 mile/hr",
-          location: [-104.618896, 50.44521],  
-        }
-      ]
-    };
 
-    return mockData;
-  }
 
-  flyToDriver(lat, long) {
+   animateMarker(timestamp) {
+    var radius = 20;
+     console.log(timestamp);
+    // Update the data to a new position based on the animation timestamp. The
+    // divisor in the expression `timestamp / 1000` controls the animation speed.
+    this.marker.setLngLat([
+      Math.cos(timestamp / 1000) * radius,
+      Math.sin(timestamp / 1000) * radius
+    ]);
+     
+    // Ensure it's added to the map. This is safe to call if it's already added.
+    this.marker.addTo(this.map);
+     
+    // Request the next frame of the animation.
+    // requestAnimationFrame(animateMarker);
+    }
+
+ 
+
+  flyToDriver(lat, long) {console.log('hello');
     this.map.flyTo({
       center: [lat, long],
       zoom: 15,
+      popup: "url(../../assets/img/map-arrow.png)"
     });
   }
 
@@ -166,7 +136,20 @@ export class DashboardDriverComponent implements OnInit {
       // let latParse = arr[0];
       // let latArr = latParse.split(':');
       //let finalLat = latArr[1];
-     console.log(coordi);
+    //  console.log(coordi);
+    // let jsonGeo = JSON.parse(coordi);
+    let arr = coordi.split(',');
+    let lat = arr[0];
+    let lng = arr[1];
+    lat = parseFloat(lat);
+    lng = parseFloat(lng);
+      console.log(parseFloat(lat));
+     if(lat && lng) {
+      this.flyToDriver(lng, lat);
+      this.lat = lat;
+      this.lng = lng;
+     }
+      //  this.flyToDriver(parseFloat(lat), parseFloat(lng));
      // this.logMsg('Message: ' + message.payload.toString() + '<br> for topic: ' + message.topic);
     });
    // this.logMsg('subscribed to topic: ' + this.topicname)
