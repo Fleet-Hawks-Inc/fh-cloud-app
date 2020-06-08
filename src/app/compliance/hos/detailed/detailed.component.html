@@ -31,7 +31,7 @@
           <h2 class="card-title mt-2 mb-3">Driver Logs</h2>
           <form class="form-horizontal form-bordered" method="get">
             <div class="form-group row">
-              <div class="col-lg-4">
+              <div class="col-lg-3">
                 <div class="input-group mb-1">
                   <span class="input-group-prepend positionsta">
                     <span class="input-group-text"
@@ -45,6 +45,7 @@
                     name="userName"
                   >
                     <optgroup label="">
+                      <option>All</option>
                       <option
                         *ngFor="let driver of drivers"
                         value="{{ driver.userName }}"
@@ -54,7 +55,28 @@
                   </select>
                 </div>
               </div>
-              <div class="col-lg-4">
+
+              <div class="col-lg-3">
+                <div class="input-group mb-1">
+                  <span class="input-group-prepend positionsta">
+                    <span class="input-group-text"
+                      ><i class="fas fa-search"></i
+                    ></span>
+                  </span>
+                  <select
+                    data-plugin-selectTwo
+                    class="form-control populate"
+                    name="violation"
+                  >
+                    <optgroup label="">
+                      <option>Violation</option>
+                      <option>Non Violation</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-lg-3">
                 <div class="input-group mb-1">
                   <span class="input-group-prepend positionsta">
                     <span class="input-group-text" (click)="from.toggle()"
@@ -72,7 +94,7 @@
                   />
                 </div>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-3">
                 <div class="input-group mb-1">
                   <span class="input-group-prepend positionsta">
                     <span class="input-group-text"
@@ -115,6 +137,10 @@
                   <p class="hoshvalue">
                     <span
                       class="hosvalue text-4 font-weight-bold text-dark pl-2"
+                      >Driver</span
+                    >
+                    <span
+                      class="hosvalue text-4 font-weight-bold text-dark pl-2"
                       >Date</span
                     >
                     <span
@@ -133,6 +159,15 @@
                       class="hosvalue text-4 font-weight-bold text-dark text-center"
                       >Violation</span
                     >
+
+                    <span
+                      class="hosvalue text-4 font-weight-bold text-dark text-center"
+                      >Action</span
+                    >
+                    <span
+                      class="hosvalue text-4 font-weight-bold text-dark text-center"
+                      >&nbsp;</span
+                    >
                   </p>
                 </div>
 
@@ -141,6 +176,7 @@
                     <ng-container *ngFor="let log of logs; let i = index ">
                       <section class="toggle mt-0" (click)="getData(log.date)">
                         <label>
+                          <span class="hosvalue text-dark">{{ log.driver }}</span>
                           <span class="hosvalue text-dark">{{ log.date }}</span>
                           <span class="hosvalue text-dark text-center">{{
                             log.onDuty * 1000 | date: "H:mm:ss":"UTC"
@@ -155,6 +191,12 @@
                           <span class="hosvalue text-dark text-center"
                             >Violation</span
                           >
+                          <span class="hosvalue text-4 font-weight-bold text-dark text-center">
+                            <a class="btn btn-dark btn-sm mt-0 modal-confirm"
+                              routerLink="/compliance/hos/edit/{{log.driver}}/{{ log.date }}"
+                              >Edit</a
+                            >
+                          </span>
                         </label>
                         <div class="toggle-content" id="{{ log.date }}" style="display: none;">
                           <table class="table table-responsive-md mb-0">
