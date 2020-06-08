@@ -234,14 +234,11 @@
    font-weight: bold;
    cursor: pointer;
  }
- .ifta-tabs ul li:hover{
+ .active, .ifta-tabs ul li:hover{
  color: black;
  text-decoration: underline;
  }
- .ifta-tabs ul li:active{
-   color: black;
-   text-decoration: underline;
-   }
+
  
    #summary-div
    {
