@@ -70,12 +70,12 @@
               "namedChunks": false,
               "aot": false,
               "extractLicenses": true,
-              "vendorChunk": false,
+              "vendorChunk": true,
               "buildOptimizer": false,
               "budgets": [{
                   "type": "initial",
-                  "maximumWarning": "6mb",
-                  "maximumError": "6mb"
+                  "maximumWarning": "7mb",
+                  "maximumError": "7mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -96,7 +96,7 @@
               "namedChunks": false,
               "aot": false,
               "extractLicenses": true,
-              "vendorChunk": false,
+              "vendorChunk": true,
               "buildOptimizer": false,
               "budgets": [{
                   "type": "initial",

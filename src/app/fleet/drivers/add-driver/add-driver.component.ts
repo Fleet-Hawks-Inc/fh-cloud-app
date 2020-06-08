@@ -1,8 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import {from, of} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {Object} from 'aws-sdk/clients/s3';
+import {from} from 'rxjs';
+import {map } from 'rxjs/operators';
 import {ApiService} from '../../../api.service';
 declare var $: any;
 

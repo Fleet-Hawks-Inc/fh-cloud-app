@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
+import {  Component, OnInit } from "@angular/core";
 import { ApiService } from "../../../../api.service";
 import { Router } from "@angular/router";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import { from, of } from "rxjs";
+import {  map } from "rxjs/operators";
+import { from } from "rxjs";
 import {AwsUploadService} from '../../../../aws-upload.service';
 declare var jquery: any;
 declare var $: any;

@@ -7,6 +7,7 @@ import * as _ from "lodash";
 declare var $: any;
 import {NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe} from "@angular/common";
+import {CachedService} from "../../../cached.service";
 
 @Component({
   selector: "app-detailed",
@@ -44,7 +45,7 @@ export class DetailedComponent implements OnInit {
 
   constructor(private apiService: ApiService,
               private parserFormatter: NgbDateParserFormatter,
-              ) {
+              private cachedService: CachedService) {
 
     // this.formattedToDate = this.datePipe.transform(new Date(),  'dd-MM-yyyy');
     // this.formattedFromDate = moment(this.datePipe.transform(new Date(), 'yyyy-MM-dd').toString()).subtract(15 , 'days').format('DD-MM-YYYY');
@@ -76,11 +77,15 @@ export class DetailedComponent implements OnInit {
   }
 
   fetchDrivers() {
-    this.apiService
-      .getData("users/userType/driver")
-      .subscribe((result: any) => {
-        this.drivers = result.Items;
-      });
+    // this.apiService
+    //   .getData("users/userType/driver")
+    //   .subscribe((result: any) => {
+    //     this.drivers = result.Items;
+    //   });
+
+    this.cachedService.resolveDriver("users/userType/driver" ,"drivers").subscribe((result: any) => {
+      this.drivers = result.Items;
+    });
   }
 
   private getLogs() {

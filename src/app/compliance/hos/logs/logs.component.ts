@@ -1,12 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { ApiService } from "../../../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
 import * as moment from "moment";
 declare var $: any;
 import {NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe} from "@angular/common";
 import {fromJSDate} from "@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar";
+import {CachedService} from "../../../cached.service";
 
 @Component({
   selector: "app-logs",
@@ -26,7 +25,8 @@ export class LogsComponent implements OnInit {
 
   constructor(private apiService: ApiService,
               private parserFormatter: NgbDateParserFormatter,
-              private datePipe: DatePipe) {
+              private datePipe: DatePipe,
+              private cachedService: CachedService ) {
 
     this.formattedToDate = this.datePipe.transform(new Date(),  'dd-MM-yyyy');
     this.formattedFromDate = moment(this.datePipe.transform(new Date(), 'yyyy-MM-dd').toString()).subtract(2 , 'days').format('DD-MM-YYYY');
@@ -40,9 +40,14 @@ export class LogsComponent implements OnInit {
   }
 
   fetchDrivers() {
-    this.apiService.getData("users/userType/driver").subscribe((result: any) => {
+    this.cachedService.resolveDriver("users/userType/driver" ,"drivers").subscribe((result: any) => {
       this.drivers = result.Items;
     });
+
+    //
+    // this.apiService.getData("users/userType/driver").subscribe((result: any) => {
+    //   this.drivers = result.Items;
+    // });
     //console.log(this.drivers);
   }
 
