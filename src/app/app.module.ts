@@ -129,6 +129,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   path: environment.MQTTPATH
 }
 
+import { RegisterComponent } from './register/register.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -232,10 +233,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AddCycleComponent,
     EditCycleComponent,
     CycleListComponent,
-    NavOpenedDirective,
-
-
-
+    NavOpenedDirective
   ],
   imports: [
     AmplifyAngularModule,

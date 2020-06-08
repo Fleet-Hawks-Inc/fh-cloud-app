@@ -1,1 +1,330 @@
-<p>all-loads works!</p>
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+        <section role="main" class="content-body">
+            <header class="page-header">
+               <h2>All Loads</h2>
+               <div class="right-wrapper text-right">
+                  <ol class="breadcrumbs pr-3">
+                     <li>
+                        <a href="index.html">
+                        <i class="fas fa-home"></i>
+                        </a>
+                     </li>
+                     <li><span>All Loads</span></li>
+                  </ol>
+
+                  <div class="pull-right">
+                     <a routerLink="/dispatch/loads/Add-Load" class="mb-1 mt-1 mr-1 btn btn-success"><i class="fas fa-plus"></i> Add Load</a>
+                  </div>
+                  
+               </div>
+            </header>
+
+            <section class="card mb-4">
+               <div class="card-body">
+
+                  <div class="row">
+
+                  <div class="col-lg-1 text-right">
+                     <label class="control-label pull-right text-dark font-weight-bold text-4 pt-1">Duration:</label>
+                  </div>
+                  <div class="col-lg-2 block pl-0">
+                     <select class="form-control pull-left form-control-sm mb-3">
+                        <option>Select Option</option>
+                        <option>Last 1 Week</option>
+                        <option>Last 1 Month</option>
+                        <option>Year to Date</option>
+                        <option>Previous Year to Date</option>
+                        <option>Custom Date</option>
+                     </select>
+                  </div>
+
+                  <div class="col-lg-1 text-right">
+                     <label class="control-label pull-right text-dark font-weight-bold text-4 pt-1">Start Date:</label>
+                  </div>
+                  <div class="col-lg-2 block pl-0">
+                     <div class="input-group">
+                        <span class="input-group-prepend">
+                           <span class="input-group-text">
+                              <i class="fas fa-calendar-alt"></i>
+                           </span>
+                        </span>
+                        <input type="text" data-plugin-datepicker="" placeholder="Day/Month/Year" class="form-control">
+                     </div>
+                  </div>
+
+                  <div class="col-lg-1 text-right">
+                     <label class="control-label pull-right text-dark font-weight-bold text-4 pt-1">End Date:</label>
+                  </div>
+                  <div class="col-lg-2 block pl-0">
+                     <div class="input-group">
+                        <span class="input-group-prepend">
+                           <span class="input-group-text">
+                              <i class="fas fa-calendar-alt"></i>
+                           </span>
+                        </span>
+                        <input type="text" data-plugin-datepicker="" placeholder="Day/Month/Year" class="form-control">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="row">
+
+                  <div class="col-lg-1 text-right">
+                     <label class="control-label pull-right text-dark font-weight-bold text-4 pt-1">Status:</label>
+                  </div>
+                  <div class="col-lg-2 block pl-0">
+                     <select class="form-control pull-left form-control-sm mb-3">
+                        <option>All</option>
+                        <option>Undispatched</option>
+                        <option>Completed</option>
+                     </select>
+                  </div>
+
+                  <div class="col-lg-1 text-right">
+                     <label class="control-label pull-right text-dark font-weight-bold text-4 pt-1">Search For:</label>
+                  </div>
+                  <div class="col-lg-2 block pl-0">
+                     <select class="form-control pull-left form-control-sm mb-3">
+                        <option>Select</option>
+                        <option>Customer</option>
+                        <option>Shipper</option>
+                        <option>Receiver</option>
+                     </select>
+                  </div>
+
+                  <div class="col-lg-1 text-right">
+                     <label class="control-label pull-right text-dark font-weight-bold text-4 pt-1">Value:</label>
+                  </div>
+                  <div class="col-lg-2 block pl-0">
+                     <input type="text" class="form-control" id="inputDefault">
+                  </div>
+
+
+                  <div class="col-lg-3 text-right">
+                     <button class="btn btn-default mt-0 mr-4 modal-confirm">Reset</button>
+                     <button class="btn btn-dark mt-0 modal-confirm">Submit</button>
+                  </div>
+               </div>
+
+              
+               </div>
+
+            </section>
+
+
+
+
+            <section class="card mb-4">
+               <div class="card-body">
+
+                  <div class="row">
+                   
+                     <div class="col-lg-3 col-md-12 mt-4">
+                         <div class="maindriverbox">
+                             <div class="driverbar">
+                                 <span class="pull-right text-10 text-dark"><i class="fas fa-dollar-sign"></i></span>
+                                 <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Profit On Loads</h2>
+                             </div>
+
+                             <div class="">
+                                 <h1 class="lbwheading mt-0 mb-0 green1">$1700.00</h1>   
+                             </div>
+                         </div>
+                     </div>
+
+                     <div class="col-lg-3 col-md-12 mt-4">
+                         <div class="maindriverbox">
+                             <div class="driverbar">
+                                 <span class="pull-right text-10 text-dark"><i class="fas fa-dollar-sign"></i></span>
+                                 <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Loss On Loads</h2>
+                             </div>
+
+                             <div class="">
+                                 <h1 class="lbwheading mt-0 mb-0 red1">$00.00</h1>   
+                                
+                             </div>
+                         </div>
+                     </div>
+
+                     <div class="col-lg-3 col-md-12 mt-4">
+                         <div class="maindriverbox">
+                             <div class="driverbar">
+                                 <span class="pull-right text-10 text-dark"><i class="fas fa-truck-moving"></i></span>
+                                 <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Miles Driven</h2>
+                             </div>
+
+                             <div class="">
+                                 <h1 class="lbwheading mt-0 mb-0">136202200</h1>
+                             </div>
+                         </div>
+                     </div>
+
+                     <div class="col-lg-3 col-md-12 mt-4">
+                         <div class="maindriverbox">
+                             <div class="driverbar">
+                                 <span class="pull-right text-10 text-dark"><i class="fas fa-user"></i></span>
+                                 <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Unique Customer Served</h2>
+                             </div>
+
+                             <div class="">
+                                 <h1 class="lbwheading mt-0 mb-0">300</h1>   
+                                 
+                             </div>
+                         </div>
+                     </div>
+
+
+                   
+                 </div>
+                  
+               </div>
+
+               <div class="topnav">
+                  <ul>
+                     <li><a href="#" class="active">All</a></li>
+                     <li><a href="#">Undispatched</a></li>
+                     <li><a href="#">Active</a></li>
+                     <li><a href="#">On Route</a></li>
+                     <li><a href="#">Completed</a></li>
+                     <li><a href="#">Cancelled</a></li>
+                     <li><a href="#">UnInvoiced</a></li>
+                     <li><a href="#">Unpaid</a></li>
+                     <li><a href="#">Paid</a></li>
+                  </ul>
+
+               </div>
+            </section>
+
+            <div class="row">
+               <div class="col">
+                  <section class="card">
+                    
+                     <div class="card-body">
+                        <table class="table table-bordered table-striped mb-0" id="datatable-default">
+                           <thead>
+                              <tr class="bgcol2">
+                                 <th class="text-2">Load</th>
+                                 <th class="text-2">Trip</th>
+                                 <th class="text-2">Load/Dispatch Creation Date/Time</th>
+                                 <th class="text-2 w150px">Bill To</th>
+                                 <th class="text-2">P/L</th>
+                                 <th class="text-2">D/L</th>
+                                 <th class="text-2">Miles</th>
+                                 <th class="text-2">Charges</th>
+                                 <th class="text-2">Dispatch</th>
+                                 <th class="text-2">Action</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr>
+                                 <td class="loadid"><span class="LTLload">LTL</span> <a href="loaddetail.html">19005</a></td>
+                                 <td class="loadid"><a href="#">2532</a></td>
+                                 <td>05/25/2020 07:41 AM</td>
+                                 <td>James</td>
+                                 <td>Regina, SK
+                                    06/02/2020 05:25 AM</td>
+                                 <td>Winnipeg, YT
+                                    06/10/2020 05:20 PM</td>
+                                 <td>600</td>
+                                 <td>$300.00</td>
+                                 
+                                 <td>DIS-2250</td>
+                                 <td class="actions">
+                                    <a href=""><i class="fas fa-pencil-alt"></i></a>
+                                    <a href="" class="delete-row"><i class="far fa-trash-alt"></i></a>
+                                    <a href="" class="delete-row"><i class="far fa-file-alt"></i></a>
+                                 </td>
+                              </tr>
+
+                              <tr>
+                                 <td class="loadid"><span class="LTLload">LTL</span> <a href="loaddetail.html">81332</a></td>
+                                 <td class="loadid"><a href="#">1230</a></td>
+                                 <td>05/25/2020 07:41 AM</td>
+                                 <td>James</td>
+                                 <td>Regina, SK
+                                    06/02/2020 05:25 AM</td>
+                                 <td>Winnipeg, YT
+                                    06/10/2020 05:20 PM</td>
+                                 <td>600</td>
+                                 <td>$300.00</td>
+                                 
+                                 <td>DIS-2250</td>
+                                 <td class="actions">
+                                    <a href=""><i class="fas fa-pencil-alt"></i></a>
+                                    <a href="" class="delete-row"><i class="far fa-trash-alt"></i></a>
+                                    <a href="" class="delete-row"><i class="far fa-file-alt"></i></a>
+                                 </td>
+                              </tr>
+
+                              <tr>
+                                 <td class="loadid"><span class="FTLload">FTL</span> <a href="loaddetail.html">64111</a></td>
+                                 <td class="loadid"><a href="#">7532</a></td>
+                                 <td>05/25/2020 07:41 AM</td>
+                                 <td>James</td>
+                                 <td>Regina, SK
+                                    06/02/2020 05:25 AM</td>
+                                 <td>Winnipeg, YT
+                                    06/10/2020 05:20 PM</td>
+                                 <td>600</td>
+                                 <td>$300.00</td>
+                                 
+                                 <td>DIS-2250</td>
+                                 <td class="actions">
+                                    <a href=""><i class="fas fa-pencil-alt"></i></a>
+                                    <a href="" class="delete-row"><i class="far fa-trash-alt"></i></a>
+                                    <a href="" class="delete-row"><i class="far fa-file-alt"></i></a>
+                                 </td>
+                              </tr>
+
+                              <tr>
+                                 <td class="loadid"><span class="FTLload">FTL</span> <a href="loaddetail.html">6104</a></td>
+                                 <td class="loadid"><a href="#">914</a></td>
+                                 <td>05/25/2020 07:41 AM</td>
+                                 <td>James</td>
+                                 <td>Regina, SK
+                                    06/02/2020 05:25 AM</td>
+                                 <td>Winnipeg, YT
+                                    06/10/2020 05:20 PM</td>
+                                 <td>600</td>
+                                 <td>$300.00</td>
+                                 
+                                 <td>DIS-2250</td>
+                                 <td class="actions">
+                                    <a href=""><i class="fas fa-pencil-alt"></i></a>
+                                    <a href="" class="delete-row"><i class="far fa-trash-alt"></i></a>
+                                    <a href="" class="delete-row"><i class="far fa-file-alt"></i></a>
+                                 </td>
+                              </tr>
+
+                             
+                           </tbody>
+                        </table>
+                     </div>
+                  </section>
+               </div>
+            </div>
+
+
+         </section>
+    </div>
+
+
+
+</section>
+
+
+
+
+
+
