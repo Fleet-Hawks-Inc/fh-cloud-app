@@ -31,7 +31,7 @@
           <h2 class="card-title mt-2 mb-3">Driver Logs</h2>
           <form class="form-horizontal form-bordered" method="get">
             <div class="form-group row">
-              <div class="col-lg-4">
+              <div class="col-lg-3">
                 <div class="input-group mb-1">
                   <span class="input-group-prepend positionsta">
                     <span class="input-group-text"
@@ -45,8 +45,9 @@
                       name="userName"
                     >
                       <optgroup label="">
+                        <option>All</option>
                         <option
-                          *ngFor="let driver of drivers"
+                          *ngFor="let driver of drivers" 
                           value="{{ driver.userName }}"
                           >{{ driver.userName }}</option
                         >
@@ -54,16 +55,35 @@
                     </select>
                 </div>
               </div>
-              <div class="col-lg-4">
+
+
+              <div class="col-lg-3">
+                <div class="input-group mb-1">
+                  <span class="input-group-prepend positionsta">
+                    <span class="input-group-text"
+                      ><i class="fas fa-search"></i
+                    ></span>
+                  </span>
+                  <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="violation"
+                    >
+                      <optgroup label="">
+                        <option>Violation</option>
+                        <option>Non Violation</option>
+                      </optgroup>
+                    </select>
+                </div>
+              </div>
+              
+              <div class="col-lg-3">
                 <div class="input-group mb-1">
                   <span class="input-group-prepend positionsta">
                     <span class="input-group-text" (click)="from.toggle()"
                       ><i class="fas fa-calendar-alt"></i
                     ></span>
                   </span>
-
-
-
                   <input
                     ngbDatepicker #from="ngbDatepicker"
                     readonly
@@ -75,7 +95,7 @@
                   />
                 </div>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-3">
                 <div class="input-group mb-1">
                   <span class="input-group-prepend positionsta">
                     <span class="input-group-text" (click)="to.toggle()"
@@ -124,6 +144,7 @@
                 <thead>
                   <tr>
                     <th>Date</th>
+                    <th>Driver</th>
                     <th>On Duty Hours</th>
                     <th>Drive Hours</th>
                     <th>Break Hours</th>
@@ -135,6 +156,7 @@
                 <tbody>
                   <tr *ngFor="let log of logs">
                     <td>{{ log.date }}</td>
+                    <td>{{ log.driver }}</td>
                     <td>{{ log.onDuty * 1000 | date: "H:mm:ss":"UTC" }}</td>
                     <td>{{ log.onDrive * 1000 | date: "H:mm:ss":"UTC" }}</td>
                     <td>{{ log.onBreak * 1000 | date: "H:mm:ss":"UTC" }}</td>
@@ -142,7 +164,7 @@
                     <td>877 mi</td>
                     <td>
                       <a class="btn btn-dark btn-sm mt-0 modal-confirm"
-                        routerLink="/compliance/hos/edit/{{userName}}/{{ log.date }}"
+                        routerLink="/compliance/hos/edit/{{log.driver}}/{{ log.date }}"
                         >Detail View</a
                       >
                     </td>
