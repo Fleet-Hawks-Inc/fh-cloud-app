@@ -130,6 +130,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 }
 
 import { RegisterComponent } from './register/register.component';
+import { CarrierRegistrationComponent } from './carrier-registration/carrier-registration.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -233,7 +234,8 @@ import { RegisterComponent } from './register/register.component';
     AddCycleComponent,
     EditCycleComponent,
     CycleListComponent,
-    NavOpenedDirective
+    NavOpenedDirective,
+    CarrierRegistrationComponent
   ],
   imports: [
     AmplifyAngularModule,
