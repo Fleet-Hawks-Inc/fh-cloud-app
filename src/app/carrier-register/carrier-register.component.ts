@@ -7,6 +7,51 @@ import { Component, OnInit } from "@angular/core";
 })
 export class CarrierRegisterComponent implements OnInit {
   activeTab = 1;
+  businessDetail = {
+    businessType: "",
+    businessName: "",
+    dbaName: "",
+    EIN: "",
+  }
+  addressDetail = {
+    addressType: "",
+    countryID: "",
+    stateID: "",
+    cityID: "",
+    zipCode: "",
+    address1: "",
+    address2: "",
+    geoLocation: {
+      lat: "",
+      lng: ""
+    }
+  }
+  contactDetail = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    fax: ""
+  }
+  superAdmin = {
+    userName: "",
+    firstName: "",
+    lastName: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    language: ""
+  }
+  socialNetwork: {
+    facebook: "",
+    twitter: "",
+    linkedin: "",
+    googlePlus: "",
+    blog: "",
+    tumblr: "",  
+  }
+  notes: ""
+
 
   constructor() {}
 
