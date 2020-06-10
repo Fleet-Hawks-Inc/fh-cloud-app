@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import {ApiService} from "../api.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: "app-carrier-register",
@@ -7,6 +9,7 @@ import { Component, OnInit } from "@angular/core";
 })
 export class CarrierRegisterComponent implements OnInit {
   activeTab = 1;
+  carrierId ='testing';
   businessDetail = {
     businessType: "",
     businessName: "",
@@ -33,7 +36,7 @@ export class CarrierRegisterComponent implements OnInit {
     phone: "",
     fax: ""
   }
-  superAdmin = {
+  superAdminInfo = {
     userName: "",
     firstName: "",
     lastName: "",
@@ -48,26 +51,41 @@ export class CarrierRegisterComponent implements OnInit {
     linkedin: "",
     googlePlus: "",
     blog: "",
-    tumblr: "",  
+    tumblr: "",
   }
-  notes: ""
+  notes: "";
 
+  constructor(private route: ActivatedRoute,
+              private apiService: ApiService) {
+    //this.carrierId = this.route.snapshot.params["carrierId"];
 
-  constructor() {}
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getInfo();
+  }
 
   toggleTab(tab) {
     this.activeTab = tab;
   }
 
   next() {
-    if (this.activeTab == 5) return;
+    if (this.activeTab === 5) return;
     this.activeTab++;
   }
 
   previous() {
-    if (this.activeTab == 1) return;
+    if (this.activeTab === 1) return;
     this.activeTab--;
   }
+
+  getInfo() {
+    this.apiService.getData('carriers/register/' + this.carrierId)
+        .subscribe((result: any) => {
+      console.log(result);
+        });
+
+  }
+
+
 }

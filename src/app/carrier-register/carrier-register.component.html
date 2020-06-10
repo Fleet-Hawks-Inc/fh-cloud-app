@@ -73,7 +73,7 @@
                   [routerLink]=""
                 >
                   <span class="badge">4</span>
-                  Owner Operator
+                  Super Admin Info
                 </a>
               </li>
               <li class="nav-item" [ngClass]="{'active': activeTab == 5}">
@@ -106,7 +106,9 @@
                         <input
                           type="text"
                           class="form-control"
-                          id="inputDefault"
+                          id="businessType"
+                          [(ngModel)]="businessDetail.businessType"
+                          name="businessDetail.businessType"
                         />
                       </div>
                       <div class="col-lg-12">
@@ -118,7 +120,9 @@
                         <input
                           type="text"
                           class="form-control"
-                          id="inputDefault"
+                          id="businessName"
+                          [(ngModel)]="businessDetail.businessName"
+                          name="businessDetail.businessName"
                         />
                       </div>
                       <div class="col-lg-12">
@@ -130,7 +134,9 @@
                         <input
                           type="text"
                           class="form-control"
-                          id="inputDefault"
+                          id="dbaName"
+                          [(ngModel)]="businessDetail.dbaName"
+                          name="businessDetail.dbaName"
                         />
                       </div>
                       <div class="col-lg-12">
@@ -143,6 +149,8 @@
                           type="text"
                           class="form-control"
                           id="inputDefault"
+                          [(ngModel)]="businessDetail.EIN"
+                          name="businessDetail.EIN"
                         />
                         <span>Don't have an EIN? </span><a href="#">Click here to get EIN</a>
                       </div>
@@ -184,6 +192,9 @@
                         <select
                           data-plugin-selectTwo
                           class="form-control populate"
+                          [(ngModel)]="addressDetail.addressType"
+                          name = "addressDetail.addressType"
+
                         >
                           <optgroup label="Select Address">
                             <option value="1">Work</option>
@@ -201,7 +212,8 @@
                       for="inputDefault"
                       >Select Country</label
                     >
-                    <select data-plugin-selectTwo class="form-control populate">
+                    <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="addressDetail.countryID"   name="addressDetail.countryID"
+                    >
                       <optgroup label="Select Country">
                         <option value="1">Country 1</option>
                         <option value="2">Country 2</option>
@@ -222,6 +234,7 @@
                       class="form-control"
                       id="inputDefault"
                       placeholder="Type Address"
+
                     />
                     <div class="checkbox-custom pt-2">
                       <input type="checkbox" name="terms" id="w1-terms" />
@@ -248,6 +261,8 @@
                         <select
                           data-plugin-selectTwo
                           class="form-control populate"
+                          [(ngModel)]="addressDetail.stateID"
+                          name="addressDetail.stateID"
                         >
                           <optgroup label="Select State">
                             <option value="1">State 1</option>
@@ -266,6 +281,8 @@
                         <select
                           data-plugin-selectTwo
                           class="form-control populate"
+                          [(ngModel)]="addressDetail.cityID"
+                          name="addressDetail.cityId"
                         >
                           <optgroup label="Select City">
                             <option value="1">City 1</option>
@@ -285,6 +302,8 @@
                           type="text"
                           class="form-control"
                           id="inputDefault"
+                          [(ngModel)]="addressDetail.zipCode"
+                          name="addressDetail.zipCode"
                         />
                       </div>
                     </div>
@@ -301,6 +320,8 @@
                           type="text"
                           class="form-control"
                           id="inputDefault"
+                          [(ngModel)]="addressDetail.address1"
+                          name="addressDetail.address1"
                         />
                       </div>
                       <div class="col-lg-12">
@@ -313,6 +334,8 @@
                           type="text"
                           class="form-control"
                           id="inputDefault"
+                          [(ngModel)]="addressDetail.address2"
+                          name="addressDetail.address2"
                         />
                       </div>
                     </div>
@@ -335,6 +358,8 @@
                             type="text"
                             class="form-control"
                             id="inputDefault"
+                            [(ngModel)]="contactDetail.firstName"
+                            name="contactDetail.firstName"
                           />
                         </div>
                         <div class="col-lg-12">
@@ -347,6 +372,8 @@
                           type="text"
                           class="form-control"
                           id="inputDefault"
+                          [(ngModel)]="contactDetail.lastName"
+                          name="contactDetail.lastName"
                         />
                         </div>
                         <div class="col-lg-12">
@@ -359,6 +386,8 @@
                             type="text"
                             class="form-control"
                             id="inputDefault"
+                            [(ngModel)]="contactDetail.email"
+                            name="contactDetail.email"
                           />
                         </div>
                       </div>
@@ -375,6 +404,8 @@
                             type="text"
                             class="form-control"
                             id="inputDefault"
+                            [(ngModel)]="contactDetail.phone"
+                            name="contactDetail.phone"
                           />
                         </div>
                         <div class="col-lg-12">
@@ -387,6 +418,8 @@
                             type="text"
                             class="form-control"
                             id="inputDefault"
+                            [(ngModel)]="contactDetail.fax"
+                            name="contactDetail.fax"
                           />
                         </div>
                       </div>
@@ -402,37 +435,43 @@
                         <label
                           class="control-label text-lg-right pt-2"
                           for="inputDefault"
-                          >Name</label
+                          >User Name</label
                         >
                         <input
                           type="text"
                           class="form-control"
                           id="inputDefault"
+                          [(ngModel)]="superAdminInfo.userName"
+                          name="superAdminInfo.userName"
                         />
                       </div>
                       <div class="col-lg-12">
                         <label
                           class="control-label text-lg-right pt-2"
                           for="inputDefault"
-                          >Phone</label
+                          >Firstname</label
                         >
                         <input
                           type="text"
                           class="form-control"
                           id="inputDefault"
+                          [(ngModel)]="superAdminInfo.firstName"
+                          name="superAdminInfo.firstName"
                         />
                       </div>
                       <div class="col-lg-12">
                         <label
-                          class="control-label text-lg-right pt-2"
-                          for="inputDefault"
-                          >Address</label
+                                class="control-label text-lg-right pt-2"
+                                for="inputDefault"
+                        >Phone</label
                         >
-                        <textarea
-                          class="form-control"
-                          rows="3"
-                          id="textareaDefault"
-                        ></textarea>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="inputDefault"
+                                [(ngModel)]="superAdminInfo.phone"
+                                name="superAdminInfo.phone"
+                        />
                       </div>
                     </div>
                   </div>
@@ -442,26 +481,46 @@
                         <label
                           class="control-label text-lg-right pt-2"
                           for="inputDefault"
-                          >Relationship</label
+                          >Password</label
                         >
                         <input
-                          type="text"
+                          type="password"
                           class="form-control"
                           id="inputDefault"
+                          [(ngModel)]="superAdminInfo.password"
+                          name="contactDetail.lastname"
                         />
                       </div>
                       <div class="col-lg-12">
                         <label
                           class="control-label text-lg-right pt-2"
                           for="inputDefault"
-                          >Email</label
+                          >Lastname</label
                         >
                         <input
                           type="text"
                           class="form-control"
                           id="inputDefault"
+                          [(ngModel)]="superAdminInfo.lastname"
+                          name="contactDetail.lastname"
                         />
                       </div>
+
+                      <div class="col-lg-12">
+                        <label
+                                class="control-label text-lg-right pt-2"
+                                for="inputDefault"
+                        >Language</label
+                        >
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="inputDefault"
+                                [(ngModel)]="superAdminInfo.language"
+                                name="superAdminInfo.language"
+                        />
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -482,6 +541,7 @@
                           class="form-control"
                           id="inputDefault"
                           placeholder="Enter Your Facebook  Profile"
+                          [(ngModel)]="socialNetwork.facebook"
                         />
                       </div>
                       <div class="col-lg-12">
@@ -497,6 +557,7 @@
                           class="form-control"
                           id="inputDefault"
                           placeholder="Enter LinkedIn Profile"
+                          [(ngModel)]="socialNetwork.linkedin"
                         />
                       </div>
                       <div class="col-lg-12">
@@ -513,6 +574,7 @@
                           class="form-control"
                           id="inputDefault"
                           placeholder="Enter Your Blog Profile"
+                          [(ngModel)]="socialNetwork.blog"
                         />
                       </div>
                       <div class="col-lg-12">
@@ -525,6 +587,7 @@
                           class="form-control"
                           rows="3"
                           id="textareaDefault"
+                          [(ngModel)]="notes"
                         ></textarea>
                       </div>
                     </div>
@@ -545,6 +608,7 @@
                           class="form-control"
                           id="inputDefault"
                           placeholder="Enter Your Twitter Profile"
+                          [(ngModel)]="socialNetwork.twitter"
                         />
                       </div>
                       <div class="col-lg-12">
@@ -561,6 +625,7 @@
                           class="form-control"
                           id="inputDefault"
                           placeholder="Enter Your Google-plus Profile"
+                          [(ngModel)]="socialNetwork.googlePlus"
                         />
                       </div>
                       <div class="col-lg-12">
@@ -576,6 +641,7 @@
                           class="form-control"
                           id="inputDefault"
                           placeholder="Enter Your Tumblr Profile"
+                          [(ngModel)]="socialNetwork.tumblr"
                         />
                       </div>
                     </div>
