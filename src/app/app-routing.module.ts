@@ -128,6 +128,8 @@ import { SafetyModule } from './safety/safety.module';
 import {ChartsModule} from 'ng2-charts';
 import {Role} from '../objects/objects';
 import {CarrierRegistrationComponent} from "./carrier-registration/carrier-registration.component";
+import {CarrierRegisterComponent} from "./carrier-register/carrier-register.component";
+
 // import {RegisterComponent} from './register/register.component';
 
 const routes: Routes = [
@@ -314,6 +316,9 @@ const routes: Routes = [
 
 
   { path: 'Carrier-Registration', component: CarrierRegistrationComponent  },
+
+  { path: 'Register/:carrierID', component: CarrierRegisterComponent  },
+
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

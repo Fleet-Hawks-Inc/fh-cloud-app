@@ -1,0 +1,706 @@
+<section role="main" class="content-body card-margin">
+  <header class="page-header">
+    <h2>Add Driver</h2>
+
+    <div class="right-wrapper text-right">
+      <ol class="breadcrumbs">
+        <li>
+          <a href="index.html">
+            <i class="fas fa-home"></i>
+          </a>
+        </li>
+        <li><span>Driver</span></li>
+        <li><span>Add Driver</span></li>
+      </ol>
+
+      <a class="sidebar-right-toggle" data-open="sidebar-right"
+        ><i class="fas fa-chevron-left"></i
+      ></a>
+    </div>
+  </header>
+
+  <!-- start: page -->
+  <div class="row">
+    <div class="col">
+      <section class="card form-wizard" id="w1">
+        <header class="card-header">
+          <h2 class="card-title">Carrier Register</h2>
+        </header>
+        <div class="card-body card-body-nopadding">
+          <div class="wizard-tabs">
+            <ul class="nav wizard-steps">
+              <li class="nav-item" [ngClass]="{ active: activeTab == 1 }">
+                <a
+                  data-toggle="tab"
+                  class="nav-link text-center"
+                  (click)="toggleTab(1)"
+                  [routerLink]=""
+                >
+                  <span class="badge">1</span>
+                  Business Details
+                </a>
+              </li>
+              <li class="nav-item" [ngClass]="{ active: activeTab == 2 }">
+                <a
+                  href="#addressDetails"
+                  data-toggle="tab"
+                  class="nav-link text-center"
+                  (click)="toggleTab(2)"
+                  [routerLink]=""
+                >
+                  <span class="badge">2</span>
+                  Address Details
+                </a>
+              </li>
+              <li class="nav-item" [ngClass]="{ active: activeTab == 3 }">
+                <a
+                  href="#licenceDetails"
+                  data-toggle="tab"
+                  class="nav-link text-center"
+                  (click)="toggleTab(3)"
+                  [routerLink]=""
+                >
+                  <span class="badge">3</span>
+                  Contact Details
+                </a>
+              </li>
+              <li class="nav-item" [ngClass]="{ active: activeTab == 4 }">
+                <a
+                  href="#emergencyContact"
+                  data-toggle="tab"
+                  class="nav-link text-center"
+                  (click)="toggleTab(4)"
+                  [routerLink]=""
+                >
+                  <span class="badge">4</span>
+                  Super Admin Info
+                </a>
+              </li>
+              <li class="nav-item" [ngClass]="{ active: activeTab == 5 }">
+                <a
+                  href="#otherInfo"
+                  data-toggle="tab"
+                  class="nav-link text-center"
+                  (click)="toggleTab(5)"
+                  [routerLink]=""
+                >
+                  <span class="badge">5</span>
+                  Networking Details
+                </a>
+              </li>
+            </ul>
+          </div>
+          <form class="form-horizontal" novalidate="novalidate">
+            <div class="tab-content">
+              <div
+                id="tab1"
+                class="tab-pane p-3"
+                [ngClass]="{ active: activeTab == 1 }"
+              >
+                <div class="form-group row pt-3">
+                  <div class="col-lg-4 offset-lg-2">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Business Type</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="businessType"
+                          [(ngModel)]="businessDetail.businessType"
+                          name="businessDetail.businessType"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Business Name</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="businessDetail.carrierName"
+                          name="businessDetail.carrierName"
+                          readonly
+                          disabled
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >DBA Name</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="dbaName"
+                          [(ngModel)]="businessDetail.dbaName"
+                          name="businessDetail.dbaName"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >EIN</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="businessDetail.EIN"
+                          name="businessDetail.EIN"
+                        />
+                        <span>Don't have an EIN? </span
+                        ><a href="#">Click here to get EIN</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="row mar-top-37">
+                      <div class="col-lg-7 offset-lg-4 margin_50 text-center">
+                        <img
+                          class="business_image_style"
+                          src="assets/img/business-details.jpg"
+                        />
+                        <div class="mt-3">
+                          <input
+                            type="file"
+                            id="driverPhotoBtnHidden"
+                            hidden="hidden"
+                          />
+                          <button class="btn btn-dark" id="driverPhotoBtnShown">
+                            Add Picture
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                id="tab2"
+                class="tab-pane p-3"
+                [ngClass]="{ active: activeTab == 2 }"
+              >
+                <div class="form-group row pt-3">
+                  <div class="col-lg-4 offset-lg-2">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Address Type</label
+                        >
+                        <select
+                          data-plugin-selectTwo
+                          class="form-control populate"
+                          [(ngModel)]="addressDetail.addressType"
+                          name="addressDetail.addressType"
+                        >
+                          <optgroup label="Select Address">
+                            <option value="1">Work</option>
+                            <option value="2">Home</option>
+                            <option value="2">Office</option>
+                          </optgroup>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6"></div>
+                  <div class="col-lg-2 offset-lg-2 pt-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Select Country</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      [(ngModel)]="addressDetail.countryID"
+                      name="addressDetail.countryID"
+                    >
+                      <optgroup label="Select Country">
+                        <option value="1">Country 1</option>
+                        <option value="2">Country 2</option>
+                        <option value="2">Country 3</option>
+                        <option value="2">Country 4</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-5 pt-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Start typing your location, we'll pull address
+                      automatically from Map</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Type Address"
+                    />
+                    <div class="checkbox-custom pt-2">
+                      <input type="checkbox" name="terms" id="w1-terms" />
+                      <label for="w1-terms">Type Manually</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-1 mar-top-37 text-right pt-4">
+                    <button
+                      class="btn btn-dark"
+                      type="submit"
+                      style="width: 100px;"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                  <div class="col-lg-4 offset-lg-2 pt-3">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Select State</label
+                        >
+                        <select
+                          data-plugin-selectTwo
+                          class="form-control populate"
+                          [(ngModel)]="addressDetail.stateID"
+                          name="addressDetail.stateID"
+                        >
+                          <optgroup label="Select State">
+                            <option value="1">State 1</option>
+                            <option value="2">State 2</option>
+                            <option value="2">State 3</option>
+                            <option value="2">State 4</option>
+                          </optgroup>
+                        </select>
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Select City</label
+                        >
+                        <select
+                          data-plugin-selectTwo
+                          class="form-control populate"
+                          [(ngModel)]="addressDetail.cityID"
+                          name="addressDetail.cityID"
+                        >
+                          <optgroup label="Select City">
+                            <option value="1">City 1</option>
+                            <option value="2">City 2</option>
+                            <option value="2">City 3</option>
+                            <option value="2">City 4</option>
+                          </optgroup>
+                        </select>
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Zip Code</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="addressDetail.zipCode"
+                          name="addressDetail.zipCode"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 pt-4">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Address 1</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="addressDetail.address1"
+                          name="addressDetail.address1"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Address 2</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="addressDetail.address2"
+                          name="addressDetail.address2"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                id="tab3"
+                class="tab-pane p-3"
+                [ngClass]="{ active: activeTab == 3 }"
+              >
+                <div class="form-group row pt-3">
+                  <div class="col-lg-4 offset-lg-2 pt-3">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >First Name</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="contactDetail.firstName"
+                          name="contactDetail.firstName"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Last Name</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="contactDetail.lastName"
+                          name="contactDetail.lastName"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Email</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="contactDetail.email"
+                          name="contactDetail.email"
+                          readonly
+                          disabled
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 pt-4">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Phone Number</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="contactDetail.phone"
+                          name="contactDetail.phone"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Fax</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="contactDetail.fax"
+                          name="contactDetail.fax"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                id="tab4"
+                class="tab-pane p-3"
+                [ngClass]="{ active: activeTab == 4 }"
+              >
+                <div class="form-group row">
+                  <div class="col-lg-4 offset-lg-2">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >User Name</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="superAdminInfo.userName"
+                          name="superAdminInfo.userName"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Firstname</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="superAdminInfo.firstName"
+                          name="superAdminInfo.firstName"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Phone</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="superAdminInfo.phone"
+                          name="superAdminInfo.phone"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Email</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="superAdminInfo.email"
+                          name="superAdminInfo.email"
+                          readonly
+                          disabled
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Password</label
+                        >
+                        <input
+                          type="password"
+                          class="form-control"
+                          [(ngModel)]="superAdminInfo.password"
+                          name="superAdminInfo.password"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Lastname</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="superAdminInfo.lastName"
+                          name="superAdminInfo.lastname"
+                        />
+                      </div>
+
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Language</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="superAdminInfo.language"
+                          name="superAdminInfo.language"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                id="tab5"
+                class="tab-pane p-3"
+                [ngClass]="{ active: activeTab == 5 }"
+              >
+                <div class="form-group row">
+                  <div class="col-lg-4 offset-lg-2">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          ><img src="assets/img/fb.png" class="social-icons"
+                        /></label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="socialNetwork.facebook"
+                          placeholder="Enter Your Facebook  Profile"
+                          [(ngModel)]="socialNetwork.facebook"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          ><img
+                            src="assets/img/linkedin.png"
+                            class="social-icons"
+                        /></label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Enter LinkedIn Profile"
+                          [(ngModel)]="socialNetwork.linkedin"
+                          name="socialNetwork.linkedin"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          ><img src="assets/img/blog.png" class="social-icons"
+                        /></label>
+
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Enter Your Blog Profile"
+                          [(ngModel)]="socialNetwork.blog"
+                          name="socialNetwork.blog"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          >Notes & Description</label
+                        >
+                        <textarea
+                          class="form-control"
+                          rows="3"
+                          id="textareaDefault"
+                          [(ngModel)]="notes"
+                          name="notes"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          ><img
+                            src="assets/img/twitter.png"
+                            class="social-icons"
+                        /></label>
+
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Enter Your Twitter Profile"
+                          [(ngModel)]="socialNetwork.twitter"
+                          name="socialNetwork.twitter"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          ><img
+                            src="assets/img/google-plus.png"
+                            class="social-icons"
+                        /></label>
+
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Enter Your Google-plus Profile"
+                          [(ngModel)]="socialNetwork.googlePlus"
+                          name="socialNetwork.googlePlus"
+                        />
+                      </div>
+                      <div class="col-lg-12">
+                        <label
+                          class="control-label text-lg-right pt-2"
+                          for="inputDefault"
+                          ><img
+                            src="assets/img/tumbler.png"
+                            class="social-icons"
+                        /></label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Enter Your Tumblr Profile"
+                          [(ngModel)]="socialNetwork.tumblr"
+                          name="socialNetwork.tumblr"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <ul class="pager">
+            <li class="previous">
+              <a [routerLink]="" (click)="previous()"
+                ><i class="fas fa-angle-left"></i> Previous</a
+              >
+            </li>
+            <li class="finish hidden float-right">
+              <a id="sourceLink">Finish</a>
+            </li>
+            <li class="next" *ngIf="activeTab != 5">
+              <a [routerLink]="" (click)="next()"
+                >Next <i class="fas fa-angle-right"></i
+              ></a>
+            </li>
+            <li class="next" *ngIf="activeTab == 5">
+              <a [routerLink]="" (click)="submit()">Finish </a>
+            </li>
+          </ul>
+          <a
+            href="test-vehicle.html"
+            id="destinationLink"
+            style="display: none;"
+            >Link to Vehicle</a
+          >
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- end: page -->
+</section>
