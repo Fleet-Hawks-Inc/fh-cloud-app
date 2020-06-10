@@ -317,7 +317,7 @@ const routes: Routes = [
 
   { path: 'Carrier-Registration', component: CarrierRegistrationComponent  },
 
-  { path: 'Register', component: CarrierRegisterComponent  },
+  { path: 'Register/:carrierID', component: CarrierRegisterComponent  },
 
 ];
 @NgModule({

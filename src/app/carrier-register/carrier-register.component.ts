@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import {ApiService} from "../api.service";
-import {ActivatedRoute} from "@angular/router";
+import { ApiService } from "../api.service";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "app-carrier-register",
@@ -9,13 +9,13 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class CarrierRegisterComponent implements OnInit {
   activeTab = 1;
-  carrierId ='testing';
+  carrierID = "testing";
   businessDetail = {
     businessType: "",
-    businessName: "",
+    carrierName: "",
     dbaName: "",
     EIN: "",
-  }
+  };
   addressDetail = {
     addressType: "",
     countryID: "",
@@ -26,39 +26,38 @@ export class CarrierRegisterComponent implements OnInit {
     address2: "",
     geoLocation: {
       lat: "",
-      lng: ""
-    }
-  }
+      lng: "",
+    },
+  };
   contactDetail = {
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
-    fax: ""
-  }
+    fax: "",
+  };
   superAdminInfo = {
+    email: "",
     userName: "",
     firstName: "",
     lastName: "",
     phone: "",
     password: "",
     confirmPassword: "",
-    language: ""
-  }
-  socialNetwork: {
+    language: "",
+  };
+  socialNetwork = {
     facebook: "",
     twitter: "",
     linkedin: "",
     googlePlus: "",
     blog: "",
     tumblr: "",
-  }
+  };
   notes: "";
 
-  constructor(private route: ActivatedRoute,
-              private apiService: ApiService) {
-    //this.carrierId = this.route.snapshot.params["carrierId"];
-
+  constructor(private route: ActivatedRoute, private apiService: ApiService) {
+    this.carrierID = this.route.snapshot.params["carrierID"];
   }
 
   ngOnInit() {
@@ -80,12 +79,50 @@ export class CarrierRegisterComponent implements OnInit {
   }
 
   getInfo() {
-    this.apiService.getData('carriers/register/' + this.carrierId)
-        .subscribe((result: any) => {
-      console.log(result);
-        });
-
+    this.apiService
+      .getData("carriers/register/" + this.carrierID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+        this.carrierID = result.carrierID;
+        this.businessDetail.carrierName = result.businessDetail.carrierName;
+        this.contactDetail.email = result.contactDetail.email;
+        this.superAdminInfo.email = result.contactDetail.email;
+      });
   }
 
+  submit() {
+    let data = {
+      carrierID: this.carrierID,
+      businessDetail: this.businessDetail,
+      addressDetail: this.addressDetail,
+      contactDetail: this.contactDetail,
+      superAdminInfo: {
+        userName: this.superAdminInfo.userName,
+        firstName: this.superAdminInfo.firstName,
+        lastName: this.superAdminInfo.lastName,
+        phone: this.superAdminInfo.phone,
+        language: this.superAdminInfo.language,
+        email: this.superAdminInfo.email
+      },
+      socialNetwork: this.socialNetwork,
+      notes: this.notes
+    }
 
+    this.apiService.putData('carriers/register', data).
+    subscribe({
+      complete : () => {},
+      error : (err) => {
+        // this.hasError = true;
+        // this.Error = err.error;
+      },
+      next: (res) => {
+        // this.response = res;
+        // this.hasSuccess = true;
+        // this.Success = 'Shipper Updated successfully';
+
+      }
+    });
+
+
+  }
 }
