@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ApiService } from "../api.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Auth } from "aws-amplify";
 
 @Component({
   selector: "app-carrier-register",
@@ -91,6 +92,8 @@ export class CarrierRegisterComponent implements OnInit {
   }
 
   submit() {
+    this.register();
+    
     let data = {
       carrierID: this.carrierID,
       businessDetail: this.businessDetail,
@@ -102,16 +105,15 @@ export class CarrierRegisterComponent implements OnInit {
         lastName: this.superAdminInfo.lastName,
         phone: this.superAdminInfo.phone,
         language: this.superAdminInfo.language,
-        email: this.superAdminInfo.email
+        email: this.superAdminInfo.email,
       },
       socialNetwork: this.socialNetwork,
-      notes: this.notes
-    }
+      notes: this.notes,
+    };
 
-    this.apiService.putData('carriers/register', data).
-    subscribe({
-      complete : () => {},
-      error : (err) => {
+    this.apiService.putData("carriers/register", data).subscribe({
+      complete: () => {},
+      error: (err) => {
         // this.hasError = true;
         // this.Error = err.error;
       },
@@ -119,10 +121,27 @@ export class CarrierRegisterComponent implements OnInit {
         // this.response = res;
         // this.hasSuccess = true;
         // this.Success = 'Shipper Updated successfully';
-
-      }
+      },
     });
-
-
   }
+
+  register = async () => {
+    try {
+      // This should go in Register component
+      let res = await Auth.signUp({
+        password: this.superAdminInfo.password,
+        username: this.superAdminInfo.userName,
+        attributes: {
+          email: this.superAdminInfo.email,
+          phone_number: this.superAdminInfo.phone,
+        },
+      });     
+
+      console.log(res);
+    } catch (err) {
+      console.log("inside catch block");
+      // this.hasError = true;  
+      // this.Error = err.message || 'Error during login';
+    }
+  };
 }
