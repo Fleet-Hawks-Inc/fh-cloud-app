@@ -4,6 +4,7 @@ import {from, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Object} from 'aws-sdk/clients/s3';
 import {ApiService} from '../../../api.service';
+import { Auth } from "aws-amplify";
 declare var $: any;
 
 @Component({
@@ -117,6 +118,7 @@ export class AddDriverComponent implements OnInit {
     return new Date().toISOString().split('T')[0]
   }
   addDriver() {
+    this.register();
     this.errors = {};
     const data = {
       userType: this.userType,
@@ -241,4 +243,25 @@ export class AddDriverComponent implements OnInit {
     this.concatArrayKeys = this.concatArrayKeys.substring(0, this.concatArrayKeys.length - 1);
     return this.concatArrayKeys;
   }
+
+  register = async () => {
+    try {
+      // This should go in Register component
+      let res = await Auth.signUp({
+        password: this.password,
+        username: this.userName,
+        attributes: {
+          email: this.email,
+          phone_number: this.phone,
+        },
+      });     
+
+      console.log(res);
+    } catch (err) {
+      console.log("inside catch block");
+      // this.hasError = true;  
+      // this.Error = err.message || 'Error during login';
+    }
+  };
+  
 }
