@@ -1190,7 +1190,8 @@
           name="quantum info"
           (ngModelChange)="onChange($event)"
         >
-          <option *ngFor="let q of quantumsList" value="{{ q.quantumID }}">{{
+        <option label="-- Select option --" disabled></option>
+          <option *ngFor="let q of quantumsList" value="{{ q.deviceID }}">{{
             q.sNo
           }}</option>
         </select>

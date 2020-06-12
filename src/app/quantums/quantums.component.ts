@@ -20,14 +20,14 @@ export class QuantumsComponent implements OnInit {
   }
 
   fetchQuantums() {
-    this.apiService.getData('quantums')
+    this.apiService.getData('devices')
         .subscribe((result: any) => {
           this.quantums = result.Items;
         });
   }
 
   deleteQuantum(quantumId) {
-    this.apiService.deleteData('quantums/' + quantumId)
+    this.apiService.deleteData('devices/' + quantumId)
         .subscribe((result: any) => {
           this.fetchQuantums();
         })
