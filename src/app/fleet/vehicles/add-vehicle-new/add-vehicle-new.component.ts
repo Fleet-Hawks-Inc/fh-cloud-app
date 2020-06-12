@@ -119,7 +119,7 @@ export class AddVehicleNewComponent implements OnInit {
     this.fetchCountries();
     this.fetchGroups();
 
-    this.apiService.getData('quantums')
+    this.apiService.getData('devices')
     .subscribe((result: any) => {
       this.quantumsList = result.Items;
     });

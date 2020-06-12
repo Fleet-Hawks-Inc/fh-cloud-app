@@ -1,193 +1,290 @@
 <section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
 
-    <!-- start: header -->
-    <app-header></app-header>
+  <!-- end: header -->
 
-    <!-- end: header -->
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
 
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
 
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li>
+              <a href="/">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li>
+              <span>{{ parentTitle }}</span>
+            </li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
 
-    <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
-        <section role="main" class="content-body">
-            <header class="page-header">
-                <h2>{{title}}</h2>
-
-                <div class="right-wrapper text-right">
-                    <ol class="breadcrumbs">
-                        <li>
-                            <a href="/">
-                                <i class="fas fa-home"></i>
-                            </a>
-                        </li>
-                        <li><span>{{parentTitle}}</span></li>
-                        <li><span>{{title}}</span></li>
-                    </ol>
-
-
-                </div>
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">Details</h2>
             </header>
-
-
-
-            <div class="row">
-                <div class="col">
-                    <section class="card">
-                        <header class="card-header">
-
-
-                            <h2 class="card-title">Details</h2>
-                        </header>
-                        <div class="card-body">
-                            <form class="form-horizontal form-bordered" method="get">
-                                <div class="form-group row">
-
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Serial No</label>
-                                        <input type="text" class="form-control" name="serialNo" [(ngModel)]="serialNo">
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2">Mac ID</label>
-                                        <input type="text" class="form-control" name="macId" [(ngModel)]="macId">
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Status</label>
-                                        <select data-plugin-selectTwo class="form-control populate" name="status" [(ngModel)]="status">
-                                            <option value="Active">Active</option>
-                                                <option value="De-active">De-active</option>
-
-
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group row">
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Year</label>
-                                        <select data-plugin-selectTwo class="form-control populate" name="year" [(ngModel)]="year">
-
-                                                <option value="1">1990</option>
-                                                <option value="2">1991</option>
-                                                <option value="2">1992</option>
-                                                <option value="2">1993</option>
-                                                <option value="2">1994</option>
-                                                <option value="2">1995</option>
-                                                <option value="2">1996</option>
-                                                <option value="2">1997</option>
-                                                <option value="2">1998</option>
-                                                <option value="2">1999</option>
-                                                <option value="2">2000</option>
-                                                <option value="2">2001</option>
-                                                <option value="2">2002</option>
-                                                <option value="2">2003</option>
-                                                <option value="2">2004</option>
-                                                <option value="2">2005</option>
-                                                <option value="2">2006</option>
-                                                <option value="2">2007</option>
-                                                <option value="2">2008</option>
-                                                <option value="2">2009</option>
-                                                <option value="2">2010</option>
-                                                <option value="2">2011</option>
-                                                <option value="2">2012</option>
-
-                                        </select>
-                                    </div>
-
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right text-dark text-4 pt-2" >Model</label>
-                                        <label class="control-label text-lg-right pt-2" ></label>
-                                        <select data-plugin-selectTwo class="form-control populate" name="model" [(ngModel)]="model">
-
-                                                <option value="1">123</option>
-                                                <option value="2">456</option>
-                                                <option value="2">789</option>
-                                                <option value="2">000</option>
-
-                                        </select>
-                                    </div>
-
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Company ID</label>
-                                        <select data-plugin-selectTwo class="form-control populate" name="carrierID" [(ngModel)]="carrierID">
-                                            <optgroup label="">
-                                                <option value="1">123</option>
-                                                <option value="2">456</option>
-                                                <option value="2">789</option>
-                                                <option value="2">000</option>
-                                            </optgroup>
-                                        </select>
-                                    </div>
-
-                                </div>
-
-                                <div class="form-group row">
-
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >SIM Serial</label>
-                                        <input type="text" class="form-control" name="simSerial" [(ngModel)]="simSerial">
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Phone Number</label>
-                                        <input type="text" class="form-control" name="phoneNumber" [(ngModel)]="phoneNumber">
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Curernt Firmware Version</label>
-                                        <input type="text" class="form-control" name="currentFirmwareVersion" [(ngModel)]="currentFirmwareVersion">
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group row">
-
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Applivation Version</label>
-                                        <input type="text" class="form-control" name="applicationVersion" [(ngModel)]="applicationVersion">
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Last Certification Rotation</label>
-                                        <input type="text" class="form-control" name="lastCertificateRotation" [(ngModel)]="lastCertificateRotation">
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="control-label text-lg-right pt-2" >Api Url</label>
-                                        <input type="text" class="form-control" name="apiURL" [(ngModel)]="apiURL">
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <button class="btn btn-dark mt-4 modal-confirm" (click)="addQuantum()">Submit</button>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-
-                                        <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
-                                        <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
-                                    </div>
-                                </div>
-
-
-                            </form>
-                        </div>
-                    </section>
+            <div class="card-body">
+              <form class="form-horizontal form-bordered" method="get">
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Serial No</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="serialNo"
+                      [(ngModel)]="serialNo"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Mac ID</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="macId"
+                      [(ngModel)]="macId"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Status</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="status"
+                      [(ngModel)]="status"
+                    >
+                      <option value="Active">Active</option>
+                      <option value="De-active">De-active</option>
+                    </select>
+                  </div>
                 </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2">Year</label>
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="year"
+                      [(ngModel)]="year"
+                    >
+                      <option value="1">1990</option>
+                      <option value="2">1991</option>
+                      <option value="2">1992</option>
+                      <option value="2">1993</option>
+                      <option value="2">1994</option>
+                      <option value="2">1995</option>
+                      <option value="2">1996</option>
+                      <option value="2">1997</option>
+                      <option value="2">1998</option>
+                      <option value="2">1999</option>
+                      <option value="2">2000</option>
+                      <option value="2">2001</option>
+                      <option value="2">2002</option>
+                      <option value="2">2003</option>
+                      <option value="2">2004</option>
+                      <option value="2">2005</option>
+                      <option value="2">2006</option>
+                      <option value="2">2007</option>
+                      <option value="2">2008</option>
+                      <option value="2">2009</option>
+                      <option value="2">2010</option>
+                      <option value="2">2011</option>
+                      <option value="2">2012</option>
+                    </select>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right text-dark text-4 pt-2"
+                      >Model</label
+                    >
+                    <label class="control-label text-lg-right pt-2"></label>
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="model"
+                      [(ngModel)]="model"
+                    >
+                      <option value="1">123</option>
+                      <option value="2">456</option>
+                      <option value="2">789</option>
+                      <option value="2">000</option>
+                    </select>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Carrier ID</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="carrierID"
+                      [(ngModel)]="carrierID"
+                    >
+                      <option
+                        *ngFor="let carrier of carriers"
+                        value="{{ carrier.carrierID }}"
+                        >{{ carrier.businessDetail.carrierName }}</option
+                      >
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >SIM Serial</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="simSerial"
+                      [(ngModel)]="simSerial"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Phone Number</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="phoneNumber"
+                      [(ngModel)]="phoneNumber"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Curernt Firmware Version</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="currentFirmwareVersion"
+                      [(ngModel)]="currentFirmwareVersion"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Applivation Version</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="applicationVersion"
+                      [(ngModel)]="applicationVersion"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Last Certification Rotation</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="lastCertificateRotation"
+                      [(ngModel)]="lastCertificateRotation"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Api Url</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="apiURL"
+                      [(ngModel)]="apiURL"
+                    />
+                  </div>
+
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Device Type</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="deviceType"
+                      [(ngModel)]="deviceType"
+                    >
+                      <option>Quantum</option>
+                      <option>Dashcam</option>
+                    </select>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >key</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="key"
+                      [(ngModel)]="key"
+                    />
+                  </div>
+
+                  <div class="col-lg-4">
+                    <label class="control-label text-lg-right pt-2"
+                      >Secret</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="secret"
+                      [(ngModel)]="secret"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button     
+                      class="btn btn-dark mt-4 modal-confirm"
+                      (click)="addQuantum()"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <p class="text text-danger" *ngIf="hasError">{{ Error }}</p>
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+              </form>
             </div>
-
-        </section>
-    </div>
-
-
-
-
-
-
-
-
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>
