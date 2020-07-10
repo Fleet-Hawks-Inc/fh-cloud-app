@@ -31,6 +31,7 @@ export class AddVehicleNewComponent implements OnInit {
   state = "";
   plateNumber = "";
   serviceProgramID = "";
+  inspectionFormID = "";
   currentStatus = "";
   group = "";
   ownership = "";
@@ -98,6 +99,7 @@ export class AddVehicleNewComponent implements OnInit {
 
   countryID = "";
   servicePrograms =  [];
+  inspectionForms = [];
   manufacturers = [];
   models = [];
   countries = [];
@@ -115,6 +117,7 @@ export class AddVehicleNewComponent implements OnInit {
 
   ngOnInit() {
     this.fetchServicePrograms();
+    this.fetchInspectionForms();
     this.fetchManufacturers();
     this.fetchCountries();
     this.fetchGroups();
@@ -178,6 +181,12 @@ export class AddVehicleNewComponent implements OnInit {
       });
   }
 
+  fetchInspectionForms() {
+    this.apiService.getData("inspectionForms").subscribe((result: any) => {
+      this.inspectionForms = result.Items;
+    });
+  }
+
   addVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
@@ -190,6 +199,7 @@ export class AddVehicleNewComponent implements OnInit {
       stateID: this.state,
       plateNumber: this.plateNumber,
       serviceProgramID: this.serviceProgramID,
+      inspectionFormID: this.inspectionFormID,
       currentStatus: this.currentStatus,
       groupID: this.group,
       ownership: this.ownership,

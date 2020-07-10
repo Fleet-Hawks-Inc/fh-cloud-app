@@ -32,6 +32,7 @@ export class EditVehicleNewComponent implements OnInit {
   state = "";
   plateNumber = "";
   serviceProgramID = "";
+  inspectionFormID = "";
   currentStatus = "";
   group = "";
   ownership = "";
@@ -100,6 +101,7 @@ export class EditVehicleNewComponent implements OnInit {
 
   countryID = "";
   servicePrograms = [];
+  inspectionForms = [];
   manufacturers = [];
   models = [];
   countries = [];
@@ -116,10 +118,11 @@ export class EditVehicleNewComponent implements OnInit {
   ngOnInit() {
     this.vehicleID = this.route.snapshot.params["vehicleID"];
     this.fetchServicePrograms();
+    this.fetchInspectionForms();
     this.fetchManufacturers();
     this.fetchCountries();
     this.fetchGroups();
-    this.apiService.getData("quantums").subscribe((result: any) => {
+    this.apiService.getData("devices").subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
 
@@ -135,6 +138,7 @@ export class EditVehicleNewComponent implements OnInit {
         this.state = result.stateID;
         this.plateNumber = result.plateNumber;
         this.serviceProgramID = result.serviceProgramID;
+        this.inspectionFormID = result.inspectionFormID;
         this.currentStatus = result.currentStatus;
         this.group = result.groupID;
         this.ownership = result.ownership;
@@ -240,7 +244,7 @@ export class EditVehicleNewComponent implements OnInit {
 
   getModels() {
     this.apiService
-      .getData(`models/manufacturer/${this.make}`)
+      .getData(`vehicleModels/manufacturer/${this.make}`)
       .subscribe((result: any) => {
         this.models = result.Items;
       });
@@ -249,6 +253,13 @@ export class EditVehicleNewComponent implements OnInit {
   fetchServicePrograms() {
     this.apiService.getData("servicePrograms").subscribe((result: any) => {
       this.servicePrograms = result.Items;
+    });
+  }
+
+  fetchInspectionForms() {
+    this.apiService.getData("inspectionForms").subscribe((result: any) => {
+      this.inspectionForms = result.Items;
+      console.log(this.inspectionForms);
     });
   }
 
@@ -266,6 +277,7 @@ export class EditVehicleNewComponent implements OnInit {
       stateID: this.state,
       plateNumber: this.plateNumber,
       serviceProgramID: this.serviceProgramID,
+      inspectionFormID: this.inspectionFormID,
       currentStatus: this.currentStatus,
       groupID: this.group,
       ownership: this.ownership,

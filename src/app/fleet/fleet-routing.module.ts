@@ -87,7 +87,7 @@ const routes: Routes = [
     children: [
       { path: "Add-Vehicle-New", component: AddVehicleNewComponent },
       {
-        path: "Edit-Vehicle-New/:userName",
+        path: "Edit-Vehicle-New/:vehicleID",
         component: EditVehicleNewComponent,
       },
       { path: "Vehicle-List", component: VehicleListComponent },
