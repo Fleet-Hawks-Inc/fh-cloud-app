@@ -11,8 +11,8 @@ export class AddInspectionFormComponent implements OnInit {
   title = "Add Inspection Forms";
 
   /********** Form Fields ***********/
-
-  title = "";
+  
+  titlee = "";
   description = "";
   parameters = [
     {
@@ -22,17 +22,17 @@ export class AddInspectionFormComponent implements OnInit {
       name: 'Battery'
     },
     {
-      name: "Belts"
-    }​,
+      name: 'Belts'
+    },
     {
-      name: 'Body/Doors'
+      name: 'Body/Doors​'
     }​,
     {
       name: 'Brake Lines To Trailer'
     }​,
     {
       name: 'Brakes'
-	  ​​}​,
+    ​​}​,
     {
       name: 'Cab/Doors/Windows​'
 	  ​ }​,
