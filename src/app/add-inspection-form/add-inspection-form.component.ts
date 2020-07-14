@@ -16,18 +16,219 @@ export class AddInspectionFormComponent implements OnInit {
   description = "";
   parameters = [
     {
-      name: "Horn" 
+      name: "Air Lines",
     },
     {
-      name: "Battery" 
+      name: "Battery",
     },
     {
-      name: "Brake" 
+      name: "Belts",
     },
     {
-      name: "Clutch" 
-    }
-];
+      name: "Body/Doors​",
+    },
+    {
+      name: "Brake Lines To Trailer",
+    },
+    {
+      name: "Brakes",
+    },
+    {
+      name: "Cab/Doors/Windows​",
+    },
+    {
+      name: "Clutch",
+    },
+    {
+      name: "Coolant Leak​",
+    },
+    {
+      name: "Coolant Level",
+    },
+    {
+      name: "Drive Line​",
+    },
+    {
+      name: "Electric Lines To Trailer",
+    },
+    {
+      name: "Emergency Brakes​",
+    },
+    {
+      name: "Emergency Tire Chains",
+    },
+    {
+      name: "Exhaust",
+    },
+    {
+      name: "Fifth-wheel",
+    },
+    {
+      name: "Fire Extinguisher",
+    },
+    {
+      name: "Fuel Leak",
+    },
+    {
+      name: "Gauges/Warning Indicators​",
+    },
+    {
+      name: "Grease Leak",
+    },
+    {
+      name: "Horns​",
+    },
+    {
+      name: "Light Line",
+    },
+    {
+      name: "Lights",
+    },
+    {
+      name: "Mirrors​",
+    },
+    {
+      name: "Oil Leak​",
+    },
+    {
+      name: "Oil Level",
+    },
+    {
+      name: "Other Coupling​",
+    },
+    {
+      name: "Other Safety Equipment​",
+    },
+    {
+      name: "Parking Brake​",
+    },
+    {
+      name: "Rear-End Protection​",
+    },
+    {
+      name: "Reflectors",
+    },
+    {
+      name: "Service Brakes",
+    },
+    {
+      name: "Spare Fuses​",
+    },
+    {
+      name: "Steering",
+    },
+    {
+      name: "Suspension",
+    },
+    {
+      name: "Tie-Downs",
+    },
+    {
+      name: "Tractor Air Pressure Warning Device​",
+    },
+    {
+      name: "Tractor Ammeter",
+    },
+    {
+      name: "Tractor Body​",
+    },
+    {
+      name: "Tractor Clearance Marker Lights​",
+    },
+    {
+      name: "Tractor Cooling System",
+    },
+    {
+      name: "Tractor Engine​",
+    },
+    {
+      name: "Tractor Frame Assembly",
+    },
+    {
+      name: "Tractor Fuel System",
+    },
+    {
+      name: "Tractor Glass",
+    },
+    {
+      name: "Tractor Leaks",
+    },
+    {
+      name: "Tractor Oil Pressure​",
+    },
+    {
+      name: "Tractor Other Items​",
+    },
+    {
+      name: "Tractor Rear Vision Mirror​",
+    },
+    {
+      name: "Tractor Speedometer",
+    },
+    {
+      name: "Tractor Stop/Turn Lights",
+    },
+    {
+      name: "Tractor Tail Lights",
+    },
+    {
+      name: "Tractor Tires",
+    },
+    {
+      name: "Tractor Transmission​",
+    },
+    {
+      name: "Triangles",
+    },
+    {
+      name: "Wheels/Rims/Lugs​",
+    },
+    {
+      name: "Windshield Wipers/Washers",
+    },
+    {
+      name: "Trailer Brake Connections",
+    },
+    {
+      name: "Trailer Brakes​",
+    },
+    {
+      name: "Trailer Coupling King Pin",
+    },
+    {
+      name: "Trailer Doors​",
+    },
+    {
+      name: "Trailer Hitch",
+    },
+    {
+      name: "Trailer Landing Gear",
+    },
+    {
+      name: "Trailer Lights",
+    },
+    {
+      name: "Trailer Reflectors​",
+    },
+    {
+      name: "Trailer Roof​",
+    },
+    {
+      name: "Trailer Suspension System​",
+    },
+    {
+      name: "Trailer Tarpaulin​",
+    },
+    {
+      name: "Trailer Tires",
+    },
+    {
+      name: "Trailer Wheels/Rims/Lugs",
+    },
+    {
+      name: "Trailer Wheels/Rims/Lugs",
+    },
+  ];
   /******************/
 
   response: any = "";
@@ -46,6 +247,7 @@ export class AddInspectionFormComponent implements OnInit {
     const data = {
       title: this.titlee,
       description: this.description,
+      parameters: this.parameters
     };
 
     this.apiService.postData("inspectionForms", data).subscribe({
@@ -66,7 +268,7 @@ export class AddInspectionFormComponent implements OnInit {
 
   cloneInput() {
     this.parameters.push({
-      name: ""
+      name: "",
     });
   }
 
