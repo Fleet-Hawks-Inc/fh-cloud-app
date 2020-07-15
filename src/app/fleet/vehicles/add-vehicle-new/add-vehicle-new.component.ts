@@ -182,7 +182,7 @@ export class AddVehicleNewComponent implements OnInit {
   }
 
   fetchInspectionForms() {
-    this.apiService.getData("inspectionForms").subscribe((result: any) => {
+    this.apiService.getData("inspectionForms/type/Vehicle").subscribe((result: any) => {
       this.inspectionForms = result.Items;
     });
   }

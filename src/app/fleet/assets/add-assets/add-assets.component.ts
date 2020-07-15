@@ -42,6 +42,7 @@ export class AddAssetsComponent implements OnInit {
     UID: "",
   };
   currentStatus = "";
+  inspectionFormID = "";
 
   quantum = "";
   quantumsList = [];
@@ -52,6 +53,7 @@ export class AddAssetsComponent implements OnInit {
   manufacturers = [];
   states = [];
   models = [];
+  inspectionForms = [];
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -63,13 +65,14 @@ export class AddAssetsComponent implements OnInit {
     this.fetchQuantum();
     this.fetchManufactuer();
     this.fetchCountries();
+    this.fetchInspectionForms();
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
   }
 
   fetchQuantum() {
-    this.apiService.getData("quantums").subscribe((result: any) => {
+    this.apiService.getData("devices").subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
   }
@@ -77,6 +80,12 @@ export class AddAssetsComponent implements OnInit {
   fetchManufactuer() {
     this.apiService.getData("manufacturers").subscribe((result: any) => {
       this.manufacturers = result.Items;
+    });
+  }
+
+  fetchInspectionForms() {
+    this.apiService.getData("inspectionForms/type/Trailer").subscribe((result: any) => {
+      this.inspectionForms = result.Items;
     });
   }
 
@@ -111,6 +120,7 @@ export class AddAssetsComponent implements OnInit {
   onChange(newValue) {
     this.quantum = newValue;
     this.quantumInfo.UID = newValue;
+    console.log(this.quantumInfo);
   }
 
   addAsset() {
@@ -142,6 +152,7 @@ export class AddAssetsComponent implements OnInit {
         UID: this.quantumInfo.UID,
       },
       currentStatus: this.currentStatus,
+      inspectionFormID : this.inspectionFormID
     };
 
     this.apiService.postData("assets", data).subscribe({
