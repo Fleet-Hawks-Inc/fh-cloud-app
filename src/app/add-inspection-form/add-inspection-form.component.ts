@@ -14,6 +14,7 @@ export class AddInspectionFormComponent implements OnInit {
 
   titlee = "";
   description = "";
+  inspectionType = "";
   parameters = [
     {
       name: "Air Lines",
@@ -247,6 +248,7 @@ export class AddInspectionFormComponent implements OnInit {
     const data = {
       title: this.titlee,
       description: this.description,
+      inspectionType: this.inspectionType,
       parameters: this.parameters
     };
 
