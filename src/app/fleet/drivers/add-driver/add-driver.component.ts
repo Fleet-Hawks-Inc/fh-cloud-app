@@ -1,24 +1,24 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {from, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Object} from 'aws-sdk/clients/s3';
 import {ApiService} from '../../../api.service';
-import { Auth } from "aws-amplify";
+import { Auth } from 'aws-amplify';
 import {AwsUploadService} from '../../../aws-upload.service';
 declare var $: any;
 
 @Component({
-  selector: "app-add-driver",
-  templateUrl: "./add-driver.component.html",
-  styleUrls: ["./add-driver.component.css"],
+  selector: 'app-add-driver',
+  templateUrl: './add-driver.component.html',
+  styleUrls: ['./add-driver.component.css'],
 })
 export class AddDriverComponent implements OnInit {
-  title = "Add Driver";
+  title = 'Add Driver';
   errors = {};
   form;
   concatArrayKeys = '';
-  
+
   imageError = '';
   fileName = '';
   /**
@@ -28,7 +28,7 @@ export class AddDriverComponent implements OnInit {
       driverType : "",
       companyID : "",
       employeeID : "",
-      userName : "", 
+      userName : "",
       password : "",
       firstName : "",
       lastName : "",
@@ -39,7 +39,7 @@ export class AddDriverComponent implements OnInit {
       email : "",
     };
     address = {
-      addressType : "", 
+      addressType : "",
       driverCountry : "",
       driverStateID : "",
       driverCityID : "",
@@ -47,7 +47,7 @@ export class AddDriverComponent implements OnInit {
       driverAddress1 : "",
       driverAddress2 : "",
     };
-    payment={
+    payment = {
       driverPayType : "",
       driverPerHourRate : "",
       driverLoadedMiles : "",
@@ -56,8 +56,8 @@ export class AddDriverComponent implements OnInit {
       driverLoadPercentage : "",
       driverLoadPercentageOf : "",
     };
- 
-    licence={
+
+    licence = {
       driverContractStart : "",
       driverContractEnd : "",
       driverMedicalRenewal : "",
@@ -67,7 +67,7 @@ export class AddDriverComponent implements OnInit {
       driverLicenseStateID : "",
       driverVehicleType : "",
 
-    };  
+    };
     HOSCompliance = {
       status : "",
       type : "",
@@ -108,7 +108,8 @@ export class AddDriverComponent implements OnInit {
   Error: string = "";
   Success: string = "";
 
-  constructor(private apiService: ApiService, private router: Router,private awsUS: AwsUploadService) {}
+  constructor(private apiService: ApiService, private router: Router,
+              private awsUS: AwsUploadService) {}
 
   ngOnInit() {
     this.fetchGroups();
@@ -157,7 +158,7 @@ export class AddDriverComponent implements OnInit {
         this.states = result.Items;
       });
   }
-   getCities(){
+   getCities() {
     this.apiService.getData('cities/states' + this.address.driverStateID)
     .subscribe((result: any) => {
       this.cities = result.Items;
@@ -175,50 +176,50 @@ export class AddDriverComponent implements OnInit {
     this.register();
     this.errors = {};
     const data = {
-      basic:{
+      basic: {
         driverType: this.basic.driverType,
-        employeeID:this.basic.employeeID,
-        companyID:this.basic.companyID,
+        employeeID: this.basic.employeeID,
+        companyID: this.basic.companyID,
         userName: this.basic.userName,
-        password:this.basic.password,
+        password: this.basic.password,
         firstName: this.basic.firstName,
         lastName: this.basic.lastName,
-        driverID:this.basic.driverID,
-        driverGender:this.basic.driverGender,
+        driverID: this.basic.driverID,
+        driverGender: this.basic.driverGender,
         phone: this.basic.phone,
         email: this.basic.email,
         groupID: this.basic.groupID,
       },
-      address:{
+      address: {
         addressType: this.address.addressType,
-     
+
         driverCountry: this.address.driverCountry,
-        driverStateID:this.address.driverStateID,
-        driverCityID:this.address.driverCityID,
-        addressZip:this.address.addressZip,
-        driverAddress1:this.address.driverAddress1,
-        driverAddress2:this.address.driverAddress2,
+        driverStateID: this.address.driverStateID,
+        driverCityID: this.address.driverCityID,
+        addressZip: this.address.addressZip,
+        driverAddress1: this.address.driverAddress1,
+        driverAddress2: this.address.driverAddress2,
       },
-     payment:{
-      driverPayType:this.payment.driverPayType,
-      driverPerHourRate:this.payment.driverPerHourRate,
+     payment: {
+      driverPayType: this.payment.driverPayType,
+      driverPerHourRate: this.payment.driverPerHourRate,
       driverLoadedMiles : this.payment.driverLoadedMiles,
       driverEmptyMiles : this.payment.driverEmptyMiles,
       calculateEmptyMiles : this.payment.calculateEmptyMiles,
       driverLoadPercentage : this.payment.driverLoadPercentage,
       driverLoadPercentageOf : this.payment.driverLoadPercentageOf,
      },
-      licence:{
-        driverContractStart:this.licence.driverContractStart,
-        driverContractEnd:this.licence.driverContractEnd,
+      licence: {
+        driverContractStart: this.licence.driverContractStart,
+        driverContractEnd: this.licence.driverContractEnd,
         driverMedicalRenewal:this.licence.driverMedicalRenewal,
         driverLicenseNumber: this.licence.driverLicenseNumber,
-        driverBirthDate:this.licence.driverBirthDate,
+        driverBirthDate: this.licence.driverBirthDate,
         driverLicenseExpiry: this.licence.driverLicenseExpiry,
         driverLicenseStateID: this.licence.driverLicenseStateID,
-        driverVehicleType:this.licence.driverVehicleType,
+        driverVehicleType: this.licence.driverVehicleType,
       },
-     
+
       HOSCompliance: {
         status: this.HOSCompliance.status,
         type: this.HOSCompliance.type,
@@ -227,28 +228,28 @@ export class AddDriverComponent implements OnInit {
         driverAllowPC: this.HOSCompliance.driverAllowPC,
         driverAllowYM: this.HOSCompliance.driverAllowYM,
         exemptedNotes: this.HOSCompliance.exemptedNotes
-      },  
-      emergencyContact:{
+      },
+      emergencyContact: {
         emergencyContactName : this.emergencyContact.emergencyContactName,
         emergencyContactPhone : this.emergencyContact.emergencyContactPhone,
         emergencyContactAddress : this.emergencyContact.emergencyContactAddress,
         emergencyContactRelationship : this.emergencyContact.emergencyContactRelationship,
         emergencyContactEmail : this.emergencyContact.emergencyContactEmail,
       },
-      additionalDetails:{
-        driverFacebook:this.additionalDetails.driverFacebook,
-        driverGooglePlus:this.additionalDetails.driverGooglePlus,
-        driverBlog:this.additionalDetails.driverBlog,
-        driverTumblr:this.additionalDetails.driverTumblr,
-        driverTwitter:this.additionalDetails.driverTwitter,
-        driverLinkedIn:this.additionalDetails.driverLinkedIn,
-        additionalNotes:this.additionalDetails.additionalNotes
+      additionalDetails: {
+        driverFacebook: this.additionalDetails.driverFacebook,
+        driverGooglePlus: this.additionalDetails.driverGooglePlus,
+        driverBlog: this.additionalDetails.driverBlog,
+        driverTumblr: this.additionalDetails.driverTumblr,
+        driverTwitter: this.additionalDetails.driverTwitter,
+        driverLinkedIn: this.additionalDetails.driverLinkedIn,
+        additionalNotes: this.additionalDetails.additionalNotes
       },
-    
+
     };
 
     console.log(data);
-  return;
+    return;
     this.apiService.postData('users', data).subscribe({
       complete: () => {},
       error : (err) => {
@@ -294,7 +295,7 @@ export class AddDriverComponent implements OnInit {
         this.basic.email = "";
         this.basic.groupID = "";
         this.licence.driverLicenseNumber = "";
-        
+
         this.licence.driverLicenseExpiry = "";
         this.licence.driverLicenseStateID = "";
         this.HOSCompliance = {
@@ -305,8 +306,8 @@ export class AddDriverComponent implements OnInit {
           exemptedNotes : "",
           driverAllowYM : "",
           driverAllowPC : "",
-        };    
-        
+        };
+
         this.groups = [];
         this.countries = [];
         this.states = [];
@@ -340,26 +341,26 @@ export class AddDriverComponent implements OnInit {
           email: this.basic.email,
           phone_number: this.basic.phone,
         },
-      });     
+      });
 
       console.log(res);
     } catch (err) {
       console.log("inside catch block");
-      // this.hasError = true;  
+      // this.hasError = true;
       // this.Error = err.message || 'Error during login';
     }
   };
-  
+
   // Driver Gender Value
 onChangeDriverGender(value: any){
   this.basic.driverGender = value;
   console.log(value);
-  
+
 }
 onChangeDriverType(value: any){
   this.basic.driverType = value;
   console.log(value);
-  
+
 }
 uploadFile(event) {
   this.imageError = '';
