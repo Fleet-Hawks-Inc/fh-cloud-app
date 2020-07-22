@@ -5,6 +5,7 @@ import {map} from 'rxjs/operators';
 import {Object} from 'aws-sdk/clients/s3';
 import {ApiService} from '../../../api.service';
 import { Auth } from "aws-amplify";
+import {AwsUploadService} from '../../../aws-upload.service';
 declare var $: any;
 
 @Component({
@@ -17,47 +18,88 @@ export class AddDriverComponent implements OnInit {
   errors = {};
   form;
   concatArrayKeys = '';
+  
+  imageError = '';
+  fileName = '';
   /**
    * Form Props
    */
-  userType = "driver"; //default
-  userName = "";
-  password = "";
-  firstName = "";
-  lastName = "";
-  address = "";
-  phone = "";
-  email = "";
-  groupID = "";
-  loginEnabled = true;
-  driverNumber = "";
-  driverLicenseNumber = "";
-  driverLicenseType = "";
-  driverLicenseExpiry = "";
-  driverLicenseStateID = "";
-  HOSCompliance = {
-    status: "",
-    type: "",
-    cycleID: "",
-  };
-  defaultContract = {
-    perMile: "",
-    team: "",
-    hourly: "",
-    pickOrDrop: "",
-  };
-  fixed = {
-    amount: "",
-    type: "",
-  };
-  yardID = "";
+    basic = {
+      driverType : "",
+      companyID : "",
+      employeeID : "",
+      userName : "", 
+      password : "",
+      firstName : "",
+      lastName : "",
+      driverID : "",
+      driverGender : "",
+      groupID : "",
+      phone : "",
+      email : "",
+    };
+    address = {
+      addressType : "", 
+      driverCountry : "",
+      driverStateID : "",
+      driverCityID : "",
+      addressZip : "",
+      driverAddress1 : "",
+      driverAddress2 : "",
+    };
+    payment={
+      driverPayType : "",
+      driverPerHourRate : "",
+      driverLoadedMiles : "",
+      driverEmptyMiles : "",
+      calculateEmptyMiles : "",
+      driverLoadPercentage : "",
+      driverLoadPercentageOf : "",
+    };
+ 
+    licence={
+      driverContractStart : "",
+      driverContractEnd : "",
+      driverMedicalRenewal : "",
+      driverBirthDate : "",
+      driverLicenseNumber : "",
+      driverLicenseExpiry : "",
+      driverLicenseStateID : "",
+      driverVehicleType : "",
+
+    };  
+    HOSCompliance = {
+      status : "",
+      type : "",
+      cycleID : "",
+      yardID : "",
+      exemptedNotes : "",
+      driverAllowYM : "",
+      driverAllowPC : "",
+    };
+    emergencyContact = {
+      emergencyContactName : "",
+      emergencyContactPhone : "",
+      emergencyContactAddress : "",
+      emergencyContactRelationship : "",
+      emergencyContactEmail : "",
+    };
+    additionalDetails = {
+      driverTumblr : "",
+      driverFacebook : "",
+      driverGooglePlus : "",
+      driverTwitter : "",
+      driverBlog : "",
+      driverLinkedIn : "",
+      additionalNotes : "",
+    };
 
 
 
-  driverLicenseCountry = "";
   groups = [];
   countries = [];
   states = [];
+  cities = [];
   yards = [];
   cycles = [];
   response: any = "";
@@ -66,7 +108,7 @@ export class AddDriverComponent implements OnInit {
   Error: string = "";
   Success: string = "";
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService, private router: Router,private awsUS: AwsUploadService) {}
 
   ngOnInit() {
     this.fetchGroups();
@@ -77,6 +119,8 @@ export class AddDriverComponent implements OnInit {
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
+    this.basic.driverGender = "Male";
+    this.basic.driverType = "Employee";
   }
 
   fetchCycles() {
@@ -108,52 +152,103 @@ export class AddDriverComponent implements OnInit {
   }
 
   getStates() {
-    this.apiService.getData('states/country/' + this.driverLicenseCountry)
+    this.apiService.getData('states/country/' + this.address.driverCountry)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
   }
+   getCities(){
+    this.apiService.getData('cities/states' + this.address.driverStateID)
+    .subscribe((result: any) => {
+      this.cities = result.Items;
+    });
+   }
 
   getToday(): string {
     return new Date().toISOString().split('T')[0]
   }
   addDriver() {
+    if (this.fileName === '') {
+      this.imageError = 'Please Choose Image To Upload';
+      return;
+    }
     this.register();
     this.errors = {};
     const data = {
-      userType: this.userType,
-      userName: this.userName,
-      password: this.password,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      address: this.address,
-      phone: this.phone,
-      email: this.email,
-      groupID: this.groupID,
-      loginEnabled: this.loginEnabled,
-      driverNumber: this.driverNumber,
-      driverLicenseNumber: this.driverLicenseNumber,
-      driverLicenseType: this.driverLicenseType,
-      driverLicenseExpiry: this.driverLicenseExpiry,
-      driverLicenseStateID: this.driverLicenseStateID,
+      basic:{
+        driverType: this.basic.driverType,
+        employeeID:this.basic.employeeID,
+        companyID:this.basic.companyID,
+        userName: this.basic.userName,
+        password:this.basic.password,
+        firstName: this.basic.firstName,
+        lastName: this.basic.lastName,
+        driverID:this.basic.driverID,
+        driverGender:this.basic.driverGender,
+        phone: this.basic.phone,
+        email: this.basic.email,
+        groupID: this.basic.groupID,
+      },
+      address:{
+        addressType: this.address.addressType,
+     
+        driverCountry: this.address.driverCountry,
+        driverStateID:this.address.driverStateID,
+        driverCityID:this.address.driverCityID,
+        addressZip:this.address.addressZip,
+        driverAddress1:this.address.driverAddress1,
+        driverAddress2:this.address.driverAddress2,
+      },
+     payment:{
+      driverPayType:this.payment.driverPayType,
+      driverPerHourRate:this.payment.driverPerHourRate,
+      driverLoadedMiles : this.payment.driverLoadedMiles,
+      driverEmptyMiles : this.payment.driverEmptyMiles,
+      calculateEmptyMiles : this.payment.calculateEmptyMiles,
+      driverLoadPercentage : this.payment.driverLoadPercentage,
+      driverLoadPercentageOf : this.payment.driverLoadPercentageOf,
+     },
+      licence:{
+        driverContractStart:this.licence.driverContractStart,
+        driverContractEnd:this.licence.driverContractEnd,
+        driverMedicalRenewal:this.licence.driverMedicalRenewal,
+        driverLicenseNumber: this.licence.driverLicenseNumber,
+        driverBirthDate:this.licence.driverBirthDate,
+        driverLicenseExpiry: this.licence.driverLicenseExpiry,
+        driverLicenseStateID: this.licence.driverLicenseStateID,
+        driverVehicleType:this.licence.driverVehicleType,
+      },
+     
       HOSCompliance: {
         status: this.HOSCompliance.status,
         type: this.HOSCompliance.type,
         cycleID: this.HOSCompliance.cycleID,
+        yardID: this.HOSCompliance.yardID,
+        driverAllowPC: this.HOSCompliance.driverAllowPC,
+        driverAllowYM: this.HOSCompliance.driverAllowYM,
+        exemptedNotes: this.HOSCompliance.exemptedNotes
+      },  
+      emergencyContact:{
+        emergencyContactName : this.emergencyContact.emergencyContactName,
+        emergencyContactPhone : this.emergencyContact.emergencyContactPhone,
+        emergencyContactAddress : this.emergencyContact.emergencyContactAddress,
+        emergencyContactRelationship : this.emergencyContact.emergencyContactRelationship,
+        emergencyContactEmail : this.emergencyContact.emergencyContactEmail,
       },
-      defaultContract: {
-        perMile: this.defaultContract.perMile,
-        team: this.defaultContract.team,
-        hourly: this.defaultContract.hourly,
-        pickOrDrop: this.defaultContract.pickOrDrop,
+      additionalDetails:{
+        driverFacebook:this.additionalDetails.driverFacebook,
+        driverGooglePlus:this.additionalDetails.driverGooglePlus,
+        driverBlog:this.additionalDetails.driverBlog,
+        driverTumblr:this.additionalDetails.driverTumblr,
+        driverTwitter:this.additionalDetails.driverTwitter,
+        driverLinkedIn:this.additionalDetails.driverLinkedIn,
+        additionalNotes:this.additionalDetails.additionalNotes
       },
-      fixed: {
-        amount: this.fixed.amount,
-        type: this.fixed.type,
-      },
-      yardID: this.yardID,
+    
     };
 
+    console.log(data);
+  return;
     this.apiService.postData('users', data).subscribe({
       complete: () => {},
       error : (err) => {
@@ -190,37 +285,28 @@ export class AddDriverComponent implements OnInit {
         this.hasSuccess = true;
         this.Success = "Driver Added successfully";
 
-        this.userName = "";
-        this.password = "";
-        this.firstName = "";
-        this.lastName = "";
-        this.address = "";
-        this.phone = "";
-        this.email = "";
-        this.groupID = "";
-        this.loginEnabled = true;
-        this.driverNumber = "";
-        this.driverLicenseNumber = "";
-        this.driverLicenseType = "";
-        this.driverLicenseExpiry = "";
-        this.driverLicenseStateID = "";
+        this.basic.userName = "";
+        this.basic.password = "";
+        this.basic.firstName = "";
+        this.basic.lastName = "";
+        this.address.addressType = "";
+        this.basic.phone = "";
+        this.basic.email = "";
+        this.basic.groupID = "";
+        this.licence.driverLicenseNumber = "";
+        
+        this.licence.driverLicenseExpiry = "";
+        this.licence.driverLicenseStateID = "";
         this.HOSCompliance = {
           status: "",
           type: "",
           cycleID: "",
-        };
-        this.defaultContract = {
-          perMile: "",
-          team: "",
-          hourly: "",
-          pickOrDrop: "",
-        };
-        this.fixed = {
-          amount: "",
-          type: "",
-        };
-        this.yardID = "";
-        this.driverLicenseCountry = "";
+          yardID : "",
+          exemptedNotes : "",
+          driverAllowYM : "",
+          driverAllowPC : "",
+        };    
+        
         this.groups = [];
         this.countries = [];
         this.states = [];
@@ -248,11 +334,11 @@ export class AddDriverComponent implements OnInit {
     try {
       // This should go in Register component
       let res = await Auth.signUp({
-        password: this.password,
-        username: this.userName,
+        password: this.basic.password,
+        username: this.basic.userName,
         attributes: {
-          email: this.email,
-          phone_number: this.phone,
+          email: this.basic.email,
+          phone_number: this.basic.phone,
         },
       });     
 
@@ -264,4 +350,27 @@ export class AddDriverComponent implements OnInit {
     }
   };
   
+  // Driver Gender Value
+onChangeDriverGender(value: any){
+  this.basic.driverGender = value;
+  console.log(value);
+  
 }
+onChangeDriverType(value: any){
+  this.basic.driverType = value;
+  console.log(value);
+  
+}
+uploadFile(event) {
+  this.imageError = '';
+  if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
+    this.fileName = this.awsUS.uploadFile('test', event.target.files.item(0));
+  } else {
+    this.fileName = '';
+    this.imageError = 'Invalid Image Format';
+  }
+}
+}
+
+
+

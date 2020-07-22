@@ -1,0 +1,41 @@
+.top-tabs.nav-tabs li .nav-link {
+    color: #2e353e;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 6px 15px;
+    border-radius: 50px;
+    border: 0.5px solid #aaa;
+    margin: 0 4px;
+    background: transparent;
+  }
+  .top-tabs.nav-tabs .nav-link.active, 
+  .top-tabs.nav-tabs .nav-link:hover,
+  .top-tabs.nav-tabs .nav-link.active:hover,
+  .top-tabs.nav-tabs .nav-link.active:focus {
+    color: #fff;
+    background: #aaa;
+    border: none;
+    text-decoration: none;
+    border: 0.5px solid #aaa;
+  }
+  .tab-pane.active{
+    text-decoration: none !important;
+  }
+  #top-tabs li.active {
+    text-decoration: none;
+  }
+  .business_image_style{
+    height: 250px;
+    width: 250px;
+    border-radius: 5%;
+  }
+  .margin_50
+  {
+    margin-top: 50px;
+  }
+  .hidden_input1{
+    opacity: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+  }
