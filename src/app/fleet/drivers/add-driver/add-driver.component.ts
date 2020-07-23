@@ -159,7 +159,7 @@ export class AddDriverComponent implements OnInit {
       });
   }
    getCities() {
-    this.apiService.getData('cities/states' + this.address.driverStateID)
+    this.apiService.getData('cities/state' + this.address.driverStateID)
     .subscribe((result: any) => {
       this.cities = result.Items;
     });

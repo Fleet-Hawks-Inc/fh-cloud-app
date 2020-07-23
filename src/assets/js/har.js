@@ -72,3 +72,41 @@ function changePaymentMode(){
      }
     
     }
+
+   //  Manual Address checkbox
+   function manualAddressFn()
+   {
+      if(document.getElementById('manualAddress').checked == false){
+         var x = document.getElementsByClassName("manualAddressInput");
+         var i;
+         for(i=0; i<x.length; i++){
+            x[i].disabled = true;
+         }
+      }
+     else if(document.getElementById('manualAddress').checked == true){
+         var x = document.getElementsByClassName("manualAddressInput");
+         var i;
+         for(i=0; i<x.length; i++){
+            x[i].disabled = false;
+         }
+      }
+   }
+
+   // UNIT TYPE IN FUEL ENTRY
+function fuel_unit()
+{
+   if(document.getElementById("fuel_unit_reefer").checked){
+      document.getElementById("fuelReeferQty").style.display = "block";  
+      document.getElementById("fuelReefer").style.display = "block"; 
+      
+      document.getElementById("fuelVehicleQty").style.display = "none"; 
+      document.getElementById("fuelVehicle").style.display = "none"; 
+
+   }
+   if(document.getElementById("fuel_unit_vehicle").checked){
+      document.getElementById("fuelVehicleQty").style.display = "block"; 
+      document.getElementById("fuelVehicle").style.display = "block";  
+      document.getElementById("fuelReeferQty").style.display = "none";  
+      document.getElementById("fuelReefer").style.display = "none";     
+   }
+}

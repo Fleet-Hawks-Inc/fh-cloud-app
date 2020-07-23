@@ -249,8 +249,8 @@
                                  <input type="text" class="form-control" 
                                     placeholder="Type Address">
                                  <div class="checkbox-custom pt-2">
-                                    <input type="checkbox" name="terms" id="w1-terms">
-                                    <label for="w1-terms">Type Manually</label>
+                                    <input type="checkbox" name="terms" id="manualAddress" onchange="manualAddressFn()">
+                                    <label for="manualAddress">Type Manually</label>
                                  </div>
                               </div>
                               <div class="col-lg-1 mar-top-37 text-right pt-4">
@@ -262,7 +262,7 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2"
                                           >Select State</label>
-                                       <select data-plugin-selectTwo class="form-control populate"  name="driverStateID"
+                                       <select data-plugin-selectTwo class="form-control populate manualAddressInput"  disabled name="driverStateID"
                                        [(ngModel)]="address.driverStateID" (change)="getCities()">
                                        <optgroup label="">
                                         <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
@@ -272,7 +272,7 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2"
                                           >Select City</label>
-                                       <select data-plugin-selectTwo class="form-control populate" name="driverCityID" [(ngModel)]="address.driverCityID">
+                                       <select data-plugin-selectTwo class="form-control populate manualAddressInput" disabled name="driverCityID" [(ngModel)]="address.driverCityID">
                                         <optgroup label="">
                                           <option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
                                          </optgroup>
@@ -281,7 +281,7 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2"
                                           >Zip Code</label>
-                                       <input type="text" class="form-control" name="addressZip" [(ngModel)]="address.addressZip">
+                                       <input type="text" class="form-control manualAddressInput" name="addressZip" disabled [(ngModel)]="address.addressZip">
                                     </div>
                                  </div>
                               </div>
@@ -290,12 +290,12 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2"
                                           >Address 1</label>
-                                       <input type="text" class="form-control" name="driverAddress1" [(ngModel)]="address.driverAddress1">
+                                       <input type="text" class="form-control manualAddressInput" name="driverAddress1" disabled [(ngModel)]="address.driverAddress1">
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2"
                                           >Address 2</label>
-                                       <input type="text" class="form-control" name="driverAddress2" [(ngModel)]="address.driverAddress2">
+                                       <input type="text" class="form-control manualAddressInput" name="driverAddress2" disabled [(ngModel)]="address.driverAddress2">
                                     </div>
                                  </div>
                               </div>

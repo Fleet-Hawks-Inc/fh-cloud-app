@@ -20,6 +20,7 @@ export class AddGeofenceComponent implements OnInit {
 
   fenceName = "";
   location = "";
+  geofenceType = "";
   description = "";
   geoLocation = {
     latitude: "",
@@ -46,38 +47,41 @@ export class AddGeofenceComponent implements OnInit {
     $(document).ready(() => {
       this.form = $("#form_").validate();
     });
-  }
-
-  initMap() {
-    if ($("#map-div").is(":visible")) {
-      $("#map-div").hide("slow");
-    } else {
-      $("#map-div").show("slow");
-    }
-
     this.mapBoxService.initMapbox(-104.618896, 50.44521);
   }
+
+  // initMap() {
+  //   if ($("#map-div").is(":visible")) {
+  //     $("#map-div").hide("slow");
+  //   } else {
+  //     $("#map-div").show("slow");
+  //   }
+
+  //   this.mapBoxService.initMapbox(-104.618896, 50.44521);
+  // }
 
   addGeofence() {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
-    if(!this.mapBoxService.plottedMap){
-      alert('Please draw the geofence'); return false;
-    }
+    // if(!this.mapBoxService.plottedMap){
+    //   alert('Please draw the geofence'); return false;
+    // }
 
     const data = {
       fenceName: this.fenceName,
       location: this.location,
       description: this.description,
+      geofenceType:this.geofenceType,
       geoLocation: {
         latitude: this.mapBoxService.latitude,
         longitude: this.mapBoxService.longitude,
       },
       geofence: this.mapBoxService.plottedMap || [],
     };
-
+console.log(data);
+return;
     this.apiService.postData("geofences", data).subscribe({
       complete: () => {},
       error: (err) => {
@@ -104,7 +108,7 @@ export class AddGeofenceComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.Success = "Geofence Added successfully";
-        this.initMap();
+        // this.initMap();
         this.mapBoxService.plottedMap = '';
         
       },
