@@ -16,6 +16,13 @@ export class AddAssetsComponent implements OnInit {
   errors = {};
   form;
   quantumSelected = '';
+  assetsData = {
+    license: {},
+    assetInfo: {},
+    insuranceDetails: {},
+    uploadedPhotos: {},
+    uploadedDocs: {}
+  };
 
   /********** Form Fields ***********/
   assetName = "";
@@ -124,6 +131,7 @@ export class AddAssetsComponent implements OnInit {
   }
 
   addAsset() {
+    console.log("assets", this.assetsData);
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
@@ -155,12 +163,13 @@ export class AddAssetsComponent implements OnInit {
       inspectionFormID : this.inspectionFormID
     };
 
-    this.apiService.postData("assets", data).subscribe({
+    this.apiService.postData("assets", this.assetsData).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
+              console.log("val", val);
               const path = val.path;
               // We Can Use This Method
               const key = val.message.match(/"([^']+)"/)[1];

@@ -31,7 +31,8 @@ import { UtilitySidebarComponent } from './utility-sidebar/utility-sidebar.compo
     RouterModule,
     SidebarComponent,
     MultiSidebarComponents,
-    HeaderComponent
+    HeaderComponent,
+    UtilitySidebarComponent
 
   ]
 })

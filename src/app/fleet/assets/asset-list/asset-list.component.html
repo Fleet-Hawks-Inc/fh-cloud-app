@@ -8,7 +8,494 @@
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
 
-    <section role="main" class="content-body">
+    <section role="main" class="content-body pl-1 pt-0 pr-0">
+      <header class="page-header">
+         <form class="form-horizontal" method="get">
+            <div class="row" style="padding-top:10px;">
+               <div class="col-md-2 col-lg-2">
+                  <div class="input-group input-group-md mb-3">
+                     <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="153" tabindex="-1" aria-hidden="true">
+                        <optgroup label="">
+                           <option value="1" data-select2-id="155">Asset 1</option>
+                           <option value="2">Asset 2</option>
+                           <option value="2">Asset 3</option>
+                           <option value="2">Asset 4</option>
+                           <option value="2">Asset 5</option>
+                        </optgroup>
+                     </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="154" style="width: 233.104px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-421v-container"><span class="select2-selection__rendered" id="select2-421v-container" role="textbox" aria-readonly="true" title="Asset 1">Asset 1</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                  </div>
+               </div>
+               <div class="col-md-2  col-lg-2">
+                  <div class="btn-group flex-wrap" style="width:240px;">
+                     <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle" data-toggle="dropdown">Search by Status <span class="caret"></span></button>
+                     <div class="dropdown-menu" role="menu">
+                        <a class="dropdown-item text-1" href="#">All</a>
+                        <a class="dropdown-item text-1" href="#">Active</a>
+                        <a class="dropdown-item text-1" href="#">Inactive</a>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-lg-3 col-md-3">
+                  <div class="form-group row">
+                     <div class="col-lg-12">
+                        <div class="input-group input-group-select-append">
+                           <span class="input-group-prepend">
+                           <span class="input-group-text">
+                           <i class="fas fa-sitemap"></i>
+                           </span>
+                           </span>
+                           <select class="form-control" multiple="multiple" data-plugin-multiselect="" data-plugin-options="{ &quot;maxHeight&quot;: 200, &quot;enableCaseInsensitiveFiltering&quot;: true }" id="ms_example6" style="display: none;">
+                              <optgroup label="Group1">
+                                 <option value="analysis" selected=""> Entire Fleet</option>
+                                 <option value="algebra">Linear</option>
+                                 <option value="discrete">Discrete</option>
+                                 <option value="numerical">Numerical</option>
+                                 <option value="probability">Probability</option>
+                              </optgroup>
+                              <optgroup label="Group2">
+                                 <option value="programming">Name 1</option>
+                                 <option value="automata">Automata Theory</option>
+                                 <option value="complexity">Complexity Theory</option>
+                                 <option value="software">Software Engineering</option>
+                              </optgroup>
+                           </select><div class="btn-group"><button type="button" class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" title=" Entire Fleet"><span class="multiselect-selected-text"> Entire Fleet</span> <b class="caret"></b></button><ul class="multiselect-container dropdown-menu" style="max-height: 200px; overflow: hidden auto;"><div class="input-group"><span class="input-group-prepend"><span class="input-group-text"><i class="fas fa-search"></i></span></span><input class="form-control multiselect-search" type="text" placeholder="Search"></div><li class="multiselect-item multiselect-group"><label>Group1</label></li><li class="active"><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="analysis">  Entire Fleet</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="algebra"> Linear</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="discrete"> Discrete</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="numerical"> Numerical</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="probability"> Probability</label></a></li><li class="multiselect-item multiselect-group"><label>Group2</label></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="programming"> Name 1</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="automata"> Automata Theory</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="complexity"> Complexity Theory</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="software"> Software Engineering</label></a></li></ul></div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-1  col-lg-1">
+                  <button type="submit" class="btn btn-sm btn-success">Search</button>
+               </div>
+               <div class="col-md-4  col-lg-4 text-right pr-5">
+                  <button type="button" id="map_view_btn" class="btn btn-sm btn-default">Map View</button>
+                  <button type="button" id="list_view_btn" class="btn btn-sm btn-success">List View</button>
+                  <div class="btn-group flex-wrap">
+                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                        <a class="dropdown-item text-1" href="">Edit</a>
+                        <a class="dropdown-item text-1" href="">Deactivate</a>
+                        <a class="dropdown-item text-1" href="">Import</a>
+                        <a class="dropdown-item text-1" href="">Export</a>
+                     </div>
+                  </div>
+                  <a href="add-asset.php" class="btn btn-success btn-sm mr-4" style="color:white;"><i class="fas fa-plus"></i> Add Asset</a>
+               </div>
+            </div>
+         </form>
+      </header>
+      <!-- MAP VIEW OF ASSETS -->
+      <div class="mapclass vehiclemain" id="map_view" style="display: none;">
+         <div id="map" class="mapclassmain"></div>
+         <div class="vehicleRmini" id="arrowRvehicle">
+            <a href="#"><i class="fas fa-arrow-right"></i></a>
+         </div>
+         <div class="vehicleLmini" id="arrowLvehicle" style="display: none">
+            <a href="#"><i class="fas fa-arrow-left"></i></a>
+         </div>
+         <div class="vehicleminilist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="vehicleMiniList">
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark"> Asset Tracker</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L 5K4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark"> Asset Gateway</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T 1Z2</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Tracker</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 1</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 2</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J 1P3</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 3</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 4</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 2542 Cleary Crt Mississauga ON L5K 1Y3</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 5</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L 5K4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 6</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T 1Z2</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 7</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 8</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 9</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J 1P3</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 10</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 122 St Surrey BC V3V 4L4</span>
+               </a>
+            </div>
+         </div>
+      </div>
+      <!-- LIST VIEW OF ASSETS           -->
+      <div id="list_view">
+         <div class="m-2">
+            <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+               <li class="nav-item">
+                  <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">All</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" id="reefer-tab" data-toggle="tab" href="#reefer" role="tab" aria-controls="reefer" aria-selected="false">Reefer</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" id="dryBox-tab" data-toggle="tab" href="#dryBox" role="tab" aria-controls="dryBox" aria-selected="false">Dry Box</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" id="flatBed-tab" data-toggle="tab" href="#flatBed" role="tab" aria-controls="flatBed" aria-selected="false">Flatbed</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" id="curtainSide-tab" data-toggle="tab" href="#curtainSide" role="tab" aria-controls="curtainSide" aria-selected="false">Curtain Side</a>
+               </li>
+            </ul>
+         </div>
+         <div class="row">
+            <div class="col pr-0">
+               <section class="card">
+                  <div class="card-body">
+                     <div class="tab-content p-0" id="myTabContent">
+                        <div class="tab-pane show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                           <div id="DataTables_Table_11_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="DataTables_Table_11_length"><label>Show <select name="DataTables_Table_11_length" aria-controls="DataTables_Table_11" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div>
+                           <div class="table-responsive">
+                             <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer" id="DataTables_Table_11" role="grid">
+                              <thead>
+                                 <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 34.3333px;"><input type="checkbox"></th><th width="30%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Asset: activate to sort column ascending" style="width: 403.667px;">Asset</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 181px;">Type</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Licence Plate: activate to sort column ascending" style="width: 181px;">Licence Plate</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Battery Level: activate to sort column ascending" style="width: 106.333px;">Battery Level</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Asset Gateway S/N: activate to sort column ascending" style="width: 181px;">Asset Gateway S/N</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 106.333px;">Status</th></tr>
+                              </thead>
+                              <tbody>
+                              <tr role="row" >
+                                <td class="sorting_1"><input type="checkbox"></td>
+                                <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                <td onclick="window.location='asset1_details.php'">Reefer</td>
+                                <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                <td onclick="window.location='asset1_details.php'">20%</td>
+                                <td onclick="window.location='asset1_details.php'">None</td>
+                                <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
+                              </tr>
+                              <tr *ngFor="let asset of assets;let i = index;">
+                                <td class="sorting_1"><input type="checkbox"></td>
+                                <td>{{ asset.assetName }}</td>
+                                <td>{{ asset.assetType }}</td>
+                                <td>{{ asset.license.plateNumber }}</td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                  <span class="badge badge-secondary text-3">
+                                    {{asset.currentStatus}}
+                                  </span>
+                                </td>
+                                </tr>
+                              </tbody>
+                           </table>
+                          </div>
+                          <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_11_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_11_previous"><a href="#" aria-controls="DataTables_Table_11" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_11" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_11_next"><a href="#" aria-controls="DataTables_Table_11" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
+                        </div>
+                        <div class="tab-pane fade" id="reefer" role="tabpanel" aria-labelledby="reefer-tab">
+                        <div id="DataTables_Table_12_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="DataTables_Table_12_length"><label>Show <select name="DataTables_Table_12_length" aria-controls="DataTables_Table_12" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer" id="DataTables_Table_12" role="grid">
+                              <thead>
+                                 <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 0px;"><input type="checkbox"></th><th width="30%" class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Asset: activate to sort column ascending" style="width: 0px;">Asset</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 0px;">Type</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Licence Plate: activate to sort column ascending" style="width: 0px;">Licence Plate</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Battery Level: activate to sort column ascending" style="width: 0px;">Battery Level</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Asset Gateway S/N: activate to sort column ascending" style="width: 0px;">Asset Gateway S/N</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th></tr>
+                              </thead>
+                              <tbody>
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                              <tr role="row" class="odd">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr><tr role="row" class="even">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset 1</td>
+                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
+                                 </tr><tr role="row" class="odd">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
+                                 </tr><tr role="row" class="even">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
+                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr><tr role="row" class="odd">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
+                                 </tr><tr role="row" class="even">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Asset Name</td>
+                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr></tbody>
+                           </table></div><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_12_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_12_previous"><a href="#" aria-controls="DataTables_Table_12" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_12" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_12_next"><a href="#" aria-controls="DataTables_Table_12" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
+                        </div>
+                        <div class="tab-pane fade" id="dryBox" role="tabpanel" aria-labelledby="dryBox-tab">
+                        <div id="DataTables_Table_13_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="DataTables_Table_13_length"><label>Show <select name="DataTables_Table_13_length" aria-controls="DataTables_Table_13" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer" id="DataTables_Table_13" role="grid">
+                              <thead>
+                                 <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 0px;"><input type="checkbox"></th><th width="30%" class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Asset: activate to sort column ascending" style="width: 0px;">Asset</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 0px;">Type</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Licence Plate: activate to sort column ascending" style="width: 0px;">Licence Plate</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Battery Level: activate to sort column ascending" style="width: 0px;">Battery Level</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Asset Gateway S/N: activate to sort column ascending" style="width: 0px;">Asset Gateway S/N</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th></tr>
+                              </thead>
+                              <tbody>
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                              <tr role="row" class="odd">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Dry Box</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr><tr role="row" class="even">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Drybox</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
+                                 </tr><tr role="row" class="odd">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Dry Box</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr><tr role="row" class="even">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Dry Box</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr><tr role="row" class="odd">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Dry Box</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
+                                 </tr><tr role="row" class="even">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Dry Box</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr></tbody>
+                           </table></div><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_13_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_13_previous"><a href="#" aria-controls="DataTables_Table_13" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_13" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_13_next"><a href="#" aria-controls="DataTables_Table_13" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
+                        </div>
+                        <div class="tab-pane fade" id="flatBed" role="tabpanel" aria-labelledby="flatBed-tab">
+                        <div id="DataTables_Table_14_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="DataTables_Table_14_length"><label>Show <select name="DataTables_Table_14_length" aria-controls="DataTables_Table_14" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer" id="DataTables_Table_14" role="grid">
+                              <thead>
+                                 <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 0px;"><input type="checkbox"></th><th width="30%" class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Asset: activate to sort column ascending" style="width: 0px;">Asset</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 0px;">Type</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Licence Plate: activate to sort column ascending" style="width: 0px;">Licence Plate</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Battery Level: activate to sort column ascending" style="width: 0px;">Battery Level</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Asset Gateway S/N: activate to sort column ascending" style="width: 0px;">Asset Gateway S/N</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th></tr>
+                              </thead>
+                              <tbody>
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                              <tr role="row" class="odd">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Flatbed</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
+                                 </tr><tr role="row" class="even">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Flatbed</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr><tr role="row" class="odd">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Flatbed</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
+                                 </tr><tr role="row" class="even">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Flatbed</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr><tr role="row" class="odd">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Flatbed</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr><tr role="row" class="even">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Flatbed</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr></tbody>
+                           </table></div><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_14_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_14_previous"><a href="#" aria-controls="DataTables_Table_14" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_14" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_14_next"><a href="#" aria-controls="DataTables_Table_14" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
+                        </div>
+
+                        <div class="tab-pane fade" id="curtainSide" role="tabpanel" aria-labelledby="curtainSide-tab">
+                        <div id="DataTables_Table_15_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="DataTables_Table_15_length"><label>Show <select name="DataTables_Table_15_length" aria-controls="DataTables_Table_15" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer" id="DataTables_Table_15" role="grid">
+                              <thead>
+                                 <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 0px;"><input type="checkbox"></th><th width="30%" class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Asset: activate to sort column ascending" style="width: 0px;">Asset</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 0px;">Type</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Licence Plate: activate to sort column ascending" style="width: 0px;">Licence Plate</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Battery Level: activate to sort column ascending" style="width: 0px;">Battery Level</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Asset Gateway S/N: activate to sort column ascending" style="width: 0px;">Asset Gateway S/N</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th></tr>
+                              </thead>
+                              <tbody>
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                              <tr role="row" class="odd">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Curtain Side</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr><tr role="row" class="even">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Curtain Side</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
+                                 </tr><tr role="row" class="odd">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Curtain Side</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr><tr role="row" class="even">
+                                    <td onclick="window.location='asset1_details.php'" class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Curtain Side</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
+                                 </tr><tr role="row" class="odd">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Curtain Side</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr><tr role="row" class="even">
+                                    <td class="sorting_1"><input type="checkbox"></td>
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Curtain Side</td>
+                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
+                                    <td onclick="window.location='asset1_details.php'">20%</td>
+                                    <td onclick="window.location='asset1_details.php'">None</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
+                                 </tr></tbody>
+                           </table></div><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_15_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_15_previous"><a href="#" aria-controls="DataTables_Table_15" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_15" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_15_next"><a href="#" aria-controls="DataTables_Table_15" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
+                        </div>
+                     </div>
+                  </div>
+               </section>
+            </div>
+         </div>
+      </div>
+   </section>
+
+    <!-- <section role="main" class="content-body">
       <header class="page-header">
         <h2>{{ title }}</h2>
 
@@ -74,7 +561,7 @@
                     <th>Edit</th>
                     <th>Delete</th>
                     <!--<th class="d-lg-none">Operator</th>-->
-                    <!--<th class="d-lg-none">CSS grade</th>-->
+                    <!--<th class="d-lg-none">CSS grade</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -90,8 +577,8 @@
                         >Delete</a
                       >
                     </td>
-                    <!--<td class="center d-lg-none">4</td>-->
-                    <!--<td class="center d-lg-none">X</td>-->
+                   <td class="center d-lg-none">4</td>-->
+                    <!--<td class="center d-lg-none">X</td>
                   </tr>
                 </tbody>
               </table>
@@ -99,6 +586,6 @@
           </section>
         </div>
       </div>
-    </section>
+    </section> -->
   </div>
 </section>

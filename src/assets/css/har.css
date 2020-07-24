@@ -335,3 +335,43 @@
    ul.nav-main li .nav-children li.nav-active > a{
      color: #000!important;
    }
+
+   .top-tabs.nav-tabs li {
+    padding: 0
+  }
+  .nav-tabs{
+    border-bottom: none !important;
+  }
+  .top-tabs.nav-tabs li .nav-link {
+    color: #2e353e;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 6px 15px;
+    border-radius: 50px;
+    border: 0.5px solid #aaa;
+    margin: 0 4px;
+    background: transparent;
+  }
+  .top-tabs.nav-tabs .nav-link.active, 
+  .top-tabs.nav-tabs .nav-link:hover,
+  .top-tabs.nav-tabs .nav-link.active:hover,
+  .top-tabs.nav-tabs .nav-link.active:focus {
+    color: #fff;
+    background: #aaa;
+    border: none;
+    text-decoration: none;
+    border: 0.5px solid #aaa;
+  }
+  .tab-pane.active{
+    text-decoration: none !important;
+  }
+  /* daljit */
+  .page-header {
+    margin: 0px ;
+  }
+  .header .logo {
+    width: 270px;
+    margin: 0;
+    padding: 15px 15px 0px;
+  }
+  /* daljit ends */

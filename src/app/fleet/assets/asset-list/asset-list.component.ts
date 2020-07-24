@@ -26,7 +26,7 @@ export class AssetListComponent implements OnInit {
       },
       error: () => {},
       next: (result: any) => {
-        console.log(result);
+        console.log("res",result);
         this.assets = result.Items;
       },
     });
