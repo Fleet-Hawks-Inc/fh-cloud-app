@@ -11,28 +11,15 @@
 
     <section role="main" class="content-body">
       <header class="page-header">
-        <h2>{{ title }}</h2>
-
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a routerLink="">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/fleet/geofence/Geofence-List">
-                Geofence List
-              </a>
-            </li>
-
-            <li>
-              <span>{{ title }}</span>
-            </li>
-          </ol>
-        </div>
+         <div class="row pr-5 " style="padding-top:10px;">
+            <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+               {{title}}
+            </div>
+            <div class="col-md-8  col-lg-8 text-right pr-4">                               
+               <a [routerLink]="['/fleet', 'geofence', 'Geofence-List']"  class="btn btn-default btn-sm"><i class="fas fa-list"></i> Geofences List</a>
+            </div>
+         </div>
       </header>
-
       <div class="row">
         <div class="col pr-0">
            <form class="form-horizontal form-bordered" method="get"  name="form" id="form_">
@@ -90,7 +77,7 @@
                                    </select>
                                 </div>
                                 <div class="col-lg-1 pl-0">
-                                   <a href="#addGeofenceCategoryModal"  class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                   <a [routerLink]="" (click)="createGeofenceTypeModal()"  class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
                                 </div>
                              </div>
                           </div>
@@ -126,28 +113,31 @@
   </div>
 </section>
  <!-- Add Geofence Category MODAL -->
- <div id="addGeofenceCategoryModal" class="modal-block modal-block-primary mfp-hide">
-  <section class="card">
-     <header class="card-header">
-        <h2 class="card-title">Add Category  <span class="modal-dismiss pull-right"><i class="fas fa-times text-danger"></i></span></h2>
-     </header>
-     <div class="card-body text-dark">
-        <form>
-           <div class="form-row">
-              <div class="form-group col-md-12">
-                 <label class="font-weight-bold control-label">Category Name</label>
-                 <input type="text" class="form-control">
-              </div>
-           </div>
-        </form>
+<div id="addGeofenceCategoryModal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+     <!-- Modal content-->
+     <div class="modal-content">
+       <div class="modal-header">
+          <h4>Add Geofence Category</h4>
+         <button type="button" class="close pt-4" data-dismiss="modal">
+           &times;
+         </button>
+       </div>
+       <form class="form-horizontal form-bordered" method="get"  name="form" id="form1_">
+       <div class="modal-body">
+         
+         <label class="control-label">Category Name</label>
+          <input type="text" class="form-control" name="geofenceNewCategory" [(ngModel)]="geofenceNewCategory">
+       </div>
+       <div class="modal-footer">
+         <button type="button" (click)="addCategory()" class="btn btn-success" data-dismiss="modal">
+          Save
+         </button>
+         <p class="text text-success" *ngIf="hasSuccess">
+            {{ Success }}
+          </p>
+       </div>
+      </form>
      </div>
-     <footer class="card-footer">
-        <div class="row">
-           <div class="col-md-12 text-right">
-              <button class="btn btn-default modal-dismiss">Cancel</button>
-              <button class="btn btn-success modal-confirm">Save</button>
-           </div>
-        </div>
-     </footer>
-  </section>
-</div> 
+   </div>
+ </div>

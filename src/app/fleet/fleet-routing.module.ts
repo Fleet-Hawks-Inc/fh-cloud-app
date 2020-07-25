@@ -4,6 +4,8 @@ import { RouterModule, Routes } from "@angular/router";
 import { AddDriverComponent } from "./drivers/add-driver/add-driver.component";
 import { EditDriverComponent } from "./drivers/edit-driver/edit-driver.component";
 import { DriverListComponent } from "./drivers/driver-list/driver-list.component";
+import { DriverProfileComponent } from './drivers/driver-profile/driver-profile.component';
+
 
 import { AddVehicleComponent } from "./vehicles/add-vehicle/add-vehicle.component";
 import { EditVehicleComponent } from "./vehicles/edit-vehicle/edit-vehicle.component";
@@ -27,6 +29,8 @@ import { EditAssetComponent } from "./assets/edit-asset/edit-asset.component";
 import { AddFuelEntryComponent } from "./expenses/fuel-entry/add-fuel-entry/add-fuel-entry.component";
 import { FuelEntryListComponent } from "./expenses/fuel-entry/fuel-entry-list/fuel-entry-list.component";
 import { EditFuelEntryComponent } from "./expenses/fuel-entry/edit-fuel-entry/edit-fuel-entry.component";
+import { FuelDetailsComponent } from './expenses/fuel-entry/fuel-details/fuel-details.component';
+
 
 import { AddTicketComponent } from "./expenses/tickets/add-ticket/add-ticket.component";
 import { EditTicketComponent } from "./expenses/tickets/edit-ticket/edit-ticket.component";
@@ -80,6 +84,7 @@ const routes: Routes = [
       { path: "Add-Driver", component: AddDriverComponent },
       { path: "Edit-Driver/:userName", component: EditDriverComponent },
       { path: "Drivers-List", component: DriverListComponent },
+      { path: "Driver-Profile", component: DriverProfileComponent },
     ],
   },
   {
@@ -134,6 +139,10 @@ const routes: Routes = [
           {
             path: "Edit-Fuel-Entry/:entryID",
             component: EditFuelEntryComponent,
+          },
+          {
+            path: "Fuel-Details",
+            component: FuelDetailsComponent,
           },
         ],
       },

@@ -1,0 +1,60 @@
+.prtsidebar{
+  width: 50px;
+  height: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+  border-left: solid 1px #d7d7d7;
+  position: fixed;
+  z-index: 100;
+  right: 0;
+  top: 100px; bottom: 0;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.prtsidebar a{display: block; color: #757575; margin-bottom: 10px;}
+
+.prtsidebara{bottom:0px; right:16px; position: fixed;}
+
+.prtsidebar .prtsidebara a{display: block; color: #757575; margin-bottom: 10px;}
+
+
+
+/* ************************************************** NEW CLASSES START 16.07.20  ************************************************** */
+
+/* on hover show description of the driver on map view */
+
+.vehicle-description {
+  display: none;
+}
+
+.vehicle-item:hover .vehicle-description {
+  display: block; z-index: 99999;
+  position: absolute; color: #000000;
+  box-shadow: 0 0 10px #333;
+  width: 250px; min-height: 135px; font-size: 13px;
+  text-align: left; padding: 10px;
+  background: rgba(255,255,255, 1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

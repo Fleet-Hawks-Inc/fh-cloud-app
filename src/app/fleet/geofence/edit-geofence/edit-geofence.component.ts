@@ -21,6 +21,7 @@ export class EditGeofenceComponent implements OnInit {
   geofenceID = "";
   fenceName = "";
   location = "";
+  geofenceType = "";
   geoLocation = {
     latitude: "",
     longitude: "",
@@ -28,7 +29,7 @@ export class EditGeofenceComponent implements OnInit {
   geofence = "";
   description = "";
   timeCreated = "";
-
+  geofenceNewCategory = "";
   /******************/
 
   response: any = "";
@@ -53,6 +54,7 @@ export class EditGeofenceComponent implements OnInit {
         result = result.Items[0];
         this.fenceName = result.fenceName;
         this.location = result.location;
+        this.geofenceType = result.geofenceType;
         this.description = result.description;
         this.geoLocation.latitude = result.geoLocation.latitude;
         this.geoLocation.longitude = result.geoLocation.longitude;
@@ -62,6 +64,9 @@ export class EditGeofenceComponent implements OnInit {
 
     $(document).ready(() => {
       this.form = $("#form_").validate();
+    });
+    $(document).ready(() => {
+      this.form = $("#form1_").validate();
     });
   }
 
@@ -82,7 +87,15 @@ export class EditGeofenceComponent implements OnInit {
       this.geoLocation.longitude
     );
   }
-
+  addCategory(){
+    this.errors = {};
+      this.hasError = false;
+      this.hasSuccess = false;
+      const data1 = {
+        geofenceNewCategory: this.geofenceNewCategory
+      };
+      console.log(data1);
+  }
   updateGeofence() {
     this.errors = {};
     this.hasError = false;

@@ -49,4 +49,20 @@ export class DriverListComponent implements OnInit {
       $("#datatable-default").DataTable();
     });
   }
+  showMap(){
+    // $(document).ready(function(){
+      $("#map_view").show();
+   $("#list_view").hide();
+   $("#map_view_btn").removeClass("btn-default").addClass("btn-success");
+   $("#list_view_btn").removeClass("btn-success").addClass("btn-default");   
+    // });
+  }
+  showList(){ 
+    // $(document).ready(function(){
+      $("#list_view").show();
+      $("#map_view").hide();
+      $("#list_view_btn").removeClass("btn-default").addClass("btn-success");
+      $("#map_view_btn").removeClass("btn-success").addClass("btn-default");
+  //  });
+  }
 }

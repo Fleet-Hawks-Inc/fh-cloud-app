@@ -11,7 +11,34 @@
         <h2 class="text-uppercase font-weight-normal m-0">Driver Login</h2>
       </div>
       <div class="card-body">
-        <form action="select-vehicle.html" method="post">
+        <form action="select-vehicle.php" method="post">
+          <div class="form-group mb-3">
+             <div class="input-group">
+                <div class="logiconm mr-3">
+                   <i class="fas fa-user logicon text-5"></i>
+                </div>
+                <input name="username" [(ngModel)]="userName" type="text" placeholder="Email ID or Username" class="form-control login form-control-lg" />
+             </div>
+          </div>
+          <div class="form-group mb-3">
+             <div class="input-group">
+                <div class="logiconm mr-3">
+                   <i class="fas fa-lock logicon text-5"></i>
+                </div>
+                <input name="password" [(ngModel)]="password" type="password" placeholder="Password" class="form-control login form-control-lg" />
+             </div>
+          </div>
+          <div class="row">
+
+            <p *ngIf="hasError" class="text text-danger">{{Error}}</p>
+          </div>
+          <div class="row">
+             <div class="col-sm-12 text-center">
+                <button type="submit"  class="btn btn-primary btn-lg mt-2" (click)="loginAction1()">Login</button>
+             </div>
+          </div>
+       </form>
+        <!-- <form action="select-vehicle.html" method="post">
           <div class="form-group mb-3">
             <div class="input-group">
               <div class="logiconm mr-3">
@@ -52,7 +79,7 @@
 
 
 
-        </form>
+        </form> -->
       </div>
     </div>
 

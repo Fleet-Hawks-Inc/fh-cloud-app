@@ -77,6 +77,8 @@ import {ChartsModule} from 'ng2-charts';
 import {AddVehicleComponent} from './vehicles/add-vehicle/add-vehicle.component';
 import {EditVehicleComponent} from './vehicles/edit-vehicle/edit-vehicle.component';
 import { DashboardDriverComponent } from './dashboard-driver/dashboard-driver.component';
+import { FuelDetailsComponent } from './expenses/fuel-entry/fuel-details/fuel-details.component';
+import { DriverProfileComponent } from './drivers/driver-profile/driver-profile.component';
 
 @NgModule({
   imports: [
@@ -114,6 +116,7 @@ import { DashboardDriverComponent } from './dashboard-driver/dashboard-driver.co
     AddFuelEntryComponent,
     EditFuelEntryComponent,
     FuelEntryListComponent,
+    FuelDetailsComponent,
 
     AddTicketComponent,
     EditTicketComponent,
@@ -159,7 +162,11 @@ import { DashboardDriverComponent } from './dashboard-driver/dashboard-driver.co
 
     GraphComponent,
 
-    DashboardDriverComponent
+    DashboardDriverComponent,
+
+    DriverProfileComponent,
+
+    
   ],
   providers: [],
 })

@@ -28,1157 +28,987 @@
         </div>
       </header>
 
-      <div class="row">
-        <div class="col">
-          <section class="card mb-3">
-            <div class="card-body">
-              <h2 class="card-title mt-3 pull-left">Add New Vehicle</h2>
-              <div class="pull-right">
-                <div class="btn-group flex-wrap">
-                  <button
-                    type="button"
-                    class="mb-1 mt-1 mr-1 btn btn-default dropdown-toggle"
-                    data-toggle="dropdown"
-                  >
-                    <i class="fas fa-ellipsis-v"></i> Action
-                    <span class="caret"></span>
-                  </button>
-                  <div class="dropdown-menu" role="menu">
-                    <a class="dropdown-item text-1" href="#"
-                      >Reset All Password</a
-                    >
-                    <a class="dropdown-item text-1" href="#">Upload CSV</a>
-                    <a class="dropdown-item text-1" href="#">Download CSV</a>
-                  </div>
-                </div>
-                <a href="#" class="mb-1 mt-1 mr-1 btn btn-success"
-                  ><i class="fas fa-plus"></i> Add Multiple Vehicles</a
-                >
-              </div>
-            </div>
-
-            <div class="addv_topnav">
-              <ul class="pl-0 mt-2 mb-0">
-                <li
-                  (click)="new_details()"
-                  [ngClass]="{ active: activeTab == 'details' }"
-                  class="btn"
-                >
-                  Details
-                </li>
-                <li
-                  (click)="new_lifecycle()"
-                  [ngClass]="{ active: activeTab == 'lifeCycle' }"
-                  class="btn"
-                >
-                  Lifecycle
-                </li>
-                <li
-                  (click)="new_specifications()"
-                  [ngClass]="{ active: activeTab == 'specifications' }"
-                  class="btn"
-                >
-                  Specifications
-                </li>
-                <li
-                  (click)="new_fluids()"
-                  [ngClass]="{ active: activeTab == 'fluids' }"
-                  class="btn"
-                >
-                  Fluids
-                </li>
-                <li
-                  (click)="new_wheels()"
-                  [ngClass]="{ active: activeTab == 'wheel&Tyres' }"
-                  class="btn"
-                >
-                  Wheels & TIres
-                </li>
-                <li
-                  (click)="new_settings()"
-                  [ngClass]="{ active: activeTab == 'settings' }"
-                  class="btn"
-                >
-                  Settings
-                </li>
+      <div class="row text-dark">
+        <div class="col pr-0">
+          <section class="card">
+            <div class="m-2">
+              <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                <li class="nav-item"> <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="true">Basic</a> </li>
+                <li class="nav-item"> <a class="nav-link" id="lifecycle-tab" data-toggle="tab" href="#lifecycle" role="tab" aria-controls="lifecycle" aria-selected="false">Lifecycle</a> </li>
+                <li class="nav-item"> <a class="nav-link" id="specifications-tab" data-toggle="tab" href="#specifications" role="tab" aria-controls="specifications" aria-selected="false">Specifications</a> </li>
+                <li class="nav-item"> <a class="nav-link" id="insurance-tab" data-toggle="tab" href="#insurance" role="tab" aria-controls="insurance" aria-selected="false">Insurance</a> </li>
+                <li class="nav-item"> <a class="nav-link" id="fluids-tab" data-toggle="tab" href="#fluids" role="tab" aria-controls="fluids" aria-selected="false">Fluids</a> </li>
+                <li class="nav-item"> <a class="nav-link" id="wheels-tab" data-toggle="tab" href="#wheels" role="tab" aria-controls="wheels" aria-selected="false">Wheels & Tires</a> </li>
+                <li class="nav-item"> <a class="nav-link" id="engine-tab" data-toggle="tab" href="#engine" role="tab" aria-controls="engine" aria-selected="false">Engine & Transmission</a> </li>
+                <li class="nav-item"> <a class="nav-link" id="vsettings-tab" data-toggle="tab" href="#vsettings" role="tab" aria-controls="vsettings" aria-selected="false">Settings</a> </li>
               </ul>
             </div>
           </section>
-          <form class="form-horizontal form-bordered" method="get">
-            <div class="card-body" id="vehicle_new_details">
-              <header class="card-header">
-                <h2 class="card-title">Details</h2>
-              </header>
-              <div class="sub-heading-new-vehicle font-weight-bold pt-3 pb-2">
-                Identification
-              </div>
-              <!-- <form class="form-horizontal form-bordered" method="get"> -->
-              <div class="form-group row">
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Vechile Name</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="vehicleName"
-                    name="vehicleName"
-                  />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >VIN</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="VIN"
-                    name="VIN"
-                  />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Year</label
-                  >
-                  <select
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="year"
-                    name="year"
-                  >
-                    <optgroup label="">
-                      <option value="1980">1980</option>
-                      <option value="1981">1981</option>
-                      <option value="1982">1982</option>
-                      <option value="1983">1983</option>
-                      <option value="1984">1984</option>
-                      <option value="1985">1985</option>
-                      <option value="1986">1986</option>
-                      <option value="1987">1987</option>
-                      <option value="1988">1988</option>
-                      <option value="1989">1989</option>
-                      <option value="1990">1990</option>
-                      <option value="1991">1991</option>
-                      <option value="1992">1992</option>
-                      <option value="1993">1993</option>
-                      <option value="1994">1994</option>
-                      <option value="1995">1995</option>
-                      <option value="1996">1996</option>
-                      <option value="1997">1997</option>
-                      <option value="1998">1998</option>
-                      <option value="1999">1999</option>
-                      <option value="2000">2000</option>
-                      <option value="2001">2001</option>
-                      <option value="2002">2002</option>
-                      <option value="2003">2003</option>
-                      <option value="2004">2004</option>
-                      <option value="2005">2005</option>
-                      <option value="2006">2006</option>
-                      <option value="2007">2007</option>
-                      <option value="2008">2008</option>
-                      <option value="2009">2009</option>
-                      <option value="2010">2010</option>
-                      <option value="2011">2011</option>
-                      <option value="2012">2012</option>
-                      <option value="2013">2013</option>
-                      <option value="2014">2014</option>
-                      <option value="2015">2015</option>
-                      <option value="2016">2016</option>
-                      <option value="2017">2017</option>
-                      <option value="2018">2018</option>
-                      <option value="2019">2019</option>
-                      <option value="2020">2020</option>
-                    </optgroup>
-                  </select>
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Make</label
-                  >
-                  <select
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="make"
-                    name="make"
-                    (change)="getModels()"
-                  >
-                    <optgroup label="">
-                      <option *ngFor="let val of manufacturers" value="{{val.manufacturerID}}">{{val.name}}</option>
-                    </optgroup>
-                  </select>
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Model</label
-                  >
-                  <select
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="model"
-                    name="model"
-                  >
-                    <optgroup label="">
-                      <option *ngFor="let val of models" value="{{val.modelID}}">{{val.name}}</option>
-                    </optgroup>
-                  </select>
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Country</label
-                  >
-                  <select
-                  (change)="getStates()"
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="countryID"
-                    name="countryID"
-                  >
-                    <optgroup label="">
-                      <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
-                    </optgroup>
-                  </select>
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >State</label
-                  >
-                  <select
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="state"
-                    name="state"
-                  >
-                    <optgroup label="">
-                      <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
-                    </optgroup>
-                  </select>
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Plate Number</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="plateNumber"
-                    name="plateNumber"
-                  />
-                </div>
-              </div>
-              <div class="sub-heading-new-vehicle font-weight-bold py-1">
-                Service Information
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-12">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Service Program</label
-                  >
-                  <select
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="serviceProgramID"
-                    name="serviceProgramID"
-                  >
-                    <optgroup label="">
-                      <option *ngFor="let q of servicePrograms" value="{{ q.programID }}">{{
-                        q.programName
-                      }}</option>
-                    </optgroup>
-                  </select>
-                </div>
-              </div>
-              <div class="sub-heading-new-vehicle font-weight-bold py-1">
-                Inspection Information
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-12">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Inspection Form</label
-                  >
-                  <select
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="inspectionFormID"
-                    name="inspectionFormID"
-                  >
-                    <optgroup label="">
-                      <option *ngFor="let q of inspectionForms" value="{{ q.inspectionFormID }}">{{
-                        q.title
-                      }}</option>
-                    </optgroup>
-                  </select>
-                </div>
-              </div>
-              <div class="sub-heading-new-vehicle font-weight-bold py-1">
-                Classification
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Status</label
-                  >
-                  <select
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="currentStatus"
-                    name="currentStatus"
-                  >
-                    <optgroup label="">
-                      <option value="Active">Active</option>
-                      <option value="Inactive">Inactive</option>
-                      <option value="Out of Service">Out of Service</option>
-                      <option value="Sold">Sold</option>
-                      <option value="In Shop">In Shop</option>
-                    </optgroup>
-                  </select>
-                </div>
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Group</label
-                  >
-                  <select
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="group"
-                    name="group"
-                  >
-                    <optgroup label="">
-                      <option *ngFor="let group of groups" value="{{group.groupID}}">{{group.groupName}}</option>
-                    </optgroup>
-                  </select>
-                </div>
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Ownership</label
-                  >
-                  <select
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="ownership"
-                    name="ownership"
-                  >
-                    <optgroup label="">
-                      <option value="Owned">Owned</option>
-                      <option value="Leased">Leased</option>
-                      <option value="Rented">Rented</option>
-                      <option value="Customer">Customer</option>
-                    </optgroup>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-12">
-                  <div class="sub-heading-new-vehicle font-weight-bold py-1">
-                    Quantum Info
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Assigned Quantum</label
-                  >
-                  <input
-                    class="form-control"
-                    id="inputDisabled"
-                    type="text"
-                    placeholder="Quantum has been assigned"
-                    disabled=""
-                    [(ngModel)]="quantum"
-                    name="UID"
-                  />
-                </div>
-                <div class="col-lg-6">
-                  <a
-                    class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal"
-                    [routerLink]=""
-                    (click)="quantumModal()"
-                    ><i class="fas fa-plus"></i> Assign Quantum</a
-                  >
-                </div>
-              </div>
-              <div class="sub-heading-new-vehicle font-weight-bold py-1">
-                Additional Details
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Vechile Color</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="additionalDetails.vehicleColor"
-                    name="vehicleColor"
-                  />
-                </div>
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Body Type</label
-                  >
-                  <select
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="additionalDetails.bodyType"
-                    name="bodyType"
-                  >
-                    <optgroup label="">
-                      <option value="Conventional">Conventional</option>
-                      <option value="Full Size">Full Size</option>
-                      <option value="Pickup">Pickup</option>
-                    </optgroup>
-                  </select>
-                </div>
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Body Subtype</label
-                  >
-                  <select
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="additionalDetails.bodySubType"
-                    name="bodySubType"
-                  >
-                    <optgroup label="">
-                      <option value="Cargo">Cargo</option>
-                      <option value="Sleeper Cab">Sleeper Cab</option>
-                      <option value="Crew Cab">Crew Cab</option>
-                    </optgroup>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="card-body" id="vehicle_new_lifecycle">
-              <header class="card-header">
-                <h2 class="card-title">Lifecycle</h2>
-              </header>
-
-              <div class="sub-heading-new-vehicle font-weight-bold pt-3 pb-0">
-                Vehicle Life Estimates
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-6">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Estimated Service Life in Months</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="lifeCycle.estimatedServiceLifeInMonths"
-                    name="estimatedServiceLifeInMonths"
-                  />
-                </div>
-                <div class="col-lg-6">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Estimated Service Life in Miles</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="lifeCycle.estimatedServiceLifeInMiles"
-                    name="estimatedServiceLifeInMiles"
-                  />
-                </div>
-              </div>
-
-              <!-- </form> -->
-            </div>
-            <!-- SPECIFICATIONS -->
-            <div class="card-body" id="vehicle_new_specifications">
-              <header class="card-header">
-                <h2 class="card-title">Specifications</h2>
-              </header>
-              <div class="sub-heading-new-vehicle font-weight-bold pt-3 pb-2">
-                Dimensions
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Width</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="dimensions.width"
-                    name="width"
-                  />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Height</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="dimensions.height"
-                    name="height"
-                  />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Length</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="dimensions.length"
-                    name="length"
-                  />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Interior Volume</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="dimensions.interiorVolume"
-                    name="interiorVolume"
-                  />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Passenger Volume</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="dimensions.passengerVolume"
-                    name="passengerVolume"
-                  />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Cargo Volume</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="dimensions.cargoVolume"
-                    name="cargoVolume"
-                  />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Ground Clearance</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="dimensions.groundClearance"
-                    name="groundClearance"
-                  />
-                </div>
-                <div class="col-lg-3">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Bed Length</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="dimensions.badLength"
-                    name="badLength"
-                  />
-                </div>
-              </div>
-              <div class="sub-heading-new-vehicle font-weight-bold py-1">
-                Weight
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-6">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Curb Weight</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="weight.curbWeight"
-                    name="curbWeight"
-                  />
-                </div>
-                <div class="col-lg-6">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Gross Vehicle Weight Rating</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="weight.grossVehicleWeightRating"
-                    name="grossVehicleWeightRating"
-                  />
-                </div>
-              </div>
-              <div class="sub-heading-new-vehicle font-weight-bold py-1">
-                Performance
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-6">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Towing Capacity</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="performace.towingCapacity"
-                    name="towingCapacity"
-                  />
-                </div>
-                <div class="col-lg-6">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Max Payload</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="performace.maxPayload"
-                    name="maxPayload"
-                  />
-                </div>
-              </div>
-              <div class="sub-heading-new-vehicle font-weight-bold py-1">
-                Fuel Economy
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >EPA City</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="fuelEconomy.EPACity"
-                    name="EPACity"
-                  />
-                </div>
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >EPA Highway</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="fuelEconomy.EPAHighway"
-                    name="EPAHighway"
-                  />
-                </div>
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >EPA Combined</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="fuelEconomy.EPACombined"
-                    name="EPACombined"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <!-- FLUID -->
-            <div class="card-body" id="vehicle_new_fluids">
-              <header class="card-header">
-                <h2 class="card-title">Fluids</h2>
-              </header>
-              <div class="sub-heading-new-vehicle font-weight-bold pt-3 pb-1">
-                Fuel
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Fuel Type</label
-                  >
-                  <select
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="fuel.fuelType"
-                    name="fuelType"
-                  >
-                    <optgroup label="">
-                      <option value="CNG">CNG</option>
-                      <option value="Diesal">Diesal</option>
-                      <option value="Gasoline">Gasoline</option>
-                      <option value="Propane">Propane</option>
-                    </optgroup>
-                  </select>
-                </div>
-
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Fuel Tank 1 Capacity</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="fuel.fuelTank1Capacity"
-                    name="fuelTank1Capacity"
-                  />
-                </div>
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Fuel Tank 2 Capacity</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="fuel.fuelTank2Capacity"
-                    name="fuelTank2Capacity"
-                  />
-                </div>
-              </div>
-              <div class="sub-heading-new-vehicle font-weight-bold py-1">
-                Oil
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Oil Capacity</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="oilCapacity"
-                    name="oilCapacity"
-                  />
-                </div>
-              </div>
-              <!-- </form> -->
-            </div>
-            <!-- WHEELS -->
-            <div class="card-body" id="vehicle_new_wheels">
-              <header class="card-header">
-                <h2 class="card-title">Wheels & Tires</h2>
-              </header>
-              <div class="sub-heading-new-vehicle font-weight-bold pt-3 pb-1">
-                Features
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-2">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Brake System</label
-                  >
-                  <select
-                    data-plugin-selectTwo
-                    class="form-control populate"
-                    [(ngModel)]="features.breakSystem"
-                    name="breakSystem"
-                  >
-                    <optgroup label="">
-                      <option value="Disc">Disc</option>
-                      <option value="Drum">Drum</option>
-                    </optgroup>
-                  </select>
-                </div>
-                <div class="col-lg-2">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Wheelbase</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="features.wheelBase"
-                    name="wheelBase"
-                  />
-                </div>
-                <div class="col-lg-2">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Rear Axle</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="features.rearAxle"
-                    name="rearAxle"
-                  />
-                </div>
-                <div class="col-lg-2">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Front Tire Type</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="features.frontTyreType"
-                    name="frontTyreType"
-                  />
-                </div>
-                <div class="col-lg-2">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Front Track Width</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="features.frontTrackWidth"
-                    name="frontTrackWidth"
-                  />
-                </div>
-                <div class="col-lg-2">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Front Wheel Diameter</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="features.frontWheelDiameter"
-                    name="frontWheelDiameter"
-                  />
-                </div>
-                <div class="col-lg-2">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Front Tire PSI</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="features.frontTyrePSI"
-                    name="frontTyrePSI"
-                  />
-                </div>
-                <div class="col-lg-2">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Rear Tire Type</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="features.rearTyreType"
-                    name="rearTyreType"
-                  />
-                </div>
-                <div class="col-lg-2">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Rear Track Width</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="features.rearTrackWidth"
-                    name="rearTrackWidth"
-                  />
-                </div>
-                <div class="col-lg-2">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Rear Wheel Diameter</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="features.rearWheelDiameter"
-                    name="rearWheelDiameter"
-                  />
-                </div>
-                <div class="col-lg-2">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Rear Tire PSI</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="features.rearTyrePSI"
-                    name="rearTyrePSI"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <!-- SETTINGS -->
-            <div class="card-body" id="vehicle_new_settings">
-              <header class="card-header">
-                <h2 class="card-title">Settings</h2>
-              </header>
-
-              <div class="row mb-3">
-                <div class="col-lg-6">
-                  <div
-                    class="sub-heading-new-vehicle font-weight-bold pt-3 pb-2"
-                  >
-                    Primary Meter
-                  </div>
-                  <div class="form-group row">
-                    <div class="col-lg-3">
-                      <div class="radio-custom">
-                        <input
-                          type="radio"
-                          id="radioExample1"
-                          (change)="onChangePrimaryMeter('miles')"
-                          name="primaryMeter"
-                        />
-                        <label for="radioExample1">Miles</label>
+          <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
+            <div class="card-body">
+              <div class="tab-content" id="myTabContent" style="box-shadow: none; border: none;">
+                <div class="tab-pane show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                  <div class="">
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Identification</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Name</label>
+                            <input type="text" class="form-control"    [(ngModel)]="vehicleName"
+                            name="vehicleName"> </div>
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">VIN</label>
+                            <input type="text" class="form-control"   [(ngModel)]="VIN"
+                            name="VIN"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Year</label>
+                            <select data-plugin-selectTwo class="form-control populate"  [(ngModel)]="year"
+                            name="year">
+                            <optgroup label="">
+                              <option value="1980">1980</option>
+                              <option value="1981">1981</option>
+                              <option value="1982">1982</option>
+                              <option value="1983">1983</option>
+                              <option value="1984">1984</option>
+                              <option value="1985">1985</option>
+                              <option value="1986">1986</option>
+                              <option value="1987">1987</option>
+                              <option value="1988">1988</option>
+                              <option value="1989">1989</option>
+                              <option value="1990">1990</option>
+                              <option value="1991">1991</option>
+                              <option value="1992">1992</option>
+                              <option value="1993">1993</option>
+                              <option value="1994">1994</option>
+                              <option value="1995">1995</option>
+                              <option value="1996">1996</option>
+                              <option value="1997">1997</option>
+                              <option value="1998">1998</option>
+                              <option value="1999">1999</option>
+                              <option value="2000">2000</option>
+                              <option value="2001">2001</option>
+                              <option value="2002">2002</option>
+                              <option value="2003">2003</option>
+                              <option value="2004">2004</option>
+                              <option value="2005">2005</option>
+                              <option value="2006">2006</option>
+                              <option value="2007">2007</option>
+                              <option value="2008">2008</option>
+                              <option value="2009">2009</option>
+                              <option value="2010">2010</option>
+                              <option value="2011">2011</option>
+                              <option value="2012">2012</option>
+                              <option value="2013">2013</option>
+                              <option value="2014">2014</option>
+                              <option value="2015">2015</option>
+                              <option value="2016">2016</option>
+                              <option value="2017">2017</option>
+                              <option value="2018">2018</option>
+                              <option value="2019">2019</option>
+                              <option value="2020">2020</option>
+                            </optgroup>
+                            </select>
+                          </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Make</label>
+                            <select data-plugin-selectTwo class="form-control populate"  [(ngModel)]="make"
+                            name="make"
+                            (change)="getModels()">
+                            <optgroup label="">
+                              <option *ngFor="let val of manufacturers" value="{{val.manufacturerID}}">{{val.name}}</option>
+                            </optgroup>
+                            </select>
+                          </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Model</label>
+                            <select data-plugin-selectTwo class="form-control populate"   [(ngModel)]="model"
+                            name="model">
+                            <optgroup label="">
+                              <option *ngFor="let val of models" value="{{val.modelID}}">{{val.name}}</option>
+                            </optgroup>
+                            </select>
+                          </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Plate Number</label>
+                            <input type="text" class="form-control"   [(ngModel)]="plateNumber"
+                            name="plateNumber"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
+                            <select data-plugin-selectTwo class="form-control populate"   [(ngModel)]="countryID"
+                            name="countryID" (change)="getStates()">
+                            <optgroup label="">
+                              <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
+                            </optgroup>
+                            </select>
+                          </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
+                            <select data-plugin-selectTwo class="form-control populate"  [(ngModel)]="state"
+                            name="state">
+                              <optgroup label="">
+                                <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-7 text-center"> <img class="business_image_style" id="" src="\assets\img\truck.jpg">
+                            <div class="mt-3">
+                              <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
+                                <input type="file" multiple class="hidden_input1"  id="fileToUpload" name="fileToUpload" (change)="uploadFile($event)" >
+                              </div>
+                              <p class="text text-danger" *ngIf="imageError !== ''">
+                                {{ imageError }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="col-lg-3">
-                      <div class="radio-custom">
-                        <input
-                          type="radio"
-                          id="radioExample2"
-                          (change)="onChangePrimaryMeter('kilometers')"
-                          name="primaryMeter"
-                          checked
-                        />
-                        <label for="radioExample2">Kilometers</label>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Preventative Maintenance</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Service Program</label>
+                            <select data-plugin-selectTwo class="form-control populate"    [(ngModel)]="serviceProgramID"
+                            name="serviceProgramID">
+                            <optgroup label="">
+                              <option *ngFor="let q of servicePrograms" value="{{ q.programID }}">{{
+                                q.programName
+                              }}</option>
+                            </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row pt-4">
+                          <div class="col-lg-10">
+                            <div class="row">
+                              <div class="col-lg-3">
+                                <label class="control-label font-weight-bold text-lg-right" for="inputDefault">Primary Meter:</label>
+                              </div>
+                              <div class="col-lg-2 px-0">
+                                <div class="radio">
+                                  <label>
+                                    <input type="radio" name="basicPrimaryMeter"  (change)="onChangeBasicPrimaryMeter('miles')" id="primary-meter-miles" onclick="primary_meter_reading()" checked> Miles </label>
+                                </div>
+                              </div>
+                              <div class="col-lg-3  pr-0">
+                                <div class="radio">
+                                  <label>
+                                    <input type="radio" name="basicPrimaryMeter" (change)="onChangeBasicPrimaryMeter('kilometers')" id="primary-meter-kms" onclick="primary_meter_reading()"> Kilometers </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                                     </div>
+                                     <div class="row pt-2">
+                                        <div class="col-lg-10">
+                                           <div class="row">
+                                              <div class="col-lg-6">
+                                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Time</label>
+                                                 <div class="row">
+                                                    <div class="col-lg-6">
+                                                       <input type="number" class="form-control" name="spRepeatTime" [(ngModel)] = "spRepeatTime">
+                                                    </div>
+                                                    <div class="col-lg-6 pl-0">
+                                                       <select data-plugin-selectTwo class="form-control populate" name="spRepeatTimeUnit" [(ngModel)] = "spRepeatTimeUnit">
+                                                          <optgroup label="">
+                                                             <option value="Day(s)">Day(s)</option>
+                                                             <option value="Week(s)">Week(s)</option>
+                                                             <option value="Month(s)">Month(s)</option>
+                                                          </optgroup>
+                                                       </select>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                              <div class="col-lg-6">
+                                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer <span id="primary_meter">miles</span></label>
+                                                 <input type="text" class="form-control" name="spRepeatOdometer" [(ngModel)] = "spRepeatOdometer">
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                      </div>
+                    </div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Classification</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Status</label>
+                            <select data-plugin-selectTwo class="form-control populate"   [(ngModel)]="currentStatus"
+                            name="currentStatus">
+                              <optgroup label="">
+                                <option value="1">Active</option>
+                                <option value="2">Inactive</option>
+                                <option value="2">Out of Service</option>
+                                <option value="2">Sold</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Group</label>
+                            <select data-plugin-selectTwo class="form-control populate"   [(ngModel)]="group"
+                            name="group">
+                              <optgroup label="">
+                                <option *ngFor="let group of groups" value="{{group.groupID}}">{{group.groupName}}</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Ownership</label>
+                            <select data-plugin-selectTwo class="form-control populate"  [(ngModel)]="ownership"
+                            name="ownership">
+                              <optgroup label="">
+                                <option value="1">Owned</option>
+                                <option value="2">Leased</option>
+                                <option value="2">Rented</option>
+                                <option value="2">Customer</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- QUANTUM DETAILS -->
+                    <!-- <div class="row pt-3">
+                                     <div class="col-lg-10">
+
+                                     <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2"
+                                       >Quantum Information</label>
+                                  </div>
+                                  <div class="col-lg-5 offset-lg-1">
+                                     <div class="row">
+                                           <div class="col-lg-10">
+
+                                           <label class="control-label font-weight-bold text-lg-right pt-2">Assign Quantum</label>
+                                           <div class="row">
+                                              <div class="col-lg-10">
+                                                 <input type="text" class="form-control">
+                                              </div>
+                                              <div class="col-lg-2">
+                                                 <button type="button" class="btn btn-success btn-small">Assign</button>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <div class="col-lg-5 offset-lg-1">
+
+                                  </div>
+                               </div> -->
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Additional Details</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Color</label>
+                            <input type="text" class="form-control"   [(ngModel)]="additionalDetails.vehicleColor"
+                            name="vehicleColor"> </div>
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">MSRP <span class="font-size-12"> (Manufacturer Suggested Retail Price)</span></label>
+                            <input type="text" class="form-control" name="MSRP" [(ngModel)]="additionalDetails.MSRP"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Body Type</label>
+                            <select data-plugin-selectTwo class="form-control populate"   [(ngModel)]="additionalDetails.bodyType"
+                            name="bodyType">
+                              <optgroup label="">
+                                <option value="1">Conventional</option>
+                                <option value="2">Full Size</option>
+                                <option value="2">Pickup</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Body Subtype</label>
+                            <select data-plugin-selectTwo class="form-control populate"    [(ngModel)]="additionalDetails.bodySubType"
+                            name="bodySubType">
+                              <optgroup label="">
+                                <option value="1">Cargo</option>
+                                <option value="2">Sleeper Cab</option>
+                                <option value="2">Crew Cab</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                                     </div>
+                                     <div class="row ">
+                                        <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Assign DVIR</label>
+                                           <input type="file" class="form-control p-0">
+                                        </div>
+                                     </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
-                <div class="col-lg-6">
-                  <div
-                    class="sub-heading-new-vehicle font-weight-bold pt-3 pb-3"
-                  >
-                    Fuel Unit
-                  </div>
-                  <div class="form-group row">
-                    <div class="col-lg-3">
-                      <div class="radio-custom">
-                        <input
-                          type="radio"
-                          id="fuelUnit"
-                          (change)="onChangeFuelUnit('gallon (US)')"
-                          name="fuelUnit"
-                        />
-                        <label for="fuelUnit"> Gallons (US)</label>
+                <div class="tab-pane fade" id="lifecycle" role="tabpanel" aria-labelledby="lifecycle-tab">
+                  <div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">In-Service</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">In-Service Date</label>
+                                           <input type="date" class="form-control" name="inServiceDate" [(ngModel)]="lifeCycle.inServiceDate">
+                                         </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">In-Service Odometer</label>
+                            <input type="text" class="form-control" name="inServiceOdometer" [(ngModel)]="lifeCycle.inServiceOdometer"> </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="col-lg-3">
-                      <div class="radio-custom">
-                        <input
-                          type="radio"
-                          id="fuelUnit2"
-                          (change)="onChangeFuelUnit('gallon (CA)')"
-                          name="fuelUnit"
-                        />
-                        <label for="fuelUnit2"> Gallons (CA)</label>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Vehicle Life Estimates</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Service Life in Months</label>
+                            <input type="text" class="form-control"  [(ngModel)]="lifeCycle.estimatedServiceLifeInMonths"
+                            name="estimatedServiceLifeInMonths"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Service Life in Miles</label>
+                            <input type="text" class="form-control" [(ngModel)]="lifeCycle.estimatedServiceLifeInMiles"
+                            name="estimatedServiceLifeInMiles"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Resale Value</label>
+                            <input type="text" class="form-control" name="estimatedResaleValue" [(ngModel)]="lifeCycle.estimatedResaleValue"> </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="col-lg-3">
-                      <div class="radio-custom">
-                        <input
-                          type="radio"
-                          checked
-                          id="fuelUnit3"
-                          (change)="onChangeFuelUnit('liters')"
-                          name="fuelUnit"
-                        />
-                        <label for="fuelUnit3"> Litres</label>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Out-of-Service</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Out-of-Service Date</label>
+                            <input type="date" class="form-control" name="outServiceDate" [(ngModel)] = "lifeCycle.outServiceDate"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Out-of-Service Odometer</label>
+                            <input type="text" class="form-control" name="outServiceOdometer" [(ngModel)] = "lifeCycle.outServiceOdometer"> </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div class="sub-heading-new-vehicle font-weight-bold pt-0 pb-2">
-                Safety Parameters
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Hard Breaking Parameters</label
-                  >
-                  <div class="slidecontainer">
-                    <input
-                      type="range"
-                      min="1"
-                      max="10"
-                      class="slider"
-                      id="hardBreakingParameters"
-                      (input)="
-                        onChangeHardBreakingParameters($event.target.value)
-                      "
-                      name="hardBreakingParameters"
-                    />
-                    <p>Value: <span id="hardBreakingParametersValue"></span></p>
+                <div class="tab-pane fade" id="specifications" role="tabpanel" aria-labelledby="specifications-tab">
+                  <div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Dimensions</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Width</label>
+                            <input type="text" class="form-control"  [(ngModel)]="dimensions.width"
+                            name="width"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Height</label>
+                            <input type="text" class="form-control"    [(ngModel)]="dimensions.height"
+                            name="height"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Length</label>
+                            <input type="text" class="form-control"   [(ngModel)]="dimensions.length"
+                            name="length"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Ground Clearance</label>
+                            <input type="text" class="form-control" [(ngModel)]="dimensions.groundClearance"
+                            name="groundClearance"> </div>
+                          
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Interior Volume</label>
+                            <input type="text" class="form-control"   [(ngModel)]="dimensions.interiorVolume"
+                            name="interiorVolume"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Passenger Volume</label>
+                            <input type="text" class="form-control"  [(ngModel)]="dimensions.passengerVolume"
+                            name="passengerVolume"> </div>
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Bed Length</label>
+                              <input type="text" class="form-control"   [(ngModel)]="dimensions.badLength"
+                              name="badLength">
+                             </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Volume</label>
+                            <input type="text" class="form-control"     [(ngModel)]="dimensions.cargoVolume"
+                            name="cargoVolume"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Weight</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Curb Weight</label>
+                            <input type="text" class="form-control"  [(ngModel)]="weight.curbWeight"
+                            name="curbWeight"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Gross Vehicle Weight Rating</label>
+                            <input type="text" class="form-control"  [(ngModel)]="weight.grossVehicleWeightRating"
+                            name="grossVehicleWeightRating"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Performance</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Towing Capacity</label>
+                            <input type="text" class="form-control"   [(ngModel)]="performace.towingCapacity"
+                            name="towingCapacity"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Max Payload</label>
+                            <input type="text" class="form-control"   [(ngModel)]="performace.maxPayload"
+                            name="maxPayload"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Fuel Economy</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">EPA City</label>
+                            <input type="text" class="form-control" [(ngModel)]="fuelEconomy.EPACity"
+                            name="EPACity"> </div>
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">EPA Highway</label>
+                            <input type="text" class="form-control"    [(ngModel)]="fuelEconomy.EPAHighway"
+                            name="EPAHighway"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">EPA Combined</label>
+                            <input type="text" class="form-control"   [(ngModel)]="fuelEconomy.EPACombined"
+                            name="EPACombined"> </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Hard Accelration Parameters
-                  </label>
-                  <div class="slidecontainer">
-                    <input
-                      type="range"
-                      min="1"
-                      max="10"
-                      class="slider"
-                      id="hardAccelrationParameters"
-                      #ranger
-                      (input)="
-                        onChangeAccelrationParameters($event.target.value)
-                      "
-                      name="hardAccelrationParameters"
-                    />
-                    <p>
-                      Value: <span id="hardAccelrationParametersValue"></span>
-                    </p>
+                <div class="tab-pane fade" id="insurance" role="tabpanel" aria-labelledby="insurance-tab">
+                  <div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Details</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Date of Issue</label>
+                            <input type="date" class="form-control" name="issueDate" [(ngModel)]="insurance.issueDate"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Premium Amount</label>
+                            <div class="row">
+                              <div class="col-lg-6 pr-0">
+                                <input type="text" class="form-control" name="premiumAmount" [(ngModel)]="insurance.premiumAmount">
+                              </div>
+                              <div class="col-lg-6 pl-0">
+                                <select data-plugin-selectTwo class="form-control populate" name="premiumAmountUnit" [(ngModel)]="insurance.premiumAmountUnit">
+                                  <optgroup label="">
+                                    <option value="USD">USD</option>
+                                    <option value="CAD">CAD</option>
+                                  </optgroup>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Vendor</label>
+                            <select data-plugin-selectTwo class="form-control populate" name="vendorID" [(ngModel)]="insurance.vendorID">
+                              <optgroup label="Select Vendor">
+                                <option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.vendorName}}</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-3">
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Date of Expiry</label>
+                            <input type="date" class="form-control" name="expiryDate" [(ngModel)]="insurance.expiryDate"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Reminder Before Expiry</label>
+                            <div class="row">
+                              <div class="col-lg-6 pr-0">
+                                <input type="number" class="form-control" name="reminderNumber" [(ngModel)]="insurance.reminderNumber">
+                              </div>
+                              <div class="col-lg-6 pl-0">
+                                <select data-plugin-selectTwo class="form-control populate" name="reminderNumberUnits" [(ngModel)]="insurance.reminderNumberUnits">
+                                  <optgroup label="">
+                                    <option value="Day(s)">Day(s)</option>
+                                    <option value="Week(s)">Week(s)</option>
+                                    <option value="Month(s)">Month(s)</option>
+                                  </optgroup>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row"> </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-lg-4">
-                  <label
-                    class="control-label text-lg-right pt-2"
-                    for="inputDefault"
-                    >Turning Parameters
-                  </label>
-                  <div class="slidecontainer">
-                    <input
-                      type="range"
-                      min="1"
-                      max="10"
-                      class="slider"
-                      id="turningParameters"
-                      #ranger
-                      (input)="onChangeturningParameters($event.target.value)"
-                      name="turningParameters"
-                    />
-                    <p>Value: <span id="turningParametersValue"></span></p>
+                <div class="tab-pane fade" id="fluids" role="tabpanel" aria-labelledby="fluids-tab">
+                  <div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Fuel</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Type</label>
+                            <select data-plugin-selectTwo class="form-control populate"  [(ngModel)]="fuel.fuelType"
+                            name="fuelType">
+                            <optgroup label="">
+                              <option value="CNG">CNG</option>
+                              <option value="Diesal">Diesal</option>
+                              <option value="Gasoline">Gasoline</option>
+                              <option value="Propane">Propane</option>
+                            </optgroup>
+                            </select>
+                          </div>
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Quality</label>
+                            <input type="text" class="form-control"  [(ngModel)]="fuel.fuelQuality"
+                            name="fuelQuality"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 1 Capacity</label>
+                            <input type="text" class="form-control"  [(ngModel)]="fuel.fuelTank1Capacity"
+                            name="fuelTank1Capacity"> </div>
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 2 Capacity</label>
+                            <input type="text" class="form-control"  [(ngModel)]="fuel.fuelTank2Capacity"
+                            name="fuelTank2Capacity"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Oil</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Oil Capacity</label>
+                            <input type="text" class="form-control"  [(ngModel)]="oilCapacity"
+                            name="oilCapacity"> </div>
+                        </div>
+                      </div>
+                    </div>
+                   
                   </div>
                 </div>
-              </div>
-              <div class="sub-heading-new-vehicle font-weight-bold pt-0 pb-3">
-                Measurement Unit
-              </div>
-              <div class="form-group row">
-                <div class="col-lg-3">
-                  <div class="radio-custom">
-                    <input
-                      type="radio"
-                      id="imperial"
-                      (change)="onChangeMeasurementUnit('imperial')"
-                      name="measurementUnit"
-                    />
-                    <label for="imperial">
-                      Imperial (inches, pounds, gallons, miles)</label
-                    >
+                <div class="tab-pane fade" id="wheels" role="tabpanel" aria-labelledby="wheels-tab">
+                  <div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Features</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Number of Tires</label>
+                            <input type="text" class="form-control" name="numberOfTires" [(ngModel)] = "features.numberOfTires"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Drive Type</label>
+                            <select
+                            data-plugin-selectTwo
+                            class="form-control populate"
+                            name="driveType" [(ngModel)] = "features.driveType">
+                            <optgroup label="">
+                              <option value="4x4"> 4x4</option>
+                              <option value="6x4">6x4</option>
+                              <option value="FWD"> FWD</option>
+                              <option value="RWD">RWD</option>
+                            </optgroup>
+                          </select>
+                           </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Brake System</label>
+                            <select
+                            data-plugin-selectTwo
+                            class="form-control populate"
+                            [(ngModel)]="features.breakSystem"
+                            name="breakSystem">
+                            <optgroup label="">
+                              <option value="Disc">Disc</option>
+                              <option value="Drum">Drum</option>
+                            </optgroup>
+                          </select>
+                        </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Wheelbase</label>
+                            <input type="text" class="form-control"  [(ngModel)]="features.wheelBase"
+                            name="wheelBase"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Rear Axle</label>
+                            <input type="text" class="form-control"  [(ngModel)]="features.rearAxle"
+                            name="rearAxle">
+                           </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Front Tire Type</label>
+                            <input type="text" class="form-control"  [(ngModel)]="features.frontTyreType"
+                            name="frontTyreType"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Rear Tire Type</label>
+                            <input type="text" class="form-control"   [(ngModel)]="features.rearTyreType"
+                            name="rearTyreType"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Front Track Width</label>
+                            <input type="text" class="form-control"  [(ngModel)]="features.frontTrackWidth"
+                            name="frontTrackWidth"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Rear Track Width</label>
+                            <input type="text" class="form-control"  [(ngModel)]="features.rearTrackWidth"
+                            name="rearTrackWidth"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Front Wheel Diameter</label>
+                            <input type="text" class="form-control"  [(ngModel)]="features.frontWheelDiameter"
+                            name="frontWheelDiameter"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Rear Wheel Diameter</label>
+                            <input type="text" class="form-control"  [(ngModel)]="features.rearWheelDiameter"
+                            name="rearWheelDiameter"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Front Tire PSI</label>
+                            <input type="text" class="form-control"   [(ngModel)]="features.frontTyrePSI"
+                            name="frontTyrePSI"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Rear Tire PSI</label>
+                            <input type="text" class="form-control"  [(ngModel)]="features.rearTyrePSI"
+                            name="rearTyrePSI"> </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-lg-3">
-                  <div class="radio-custom">
-                    <input
-                      type="radio"
-                      checked
-                      id="metric"
-                      (change)="onChangeMeasurementUnit('metric')"
-                      name="measurementUnit"
-                    />
-                    <label for="metric">
-                      Metric (centimeters, kilograms, liters, kilometers)</label
-                    >
+                <div class="tab-pane fade" id="engine" role="tabpanel" aria-labelledby="engine-tab">
+                  <div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold  text-lg-right text-5 pt-2">Engine</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Engine Summary</label>
+                            <input type="text" class="form-control" name="engineSummary" [(ngModel)]="engine.engineSummary"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Engine Brand</label>
+                            <input type="text" class="form-control" name="engineBrand" [(ngModel)]="engine.engineBrand"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Aspiration</label>
+                            <select
+                            data-plugin-selectTwo
+                            class="form-control populate"
+                            name="aspiration" [(ngModel)]="engine.aspiration">
+                            <optgroup label="">
+                              <option value="Naturally Aspirated">Naturally Aspirated</option>
+                              <option value="Turbocharger">Turbocharger</option>
+                              <option value="Twin Turbocharger">Twin Turbocharger</option>
+                            </optgroup>
+                          </select>
+                           </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Block Type</label>
+                            <input type="text" class="form-control" name="blockType " [(ngModel)]="engine.blockType "> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Bore</label>
+                            <input type="text" class="form-control" name="bore " [(ngModel)]="engine.bore "> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Cam Type</label>
+                            <select
+                            data-plugin-selectTwo
+                            class="form-control populate"
+                            name="camType" [(ngModel)]="engine.camType">
+                            <optgroup label="">
+                              <option value="DOHC">DOHC</option>
+                              <option value="OHV">OHV</option>
+                            </optgroup>
+                          </select>
+                        </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Stroke</label>
+                            <input type="text" class="form-control" name="stroke" [(ngModel)]="engine.stroke"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Valves</label>
+                            <input type="text" class="form-control" name="valves" [(ngModel)]="engine.valves"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Compression</label>
+                            <input type="text" class="form-control" name="compression" [(ngModel)]="engine.compression"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Cylinders</label>
+                            <input type="text" class="form-control" name="cylinders" [(ngModel)]="engine.cylinders"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Displacement</label>
+                            <input type="text" class="form-control" name="displacement" [(ngModel)]="engine.displacement"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Induction</label>
+                            <select
+                            data-plugin-selectTwo
+                            class="form-control populate"
+                            name="fuelInduction" [(ngModel)]="engine.fuelInduction">
+                            <optgroup label="">
+                              <option value="Common Rail Direct Injection">Common Rail Direct Injection</option>
+                              <option value="Sequential Multiport Fuel Injection">Sequential Multiport Fuel Injection</option>
+                              <option value="Sequential Port Fuel Injection">Sequential Port Fuel Injection</option>
+                            </optgroup>
+                          </select>
+                                 </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Quality</label>
+                            <input type="text" class="form-control" name="fuelQuality" [(ngModel)]="engine.fuelQuality"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Max HP</label>
+                            <input type="text" class="form-control" name="maxHP" [(ngModel)]="engine.maxHP"> </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Max Torque</label>
+                            <input type="text" class="form-control" name="maxTorque" [(ngModel)]="engine.maxTorque">  </div>
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Redline RPM</label>
+                            <input type="text" class="form-control" name="redlineRPM" [(ngModel)]="engine.redlineRPM"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Transmission</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Summary</label>
+                            <input type="text" class="form-control" name="summary" [(ngModel)]="transmission.summary"> </div>
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Brand</label>
+                            <input type="text" class="form-control" name=" brand" [(ngModel)]="transmission. brand"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Type</label>
+                            <select
+                            data-plugin-selectTwo
+                            class="form-control populate"
+                            name="type" [(ngModel)]="transmission.type">
+                            <optgroup label="">
+                              <option value="Automatic">Automatic</option>
+                              <option value="Continuously Variable">Continuously Variable</option>
+                            </optgroup>
+                          </select>
+                          </div>
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Gears</label>
+                            <input type="text" class="form-control" name="gears" [(ngModel)]="transmission.gears"> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="vsettings" role="tabpanel" aria-labelledby="vsettings-tab">
+                  <div>
+                    <div class="row pt-3">
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Primary Meter</label>
+                      </div>
+                      <div class="col-lg-7">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Fuel Unit</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <div class="radio">
+                              <label>
+                                <input type="radio"  id="optionsRadios1"  (change)="onChangePrimaryMeter('miles')"
+                                name="primaryMeter" checked=""> Miles </label>
+                            </div>
+                          </div>
+                          <div class="col-lg-10">
+                            <div class="radio">
+                              <label>
+                                <input type="radio" id="optionsRadios1"  (change)="onChangePrimaryMeter('kilometers')"
+                                name="primaryMeter"> Kilometers </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <div class="radio">
+                              <label>
+                                <input type="radio"  id="fuelUnit"
+                                (change)="onChangeFuelUnit('gallon (US)')"
+                                name="fuelUnit" checked> Gallons (US) </label>
+                            </div>
+                          </div>
+                          <div class="col-lg-10">
+                            <div class="radio">
+                              <label>
+                                <input type="radio" id="fuelUnit2"
+                                (change)="onChangeFuelUnit('gallon (CA)')"
+                                name="fuelUnit"> Gallons (CA) </label>
+                            </div>
+                          </div>
+                          <div class="col-lg-10">
+                            <div class="radio">
+                              <label>
+                                <input type="radio"  id="fuelUnit3"
+                                (change)="onChangeFuelUnit('liters')"
+                                name="fuelUnit"> Litres </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold  text-lg-right text-5 pt-2">Safety Parameters</label>
+                      </div>
+                      <div class="col-lg-4">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Hard Breaking Parameters</label>
+                        <div class="slidecontainer">
+                          <input type="range" min="1" max="10" class="slider" id="hardBreakingParameters" (input)="onChangeHardBreakingParameters($event.target.value)" name="hardBreakingParameters" />
+                          <p>Value: <span id="hardBreakingParametersValue"></span></p>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Hard Accelration Parameters </label>
+                        <div class="slidecontainer">
+                          <input type="range" min="1" max="10" class="slider" id="hardAccelrationParameters" #ranger (input)="onChangeAccelrationParameters($event.target.value)" name="hardAccelrationParameters" />
+                          <p>Value: <span id="hardAccelrationParametersValue"></span></p>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Turning Parameters </label>
+                        <div class="slidecontainer">
+                          <input type="range" min="1" max="10" class="slider" id="turningParameters" #ranger (input)="onChangeturningParameters($event.target.value)" name="turningParameters" />
+                          <p>Value: <span id="turningParametersValue"></span></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold  text-lg-right text-5 pt-2">Measurement Unit</label>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <div class="radio">
+                              <label>
+                                <input type="radio"  id="imperial"
+                                (change)="onChangeMeasurementUnit('imperial')"
+                                name="measurementUnit"> Imperial (inches, pounds, gallons, miles) </label>
+                            </div>
+                          </div>
+                          <div class="col-lg-10">
+                            <div class="radio">
+                              <label>
+                                <input type="radio"  id="metric"
+                                (change)="onChangeMeasurementUnit('metric')"
+                                name="measurementUnit"> Metric (centimeters, kilograms, liters, kilometers) </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            <!-- SETTINGS END -->
             <div class="form-group row">
-              <div class="col-lg-12">
-                <button
-                  class="btn btn-dark mt-4 modal-confirm"
-                  (click)="addVehicle()"
-                >
-                  Submit
-                </button>
-                <button class="btn btn-default mt-4 modal-confirm">
-                  Cancel
-                </button>
-              </div>
+              <div class="col-lg-12 pr-5 text-right">
+                <button class="btn btn-default mt-4 modal-confirm">Cancel</button>
+                 <button class="btn btn-success mt-4 modal-confirm" (click)="addVehicle()">Submit</button>
+                 </div>
             </div>
             <div class="form-group row">
               <div class="col-lg-12">
@@ -1195,15 +1025,15 @@
   </div>
 </section>
 
-<div id="quantumModal" class="modal fade" role="dialog">
+<!-- <div id="quantumModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
-    <!-- Modal content-->
+  
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">
           &times;
         </button>
-        <!--<h4 class="modal-title">Assign Quantum</h4>-->
+        
       </div>
       <div class="modal-body">
         <h4 class="modal-title">Assign Quantum</h4>
@@ -1227,4 +1057,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

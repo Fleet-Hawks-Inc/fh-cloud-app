@@ -542,12 +542,18 @@ float:  left;
   .gmainbox2{float: left; overflow-x:scroll; width:420px;}
 }
 
+/* DVIR */
+.dvirChk{min-width: 5%; float: left;}
+.dvirFields{min-width: 13%; float: left;}
 
-
-
+/* GeoFence Description Page */
+.geofields{min-width: 15%; float: left;}
+.geofieldsdesc{min-width: 50%; float: left;}
 
 /* hos report class*/
 .hosvalue{min-width: 14%; float: left;}
+
+
 
 .hoshvalue{background: #c4c4c4; min-height: 40px;
   line-height: 40px;
@@ -568,21 +574,27 @@ float:  left;
 .drivelist{
   position: absolute; width: 518px;
   background: #f5f5f5; height: 100%; padding-bottom: 100px;
-  position: fixed;  z-index: 99999;
-  right:0px; top: 110px; 
+  position: fixed;  z-index: 999;
+  right:48px; top: 110px; 
 }
 
-.driverdetail{float: left; background: #fff; width: 100%;
-  border-bottom: 1px solid #bec8d1;}
+.driverdetail{float: left; background: #fff; width: 100%; padding:10px 10px;border-top: 2px solid white;border-left: 2px solid white;border-right: 2px solid white;
+  border-bottom: 2px solid #bec8d1;
+  }
+.driverdetail:hover{
+  border: 2px solid black;
+}
 
-.driverdetail a{display: block; height: 425px; text-decoration:none; border: solid 3px #fff; padding:10px 10px;}
-.driverdetail a:hover{background: #f0f0f0; text-decoration:none; border: solid 3px #000;}
+
+
+/* .driverdetail a{display: block; height: 425px; text-decoration:none; border: solid 3px #fff; padding:10px 10px;}
+.driverdetail a:hover{background: #f0f0f0; text-decoration:none; border: solid 3px #000;} */
 .driverstatus{width: 100%;}
 .curtime{width: 120px; margin-right: 10px; float: left; border-right:solid 1px #333;}
 .curcycle{width: 130px; float: left;  }
 
 .iconR{position: absolute;
-  right:518px; 
+  right:512px; 
   top: 370px;
   }
 
@@ -590,7 +602,7 @@ float:  left;
   .iconR a{background: #ebebeb;}
 
   .iconL{position: absolute;
-    right:0px; 
+    right:-10px; 
     top: 370px;
     }
   
@@ -606,10 +618,63 @@ float:  left;
         min-height:200px; border-radius:6px; margin-top:20px;
         margin-bottom:20px;}
         .vinfo .vdetail{padding: 10px;}
+/* PICK UP BUTTON CLASS */
+.pickup
+{
+  background: crimson;
+  border-radius: 50px;
+  font-size: 10px;
+  padding: 2px 5px;
+  text-align: center;
+  color: #fff;
+}
 
+/* DROP OFF BUTTON CLASS */
+.dropoff
+{
+  background: gray;
+  border-radius: 50px;
+  font-size: 10px;
+  padding: 2px 5px;
+  text-align: center;
+  color: #fff;
+}
+
+
+/*dashboard driver list classes*/
+
+.drivermain{position: relative;}
+.driverminilist{
+  position: absolute; width: 300px;
+  background: #f5f5f5; height: 100%;
+  position: fixed;
+  right:48px; top: 110px; 
+}
+.iconRmini{position: absolute;
+  right:293px; 
+  top: 370px;
+  }
+
+  .iconRmini a{background: #fff; padding: 10px;}
+  .iconRmini a{background: #ebebeb;}
+
+  .iconLmini{position: absolute;
+    right:-5px; 
+    top: 370px;
+    }
+  
+    .iconLmini a{background: #fff; padding: 10px;}
+    .iconLmini a{background: #ebebeb;}
+.driverdetailMap{float: left; background: #f5f5f5; width: 100%;
+  border-bottom: 1px solid #bec8d1;}
+
+.driverdetailMap a{display: block; height: 165px; text-decoration:none; padding:10px 10px;}
+.driverdetailMap a:hover{background: #fff; text-decoration:none;}
+.driverstatus{width: 100%; float: left; padding: 5px;}
+.curtime{width: 120px; margin-right: 10px; float: left; border-right:solid 1px #333;}
+.curcycle{width: 130px; float: left;  }
 
 /* trip  info*/
-
 .tripscrolbar{height: 150px; margin-top: 0px; position: relative;}
 
 .tripbar{width:500px; height: 5px; background: #727272;
@@ -670,7 +735,6 @@ position: absolute; left: 0; top: 60px; z-index: 100;}
 .tripdot6{width: 12px; height: 12px; border-radius: 50%;
             background: #ff0000; z-index: 999; position: absolute;
             left: 472px; top: 55px;}
-
 /* trip info date time */
 
 .tripdt1{z-index: 999; width: 50px; position: absolute;left: -7px  ; top: 10px; text-align: center;}
@@ -922,6 +986,18 @@ right: 20px; top: 10px;
           bottom: 0;
           width: 100%;
         }
+        /* #map1 {
+          height:800px;
+          top: 10;
+          bottom: 0;
+          width: 100%;
+        }
+        #map2 {
+          height:800px;
+          top: 10;
+          bottom: 0;
+          width: 100%;
+        } */
         .match-parent {
           width: 100%;
           height: 100%;
@@ -1397,6 +1473,57 @@ text-decoration: underline;
 
 /*****************  har classes end  *********************************/
 
+.temp_graph{
+  cursor: pointer;
+}
+/* temp dashboard */
+
+.dashboard{
+  position: absolute; width:1082px;
+  background: #f5f5f5; padding-bottom: 10px;
+  position: fixed;  z-index: 99999;
+  bottom:0px; left: 270px; 
+}
+#hawk-btn
+{
+  position: absolute;
+  bottom:-200px; left: 1%;
+  z-index: 99999;
+  background-color: white;
+  color: #000;
+  padding: 10px;
+}
+#cam-btn{
+  position: absolute;
+  bottom:0px; left: 44%; 
+  position: fixed;  z-index: 99999;
+  background-color: white;
+  color: #000;
+  padding: 10px;
+}
+#cam-close-btn,#cam-close-btn2{
+  position: relative;
+  bottom:28px; left: 50%; 
+   z-index: 99999;
+  background-color: white;
+  color: #000;
+  padding: 10px;
+}
+.iconT{position: absolute;
+  bottom:118px; 
+  left: 1100px;
+  }
+
+  .iconT a{background: #fff; padding: 10px;}
+  .iconT a{background: #ebebeb;}
+
+  .iconB{position: absolute;
+    bottom:320px; 
+    left: 570px;
+    }
+  
+.iconB a{background: #fff; padding: 10px;}
+.iconB a{background: #ebebeb;}
 
 
 
@@ -1445,4 +1572,244 @@ text-decoration: underline;
 
   .divcenter{display: flex; justify-content: center;}
 
+.profile-heading
+{
+  background: #777;
+  height: 30px;
+  width: 100%;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  padding-top: 3px;
+  border-radius: 5px;
+}
 
+/* TABLE ROW HOVER */
+/* table tbody tr:hover{
+  background-color: #ccc;
+} */
+
+
+/*  Driver profile Page  */
+.summary_box
+{
+ 
+  padding: 20px;
+}
+
+
+
+#photoDiv{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: white;
+}
+
+.back-color-gray{
+  background-color: #eee;
+  border: 0.5px solid #ddd;
+}
+.border-box{
+  border: 0.5px solid #ddd;
+}
+
+
+/* Daljit Classes Starts here */
+
+.f-40 {
+  font-size: 40px !important;
+}
+
+/*--Incidents Css--*/
+.incident-tabs.nav-tabs li {
+    padding: 0
+}
+.incident-tabs.nav-tabs li .nav-link {
+    color: #2e353e;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 6px 15px;
+    border-radius: 50px;
+    border: none;
+    margin: 0;
+    background: transparent;
+}
+.incident-tabs.nav-tabs .nav-link.active, 
+.incident-tabs.nav-tabs .nav-link:hover,
+.incident-tabs.nav-tabs .nav-link.active:hover,
+.incident-tabs.nav-tabs .nav-link.active:focus {
+    color: #000;
+    background: #fff;
+    border: none;
+    text-decoration: none;
+}
+.tab-pane.active{
+    text-decoration: none !important;
+}
+#incident-tabs li.active {
+    text-decoration: none;
+}
+#hos-list,#incidents-list,#scorecard-list {
+    display: none;
+}
+.safety-overview__main .maindriverbox {
+    cursor: pointer;
+}
+.maindriverbox.active {
+    background-color: #ecedf0;
+}
+.dataTables_length {
+    display: none;
+}
+
+/* Safety Details css*/
+.safety-deails__map {
+    width: 100%;
+    height: 400px;
+}
+.back-color-gray {
+    background-color: #eee;
+    border: 0.5px solid #ddd;
+}
+
+/*--Add Alert--*/
+.add-alert__listing {
+    list-style: none;
+    padding: 0;
+}
+.add-alert__listing li {
+    margin: 10px 10px 0 0;
+    text-align: center;
+}
+.add-alert__listing li a {
+    padding: 5px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    border: 1px solid #dcdcdc;
+    position: relative;
+    font-size: 14px;
+}
+.add-alert__listing li a.active {
+    background: #343434;
+    color: #fff;
+    border-color: #343434;
+}
+.add-alert__listing li .check-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.alert-container {
+    border: 2px solid #dcdcdc;
+    padding: 30px;  
+}
+.lh-normal {
+    line-height: normal;
+}
+.driver-vehicle__main .nav-tabs li .nav-link {
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid transparent;
+    color: #678;
+}
+.driver-vehicle__main .nav-tabs .nav-link.active {
+    text-decoration: none;
+    border-bottom: 1px solid #787;
+}
+.alert-container {
+    display: none;
+}
+.alert-container.active {
+    display: block;
+    text-decoration: none;
+}
+
+/*--Reports--*/
+.reports-sidebar,
+.reports-tabs__content {
+    border: 1px solid #e6e6e6;
+}
+.reports-sidebar ul{
+    list-style: none;
+}
+.reports-sidebar ul li a{
+    border-bottom: 1px solid #e6e6e6;
+    padding: 10px 15px;
+    float: left;
+    margin-left: -2px;
+    border-radius: 0; 
+    position: relative;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+}
+.reports-sidebar ul li a.active,
+.reports-sidebar ul li a:hover{
+    text-decoration: none !important;
+    color: #000 !important;
+    border-left: 1px solid #424242;
+    border-right: 1px solid #424242;
+    background-color: #efefef !important;
+}
+/* .reports-sidebar ul li a.active::after {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-family: "Font Awesome 5 Free"; 
+    font-weight: 900; 
+    content: "\f054";
+} */
+.reports-sidebar ul li:last-child a{
+    border-bottom: none;
+}
+.active{
+    text-decoration: none !important; 
+}
+
+html.fixed .reports-wrapper {
+    padding-top: 60px;
+}
+.reports-search {
+    max-width: 65%;
+    margin: 0 auto;
+}
+.reports-listing a {
+    padding: 10px 15px;
+    display: block;
+    line-height: normal;
+    text-decoration: none !important;
+    border-bottom: 1px solid #e6e6e6;
+    transition: all 0.3s linear 0s;
+    position: relative;
+}
+.reports-listing a:last-child {
+    border: none;
+}
+/* .reports-listing a::after {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    font-family: "Font Awesome 5 Free"; 
+    font-weight: 900; 
+    content: "\f054";
+    color: #d2d2d2;
+} */
+.reports-listing a:hover{
+    background-color: #f7f4f4;
+    text-decoration: underline!important;
+}
+.reports-listing h4 {
+    font-size: 13px;
+}
+.reports-listing span {
+    font-size: 0.8rem;
+    color: #607587;
+}
+.report-dtl__content .card{
+  border: 1px solid #DADADA;
+}
+.report-dtl__content .card-header {
+  background-color: #343434;
+  color: #fff;
+  text-transform: uppercase;
+}

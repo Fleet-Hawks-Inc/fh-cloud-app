@@ -27,7 +27,7 @@ export class AddGeofenceComponent implements OnInit {
     longitude: "",
   };
   geofence = "";
-
+  geofenceNewCategory = "";
   /******************/
 
   response: any = "";
@@ -48,6 +48,9 @@ export class AddGeofenceComponent implements OnInit {
       this.form = $("#form_").validate();
     });
     this.mapBoxService.initMapbox(-104.618896, 50.44521);
+    $(document).ready(() => {
+      this.form = $("#form1_").validate();
+    });
   }
 
   // initMap() {
@@ -59,7 +62,15 @@ export class AddGeofenceComponent implements OnInit {
 
   //   this.mapBoxService.initMapbox(-104.618896, 50.44521);
   // }
-
+addCategory(){
+  this.errors = {};
+    this.hasError = false;
+    this.hasSuccess = false;
+    const data1 = {
+      geofenceNewCategory: this.geofenceNewCategory
+    };
+    console.log(data1);
+}
   addGeofence() {
     this.errors = {};
     this.hasError = false;
@@ -117,5 +128,11 @@ return;
 
   throwErrors() {
     this.form.showErrors(this.errors);
+  }
+
+  createGeofenceTypeModal() {
+    $( document ).ready(function() {
+      $('#addGeofenceCategoryModal').modal('show');
+    });
   }
 }
