@@ -77,6 +77,11 @@ import {ChartsModule} from 'ng2-charts';
 import {AddVehicleComponent} from './vehicles/add-vehicle/add-vehicle.component';
 import {EditVehicleComponent} from './vehicles/edit-vehicle/edit-vehicle.component';
 import { DashboardDriverComponent } from './dashboard-driver/dashboard-driver.component';
+import { IssueListComponent } from './maintenance/issues/issue-list/issue-list.component';
+import { AddIssueComponent } from './maintenance/issues/add-issue/add-issue.component';
+import { ServiceListComponent } from './maintenance/services/service-list/service-list.component';
+import { AddServiceComponent } from './maintenance/services/add-service/add-service.component';
+
 
 @NgModule({
   imports: [
@@ -159,7 +164,16 @@ import { DashboardDriverComponent } from './dashboard-driver/dashboard-driver.co
 
     GraphComponent,
 
-    DashboardDriverComponent
+    DashboardDriverComponent,
+
+    IssueListComponent,
+
+    AddIssueComponent,
+
+    ServiceListComponent,
+
+    AddServiceComponent,
+    
   ],
   providers: [],
 })

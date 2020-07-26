@@ -73,6 +73,10 @@ import { GraphComponent } from "./graphs/graph/graph.component";
 import { ChartsModule } from "ng2-charts";
 import { DashboardDriverComponent } from "./dashboard-driver/dashboard-driver.component";
 
+import { IssueListComponent } from './maintenance/issues/issue-list/issue-list.component';
+import { AddIssueComponent } from './maintenance/issues/add-issue/add-issue.component';
+import { ServiceListComponent } from './maintenance/services/service-list/service-list.component';
+
 const routes: Routes = [
   {
     path: "drivers",
@@ -176,6 +180,22 @@ const routes: Routes = [
   {
     path: "maintenance",
     children: [
+      {
+        path: "issues",
+        children: [
+          { path: "list", component: IssueListComponent },
+          { path: "add-issue", component: AddIssueComponent },
+          // { path: "Edit-Asset/:assetID", component: EditAssetComponent },
+        ],
+      },
+      {
+        path: "services",
+        children: [
+          { path: "list", component: ServiceListComponent },
+          { path: "add-service", component: AddIssueComponent },
+          // { path: "Edit-Asset/:assetID", component: EditAssetComponent },
+        ],
+      },
       {
         path: "vendor",
         children: [

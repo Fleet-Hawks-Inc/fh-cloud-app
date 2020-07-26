@@ -78,7 +78,7 @@
                         <a class="dropdown-item text-1" href="">Export</a>
                      </div>
                   </div>
-                  <a href="add-asset.php" class="btn btn-success btn-sm mr-4" style="color:white;"><i class="fas fa-plus"></i> Add Asset</a>
+                  <a routerLink="/fleet/maintenance/assets/Add-Assets" class="btn btn-success btn-sm mr-4" style="color:white;"><i class="fas fa-plus"></i> Add Asset</a>
                </div>
             </div>
          </form>
@@ -195,7 +195,7 @@
             </ul>
          </div>
          <div class="row">
-            <div class="col pr-0">
+            <div class="col">
                <section class="card">
                   <div class="card-body">
                      <div class="tab-content p-0" id="myTabContent">
@@ -207,15 +207,6 @@
                                  <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 34.3333px;"><input type="checkbox"></th><th width="30%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Asset: activate to sort column ascending" style="width: 403.667px;">Asset</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 181px;">Type</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Licence Plate: activate to sort column ascending" style="width: 181px;">Licence Plate</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Battery Level: activate to sort column ascending" style="width: 106.333px;">Battery Level</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Asset Gateway S/N: activate to sort column ascending" style="width: 181px;">Asset Gateway S/N</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 106.333px;">Status</th></tr>
                               </thead>
                               <tbody>
-                              <tr role="row" >
-                                <td class="sorting_1"><input type="checkbox"></td>
-                                <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                <td onclick="window.location='asset1_details.php'">Reefer</td>
-                                <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                <td onclick="window.location='asset1_details.php'">20%</td>
-                                <td onclick="window.location='asset1_details.php'">None</td>
-                                <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
-                              </tr>
                               <tr *ngFor="let asset of assets;let i = index;">
                                 <td class="sorting_1"><input type="checkbox"></td>
                                 <td>{{ asset.assetName }}</td>

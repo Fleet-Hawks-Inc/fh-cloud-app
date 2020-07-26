@@ -9,26 +9,11 @@
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
 
-    <section role="main" class="content-body">
+    <section role="main" class="content-body pt-0 pr-0 pl-0">
       <header class="page-header">
-        <h2>{{ title }}</h2>
-
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a routerLink="/">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/fleet/assets/Assets-List">
-                <span>Assets List</span>
-              </a>
-            </li>
-            <li>
-              <span>{{ title }}</span>
-            </li>
-          </ol>
+        <div class="row pr-5 " style="padding-top:10px;">
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Add Asset </div>
+          <div class="col-md-8  col-lg-8 text-right pr-4"> <a href="assets.php" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Assets List</a> </div>
         </div>
       </header>
 
