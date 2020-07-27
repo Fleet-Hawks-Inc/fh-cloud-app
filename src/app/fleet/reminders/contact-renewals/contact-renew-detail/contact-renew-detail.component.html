@@ -1,0 +1,187 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body pl-0 pt-0">
+            <header class="page-header">
+                <div class="row pr-5 " style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                        Charles Bejoj </div>
+                    <div class="col-md-8  col-lg-8 text-right">
+                        <a href="contact-renewals.php" class="btn btn-sm btn-default"><i class="fas fa-list"></i>
+                            Contact Renewals List</a>
+
+                        <a href="add-contact-renewal-reminder.php" class="btn btn-success btn-sm"><i
+                                class="fas fa-plus"></i> Add Contact Renewal Reminder</a>
+
+
+                        <div class="btn-group flex-wrap">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">Actions<span class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+
+
+                                <a class="modal-with-form dropdown-item text-1"
+                                    href="#editContactReminder">Edit/Reschedule</a>
+                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </header>
+            <div class="row">
+                <div class="col">
+                    <div class="card-body text-dark">
+                        <form class="form-horizontal form-bordered" method="get">
+                            <div class=" row">
+                                <div class="col-lg-12">
+                                    <label
+                                        class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Contact
+                                        Renewal Reminder Details</label>
+                                </div>
+
+                                <div class="col-lg-10 offset-lg-1">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <table class="table table-bordered table-striped table-responsive-lg">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="5%"><input type="checkbox"></th>
+                                                        <th width="35%">Contact renewal type</th>
+                                                        <th width="25%"> Next due at</th>
+                                                        <th width="35%"> Renewal reminder subscriptions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><input type="checkbox"></td>
+                                                        <td>Certification</td>
+                                                        <td>No Reminder Set</td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="checkbox"></td>
+                                                        <td>License Renewal <span
+                                                                class="font-size-12 font-weight-bold text-danger">Overdue</span>
+                                                        </td>
+                                                        <td>Sat, Jun 13, 2020</td>
+                                                        <td>1 subscriber</td>
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+<!-- Delete MODAL -->
+<div id="deleteModal" class="modal-block modal-block-primary mfp-hide">
+    <section class="card">
+        <header class="card-header">
+            <h2 class="card-title">Corfirm Action</h2>
+        </header>
+        <div class="card-body text-dark">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="inputEmail4">Are you sure?</label>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <footer class="card-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button class="btn btn-danger modal-confirm">OK</button>
+                    <button class="btn btn-default modal-dismiss">Cancel</button>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>
+
+
+<!--   edit Contact Reminder -->
+<div id="editContactReminder" class="modal-block modal-block-primary mfp-hide">
+    <section class="card">
+        <header class="card-header">
+            <h2 class="card-title">Edit Reminder</h2><span class="text-info">License
+                Renewal</span>
+        </header>
+        <div class="card-body text-dark">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-lg-12">
+                        <label class="control-label font-weight-bold">Next Due At</label>
+                        <input type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row mt-2">
+                    <div class="form-group col-lg-12">
+                        <label class="control-label font-weight-bold">Due soon
+                            Threshold</label>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="col-lg-4">
+                                <select data-plugin-selecttwo=""
+                                    class="form-control populate">
+                                    <optgroup label="">
+                                        <option value="1">Day(s)</option>
+                                        <option value="2">Week(s)</option>
+                                        <option value="2">Month(s)</option>
+                                        <option value="2">Year(s)</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row mt-2">
+
+                    <div class="col-lg-5">
+                        <div class="checkbox-custom">
+                            <input type="checkbox">
+                            <label class="control-label font-weight-bold">Send
+                                Email?</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row mt-2">
+                    <div class="form-group col-lg-12">
+                        <label class="control-label font-weight-bold">Users</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <footer class="card-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button class="btn btn-success modal-confirm">Save</button>
+                    <button class="btn btn-default modal-dismiss">Cancel</button>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>

@@ -53,7 +53,7 @@
               "src/assets/js/examples/examples.dashboard.js",
               "src/assets/js/jquery.validate.min.js",
               "node_modules/datatables.net/js/jquery.dataTables.js",
-              "src/assets/vendor/select2/js/select2.js",
+              
               "node_modules/chart.js/dist/Chart.bundle.min.js"
             ]
           },

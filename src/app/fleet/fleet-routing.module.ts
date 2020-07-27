@@ -76,6 +76,19 @@ import { DashboardDriverComponent } from "./dashboard-driver/dashboard-driver.co
 import { IssueListComponent } from './maintenance/issues/issue-list/issue-list.component';
 import { AddIssueComponent } from './maintenance/issues/add-issue/add-issue.component';
 import { ServiceListComponent } from './maintenance/services/service-list/service-list.component';
+import { AssetDetailComponent } from './assets/asset-detail/asset-detail.component';
+
+import { ListingComponent } from './reminders/service-reminder/listing/listing.component';
+import { AddReminderComponent } from './reminders/service-reminder/add-reminder/add-reminder.component';
+import { VehicleRenewAddComponent } from './reminders/vehicle-renewals/vehicle-renew-add/vehicle-renew-add.component';
+import { VehicleRenewListComponent } from './reminders/vehicle-renewals/vehicle-renew-list/vehicle-renew-list.component';
+import { ListContactRenewComponent } from './reminders/contact-renewals/list-contact-renew/list-contact-renew.component';
+import { AddContactRenewComponent } from './reminders/contact-renewals/add-contact-renew/add-contact-renew.component';
+import { ServiceRemindDetailComponent } from './reminders/service-reminder/service-remind-detail/service-remind-detail.component';
+
+import { VehicleRenewDetailComponent } from './reminders/vehicle-renewals/vehicle-renew-detail/vehicle-renew-detail.component';
+import { ContactRenewDetailComponent } from './reminders/contact-renewals/contact-renew-detail/contact-renew-detail.component';
+
 
 const routes: Routes = [
   {
@@ -118,6 +131,7 @@ const routes: Routes = [
     children: [
       { path: "Add-Assets", component: AddAssetsComponent },
       { path: "Assets-List", component: AssetListComponent },
+      { path: "asset-detail", component: AssetDetailComponent },
       { path: "Edit-Asset/:assetID", component: EditAssetComponent },
     ],
   },
@@ -175,6 +189,36 @@ const routes: Routes = [
           },
         ],
       },
+    ],
+  },
+  {
+    path: "reminders",
+    children: [
+      {
+        path: "service-reminder",
+        children: [
+          { path: "list", component: ListingComponent },
+          { path: "add-reminder", component: AddReminderComponent },
+          { path: "detail", component: ServiceRemindDetailComponent },
+        ],
+      },
+      {
+        path: "vehicle-renewals",
+        children: [
+          { path: "list", component: VehicleRenewListComponent },
+          { path: "add", component: VehicleRenewAddComponent },
+          { path: "detail", component: VehicleRenewDetailComponent },
+        ],
+      },
+      {
+        path: "contact-renewals",
+        children: [
+          { path: "list", component: ListContactRenewComponent },
+          { path: "add", component: AddContactRenewComponent },
+          { path: "detail", component: ContactRenewDetailComponent },
+        ],
+      },
+      
     ],
   },
   {

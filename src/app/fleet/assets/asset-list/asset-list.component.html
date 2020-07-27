@@ -14,15 +14,9 @@
             <div class="row" style="padding-top:10px;">
                <div class="col-md-2 col-lg-2">
                   <div class="input-group input-group-md mb-3">
-                     <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="153" tabindex="-1" aria-hidden="true">
-                        <optgroup label="">
-                           <option value="1" data-select2-id="155">Asset 1</option>
-                           <option value="2">Asset 2</option>
-                           <option value="2">Asset 3</option>
-                           <option value="2">Asset 4</option>
-                           <option value="2">Asset 5</option>
-                        </optgroup>
-                     </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="154" style="width: 233.104px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-421v-container"><span class="select2-selection__rendered" id="select2-421v-container" role="textbox" aria-readonly="true" title="Asset 1">Asset 1</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                     <ng-select [(ngModel)]="selectedAssets" name='search_asset' style="width: 100%;">
+                        <ng-option *ngFor="let item of assets" [value]="item.id">{{item.assetName}}</ng-option>
+                    </ng-select>
                   </div>
                </div>
                <div class="col-md-2  col-lg-2">
@@ -78,7 +72,7 @@
                         <a class="dropdown-item text-1" href="">Export</a>
                      </div>
                   </div>
-                  <a routerLink="/fleet/maintenance/assets/Add-Assets" class="btn btn-success btn-sm mr-4" style="color:white;"><i class="fas fa-plus"></i> Add Asset</a>
+                  <a routerLink="/fleet/assets/Add-Assets" class="btn btn-success btn-sm mr-4" style="color:white;"><i class="fas fa-plus"></i> Add Asset</a>
                </div>
             </div>
          </form>
@@ -207,7 +201,7 @@
                                  <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 34.3333px;"><input type="checkbox"></th><th width="30%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Asset: activate to sort column ascending" style="width: 403.667px;">Asset</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 181px;">Type</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Licence Plate: activate to sort column ascending" style="width: 181px;">Licence Plate</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Battery Level: activate to sort column ascending" style="width: 106.333px;">Battery Level</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Asset Gateway S/N: activate to sort column ascending" style="width: 181px;">Asset Gateway S/N</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 106.333px;">Status</th></tr>
                               </thead>
                               <tbody>
-                              <tr *ngFor="let asset of assets;let i = index;">
+                              <tr *ngFor="let asset of assets;let i = index;" routerLink="/fleet/assets/asset-detail">
                                 <td class="sorting_1"><input type="checkbox"></td>
                                 <td>{{ asset.assetName }}</td>
                                 <td>{{ asset.assetType }}</td>

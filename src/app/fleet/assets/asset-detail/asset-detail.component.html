@@ -1,0 +1,263 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+  
+    <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->
+  
+      <section role="main" class="content-body pl-0 pr-0 pt-0">
+        <header class="page-header">
+           <div class="row pr-5 " style="padding-top:10px;">
+              <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                 Asset Details                    
+              </div>
+              <div class="col-md-8  col-lg-8 text-right pr-4">
+                
+
+              </div>
+           </div>
+        </header>
+        <div class="row">
+           <div class="col">
+              <div class="card-body text-dark">
+                 <form class="form-horizontal form-bordered" method="get">
+                 <div class=" row">
+                       <div class="col-lg-6">
+                          <div class="row">
+                             <div class="col-lg-12">
+                                <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Asset Details</label>
+                             </div>
+                             <div class="col-lg-12">
+                                <table class="table table-bordered table-responsive-lg">
+                                   <tbody>
+                                      <tr>
+                                         <td width="40%" class="back-color-gray font-weight-bold">Asset Name/ID</td>
+                                         <td  width="60%">2100</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">VIN</td>
+                                         <td>3476556</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">Asset Gateway S/N</td>
+                                         <td>none</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">Type</td>
+                                         <td>Curtain Side</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">Licence Plate Number</td>
+                                         <td>Cat2019</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">Licence State</td>
+                                         <td>Californioa</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">Year, Make & Model</td>
+                                         <td>Caterpillar 2019</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">Length</td>
+                                         <td>58 ft</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">Axles</td>
+                                         <td>3</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">GVWR</td>
+                                         <td>60,500 lb</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">GAWR</td>
+                                         <td>15,500 lb</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">Ownership</td>
+                                         <td>Leased</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">
+                                            Notes
+                                         </td>
+                                         <td>These are notes about asset.</td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                             </div>
+                          </div>
+                       </div>
+                       <div class="col-lg-6">
+                          <div class="row">
+                             <div class="col-lg-12">
+                                <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Device Specific Details</label>
+                             </div>
+                             <div class="col-lg-12">
+                                <table class="table table-bordered table-responsive-lg">
+                                   <tbody>
+                                      <tr>
+                                         <td width="40%" class="back-color-gray font-weight-bold">Device ID</td>
+                                         <td  width="60%">2100</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">Device Name</td>
+                                         <td><a class="text-info" href="devices-details1.php">Device Name</a></td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">Device Type</td>
+                                         <td>Asset Tracker</td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                             </div>
+                             <div class="col-lg-12">
+                                <div class="vehicle-common-box p-3">
+                                   <div class="row">
+                                      <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label></div>
+                                      <div class="col-lg-6 text-right"><input type="file" hidden id="hidden_photo_input"><button type="button" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo</button></div>
+                                   </div>
+                                   <hr class="solid mt-3">
+                                   <div class="row">
+                                      <div class="col-lg-6">
+                                         <div class="vehicle-photo-box">
+                                            <img src="assets/img/truck1.jpg" height="180px" width="330px">
+                                            <hr class="m-3">
+                                            <div class="row">
+                                               <div class="col-lg-8">Name of the Image</div>
+                                               <div class="col-lg-4 text-right">
+                                                  <div class="btn-group flex-wrap mx-2">
+                                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                        <a class="dropdown-item text-1" href="">Crop/Rotate Image</a>
+                                                        <a class="modal-with-form dropdown-item text-1" href="#editPhoto">Edit</a>
+                                                        <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                                     </div>
+                                                  </div>
+                                               </div>
+                                            </div>
+                                         </div>
+                                      </div>
+                                      <div class="col-lg-6">
+                                         <div class="vehicle-photo-box">
+                                            <img src="assets/img/truck2.jpg" height="180px" width="330px">
+                                            <hr class="m-3">
+                                            <div class="row">
+                                               <div class="col-lg-8">Name of the Image</div>
+                                               <div class="col-lg-4 text-right">
+                                                  <div class="btn-group flex-wrap mx-2">
+                                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                        <a class="dropdown-item text-1" href="">Crop/Rotate Image</a>
+                                                        <a class="dropdown-item text-1" href="">Edit</a>
+                                                        <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                                     </div>
+                                                  </div>
+                                               </div>
+                                            </div>
+                                         </div>
+                                      </div>
+                                   </div>
+                                </div>
+                             </div>
+                          </div>
+                          <div class="row pt-2">
+                             <div class="col-lg-12">
+                                <div class="vehicle-common-box p-3">
+                                   <div class="row">
+                                      <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Documents(s)</label></div>
+                                      <div class="col-lg-6 text-right"><input type="file" hidden id="hidden_issue_document_input"><button type="button" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Documents</button></div>
+                                   </div>
+                                   <hr class="solid mt-3">
+                                   <div class="row">
+                                      <div class="col-lg-9">Name of the Document</div>
+                                      <div class="col-lg-3 text-right">
+                                         <div class="btn-group flex-wrap mx-2">
+                                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                            <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                               <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                            </div>
+                                         </div>
+                                      </div>
+                                   </div>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="row">
+                            <div class="col-lg-12"><label class="control-label font-weight-bold text-3">Reefer Temperature Graph:</label><span class="text-info"> 7576</span></div>
+                        <div class="col-lg-12">
+                             <!-- Morris: Line -->
+                                 <div class="chart chart-md" id="morrisLine"></div>
+                                 <script type="text/javascript">
+                 
+                                     var morrisLineData = [{
+                                         y: '2006',
+                                         a: 100,
+                                         b: 90
+                                     }, {
+                                         y: '2007',
+                                         a: 75,
+                                         b: 65
+                                     }, {
+                                         y: '2008',
+                                         a: 50,
+                                         b: 40
+                                     }, {
+                                         y: '2009',
+                                         a: 75,
+                                         b: 65
+                                     }, {
+                                         y: '2010',
+                                         a: 50,
+                                         b: 40
+                                     }, {
+                                         y: '2011',
+                                         a: 75,
+                                         b: 65
+                                     }, {
+                                         y: '2012',
+                                         a: 100,
+                                         b: 90
+                                     }, {
+                                         y: '2017',
+                                         a: 75,
+                                         b: 65
+                                     }, {
+                                         y: '2017',
+                                         a: 100,
+                                         b: 90
+                                     }];
+                 
+                                     // See: js/examples/examples.charts.js for more settings.
+                 
+                                 </script>
+                      </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                        <label class="control-label font-weight-bold text-3">Map Location:</label>
+
+                        <div id="map" class="mapclassmain" style="height: 320px;"></div>
+
+                        </div>
+                      
+                    </div>
+                
+                 </form>
+              </div>
+           </div>
+        </div>
+     </section>
+  
+    </div>
+  </section>
+  

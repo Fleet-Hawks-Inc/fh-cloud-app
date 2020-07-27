@@ -13,6 +13,9 @@ export class AssetListComponent implements OnInit {
   title = "Assets List";
   assets;
 
+  selectedAssets;
+  
+
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {

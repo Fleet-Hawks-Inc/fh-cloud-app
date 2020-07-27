@@ -81,7 +81,23 @@ import { IssueListComponent } from './maintenance/issues/issue-list/issue-list.c
 import { AddIssueComponent } from './maintenance/issues/add-issue/add-issue.component';
 import { ServiceListComponent } from './maintenance/services/service-list/service-list.component';
 import { AddServiceComponent } from './maintenance/services/add-service/add-service.component';
+import { AssetDetailComponent } from './assets/asset-detail/asset-detail.component';
 
+// Reminders
+import { ListingComponent } from './reminders/service-reminder/listing/listing.component';
+import { AddReminderComponent } from './reminders/service-reminder/add-reminder/add-reminder.component';
+
+//ngselect2
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgSelectConfig } from '@ng-select/ng-select'; 
+import { ɵs } from '@ng-select/ng-select';
+import { VehicleRenewAddComponent } from './reminders/vehicle-renewals/vehicle-renew-add/vehicle-renew-add.component';
+import { VehicleRenewListComponent } from './reminders/vehicle-renewals/vehicle-renew-list/vehicle-renew-list.component';
+import { AddContactRenewComponent } from './reminders/contact-renewals/add-contact-renew/add-contact-renew.component';
+import { ListContactRenewComponent } from './reminders/contact-renewals/list-contact-renew/list-contact-renew.component';
+import { ServiceRemindDetailComponent } from './reminders/service-reminder/service-remind-detail/service-remind-detail.component';
+import { ContactRenewDetailComponent } from './reminders/contact-renewals/contact-renew-detail/contact-renew-detail.component';
+import { VehicleRenewDetailComponent } from './reminders/vehicle-renewals/vehicle-renew-detail/vehicle-renew-detail.component';
 
 @NgModule({
   imports: [
@@ -89,7 +105,8 @@ import { AddServiceComponent } from './maintenance/services/add-service/add-serv
             FormsModule,
             CommonModule,
             SharedModule,
-    ChartsModule
+    ChartsModule,
+    NgSelectModule
 
   ],
   declarations: [
@@ -173,8 +190,20 @@ import { AddServiceComponent } from './maintenance/services/add-service/add-serv
     ServiceListComponent,
 
     AddServiceComponent,
+
+    AssetDetailComponent,
+    ListingComponent,
+    AddReminderComponent,
+    VehicleRenewAddComponent,
+    VehicleRenewListComponent,
+    AddContactRenewComponent,
+    ListContactRenewComponent,
+    ServiceRemindDetailComponent,
+    ContactRenewDetailComponent,
+    VehicleRenewDetailComponent
+    
     
   ],
-  providers: [],
+  providers: [NgSelectConfig,ɵs],
 })
 export class FleetModule {}

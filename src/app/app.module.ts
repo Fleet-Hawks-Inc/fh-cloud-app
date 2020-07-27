@@ -112,6 +112,8 @@ import { NavOpenedDirective } from './directives/nav-opened.directive';
 import {SharedModule} from './shared/shared.module';
 import {ChartsModule} from 'ng2-charts';
 import {ToastrModule} from 'ngx-toastr';
+//ngselect2
+//import { NgSelectModule } from '@ng-select/ng-select';
 
 // Authentication
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
@@ -253,8 +255,8 @@ import { CarrierRegisterComponent } from './carrier-register/carrier-register.co
     ChartsModule,
     SharedModule,
     ToastrModule.forRoot(),
-    MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
-
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+    //NgSelectModule
 
 
   ],
