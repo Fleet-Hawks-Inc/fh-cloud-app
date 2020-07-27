@@ -2,7 +2,10 @@
  .black_color{
   color: #000!important;
 }
-
+/* PAGE HEADER MARGIN */
+.page-header{
+  margin: -40px -40px 0px -40px;
+}
 /* safety page classes */
 .border_bottom
 {

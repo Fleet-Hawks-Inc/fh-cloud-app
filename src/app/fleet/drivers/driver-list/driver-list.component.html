@@ -14,7 +14,7 @@
            <div class="row px-2" style="padding-top:10px;">
               <div class="col-md-2 col-lg-2">
                  <div class="input-group input-group-md mb-3">
-                    <select data-plugin-selectTwo class="form-control populate">
+                    <!-- <select data-plugin-selectTwo class="form-control populate">
                        <optgroup label="">
                           <option value="1">Driver 1</option>
                           <option value="2">Driver 2</option>
@@ -22,7 +22,10 @@
                           <option value="2">Driver 4</option>
                           <option value="2">Driver 5</option>
                        </optgroup>
-                    </select>
+                    </select> --> 
+                    <ng-select [items]="defaultBindingsList" name="serahDriver"
+                    [(ngModel)]="selectedCity" style="width: 100%;">
+         </ng-select>
                  </div>
               </div>
               <div class="col-md-2  col-lg-2" >

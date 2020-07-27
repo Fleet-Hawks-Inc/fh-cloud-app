@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+// Select List
+import { NgSelectModule } from '@ng-select/ng-select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 
@@ -113,6 +115,7 @@ import {SharedModule} from './shared/shared.module';
 import {ChartsModule} from 'ng2-charts';
 import {ToastrModule} from 'ngx-toastr';
 
+
 // Authentication
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 // JWT interceptors
@@ -132,6 +135,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 import { RegisterComponent } from './register/register.component';
 import { CarrierRegistrationComponent } from './carrier-registration/carrier-registration.component';
 import { CarrierRegisterComponent } from './carrier-register/carrier-register.component';
+
+import { CarouselModule } from 'ngx-owl-carousel-o';
 @NgModule({
   declarations: [
     AppComponent,
@@ -246,7 +251,9 @@ import { CarrierRegisterComponent } from './carrier-register/carrier-register.co
     RouterModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
+    NgSelectModule,
+    CarouselModule,
+    FormsModule,  
     ReactiveFormsModule,
       NgbModule,
     BrowserAnimationsModule,

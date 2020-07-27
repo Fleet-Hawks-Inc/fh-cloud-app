@@ -24,6 +24,8 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
+              "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css",
               "src/assets/css/jquerytable.css",
               "node_modules/mapbox-gl/dist/mapbox-gl.css",
               "node_modules/@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css",
@@ -32,11 +34,13 @@
               "src/styles.css",
               "src/assets/vendor/select2/css/select2.css",
               "src/assets/vendor/select2-bootstrap-theme/select2-bootstrap.min.css",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/animate.css/animate.min.css"
+             
             ],
             "scripts": [
               "node_modules/mapbox-gl/dist/mapbox-gl.js",
-              "node_modules/@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.js",
+               "node_modules/@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.js",
               "src/assets/vendor/modernizr/modernizr.min.js",
               "src/assets/vendor/jquery/jquery.js",
               "src/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js",
@@ -55,6 +59,8 @@
               "node_modules/datatables.net/js/jquery.dataTables.js",
               "src/assets/vendor/select2/js/select2.js",
               "node_modules/chart.js/dist/Chart.bundle.min.js"
+              
+             
             ]
           },
           "configurations": {

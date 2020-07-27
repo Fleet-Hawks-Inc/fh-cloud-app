@@ -8,6 +8,8 @@ import { SharedModule } from '../shared/shared.module';
 import { AddVehicleNewComponent } from './vehicles/add-vehicle-new/add-vehicle-new.component';
 import { EditVehicleNewComponent } from './vehicles/edit-vehicle-new/edit-vehicle-new.component';
 import { VehicleListComponent } from './vehicles/vehicle-list/vehicle-list.component';
+import { VehicleDetailsComponent } from './vehicles/vehicle-details/vehicle-details.component';
+
 
 import { UserListComponent } from './fleet-manager/user-list/user-list.component';
 import { AddUserComponent } from './fleet-manager/add-user/add-user.component';
@@ -80,19 +82,29 @@ import { DashboardDriverComponent } from './dashboard-driver/dashboard-driver.co
 import { FuelDetailsComponent } from './expenses/fuel-entry/fuel-details/fuel-details.component';
 import { DriverProfileComponent } from './drivers/driver-profile/driver-profile.component';
 
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgSelectConfig } from '@ng-select/ng-select'; 
+import { ɵs } from '@ng-select/ng-select';
+
+import { CarouselModule } from 'ngx-owl-carousel-o';
+
 @NgModule({
   imports: [
     FleetRoutingModule,
             FormsModule,
             CommonModule,
             SharedModule,
-    ChartsModule
+            ChartsModule,
+            NgSelectModule,
+            CarouselModule
 
   ],
   declarations: [
+   
     AddDriverComponent,
     EditDriverComponent,
     DriverListComponent,
+    VehicleDetailsComponent,
 
     AddVehicleComponent,
     EditVehicleComponent,
@@ -166,8 +178,10 @@ import { DriverProfileComponent } from './drivers/driver-profile/driver-profile.
 
     DriverProfileComponent,
 
+ 
+
     
   ],
-  providers: [],
+  providers: [NgSelectConfig,ɵs],
 })
 export class FleetModule {}

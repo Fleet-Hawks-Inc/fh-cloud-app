@@ -1,3 +1,4 @@
+
 $("#arrowRmini").on('click',function()
         {
           $("#driverMiniList").hide("slide", { direction: "right"  }, 1000 );   

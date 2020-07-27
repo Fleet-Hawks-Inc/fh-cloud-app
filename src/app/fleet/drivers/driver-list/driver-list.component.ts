@@ -12,11 +12,17 @@ declare var $: any;
 export class DriverListComponent implements OnInit {
   title = "Driver List";
   users = [];
-
-  constructor(private apiService: ApiService, private router: Router) {}
+  defaultBindingsList = [
+    { value: 1, label: 'Vilnius' },
+    { value: 2, label: 'Kaunas' },
+    { value: 3, label: 'Pavilnys', disabled: true }
+];
+ selectedCity = null;
+   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
     this.fetchUsers();
+    this.selectedCity = this.defaultBindingsList[0];
   }
 
   fetchUsers() {
@@ -46,7 +52,7 @@ export class DriverListComponent implements OnInit {
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      // $("#datatable-default").DataTable();
     });
   }
   showMap(){

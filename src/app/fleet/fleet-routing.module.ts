@@ -13,6 +13,8 @@ import { EditVehicleComponent } from "./vehicles/edit-vehicle/edit-vehicle.compo
 import { AddVehicleNewComponent } from "./vehicles/add-vehicle-new/add-vehicle-new.component";
 import { EditVehicleNewComponent } from "./vehicles/edit-vehicle-new/edit-vehicle-new.component";
 import { VehicleListComponent } from "./vehicles/vehicle-list/vehicle-list.component";
+import { VehicleDetailsComponent } from './vehicles/vehicle-details/vehicle-details.component';
+
 
 import { AddUserComponent } from "./fleet-manager/add-user/add-user.component";
 import { EditUserComponent } from "./fleet-manager/edit-user/edit-user.component";
@@ -94,6 +96,10 @@ const routes: Routes = [
       {
         path: "Edit-Vehicle-New/:vehicleID",
         component: EditVehicleNewComponent,
+      },
+      {
+        path: "Vehicle-Details",
+        component: VehicleDetailsComponent,
       },
       { path: "Vehicle-List", component: VehicleListComponent },
     ],
