@@ -15,7 +15,7 @@
                <div class="col-md-2 col-lg-2">
                   <div class="input-group input-group-md mb-3">
                      <ng-select [(ngModel)]="selectedAssets" name='search_asset' style="width: 100%;">
-                        <ng-option *ngFor="let item of assets" [value]="item.id">{{item.assetName}}</ng-option>
+                        <ng-option *ngFor="let item of assetsData" [value]="item.id">{{item.assetName}}</ng-option>
                     </ng-select>
                   </div>
                </div>
@@ -194,14 +194,21 @@
                   <div class="card-body">
                      <div class="tab-content p-0" id="myTabContent">
                         <div class="tab-pane show active" id="all" role="tabpanel" aria-labelledby="all-tab">
-                           <div id="DataTables_Table_11_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="DataTables_Table_11_length"><label>Show <select name="DataTables_Table_11_length" aria-controls="DataTables_Table_11" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div>
-                           <div class="table-responsive">
-                             <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer" id="DataTables_Table_11" role="grid">
+                           <div class="">
+                             <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
                               <thead>
-                                 <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 34.3333px;"><input type="checkbox"></th><th width="30%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Asset: activate to sort column ascending" style="width: 403.667px;">Asset</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 181px;">Type</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Licence Plate: activate to sort column ascending" style="width: 181px;">Licence Plate</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Battery Level: activate to sort column ascending" style="width: 106.333px;">Battery Level</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Asset Gateway S/N: activate to sort column ascending" style="width: 181px;">Asset Gateway S/N</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_11" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 106.333px;">Status</th></tr>
+                                 <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th>Asset</th>
+                                    <th>Type</th>
+                                    <th>Licence Plate</th>
+                                    <th>Battery Level</th>
+                                    <th>Asset Gateway S/N</th>
+                                    <th>Status</th>
+                                 </tr>
                               </thead>
                               <tbody>
-                              <tr *ngFor="let asset of assets;let i = index;" routerLink="/fleet/assets/asset-detail">
+                              <tr *ngFor="let asset of assetsData;let i = index;" routerLink="/fleet/assets/asset-detail">
                                 <td class="sorting_1"><input type="checkbox"></td>
                                 <td>{{ asset.assetName }}</td>
                                 <td>{{ asset.assetType }}</td>
@@ -216,261 +223,136 @@
                                 </tr>
                               </tbody>
                            </table>
-                          </div>
-                          <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_11_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_11_previous"><a href="#" aria-controls="DataTables_Table_11" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_11" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_11_next"><a href="#" aria-controls="DataTables_Table_11" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
+                           </div>
                         </div>
                         <div class="tab-pane fade" id="reefer" role="tabpanel" aria-labelledby="reefer-tab">
-                        <div id="DataTables_Table_12_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="DataTables_Table_12_length"><label>Show <select name="DataTables_Table_12_length" aria-controls="DataTables_Table_12" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer" id="DataTables_Table_12" role="grid">
-                              <thead>
-                                 <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 0px;"><input type="checkbox"></th><th width="30%" class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Asset: activate to sort column ascending" style="width: 0px;">Asset</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 0px;">Type</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Licence Plate: activate to sort column ascending" style="width: 0px;">Licence Plate</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Battery Level: activate to sort column ascending" style="width: 0px;">Battery Level</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Asset Gateway S/N: activate to sort column ascending" style="width: 0px;">Asset Gateway S/N</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_12" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th></tr>
-                              </thead>
-                              <tbody>
-                                 
-                                 
-                                 
-                                 
-                                 
-                                 
-                              <tr role="row" class="odd">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr><tr role="row" class="even">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset 1</td>
-                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
-                                 </tr><tr role="row" class="odd">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
-                                 </tr><tr role="row" class="even">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
-                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr><tr role="row" class="odd">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
-                                 </tr><tr role="row" class="even">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Asset Name</td>
-                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr></tbody>
-                           </table></div><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_12_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_12_previous"><a href="#" aria-controls="DataTables_Table_12" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_12" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_12_next"><a href="#" aria-controls="DataTables_Table_12" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
+                           <div class="">
+                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
+                               <thead>
+                                  <tr>
+                                     <th><input name="assetsCheck" (click)="checkuncheckall()" type="checkbox"></th>
+                                     <th>Asset</th>
+                                     <th>Type</th>
+                                     <th>Licence Plate</th>
+                                     <th>Battery Level</th>
+                                     <th>Asset Gateway S/N</th>
+                                     <th>Status</th>
+                                  </tr>
+                               </thead>
+                               <tbody>
+                               <tr *ngFor="let asset of assetsData;let i = index;" routerLink="/fleet/assets/asset-detail">
+                                 <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
+                                 <td>{{ asset.assetName }}</td>
+                                 <td>{{ asset.assetType }}</td>
+                                 <td>{{ asset.license.plateNumber }}</td>
+                                 <td></td>
+                                 <td></td>
+                                 <td>
+                                   <span class="badge badge-secondary text-3">
+                                     {{asset.currentStatus}}
+                                   </span>
+                                 </td>
+                                 </tr>
+                               </tbody>
+                            </table>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="dryBox" role="tabpanel" aria-labelledby="dryBox-tab">
-                        <div id="DataTables_Table_13_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="DataTables_Table_13_length"><label>Show <select name="DataTables_Table_13_length" aria-controls="DataTables_Table_13" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer" id="DataTables_Table_13" role="grid">
-                              <thead>
-                                 <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 0px;"><input type="checkbox"></th><th width="30%" class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Asset: activate to sort column ascending" style="width: 0px;">Asset</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 0px;">Type</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Licence Plate: activate to sort column ascending" style="width: 0px;">Licence Plate</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Battery Level: activate to sort column ascending" style="width: 0px;">Battery Level</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Asset Gateway S/N: activate to sort column ascending" style="width: 0px;">Asset Gateway S/N</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_13" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th></tr>
-                              </thead>
-                              <tbody>
-                                 
-                                 
-                                 
-                                 
-                                 
-                                 
-                              <tr role="row" class="odd">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Dry Box</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr><tr role="row" class="even">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Drybox</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
-                                 </tr><tr role="row" class="odd">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Dry Box</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr><tr role="row" class="even">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Dry Box</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr><tr role="row" class="odd">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Dry Box</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
-                                 </tr><tr role="row" class="even">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Dry Box</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr></tbody>
-                           </table></div><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_13_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_13_previous"><a href="#" aria-controls="DataTables_Table_13" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_13" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_13_next"><a href="#" aria-controls="DataTables_Table_13" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
+                           <div class="">
+                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
+                               <thead>
+                                  <tr>
+                                     <th><input type="checkbox"></th>
+                                     <th>Asset</th>
+                                     <th>Type</th>
+                                     <th>Licence Plate</th>
+                                     <th>Battery Level</th>
+                                     <th>Asset Gateway S/N</th>
+                                     <th>Status</th>
+                                  </tr>
+                               </thead>
+                               <tbody>
+                               <tr *ngFor="let asset of assetsData;let i = index;" routerLink="/fleet/assets/asset-detail">
+                                 <td class="sorting_1"><input type="checkbox"></td>
+                                 <td>{{ asset.assetName }}</td>
+                                 <td>{{ asset.assetType }}</td>
+                                 <td>{{ asset.license.plateNumber }}</td>
+                                 <td></td>
+                                 <td></td>
+                                 <td>
+                                   <span class="badge badge-secondary text-3">
+                                     {{asset.currentStatus}}
+                                   </span>
+                                 </td>
+                                 </tr>
+                               </tbody>
+                            </table>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="flatBed" role="tabpanel" aria-labelledby="flatBed-tab">
-                        <div id="DataTables_Table_14_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="DataTables_Table_14_length"><label>Show <select name="DataTables_Table_14_length" aria-controls="DataTables_Table_14" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer" id="DataTables_Table_14" role="grid">
-                              <thead>
-                                 <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 0px;"><input type="checkbox"></th><th width="30%" class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Asset: activate to sort column ascending" style="width: 0px;">Asset</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 0px;">Type</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Licence Plate: activate to sort column ascending" style="width: 0px;">Licence Plate</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Battery Level: activate to sort column ascending" style="width: 0px;">Battery Level</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Asset Gateway S/N: activate to sort column ascending" style="width: 0px;">Asset Gateway S/N</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_14" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th></tr>
-                              </thead>
-                              <tbody>
-                                 
-                                 
-                                 
-                                 
-                                 
-                                 
-                              <tr role="row" class="odd">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Flatbed</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
-                                 </tr><tr role="row" class="even">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Flatbed</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr><tr role="row" class="odd">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Flatbed</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
-                                 </tr><tr role="row" class="even">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Flatbed</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr><tr role="row" class="odd">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Flatbed</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr><tr role="row" class="even">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Flatbed</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr></tbody>
-                           </table></div><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_14_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_14_previous"><a href="#" aria-controls="DataTables_Table_14" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_14" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_14_next"><a href="#" aria-controls="DataTables_Table_14" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
+                           <div class="">
+                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
+                               <thead>
+                                  <tr>
+                                     <th><input type="checkbox"></th>
+                                     <th>Asset</th>
+                                     <th>Type</th>
+                                     <th>Licence Plate</th>
+                                     <th>Battery Level</th>
+                                     <th>Asset Gateway S/N</th>
+                                     <th>Status</th>
+                                  </tr>
+                               </thead>
+                               <tbody>
+                               <tr *ngFor="let asset of assetsData;let i = index;" routerLink="/fleet/assets/asset-detail">
+                                 <td class="sorting_1"><input type="checkbox"></td>
+                                 <td>{{ asset.assetName }}</td>
+                                 <td>{{ asset.assetType }}</td>
+                                 <td>{{ asset.license.plateNumber }}</td>
+                                 <td></td>
+                                 <td></td>
+                                 <td>
+                                   <span class="badge badge-secondary text-3">
+                                     {{asset.currentStatus}}
+                                   </span>
+                                 </td>
+                                 </tr>
+                               </tbody>
+                            </table>
+                            </div>
                         </div>
 
                         <div class="tab-pane fade" id="curtainSide" role="tabpanel" aria-labelledby="curtainSide-tab">
-                        <div id="DataTables_Table_15_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="DataTables_Table_15_length"><label>Show <select name="DataTables_Table_15_length" aria-controls="DataTables_Table_15" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer" id="DataTables_Table_15" role="grid">
-                              <thead>
-                                 <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 0px;"><input type="checkbox"></th><th width="30%" class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Asset: activate to sort column ascending" style="width: 0px;">Asset</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 0px;">Type</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Licence Plate: activate to sort column ascending" style="width: 0px;">Licence Plate</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Battery Level: activate to sort column ascending" style="width: 0px;">Battery Level</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Asset Gateway S/N: activate to sort column ascending" style="width: 0px;">Asset Gateway S/N</th><th width="10%" class="sorting" tabindex="0" aria-controls="DataTables_Table_15" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 0px;">Status</th></tr>
-                              </thead>
-                              <tbody>
-                                 
-                                 
-                                 
-                                 
-                                 
-                                 
-                              <tr role="row" class="odd">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Curtain Side</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr><tr role="row" class="even">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Curtain Side</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
-                                 </tr><tr role="row" class="odd">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Curtain Side</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr><tr role="row" class="even">
-                                    <td onclick="window.location='asset1_details.php'" class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Curtain Side</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-secondary text-3">Inactive</span></td>
-                                 </tr><tr role="row" class="odd">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Curtain Side</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr><tr role="row" class="even">
-                                    <td class="sorting_1"><input type="checkbox"></td>
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Curtain Side</td>
-                                    <td onclick="window.location='asset1_details.php'">Jun2020</td>
-                                    <td onclick="window.location='asset1_details.php'">20%</td>
-                                    <td onclick="window.location='asset1_details.php'">None</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-success text-3">Active</span></td>
-                                 </tr></tbody>
-                           </table></div><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_15_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_15_previous"><a href="#" aria-controls="DataTables_Table_15" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_15" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_15_next"><a href="#" aria-controls="DataTables_Table_15" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
+                           <div class="">
+                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
+                               <thead>
+                                  <tr>
+                                     <th><input type="checkbox"></th>
+                                     <th>Asset</th>
+                                     <th>Type</th>
+                                     <th>Licence Plate</th>
+                                     <th>Battery Level</th>
+                                     <th>Asset Gateway S/N</th>
+                                     <th>Status</th>
+                                  </tr>
+                               </thead>
+                               <tbody>
+                               <tr *ngFor="let asset of assetsData;let i = index;" routerLink="/fleet/assets/asset-detail">
+                                 <td class="sorting_1"><input type="checkbox"></td>
+                                 <td>{{ asset.assetName }}</td>
+                                 <td>{{ asset.assetType }}</td>
+                                 <td>{{ asset.license.plateNumber }}</td>
+                                 <td></td>
+                                 <td></td>
+                                 <td>
+                                   <span class="badge badge-secondary text-3">
+                                     {{asset.currentStatus}}
+                                   </span>
+                                 </td>
+                                 </tr>
+                               </tbody>
+                            </table>
+                            </div>
                         </div>
                      </div>
                   </div>

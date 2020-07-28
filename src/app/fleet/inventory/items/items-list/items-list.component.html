@@ -8,103 +8,185 @@
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
 
-    <section role="main" class="content-body">
+    <section role="main" class="content-body pl-0 pt-0 pr-0">
       <header class="page-header">
-        <h2>{{ title }}</h2>
+         <form class="form-horizontal" method="get">
+            <div class="row pr-5" style="padding-top:10px;">
+               <div class="col-md-3 col-lg-3">
+                  <div class="input-group input-group-sm mb-3">
+                     <input type="text" class="form-control" placeholder="Search by Name">
+                  </div>
+               </div>
+               <div class="col-lg-2 col-md-2">
+                  <button class="btn btn-sm btn-success" type="submit">Search</button>
+               </div>
+               <div class="col-md-7  col-lg-7 text-right pr-4">
+               <a href="#transferModal" class="modal-with-form btn btn-success btn-sm"><i class="fas fa-exchange-alt"></i> Transfer</a>                
 
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a routerLink="">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li>
-              <span>
-                Inventory
-              </span>
-            </li>
-            <li>
-              <span>{{ title }}</span>
-            </li>
-          </ol>
-        </div>
+                  <div class="btn-group flex-wrap">
+                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                        <a class="dropdown-item text-1" href="">Edit</a>
+                        <a class="dropdown-item text-1" href="">Delete</a>
+                     </div>
+                  </div>
+                  <a routerLink="/fleet/inventory/item/Add-Item" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Inventory</a>                
+
+               </div>
+            </div>
+         </form>
       </header>
+     
+      <div class="row text-dark">
+         <div class="col-12 pr-0">
+            <section class="card">
+               <div class="card-body mb-0">
+               <h2 class="mt-0 font-weight-bold text-dark text-4">Existing Inventory</h2>
 
-      <section class="card mb-4">
-        <div class="card-body">
-          <h2 class="card-title mt-3 pull-left">{{ title }}</h2>
-          <div class="pull-right">
-            <div class="btn-group flex-wrap">
-              <button
-                type="button"
-                class="mb-1 mt-1 mr-1 btn btn-default dropdown-toggle"
-                data-toggle="dropdown"
-              >
-                <i class="fas fa-ellipsis-v"></i> Action
-                <span class="caret"></span>
-              </button>
-              <div class="dropdown-menu" role="menu">
-                <a class="dropdown-item text-1" href="#">Action</a>
-                <a class="dropdown-item text-1" href="#">Another action</a>
-                <a class="dropdown-item text-1" href="#">Something else here</a>
-                <a class="dropdown-item text-1" href="#">Separated link</a>
-              </div>
-            </div>
+                  <div id="simple-table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="simple-table_length"><label>Show <select name="simple-table_length" aria-controls="simple-table" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 dataTable no-footer" id="simple-table" role="grid">
+                     <thead>
+                        <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 31.6667px;"><input type="checkbox"></th><th width="5%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Part #: activate to sort column ascending" style="width: 33px;">Part #</th><th width="20%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" style="width: 249px;">Name</th><th width="10%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 106.333px;">Category</th><th width="20%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Vendor: activate to sort column ascending" style="width: 250.333px;">Vendor</th><th width="5%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Quantity: activate to sort column ascending" style="width: 58.3333px;">Quantity</th><th width="10%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="On Hand: activate to sort column ascending" style="width: 106.333px;">On Hand</th><th width="10%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Unit Cost: activate to sort column ascending" style="width: 106.333px;">Unit Cost</th><th width="15%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Warehouse Details: activate to sort column ascending" style="width: 178.333px;">Warehouse Details</th></tr>
+                     </thead>
+                     <tbody>
+                        
+                        
+                        
+                        
+                        
+                       
+                     <tr role="row"  routerLink="/fleet/inventory/item/item-detail" class="odd">
+                           <td class="sorting_1"><input type="checkbox"></td>
+                           <td>01</td>
+                           <td>10-30wt Oil</td>
+                           <td>Oil</td>
+                           <td>Warren CAT</td>
+                           <td>18</td>
+                           <td>234 </td>
+                           <td>$ 2.34 </td>
+                           <td>Warehouse 1</td>
+                        </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="even">
+                           <td class="sorting_1"><input type="checkbox"></td>
+                           <td>01</td>
+                           <td>10-30wt Oil</td>
+                           <td>Oil</td>
+                           <td>Warren CAT</td>
+                           <td>9</td>
+                           <td>234 </td>
+                           <td>$ 2.34 </td>
+                           <td>Warehouse 2</td>
+                        </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="odd">
+                           <td class="sorting_1"><input type="checkbox"></td>
+                           <td>01</td>
+                           <td>10-30wt Oil</td>
+                           <td>Oil</td>
+                           <td>Warren CAT</td>
+                           <td>4</td>
+                           <td>234 </td>
+                           <td>$ 2.34 </td>
+                           <td>Warehouse 3</td>
+                        </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="even">
+                           <td class="sorting_1"><input type="checkbox"></td>
+                           <td>01</td>
+                           <td>10-30wt Oil</td>
+                           <td>Oil</td>
+                           <td>Warren CAT</td>
+                           <td>2</td>
+                           <td>234 </td>
+                           <td>$ 2.34 </td>
+                           <td>Warehouse 4</td>
+                        </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="odd">
+                           <td class="sorting_1"><input type="checkbox"></td>
+                           <td>01</td>
+                           <td>10-30wt Oil</td>
+                           <td>Oil</td>
+                           <td>Warren CAT</td>
+                           <td>15</td>
+                           <td>234 </td>
+                           <td>$ 2.34 </td>
+                           <td>Warehouse 5</td>
+                        </tr></tbody>
+                  </table></div><div class="dataTables_paginate paging_simple_numbers" id="simple-table_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="simple-table_previous"><a href="#" aria-controls="simple-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="simple-table" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="simple-table_next"><a href="#" aria-controls="simple-table" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
+               </div>
+            </section>
+         </div>
 
-            <a routerLink="/fleet/inventory/item/Add-Item" class="mb-1 mt-1 mr-1 btn btn-success"
-              ><i class="fas fa-plus"></i> Add Item</a
-            >
-          </div>
-        </div>
-      </section>
+         <div class="col-12 pr-0">
+            <section class="card">
+               <div class="card-body mt-0">
+               <h2 class="mt-0 font-weight-bold text-dark text-4">Required Inventory</h2>
 
-      <div class="row">
-        <div class="col">
-          <section class="card">
-            <header class="card-header">
-              <h2 class="card-title">{{ title }}</h2>
-            </header>
-            <div class="card-body">
-              <table
-                class="table table-bordered table-striped mb-0"
-                #FhDataTable
-                id="datatable-default"
-              >
-                <thead>
-                  <tr>
-                    <th>Item Name</th>
-                    <th>opening Stock</th>
-                    <th>Description</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                    <!--<th class="d-lg-none">Operator</th>-->
-                    <!--<th class="d-lg-none">CSS grade</th>-->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of items">
-                    <td>{{ item.itemName }}</td>
-                    <td>{{ item.openingStock }}</td>
-                    <td>{{ item.description }}</td>
-                    <td>
-                      <a routerLink="/fleet/inventory/item/Edit-Item/{{ item.itemID }}">Edit</a>
-                    </td>
-                    <td>
-                      <a [routerLink]="" (click)="deleteItem(item.itemID)"
-                        >Delete</a
-                      >
-                    </td>
+                  <div id="simple-table1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="simple-table1_length"><label>Show <select name="simple-table1_length" aria-controls="simple-table1" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 dataTable no-footer" id="simple-table1" role="grid">
+                     <thead>
+                        <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 31.6667px;"><input type="checkbox"></th><th width="5%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Part #: activate to sort column ascending" style="width: 33px;">Part #</th><th width="20%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" style="width: 249px;">Name</th><th width="10%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 106.333px;">Category</th><th width="20%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Vendor: activate to sort column ascending" style="width: 250.333px;">Vendor</th><th width="5%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Quantity: activate to sort column ascending" style="width: 58.3333px;">Quantity</th><th width="10%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="On Hand: activate to sort column ascending" style="width: 106.333px;">On Hand</th><th width="10%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Unit Cost: activate to sort column ascending" style="width: 106.333px;">Unit Cost</th><th width="15%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Warehouse Details: activate to sort column ascending" style="width: 178.333px;">Warehouse Details</th></tr>
+                     </thead>
+                     <tbody>
+                        
+                        
+                        
+                        
+                        
 
-                    <!--<td class="center d-lg-none">4</td>-->
-                    <!--<td class="center d-lg-none">X</td>-->
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </div>
+                      
+                       
+                     <tr role="row" routerLink="/fleet/inventory/item/item-detail" class="odd">
+                           <td class="sorting_1"><input type="checkbox"></td>
+                           <td>01</td>
+                           <td>10-30wt Oil</td>
+                           <td>Oil</td>
+                           <td>Warren CAT</td>
+                           <td>15</td>
+                           <td>234 </td>
+                           <td>$ 2.34 </td>
+                           <td>Warehouse Location 1</td>
+                        </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="even">
+                           <td class="sorting_1"><input type="checkbox"></td>
+                           <td>01</td>
+                           <td>10-30wt Oil</td>
+                           <td>Oil</td>
+                           <td>Warren CAT</td>
+                           <td>3</td>
+                           <td>234 </td>
+                           <td>$ 2.34 </td>
+                           <td>Warehouse Detail 1</td>
+                        </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="odd">
+                           <td class="sorting_1"><input type="checkbox"></td>
+                           <td>01</td>
+                           <td>10-30wt Oil</td>
+                           <td>Oil</td>
+                           <td>Warren CAT</td>
+                           <td>4</td>
+                           <td>234 </td>
+                           <td>$ 2.34 </td>
+                           <td>Warehouse Location 2</td>
+                        </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="even">
+                           <td class="sorting_1"><input type="checkbox"></td>
+                           <td>01</td>
+                           <td>10-30wt Oil</td>
+                           <td>Oil</td>
+                           <td>Warren CAT</td>
+                           <td>11</td>
+                           <td>234 </td>
+                           <td>$ 2.34 </td>
+                           <td>Warehouse Location 3</td>
+                        </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="odd">
+                           <td class="sorting_1"><input type="checkbox"></td>
+                           <td>01</td>
+                           <td>10-30wt Oil</td>
+                           <td>Oil</td>
+                           <td>Warren CAT</td>
+                           <td>6</td>
+                           <td>234 </td>
+                           <td>$ 2.34 </td>
+                           <td>Warehouse Location 4</td>
+                        </tr></tbody>
+                  </table></div><div class="dataTables_paginate paging_simple_numbers" id="simple-table1_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="simple-table1_previous"><a href="#" aria-controls="simple-table1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="simple-table1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="simple-table1_next"><a href="#" aria-controls="simple-table1" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
+               </div>
+            </section>
+         </div>
+
       </div>
-    </section>
+
+
+   </section>
   </div>
 </section>

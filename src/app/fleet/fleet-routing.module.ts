@@ -88,6 +88,7 @@ import { ServiceRemindDetailComponent } from './reminders/service-reminder/servi
 
 import { VehicleRenewDetailComponent } from './reminders/vehicle-renewals/vehicle-renew-detail/vehicle-renew-detail.component';
 import { ContactRenewDetailComponent } from './reminders/contact-renewals/contact-renew-detail/contact-renew-detail.component';
+import { ItemDetailComponent } from './inventory/items/item-detail/item-detail.component';
 
 
 const routes: Routes = [
@@ -308,9 +309,14 @@ const routes: Routes = [
             component: ItemsListComponent,
           },
           {
+            path: "item-detail",
+            component: ItemDetailComponent,
+          },
+          {
             path: "Edit-Item/:itemID",
             component: EditItemComponent,
           },
+          
         ],
       },
       {

@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ApiService } from "../../../api.service";
 import { Router } from "@angular/router";
-import { timer } from "rxjs";
+import { timer, Subject } from "rxjs";
 declare var $: any;
 
 @Component({
@@ -11,26 +11,47 @@ declare var $: any;
 })
 export class AssetListComponent implements OnInit {
   title = "Assets List";
-  assets;
+  assetsData = [];
+  isChecked = false;
 
-  selectedAssets;
-  
+  dtOptions: any = {};
+  dtTrigger = new Subject();
 
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
+    
+    this.dtOptions = {
+      dom: 'Bfrtip', //lrtip to hide search field
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      buttons: [
+        'colvis',
+      ],
+    }
     this.fetchAssets();
+    this.checkuncheckall()
+
   }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+  
 
   fetchAssets() {
     this.apiService.getData("assets").subscribe({
       complete: () => {
-        this.initDataTable();
+        //this.initDataTable();
       },
       error: () => {},
       next: (result: any) => {
         console.log("res",result);
-        this.assets = result.Items;
+        this.assetsData = result.Items;
+        // Calling the DT trigger to manually render the table
+        this.dtTrigger.next();
       },
     });
   }
@@ -52,4 +73,17 @@ export class AssetListComponent implements OnInit {
       $("#datatable-default").DataTable();
     });
   }
+
+  
+  checkuncheckall() {
+  
+    if (this.isChecked == true) {
+      this.isChecked = false;
+    }
+    else {
+      this.isChecked = true;
+    }
+
+  }
+  
 }

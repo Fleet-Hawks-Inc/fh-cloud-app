@@ -16,6 +16,10 @@ export class AddItemComponent implements OnInit {
   errors = {};
   form;
   concatArrayKeys = "";
+  inventaryData = {
+    uploadedPhotos: {},
+    uploadedDocuments: {}
+  };
   /**
    * Form props
    */
@@ -59,6 +63,7 @@ export class AddItemComponent implements OnInit {
   }
 
   addItem() {
+    console.log(this.inventaryData)
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;

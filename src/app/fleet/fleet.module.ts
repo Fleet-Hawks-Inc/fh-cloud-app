@@ -4,6 +4,7 @@ import { FleetRoutingModule } from './fleet-routing.module';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AddVehicleNewComponent } from './vehicles/add-vehicle-new/add-vehicle-new.component';
 import { EditVehicleNewComponent } from './vehicles/edit-vehicle-new/edit-vehicle-new.component';
@@ -98,7 +99,9 @@ import { ListContactRenewComponent } from './reminders/contact-renewals/list-con
 import { ServiceRemindDetailComponent } from './reminders/service-reminder/service-remind-detail/service-remind-detail.component';
 import { ContactRenewDetailComponent } from './reminders/contact-renewals/contact-renew-detail/contact-renew-detail.component';
 import { VehicleRenewDetailComponent } from './reminders/vehicle-renewals/vehicle-renew-detail/vehicle-renew-detail.component';
-
+//DataTable
+import { DataTablesModule } from 'angular-datatables';
+import { ItemDetailComponent } from './inventory/items/item-detail/item-detail.component';
 @NgModule({
   imports: [
     FleetRoutingModule,
@@ -106,8 +109,9 @@ import { VehicleRenewDetailComponent } from './reminders/vehicle-renewals/vehicl
             CommonModule,
             SharedModule,
     ChartsModule,
-    NgSelectModule
-
+    NgSelectModule,
+    DataTablesModule,
+    NgbModule
   ],
   declarations: [
     AddDriverComponent,
@@ -200,7 +204,8 @@ import { VehicleRenewDetailComponent } from './reminders/vehicle-renewals/vehicl
     ListContactRenewComponent,
     ServiceRemindDetailComponent,
     ContactRenewDetailComponent,
-    VehicleRenewDetailComponent
+    VehicleRenewDetailComponent,
+    ItemDetailComponent
     
     
   ],
