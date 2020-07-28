@@ -4,6 +4,7 @@ import { FleetRoutingModule } from './fleet-routing.module';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AddVehicleNewComponent } from './vehicles/add-vehicle-new/add-vehicle-new.component';
 import { EditVehicleNewComponent } from './vehicles/edit-vehicle-new/edit-vehicle-new.component';
@@ -96,7 +97,8 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
             SharedModule,
             ChartsModule,
             NgSelectModule,
-            CarouselModule
+            CarouselModule,
+            NgbModule
 
   ],
   declarations: [

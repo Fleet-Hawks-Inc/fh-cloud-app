@@ -14,15 +14,9 @@
            <div class="row px-4" style="padding-top:10px;">
               <div class="col-md-2 col-lg-2">
                  <div class="input-group input-group-md mb-3">
-                    <select data-plugin-selectTwo class="form-control populate">
-                       <optgroup label="">
-                          <option value="1">Vehicle 1</option>
-                          <option value="2">Vehicle 2</option>
-                          <option value="2">Vehicle 3</option>
-                          <option value="2">Vehicle 4</option>
-                          <option value="2">Vehicle 5</option>
-                       </optgroup>
-                    </select>
+                  <ng-select [items]="defaultBindingsList" name="searchFuelEntry"
+                  [(ngModel)]="selectedCity" placeholder="Search Fuel Entry" style="width: 100%;">
+                    </ng-select>
                  </div>
               </div>
               <div class="col-lg-3 col-md-3">
@@ -124,63 +118,63 @@
                     <tbody>
                        <tr>
                           <td><input type="checkbox"></td>
-                          <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">Vehicle 1</a></td>
-                          <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">Jun 5, 2020</a></td>
-                          <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">123.9 mi</a> </td>
-                          <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">16.456</a></td>
-                          <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">$45.67</a><br><span class="font-size-12"></span></td>
-                          <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">13.56 MPG(US)</a></td>
-                          <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">$0.18/mi</a></td>
+                          <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details">Vehicle 1</a></td>
+                          <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details">Jun 5, 2020</a></td>
+                          <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">123.9 mi</a> </td>
+                          <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">16.456</a></td>
+                          <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">$45.67</a><br><span class="font-size-12"></span></td>
+                          <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">13.56 MPG(US)</a></td>
+                          <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">$0.18/mi</a></td>
                        </tr>
                        <tr>
                         <td><input type="checkbox"></td>
-                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">Vehicle 1</a></td>
-                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">Jun 5, 2020</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">123.9 mi</a> </td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">16.456</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">$45.67</a><br><span class="font-size-12"></span></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">13.56 MPG(US)</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">$0.18/mi</a></td>
+                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details">Vehicle 1</a></td>
+                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details">Jun 5, 2020</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">123.9 mi</a> </td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">16.456</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">$45.67</a><br><span class="font-size-12"></span></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">13.56 MPG(US)</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">$0.18/mi</a></td>
                      </tr>
                      <tr>
                         <td><input type="checkbox"></td>
-                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">Vehicle 1</a></td>
-                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">Jun 5, 2020</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">123.9 mi</a> </td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">16.456</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">$45.67</a><br><span class="font-size-12"></span></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">13.56 MPG(US)</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">$0.18/mi</a></td>
+                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details">Vehicle 1</a></td>
+                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details">Jun 5, 2020</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">123.9 mi</a> </td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">16.456</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">$45.67</a><br><span class="font-size-12"></span></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">13.56 MPG(US)</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">$0.18/mi</a></td>
                      </tr>
                      <tr>
                         <td><input type="checkbox"></td>
-                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">Vehicle 1</a></td>
-                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">Jun 5, 2020</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">123.9 mi</a> </td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">16.456</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">$45.67</a><br><span class="font-size-12"></span></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">13.56 MPG(US)</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">$0.18/mi</a></td>
+                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details">Vehicle 1</a></td>
+                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details">Jun 5, 2020</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">123.9 mi</a> </td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">16.456</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">$45.67</a><br><span class="font-size-12"></span></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">13.56 MPG(US)</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">$0.18/mi</a></td>
                      </tr>
                      <tr>
                         <td><input type="checkbox"></td>
-                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">Vehicle 1</a></td>
-                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">Jun 5, 2020</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">123.9 mi</a> </td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">16.456</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">$45.67</a><br><span class="font-size-12"></span></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">13.56 MPG(US)</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">$0.18/mi</a></td>
+                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details">Vehicle 1</a></td>
+                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details">Jun 5, 2020</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">123.9 mi</a> </td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">16.456</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">$45.67</a><br><span class="font-size-12"></span></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">13.56 MPG(US)</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">$0.18/mi</a></td>
                      </tr>
                      <tr>
                         <td><input type="checkbox"></td>
-                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">Vehicle 1</a></td>
-                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">Jun 5, 2020</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">123.9 mi</a> </td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">16.456</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">$45.67</a><br><span class="font-size-12"></span></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">13.56 MPG(US)</a></td>
-                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">$0.18/mi</a></td>
+                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details">Vehicle 1</a></td>
+                        <td> <a routerLink="/fleet/expenses/fuel/Fuel-Details">Jun 5, 2020</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">123.9 mi</a> </td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">16.456</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">$45.67</a><br><span class="font-size-12"></span></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">13.56 MPG(US)</a></td>
+                        <td><a routerLink="/fleet/expenses/fuel/Fuel-Details">$0.18/mi</a></td>
                      </tr>
                     </tbody>
                  </table>

@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit ,ViewChild } from "@angular/core";
 import { ApiService } from "../../../api.service";
 import { Router } from "@angular/router";
 import { timer } from "rxjs";
+
 declare var $: any;
 
 @Component({
@@ -13,7 +14,11 @@ export class GeofenceListComponent implements OnInit {
 
   title = 'Geofence List';
   geofences;
-
+  defaultBindingsList = [
+    { value: 1, label: 'Vilnius' },
+    { value: 2, label: 'Kaunas' },
+    { value: 3, label: 'Pavilnys'}
+];
   constructor(private apiService: ApiService,
               private router: Router) { }
 
@@ -54,5 +59,6 @@ export class GeofenceListComponent implements OnInit {
       $("#datatable-default").DataTable();
     });
   }
-  
+
+
 }

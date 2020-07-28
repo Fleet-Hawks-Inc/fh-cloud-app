@@ -1,5 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
+import { MapBoxService } from "../map-box.service";
 import * as mapboxSdk from '@mapbox/mapbox-sdk';
 import * as geocoding from '@mapbox/mapbox-sdk/services/geocoding';
 import * as mapboxgl from 'mapbox-gl';
@@ -52,7 +53,7 @@ export class MapDashboardComponent implements OnInit {
 
   center = { lat: 30.900965, lng: 75.857277 };
   marker;
-  constructor() { }
+  constructor(private mapBoxService: MapBoxService) { }
 
   ngOnInit() {
     this.mapboxInit();

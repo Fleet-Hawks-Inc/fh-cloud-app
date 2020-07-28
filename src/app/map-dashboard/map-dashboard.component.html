@@ -5,7 +5,8 @@
     <!-- start: sidebar -->
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
-    <section role="main" class="content-body pl-0 pr-0 pt-0">
+  
+    <!-- <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header">
         <h2>{{ title }}</h2>
         <div class="right-wrapper text-right">
@@ -165,6 +166,563 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
+    <section role="main" class="content-body pl-0 pr-0">
+      <header class="page-header pl-5">
+         <h2>Driver Dashboard</h2>
+         <div class="row" style="padding-top:10px;">
+            <div class="col-lg-7"></div>
+            <div class="col-lg-2">
+               <div class="input-group">
+                  <input class="form-control" type="text" placeholder="Search" >
+                  <span class="input-group-append">
+                  <span class="input-group-text">
+                  <i class="fas fa-search"></i>
+                  </span>
+                  </span>
+               </div>
+            </div>
+            <div class="col-lg-3 text-right pl-0 pr-5">
+               <div class="btn-group flex-wrap">
+                  <button type="button" class="mb-1 mx-1 btn btn-dark btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Duty Status<span class="caret"></span></button>
+                  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                     <a class="dropdown-item text-1" href="">ON</a>
+                     <a class="dropdown-item text-1" href="">OFF</a>
+                     <a class="dropdown-item text-1" href="">D</a>
+                     <a class="dropdown-item text-1" href="">SB</a>
+                     <a class="dropdown-item text-1" href="">YM</a>
+                  </div>
+               </div>
+               <div class="btn-group flex-wrap">
+                  <button type="button" class="mb-1 mx-1 btn btn-dark btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Schedule<span class="caret"></span></button>
+                  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                     <a class="dropdown-item text-1" href="">On Time</a>
+                     <a class="dropdown-item text-1" href="">Late</a>
+                  </div>
+               </div>
+               <div class="btn-group flex-wrap">
+                  <button type="button" class="mb-1 mx-1 btn btn-dark btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Load Type<span class="caret"></span></button>
+                  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                     <a class="dropdown-item text-1" href="">FTL</a>
+                     <a class="dropdown-item text-1" href="">LTL</a>
+                     <a class="dropdown-item text-1" href="">Reefer</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </header>
+      <div class="mapclass drivermain">
+         <div id="map" class="mapclassmain"></div>
+         <!-- COLLAPSABLE BUTTON -->
+         <div  id="map_collapse_sidebar">
+            <section class="card">
+               <header class="card-header" style="border-radius:none;">
+                  <div class="card-actions">
+                     <a class="card-action card-action-toggle" href="#" data-card-toggle=""></a>
+                  </div>
+                  <h2 class="card-title" style="width:230px;"><i class="fas fa-sitemap"></i>&nbsp;&nbsp;&nbsp; Entire Fleet</h2>
+                  <div class="mt-3">
+                     <select data-plugin-selectTwo class="form-control populate">
+                        <optgroup label="Select Truck">
+                           <option value="1">Groups</option>
+                           <option value="2">Vehicles</option>
+                           <option value="2">Drivers</option>
+                           <option value="2">Assets</option>
+                        </optgroup>
+                     </select>
+                  </div>
+               </header>
+               <div class="card-body" style="display: block;">
+                  <div tabindex="0" class="jstree jstree-2 jstree-default jstree-checkbox-selection" id="treeCheckbox" role="tree" aria-busy="false" aria-multiselectable="true" aria-selected="false" aria-activedescendant="j2_9">
+                     <ul class="jstree-container-ul jstree-children" role="group">
+                        <li class="jstree-node  jstree-open" id="j2_1" role="treeitem" aria-expanded="true" aria-selected="false" aria-level="1" aria-labelledby="j2_1_anchor">
+                           <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                           <a tabindex="-1" class="jstree-anchor" id="j2_1_anchor" href="#">
+                           <i class="jstree-icon jstree-checkbox" role="presentation"></i>
+                           <i class="jstree-icon jstree-themeicon fas fa-folder jstree-themeicon-custom" role="presentation"></i>
+                           Root Node
+                           </a>
+                           <ul class="jstree-children" role="group">
+
+                            
+
+                              <li class="jstree-node jstree-open" id="j2_3" role="treeitem" aria-expanded="false" aria-selected="false" aria-level="2" aria-labelledby="j2_3_anchor" data-jstree='{ "opened" : true }'>
+                                 <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                                 <a tabindex="-1" class="jstree-anchor" id="j2_3_anchor" href="#">
+                                 <i class="jstree-icon jstree-checkbox" role="presentation"></i>
+                                 <i class="jstree-icon jstree-themeicon fas fa-folder jstree-themeicon-custom" role="presentation"></i>
+                                 Opened Node
+                                 </a>
+                              </li>
+                              <li class="jstree-node  jstree-leaf" id="j2_6" role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="j2_6_anchor" data-jstree='{ "icon" : "far fa-file-image" }'>
+                                 <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                                 <a tabindex="-1" class="jstree-anchor" id="j2_6_anchor" href="#">
+                                 <i class="jstree-icon jstree-checkbox" role="presentation"></i>
+                                 <i class="jstree-icon jstree-themeicon far fa-file-image jstree-themeicon-custom" role="presentation"></i>
+                                 Custom Icon
+                                 </a>
+                              </li>
+                              <li class="jstree-node  jstree-leaf jstree-last" id="j2_7" role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="j2_7_anchor" data-jstree='{ "icon" : "img/icon.png" }'>
+                                 <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                                 <a tabindex="-1" class="jstree-anchor" id="j2_7_anchor" href="#">
+                                 <i class="jstree-icon jstree-checkbox" role="presentation"></i>
+                                 <i class="jstree-icon jstree-themeicon jstree-themeicon-custom" role="presentation" style='background-position: center; background-image: url("img/icon.png"); background-size: auto;'></i>
+                                 Custom Icon Image
+                                 </a>
+                              </li>
+                           </ul>
+                        </li>
+                        <li class="jstree-node  jstree-open" id="j2_9" role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="j2_9_anchor">
+                           <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                           <a tabindex="-1" class="jstree-anchor" id="j2_9_anchor" href="#">
+                           <i class="jstree-icon jstree-checkbox" role="presentation"></i>
+                           <i class="jstree-icon jstree-themeicon fas fa-folder jstree-themeicon-custom" role="presentation"></i>
+                           Colored Icon Only
+                           </a>
+                           <ul class="jstree-children" role="group">
+                            
+                              <li class="jstree-node jstree-open" id="j2_3" role="treeitem" aria-expanded="false" aria-selected="true" aria-level="2" aria-labelledby="j2_3_anchor" data-jstree='{ "opened" : true }'>
+                                 <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                                 <a tabindex="-1" class="jstree-anchor" id="j2_3_anchor" href="#">
+                                 <i class="jstree-icon jstree-checkbox" role="presentation"></i>
+                                 <i class="jstree-icon jstree-themeicon fas fa-folder jstree-themeicon-custom" role="presentation"></i>
+                                 Opened Node
+                                 </a>
+                              </li>
+                              <li class="jstree-node  jstree-leaf" id="j2_6" role="treeitem" aria-selected="true" aria-level="2" aria-labelledby="j2_6_anchor" data-jstree='{ "icon" : "far fa-file-image" }'>
+                                 <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                                 <a tabindex="-1" class="jstree-anchor" id="j2_6_anchor" href="#">
+                                 <i class="jstree-icon jstree-checkbox" role="presentation"></i>
+                                 <i class="jstree-icon jstree-themeicon far fa-file-image jstree-themeicon-custom" role="presentation"></i>
+                                 Custom Icon
+                                 </a>
+                              </li>
+                              <li class="jstree-node  jstree-leaf jstree-last" id="j2_7" role="treeitem" aria-selected="true" aria-level="2" aria-labelledby="j2_7_anchor" data-jstree='{ "icon" : "img/icon.png" }'>
+                                 <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                                 <a tabindex="-1" class="jstree-anchor" id="j2_7_anchor" href="#">
+                                 <i class="jstree-icon jstree-checkbox" role="presentation"></i>
+                                 <i class="jstree-icon jstree-themeicon jstree-themeicon-custom" role="presentation" style='background-position: center; background-image: url("img/icon.png"); background-size: auto;'></i>
+                                 Custom Icon Image
+                                 </a>
+                              </li>
+                           </ul>
+                        </li>
+                        <li class="jstree-node  jstree-open" id="j2_9" role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="j2_9_anchor">
+                           <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                           <a tabindex="-1" class="jstree-anchor" id="j2_9_anchor" href="#">
+                           <i class="jstree-icon jstree-checkbox" role="presentation"></i>
+                           <i class="jstree-icon jstree-themeicon fas fa-folder jstree-themeicon-custom" role="presentation"></i>
+                           Colored Icon Only
+                           </a>
+                           <ul class="jstree-children" role="group">
+                             
+                              <li class="jstree-node jstree-open" id="j2_3" role="treeitem" aria-expanded="false" aria-selected="true" aria-level="2" aria-labelledby="j2_3_anchor" data-jstree='{ "opened" : true }'>
+                                 <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                                 <a tabindex="-1" class="jstree-anchor " id="j2_3_anchor" href="#">
+                                 <i class="jstree-icon jstree-checkbox" role="presentation"></i>
+                                 <i class="jstree-icon jstree-themeicon fas fa-folder jstree-themeicon-custom" role="presentation"></i>
+                                 Opened Node
+                                 </a>
+                              </li>
+                              <li class="jstree-node  jstree-leaf" id="j2_6" role="treeitem" aria-selected="true" aria-level="2" aria-labelledby="j2_6_anchor" data-jstree='{ "icon" : "far fa-file-image" }'>
+                                 <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                                 <a tabindex="-1" class="jstree-anchor" id="j2_6_anchor" href="#">
+                                 <i class="jstree-icon jstree-checkbox" role="presentation"></i>
+                                 <i class="jstree-icon jstree-themeicon far fa-file-image jstree-themeicon-custom" role="presentation"></i>
+                                 Custom Icon
+                                 </a>
+                              </li>
+                              <li class="jstree-node  jstree-leaf jstree-last" id="j2_7" role="treeitem" aria-selected="true" aria-level="2" aria-labelledby="j2_7_anchor" data-jstree='{ "icon" : "img/icon.png" }'>
+                                 <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                                 <a tabindex="-1" class="jstree-anchor" id="j2_7_anchor" href="#">
+                                 <i class="jstree-icon jstree-checkbox" role="presentation"></i>
+                                 <i class="jstree-icon jstree-themeicon jstree-themeicon-custom" role="presentation" style='background-position: center; background-image: url("img/icon.png"); background-size: auto;'></i>
+                                 Custom Icon Image
+                                 </a>
+                              </li>
+                           </ul>
+                        </li>
+                        <li class="jstree-node  jstree-leaf jstree-last" id="j2_10" role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="j2_10_anchor">
+                           <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                           <a tabindex="-1" class="jstree-anchor" id="j2_10_anchor" href="#">
+                           <i class="jstree-icon jstree-checkbox" role="presentation"></i>
+                           <i class="jstree-icon jstree-themeicon fas fa-folder jstree-themeicon-custom" role="presentation"></i>
+                           Folder Style
+                           </a>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </section>
+         </div>
+
+         <!-- VEHICLE MAP LOCATIONS -->
+         <div class="vehicle_moving vehicle-item" id="vehicleLoc1">
+            <a href="#"><i class="fas fa-location-arrow"></i>
+            <p class="vehicle-description">
+            <i class="fas fa-user"></i> Manjit Singh<br>
+            <i class="fas fa-calendar-day"></i> Cycle: 10 D<br>
+            <i class="fas fa-map-marker-alt"></i> Location: Kingston, Toronto<br>
+               <strong>HOS Summary</strong><br>
+               Break: 10 h, Hours: 5 h<br>
+               Shift: 2nd, Cycle Reset: 4:25 h
+            </p>
+         </a>
+         
+      </div>
+         <div class="vehicle_moving" id="vehicleLoc2"><i class="fas fa-location-arrow"></i></div>
+         <div class="vehicle_moving" id="vehicleLoc3"><i class="fas fa-location-arrow"></i></div>
+         <div class="vehicle_moving" id="vehicleLoc4"><i class="fas fa-location-arrow"></i></div>
+         <div class="vehicle_moving" id="vehicleLoc5"><i class="fas fa-location-arrow"></i></div>
+         <div class="vehicle_stop" id="vehicleStopLoc1"><i class="fas fa-location-arrow"></i></div>
+         <div class="vehicle_stop" id="vehicleStopLoc2"><i class="fas fa-location-arrow"></i></div>
+         <div class="vehicle_stop" id="vehicleStopLoc3"><i class="fas fa-location-arrow"></i></div>
+         <div class="vehicle_idle" id="vehicleIdleLoc1"><i class="fas fa-location-arrow"></i></div>
+         <div class="vehicle_idle" id="vehicleIdleLoc2"><i class="fas fa-location-arrow"></i></div>
+         <div class="vehicle_idle" id="vehicleIdleLoc3"><i class="fas fa-location-arrow"></i></div>
+         <div class="vehicle_idle" id="vehicleIdleLoc4"><i class="fas fa-location-arrow"></i></div>
+         <div class="iconR" id="arrowR"  *ngIf="visible">
+            <a [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-right"></i></a>
+         </div>
+         <div class="iconL" id="arrowL" *ngIf="!visible">
+            <a  [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
+         </div>
+         <div class="iconT" id="arrowb">
+            <a href="#"><i class="fas fa-arrow-up"></i></a>
+         </div>
+         <div class="iconB" id="arrowt" style="display: none">
+            <a href="#"><i class="fas fa-arrow-bottom"></i></a>
+         </div>
+         <form method=""  >
+            <div class="drivelist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverList" *ngIf="visible"
+            [@slideInOut]>
+               <div class="driverdetail">
+                  <div class="row">
+                     <div class="col-lg-5">
+                        <p class="mb-2 text-5 font-weight-semibold text-dark"><a routerLink="/fleet/drivers/Driver-Profile">Manjit Singh </a><span class="onduty">ON</span></p>
+                     </div>
+                     <div class="col-lg-5">
+                     </div>
+                     <div class="col-lg-2 pl-0">
+                        <a class="pull-right btn btn-dark btn-xs" routerLink="/Live-View">Live View</a>
+                     </div>
+                  </div>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span class="text-5">10D</span></p>
+                  <p class="mb-0"><span class="text-dark pl-0">Kingston, Toronto, ON K7L 5K4 <i class="fas fa-map-marker-alt" title="Share Location"></i></span></p>
+                  
+                  <div class="row">
+                     <div class="col-lg-6">
+                        <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650</p>
+                     </div>
+                     <div class="col-lg-6 text-right">
+                     <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356</p>
+                     </div>
+                  </div>
+
+                  <p class="mb-2 mt-3 text-4 font-weight-semibold text-dark">Trip Info</p>
+                  <div class="tripscrolbar" style="overflow-x: scroll; overflow-y: hidden; width: 400px;">
+                     <div class="tripbar1"></div>
+                     <div class="tripbarfinish1"></div>
+                     <div class="tripdot1"></div>
+                     <div class="tripdt1">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 1<br>00:00</p>
+                     </div>
+                     <div class="triploc1">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">P</span> Location1 </p>
+                     </div>
+                     <div class="tripdot2"></div>
+                     <div class="tripbarred2"></div>
+                     <div class="tripdot2"></div>
+                     <div class="tripdt2">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 2<br>00:00</p>
+                     </div>
+                     <div class="triploc2">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">P</span> Location2</p>
+                     </div>
+                     <div class="tripbar3"></div>
+                     <div class=""></div>
+                     <div class="tripdot3"></div>
+                     <div class="tripdt3">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 3<br>00:00</p>
+                     </div>
+                     <div class="triploc3">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">D</span> Location3</p>
+                     </div>
+                     <div class="tripbar4"></div>
+                     <div class="tripbarfinish4"></div>
+                     <div class="tripdot4"></div>
+                     <div class="tripdt4">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 4<br>00:00</p>
+                     </div>
+                     <div class="triploc4">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">D</span> Location4</p>
+                     </div>
+                  </div>
+                  
+                  <p class="mb-2 text-4 font-weight-semibold text-dark temp_graph">Temperature
+                     <span class="pull-right text-right">Set: 15<sup>o</sup> - Actuall: 14<sup>o</sup></span>
+                  </p>
+
+                  <table class="table table-responsive-md table-sm table-bordered">
+             <thead>
+               <tr>
+                 <th>Refer 1</th>
+                              <th>Refer 2</th>
+                              <th>Refer 3</th>
+               </tr>
+             </thead>
+             <tbody>
+               <tr>
+                 <td>14<sup>o</sup></td>
+                 <td>16<sup>o</sup></td>
+                 <td>15<sup>o</sup></td>
+               </tr>
+             </tbody>
+                     </table>
+                     
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Status
+                     <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">On Time</button></span>
+                  </p>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Dispatch
+                     <a class="pull-right" href="">DIS-6104</a>
+                  </p>
+               </div>
+               <div class="driverdetail">
+                  <div class="row">
+                     <div class="col-lg-5">
+                        <p class="mb-2 text-5 font-weight-semibold text-dark"><a routerLink="/fleet/drivers/Driver-Profile">Roshan Prince  </a><span class="offduty">OFF</span></p>
+                     </div>
+                     <div class="col-lg-5">
+                     </div>
+                     <div class="col-lg-2 pl-0">
+                        <a class="pull-right btn btn-dark btn-xs" routerLink="/Live-View">Live View</a>
+                     </div>
+                  </div>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span class="text-5">5D</span></p>
+                  <p class="driverstatus mb-0 text-dark pl-0">Crescent Road Vancouver, BC V6T 1Z2 <i class="fas fa-map-marker-alt" title="Share Location"></i></p>
+                  
+                  <div class="row">
+                     <div class="col-lg-6">
+                        <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650</p>
+                     </div>
+                     <div class="col-lg-6 text-right">
+                     <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356</p>
+                     </div>
+                  </div>
+
+                  <p class="mb-2 mt-3 text-4 font-weight-semibold text-dark">Trip Info</p>
+                  <div class="tripscrolbar" style="overflow-x: scroll; overflow-y: hidden; width: 400px;">
+                     <div class="tripbar1"></div>
+                     <div class="tripbarfinish1"></div>
+                     <div class="tripdot1"></div>
+                     <div class="tripdt1">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 1<br>00:00</p>
+                     </div>
+                     <div class="triploc1">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">P</span> Location1 </p>
+                     </div>
+                     <div class="tripdot2"></div>
+                     <div class="tripbarred2"></div>
+                     <div class="tripdot2"></div>
+                     <div class="tripdt2">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 2<br>00:00</p>
+                     </div>
+                     <div class="triploc2">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">P</span> Location2</p>
+                     </div>
+                     <div class="tripbar3"></div>
+                     <div class=""></div>
+                     <div class="tripdot3"></div>
+                     <div class="tripdt3">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 3<br>00:00</p>
+                     </div>
+                     <div class="triploc3">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">D</span> Location3</p>
+                     </div>
+                     <div class="tripbar4"></div>
+                     <div class="tripbarfinish4"></div>
+                     <div class="tripdot4"></div>
+                     <div class="tripdt4">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 4<br>00:00</p>
+                     </div>
+                     <div class="triploc4">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">D</span> Location4</p>
+                     </div>
+                  </div>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Distance Travelled<span class="pull-right">500 Kms</span></p>
+                  <!-- <p class="mb-2 text-4 font-weight-semibold text-dark temp_graph">Temperature
+                     <span class="pull-right text-right">-10<sup>o</sup>C C to -20<sup>o</sup></span>
+                     </p> -->
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Status
+                     <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-danger">Late</button></span>
+                  </p>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Load
+                     <a class="pull-right mx-1" href="">6564</a><a class="pull-right mx-1" href="">6894</a>
+                     <span class="pull-right LTLload">LTL</span>
+                  </p>
+               </div>
+               <div class="driverdetail">
+                  <div class="row">
+                     <div class="col-lg-5">
+                        <p class="mb-2 text-5 font-weight-semibold text-dark"><a routerLink="/fleet/drivers/Driver-Profile">Diljit </a><span class="dutyonly">D</span></p>
+                     </div>
+                     <div class="col-lg-5">
+                        <p class="mb-2 text-4 font-weight-semibold text-dark"><a routerLink="/fleet/drivers/Driver-Profile">Honey Sharma </a><span class="sbduty">SB</span></p>
+                     </div>
+                     <div class="col-lg-2 pl-0">
+                        <a class="pull-right btn btn-dark btn-xs" routerLink="/Live-View">Live View</a>
+                     </div>
+                  </div>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span class="text-5">7D</span></p>
+                  <p class="driverstatus mb-0 text-dark pl-0">McCallum Ave Regina SK S4S 0S4 <i class="fas fa-map-marker-alt" title="Share Location"></i></p>
+                  
+                  <div class="row">
+                     <div class="col-lg-6">
+                        <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650</p>
+                     </div>
+                     <div class="col-lg-6 text-right">
+                     <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356</p>
+                     </div>
+                  </div>
+
+                  <p class="mb-2 mt-3 text-4 font-weight-semibold text-dark">Trip Info</p>
+                  <div class="tripscrolbar" style="overflow-x: scroll; overflow-y: hidden; width: 400px;">
+                     <div class="tripbar1"></div>
+                     <div class="tripbarfinish1"></div>
+                     <div class="tripdot1"></div>
+                     <div class="tripdt1">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 1<br>00:00</p>
+                     </div>
+                     <div class="triploc1">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">P</span> Location1 </p>
+                     </div>
+                     <div class="tripdot2"></div>
+                     <div class="tripbarred2"></div>
+                     <div class="tripdot2"></div>
+                     <div class="tripdt2">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 2<br>00:00</p>
+                     </div>
+                     <div class="triploc2">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">P</span> Location2</p>
+                     </div>
+                     <div class="tripbar3"></div>
+                     <div class=""></div>
+                     <div class="tripdot3"></div>
+                     <div class="tripdt3">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 3<br>00:00</p>
+                     </div>
+                     <div class="triploc3">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">D</span> Location3</p>
+                     </div>
+                     <div class="tripbar4"></div>
+                     <div class="tripbarfinish4"></div>
+                     <div class="tripdot4"></div>
+                     <div class="tripdt4">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 4<br>00:00</p>
+                     </div>
+                     <div class="triploc4">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">D</span> Location4</p>
+                     </div>
+                  </div>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Distance Travelled<span class="pull-right">500 Kms</span></p>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark temp_graph">Temperature
+                     <span class="pull-right text-right">-10<sup>o</sup>C C to -20<sup>o</sup></span>
+                  </p>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Status
+                     <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-danger">Late</button></span>
+                  </p>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Load
+                     <a class="pull-right mx-1" href="#">7864</a>
+                     <a class="pull-right mx-1" href="">6564</a><a class="pull-right mx-1" href="">6894</a>
+                     <span class="pull-right LTLload">LTL</span>
+                  </p>
+               </div>
+               <div class="driverdetail">
+                  <div class="row">
+                     <div class="col-lg-5">
+                        <p class="mb-2 text-5 font-weight-semibold text-dark"><a routerLink="/fleet/drivers/Driver-Profile">Maninder </a><span class="dutyonly">D</span></p>
+                     </div>
+                     <div class="col-lg-5">
+                        <p class="mb-2 text-4 font-weight-semibold text-dark"><a routerLink="/fleet/drivers/Driver-Profile">Honey Sharma </a><span class="sbduty">SB</span></p>
+                     </div>
+                     <div class="col-lg-2 pl-0">
+                        <a class="pull-right btn btn-dark btn-xs" routerLink="/Live-View">Live View</a>
+                     </div>
+                  </div>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span class="text-5">9D</span></p>
+                  <p class="driverstatus mb-0 text-dark pl-0">McCallum Ave Regina SK S4S 0S4 <i class="fas fa-map-marker-alt" title="Share Location"></i></p>
+                  
+                  <div class="row">
+                     <div class="col-lg-6">
+                        <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650</p>
+                     </div>
+                     <div class="col-lg-6 text-right">
+                     <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356</p>
+                     </div>
+                  </div>
+                  
+                  <p class="mb-2 mt-3 text-4 font-weight-semibold text-dark">Trip Info</p>
+                  <div class="tripscrolbar" style="overflow-x: scroll; overflow-y: hidden; width: 400px;">
+                     <div class="tripbar"></div>
+                     <div class="tripbarfinish"></div>
+                     <div class="tripdot1"></div>
+                     <div class="tripdot2"></div>
+                     <div class="tripdot3"></div>
+                     <div class="tripdot4"></div>
+                     <div class="tripdot5"></div>
+                     <div class="tripdot6"></div>
+                     <div class="tripdt1">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 1<br>00:00</p>
+                     </div>
+                     <div class="tripdt2">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 2<br>00:00</p>
+                     </div>
+                     <div class="tripdt3">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 3<br>00:00</p>
+                     </div>
+                     <div class="tripdt4">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 4<br>00:00</p>
+                     </div>
+                     <div class="tripdt5">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 5<br>00:00</p>
+                     </div>
+                     <div class="tripdt6">
+                        <p class="line-height-xs text-2 font-weight-bold">Day 6<br>00:00</p>
+                     </div>
+                     <div class="triploc1">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">P</span> Location1</p>
+                     </div>
+                     <div class="triploc2">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">P</span> Location2</p>
+                     </div>
+                     <div class="triploc3">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">P</span> Location3</p>
+                     </div>
+                     <div class="triploc4">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">D</span> Location4</p>
+                     </div>
+                     <div class="triploc5">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">D</span> Location5</p>
+                     </div>
+                     <div class="triploc6">
+                        <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">D</span> Location6</p>
+                     </div>
+                  </div>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Distance Travelled<span class="pull-right">500 Kms</span></p>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark temp_graph">Temperature
+                     <span class="pull-right text-right">-10<sup>o</sup>C C to -20<sup>o</sup></span>
+                  </p>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Status
+                     <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">On Time</button></span>
+                  </p>
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Load
+                     <a class="pull-right" href="#">6578</a>
+                     <span class="pull-right FTLload">FTL</span>
+                  </p>
+               </div>
+            </div>
+         </form>
+      </div>
+   </section>
   </div>
 </section>

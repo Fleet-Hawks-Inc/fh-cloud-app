@@ -13,7 +13,11 @@ export class VehicleListComponent implements OnInit {
 
   title = 'Vehicle List';
   vehicles;
-
+  defaultBindingsList = [
+    { value: 1, label: 'Vilnius' },
+    { value: 2, label: 'Kaunas' },
+    { value: 3, label: 'Pavilnys'}
+];
   constructor(private apiService: ApiService,
               private router: Router) { }
 

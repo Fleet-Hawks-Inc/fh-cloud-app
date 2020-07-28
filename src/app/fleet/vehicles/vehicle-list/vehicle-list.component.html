@@ -14,15 +14,9 @@
            <div class="row px-4" style="padding-top:10px;">
               <div class="col-md-2 col-lg-2">
                  <div class="input-group input-group-md mb-3">
-                    <select data-plugin-selectTwo class="form-control populate">
-                       <optgroup label="">
-                          <option value="1">Vehicle 1</option>
-                          <option value="2">Vehicle 2</option>
-                          <option value="2">Vehicle 3</option>
-                          <option value="2">Vehicle 4</option>
-                          <option value="2">Vehicle 5</option>
-                       </optgroup>
-                    </select>
+                  <ng-select [items]="defaultBindingsList" name="searchVehicle"
+                  [(ngModel)]="selectedCity" placeholder="Search Vehicle" style="width: 100%;">
+                    </ng-select>
                  </div>
               </div>
               <div class="col-md-2  col-lg-2">

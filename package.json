@@ -57,8 +57,10 @@
     "path": "0.12.7",
     "randomstring": "1.1.5",
     "rxjs": "6.4.0",
+    "save": "^2.4.0",
     "stream": "0.0.2",
     "tslib": "1.10.0",
+    "tslint-angular": "^3.0.2",
     "zone.js": "0.9.1"
   },
   "devDependencies": {

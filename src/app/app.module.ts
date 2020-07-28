@@ -137,6 +137,7 @@ import { CarrierRegistrationComponent } from './carrier-registration/carrier-reg
 import { CarrierRegisterComponent } from './carrier-register/carrier-register.component';
 
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { LiveViewComponent } from './live-view/live-view.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -242,7 +243,8 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     CycleListComponent,
     NavOpenedDirective,
     CarrierRegistrationComponent,
-    CarrierRegisterComponent
+    CarrierRegisterComponent,
+    LiveViewComponent
   ],
   imports: [
     AmplifyAngularModule,

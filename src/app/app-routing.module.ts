@@ -129,6 +129,7 @@ import {ChartsModule} from 'ng2-charts';
 import {Role} from '../objects/objects';
 import {CarrierRegistrationComponent} from "./carrier-registration/carrier-registration.component";
 import {CarrierRegisterComponent} from "./carrier-register/carrier-register.component";
+import { LiveViewComponent } from './live-view/live-view.component';
 
 // import {RegisterComponent} from './register/register.component';
 
@@ -167,6 +168,11 @@ const routes: Routes = [
   {
     path: 'Map-Dashboard',
     component: MapDashboardComponent,
+    canActivate: [AuthService],
+  },
+  {
+    path: 'Live-View',
+    component: LiveViewComponent,
     canActivate: [AuthService],
   },
 

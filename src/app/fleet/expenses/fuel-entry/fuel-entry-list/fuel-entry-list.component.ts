@@ -12,7 +12,11 @@ declare var $: any;
 export class FuelEntryListComponent implements OnInit {
   title = "Fuel Entries List";
   fuelLists;
-
+  defaultBindingsList = [
+    { value: 1, label: 'Vilnius' },
+    { value: 2, label: 'Kaunas' },
+    { value: 3, label: 'Pavilnys'}
+];
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {

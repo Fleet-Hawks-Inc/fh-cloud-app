@@ -1,0 +1,321 @@
+<section class="body">
+    <app-header></app-header>
+  
+    <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->   
+      <!-- <app-right-sidebar></app-right-sidebar>  -->
+      <section role="main" class="content-body pl-0 pr-0">
+        <header class="page-header pl-5">
+           <h2>Live View</h2>
+           <div class="row" style="padding-top:10px;">
+              <div class="col-lg-7"></div>
+              <div class="col-lg-2">
+               
+              </div>
+              <div class="col-lg-3 text-right pl-0">
+               
+              </div>
+           </div>
+        </header>
+        <div class="mapclass drivermain">
+           <div id="map" class="mapclassmain"></div>
+           <!-- VEHICLE MAP LOCATIONS -->
+           <div class="vehicle_moving" id="vehicleLoc1"><i class="fas fa-location-arrow"></i></div>
+    
+           <div class="iconR" id="arrowR"  *ngIf="visible">
+            <a [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-right"></i></a>
+         </div>
+         <div class="iconL" id="arrowL" *ngIf="!visible">
+            <a  [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
+         </div>
+           <div class="iconT" id="arrowb" style="display: none;">
+              <a href="#"><i class="fas fa-arrow-up"></i></a>
+           </div>
+           <div class="iconB" id="arrowt" style="display: none">
+              <a href="#"><i class="fas fa-arrow-bottom"></i></a>
+           </div>
+           <form method=""  >
+              <div class="drivelist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverList"  *ngIf="visible"
+              [@slideInOut]>
+                 <div class="driverdetail">
+                    <div class="row">
+                       <div class="col-lg-5">
+                          <p class="mb-2 text-5 font-weight-semibold text-dark"><a routerLink="/fleet/drivers/Driver-Profile">Manjit Singh </a><span class="onduty">ON</span>
+                       </div>
+                       <div class="col-lg-5">
+                       </div>
+                       <div class="col-lg-2 pl-0">
+                          <!-- <span class="pull-right btn btn-dark btn-xs" id="liveViewBtn1">Live View</span></p> -->
+                       </div>
+                    </div>
+                    <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span class="text-5">10D</span></p>
+                    <p class="driverstatus mb-0 text-dark pl-0">Kingston, Toronto, ON K7L 5K4 <i class="fas fa-map-marker-alt" title="Share Location"></i></p>
+                    
+                    <div class="row">
+                       <div class="col-lg-6">
+                          <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650 <a href="#" data-toggle="tooltip" title="Shared Live Location" class="mb-0 mt-0 btn btn-xs btn-dark"><i class="fas fa-share-alt"></i></a></p>
+                       </div>
+                       <div class="col-lg-6 text-right">
+                       <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356 <a href="#" data-toggle="tooltip" title="Shared Live Location" class="mb-0 mt-0 btn btn-xs btn-dark"><i class="fas fa-share-alt"></i></a></p>
+                       </div>
+                    </div>
+
+                    <p class="mb-2 mt-3 text-4 font-weight-semibold text-dark">Trip Info</p>
+                    <div class="tripscrolbar" style="overflow-x: scroll; overflow-y: hidden; width: 400px;">
+                       <div class="tripbar1"></div>
+                       <div class="tripbarfinish1"></div>
+                       <div class="tripdot1"></div>
+                       <div class="tripdt1">
+                          <p class="line-height-xs text-2 font-weight-bold">Pick 1<br>00:00</p>
+                       </div>
+                       <div class="triploc1">
+                          <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">P</span> Location1 </p>
+                       </div>
+                       <div class="tripdot2"></div>
+                       <div class="tripbarred2"></div>
+                       <div class="tripdot2"></div>
+                       <div class="tripdt2">
+                          <p class="line-height-xs text-2 font-weight-bold">Pick 2<br>00:00</p>
+                       </div>
+                       <div class="triploc2">
+                          <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">P</span> Location2</p>
+                       </div>
+                       <div class="tripbar3"></div>
+                       <div class=""></div>
+                       <div class="tripdot3"></div>
+                       <div class="tripdt3">
+                          <p class="line-height-xs text-2 font-weight-bold">Drop 3<br>00:00</p>
+                       </div>
+                       <div class="triploc3">
+                          <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">D</span> Location3</p>
+                       </div>
+                       <div class="tripbar4"></div>
+                       <div class="tripbarfinish4"></div>
+                       <div class="tripdot4"></div>
+                       <div class="tripdt4">
+                          <p class="line-height-xs text-2 font-weight-bold">Drop 4<br>00:00</p>
+                       </div>
+                       <div class="triploc4">
+                          <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">D</span> Location4</p>
+                       </div>
+                    </div>
+                    <p class="mb-2 text-4 font-weight-semibold text-dark">Distance Travelled<span class="pull-right">500 Kms</span></p>
+                    <p class="mb-2 text-4 font-weight-semibold text-dark temp_graph">Temperature
+                       <span class="pull-right text-right">-10<sup>o</sup>C C to -20<sup>o</sup></span>
+                    </p>
+                    <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Status
+                       <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">On Time</button></span>
+                    </p>
+                    <p class="mb-2 text-4 font-weight-semibold text-dark">Load
+                       <a class="pull-right" href="">6104</a>
+                       <span class="pull-right FTLload">FTL</span>
+                    </p>
+                    <div style="display: block;">
+                       <div class="vinfo">
+                          <p class="mb-0 text-4 font-weight-semibold text-dark pl-3 pt-2">Vehicle Information</p>
+                          <hr class="solid mt-2 mb-2">
+                          <div class="vdetail">
+                             <p class="mb-0 text-3 font-weight-semibold text-dark">VIN<span class="pull-right">XJKDF853269522230000</span></p>
+                             <hr class="solid mt-2 mb-2">
+                             <p class="mb-0 text-3 font-weight-semibold text-dark">Engine<span class="pull-right">Running</span></p>
+                             <hr class="solid mt-2 mb-2">
+                             <p class="mb-0 text-3 font-weight-semibold text-dark">Engine Load<span class="pull-right">35%</span></p>
+                             <hr class="solid mt-2 mb-2">
+                             <p class="mb-0 text-3 font-weight-semibold text-dark">Engine Speed (RPM)<span class="pull-right">2280</span></p>
+                             <hr class="solid mt-2 mb-2">
+                             <p class="mb-0 text-3 font-weight-semibold text-dark">Engine Light<span class="pull-right">ON</span></p>
+                             <hr class="solid mt-2 mb-2">
+                             <p class="mb-0 text-3 font-weight-semibold text-dark">Battery Voltage<span class="pull-right">14.12 V</span></p>
+                             <hr class="solid mt-2 mb-2">
+                             <p class="mb-0 text-3 font-weight-semibold text-dark">Coolant Temp<span class="pull-right">180 F</span></p>
+                             <hr class="solid mt-2 mb-2">
+                             <p class="mb-0 text-3 font-weight-semibold text-dark">Fuel Rate<span class="pull-right">3.33 Gallons/Hour</span></p>
+                             <hr class="solid mt-2 mb-2">
+                             <p class="mb-0 text-3 font-weight-semibold text-dark">Odometer<span class="pull-right">0953250</span></p>
+                             <hr class="solid mt-2 mb-2">
+                             <div class="row">
+                                <div class="col-lg-9 mb-0 text-3 font-weight-semibold text-dark">DEF Capacity</div>
+                                <div class="col-lg-3 text-right">
+                                   <div class="progress progress-sm progress-half-rounded m-2 light">
+                                      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                         60%
+                                      </div>
+                                   </div>
+                                </div>
+                             </div>
+                             <hr class="solid mt-2 mb-2">
+                             <div class="row">
+                                <div class="col-lg-9 mb-0 text-3 font-weight-semibold text-dark">Fuel Capacity</div>
+                                <div class="col-lg-3 text-right">
+                                   <div class="progress progress-sm progress-half-rounded m-2 light">
+                                      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                         60%
+                                      </div>
+                                   </div>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+                
+              </div>
+              <div class="dashboard" id="dcam" style="display:block;">
+                 <div id="with_temp_graph" style="display: block;">
+                 <div  class="row p-2" >
+                 <div class="col-lg-6">
+                             <h3 class="font-weight-bold text-4 text-dark mt-0">Dash Camera</h3>
+                             <img src="/assets/img/dash-cam2.jpg" class="img-fluid" />
+                          </div>
+                    <div class="col-lg-6">
+                       <h3 class="font-weight-bold text-4 text-dark mt-0">Temperature Graph</h3>
+                       <div style="width:100%; height: 50%;">
+                          <canvas id="canvas"></canvas>
+                       </div>
+                       <br>
+                       <script>
+                          var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                          var config = {
+                            type: 'line',
+                            data: {
+                              labels: ['1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM','8AM', '9AM', '10AM', '11AM', '12AM', '1PM', '2PM', '3PM', '4PM','5PM','6PM','7PM','8PM','9PM','10PM','11PM','12PM'],
+                              datasets: [{
+                                label: '',
+                                fill: false,
+                                backgroundColor: window.chartColors.blue,
+                                borderColor: window.chartColors.blue,
+                                data: [
+                                -10, 10, 30, 50, 70,10,30,40,-10,45,60,70,20,30,0,55,10,10,10,10,10,20,20 
+                                ],
+                              }]
+                            },
+                            options: 
+                            {
+                              responsive: true,
+                          
+                              legend: {
+                                display: false
+                                
+                            },
+                          
+                          
+                              title: {
+                                display: false,
+                                text: 'Chart.js Line Chart'
+                              },
+                              tooltips: {
+                                mode: 'index',
+                                intersect: false,
+                              },
+                              hover: {
+                                mode: 'nearest',
+                                intersect: true
+                              },
+                              scales: {
+                                xAxes: [{
+                                  display: true,
+                                  scaleLabel: {
+                                    display: true,
+                                    labelString: ''
+                                  }
+                                }],
+                                yAxes: [{
+                                  display: true,
+                                  scaleLabel: {
+                                    display: true,
+                                    labelString: 'Temperature'
+                                  }
+                                }]
+                              }
+                            }
+                          };
+                          
+                          window.onload = function() {
+                            var ctx = document.getElementById('canvas').getContext('2d');
+                            window.myLine = new Chart(ctx, config);
+                          };
+                          
+                          document.getElementById('randomizeData').addEventListener('click', function() {
+                            config.data.datasets.forEach(function(dataset) {
+                              dataset.data = dataset.data.map(function() {
+                                return randomScalingFactor();
+                              });
+                          
+                            });
+                          
+                            window.myLine.update();
+                          });
+                          
+                          var colorNames = Object.keys(window.chartColors);
+                          document.getElementById('addDataset').addEventListener('click', function() {
+                            var colorName = colorNames[config.data.datasets.length % colorNames.length];
+                            var newColor = window.chartColors[colorName];
+                            var newDataset = {
+                              label: 'Dataset ' + config.data.datasets.length,
+                              backgroundColor: newColor,
+                              borderColor: newColor,
+                              data: [],
+                              fill: false
+                            };
+                          
+                            for (var index = 0; index < config.data.labels.length; ++index) {
+                              newDataset.data.push(randomScalingFactor());
+                            }
+                          
+                            config.data.datasets.push(newDataset);
+                            window.myLine.update();
+                          });
+                          
+                          document.getElementById('addData').addEventListener('click', function() {
+                            if (config.data.datasets.length > 0) {
+                              var month = MONTHS[config.data.labels.length % MONTHS.length];
+                              config.data.labels.push(month);
+                          
+                              config.data.datasets.forEach(function(dataset) {
+                                dataset.data.push(randomScalingFactor());
+                              });
+                          
+                              window.myLine.update();
+                            }
+                          });
+                          
+                          document.getElementById('removeDataset').addEventListener('click', function() {
+                            config.data.datasets.splice(0, 1);
+                            window.myLine.update();
+                          });
+                          
+                          document.getElementById('removeData').addEventListener('click', function() {
+                            config.data.labels.splice(-1, 1); // remove the label first
+                          
+                            config.data.datasets.forEach(function(dataset) {
+                              dataset.data.pop();
+                            });
+                          
+                            window.myLine.update();
+                          });
+                       </script>
+                    </div>
+                 </div>
+                 </div>
+                
+                 <div id="without_temp_graph" class="row p-2" style="display: none;">
+                    <div class="row px-3">
+                       <div class="col-lg-6">
+                          <h3 class="font-weight-bold text-4 text-dark mt-0">Front View</h3>
+                          <img src="img/fv.jpg" class="img-fluid" />
+                       </div>
+                       <div class="col-lg-6">
+                          <h3 class="font-weight-bold text-4 text-dark mt-0">Back View</h3>
+                          <img src="img/bv.png" class="img-fluid" />                        
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </form>
+        </div>
+     </section>
+    </div>
+  </section>
+  
