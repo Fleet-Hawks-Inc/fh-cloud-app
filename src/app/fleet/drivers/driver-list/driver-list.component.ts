@@ -1,16 +1,31 @@
 import { Component, OnInit } from "@angular/core";
+import { animate, style, transition, trigger } from '@angular/animations';
 import {ApiService} from '../../../api.service';
 import { Router } from "@angular/router";
 import { timer } from "rxjs";
+import { MapBoxService } from "../../../map-box.service";
+
 declare var $: any;
 
 @Component({
   selector: "app-driver-list",
   templateUrl: "./driver-list.component.html",
   styleUrls: ["./driver-list.component.css"],
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)' }),
+        animate('400ms', style({ transform: 'translateX(0%)' }))
+      ]),
+      transition(':leave', [
+        animate('400ms', style({ transform: 'translateX(100%)' }))
+      ])
+    ])
+  ],
 })
 export class DriverListComponent implements OnInit {
   title = "Driver List";
+  visible = true;
   users = [];
   defaultBindingsList = [
     { value: 1, label: 'Vilnius' },
@@ -18,11 +33,17 @@ export class DriverListComponent implements OnInit {
     { value: 3, label: 'Pavilnys', disabled: true }
 ];
  selectedCity = null;
-   constructor(private apiService: ApiService, private router: Router) {}
+   constructor(private apiService: ApiService, private router: Router,private mapBoxService: MapBoxService,
+    ) {}
 
   ngOnInit() {
     this.fetchUsers();
     this.selectedCity = this.defaultBindingsList[0];
+    this.mapBoxService.initMapbox(-104.618896, 50.44521);
+
+  }
+  valuechange() {
+    this.visible = !this.visible;
   }
 
   fetchUsers() {

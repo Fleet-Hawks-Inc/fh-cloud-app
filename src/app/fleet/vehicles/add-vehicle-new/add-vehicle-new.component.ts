@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import {ApiService} from '../../../api.service';
 import {Router} from '@angular/router';
 import {AwsUploadService} from '../../../aws-upload.service';
+import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 
 declare var $: any;
 
@@ -23,7 +25,14 @@ export class AddVehicleNewComponent implements OnInit {
   quantum = '';
   quantumSelected = '';
   quantumStatus = '';
-
+// Dates
+loanDate: NgbDateStruct;
+loanEndDate: NgbDateStruct;
+firstPaymentDate: NgbDateStruct;
+inServiceDate: NgbDateStruct;
+outServiceDate: NgbDateStruct;
+issueDate: NgbDateStruct;
+expiryDate : NgbDateStruct;
   /**
    * Vehicle Prop
    */
@@ -138,6 +147,21 @@ export class AddVehicleNewComponent implements OnInit {
       type: "",
       gears : "",
     }
+    loan = {
+      loanVendor : "",
+      loanAmount : "",
+       aspiration : "",
+       annualPercentageRate : "",
+       downPayment : "",
+       loanDate : "",
+       monthlyPayment : "",
+       firstPaymentDate : "",
+       numberofPayments : "",
+       loanEndDate : "",
+       accountNumber : "",
+       generateExpenses : "",
+       notes : ""
+          }
   settings = {
     primaryMeter: "",
     fuelUnit: "",
@@ -361,6 +385,21 @@ export class AddVehicleNewComponent implements OnInit {
           type: this.transmission.type,
           gears : this.transmission.gears,
         },
+        loan : {
+          loanVendor : this.loan.loanVendor,
+          loanAmount : this.loan.loanAmount,
+           aspiration : this.loan.aspiration,
+           annualPercentageRate : this.loan.annualPercentageRate,
+           downPayment : this.loan.downPayment,
+           loanDate : this.loan.loanDate,
+           monthlyPayment : this.loan.monthlyPayment,
+           firstPaymentDate : this.loan.firstPaymentDate,
+           numberofPayments : this.loan.numberofPayments,
+           loanEndDate : this.loan.loanEndDate,
+           accountNumber : this.loan.accountNumber,
+           generateExpenses : this.loan.generateExpenses,
+           notes : this.loan.notes
+              },
       settings: {
         primaryMeter: this.settings.primaryMeter,
         fuelUnit: this.settings.fuelUnit,

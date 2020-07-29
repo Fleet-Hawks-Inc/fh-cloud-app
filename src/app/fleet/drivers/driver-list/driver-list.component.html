@@ -71,11 +71,10 @@
               <div class="col-md-1  col-lg-1">
                  <button type="submit" class="btn btn-sm btn-success">Search</button>
               </div>
-              <div class="col-md-4  col-lg-4 text-right">
+              <div class="col-md-4  col-lg-4 text-right pr-5">
                  <button type="button" id="map_view_btn" (click)="showMap()" class="btn btn-default btn-sm">Map View</button>
                  <button type="button" id="list_view_btn" (click)="showList()" class="btn btn-success btn-sm">List View</button>
-                 <a routerLink="/fleet/drivers/Add-Driver" class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add Driver</a>
-                 <div class="btn-group flex-wrap">
+                 <div class="btn-group flex-wrap ml-2">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                        <a class="dropdown-item text-1" href="">Edit</a>
@@ -84,6 +83,8 @@
                        <a class="dropdown-item text-1" href="">Export</a>
                     </div>
                  </div>
+                 <a routerLink="/fleet/drivers/Add-Driver" class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add Driver</a>
+
               </div>
            </div>
         </form>
@@ -118,11 +119,11 @@
       </section> -->
       <div class="mapclass drivermain" id="map_view" style="display:none;">
         <div id="map" class="mapclassmain"></div>
-        <div class="iconRmini" id="arrowRmini">
-           <a href="#"><i class="fas fa-arrow-right"></i></a>
+        <div class="iconRmini" id="arrowRmini" *ngIf="visible">
+           <a  [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-right"></i></a>
         </div>
-        <div class="iconLmini" id="arrowLmini" style="display: none">
-           <a href="#"><i class="fas fa-arrow-left"></i></a>
+        <div class="iconLmini" id="arrowLmini" *ngIf="!visible">
+           <a [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
         </div>
         <!-- ENTIRE FLEET DROP DOWN ON MAP -->
         <div class="entire_fleet_map">
@@ -153,9 +154,9 @@
               </div>
            </div>
         </div>
-        <div class="driverminilist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverMiniList">
+        <div class="driverminilist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverMiniList" *ngIf="visible" [@slideInOut]>
            <div class="driverdetailMap">
-              <a href="driver-profile2.php">
+              <a routerLink="/fleet/drivers/Driver-Profile">
                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span> Manjit Singh</p>
                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L 5K4</span>
                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
@@ -165,7 +166,7 @@
               </a>
            </div>
            <div class="driverdetailMap">
-              <a href="driver-profile2.php">
+              <a routerLink="/fleet/drivers/Driver-Profile">
                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="offduty pull-right">OFF</span> Roshan Prince</p>
                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T 1Z2</span>
                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
@@ -175,7 +176,7 @@
               </a>
            </div>
            <div class="driverdetailMap">
-              <a href="driver-profile2.php">
+              <a routerLink="/fleet/drivers/Driver-Profile">
                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="dutyonly pull-right">D</span> Bachitar</p>
                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
@@ -185,7 +186,7 @@
               </a>
            </div>
            <div class="driverdetailMap">
-              <a href="driver-profile2.php">
+              <a routerLink="/fleet/drivers/Driver-Profile">
                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="pcduty pull-right">PC</span> Kapil Sharma</p>
                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
@@ -195,7 +196,7 @@
               </a>
            </div>
            <div class="driverdetailMap">
-              <a href="driver-profile2.php">
+              <a routerLink="/fleet/drivers/Driver-Profile">
                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="ymduty pull-right">YM</span> Rohit Aggarwal</p>
                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J 1P3</span>
                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
@@ -205,7 +206,7 @@
               </a>
            </div>
            <div class="driverdetailMap">
-              <a href="driver-profile2.php">
+              <a routerLink="/fleet/drivers/Driver-Profile">
                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span> Manjot Birdi</p>
                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
@@ -215,7 +216,7 @@
               </a>
            </div>
            <div class="driverdetailMap">
-              <a href="driver-profile2.php">
+              <a routerLink="/fleet/drivers/Driver-Profile">
                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="dutyonly pull-right">D</span> Ricky Clerk</p>
                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 2542 Cleary Crt Mississauga ON L5K 1Y3</span>
                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
@@ -225,7 +226,7 @@
               </a>
            </div>
            <div class="driverdetailMap">
-              <a href="driver-profile2.php">
+              <a routerLink="/fleet/drivers/Driver-Profile">
                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span> Manjit Singh</p>
                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L 5K4</span>
                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
@@ -235,7 +236,7 @@
               </a>
            </div>
            <div class="driverdetailMap">
-              <a href="driver-profile2.php">
+              <a routerLink="/fleet/drivers/Driver-Profile">
                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="offduty pull-right">OFF</span> Roshan Prince</p>
                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T 1Z2</span>
                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
@@ -245,7 +246,7 @@
               </a>
            </div>
            <div class="driverdetailMap">
-              <a href="driver-profile2.php">
+              <a routerLink="/fleet/drivers/Driver-Profile">
                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="dutyonly pull-right">D</span> Bachitar</p>
                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
@@ -255,7 +256,7 @@
               </a>
            </div>
            <div class="driverdetailMap">
-              <a href="driver-profile2.php">
+              <a routerLink="/fleet/drivers/Driver-Profile">
                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="pcduty pull-right">PC</span> Kapil Sharma</p>
                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
@@ -265,7 +266,7 @@
               </a>
            </div>
            <div class="driverdetailMap">
-              <a href="driver-profile2.php">
+              <a routerLink="/fleet/drivers/Driver-Profile">
                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="ymduty pull-right">YM</span> Rohit Aggarwal</p>
                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J 1P3</span>
                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
@@ -275,7 +276,7 @@
               </a>
            </div>
            <div class="driverdetailMap">
-              <a href="driver-profile2.php">
+              <a routerLink="/fleet/drivers/Driver-Profile">
                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span> Manjot Birdi</p>
                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 122 St Surrey BC V3V 4L4</span>
                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>

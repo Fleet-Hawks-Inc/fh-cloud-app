@@ -8,8 +8,8 @@
     <!-- start: sidebar -->
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
-
-    <section role="main" class="content-body pt-0 pl-0 pr-0">
+    
+    <section role="main" class="content-body pl-2 pr-0">
       <header class="page-header">
          <h2>Add Driver</h2>
       </header>
@@ -132,7 +132,7 @@
                                              </select>
                                           </div>
                                           <div class="col-lg-1 pl-0">
-                                             <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                             <a [routerLink]="" (click)="createGroupModal()" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
                                           </div>
                                        </div>
                                     </div>
@@ -396,16 +396,37 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2"
                                           >Licence Expiration</label>
-                                       <input type="date"   name="driverLicenseExpiry"
-                                       [(ngModel)]="licence.driverLicenseExpiry"
-                                       [min]="getToday()"
-                                          class="form-control" placeholder="Select Date">
+                                          <div class="input-group">
+                                             <span class="input-group-prepend positionsta">
+                                               <span class="input-group-text" (click)="licenseExpiry.toggle()"
+                                                 ><i class="fas fa-calendar-alt"></i
+                                               ></span>
+                                             </span>
+                                             <input
+                                               class="form-control"
+                                               placeholder="Select Date"
+                                               name="driverLicenseExpiry"
+                                       [(ngModel)]="licence.driverLicenseExpiry" ngbDatepicker #licenseExpiry="ngbDatepicker"
+                                             />
+                                           </div>
+                                      
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2"
                                           >Contract Start Date</label>
-                                       <input type="date" data-plugin-datepicker=""
-                                          class="form-control" placeholder="Select Date" name="driverContractStart" [(ngModel)]="licence.driverContractStart">
+                                          <div class="input-group">
+                                             <span class="input-group-prepend positionsta">
+                                               <span class="input-group-text" (click)="contractStart.toggle()"
+                                                 ><i class="fas fa-calendar-alt"></i
+                                               ></span>
+                                             </span>
+                                             <input
+                                               class="form-control"
+                                               placeholder="Select Date"
+                                               name="driverContractStart" [(ngModel)]="licence.driverContractStart" ngbDatepicker #contractStart="ngbDatepicker"
+                                             />
+                                           </div>
+                                       
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2"
@@ -436,20 +457,52 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2"
                                           >Medical Card Renewal</label>
-                                       <input type="date"
-                                          class="form-control" placeholder="Select Date" name="driverMedicalRenewal" [(ngModel)]="licence.driverMedicalRenewal" >
+                                          <div class="input-group">
+                                             <span class="input-group-prepend positionsta">
+                                               <span class="input-group-text" (click)="medicalRenewal.toggle()"
+                                                 ><i class="fas fa-calendar-alt"></i
+                                               ></span>
+                                             </span>
+                                             <input
+                                               class="form-control"
+                                               placeholder="Select Date"
+                                               name="driverMedicalRenewal" [(ngModel)]="licence.driverMedicalRenewal" ngbDatepicker #medicalRenewal="ngbDatepicker"
+                                             />
+                                           </div>                                       
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2"
                                           >Contract End Date</label>
-                                       <input type="date" data-plugin-datepicker=""
-                                          class="form-control" placeholder="Select Date"  name="driverContractEnd" [(ngModel)]="licence.driverContractEnd">
+                                          <div class="input-group">
+                                             <span class="input-group-prepend positionsta">
+                                               <span class="input-group-text" (click)="contractEnd.toggle()"
+                                                 ><i class="fas fa-calendar-alt"></i
+                                               ></span>
+                                             </span>
+                                             <input
+                                               class="form-control"
+                                               placeholder="Select Date"
+                                               name="driverContractEnd" [(ngModel)]="licence.driverContractEnd" ngbDatepicker #contractEnd="ngbDatepicker"
+                                             />
+                                           </div>
+                                     
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2"
                                           >Birth Date</label>
-                                       <input type="date" name="driverBirthDate" [(ngModel)]="licence.driverBirthDate"
-                                          class="form-control" placeholder="Select Date">
+                                          <div class="input-group">
+                                             <span class="input-group-prepend positionsta">
+                                               <span class="input-group-text" (click)="birthDate.toggle()"
+                                                 ><i class="fas fa-calendar-alt"></i
+                                               ></span>
+                                             </span>
+                                             <input
+                                               class="form-control"
+                                               placeholder="Select Date"
+                                               name="driverBirthDate" [(ngModel)]="licence.driverBirthDate" ngbDatepicker #birthDate="ngbDatepicker"
+                                             />
+                                           </div>
+                                
                                     </div>
                                  </div>
                               </div>
@@ -659,3 +712,33 @@
    </section>
   </div>
 </section>
+
+<!-- Add Group MODAL -->
+<div id="addGroupModal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+    
+     <div class="modal-content">
+       <div class="modal-header">
+          <h4>Add Group</h4>
+         <button type="button" class="close pt-4" data-dismiss="modal">
+           &times;
+         </button>
+       </div>
+       <form class="form-horizontal form-bordered" method="get"  name="form" id="form1_">
+       <div class="modal-body">
+         
+         <label class="control-label">Category Name</label>
+          <input type="text" class="form-control" name="groupNameModal" [(ngModel)]="groupNameModal">
+       </div>
+       <div class="modal-footer">
+         <button type="button" (click)="addGroup()" class="btn btn-success" data-dismiss="modal">
+          Save
+         </button>
+         <p class="text text-success" *ngIf="hasSuccess">
+            {{ Success }}
+          </p>
+       </div>
+      </form>
+     </div>
+   </div>
+ </div>

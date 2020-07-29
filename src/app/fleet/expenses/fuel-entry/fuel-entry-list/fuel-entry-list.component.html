@@ -8,9 +8,9 @@
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
 
-    <section role="main" class="content-body">
-      <header class="page-header">
-        <form class="form-horizontal" method="get">
+    <section role="main" class="content-body pl-0">
+      <header class="page-header pl-3">
+        <form class="form-horizontal" method="get" name="form" id="form_">
            <div class="row px-4" style="padding-top:10px;">
               <div class="col-md-2 col-lg-2">
                  <div class="input-group input-group-md mb-3">
@@ -19,24 +19,46 @@
                     </ng-select>
                  </div>
               </div>
-              <div class="col-lg-3 col-md-3">
-                 <div class="input-daterange input-group" data-plugin-datepicker="">
-                    <span class="input-group-prepend">
-                    <span class="input-group-text">
-                    <i class="fas fa-calendar-alt"></i>
-                    </span>
-                    </span>
-                    <input type="text" class="form-control" name="start">
-                    <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                    to
-                    </span>
-                    <input type="text" class="form-control" name="end">
-                 </div>
+              <div class="col-lg-2 col-md-2">              
+                <div class="form-group">
+                  <div class="input-group">
+                     <span class="input-group-prepend positionsta">
+                       <span class="input-group-text" (click)="from.toggle()"
+                         ><i class="fas fa-calendar-alt"></i
+                       ></span>
+                     </span>
+                     <input
+                       class="form-control"
+                       placeholder="Enter Start Date"
+                       name="fromDate" [(ngModel)]="fromDate" ngbDatepicker #from="ngbDatepicker"
+                     />
+                   </div>
+                 
+                </div> 
+               </div>
+               <div class="col-lg-2 col-md-2">
+                  <div class="form-group">
+                     <div class="input-group">
+                        <span class="input-group-prepend positionsta">
+                          <span class="input-group-text" (click)="to.toggle()"
+                            ><i class="fas fa-calendar-alt"></i
+                          ></span>
+                        </span>
+                        <input
+                          class="form-control"
+                          placeholder="Enter End Date"
+                          name="toDate" [(ngModel)]="toDate" ngbDatepicker #to="ngbDatepicker"
+                        />
+                      </div>
+                    
+                   </div>
+                
+                
               </div>
               <div class="col-md-1  col-lg-1">
-                 <button type="submit" class="btn btn-sm btn-success">Search</button>
+                 <button type="submit" (click)="showTopValues()" class="btn btn-sm btn-success">Search</button>
               </div>
-              <div class="col-md-6  col-lg-6 text-right pr-5">
+              <div class="col-md-5  col-lg-5 text-right pr-5">
                  <div class="btn-group flex-wrap">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">

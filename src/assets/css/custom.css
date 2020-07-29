@@ -594,7 +594,7 @@ float:  left;
 .curcycle{width: 130px; float: left;  }
 
 .iconR{position: absolute;
-  right:512px; 
+  right:566px; 
   top: 370px;
   }
 
@@ -602,7 +602,7 @@ float:  left;
   .iconR a{background: #ebebeb;}
 
   .iconL{position: absolute;
-    right:-10px; 
+    right:50px; 
     top: 370px;
     }
   
@@ -651,7 +651,7 @@ float:  left;
   right:48px; top: 110px; 
 }
 .iconRmini{position: absolute;
-  right:293px; 
+  right:350px; 
   top: 370px;
   }
 
@@ -659,7 +659,7 @@ float:  left;
   .iconRmini a{background: #ebebeb;}
 
   .iconLmini{position: absolute;
-    right:-5px; 
+    right:50px; 
     top: 370px;
     }
   
@@ -668,7 +668,7 @@ float:  left;
 .driverdetailMap{float: left; background: #f5f5f5; width: 100%;
   border-bottom: 1px solid #bec8d1;}
 
-.driverdetailMap a{display: block; height: 165px; text-decoration:none; padding:10px 10px;}
+.driverdetailMap a{display: block; height: 220px; text-decoration:none; padding:10px 10px;}
 .driverdetailMap a:hover{background: #fff; text-decoration:none;}
 .driverstatus{width: 100%; float: left; padding: 5px;}
 .curtime{width: 120px; margin-right: 10px; float: left; border-right:solid 1px #333;}

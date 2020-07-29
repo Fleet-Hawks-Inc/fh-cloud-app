@@ -31,7 +31,8 @@ import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
     RouterModule,
     SidebarComponent,
     MultiSidebarComponents,
-    HeaderComponent
+    HeaderComponent,
+    RightSidebarComponent
 
   ]
 })

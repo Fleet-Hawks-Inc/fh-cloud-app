@@ -168,7 +168,7 @@
       </div>
     </section> -->
     <section role="main" class="content-body pl-0 pr-0">
-      <header class="page-header pl-5">
+      <header class="page-header pl-4 pr-5">
          <h2>Driver Dashboard</h2>
          <div class="row" style="padding-top:10px;">
             <div class="col-lg-7"></div>
@@ -387,12 +387,7 @@
          <div class="iconL" id="arrowL" *ngIf="!visible">
             <a  [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
          </div>
-         <div class="iconT" id="arrowb">
-            <a href="#"><i class="fas fa-arrow-up"></i></a>
-         </div>
-         <div class="iconB" id="arrowt" style="display: none">
-            <a href="#"><i class="fas fa-arrow-bottom"></i></a>
-         </div>
+         
          <form method=""  >
             <div class="drivelist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverList" *ngIf="visible"
             [@slideInOut]>

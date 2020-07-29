@@ -11,7 +11,7 @@ declare var $: any;
   styleUrls: ["./add-geofence.component.css"],
 })
 export class AddGeofenceComponent implements OnInit {
-  title = "Add Geofencing";
+  title = "Add Geofence";
 
   errors = {};
   form;

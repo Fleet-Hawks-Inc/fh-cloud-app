@@ -6,6 +6,9 @@ import {Object} from 'aws-sdk/clients/s3';
 import {ApiService} from '../../../api.service';
 import { Auth } from 'aws-amplify';
 import {AwsUploadService} from '../../../aws-upload.service';
+import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+import * as moment from "moment";
 declare var $: any;
 
 @Component({
@@ -24,6 +27,13 @@ export class AddDriverComponent implements OnInit {
   /**
    * Form Props
    */
+  // Dates
+  driverContractEnd: NgbDateStruct;
+  driverContractStart : NgbDateStruct;
+  driverMedicalRenewal : NgbDateStruct;
+  driverBirthDate  : NgbDateStruct;
+  driverLicenseExpiry : NgbDateStruct;
+ 
     basic = {
       driverType : "",
       companyID : "",
@@ -97,6 +107,7 @@ export class AddDriverComponent implements OnInit {
 
 
   groups = [];
+  groupNameModal = "";
   countries = [];
   states = [];
   cities = [];
@@ -107,9 +118,10 @@ export class AddDriverComponent implements OnInit {
   hasSuccess = false;
   Error: string = "";
   Success: string = "";
+  rightSidebarShow:boolean = true;
 
   constructor(private apiService: ApiService, private router: Router,
-              private awsUS: AwsUploadService) {}
+              private awsUS: AwsUploadService,private parserFormatter: NgbDateParserFormatter) {}
 
   ngOnInit() {
     this.fetchGroups();
@@ -119,6 +131,9 @@ export class AddDriverComponent implements OnInit {
     this.getToday();
     $(document).ready(() => {
       this.form = $('#form_').validate();
+    });
+    $(document).ready(() => {
+      this.form = $("#form1_").validate();
     });
     this.basic.driverGender = "Male";
     this.basic.driverType = "Employee";
@@ -168,11 +183,21 @@ export class AddDriverComponent implements OnInit {
   getToday(): string {
     return new Date().toISOString().split('T')[0]
   }
+
+  addGroup(){
+    this.errors = {};
+      this.hasError = false;
+      this.hasSuccess = false;
+      const data1 = {
+        groupNameModal: this.groupNameModal
+      };
+      console.log(data1);
+  }
   addDriver() {
-    if (this.fileName === '') {
-      this.imageError = 'Please Choose Image To Upload';
-      return;
-    }
+    // if (this.fileName === '') {
+    //   this.imageError = 'Please Choose Image To Upload';
+    //   return;
+    // }
     this.register();
     this.errors = {};
     const data = {
@@ -370,6 +395,12 @@ uploadFile(event) {
     this.fileName = '';
     this.imageError = 'Invalid Image Format';
   }
+}
+
+createGroupModal() {
+  $( document ).ready(function() {
+    $('#addGroupModal').modal('show');
+  });
 }
 }
 

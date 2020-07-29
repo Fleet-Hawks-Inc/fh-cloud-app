@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { catchError, map, mapTo, tap } from "rxjs/operators";
 import { from, of } from "rxjs";
 import {AwsUploadService} from '../../../../aws-upload.service';
+import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 declare var jquery: any;
 declare var $: any;
 
@@ -14,7 +15,7 @@ declare var $: any;
 })
 export class AddFuelEntryComponent implements OnInit {
   title = "Add Fuel Entry";
-
+  date: NgbDateStruct;
   imageError = '';
   fileName = '';
 

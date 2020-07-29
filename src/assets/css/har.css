@@ -493,7 +493,7 @@ VEHICLE MAIN PAGE */
   right:0px; top: 110px; 
 }
 .vehicleRmini{position: absolute;
-  right:245px; 
+  right:255px; 
   top: 370px;
   }
 
@@ -501,7 +501,7 @@ VEHICLE MAIN PAGE */
   .vehicleRmini a{background: #ebebeb;}
 
   .vehicleLmini{position: absolute;
-    right:-5px; 
+    right:9px; 
     top: 370px;
     }
   

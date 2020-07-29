@@ -16,6 +16,7 @@
   <div class="nano">
     <div class="nano-content">
       <nav id="menu" class="nav-main" role="navigation">
+        <app-right-sidebar></app-right-sidebar>
         <fleet-sidebar *ngIf="active_nav == 'fleet'"></fleet-sidebar>
         <compliance-sidebar *ngIf="active_nav == 'compliance'"></compliance-sidebar>
         <alert-sidebar *ngIf="active_nav == 'alert'"></alert-sidebar>

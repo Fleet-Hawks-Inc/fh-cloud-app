@@ -56,7 +56,7 @@ export class LogsComponent implements OnInit {
      * this.fromDate and this.toDate are objects need to format them
      */
     this.formattedFromDate  = moment(this.parserFormatter.format(this.fromDate)).format('DD-MM-YYYY');
-    this.formattedToDate = moment(this.parserFormatter.format(this.toDate)).format('DD-MM-YYYY');
+    this.formattedToDate = moment(this.parserFormatter.format(this.toDate)).format('DD-MM-YYYY');  
     this.getLogs();
   }
 

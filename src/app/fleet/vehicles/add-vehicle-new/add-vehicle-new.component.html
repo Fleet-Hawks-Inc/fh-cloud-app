@@ -9,43 +9,38 @@
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
 
-    <section role="main" class="content-body">
-      <header class="page-header">
-        <h2>{{ title }}</h2>
-
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a href="/">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li><span>Vehicles</span></li>
-            <li>
-              <span>{{ title }}</span>
-            </li>
-          </ol>
+    <section role="main" class="content-body pl-0">
+      <header class="page-header pl-5">
+        <div class="row pr-5 " style="padding-top:10px;">
+           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+              {{title}}
+           </div>
+           <div class="col-md-8  col-lg-8 text-right pr-4">                               
+              <a [routerLink]="['/fleet', 'vehicles', 'Vehicle-List']"  class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles List</a>
+           </div>
         </div>
-      </header>
+     </header>
 
       <div class="row text-dark">
         <div class="col pr-0">
           <section class="card">
-            <div class="m-2">
-              <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                <li class="nav-item"> <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="true">Basic</a> </li>
-                <li class="nav-item"> <a class="nav-link" id="lifecycle-tab" data-toggle="tab" href="#lifecycle" role="tab" aria-controls="lifecycle" aria-selected="false">Lifecycle</a> </li>
-                <li class="nav-item"> <a class="nav-link" id="specifications-tab" data-toggle="tab" href="#specifications" role="tab" aria-controls="specifications" aria-selected="false">Specifications</a> </li>
-                <li class="nav-item"> <a class="nav-link" id="insurance-tab" data-toggle="tab" href="#insurance" role="tab" aria-controls="insurance" aria-selected="false">Insurance</a> </li>
-                <li class="nav-item"> <a class="nav-link" id="fluids-tab" data-toggle="tab" href="#fluids" role="tab" aria-controls="fluids" aria-selected="false">Fluids</a> </li>
-                <li class="nav-item"> <a class="nav-link" id="wheels-tab" data-toggle="tab" href="#wheels" role="tab" aria-controls="wheels" aria-selected="false">Wheels & Tires</a> </li>
-                <li class="nav-item"> <a class="nav-link" id="engine-tab" data-toggle="tab" href="#engine" role="tab" aria-controls="engine" aria-selected="false">Engine & Transmission</a> </li>
-                <li class="nav-item"> <a class="nav-link" id="vsettings-tab" data-toggle="tab" href="#vsettings" role="tab" aria-controls="vsettings" aria-selected="false">Settings</a> </li>
-              </ul>
-            </div>
+          
           </section>
           <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
             <div class="card-body">
+              <div class="m-2">
+                <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                  <li class="nav-item active"> <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="true">Basic</a> </li>
+                  <li class="nav-item"> <a class="nav-link" id="lifecycle-tab" data-toggle="tab" href="#lifecycle" role="tab" aria-controls="lifecycle" aria-selected="false">Lifecycle</a> </li>
+                  <li class="nav-item"> <a class="nav-link" id="specifications-tab" data-toggle="tab" href="#specifications" role="tab" aria-controls="specifications" aria-selected="false">Specifications</a> </li>
+                  <li class="nav-item"> <a class="nav-link" id="insurance-tab" data-toggle="tab" href="#insurance" role="tab" aria-controls="insurance" aria-selected="false">Insurance</a> </li>
+                  <li class="nav-item"> <a class="nav-link" id="fluids-tab" data-toggle="tab" href="#fluids" role="tab" aria-controls="fluids" aria-selected="false">Fluids</a> </li>
+                  <li class="nav-item"> <a class="nav-link" id="wheels-tab" data-toggle="tab" href="#wheels" role="tab" aria-controls="wheels" aria-selected="false">Wheels & Tires</a> </li>
+                  <li class="nav-item"> <a class="nav-link" id="engine-tab" data-toggle="tab" href="#engine" role="tab" aria-controls="engine" aria-selected="false">Engine & Transmission</a> </li>
+                  <li class="nav-item"> <a class="nav-link" id="loan-tab" data-toggle="tab" href="#loan" role="tab" aria-controls="loan" aria-selected="false">Loan</a> </li>
+                  <li class="nav-item"> <a class="nav-link" id="vsettings-tab" data-toggle="tab" href="#vsettings" role="tab" aria-controls="vsettings" aria-selected="false">Settings</a> </li>
+                </ul>
+              </div>
               <div class="tab-content" id="myTabContent" style="box-shadow: none; border: none;">
                 <div class="tab-pane show active" id="details" role="tabpanel" aria-labelledby="details-tab">
                   <div class="">
@@ -373,7 +368,18 @@
                         <div class="row">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">In-Service Date</label>
-                                           <input type="date" class="form-control" name="inServiceDate" [(ngModel)]="lifeCycle.inServiceDate">
+                            <div class="input-group">
+                              <span class="input-group-prepend positionsta">
+                                <span class="input-group-text" (click)="inServiceDate.toggle()"
+                                  ><i class="fas fa-calendar-alt"></i
+                                ></span>
+                              </span>
+                              <input
+                                class="form-control"
+                                placeholder="Select Date"
+                                name="inServiceDate" [(ngModel)]="lifeCycle.inServiceDate" ngbDatepicker #inServiceDate="ngbDatepicker"
+                              />
+                            </div>
                                          </div>
                         </div>
                       </div>
@@ -417,7 +423,19 @@
                         <div class="row">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Out-of-Service Date</label>
-                            <input type="date" class="form-control" name="outServiceDate" [(ngModel)] = "lifeCycle.outServiceDate"> </div>
+                            <div class="input-group">
+                              <span class="input-group-prepend positionsta">
+                                <span class="input-group-text" (click)="outServiceDate.toggle()"
+                                  ><i class="fas fa-calendar-alt"></i
+                                ></span>
+                              </span>
+                              <input
+                                class="form-control"
+                                placeholder="Select Date"
+                                name="outServiceDate" [(ngModel)] = "lifeCycle.outServiceDate" ngbDatepicker #outServiceDate="ngbDatepicker"
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-lg-5 offset-lg-1">
@@ -558,7 +576,20 @@
                         <div class="row">
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Date of Issue</label>
-                            <input type="date" class="form-control" name="issueDate" [(ngModel)]="insurance.issueDate"> </div>
+                            <div class="input-group">
+                              <span class="input-group-prepend positionsta">
+                                <span class="input-group-text" (click)="inIssueDate.toggle()"
+                                  ><i class="fas fa-calendar-alt"></i
+                                ></span>
+                              </span>
+                              <input
+                                class="form-control"
+                                placeholder="Select Date"
+                                name="issueDate" [(ngModel)]="insurance.issueDate" ngbDatepicker #inIssueDate="ngbDatepicker"
+                              />
+                            </div>
+                           
+                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Premium Amount</label>
                             <div class="row">
@@ -595,7 +626,19 @@
                         <div class="row">
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Date of Expiry</label>
-                            <input type="date" class="form-control" name="expiryDate" [(ngModel)]="insurance.expiryDate"> </div>
+                            <div class="input-group">
+                              <span class="input-group-prepend positionsta">
+                                <span class="input-group-text" (click)="inExpiryDate.toggle()"
+                                  ><i class="fas fa-calendar-alt"></i
+                                ></span>
+                              </span>
+                              <input
+                                class="form-control"
+                                placeholder="Select Date"
+                                name="expiryDate" [(ngModel)]="insurance.expiryDate" ngbDatepicker #inExpiryDate="ngbDatepicker"
+                              />
+                            </div>
+                            </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Reminder Before Expiry</label>
                             <div class="row">
@@ -643,8 +686,20 @@
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Quality</label>
-                            <input type="text" class="form-control"  [(ngModel)]="fuel.fuelQuality"
-                            name="fuelQuality"> </div>
+                            <select data-plugin-selectTwo class="form-control populate"  name="fuelQuality" [(ngModel)]="fuel.fuelQuality">
+                              <optgroup label="">
+                                <option value="Regular">Regular</option>
+                                <option value="Extra">Extra</option>
+                                <option value="Supreme">Supreme</option>
+                                <option value="Supreme+">Supreme+</option>
+                                <option value="Regular Clean">Regular Clean</option>
+                                <option value="Plus Clean">Plus Clean</option>
+                                <option value="Super Clean">Super Clean</option>
+                                <option value="Ultra94">Ultra94</option>
+                                <option value="V-Power">V-Power</option>
+                              </optgroup>
+                            </select>
+                             </div>
                         </div>
                       </div>
                       <div class="col-lg-5 offset-lg-1">
@@ -843,7 +898,20 @@
                                  </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Quality</label>
-                            <input type="text" class="form-control" name="fuelQuality" [(ngModel)]="engine.fuelQuality"> </div>
+                            <select data-plugin-selectTwo class="form-control populate"  name="fuelQuality" [(ngModel)]="engine.fuelQuality">
+                              <optgroup label="">
+                                <option value="Regular">Regular</option>
+                                <option value="Extra">Extra</option>
+                                <option value="Supreme">Supreme</option>
+                                <option value="Supreme+">Supreme+</option>
+                                <option value="Regular Clean">Regular Clean</option>
+                                <option value="Plus Clean">Plus Clean</option>
+                                <option value="Super Clean">Super Clean</option>
+                                <option value="Ultra94">Ultra94</option>
+                                <option value="V-Power">V-Power</option>
+                              </optgroup>
+                            </select>
+                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Max HP</label>
                             <input type="text" class="form-control" name="maxHP" [(ngModel)]="engine.maxHP"> </div>
@@ -892,6 +960,105 @@
                     </div>
                   </div>
                 </div>
+                <!-- loan -->
+									<div class="tab-pane fade" id="loan" role="tabpanel" aria-labelledby="loan-tab">
+										<div>
+											<div class="row pt-3">
+												<div class="col-lg-10">
+													<label class="control-label font-weight-bold  text-lg-right text-5 pt-2">Loan Detail</label>
+												</div>
+												<div class="col-lg-5 offset-lg-1">
+													<div class="row">
+														<div class="col-lg-5">
+															<label class="control-label font-weight-bold text-lg-right pt-2">Loan Vendor</label>
+															<input type="text" class="form-control" name="loanVendor" [(ngModel)]="loan.loanVendor"> </div>
+														<div class="col-lg-5">
+															<label class="control-label font-weight-bold text-lg-right pt-2">Amount of Loan</label>
+															<input type="text" class="form-control" name="loanAmount" [(ngModel)]="loan.loanAmount"> </div>
+														<div class="col-lg-5">
+															<label class="control-label font-weight-bold text-lg-right pt-2">Aspiration</label>
+															<input type="text" class="form-control" name="aspiration" [(ngModel)]="loan.aspiration"> </div>
+														<div class="col-lg-5">
+															<label class="control-label font-weight-bold text-lg-right pt-2">Annual Percentage Rate</label>
+															<input type="number" class="form-control" name="annualPercentageRate" [(ngModel)]="loan.annualPercentageRate"> </div>
+														<div class="col-lg-5">
+															<label class="control-label font-weight-bold text-lg-right pt-2">Down Payment</label>
+															<input type="text" class="form-control" name="downPayment" [(ngModel)]="loan.downPayment"> </div>
+														<div class="col-lg-5">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Date of Loan</label>
+                              <div class="input-group">
+                                <span class="input-group-prepend positionsta">
+                                  <span class="input-group-text" (click)="LDate.toggle()"
+                                    ><i class="fas fa-calendar-alt"></i
+                                  ></span>
+                                </span>
+                                <input
+                                  class="form-control"
+                                  placeholder="Select Date"
+                                  name="loanDate" [(ngModel)]="loan.loanDate" ngbDatepicker #LDate="ngbDatepicker"
+                                />
+                              </div>
+                            
+                             </div>
+														<div class="col-lg-5">
+															<label class="control-label font-weight-bold text-lg-right pt-2">Monthly Payment</label>
+															<input type="text" class="form-control" name="monthlyPayment" [(ngModel)]="loan.monthlyPayment"> </div>
+														<div class="col-lg-5">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">First Payment Date</label>
+                              <div class="input-group">
+                                <span class="input-group-prepend positionsta">
+                                  <span class="input-group-text" (click)="FirstPayDate.toggle()"
+                                    ><i class="fas fa-calendar-alt"></i
+                                  ></span>
+                                </span>
+                                <input
+                                  class="form-control"
+                                  placeholder="Select Date"
+                                  name="firstPaymentDate" [(ngModel)]="loan.firstPaymentDate" ngbDatepicker #FirstPayDate="ngbDatepicker"
+                                />
+                              </div>
+                          
+                             </div>
+													</div>
+												</div>
+												<div class="col-lg-5 offset-lg-1">
+													<div class="row">
+														<div class="col-lg-5">
+															<label class="control-label font-weight-bold text-lg-right pt-2">Number of Payments</label>
+															<input type="text" class="form-control" name="numberofPayments" [(ngModel)]="loan.numberofPayments"> </div>
+														<div class="col-lg-5">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Loan End Date</label>
+                              <div class="input-group">
+                                <span class="input-group-prepend positionsta">
+                                  <span class="input-group-text" (click)="LoanEndDate.toggle()"
+                                    ><i class="fas fa-calendar-alt"></i
+                                  ></span>
+                                </span>
+                                <input
+                                  class="form-control"
+                                  placeholder="Select Date"
+                                  name="loanEndDate" [(ngModel)]="loan.loanEndDate" ngbDatepicker #LoanEndDate="ngbDatepicker"
+                                />
+                              </div>
+                             </div>
+														<div class="col-lg-5">
+															<label class="control-label font-weight-bold text-lg-right pt-2">Account Number</label>
+															<input type="text" class="form-control" name="accountNumber" [(ngModel)]="loan.accountNumber"> </div>
+														<div class="col-lg-5">
+															<label class="control-label font-weight-bold text-lg-right pt-2">Generate Expenses:</label>
+															<input type="text" class="form-control" name="generateExpenses" [(ngModel)]="loan.generateExpenses"> </div>
+														<div class="col-lg-10">
+															<label class="control-label font-weight-bold text-lg-right pt-2">Notes</label>
+															<textarea class="form-control" rows="3" name="notes" [(ngModel)]="loan.notes"></textarea>
+														</div>
+														
+														
+													</div>
+												</div>
+											</div>
+											
+										</div>
+									</div>
                 <div class="tab-pane fade" id="vsettings" role="tabpanel" aria-labelledby="vsettings-tab">
                   <div>
                     <div class="row pt-3">

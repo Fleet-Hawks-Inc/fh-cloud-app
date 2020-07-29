@@ -98,11 +98,12 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
             ChartsModule,
             NgSelectModule,
             CarouselModule,
-            NgbModule
+            NgbModule,
+            
 
   ],
   declarations: [
-   
+    
     AddDriverComponent,
     EditDriverComponent,
     DriverListComponent,
