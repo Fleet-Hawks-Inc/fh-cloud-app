@@ -4,3 +4,6 @@
 .nav-active {
   background-color: #EAEAEA;
 }
+.sidebar-left {
+  height: 100vh;
+}

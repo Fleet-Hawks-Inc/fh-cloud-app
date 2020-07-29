@@ -23,16 +23,19 @@ export class AssetListComponent implements OnInit {
     
     this.dtOptions = {
       dom: 'Bfrtip', //lrtip to hide search field
+      processing: true,
       colReorder: {
         fixedColumnsLeft: 1
       },
       buttons: [
         'colvis',
       ],
+      rowCallback: () => {
+        this.checkuncheckall();
+      }
     }
     this.fetchAssets();
-    this.checkuncheckall()
-
+    
   }
 
   ngOnDestroy(): void {

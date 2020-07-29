@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import { MultiSidebarComponents } from './sidebars/multi-sidebar.component';
 import {HeaderComponent} from './header/header.component';
-import { UtilitySidebarComponent } from './utility-sidebar/utility-sidebar.component';
+
 
 @NgModule({
   imports: [
@@ -20,8 +20,7 @@ import { UtilitySidebarComponent } from './utility-sidebar/utility-sidebar.compo
     SidebarComponent,
     MultiSidebarComponents,
     HeaderComponent,
-    UtilitySidebarComponent
-
+    
   ],
   exports: [
     CommonModule,
@@ -32,7 +31,6 @@ import { UtilitySidebarComponent } from './utility-sidebar/utility-sidebar.compo
     SidebarComponent,
     MultiSidebarComponents,
     HeaderComponent,
-    UtilitySidebarComponent
 
   ]
 })

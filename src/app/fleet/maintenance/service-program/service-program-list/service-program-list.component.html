@@ -1,4 +1,136 @@
 <section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+  
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+  
+        <section role="main" class="content-body pt-0 pr-0 pl-0">
+            <header class="page-header service-program-header">
+                <form class="form-horizontal" method="get">
+            
+                    <div class="row pr-5" style="padding-top:10px;">
+                        <div class="col-md-4 col-lg-4">
+                            <div class="input-group input-group-sm mb-3">
+                                <input type="text" class="form-control" placeholder="Search">
+                            </div>
+                        </div>
+                        <div class="col-md-1  col-lg-1">
+                            <button type="submit" class="btn btn-sm btn-success">Search</button>
+                        </div>
+                        <div class="col-md-7  col-lg-7 text-right pr-4">
+            
+                            <div class="btn-group flex-wrap">
+                                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="false">Actions<span class="caret"></span></button>
+                                <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                    <a class="dropdown-item text-1" href="">Import</a>
+                                    <a class="dropdown-item text-1" href="">Export</a>
+                                </div>
+                            </div>
+                            <a  routerLink="/fleet/maintenance/service-program/Add-Service-Program" class="btn btn-success btn-sm ml-2" style="color:white;"><i
+                                    class="fas fa-plus"></i> Add Service Program</a>
+            
+                        </div>
+                    </div>
+                </form>
+            </header>
+            <section class="card">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="wtopnav">
+                        <ul>
+                        <li><a routerLink="/fleet/maintenance/issues/list">Issues</a></li>
+                        <li><a routerLink="/fleet/maintenance/services/list" class="active">Services </a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 pt-1 text-right">
+                </div>
+            </div>
+            </section>
+            <div class="row">
+                <div class="col">
+                    <section class="card">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link " routerLink="/fleet/maintenance/service-log/list" id="service-log-tab" data-toggle="tab" href="#service-log" role="tab" aria-controls="open" aria-selected="true">Service Log</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link active" routerLink="/fleet/maintenance/service-program/Service-Program-List" id="service-prog-tab" data-toggle="tab" role="tab" aria-controls="overdue" aria-selected="false">Service Programs</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content p-0" id="myTabContent">
+                                <div class="tab-pane fade show active" id="service-prog" role="tabpanel" aria-labelledby="service-prog-tab">
+                                    <div class="row">
+                                        <div class="col pr-0">
+                                           <section class="card">
+                                            
+                                              <div class="card-body p-0">
+                                                 <table class="table table-responsive-lg table-bordered table-striped mb-0">
+                                                    <thead>
+                                                       <tr>
+                                                          <th width="5%"><input type="checkbox"></th>
+                                                          <th width="35%">Service Program Name</th>
+                                                          <th  width="60%">Description</th> 
+                                                          
+                                                       </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                       <tr>
+                                                         <td><input type="checkbox"></td>
+                                                          <td onclick="window.location='service-program-details.php';">Service Program 1</td>
+                                                          <td>This is service task description.This is service task description.</td>                                   
+                                                       </tr>
+                                                       <tr>
+                                                         <td><input type="checkbox"></td>
+                                                          <td  onclick="window.location='service-program-details.php';">Service Program 2</td>
+                                                          <td>This is service task description.This is service task description.</td>                                   
+                                                       </tr>
+                                                       <tr>
+                                                         <td><input type="checkbox"></td>
+                                                          <td  onclick="window.location='service-program-details.php';">Service Program 3</td>
+                                                          <td>This is service task description.This is service task description.</td>                                   
+                                                       </tr>
+                                                       <tr>
+                                                         <td><input type="checkbox"></td>
+                                                          <td  onclick="window.location='service-program-details.php';">Service Program 4</td>
+                                                          <td>This is service task description.This is service task description.</td>                                   
+                                                       </tr>
+                                                       <tr>
+                                                         <td><input type="checkbox"></td>
+                                                          <td  onclick="window.location='service-program-details.php';">Service Program 5</td>
+                                                          <td>This is service task description.This is service task description.</td>                                   
+                                                       </tr>
+                                                       
+                                                      
+                                                    
+                                                      
+                                                    </tbody>
+                                                 </table>
+                                              </div>
+                                           </section>
+                                        </div>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+  
+
+<section class="body">
   <!-- start: header -->
   <app-header></app-header>
   <!-- end: header -->

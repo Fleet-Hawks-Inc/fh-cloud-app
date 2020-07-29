@@ -44,8 +44,8 @@
               <div class="col-lg-8">
                  <div class="wtopnav">
                     <ul>
-                       <li><a href="new-maintenance.php"  class="active">Issues</a></li>
-                       <li><a routerLink="/fleet/maintenance/services/list" >Services </a></li>
+                       <li><a routerLink="/fleet/maintenance/issues/list"  class="active">Issues</a></li>
+                       <li><a routerLink="/fleet/maintenance/service-log/list" >Services </a></li>
                     </ul>
                  </div>
               </div>
@@ -91,11 +91,11 @@
                                     <tbody>
                                         <tr>
                                         <td><input type="checkbox" /></td>
-                                        <td onclick="window.location='open-issue-details.php';">Vehicle 1</td>
-                                        <td onclick="window.location='open-issue-details.php';">Brakes Issue</td>
-                                        <td onclick="window.location='open-issue-details.php';">Jun 5, 2020</td>
-                                        <td onclick="window.location='open-issue-details.php';">Mr. Singh</td>
-                                        <td onclick="window.location='open-issue-details.php';">Charles</td>
+                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Vehicle 1</td>
+                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Brakes Issue</td>
+                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Jun 5, 2020</td>
+                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Mr. Singh</td>
+                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Charles</td>
                                         <td>
                                             <div class="btn-group flex-wrap">
                                                 <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>

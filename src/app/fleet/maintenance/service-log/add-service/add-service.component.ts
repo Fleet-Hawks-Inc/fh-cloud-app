@@ -6,10 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-service.component.css']
 })
 export class AddServiceComponent implements OnInit {
-
+  serviceData = {
+    uploadedDocuments : {},
+    uploadedPhotos: {}
+  }
   constructor() { }
 
   ngOnInit() {
+  }
+
+  addService(){
+    console.log(this.serviceData)
   }
 
 }

@@ -80,8 +80,8 @@ import {EditVehicleComponent} from './vehicles/edit-vehicle/edit-vehicle.compone
 import { DashboardDriverComponent } from './dashboard-driver/dashboard-driver.component';
 import { IssueListComponent } from './maintenance/issues/issue-list/issue-list.component';
 import { AddIssueComponent } from './maintenance/issues/add-issue/add-issue.component';
-import { ServiceListComponent } from './maintenance/services/service-list/service-list.component';
-import { AddServiceComponent } from './maintenance/services/add-service/add-service.component';
+import { ServiceListComponent } from './maintenance/service-log/service-list/service-list.component';
+import { AddServiceComponent } from './maintenance/service-log/add-service/add-service.component';
 import { AssetDetailComponent } from './assets/asset-detail/asset-detail.component';
 
 // Reminders
@@ -102,6 +102,8 @@ import { VehicleRenewDetailComponent } from './reminders/vehicle-renewals/vehicl
 //DataTable
 import { DataTablesModule } from 'angular-datatables';
 import { ItemDetailComponent } from './inventory/items/item-detail/item-detail.component';
+import { IssueDetailComponent } from './maintenance/issues/issue-detail/issue-detail.component';
+
 @NgModule({
   imports: [
     FleetRoutingModule,
@@ -205,7 +207,9 @@ import { ItemDetailComponent } from './inventory/items/item-detail/item-detail.c
     ServiceRemindDetailComponent,
     ContactRenewDetailComponent,
     VehicleRenewDetailComponent,
-    ItemDetailComponent
+    ItemDetailComponent,
+    IssueDetailComponent,
+    
     
     
   ],

@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-contact-renew.component.css']
 })
 export class AddContactRenewComponent implements OnInit {
-
+  reminderData = {}
   constructor() { }
 
   ngOnInit() {
   }
 
+  addRenewal() {
+    console.log(this.reminderData);
+  }
 }

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UtilitySidebarComponent } from './utility-sidebar.component';
+import { IssueDetailComponent } from './issue-detail.component';
 
-describe('UtilitySidebarComponent', () => {
-  let component: UtilitySidebarComponent;
-  let fixture: ComponentFixture<UtilitySidebarComponent>;
+describe('IssueDetailComponent', () => {
+  let component: IssueDetailComponent;
+  let fixture: ComponentFixture<IssueDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UtilitySidebarComponent ]
+      declarations: [ IssueDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UtilitySidebarComponent);
+    fixture = TestBed.createComponent(IssueDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

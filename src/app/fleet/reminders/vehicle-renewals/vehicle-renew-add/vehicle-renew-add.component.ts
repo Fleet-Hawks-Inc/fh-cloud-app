@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./vehicle-renew-add.component.css']
 })
 export class VehicleRenewAddComponent implements OnInit {
-
+  reminderData = {}
   constructor() { }
 
   ngOnInit() {
+  }
+
+  addRenewal() {
+    console.log(this.reminderData);
   }
 
 }

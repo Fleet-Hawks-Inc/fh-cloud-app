@@ -75,7 +75,7 @@ import { DashboardDriverComponent } from "./dashboard-driver/dashboard-driver.co
 
 import { IssueListComponent } from './maintenance/issues/issue-list/issue-list.component';
 import { AddIssueComponent } from './maintenance/issues/add-issue/add-issue.component';
-import { ServiceListComponent } from './maintenance/services/service-list/service-list.component';
+import { ServiceListComponent } from './maintenance/service-log/service-list/service-list.component';
 import { AssetDetailComponent } from './assets/asset-detail/asset-detail.component';
 
 import { ListingComponent } from './reminders/service-reminder/listing/listing.component';
@@ -89,6 +89,8 @@ import { ServiceRemindDetailComponent } from './reminders/service-reminder/servi
 import { VehicleRenewDetailComponent } from './reminders/vehicle-renewals/vehicle-renew-detail/vehicle-renew-detail.component';
 import { ContactRenewDetailComponent } from './reminders/contact-renewals/contact-renew-detail/contact-renew-detail.component';
 import { ItemDetailComponent } from './inventory/items/item-detail/item-detail.component';
+import { IssueDetailComponent } from './maintenance/issues/issue-detail/issue-detail.component';
+import { AddServiceComponent } from './maintenance/service-log/add-service/add-service.component';
 
 
 const routes: Routes = [
@@ -230,15 +232,32 @@ const routes: Routes = [
         children: [
           { path: "list", component: IssueListComponent },
           { path: "add-issue", component: AddIssueComponent },
+          { path: "issue-detail", component: IssueDetailComponent },
+        ],
+      },
+      {
+        path: "service-log",
+        children: [
+          { path: "list", component: ServiceListComponent },
+          { path: "add-service", component: AddServiceComponent },
           // { path: "Edit-Asset/:assetID", component: EditAssetComponent },
         ],
       },
       {
-        path: "services",
+        path: "service-program",
         children: [
-          { path: "list", component: ServiceListComponent },
-          { path: "add-service", component: AddIssueComponent },
-          // { path: "Edit-Asset/:assetID", component: EditAssetComponent },
+          {
+            path: "Add-Service-Program",
+            component: AddServiceProgramComponent,
+          },
+          {
+            path: "Service-Program-List",
+            component: ServiceProgramListComponent,
+          },
+          {
+            path: "Edit-Service-Program/:programID",
+            component: EditServiceProgramComponent,
+          },
         ],
       },
       {
@@ -275,23 +294,7 @@ const routes: Routes = [
           },
         ],
       },
-      {
-        path: "service-program",
-        children: [
-          {
-            path: "Add-Service-Program",
-            component: AddServiceProgramComponent,
-          },
-          {
-            path: "Service-Program-List",
-            component: ServiceProgramListComponent,
-          },
-          {
-            path: "Edit-Service-Program/:programID",
-            component: EditServiceProgramComponent,
-          },
-        ],
-      },
+      
     ],
   },
   {

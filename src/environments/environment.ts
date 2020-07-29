@@ -31,6 +31,9 @@ export const environment = {
   HOSTNAME :'myhome.anterbox.com',
   PORT : 9001,
   MQTTPATH : '/',
+  mapConfig: {
+    apiKey: 'lIoqoqWBD3Op-8TVFDBPM9pj3kTQKIyCuH8Q_2RDR1c'  
+  },
 };
 
 

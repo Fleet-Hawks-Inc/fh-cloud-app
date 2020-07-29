@@ -198,7 +198,7 @@
                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
                               <thead>
                                  <tr>
-                                    <th><input type="checkbox"></th>
+                                    <th><input (click)="checkuncheckall()" type="checkbox"></th>
                                     <th>Asset</th>
                                     <th>Type</th>
                                     <th>Licence Plate</th>
@@ -208,9 +208,9 @@
                                  </tr>
                               </thead>
                               <tbody>
-                              <tr *ngFor="let asset of assetsData;let i = index;" routerLink="/fleet/assets/asset-detail">
-                                <td class="sorting_1"><input type="checkbox"></td>
-                                <td>{{ asset.assetName }}</td>
+                              <tr *ngFor="let asset of assetsData;let i = index;">
+                                <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
+                                <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
                                 <td>{{ asset.assetType }}</td>
                                 <td>{{ asset.license.plateNumber }}</td>
                                 <td></td>
@@ -240,9 +240,9 @@
                                   </tr>
                                </thead>
                                <tbody>
-                               <tr *ngFor="let asset of assetsData;let i = index;" routerLink="/fleet/assets/asset-detail">
+                               <tr *ngFor="let asset of assetsData;let i = index;" >
                                  <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
-                                 <td>{{ asset.assetName }}</td>
+                                 <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
                                  <td>{{ asset.assetType }}</td>
                                  <td>{{ asset.license.plateNumber }}</td>
                                  <td></td>
@@ -262,7 +262,7 @@
                               <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
                                <thead>
                                   <tr>
-                                     <th><input type="checkbox"></th>
+                                     <th><input (click)="checkuncheckall()"  type="checkbox"></th>
                                      <th>Asset</th>
                                      <th>Type</th>
                                      <th>Licence Plate</th>
@@ -272,9 +272,9 @@
                                   </tr>
                                </thead>
                                <tbody>
-                               <tr *ngFor="let asset of assetsData;let i = index;" routerLink="/fleet/assets/asset-detail">
-                                 <td class="sorting_1"><input type="checkbox"></td>
-                                 <td>{{ asset.assetName }}</td>
+                               <tr *ngFor="let asset of assetsData;let i = index;">
+                                 <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
+                                 <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
                                  <td>{{ asset.assetType }}</td>
                                  <td>{{ asset.license.plateNumber }}</td>
                                  <td></td>
@@ -294,7 +294,7 @@
                               <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
                                <thead>
                                   <tr>
-                                     <th><input type="checkbox"></th>
+                                     <th><input (click)="checkuncheckall()" type="checkbox"></th>
                                      <th>Asset</th>
                                      <th>Type</th>
                                      <th>Licence Plate</th>
@@ -304,9 +304,9 @@
                                   </tr>
                                </thead>
                                <tbody>
-                               <tr *ngFor="let asset of assetsData;let i = index;" routerLink="/fleet/assets/asset-detail">
-                                 <td class="sorting_1"><input type="checkbox"></td>
-                                 <td>{{ asset.assetName }}</td>
+                               <tr *ngFor="let asset of assetsData;let i = index;">
+                                 <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
+                                 <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
                                  <td>{{ asset.assetType }}</td>
                                  <td>{{ asset.license.plateNumber }}</td>
                                  <td></td>
@@ -327,7 +327,7 @@
                               <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
                                <thead>
                                   <tr>
-                                     <th><input type="checkbox"></th>
+                                     <th><input (click)="checkuncheckall()"  type="checkbox"></th>
                                      <th>Asset</th>
                                      <th>Type</th>
                                      <th>Licence Plate</th>
@@ -337,9 +337,9 @@
                                   </tr>
                                </thead>
                                <tbody>
-                               <tr *ngFor="let asset of assetsData;let i = index;" routerLink="/fleet/assets/asset-detail">
-                                 <td class="sorting_1"><input type="checkbox"></td>
-                                 <td>{{ asset.assetName }}</td>
+                               <tr *ngFor="let asset of assetsData;let i = index;">
+                                 <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
+                                 <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
                                  <td>{{ asset.assetType }}</td>
                                  <td>{{ asset.license.plateNumber }}</td>
                                  <td></td>

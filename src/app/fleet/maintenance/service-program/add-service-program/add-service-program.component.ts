@@ -15,6 +15,9 @@ declare var $: any;
 })
 export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   title = 'Add Service Program';
+  
+  meterText = 'Miles';
+  serviceData = {}
 
   errors = {};
   form;
@@ -48,6 +51,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
 
 
   addServiceProgram() {
+    console.log("service program",this.serviceData);
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
@@ -58,8 +62,8 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       repeatByOdometer: this.repeatByOdometer,
       description: this.description,
     };
-
-    this.apiService.postData('servicePrograms', data).subscribe({
+    console.log('data',data)
+    this.apiService.postData('servicePrograms', this.serviceData).subscribe({
         complete : () => {},
         error: (err) => {
           from(err.error)
@@ -107,5 +111,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   throwErrors() {
     this.form.showErrors(this.errors);
   }
+
+  
 
 }
