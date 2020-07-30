@@ -30,9 +30,6 @@ export class AssetListComponent implements OnInit {
       buttons: [
         'colvis',
       ],
-      rowCallback: () => {
-        this.checkuncheckall();
-      }
     }
     this.fetchAssets();
     

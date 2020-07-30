@@ -9,143 +9,96 @@
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
 
-    <section role="main" class="content-body">
-      <header class="page-header">
-        <h2>{{ title }}</h2>
-
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a routerLink="">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/fleet/geofence/Geofence-List">
-                Geofence List
-              </a>
-            </li>
-
-            <li>
-              <span>{{ title }}</span>
-            </li>
-          </ol>
-        </div>
+    <section role="main" class="content-body pl-0 pt-0">
+      <header class="page-header pl-5">
+         <div class="row pr-5 " style="padding-top:10px;">
+            <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+               {{title}}
+            </div>
+            <div class="col-md-8  col-lg-8 text-right pr-4">                               
+               <a [routerLink]="['/fleet', 'geofence', 'Geofence-List']"  class="btn btn-default btn-sm"><i class="fas fa-list"></i> Geofences List</a>
+            </div>
+         </div>
       </header>
-
       <div class="row">
-        <div class="col">
-          <section class="card">
-            <header class="card-header">
-              <h2 class="card-title">{{ title }}</h2>
-            </header>
-
-            <div class="card-body">
-              <form
-                class="form-horizontal form-bordered"
-                method="get"
-                name="form"
-                id="form_"
-              >
-                <div class="form-group row">
-                  <div class="col-lg-6">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Fence Name</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      [(ngModel)]="fenceName"
-                      name="fenceName"
-                    />
-                  </div>
-                  <div class="col-lg-6">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Location</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      [(ngModel)]="location"
-                      name="location"
-                    />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Description</label
-                    >
-                    <textarea
-                      class="form-control"
-                      [(ngModel)]="description"
-                      name="description"
-                    ></textarea>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Geo-location</label
-                    >
-                  </div>
-
-                  <div class="col-lg-12 col-xl-12 btn pb-0" (click)="initMap()">
-                    <div class="card card-default">
-                      <div class="card-header brbtmgf">
-                        <h4 class="card-title m-0">
-                          <span class="pull-left">
-                            Set Geofences
-                          </span>
-                          <span class="pull-right"
-                            ><i class="fas fa-angle-down"></i
-                          ></span>
-                        </h4>
-                      </div>
+        <div class="col pr-0">
+           <form class="form-horizontal form-bordered" method="get"  name="form" id="form_">
+              <div class="card-body pl-0 pt-0 text-dark">
+                 <div class="row">
+                    <div class="col-lg-12">
+                       <div id="map" class="mapclassmain" style="height: 600px;"></div>
                     </div>
-                  </div>
-
-                  <div
-                    class="col-lg-12 col-xl-12"
-                    id="map-div"
-                    style="display: none;"
-                  >
-                    <div class="card-body p-0">
-                      <div
-                        class="map"
-                        id="map"
-                        style="
-                          width: 100%;
-                          height: 700px;
-                          border-radius: 0px;
-                          padding: 10px;
-                        "
-                      ></div>
+                 </div>
+                 <div class="form-group row pt-3">
+                   
+                    <div class="col-lg-12">
+                       <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
+                          >Geo-Fence Details</label>
                     </div>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <button
-                      class="btn btn-dark mt-4 modal-confirm"
-                      (click)="addGeofence()"
-                    >
-                      Submit
-                    </button>
-                  </div>
-                </div>
-                <div class="form-group row">
+                    <div class="col-lg-5 offset-lg-1">
+                       <div class="row">
+                          <div class="col-lg-12">
+                             <label class="control-label font-weight-bold text-lg-right pt-2"
+                                >Geo-Fence Name</label>
+                             <input type="text" class="form-control"  [(ngModel)]="fenceName"
+                             name="fenceName">
+                          </div>
+                          <div class="col-lg-12">
+                             <label class="control-label font-weight-bold text-lg-right pt-2"
+                                >Location</label>
+                             <input type="text" class="form-control"  [(ngModel)]="location"
+                             name="location">
+                          </div>
+                       </div>
+                    </div>
+                    <div class="col-lg-5">
+                       <div class="row" >
+                          <div class="col-lg-12">
+                             <label
+                                class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"               
+                                >Type</label>
+                             <div class="row">
+                                <div class="col-lg-11">
+                                   <select
+                                      data-plugin-selectTwo
+                                      class="form-control populate" name="geofenceType" [(ngModel)]="geofenceType">
+                                      <optgroup label="">
+                                         <option value="Uncategorized">Uncategorized</option>
+                                         <option value="Fuel Station">Fuel Station</option>
+                                         <option value="Job Site">Job Site</option>
+                                         <option value="Maintenance Facility">Maintenance Facility</option>
+                                         <option value="Receiver/Consignee">Receiver/Consignee</option>
+                                         <option value="Restricted Location">Restricted Location</option>
+                                         <option value="Shipper">Shipper</option>
+                                         <option value="Shipper/Receiver">Shipper/Receiver</option>
+                                         <option value="Terminal/Yard">Terminal/Yard</option>
+                                         <option value="Truck Stop/Rest Area">Truck Stop/Rest Area</option>
+                                         <option value="Weigh Station/Scale">Weigh Station/Scale</option>
+                                      </optgroup>
+                                   </select>
+                                </div>
+                                <div class="col-lg-1 pl-0">
+                                   <a [routerLink]="" (click)="createGeofenceTypeModal()"  class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                </div>
+                             </div>
+                          </div>
+                          <div class="col-lg-12">
+                             <label
+                                class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"               
+                                >Description</label>
+                             <textarea class="form-control"  [(ngModel)]="description"
+                             name="description" rows="3"></textarea>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+                 <div class="form-group row">
+                    <div class="col-lg-11 text-right">
+                       <button class="btn btn-default">Cancel</button>
+                       <button class="btn btn-success" (click)="addGeofence()">Submit</button>                            
+                    </div>
+                 </div>
+                 <div class="form-group row">
                   <div class="col-lg-12">
                     <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
                     <p class="text text-success" *ngIf="hasSuccess">
@@ -153,11 +106,39 @@
                     </p>
                   </div>
                 </div>
-              </form>
-            </div>
-          </section>
+              </div>
+           </form>
         </div>
-      </div>
+     </div>
     </section>
   </div>
 </section>
+ <!-- Add Geofence Category MODAL -->
+<div id="addGeofenceCategoryModal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+     <!-- Modal content-->
+     <div class="modal-content">
+       <div class="modal-header">
+          <h4>Add Geofence Category</h4>
+         <button type="button" class="close pt-4" data-dismiss="modal">
+           &times;
+         </button>
+       </div>
+       <form class="form-horizontal form-bordered" method="get"  name="form" id="form1_">
+       <div class="modal-body">
+         
+         <label class="control-label">Category Name</label>
+          <input type="text" class="form-control" name="geofenceNewCategory" [(ngModel)]="geofenceNewCategory">
+       </div>
+       <div class="modal-footer">
+         <button type="button" (click)="addCategory()" class="btn btn-success" data-dismiss="modal">
+          Save
+         </button>
+         <p class="text text-success" *ngIf="hasSuccess">
+            {{ Success }}
+          </p>
+       </div>
+      </form>
+     </div>
+   </div>
+ </div>

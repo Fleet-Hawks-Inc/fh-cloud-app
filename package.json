@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
     "@auth0/angular-jwt": "4.0.0",
+    "@geoman-io/leaflet-geoman-free": "^2.6.0",
     "@mapbox/mapbox-gl-directions": "4.0.3",
     "@mapbox/mapbox-gl-draw": "1.1.2",
     "@mapbox/mapbox-gl-geocoder": "4.5.1",

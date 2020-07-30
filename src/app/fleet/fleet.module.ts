@@ -103,6 +103,8 @@ import { VehicleRenewDetailComponent } from './reminders/vehicle-renewals/vehicl
 import { DataTablesModule } from 'angular-datatables';
 import { ItemDetailComponent } from './inventory/items/item-detail/item-detail.component';
 import { IssueDetailComponent } from './maintenance/issues/issue-detail/issue-detail.component';
+import { ServiceDetailComponent } from './maintenance/service-log/service-detail/service-detail.component';
+import { ServiceProgramDetailComponent } from './maintenance/service-program/service-program-detail/service-program-detail.component';
 
 @NgModule({
   imports: [
@@ -209,6 +211,8 @@ import { IssueDetailComponent } from './maintenance/issues/issue-detail/issue-de
     VehicleRenewDetailComponent,
     ItemDetailComponent,
     IssueDetailComponent,
+    ServiceDetailComponent,
+    ServiceProgramDetailComponent,
     
     
     

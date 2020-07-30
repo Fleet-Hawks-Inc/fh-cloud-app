@@ -210,7 +210,7 @@
                               <tbody>
                               <tr *ngFor="let asset of assetsData;let i = index;">
                                 <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
-                                <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
+                                <td routerLink="/fleet/assets/asset-detail/{{asset.assetID}}">{{ asset.assetName }}</td>
                                 <td>{{ asset.assetType }}</td>
                                 <td>{{ asset.license.plateNumber }}</td>
                                 <td></td>

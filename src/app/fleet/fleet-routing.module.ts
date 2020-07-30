@@ -91,6 +91,8 @@ import { ContactRenewDetailComponent } from './reminders/contact-renewals/contac
 import { ItemDetailComponent } from './inventory/items/item-detail/item-detail.component';
 import { IssueDetailComponent } from './maintenance/issues/issue-detail/issue-detail.component';
 import { AddServiceComponent } from './maintenance/service-log/add-service/add-service.component';
+import { ServiceDetailComponent } from './maintenance/service-log/service-detail/service-detail.component';
+import { ServiceProgramDetailComponent } from './maintenance/service-program/service-program-detail/service-program-detail.component';
 
 
 const routes: Routes = [
@@ -134,7 +136,7 @@ const routes: Routes = [
     children: [
       { path: "Add-Assets", component: AddAssetsComponent },
       { path: "Assets-List", component: AssetListComponent },
-      { path: "asset-detail", component: AssetDetailComponent },
+      { path: "asset-detail/:assetID", component: AssetDetailComponent },
       { path: "Edit-Asset/:assetID", component: EditAssetComponent },
     ],
   },
@@ -240,7 +242,7 @@ const routes: Routes = [
         children: [
           { path: "list", component: ServiceListComponent },
           { path: "add-service", component: AddServiceComponent },
-          // { path: "Edit-Asset/:assetID", component: EditAssetComponent },
+          { path: "service-detail", component: ServiceDetailComponent },
         ],
       },
       {
@@ -257,6 +259,10 @@ const routes: Routes = [
           {
             path: "Edit-Service-Program/:programID",
             component: EditServiceProgramComponent,
+          },
+          {
+            path: "service-program-detail",
+            component: ServiceProgramDetailComponent,
           },
         ],
       },

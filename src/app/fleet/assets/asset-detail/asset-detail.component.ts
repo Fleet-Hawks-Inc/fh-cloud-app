@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HereMapService } from './../../../services/here-map.service';
 
 @Component({
   selector: 'app-asset-detail',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AssetDetailComponent implements OnInit {
 
-  constructor() { }
+  constructor(public hereMap: HereMapService) { }
 
   ngOnInit() {
+    this.hereMap.mapInit()
   }
+  
 
 }
