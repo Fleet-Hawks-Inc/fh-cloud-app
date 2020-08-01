@@ -3,10 +3,10 @@ import { ActivatedRoute } from "@angular/router";
 import { ApiService } from "../../../api.service";
 import { from } from "rxjs";
 //import { MapBoxService } from "../../../map-box.service";
-import { HereMapService } from './../../../services/here-map.service'
+import { LeafletMapService } from './../../../services/leaflet-map.service'
 import { Subject, throwError } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 declare var $: any;
 @Component({
   selector: "app-add-geofence",
@@ -15,9 +15,12 @@ declare var $: any;
 })
 export class AddGeofenceComponent implements OnInit {
   title = "Add Geofence";
+  // AutoSuggestion location search Variables
   public searchTerm = new Subject<string>();
-  searchResults
+  public searchResults: any;
 
+  showDestination = true;
+  private readonly search: any;
   errors = {};
   form;
 
@@ -41,20 +44,20 @@ export class AddGeofenceComponent implements OnInit {
   Error: string = "";
   Success: string = "";
 
-  public searchForm = new FormGroup({
-    search: new FormControl(''),
-  });
+
+  
 
   constructor(
     private route: ActivatedRoute,
     //private mapBoxService: MapBoxService,
-    private hereMap: HereMapService,
+    private leafMap: LeafletMapService,
     private apiService: ApiService
   ) { }
 
   ngOnInit() {
     // here maps initialization
-    this.hereMap.mapInit();
+    this.leafMap.initGeoFenceMap();
+    //this.searchLocation();
 
     $(document).ready(() => {
       this.form = $("#form_").validate();
@@ -149,26 +152,27 @@ export class AddGeofenceComponent implements OnInit {
   }
 
   // AutoSuggestion location search
-  public searchLocation() {
-    let target;
-    this.searchTerm.pipe(
-      map((e: any) => {
-        target = e;
-        return e.target.value;
-      }),
-      debounceTime(400),
-      distinctUntilChanged(),
-      switchMap(term => {
-        return this.hereMap.searchEntries(term);
-      }),
-      catchError((e) => {
-        return throwError(e);
-      }),
-    ).subscribe(res => {
-      this.searchResults = res;
-      // if (target.target.id === 'sourceLocation') {
-      //   this.showSource = true;
-      // } 
-    });
-  }
+  // public searchLocation() {
+  //   let target;
+  //   this.searchTerm.pipe(
+  //     map((e: any) => {
+  //       target = e;
+  //       return e.target.value;
+  //     }),
+  //     debounceTime(400),
+  //     distinctUntilChanged(),
+  //     switchMap(term => {
+  //       return this.hereMap.searchEntries(term);
+  //     }),
+  //     catchError((e) => {
+  //       return throwError(e);
+  //     }),
+  //   ).subscribe(res => {
+  //     console.log('dd', res);
+  //     this.searchResults = res;
+  //     // if (target.target.id === 'sourceLocation') {
+  //     //   this.showSource = true;
+  //     // } 
+  //   });
+  // }
 }

@@ -19,13 +19,22 @@ export class HereMapService {
   private readonly apiKey = environment.mapConfig.apiKey;
 
   public searchResults: any;
-  
+  private httpOptions() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      })
+    };
+    return httpOptions;
+  }
   constructor(private http: HttpClient) { }
 
   /**
    * Initialize maps
    */
-  mapInit11 = () => {
+  mapInit = () => {
     
     this.platform = new H.service.Platform({
       'apikey': this.apiKey,
@@ -35,8 +44,8 @@ export class HereMapService {
       document.getElementById('map'),
       defaultLayers.vector.normal.truck,
       {
-        zoom: 13.2,
-        //center: { lat: lat, lng: lng },
+        zoom: 11,
+        center: { lat: 51.053193, lng: -114.067266 },
         pixelRatio: window.devicePixelRatio || 1
 
       }
@@ -68,7 +77,7 @@ export class HereMapService {
     this.map.addLayer(defaultLayers.vector.normal.trafficincidents);
     this.map.setBaseLayer(tileLayer);
 
-    this.getCurrentLocation();
+    //this.getCurrentLocation();
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
     this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
     let mapSettings = this.ui.getControl('mapsettings');
@@ -78,19 +87,19 @@ export class HereMapService {
     mapSettings.setAlignment('bottom-left');
     zoom.setAlignment('bottom-left');
     scalebar.setAlignment('bottom-left');
+     return this.map;
+  } 
 
-  }
-  mapInit = () => {
+  /**
+   * Initialize Leaflet map for addGeofencing Page
+   */
+  initGeoFenceMap = () => {
 
     const here = {
       apiKey: environment.mapConfig.apiKey
     }
     const style = 'normal.night';
-	const parameters = {
-		congestion: true,
-		ppi: 320
-
-	};
+	  
     const hereTileUrl = `https://2.base.maps.ls.hereapi.com/maptile/2.1/trucktile/newest/${style}/{z}/{x}/{y}/512/png8?apiKey=${here.apiKey}&ppi=320&congestion=true`;
     const map = L.map('map', {
       	center: [37.773972, -122.431297],
@@ -98,20 +107,20 @@ export class HereMapService {
       	layers: [L.tileLayer(hereTileUrl)]
 	});
 	
-    //map.attributionControl.addAttribution('&copy; HERE 2020');
+    map.attributionControl.addAttribution('&copy; HERE 2020');
     map.pm.addControls({
-		position: 'topleft',
-		drawCircle: true,
-		drawCircleMarker: false,
-		drawPolyline: false,
-		drawRectangle: false,
-		drawPolygon: true,
-		editMode: true,
-		dragMode: true,
-		cutPolygon: true,
-		removalMode: true,
-		drawMarker: false
-	});
+      position: 'topleft',
+      drawCircle: true,
+      drawCircleMarker: false,
+      drawPolyline: false,
+      drawRectangle: false,
+      drawPolygon: true,
+      editMode: true,
+      dragMode: true,
+      cutPolygon: true,
+      removalMode: true,
+      drawMarker: false
+    });
 	  map.on('pm:create', function (e) {
 		  // alert('pm:create event fired. See console for details');
 		  const layer = e.layer;
@@ -120,16 +129,16 @@ export class HereMapService {
 			var coords = layer.getLatLngs();
 			//var polyedit = layer.toGeoJSON();
 			console.log(coords);
-			//console.log(polyedit);
+      //console.log(polyedit);
+      layer.on('pm:edit',({layer}) => {
+        console.log("lyr", layer)
+        var coords = layer.getLatLngs();
+        var polyedit = layer.toGeoJSON();
+        console.log(coords);
+        console.log(polyedit);
+        })
 	});
-	map.on('pm:edit',(e) => {
-		const layer = e.layer
-		console.log("lyr", layer)
-		var coords = layer.getLatLngs();
-		var polyedit = layer.toGeoJSON();
-		console.log(coords);
-		console.log(polyedit);
-	  })
+	
 	map.on('pm:cut', function (e) {
 		  console.log('cut event on map');
 		  console.log(e);
@@ -168,20 +177,53 @@ export class HereMapService {
         const currentLoc = new H.map.Marker({ lat: position.coords.latitude, lng: position.coords.longitude });
         this.map.removeObjects(this.map.getObjects());
         this.map.addObject(currentLoc);
+       
 
       });
     }
   }
 
-  searchLocation(query): Observable<any> {
+  searchLocationOld(query): Observable<any> {
     const URL = 'https://autocomplete.geocoder.ls.hereapi.com/6.2/suggest.json';
-    return this.http.get(URL + '?apiKey=' + this.apiKey + '&query=' + query)
+    return this.http.get(URL + '?apiKey=' + this.apiKey + '&query=' + query  )
       .pipe(map(response => {
+        console.log("response['suggestions']", response['suggestions']);
         return this.searchResults = response['suggestions'];
       })
       );
-    
   }
+
+  // searchLocation1 = async (query) => {
+  //   const service = this.platform.getSearchService();
+  //   const result = await service.geocode({ q: query });
+  //   if (result && result.items.length > 0) {
+  //     //console.log(result);
+  //     const response = await service.autosuggest(
+  //       {
+  //         at: `${result.items[0].position.lat},${result.items[0].position.lng}`,
+  //         limit: 5,
+  //         q: query
+  //       }
+  //     );
+  //     //console.log("res",response)
+  //   }
+  // }
+  searchLocation = async (query) => {
+    const service = this.platform.getSearchService();
+    const result = await service.geocode({ q: query });
+    if (result && result.items.length > 0) {
+      console.log(result);
+      const response = await service.autosuggest(
+        {
+          at: `${result.items[0].position.lat},${result.items[0].position.lng}`,
+          limit: 5,
+          q: query
+        }
+      );
+      return response.items
+    }
+  }
+  
 
   // returns the response
   public searchEntries(query) {

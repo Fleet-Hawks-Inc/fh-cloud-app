@@ -47,9 +47,10 @@ export class EditVehicleComponent implements OnInit {
 
   ngOnInit() {
     this.vehicleID = this.route.snapshot.params['vehicleId'];
-
+    console.log("id",this.vehicleID);
       this.apiService.getData('quantums')
           .subscribe((result: any) => {
+              console.log("result items", result.items)
               this.quantumsList = result.Items;
           });
 

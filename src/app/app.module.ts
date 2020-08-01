@@ -5,6 +5,8 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
@@ -256,6 +258,7 @@ import { CarrierRegisterComponent } from './carrier-register/carrier-register.co
     SharedModule,
     ToastrModule.forRoot(),
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+    NgMultiSelectDropDownModule.forRoot()
     //NgSelectModule
 
 

@@ -57,6 +57,7 @@
     "lodash": "4.17.15",
     "mapbox-gl": "1.9.1",
     "moment": "2.25.3",
+    "ng-multiselect-dropdown": "^0.2.10",
     "ng2-charts": "2.2.3",
     "ngx-mqtt": "^6.13.2",
     "ngx-toastr": "10.0.4",

@@ -105,7 +105,7 @@ import { ItemDetailComponent } from './inventory/items/item-detail/item-detail.c
 import { IssueDetailComponent } from './maintenance/issues/issue-detail/issue-detail.component';
 import { ServiceDetailComponent } from './maintenance/service-log/service-detail/service-detail.component';
 import { ServiceProgramDetailComponent } from './maintenance/service-program/service-program-detail/service-program-detail.component';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 @NgModule({
   imports: [
     FleetRoutingModule,
@@ -115,7 +115,8 @@ import { ServiceProgramDetailComponent } from './maintenance/service-program/ser
     ChartsModule,
     NgSelectModule,
     DataTablesModule,
-    NgbModule
+    NgbModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   declarations: [
     AddDriverComponent,
