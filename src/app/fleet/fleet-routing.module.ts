@@ -84,7 +84,7 @@ const routes: Routes = [
     path: "drivers",
     children: [
       { path: "Add-Driver", component: AddDriverComponent },
-      { path: "Edit-Driver/:userName", component: EditDriverComponent },
+      { path: "Edit-Driver", component: EditDriverComponent },
       { path: "Drivers-List", component: DriverListComponent },
       { path: "Driver-Profile", component: DriverProfileComponent },
     ],
@@ -94,7 +94,7 @@ const routes: Routes = [
     children: [
       { path: "Add-Vehicle-New", component: AddVehicleNewComponent },
       {
-        path: "Edit-Vehicle-New/:vehicleID",
+        path: "Edit-Vehicle-New",
         component: EditVehicleNewComponent,
       },
       {
@@ -143,7 +143,7 @@ const routes: Routes = [
             component: FuelEntryListComponent,
           },
           {
-            path: "Edit-Fuel-Entry/:entryID",
+            path: "Edit-Fuel-Entry",
             component: EditFuelEntryComponent,
           },
           {
@@ -325,7 +325,7 @@ const routes: Routes = [
     path: "geofence",
     children: [
       { path: "Add-Geofence", component: AddGeofenceComponent },
-      { path: "Edit-Geofence/:fenceID", component: EditGeofenceComponent },
+      { path: "Edit-Geofence", component: EditGeofenceComponent },
       { path: "Geofence-List", component: GeofenceListComponent },
     ],
   },

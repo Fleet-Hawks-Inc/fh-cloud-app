@@ -3,3 +3,32 @@
     right: 566px;
     top: 370px;
   }
+  .graph-tabs.nav-tabs li .nav-link {
+    color: #2e353e;
+    text-decoration: none;
+    font-weight: 400;
+    padding: 3px 10px;
+    border-radius: 50px;
+    border: 0.5px solid #aaa;
+    margin: 0 2px;
+    background: transparent;
+  }
+  .graph-tabs.nav-tabs .nav-link.active, 
+  .graph-tabs.nav-tabs .nav-link:hover,
+  .graph-tabs.nav-tabs .nav-link.active:hover,
+  .graph-tabs.nav-tabs .nav-link.active:focus {
+    color: #fff;
+    background: #aaa;
+    border: none;
+    text-decoration: none;
+    border: 0.5px solid #aaa;
+  }
+  .tab-pane.active{
+    text-decoration: none !important;
+  }
+  #graph-tabs li.active {
+    text-decoration: none;
+  }
+  .height300{
+     height: 300px!important;
+  }

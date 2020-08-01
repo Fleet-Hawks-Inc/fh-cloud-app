@@ -45,23 +45,29 @@ export class EditGeofenceComponent implements OnInit {
     private apiService: ApiService
   ) {}
 
+  mockData = {
+    description: "this is description of geo fence.",
+    fenceName: "geo fence name",
+    geofenceType: "Uncategorized",
+    location: "Surrey,Canada"
+  }
   ngOnInit() {
-    this.geofenceID = this.route.snapshot.params["fenceID"];
+    // this.geofenceID = this.route.snapshot.params["fenceID"];
 
-    this.apiService
-      .getData("geofences/" + this.geofenceID)
-      .subscribe((result: any) => {
-        result = result.Items[0];
-        this.fenceName = result.fenceName;
-        this.location = result.location;
-        this.geofenceType = result.geofenceType;
-        this.description = result.description;
-        this.geoLocation.latitude = result.geoLocation.latitude;
-        this.geoLocation.longitude = result.geoLocation.longitude;
-        this.geofence = result.geofence;
-        this.timeCreated = result.timeCreated;
-      });
-
+    // this.apiService
+    //   .getData("geofences/" + this.geofenceID)
+    //   .subscribe((result: any) => {
+    //     result = result.Items[0];
+        this.fenceName = this.mockData.fenceName;
+        this.location = this.mockData.location;
+        this.geofenceType = this.mockData.geofenceType;
+        this.description = this.mockData.description;
+        // this.geoLocation.latitude = result.geoLocation.latitude;
+        // this.geoLocation.longitude = result.geoLocation.longitude;
+        // this.geofence = result.geofence;
+        // this.timeCreated = result.timeCreated;
+      // });
+      this.mapBoxService.initMapbox(-104.618896, 50.44521);
     $(document).ready(() => {
       this.form = $("#form_").validate();
     });
@@ -70,23 +76,23 @@ export class EditGeofenceComponent implements OnInit {
     });
   }
 
-  initMap() {
-    if ($("#map-div").is(":visible")) {
-      $("#map-div").hide("slow");
-    } else {
-      $("#map-div").show("slow");
-    }
+  // initMap() {
+  //   if ($("#map-div").is(":visible")) {
+  //     $("#map-div").hide("slow");
+  //   } else {
+  //     $("#map-div").show("slow");
+  //   }
 
-    //initiate map box
-    this.mapBoxService.initMapbox(-104.618896, 50.44521);
+   
+  //   this.mapBoxService.initMapbox(-104.618896, 50.44521);
 
-    //create polygon
-    this.mapBoxService.plotGeofencing(
-      this.geofence,
-      this.geoLocation.latitude,
-      this.geoLocation.longitude
-    );
-  }
+   
+  //   this.mapBoxService.plotGeofencing(
+  //     this.geofence,
+  //     this.geoLocation.latitude,
+  //     this.geoLocation.longitude
+  //   );
+  // }
   addCategory(){
     this.errors = {};
       this.hasError = false;
@@ -103,17 +109,19 @@ export class EditGeofenceComponent implements OnInit {
 
     const data = {
       geofenceID: this.geofenceID,
+      geofenceType : this.geofenceType,
       fenceName: this.fenceName,
       location: this.location,
       description: this.description,
-      geoLocation: {
-        latitude: this.mapBoxService.latitude,
-        longitude: this.mapBoxService.longitude,
-      },
-      geofence: this.mapBoxService.plottedMap || [],
-      timeCreated: this.timeCreated,
+      // geoLocation: {
+      //   latitude: this.mapBoxService.latitude,
+      //   longitude: this.mapBoxService.longitude,
+      // },
+      // geofence: this.mapBoxService.plottedMap || [],
+      // timeCreated: this.timeCreated,
     };
-
+   console.log(data);
+   return;
     this.apiService.putData("geofences", data).subscribe({
       complete: () => {},
       error: (err) => {
@@ -138,5 +146,10 @@ export class EditGeofenceComponent implements OnInit {
 
   throwErrors() {
     this.form.showErrors(this.errors);
+  }
+  createGeofenceTypeModal() {
+    $( document ).ready(function() {
+      $('#addGeofenceCategoryModal').modal('show');
+    });
   }
 }

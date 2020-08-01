@@ -35,7 +35,7 @@ export class AddDriverComponent implements OnInit {
   driverLicenseExpiry : NgbDateStruct;
  
     basic = {
-      driverType : "",
+      driverType : "Employee",
       companyID : "",
       employeeID : "",
       userName : "",
@@ -43,7 +43,7 @@ export class AddDriverComponent implements OnInit {
       firstName : "",
       lastName : "",
       driverID : "",
-      driverGender : "",
+      driverGender : "Male",
       groupID : "",
       phone : "",
       email : "",
@@ -58,7 +58,7 @@ export class AddDriverComponent implements OnInit {
       driverAddress2 : "",
     };
     payment = {
-      driverPayType : "",
+      driverPayType : "Pay Per Mile",
       driverPerHourRate : "",
       driverLoadedMiles : "",
       driverEmptyMiles : "",
@@ -97,7 +97,7 @@ export class AddDriverComponent implements OnInit {
     additionalDetails = {
       driverTumblr : "",
       driverFacebook : "",
-      driverGooglePlus : "",
+      driverInstagram : "",
       driverTwitter : "",
       driverBlog : "",
       driverLinkedIn : "",
@@ -263,7 +263,7 @@ export class AddDriverComponent implements OnInit {
       },
       additionalDetails: {
         driverFacebook: this.additionalDetails.driverFacebook,
-        driverGooglePlus: this.additionalDetails.driverGooglePlus,
+        driverInstagram: this.additionalDetails.driverInstagram,
         driverBlog: this.additionalDetails.driverBlog,
         driverTumblr: this.additionalDetails.driverTumblr,
         driverTwitter: this.additionalDetails.driverTwitter,
@@ -401,6 +401,9 @@ createGroupModal() {
   $( document ).ready(function() {
     $('#addGroupModal').modal('show');
   });
+}
+changePaymentMode(value:any){
+   console.log(value);
 }
 }
 

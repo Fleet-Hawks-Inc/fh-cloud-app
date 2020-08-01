@@ -4,6 +4,8 @@ import {Router} from "@angular/router";
 import { timer } from "rxjs";
 import { MapBoxService } from "../../../map-box.service";
 import { animate, style, transition, trigger } from '@angular/animations';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+
 
 declare var $: any;
 
@@ -11,6 +13,7 @@ declare var $: any;
   selector: 'app-vehicle-list',
   templateUrl: './vehicle-list.component.html',
   styleUrls: ['./vehicle-list.component.css'],
+  
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
@@ -28,18 +31,50 @@ export class VehicleListComponent implements OnInit {
   title = 'Vehicle List';
   visible = true;
   vehicles;
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings:IDropdownSettings;
   defaultBindingsList = [
     { value: 1, label: 'Vilnius' },
     { value: 2, label: 'Kaunas' },
     { value: 3, label: 'Pavilnys'}
 ];
   constructor(private apiService: ApiService,
-              private router: Router,private mapBoxService: MapBoxService) { }
+              private router: Router,private mapBoxService: MapBoxService) {
+                
+               }
 
   ngOnInit() {
+ 
     this.mapBoxService.initMapbox(-104.618896, 50.44521);
       this.fetchVehicles();
 
+      this.dropdownList = [
+        { item_id: 1, item_text: 'Mumbai' },
+        { item_id: 2, item_text: 'Bangaluru' },
+        { item_id: 3, item_text: 'Pune' },
+        { item_id: 4, item_text: 'Navsari' },
+        { item_id: 5, item_text: 'New Delhi' }
+      ];
+      this.selectedItems = [
+        { item_id: 3, item_text: 'Pune' },
+        { item_id: 4, item_text: 'Navsari' }
+      ];
+      this.dropdownSettings = {
+        singleSelection: false,
+        idField: 'item_id',
+        textField: 'item_text',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 3,
+        allowSearchFilter: true
+      };
+  }
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
   }
   valuechange() {
     this.visible = !this.visible;

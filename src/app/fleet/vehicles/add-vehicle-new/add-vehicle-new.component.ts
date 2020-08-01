@@ -43,7 +43,7 @@ expiryDate : NgbDateStruct;
   model = "";
   state = "";
   plateNumber = "";
-  basicPrimaryMeter = "";
+  basicPrimaryMeter = "Miles";
   spRepeatTime = "";
   spRepeatTimeUnit = "";
   spRepeatOdometer = "";
@@ -76,13 +76,13 @@ expiryDate : NgbDateStruct;
     passengerVolume: "",
     cargoVolume: "",
     groundClearance: "",
-    badLength: ""
+    bedLength: ""
   }
   weight = {
     curbWeight: "",
     grossVehicleWeightRating: ""
   }
-  performace = {
+  performance = {
     towingCapacity: "",
     maxPayload:  ""
   }
@@ -324,15 +324,15 @@ expiryDate : NgbDateStruct;
         passengerVolume: this.dimensions.passengerVolume,
         cargoVolume: this.dimensions.cargoVolume,
         groundClearance: this.dimensions.groundClearance,
-        badLength: this.dimensions.badLength
+        bedLength: this.dimensions.bedLength
       },
       weight: {
         curbWeight: this.weight.curbWeight,
         grossVehicleWeightRating: this.weight.grossVehicleWeightRating
       },
-      performace: {
-        towingCapacity: this.performace.towingCapacity,
-        maxPayload: this.performace.maxPayload
+      performance: {
+        towingCapacity: this.performance.towingCapacity,
+        maxPayload: this.performance.maxPayload
       },
       fuelEconomy: {
         EPACity: this.fuelEconomy.EPACity,

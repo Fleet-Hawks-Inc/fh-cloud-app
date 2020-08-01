@@ -4,6 +4,8 @@ import {ApiService} from '../../../api.service';
 import { Router } from "@angular/router";
 import { timer } from "rxjs";
 import { MapBoxService } from "../../../map-box.service";
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+
 
 declare var $: any;
 
@@ -27,6 +29,9 @@ export class DriverListComponent implements OnInit {
   title = "Driver List";
   visible = true;
   users = [];
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings:IDropdownSettings;
   defaultBindingsList = [
     { value: 1, label: 'Vilnius' },
     { value: 2, label: 'Kaunas' },
@@ -40,12 +45,36 @@ export class DriverListComponent implements OnInit {
     this.fetchUsers();
     this.selectedCity = this.defaultBindingsList[0];
     this.mapBoxService.initMapbox(-104.618896, 50.44521);
-
+    this.dropdownList = [
+      { item_id: 1, item_text: 'Mumbai' },
+      { item_id: 2, item_text: 'Bangaluru' },
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' },
+      { item_id: 5, item_text: 'New Delhi' }
+    ];
+    this.selectedItems = [
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' }
+    ];
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
   }
   valuechange() {
     this.visible = !this.visible;
   }
-
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
   fetchUsers() {
     this.apiService.getData("users/userType/driver").subscribe({
       complete: () => {

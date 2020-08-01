@@ -88,6 +88,8 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 import { ɵs } from '@ng-select/ng-select';
 
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 
 @NgModule({
   imports: [
@@ -99,6 +101,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
             NgSelectModule,
             CarouselModule,
             NgbModule,
+            NgMultiSelectDropDownModule.forRoot()
             
 
   ],

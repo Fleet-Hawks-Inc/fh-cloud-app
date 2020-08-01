@@ -3,6 +3,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { MapBoxService } from "../map-box.service";
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment';
+import {Chart} from 'chart.js';
 declare var $: any;
 @Component({
   selector: 'app-live-view',
@@ -17,8 +18,17 @@ declare var $: any;
       transition(':leave', [
         animate('400ms', style({ transform: 'translateX(100%)' }))
       ])
-    ])
-  ],
+    ]),
+    // trigger('slideUpdown', [
+    //   transition(':enter', [
+    //     style({ transform: 'translateY(100%)' }),
+    //     animate('400ms', style({ transform: 'translateY(0%)' }))
+    //   ]),
+    //   transition(':leave', [
+    //     animate('400ms', style({ transform: 'translateY(100%)' }))
+    //   ])
+    // ])
+  ]
 })
 export class LiveViewComponent implements OnInit {
    // Mapbox Integration
@@ -28,11 +38,240 @@ export class LiveViewComponent implements OnInit {
    lng = 50.445210;
    isControlAdded = false;
    visible = true;
-
+   chart:any = [];
+   chart1:any = [];
+   chart2:any = [];
+   graphType ='line';
   constructor(private mapBoxService: MapBoxService) { }
 
   ngOnInit() {
+    this.charts();
+    this.charts1();
+    this.charts2();
     this.mapboxInit();
+   
+  }
+  changeBarGraph(){
+    this.chart.destroy();
+    this.graphType = 'bar';
+    this.charts();
+  }
+  changeLineGraph(){
+    this.chart.destroy();
+    this.graphType = 'line';
+    this.charts();
+    }
+  charts(){    
+    this.chart = new Chart('canvas',{
+      type: this.graphType,
+      data : {
+        labels: ['20:00', '22:00','31 July', '02:00', '04:00','06:00','08:00','10:00','12:00'],
+        datasets: [{
+          label: 'Set Temperature',
+          fill: false,
+          backgroundColor: '#9c9ea1',
+          borderColor: '#9c9ea1',
+          borderWidth: 1,
+          data: [
+          33,35,30,29,28,30,25,24,30,33,35,30,29,28,30,25,24 
+          ],
+        },
+        {
+          label: 'Actual Temperature',
+          fill: false,
+          backgroundColor: '#000',
+          borderColor: '#000',
+          borderWidth: 1,
+          data: [
+            31,33,29,29,26,29,28,24,33,31,33,29,29,26,29,28,24,33
+          ],
+        }
+      ]
+      },
+      options:{
+        responsive: true,
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+        legend:{
+         position:'top',
+         labels:{
+           boxWidth:10
+         }
+        },
+        scales: {
+          yAxes: [{
+            // ticks: {beginAtZero:true},
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Temperature (F)'
+            },
+            ticks: {
+              beginAtZero:true,
+              // Include a dollar sign in the ticks
+              callback: function(value, index, values) {
+                  return   value + '°F';
+              }
+          }
+            
+          }]
+        }
+      }
+    }); 
+  }
+  changeBarGraph1(){
+    this.chart1.destroy();
+    this.graphType = 'bar';
+    this.charts1();
+  }
+  changeLineGraph1(){
+    this.chart1.destroy();
+    this.graphType = 'line';
+    this.charts1();
+    }
+  charts1(){    
+    this.chart1 = new Chart('canvas1',{
+      type: this.graphType,
+      data : {
+        labels: ['20:00', '22:00','31 July', '02:00', '04:00','06:00','08:00','10:00','12:00'],
+        datasets: [{
+          label: 'Set Temperature',
+          fill: false,
+          backgroundColor: '#9c9ea1',
+          borderColor: '#9c9ea1',
+          borderWidth: 1,
+          data: [
+          12,15,17,13,15,12,18,12,18,13,10,14,12 
+          ],
+        },
+        {
+          label: 'Actual Temperature',
+          fill: false,
+          backgroundColor: '#000',
+          borderColor: '#000',
+          borderWidth: 1,
+          data: [
+            10,14,12,11,14,11,15,12,16,14,11,13,14
+          ],
+        }
+      ]
+      },
+      options:{
+        responsive: true,
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+        legend:{
+         position:'top',
+         labels:{
+           boxWidth:10
+         }
+        },
+        scales: {
+          yAxes: [{
+            // ticks: {beginAtZero:true},
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Temperature (F)'
+            },
+            ticks: {
+              beginAtZero:true,
+              // Include a dollar sign in the ticks
+              callback: function(value, index, values) {
+                  return   value + '°F';
+              }
+          }
+            
+          }]
+        }
+      }
+    }); 
+  }
+  changeBarGraph2(){
+    this.chart2.destroy();
+    this.graphType = 'bar';
+    this.charts2();
+  }
+  changeLineGraph2(){
+    this.chart2.destroy();
+    this.graphType = 'line';
+    this.charts2();
+    }
+  charts2(){    
+    this.chart2 = new Chart('canvas2',{
+      type: this.graphType,
+      data : {
+        labels: ['20:00', '22:00','31 July', '02:00', '04:00','06:00','08:00','10:00','12:00'],
+        datasets: [{
+          label: 'Set Temperature',
+          fill: false,
+          backgroundColor: '#9c9ea1',
+          borderColor: '#9c9ea1',
+          borderWidth: 1,
+          data: [
+          22,25,23,24,25,22,23,20,24,21,23,25 
+          ],
+        },
+        {
+          label: 'Actual Temperature',
+          fill: false,
+          backgroundColor: '#000',
+          borderColor: '#000',
+          borderWidth: 1,
+          data: [
+            23,22,21,26,23,21,27,20,22,23,20,22 
+          ],
+        }
+      ]
+      },
+      options:{
+        responsive: true,
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+        legend:{
+         position:'top',
+         labels:{
+           boxWidth:10
+         }
+        },
+        scales: {
+          yAxes: [{
+            // ticks: {beginAtZero:true},
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Temperature (F)'
+            },
+            ticks: {
+              beginAtZero:true,
+              // Include a dollar sign in the ticks
+              callback: function(value, index, values) {
+                  return   value + '°F';
+              }
+          }
+            
+          }]
+        }
+      }
+    }); 
   }
   valuechange() {
     this.visible = !this.visible;

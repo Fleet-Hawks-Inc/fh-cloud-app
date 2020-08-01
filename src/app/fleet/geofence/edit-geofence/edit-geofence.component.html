@@ -9,29 +9,17 @@
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
 
-    <section role="main" class="content-body">
-      <header class="page-header">
-        <h2>{{ title }}</h2>
-
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a routerLink="">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/fleet/geofence/Geofence-List">
-                Geofence List
-              </a>
-            </li>
-
-            <li>
-              <span>{{ title }}</span>
-            </li>
-          </ol>
+    <section role="main" class="content-body pl-0">
+      <header class="page-header pl-5">
+        <div class="row pr-5 " style="padding-top:10px;">
+           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+              {{title}}
+           </div>
+           <div class="col-md-8  col-lg-8 text-right pr-4">                               
+              <a [routerLink]="['/fleet', 'geofence', 'Geofence-List']"  class="btn btn-default btn-sm"><i class="fas fa-list"></i> Geofences List</a>
+           </div>
         </div>
-      </header>
+     </header>
       <div class="row">
         <div class="col pr-0">
            <form class="form-horizontal form-bordered" method="get"  name="form" id="form_">

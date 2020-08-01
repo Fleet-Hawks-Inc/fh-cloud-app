@@ -138,6 +138,8 @@ import { CarrierRegisterComponent } from './carrier-register/carrier-register.co
 
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { LiveViewComponent } from './live-view/live-view.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -262,7 +264,8 @@ import { LiveViewComponent } from './live-view/live-view.component';
     ChartsModule,
     SharedModule,
     ToastrModule.forRoot(),
-    MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+    NgMultiSelectDropDownModule.forRoot()
 
 
 

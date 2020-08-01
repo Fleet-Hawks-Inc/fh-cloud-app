@@ -6,6 +6,7 @@ import {NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe} from "@angular/common";
 import * as moment from "moment";
 
+
 declare var $: any;
 
 @Component({
@@ -20,6 +21,8 @@ export class FuelEntryListComponent implements OnInit {
   // toDate: NgbDateStruct;
   fromDate: any = "" ;
   toDate: any = "" ;
+ 
+
   formattedFromDate: any = "";
   formattedToDate: any = "";
   fuelLists;
@@ -41,8 +44,9 @@ export class FuelEntryListComponent implements OnInit {
 
   ngOnInit() {
     this.fuelEntries();
+    
   }
-
+  
   fuelEntries() {
     this.apiService.getData("fuelEntries").subscribe({
       complete: () => {

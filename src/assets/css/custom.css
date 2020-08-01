@@ -982,7 +982,7 @@ right: 20px; top: 10px;
   
         #map {
           height:800px;
-          top: 10;
+          top: 10!important;
           bottom: 0;
           width: 100%;
         }

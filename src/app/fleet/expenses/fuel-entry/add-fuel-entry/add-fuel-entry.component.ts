@@ -21,7 +21,7 @@ export class AddFuelEntryComponent implements OnInit {
 
   /********** Form Fields ***********/
  basic = {
-     unitType : "",
+     unitType : "Vehicle",
      vehicleID: "",
      vehicleFuelQty : 0.0,   
      vehicleFuelQtyUnit : "",
@@ -55,6 +55,10 @@ export class AddFuelEntryComponent implements OnInit {
   stateID : "",
   cityID : "",
  };
+ dispatch = {
+   dispatchAssociate : "",
+   dispatchID : ""
+ };
  additional ={
   avgGVW : "",
   odometer : "",
@@ -75,6 +79,9 @@ export class AddFuelEntryComponent implements OnInit {
   hasSuccess: boolean = false;
   Error: string = "";
   Success: string = "";
+
+
+ 
   constructor(private apiService: ApiService,
               private router: Router,
               private awsUS: AwsUploadService) {}
@@ -175,6 +182,10 @@ export class AddFuelEntryComponent implements OnInit {
         stateID : this.fuelStop.stateID,
         cityID : this.fuelStop.cityID,
        },
+       dispatch : {
+        dispatchAssociate : this.dispatch.dispatchAssociate,
+        dispatchID : this.dispatch.dispatchID
+      },
        additional : {
         avgGVW : this.additional.avgGVW,
         odometer : this.additional.odometer,
@@ -234,7 +245,12 @@ return;
     this.form.showErrors(this.errors);
   }
   onChangeUnitType(value: any){
-    this.basic.unitType = value;  
+    this.basic.unitType = value; 
+    this.basic.vehicleFuelQtyAmt = 0;
+    this.basic.reeferFuelQtyAmt = 0;
+    this.basic.vehicleFuelQty = 0;
+    this.basic.reeferFuelQty = 0;
+    this.calculate(); 
   }
   changeFuelUnit(){
     if((this.basic.vehicleFuelQtyUnit == "gallons") || (this.basic.reeferFuelQtyUnit == "gallons")){

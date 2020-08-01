@@ -29,16 +29,9 @@
          </div>
          <div class="iconL" id="arrowL" *ngIf="!visible">
             <a  [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
-         </div>
-           <div class="iconT" id="arrowb" style="display: none;">
-              <a href="#"><i class="fas fa-arrow-up"></i></a>
-           </div>
-           <div class="iconB" id="arrowt" style="display: none">
-              <a href="#"><i class="fas fa-arrow-bottom"></i></a>
-           </div>
+         </div>         
            <form method=""  >
-              <div class="drivelist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverList"  *ngIf="visible"
-              [@slideInOut]>
+              <div class="drivelist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverList"  *ngIf="visible" [@slideInOut]>
                  <div class="driverdetail">
                     <div class="row">
                        <div class="col-lg-5">
@@ -162,155 +155,64 @@
                  </div>
                 
               </div>
-              <div class="dashboard" id="dcam" style="display:block;">
-                 <div id="with_temp_graph" style="display: block;">
+              <div class="dashboard" id="dcam" >
+                 <div id="with_temp_graph">
                  <div  class="row p-2" >
                  <div class="col-lg-6">
                              <h3 class="font-weight-bold text-4 text-dark mt-0">Dash Camera</h3>
-                             <img src="/assets/img/dash-cam2.jpg" class="img-fluid" />
+                             <img src="/assets/img/dash-cam2.jpg" class="img-fluid height300" />
                           </div>
                     <div class="col-lg-6">
-                       <h3 class="font-weight-bold text-4 text-dark mt-0">Temperature Graph</h3>
+                       <div class="row">
+                          <div class="col-lg-4"><h3 class="font-weight-bold text-4 text-dark mt-0">Temperature Graph</h3>
+                          </div>
+                          <div class="col-lg-8">
+                           <ul class="nav nav-tabs graph-tabs" id="graph-tabs" role="tablist">
+                              <li class="nav-item">
+                                 <a class="nav-link active" id="reefer1-tab" data-toggle="tab" href="#reefer1" role="tab" aria-controls="reefer1" aria-selected="true">Reefer 1</a>
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link" id="reefer2-tab" data-toggle="tab" href="#reefer2" role="tab" aria-controls="reefer2" aria-selected="false">Reefer 2</a>
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link" id="reefer3-tab" data-toggle="tab" href="#reefer3" role="tab" aria-controls="reefer3" aria-selected="false">Reefer 3</a>
+                              </li>
+                           </ul>
+                          </div>
+                       </div>
+                      
                        <div style="width:100%; height: 50%;">
-                          <canvas id="canvas"></canvas>
+                        <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
+                           <div class="tab-pane show active" id="reefer1" role="tabpanel" aria-labelledby="reefer1-tab">
+                              <div>
+                                 <button class="btn btn-default btn-xs" type="button" (click)="changeLineGraph()">Line Chart</button>
+                                 <button class="btn btn-default btn-xs" type="button" (click)="changeBarGraph()">Bar Chart</button>
+                               </div>
+                              <canvas id="canvas"></canvas>  
+                           </div>
+                           <!-- Reefer 2-->
+                           <div class="tab-pane fade" id="reefer2" role="tabpanel" aria-labelledby="reefer2-tab">
+                              <div>
+                                 <button class="btn btn-default btn-xs" type="button" (click)="changeLineGraph1()">Line Chart</button>
+                                 <button class="btn btn-default btn-xs" type="button" (click)="changeBarGraph1()">Bar Chart</button>
+                               </div>
+                              <canvas id="canvas1"></canvas> 
+                           </div>
+                            <!-- Reefer 3-->
+                            <div class="tab-pane fade" id="reefer3" role="tabpanel" aria-labelledby="reefer3-tab">
+                              <div>
+                                 <button class="btn btn-default btn-xs" type="button" (click)="changeLineGraph2()">Line Chart</button>
+                                 <button class="btn btn-default btn-xs" type="button" (click)="changeBarGraph2()">Bar Chart</button>
+                               </div>
+                              <canvas id="canvas2"></canvas> 
+                           </div>
+                          
+                        </div>
                        </div>
+                      
                        <br>
-                       <script>
-                          var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                          var config = {
-                            type: 'line',
-                            data: {
-                              labels: ['1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM','8AM', '9AM', '10AM', '11AM', '12AM', '1PM', '2PM', '3PM', '4PM','5PM','6PM','7PM','8PM','9PM','10PM','11PM','12PM'],
-                              datasets: [{
-                                label: '',
-                                fill: false,
-                                backgroundColor: window.chartColors.blue,
-                                borderColor: window.chartColors.blue,
-                                data: [
-                                -10, 10, 30, 50, 70,10,30,40,-10,45,60,70,20,30,0,55,10,10,10,10,10,20,20 
-                                ],
-                              }]
-                            },
-                            options: 
-                            {
-                              responsive: true,
-                          
-                              legend: {
-                                display: false
-                                
-                            },
-                          
-                          
-                              title: {
-                                display: false,
-                                text: 'Chart.js Line Chart'
-                              },
-                              tooltips: {
-                                mode: 'index',
-                                intersect: false,
-                              },
-                              hover: {
-                                mode: 'nearest',
-                                intersect: true
-                              },
-                              scales: {
-                                xAxes: [{
-                                  display: true,
-                                  scaleLabel: {
-                                    display: true,
-                                    labelString: ''
-                                  }
-                                }],
-                                yAxes: [{
-                                  display: true,
-                                  scaleLabel: {
-                                    display: true,
-                                    labelString: 'Temperature'
-                                  }
-                                }]
-                              }
-                            }
-                          };
-                          
-                          window.onload = function() {
-                            var ctx = document.getElementById('canvas').getContext('2d');
-                            window.myLine = new Chart(ctx, config);
-                          };
-                          
-                          document.getElementById('randomizeData').addEventListener('click', function() {
-                            config.data.datasets.forEach(function(dataset) {
-                              dataset.data = dataset.data.map(function() {
-                                return randomScalingFactor();
-                              });
-                          
-                            });
-                          
-                            window.myLine.update();
-                          });
-                          
-                          var colorNames = Object.keys(window.chartColors);
-                          document.getElementById('addDataset').addEventListener('click', function() {
-                            var colorName = colorNames[config.data.datasets.length % colorNames.length];
-                            var newColor = window.chartColors[colorName];
-                            var newDataset = {
-                              label: 'Dataset ' + config.data.datasets.length,
-                              backgroundColor: newColor,
-                              borderColor: newColor,
-                              data: [],
-                              fill: false
-                            };
-                          
-                            for (var index = 0; index < config.data.labels.length; ++index) {
-                              newDataset.data.push(randomScalingFactor());
-                            }
-                          
-                            config.data.datasets.push(newDataset);
-                            window.myLine.update();
-                          });
-                          
-                          document.getElementById('addData').addEventListener('click', function() {
-                            if (config.data.datasets.length > 0) {
-                              var month = MONTHS[config.data.labels.length % MONTHS.length];
-                              config.data.labels.push(month);
-                          
-                              config.data.datasets.forEach(function(dataset) {
-                                dataset.data.push(randomScalingFactor());
-                              });
-                          
-                              window.myLine.update();
-                            }
-                          });
-                          
-                          document.getElementById('removeDataset').addEventListener('click', function() {
-                            config.data.datasets.splice(0, 1);
-                            window.myLine.update();
-                          });
-                          
-                          document.getElementById('removeData').addEventListener('click', function() {
-                            config.data.labels.splice(-1, 1); // remove the label first
-                          
-                            config.data.datasets.forEach(function(dataset) {
-                              dataset.data.pop();
-                            });
-                          
-                            window.myLine.update();
-                          });
-                       </script>
                     </div>
                  </div>
-                 </div>
-                
-                 <div id="without_temp_graph" class="row p-2" style="display: none;">
-                    <div class="row px-3">
-                       <div class="col-lg-6">
-                          <h3 class="font-weight-bold text-4 text-dark mt-0">Front View</h3>
-                          <img src="img/fv.jpg" class="img-fluid" />
-                       </div>
-                       <div class="col-lg-6">
-                          <h3 class="font-weight-bold text-4 text-dark mt-0">Back View</h3>
-                          <img src="img/bv.png" class="img-fluid" />                        
-                       </div>
-                    </div>
                  </div>
               </div>
            </form>

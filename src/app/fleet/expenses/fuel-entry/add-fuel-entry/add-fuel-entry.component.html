@@ -9,30 +9,16 @@
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
 
-    <section role="main" class="content-body">
-      <header class="page-header">
-        <h2>{{ title }}</h2>
-
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a routerLink="">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li>
-              <span>Expenses</span>
-            </li>
-            <li>
-              <a routerLink="/fleet/expenses/fuel/Fuel-Entry-List">
-                <span>Fuel Entries List</span>
-              </a>
-            </li>
-            <li>
-              <span>{{ title }}</span>
-            </li>
-          </ol>
-        </div>
+    <section role="main" class="content-body pl-0">
+      <header class="page-header pl-5">
+         <div class="row pr-5 " style="padding-top:10px;">
+            <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+               {{title}}
+            </div>
+            <div class="col-md-8  col-lg-8 text-right pr-4">                               
+               <a [routerLink]="['/fleet', 'expenses','fuel', 'Fuel-Entry-List']"  class="btn btn-default btn-sm"><i class="fas fa-list"></i> Fuel Entry List</a>
+            </div>
+         </div>
       </header>
       <div class="row">
         <div class="col pr-0">
@@ -62,7 +48,7 @@
                                 <div class="col-lg-4 text-right">
                                    <div class="radio">
                                       <label  class="btn btn-md btn-default csbtn">
-                                      <input type="radio" name="unitType"
+                                      <input type="radio" name="unitType" [(ngModel)]="basic.unitType"
                                          id="fuel_unit_reefer" onclick="fuel_unit()" hidden value="Reefer" (change) = "onChangeUnitType('Reefer')">
                                       Reefer
                                       </label>
@@ -72,7 +58,7 @@
                              </div>
                           </div>
                        </div>
-                       <div class="row pt-3" id="fuelVehicle">
+                       <div class="row pt-3" id="fuelVehicle" *ngIf="basic.unitType ==='Vehicle'">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vehicle</label>
                              <select data-plugin-selectTwo class="form-control populate" name="vehicleID" [(ngModel)]="basic.vehicleID">
@@ -83,7 +69,7 @@
                           </div>
                          
                        </div>
-                       <div class="row pt-3" id="fuelReefer" style="display:none;">
+                       <div class="row pt-3" id="fuelReefer" *ngIf="basic.unitType ==='Reefer'">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reefer</label>
                              <select data-plugin-selectTwo class="form-control populate">
@@ -97,7 +83,7 @@
                           </div>
                         
                        </div>
-                       <div id="fuelVehicleQty"  style="display:block;">
+                       <div id="fuelVehicleQty"  *ngIf="basic.unitType ==='Vehicle'">
                           <div class="row">
                              <div class="col-lg-4">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vehicle Fuel Quantity</label>
@@ -117,7 +103,7 @@
                              </div>
                           </div>
                        </div>
-                       <div id="fuelReeferQty"  style="display:none;">
+                       <div id="fuelReeferQty" *ngIf="basic.unitType ==='Reefer'">
                           <div class="row" >
                              <div class="col-lg-4">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reefer Fuel Quantity</label>
@@ -218,7 +204,7 @@
                              </select>
                           </div>
                        </div>
-                       <div class="row">
+                       <!-- <div class="row">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Dispatch Number</label>
                              <select data-plugin-selectTwo class="form-control populate">
@@ -227,7 +213,7 @@
                                 </optgroup>
                              </select>
                           </div>
-                       </div>
+                       </div> -->
                     </div>
                  </div>
                  <div class="form-group row">
@@ -336,6 +322,39 @@
                        </div>
                     </div>
                  </div>
+                 
+                 <div class="form-group row">
+                  <div class="col-lg-12">
+                      <label class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-2">Add Dispatch ID</label>
+                   </div>
+                    <div class="col-lg-5 offset-lg-1">
+                      <div class="row pt-2">
+                          <div class="col-lg-10">
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Do you want to associate the receipt with Dispatch ID</label>
+                           <select data-plugin-selectTwo class="form-control populate" name="dispatchAssociate" [(ngModel)]="dispatch.dispatchAssociate">
+                             <optgroup label="Select Option">
+                                 <option value="Yes">Yes</option>
+                                 <option value="No">No</option>
+                             </optgroup>
+                             </select>
+                          </div>
+                      </div>
+                      <div class="row pt-2">
+                          <div class="col-lg-10">
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Select Dispatch ID</label>
+                           <select data-plugin-selectTwo class="form-control populate" name="dispatchID" [(ngModel)]="dispatch.dispatchID">
+                             <optgroup label="Select Dispatch">
+                                 <option value="DIS-2536">DIS-2536</option>
+                                 <option value="DI-0082">DI-0082</option>
+                                 <option value="DIS-9985">DIS-9985</option>
+                                 <option value="DIS-5689230">DIS-5689230</option>
+                             </optgroup>
+                             </select>
+                          </div>
+                      </div>
+                    </div>
+                  
+                </div>
                  <div class="form-group row">
                     <div class="col-lg-12">
                        <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional Details</label>
@@ -346,10 +365,10 @@
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Average Gross Vehicle Weight</label>
                              <select data-plugin-selectTwo class="form-control populate" name="avgGVW" [(ngModel)] ="additional.avgGVW">
                                 <optgroup label="">
-                                   <option value="1">10-15,000 lbs</option>
-                                   <option value="2">15-20,000 lbs</option>
-                                   <option value="2">20-25,000 lbs</option>
-                                   <option value="2">25-30,000 lbs</option>
+                                   <option value="10-15,000 lbs">10-15,000 lbs</option>
+                                   <option value="15-20,000 lbs">15-20,000 lbs</option>
+                                   <option value="20-25,000 lbs">20-25,000 lbs</option>
+                                   <option value="25-30,000 lbs">25-30,000 lbs</option>
                                 </optgroup>
                              </select>
                           </div>
@@ -381,7 +400,7 @@
                  <div class="form-group row">
                     <div class="col-lg-11 text-right">
                        <button class="btn btn-default" >Cancel</button>
-                       <button class="btn btn-success"  (click)="addFuelEntry()">Save</button>
+                       <button class="btn btn-success"  (click)="addFuelEntry()">Submit</button>
                     </div>
                  </div>
                  <div class="form-group row">

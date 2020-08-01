@@ -405,55 +405,8 @@ function showHOSReports(subdiv,link_id){
     document.getElementById(subdiv).style.display='block';
     document.getElementById(link_id).classList.add('btn-success');
 }
-// Add Driver
-function driver_type()
-{
-   if(document.getElementById("driver_contractor").checked){
-      document.getElementById("companyDiv").style.display = "block";  
-      document.getElementById("employeeIDDiv").style.display = "none";     
-   }
-   if(document.getElementById("driver_employee").checked){
-      document.getElementById("employeeIDDiv").style.display = "block"; 
-      document.getElementById("companyDiv").style.display = "none";       
-   }
-}
-function driver_gender()
-{
-   if(document.getElementById("driver_male").checked){
-      document.getElementById("male_photo").style.display = "block";  
-      document.getElementById("female_photo").style.display = "none";     
-   }
-   else if(document.getElementById("driver_female").checked){
-      document.getElementById("female_photo").style.display = "block"; 
-      document.getElementById("male_photo").style.display = "none";       
-   }
-}
 
-// DRIVER PAYMENT 
-function changePaymentMode(){
-  var payType = document.getElementById("paymentType");
-   if(payType.value == "Pay Per Mile")
-   {
-      document.getElementById("payPerMile").style.display = "block";
-      document.getElementById("payPercentage").style.display = "none";
-      document.getElementById("payPerHour").style.display = "none";
-  
-   }
-   else if(payType.value == "Percentage")
-   {
-      document.getElementById("payPercentage").style.display = "block";
-      document.getElementById("payPerMile").style.display = "none";
-      document.getElementById("payPerHour").style.display = "none";
-  
-   }
-   else if(payType.value == "Pay Per Hour")
-   {
-      document.getElementById("payPercentage").style.display = "none";
-      document.getElementById("payPerMile").style.display = "none";
-      document.getElementById("payPerHour").style.display = "block";
-   }
-  
-  }
+
 // IFTA TRIP REPORTS
 
 var iftaTripDivs = ["ifta-report-distance-vehicle-div","ifta-report-distance-fleet-div"];
