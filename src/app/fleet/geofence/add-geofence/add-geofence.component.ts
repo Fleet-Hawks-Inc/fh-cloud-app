@@ -15,10 +15,7 @@ declare var $: any;
 })
 export class AddGeofenceComponent implements OnInit {
   title = "Add Geofence";
-  // AutoSuggestion location search Variables
-  public searchTerm = new Subject<string>();
-  public searchResults: any;
-
+  public getPolygonData :any;
   showDestination = true;
   private readonly search: any;
   errors = {};
@@ -151,28 +148,14 @@ export class AddGeofenceComponent implements OnInit {
     });
   }
 
-  // AutoSuggestion location search
-  // public searchLocation() {
-  //   let target;
-  //   this.searchTerm.pipe(
-  //     map((e: any) => {
-  //       target = e;
-  //       return e.target.value;
-  //     }),
-  //     debounceTime(400),
-  //     distinctUntilChanged(),
-  //     switchMap(term => {
-  //       return this.hereMap.searchEntries(term);
-  //     }),
-  //     catchError((e) => {
-  //       return throwError(e);
-  //     }),
-  //   ).subscribe(res => {
-  //     console.log('dd', res);
-  //     this.searchResults = res;
-  //     // if (target.target.id === 'sourceLocation') {
-  //     //   this.showSource = true;
-  //     // } 
-  //   });
-  // }
+  // Use this function while updating edit page of Geofence
+  loadExistingGeoFence=(geofence:[])=>{
+    // code goes here
+    // var polygonPoints = [
+    //   [37.786617, -122.404654],
+    //   [37.797843, -122.407057],
+    //   [37.798962, -122.398260],
+    //   [37.794299, -122.395234]];
+    // var poly = L.polygon(polygonPoints).addTo(map);
+  }
 }

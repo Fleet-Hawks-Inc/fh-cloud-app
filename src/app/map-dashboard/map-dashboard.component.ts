@@ -42,6 +42,7 @@ export class MapDashboardComponent implements OnInit {
   public searchTerm = new Subject<string>();
   public searchResults: any;
   driverData : any;
+  
 
   // Mapbox Integration
   style = 'mapbox://styles/kunalfleethawks/ck86yfrzp0g3z1illpdp9hs3g';
@@ -77,6 +78,21 @@ export class MapDashboardComponent implements OnInit {
     this.map = this.HereMap.mapInit();
     this.searchLocation();
     this.showDriverData()
+    
+  }
+
+  
+
+  userDestination = async (value: any) => {
+    const service = this.platform.getSearchService();
+    let result = await service.geocode({ q: value });
+    let positionFound = result.items[0].position;
+    this.map.setCenter({
+        lat: positionFound.lat,
+        lng: positionFound.lng
+    });
+      const currentLoc = new H.map.Marker({ lat: positionFound.lat, lng: positionFound.lng });
+      this.map.addObject(currentLoc);
     
   }
 
@@ -164,7 +180,6 @@ export class MapDashboardComponent implements OnInit {
         return throwError(e);
       }),
     ).subscribe(res => {
-      console.log('dd', res);
       this.searchResults = res;
       // if (target.target.id === 'sourceLocation') {
       //   this.showSource = true;
@@ -172,12 +187,13 @@ export class MapDashboardComponent implements OnInit {
     });
   }
 
+
   showDriverData(){
     
     const mockData = this.getDriverData();
     const geocoder = this.platform.getGeocodingService();
     this.frontEndData = mockData;
-    console.log("fron", this.frontEndData)
+    
     mockData.drivers.forEach(async driver => {
       const result = await geocoder.reverseGeocode(
         {
@@ -186,6 +202,7 @@ export class MapDashboardComponent implements OnInit {
           maxresults: '1',
         }
       );
+      //console.log(result);
       
       const origin = location.origin;
       let customMarker  =   origin+'/assets/img/cirlce-stroke.png';
@@ -199,6 +216,24 @@ export class MapDashboardComponent implements OnInit {
         }
         );
       this.map.addObject(markers);
+      const defaultLayers = this.platform.createDefaultLayers();
+      let ui = H.ui.UI.createDefault(this.map, defaultLayers);
+      markers.setData(`<h5>${driver.driverName}</h5>
+      Load: ${driver.loadCapacity}</br>
+      Speed: ${driver.speed}<br>
+      Location: ${result.Response.View[0].Result[0].Location.Address.Label}
+      `);
+      markers.addEventListener('tap', function (evt) {
+        var bubble =  new H.ui.InfoBubble(evt.target.getGeometry(), {
+          // read custom data
+          content: evt.target.getData()
+        });
+        
+        // show info bubble
+        ui.addBubble(bubble);
+      
+      },false)
+      
     
     }
     );
@@ -364,12 +399,13 @@ export class MapDashboardComponent implements OnInit {
   }
 
   flyToDriver(currentFeature) {
-
-    this.map.flyTo({
-      center: currentFeature,
-      zoom: 15
+    this.map.setCenter({
+      lat: currentFeature[0],
+      lng: currentFeature[1]
     });
-
-
+    this.visible = false;
+    this.map.getViewModel().setLookAtData({
+      zoom: 17,
+    });
   }
 }

@@ -177,12 +177,11 @@
          <h2>Driver Dashboard</h2>
          <div class="row" style="padding-top:10px;">
             <div class="col-lg-7"></div>
-            <div class="col-lg-2">
+            <!-- <div class="col-lg-2">
                <div class="input-group">
                   <input type="text" id="destinationLocation" value="{{destinationLocation}}"
                      placeholder="Choose Location" (keyup)="searchTerm.next($event);" [(ngModel)]="search"
                      name="search" class="form-control mapinput">
-                  <!-- <input class="form-control" type="text" placeholder="Search" > -->
                   <span class="input-group-append">
                   <span class="input-group-text">
                   <i class="fas fa-search"></i>
@@ -192,12 +191,12 @@
                <div class="map-search__results bg-white">
                   <ul class="p-0 m-0 text-left">
                     <li *ngFor="let item of searchResults; let i = index">
-                      <a href="javascript:;" class="{{item.address.label}}">{{item.address.label}}</a>
+                      <a href="javascript:;" (click)="userDestination(item.address.label)" class="{{item.address.label}}">{{item.address.label}}</a>
                     </li>
                   </ul>
                 </div>
-            </div>
-            <div class="col-lg-3 text-right pl-0 pr-0">
+            </div> -->
+            <div class="col-lg-5 text-right pl-0 pr-0">
                <div class="btn-group flex-wrap">
                   <button type="button" class="mb-1 mx-1 btn btn-dark btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Duty Status<span class="caret"></span></button>
                   <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -409,7 +408,7 @@
                <div class="driverdetail" *ngFor="let driver of frontEndData.drivers">
                   <div class="row">
                      <div class="col-lg-5">
-                        <p class="mb-2 text-5 font-weight-semibold text-dark"><a routerLink="/fleet/drivers/Driver-Profile">{{driver.driverName}} </a><span class="onduty">{{driver.driverStatus}}</span></p>
+                        <p class="mb-2 text-5 font-weight-semibold text-dark"><a (click)="flyToDriver(driver.location)">{{driver.driverName}} </a><span class="onduty">{{driver.driverStatus}}</span></p>
                      </div>
                      <div class="col-lg-5">
                      </div>
