@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {from, of} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -6,15 +6,68 @@ import {Object} from 'aws-sdk/clients/s3';
 import {ApiService} from '../../../api.service';
 import { Auth } from 'aws-amplify';
 import {AwsUploadService} from '../../../aws-upload.service';
-import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
-import {NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import * as moment from "moment";
 declare var $: any;
+
+/**
+ * This Service handles how the date is represented in scripts i.e. ngModel.
+ */
+@Injectable()
+export class CustomAdapter extends NgbDateAdapter<string> {
+
+  readonly DELIMITER = '-';
+
+  fromModel(value: string | null): NgbDateStruct | null {
+    if (value) {
+      let date = value.split(this.DELIMITER);
+      return {
+        day : parseInt(date[0], 10),
+        month : parseInt(date[1], 10),
+        year : parseInt(date[2], 10)
+      };
+    }
+    return null;
+  }
+
+  toModel(date: NgbDateStruct | null): string | null {
+    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : null;
+  }
+}
+
+/**
+ * This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
+ */
+@Injectable()
+export class CustomDateParserFormatter extends NgbDateParserFormatter {
+
+  readonly DELIMITER = '/';
+
+  parse(value: string): NgbDateStruct | null {
+    if (value) {
+      let date = value.split(this.DELIMITER);
+      return {
+        day : parseInt(date[0], 10),
+        month : parseInt(date[1], 10),
+        year : parseInt(date[2], 10)
+      };
+    }
+    return null;
+  }
+
+  format(date: NgbDateStruct | null): string {
+    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
+  }
+}
 
 @Component({
   selector: 'app-add-driver',
   templateUrl: './add-driver.component.html',
   styleUrls: ['./add-driver.component.css'],
+  providers: [
+    {provide: NgbDateAdapter, useClass: CustomAdapter},
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
+  ]
 })
 export class AddDriverComponent implements OnInit {
   title = 'Add Driver';
@@ -78,6 +131,7 @@ export class AddDriverComponent implements OnInit {
       driverVehicleType : "",
 
     };
+    formattedBirthDate :any ="";
     HOSCompliance = {
       status : "",
       type : "",
@@ -121,7 +175,10 @@ export class AddDriverComponent implements OnInit {
   rightSidebarShow:boolean = true;
 
   constructor(private apiService: ApiService, private router: Router,
-              private awsUS: AwsUploadService,private parserFormatter: NgbDateParserFormatter) {}
+              private awsUS: AwsUploadService,private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {}
+              get today() {
+                return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+              }
 
   ngOnInit() {
     this.fetchGroups();
@@ -244,7 +301,6 @@ export class AddDriverComponent implements OnInit {
         driverLicenseStateID: this.licence.driverLicenseStateID,
         driverVehicleType: this.licence.driverVehicleType,
       },
-
       HOSCompliance: {
         status: this.HOSCompliance.status,
         type: this.HOSCompliance.type,

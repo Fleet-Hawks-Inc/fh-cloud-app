@@ -81,7 +81,7 @@
                  <div class="btn-group flex-wrap ml-2">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                       <a class="dropdown-item text-1" href="">Edit</a>
+                       <a class="dropdown-item text-1" (click)='checkBoxesLength()' >Edit</a>
                        <a class="dropdown-item text-1" href="">Delete</a>
                        <a class="dropdown-item text-1" href="">Import</a>
                        <a class="dropdown-item text-1" href="">Export</a>
@@ -312,7 +312,7 @@
                        </thead>
                        <tbody>
                           <tr>
-                             <td><input type="checkbox"></td>
+                           <td><input type="checkbox" class="driver_checkbox" value="driverID1"></td>
                              <td><a routerLink="/fleet/drivers/Driver-Profile"><span class="font-weight-bold">David Thomas123</span> <span class="onduty pull-right">ON</span>
                                 <br><i class="fas fa-map-marker-alt"></i> 100 street Ontario,Toronto</a>
                              </td>
@@ -325,7 +325,7 @@
                              <td>22232005</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox" value="driverID2"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Ricky</span> <span class="offduty pull-right">OFF</span>
                                 <br><i class="fas fa-map-marker-alt"></i> 100 street Brampton
                              </td>
@@ -338,7 +338,7 @@
                              <td>856011</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Anchal</span> <span class="dutyonly pull-right">D</span>
                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, California
                              </td>
@@ -351,7 +351,7 @@
                              <td>22232005</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Deep</span> <span class="dutyonly pull-right">D</span>
                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Brampton
                              </td>
@@ -364,7 +364,7 @@
                              <td>856011</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Maninder</span> <span class="onduty pull-right">ON</span>
                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Winnipeg
                              </td>
@@ -377,7 +377,7 @@
                              <td>22232005</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Jatinder</span> <span class="ymduty pull-right">YM</span>
                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Surrey,British Columbia
                              </td>
@@ -390,7 +390,7 @@
                              <td>856011</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">David Thomas123</span> <span class="onduty pull-right">ON</span>
                                 <br><i class="fas fa-map-marker-alt"></i> 100 street Ontario,Toronto
                              </td>
@@ -403,7 +403,7 @@
                              <td>22232005</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Ricky</span> <span class="offduty pull-right">OFF</span>
                                 <br><i class="fas fa-map-marker-alt"></i> 100 street Brampton
                              </td>
@@ -416,7 +416,7 @@
                              <td>856011</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Anchal</span> <span class="dutyonly pull-right">D</span>
                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, California
                              </td>
@@ -429,7 +429,7 @@
                              <td>22232005</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Deep</span> <span class="dutyonly pull-right">D</span>
                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Brampton
                              </td>
@@ -442,7 +442,7 @@
                              <td>856011</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Maninder</span> <span class="onduty pull-right">ON</span>
                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Winnipeg
                              </td>
@@ -455,7 +455,7 @@
                              <td>22232005</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Jatinder</span> <span class="ymduty pull-right">YM</span>
                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Surrey,British Columbia
                              </td>
@@ -468,7 +468,7 @@
                              <td>856011</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">David Thomas123</span> <span class="onduty pull-right">ON</span>
                                 <br><i class="fas fa-map-marker-alt"></i> 100 street Ontario,Toronto
                              </td>
@@ -481,7 +481,7 @@
                              <td>22232005</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Ricky</span> <span class="offduty pull-right">OFF</span>
                                 <br><i class="fas fa-map-marker-alt"></i> 100 street Brampton
                              </td>
@@ -494,7 +494,7 @@
                              <td>856011</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Anchal</span> <span class="dutyonly pull-right">D</span>
                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, California
                              </td>
@@ -507,7 +507,7 @@
                              <td>22232005</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Deep</span> <span class="dutyonly pull-right">D</span>
                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Brampton
                              </td>
@@ -520,7 +520,7 @@
                              <td>856011</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Maninder</span> <span class="onduty pull-right">ON</span>
                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Winnipeg
                              </td>
@@ -533,7 +533,7 @@
                              <td>22232005</td>
                           </tr>
                           <tr>
-                             <td><input type="checkbox"></td>
+                             <td><input type="checkbox" class="driver_checkbox"></td>
                              <td onclick="window.location='driver-profile2.php';"><span class="font-weight-bold">Jatinder</span> <span class="ymduty pull-right">YM</span>
                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Surrey,British Columbia
                              </td>

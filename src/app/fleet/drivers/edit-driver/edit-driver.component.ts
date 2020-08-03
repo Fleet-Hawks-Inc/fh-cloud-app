@@ -146,7 +146,7 @@ export class EditDriverComponent implements OnInit {
       driverLicenseNumber: "12312323",
       driverLicenseStateID: "9a507140-897a-11ea-94e8-ddabdd2e57f0",
       driverMedicalRenewal: { year: 2020, month: 7, day: 14 },
-      driverVehicleType: "1"
+      driverVehicleType: "Heavy Truck"
     },
     HOSCompliance: {
       cycleID: "bc459ff0-85f6-11ea-9a20-5b1ee3c12feb",

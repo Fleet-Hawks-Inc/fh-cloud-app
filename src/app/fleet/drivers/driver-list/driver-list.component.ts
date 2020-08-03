@@ -121,4 +121,22 @@ export class DriverListComponent implements OnInit {
       $("#map_view_btn").removeClass("btn-success").addClass("btn-default");
   //  });
   }
+
+  checkBoxesLength(){
+    $(document).ready(function() {
+     
+      // $('.driver_checkbox:checked').each(function () {
+      //   var sThisVal = (this.checked ? $(this).val() : "");
+      //   alert(sThisVal);
+      // });
+     var c1 = $('.driver_checkbox:checked').length;
+     if(c1==1){
+              var sThisVal = $('.driver_checkbox:checked').val();
+              alert(sThisVal);
+     }
+     else{
+       alert("Select One Option for Editing");
+     }
+    });
+  }
 }
