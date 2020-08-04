@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ApiService } from "../../../api.service";
 import { ActivatedRoute } from "@angular/router";
+import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 declare var $: any;
 
@@ -19,6 +20,14 @@ export class EditVehicleNewComponent implements OnInit {
   quantumsList = [];
   quantum = "";
   quantumSelected = "";
+  // Dates
+loanDate: NgbDateStruct;
+loanEndDate: NgbDateStruct;
+firstPaymentDate: NgbDateStruct;
+inServiceDate: NgbDateStruct;
+outServiceDate: NgbDateStruct;
+issueDate: NgbDateStruct;
+expiryDate : NgbDateStruct;
 
   /**
    * Vehicle Prop
@@ -211,8 +220,8 @@ export class EditVehicleNewComponent implements OnInit {
       EPAHighway: "34",
     },
     insurance: {
-      expiryDate: { year: 2022, month: 7, day: 30 },
-      issueDate: { year: 2020, month: 8, day: 2 },
+      expiryDate: "6-9-2020",
+issueDate: "27-7-2020",
       premiumAmount: "67",
       premiumAmountUnit: "USD",
       reminderNumber: 34,
@@ -223,9 +232,9 @@ export class EditVehicleNewComponent implements OnInit {
       estimatedResaleValue: "230000",
       estimatedServiceLifeInMiles: "20000",
       estimatedServiceLifeInMonths: "200",
-      inServiceDate: { year: 2020, month: 8, day: 2 },
+      inServiceDate: "26-8-2020",
       inServiceOdometer: "12000",
-      outServiceDate: { year: 2020, month: 8, day: 9 },
+      outServiceDate: "3-9-2020",
       outServiceOdometer: "11000",
     },
     manufacturerID: "3b39cbd0-8f5f-11ea-b9cd-65629f8a2909",
@@ -291,11 +300,11 @@ export class EditVehicleNewComponent implements OnInit {
       annualPercentageRate: 10,
       aspiration: "loan aspiration",
       downPayment: "down payment ",
-      firstPaymentDate: { year: 2020, month: 7, day: 9 },
+      firstPaymentDate: "26-8-2020",
       generateExpenses: "expenses",
       loanAmount: "5000",
-      loanDate: { year: 2020, month: 7, day: 10 },
-      loanEndDate: { year: 2020, month: 8, day: 19 },
+      loanDate: "27-7-2020",
+      loanEndDate: "6-8-2020",
       loanVendor: "61b8adc0-886c-11ea-9330-cff010647120",
       monthlyPayment: "monthly payment",
       notes: "these are notes about loan",
@@ -312,7 +321,10 @@ export class EditVehicleNewComponent implements OnInit {
       primaryMeter: "miles",
     }
   }
-  constructor(private route: ActivatedRoute, private apiService: ApiService) { }
+  constructor(private route: ActivatedRoute, private apiService: ApiService, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) { }
+  get today() {
+    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+  }
 
   ngOnInit() {
     this.vehicleID = this.route.snapshot.params["vehicleID"];
@@ -363,19 +375,19 @@ export class EditVehicleNewComponent implements OnInit {
     }
 
     this.lifeCycle = {
-      inServiceDate: this.result.lifeCycle.inServiceDate.toString(),
+      inServiceDate: this.result.lifeCycle.inServiceDate,
       inServiceOdometer: this.result.lifeCycle.inServiceOdometer,
       estimatedServiceLifeInMonths: this.result.lifeCycle.estimatedServiceLifeInMonths,
       estimatedServiceLifeInMiles: this.result.lifeCycle.estimatedServiceLifeInMiles,
       estimatedResaleValue: this.result.lifeCycle.estimatedResaleValue,
-      outServiceDate: this.result.lifeCycle.outServiceDate.toString(),
+      outServiceDate: this.result.lifeCycle.outServiceDate,
       outServiceOdometer: this.result.lifeCycle.outServiceOdometer,
     };
     this.insurance = {
-      issueDate: this.result.insurance.issueDate.toString(),
+      issueDate: this.result.insurance.issueDate,
       premiumAmount: this.result.insurance.premiumAmount,
       premiumAmountUnit: this.result.insurance.premiumAmountUnit,
-      expiryDate: this.result.insurance.expiryDate.toString(),
+      expiryDate: this.result.insurance.expiryDate,
       vendorID: this.result.insurance.vendorID,
       reminderNumber: this.result.insurance.reminderNumber.toString(),
       reminderNumberUnits: this.result.insurance.reminderNumberUnits

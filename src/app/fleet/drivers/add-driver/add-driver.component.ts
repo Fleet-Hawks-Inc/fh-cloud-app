@@ -1,73 +1,20 @@
-import { Component, OnInit,Injectable } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {from, of} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {Object} from 'aws-sdk/clients/s3';
-import {ApiService} from '../../../api.service';
+import { from, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Object } from 'aws-sdk/clients/s3';
+import { ApiService } from '../../../api.service';
 import { Auth } from 'aws-amplify';
-import {AwsUploadService} from '../../../aws-upload.service';
-import {NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { AwsUploadService } from '../../../aws-upload.service';
+import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from "moment";
 declare var $: any;
-
-/**
- * This Service handles how the date is represented in scripts i.e. ngModel.
- */
-@Injectable()
-export class CustomAdapter extends NgbDateAdapter<string> {
-
-  readonly DELIMITER = '-';
-
-  fromModel(value: string | null): NgbDateStruct | null {
-    if (value) {
-      let date = value.split(this.DELIMITER);
-      return {
-        day : parseInt(date[0], 10),
-        month : parseInt(date[1], 10),
-        year : parseInt(date[2], 10)
-      };
-    }
-    return null;
-  }
-
-  toModel(date: NgbDateStruct | null): string | null {
-    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : null;
-  }
-}
-
-/**
- * This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
- */
-@Injectable()
-export class CustomDateParserFormatter extends NgbDateParserFormatter {
-
-  readonly DELIMITER = '/';
-
-  parse(value: string): NgbDateStruct | null {
-    if (value) {
-      let date = value.split(this.DELIMITER);
-      return {
-        day : parseInt(date[0], 10),
-        month : parseInt(date[1], 10),
-        year : parseInt(date[2], 10)
-      };
-    }
-    return null;
-  }
-
-  format(date: NgbDateStruct | null): string {
-    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
-  }
-}
 
 @Component({
   selector: 'app-add-driver',
   templateUrl: './add-driver.component.html',
   styleUrls: ['./add-driver.component.css'],
-  providers: [
-    {provide: NgbDateAdapter, useClass: CustomAdapter},
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
-  ]
+ 
 })
 export class AddDriverComponent implements OnInit {
   title = 'Add Driver';
@@ -82,81 +29,81 @@ export class AddDriverComponent implements OnInit {
    */
   // Dates
   driverContractEnd: NgbDateStruct;
-  driverContractStart : NgbDateStruct;
-  driverMedicalRenewal : NgbDateStruct;
-  driverBirthDate  : NgbDateStruct;
-  driverLicenseExpiry : NgbDateStruct;
- 
-    basic = {
-      driverType : "Employee",
-      companyID : "",
-      employeeID : "",
-      userName : "",
-      password : "",
-      firstName : "",
-      lastName : "",
-      driverID : "",
-      driverGender : "Male",
-      groupID : "",
-      phone : "",
-      email : "",
-    };
-    address = {
-      addressType : "",
-      driverCountry : "",
-      driverStateID : "",
-      driverCityID : "",
-      addressZip : "",
-      driverAddress1 : "",
-      driverAddress2 : "",
-    };
-    payment = {
-      driverPayType : "Pay Per Mile",
-      driverPerHourRate : "",
-      driverLoadedMiles : "",
-      driverEmptyMiles : "",
-      calculateEmptyMiles : "",
-      driverLoadPercentage : "",
-      driverLoadPercentageOf : "",
-    };
+  driverContractStart: NgbDateStruct;
+  driverMedicalRenewal: NgbDateStruct;
+  driverBirthDate: NgbDateStruct;
+  driverLicenseExpiry: NgbDateStruct;
 
-    licence = {
-      driverContractStart : "",
-      driverContractEnd : "",
-      driverMedicalRenewal : "",
-      driverBirthDate : "",
-      driverLicenseNumber : "",
-      driverLicenseExpiry : "",
-      driverLicenseStateID : "",
-      driverVehicleType : "",
+  basic = {
+    driverType: "Employee",
+    companyID: "",
+    employeeID: "",
+    userName: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    driverID: "",
+    driverGender: "Male",
+    groupID: "",
+    phone: "",
+    email: "",
+  };
+  address = {
+    addressType: "",
+    driverCountry: "",
+    driverStateID: "",
+    driverCityID: "",
+    addressZip: "",
+    driverAddress1: "",
+    driverAddress2: "",
+  };
+  payment = {
+    driverPayType: "Pay Per Mile",
+    driverPerHourRate: "",
+    driverLoadedMiles: "",
+    driverEmptyMiles: "",
+    calculateEmptyMiles: "",
+    driverLoadPercentage: "",
+    driverLoadPercentageOf: "",
+  };
 
-    };
-    formattedBirthDate :any ="";
-    HOSCompliance = {
-      status : "",
-      type : "",
-      cycleID : "",
-      yardID : "",
-      exemptedNotes : "",
-      driverAllowYM : "",
-      driverAllowPC : "",
-    };
-    emergencyContact = {
-      emergencyContactName : "",
-      emergencyContactPhone : "",
-      emergencyContactAddress : "",
-      emergencyContactRelationship : "",
-      emergencyContactEmail : "",
-    };
-    additionalDetails = {
-      driverTumblr : "",
-      driverFacebook : "",
-      driverInstagram : "",
-      driverTwitter : "",
-      driverBlog : "",
-      driverLinkedIn : "",
-      additionalNotes : "",
-    };
+  licence = {
+    driverContractStart: "",
+    driverContractEnd: "",
+    driverMedicalRenewal: "",
+    driverBirthDate: "",
+    driverLicenseNumber: "",
+    driverLicenseExpiry: "",
+    driverLicenseStateID: "",
+    driverVehicleType: "",
+
+  };
+  formattedBirthDate: any = "";
+  HOSCompliance = {
+    status: "",
+    type: "",
+    cycleID: "",
+    yardID: "",
+    exemptedNotes: "",
+    driverAllowYM: "",
+    driverAllowPC: "",
+  };
+  emergencyContact = {
+    emergencyContactName: "",
+    emergencyContactPhone: "",
+    emergencyContactAddress: "",
+    emergencyContactRelationship: "",
+    emergencyContactEmail: "",
+  };
+  additionalDetails = {
+    driverTumblr: "",
+    driverFacebook: "",
+    driverInstagram: "",
+    driverTwitter: "",
+    driverBlog: "",
+    driverLinkedIn: "",
+    additionalNotes: "",
+  };
 
 
 
@@ -172,13 +119,13 @@ export class AddDriverComponent implements OnInit {
   hasSuccess = false;
   Error: string = "";
   Success: string = "";
-  rightSidebarShow:boolean = true;
+  rightSidebarShow: boolean = true;
 
   constructor(private apiService: ApiService, private router: Router,
-              private awsUS: AwsUploadService,private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {}
-              get today() {
-                return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
-              }
+    private awsUS: AwsUploadService, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) { }
+  get today() {
+    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+  }
 
   ngOnInit() {
     this.fetchGroups();
@@ -198,16 +145,16 @@ export class AddDriverComponent implements OnInit {
 
   fetchCycles() {
     this.apiService.getData('cycles')
-    .subscribe((result: any) => {
-      this.cycles = result.Items;
-    });
+      .subscribe((result: any) => {
+        this.cycles = result.Items;
+      });
   }
 
   fetchGroups() {
     this.apiService.getData('groups')
-    .subscribe((result: any) => {
-      this.groups = result.Items;
-    });
+      .subscribe((result: any) => {
+        this.groups = result.Items;
+      });
   }
 
   fetchCountries() {
@@ -230,25 +177,25 @@ export class AddDriverComponent implements OnInit {
         this.states = result.Items;
       });
   }
-   getCities() {
+  getCities() {
     this.apiService.getData('cities/state' + this.address.driverStateID)
-    .subscribe((result: any) => {
-      this.cities = result.Items;
-    });
-   }
+      .subscribe((result: any) => {
+        this.cities = result.Items;
+      });
+  }
 
   getToday(): string {
     return new Date().toISOString().split('T')[0]
   }
 
-  addGroup(){
+  addGroup() {
     this.errors = {};
-      this.hasError = false;
-      this.hasSuccess = false;
-      const data1 = {
-        groupNameModal: this.groupNameModal
-      };
-      console.log(data1);
+    this.hasError = false;
+    this.hasSuccess = false;
+    const data1 = {
+      groupNameModal: this.groupNameModal
+    };
+    console.log(data1);
   }
   addDriver() {
     // if (this.fileName === '') {
@@ -274,7 +221,6 @@ export class AddDriverComponent implements OnInit {
       },
       address: {
         addressType: this.address.addressType,
-
         driverCountry: this.address.driverCountry,
         driverStateID: this.address.driverStateID,
         driverCityID: this.address.driverCityID,
@@ -282,19 +228,19 @@ export class AddDriverComponent implements OnInit {
         driverAddress1: this.address.driverAddress1,
         driverAddress2: this.address.driverAddress2,
       },
-     payment: {
-      driverPayType: this.payment.driverPayType,
-      driverPerHourRate: this.payment.driverPerHourRate,
-      driverLoadedMiles : this.payment.driverLoadedMiles,
-      driverEmptyMiles : this.payment.driverEmptyMiles,
-      calculateEmptyMiles : this.payment.calculateEmptyMiles,
-      driverLoadPercentage : this.payment.driverLoadPercentage,
-      driverLoadPercentageOf : this.payment.driverLoadPercentageOf,
-     },
+      payment: {
+        driverPayType: this.payment.driverPayType,
+        driverPerHourRate: this.payment.driverPerHourRate,
+        driverLoadedMiles: this.payment.driverLoadedMiles,
+        driverEmptyMiles: this.payment.driverEmptyMiles,
+        calculateEmptyMiles: this.payment.calculateEmptyMiles,
+        driverLoadPercentage: this.payment.driverLoadPercentage,
+        driverLoadPercentageOf: this.payment.driverLoadPercentageOf,
+      },
       licence: {
         driverContractStart: this.licence.driverContractStart,
         driverContractEnd: this.licence.driverContractEnd,
-        driverMedicalRenewal:this.licence.driverMedicalRenewal,
+        driverMedicalRenewal: this.licence.driverMedicalRenewal,
         driverLicenseNumber: this.licence.driverLicenseNumber,
         driverBirthDate: this.licence.driverBirthDate,
         driverLicenseExpiry: this.licence.driverLicenseExpiry,
@@ -311,11 +257,11 @@ export class AddDriverComponent implements OnInit {
         exemptedNotes: this.HOSCompliance.exemptedNotes
       },
       emergencyContact: {
-        emergencyContactName : this.emergencyContact.emergencyContactName,
-        emergencyContactPhone : this.emergencyContact.emergencyContactPhone,
-        emergencyContactAddress : this.emergencyContact.emergencyContactAddress,
-        emergencyContactRelationship : this.emergencyContact.emergencyContactRelationship,
-        emergencyContactEmail : this.emergencyContact.emergencyContactEmail,
+        emergencyContactName: this.emergencyContact.emergencyContactName,
+        emergencyContactPhone: this.emergencyContact.emergencyContactPhone,
+        emergencyContactAddress: this.emergencyContact.emergencyContactAddress,
+        emergencyContactRelationship: this.emergencyContact.emergencyContactRelationship,
+        emergencyContactEmail: this.emergencyContact.emergencyContactEmail,
       },
       additionalDetails: {
         driverFacebook: this.additionalDetails.driverFacebook,
@@ -332,26 +278,26 @@ export class AddDriverComponent implements OnInit {
     console.log(data);
     return;
     this.apiService.postData('users', data).subscribe({
-      complete: () => {},
-      error : (err) => {
+      complete: () => { },
+      error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
-                // this.errors[key] = val.message;
-                // Or We Can Use This One To Extract Key
-                // const key = this.concatArray(path);
-                // this.errors[this.concatArray(path)] = val.message;
-                // if (key.length === 2) {
-                // this.errors[val.context.key] = val.message;
-                // } else {
-                // this.errors[key] = val.message;
-                // }
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[key] = val.message;
-              }),
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+              // this.errors[key] = val.message;
+              // Or We Can Use This One To Extract Key
+              // const key = this.concatArray(path);
+              // this.errors[this.concatArray(path)] = val.message;
+              // if (key.length === 2) {
+              // this.errors[val.context.key] = val.message;
+              // } else {
+              // this.errors[key] = val.message;
+              // }
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[key] = val.message;
+            }),
           )
           .subscribe({
             complete: () => {
@@ -361,7 +307,7 @@ export class AddDriverComponent implements OnInit {
             error: () => { },
             next: () => { }
           });
-        },
+      },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
@@ -383,10 +329,10 @@ export class AddDriverComponent implements OnInit {
           status: "",
           type: "",
           cycleID: "",
-          yardID : "",
-          exemptedNotes : "",
-          driverAllowYM : "",
-          driverAllowPC : "",
+          yardID: "",
+          exemptedNotes: "",
+          driverAllowYM: "",
+          driverAllowPC: "",
         };
 
         this.groups = [];
@@ -406,7 +352,7 @@ export class AddDriverComponent implements OnInit {
   concatArray(path) {
     this.concatArrayKeys = '';
     for (const i in path) {
-        this.concatArrayKeys += path[i] + '.';
+      this.concatArrayKeys += path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(0, this.concatArrayKeys.length - 1);
     return this.concatArrayKeys;
@@ -433,34 +379,34 @@ export class AddDriverComponent implements OnInit {
   };
 
   // Driver Gender Value
-onChangeDriverGender(value: any){
-  this.basic.driverGender = value;
-  console.log(value);
+  onChangeDriverGender(value: any) {
+    this.basic.driverGender = value;
+    console.log(value);
 
-}
-onChangeDriverType(value: any){
-  this.basic.driverType = value;
-  console.log(value);
-
-}
-uploadFile(event) {
-  this.imageError = '';
-  if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
-    this.fileName = this.awsUS.uploadFile('test', event.target.files.item(0));
-  } else {
-    this.fileName = '';
-    this.imageError = 'Invalid Image Format';
   }
-}
+  onChangeDriverType(value: any) {
+    this.basic.driverType = value;
+    console.log(value);
 
-createGroupModal() {
-  $( document ).ready(function() {
-    $('#addGroupModal').modal('show');
-  });
-}
-changePaymentMode(value:any){
-   console.log(value);
-}
+  }
+  uploadFile(event) {
+    this.imageError = '';
+    if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
+      this.fileName = this.awsUS.uploadFile('test', event.target.files.item(0));
+    } else {
+      this.fileName = '';
+      this.imageError = 'Invalid Image Format';
+    }
+  }
+
+  createGroupModal() {
+    $(document).ready(function () {
+      $('#addGroupModal').modal('show');
+    });
+  }
+  changePaymentMode(value: any) {
+    console.log(value);
+  }
 }
 
 

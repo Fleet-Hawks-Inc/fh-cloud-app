@@ -38,10 +38,10 @@
              
             ],
             "scripts": [
+              "src/assets/vendor/jquery/jquery.js",
               "node_modules/mapbox-gl/dist/mapbox-gl.js",
                "node_modules/@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.js",
-              "src/assets/vendor/modernizr/modernizr.min.js",
-              "src/assets/vendor/jquery/jquery.js",
+              "src/assets/vendor/modernizr/modernizr.min.js",              
               "src/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js",
               "src/assets/vendor/popper/umd/popper.min.js",
               "src/assets/vendor/bootstrap/js/bootstrap.js",

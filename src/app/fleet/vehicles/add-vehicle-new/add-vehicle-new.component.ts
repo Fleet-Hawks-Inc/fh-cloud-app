@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import {ApiService} from '../../../api.service';
 import {Router} from '@angular/router';
 import {AwsUploadService} from '../../../aws-upload.service';
-import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
-import {NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+
 
 declare var $: any;
 
@@ -190,7 +190,10 @@ expiryDate : NgbDateStruct;
   Success : string = '';
 
   constructor(private apiService: ApiService,
-    private router: Router,private awsUS: AwsUploadService) {}
+    private router: Router,private awsUS: AwsUploadService, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {}
+    get today() {
+      return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+    }
 
   ngOnInit() {
     this.fetchServicePrograms();

@@ -4,6 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 import { catchError, map, mapTo, tap } from "rxjs/operators";
 import { from, of } from "rxjs";
 import { AwsUploadService } from '../../../../aws-upload.service';
+import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 declare var jquery: any;
 declare var $: any;
 
@@ -86,7 +87,7 @@ export class EditFuelEntryComponent implements OnInit {
       DEFFuelQtyUnit: "gallons",
       amountPaid: 2100,
       costPerGallon: 88,
-      date: { year: 2020, month: 8, day: 19 },
+      date: "5-8-2020",
       discount: "100",
       fuelType: "Bio Diesel",
       reeferFuelQty: 0,
@@ -126,7 +127,10 @@ dispatchID: "DIS-2536"
   }
   constructor(private apiService: ApiService,
     private route: ActivatedRoute,
-    private awsUS: AwsUploadService) { }
+    private awsUS: AwsUploadService, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) { }
+    get today() {
+      return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+    }
 
   ngOnInit() {
     // this.entryID = this.route.snapshot.params["entryID"];
@@ -202,7 +206,7 @@ dispatchID: "DIS-2536"
       totalAmount: this.mockData.basic.totalAmount,
       costPerGallon: this.mockData.basic.costPerGallon,
       amountPaid: this.mockData.basic.amountPaid,
-      date: this.mockData.basic.date.toString(),
+      date: this.mockData.basic.date,
       fuelType: this.mockData.basic.fuelType,
       tripID: this.mockData.basic.tripID,
       costLabel : this.mockData.basic.costLabel

@@ -4,7 +4,8 @@ import { Router } from "@angular/router";
 import { catchError, map, mapTo, tap } from "rxjs/operators";
 import { from, of } from "rxjs";
 import {AwsUploadService} from '../../../../aws-upload.service';
-import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+
 declare var jquery: any;
 declare var $: any;
 
@@ -18,7 +19,7 @@ export class AddFuelEntryComponent implements OnInit {
   date: NgbDateStruct;
   imageError = '';
   fileName = '';
-
+ 
   /********** Form Fields ***********/
  basic = {
      unitType : "Vehicle",
@@ -84,7 +85,10 @@ export class AddFuelEntryComponent implements OnInit {
  
   constructor(private apiService: ApiService,
               private router: Router,
-              private awsUS: AwsUploadService) {}
+              private awsUS: AwsUploadService, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {}
+              get today() {
+                return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+              }
 
   ngOnInit() {
     this.fetchVehicles();

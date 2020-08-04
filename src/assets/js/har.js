@@ -505,20 +505,20 @@ function closefeedback(){
   document.getElementById('feedbackBox').style.display = "none";
 }
 // TABLE WITHOUT  SEARCH AND NUMBER OF RECORDS ONLY PAGINATION
-$('.simple-table').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: false, paging: true, info: false});
-$('.search-table').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: true, paging: true, info: false});
+// $('.simple-table').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: false, paging: true, info: false});
+// $('.search-table').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: true, paging: true, info: false});
 
-$('#simple-table').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: false, paging: true, info: false});
-$('#simple-table1').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: false, paging: true, info: false});
-$('#simple-table2').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: false, paging: true, info: false});
-$('#simple-table3').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: false, paging: true, info: false});
-$('#simple-table4').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: false, paging: true, info: false});
+// $('#simple-table').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: false, paging: true, info: false});
+// $('#simple-table1').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: false, paging: true, info: false});
+// $('#simple-table2').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: false, paging: true, info: false});
+// $('#simple-table3').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: false, paging: true, info: false});
+// $('#simple-table4').dataTable({dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',searching: false, paging: true, info: false});
 
-$('.assetDetailsTable').DataTable( {
-  "scrollY":        "310px",
-  "scrollCollapse": true,
-  "paging":         false,
-  "info": false,
-  "searching":false
-} );
+// $('.assetDetailsTable').DataTable( {
+//   "scrollY":        "310px",
+//   "scrollCollapse": true,
+//   "paging":         false,
+//   "info": false,
+//   "searching":false
+// } );
 

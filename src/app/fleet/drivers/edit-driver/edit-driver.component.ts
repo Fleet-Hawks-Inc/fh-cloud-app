@@ -1,10 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit,Injectable } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ApiService } from '../../../api.service';
 import { from, of } from "rxjs";
 import { map } from "rxjs/operators";
 import { Object } from "aws-sdk/clients/s3";
-import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 declare var $: any;
 
@@ -12,6 +12,7 @@ declare var $: any;
   selector: "app-edit-driver",
   templateUrl: "./edit-driver.component.html",
   styleUrls: ["./edit-driver.component.css"],
+ 
 })
 export class EditDriverComponent implements OnInit {
   title = "Edit Driver";
@@ -101,10 +102,10 @@ export class EditDriverComponent implements OnInit {
   cycles = [];
    // Dates
    driverContractEnd: NgbDateStruct;
-   driverContractStart : NgbDateStruct;
-   driverMedicalRenewal : NgbDateStruct;
-   driverBirthDate  : NgbDateStruct;
-   driverLicenseExpiry : NgbDateStruct;
+   driverContractStart: NgbDateStruct;
+   driverMedicalRenewal: NgbDateStruct;
+   driverBirthDate: NgbDateStruct;
+   driverLicenseExpiry: NgbDateStruct;
   mockData = {
     basic: {
       companyID: '1111',
@@ -139,13 +140,13 @@ export class EditDriverComponent implements OnInit {
       driverPerHourRate: "",
     },
     licence: {
-      driverBirthDate: { year: 2020, month: 7, day: 23 },
-      driverContractEnd: { year: 2022, month: 7, day: 29 },
-      driverContractStart: { year: 2020, month: 8, day: 9 },
-      driverLicenseExpiry: { year: 2020, month: 8, day: 1 },
+      driverBirthDate: "2-9-2020",
+      driverContractEnd: "2-9-2020",
+      driverContractStart: "26-8-2020",
+      driverLicenseExpiry: "25-8-2020",
       driverLicenseNumber: "12312323",
       driverLicenseStateID: "9a507140-897a-11ea-94e8-ddabdd2e57f0",
-      driverMedicalRenewal: { year: 2020, month: 7, day: 14 },
+      driverMedicalRenewal: "25-8-2020",
       driverVehicleType: "Heavy Truck"
     },
     HOSCompliance: {
@@ -180,7 +181,10 @@ export class EditDriverComponent implements OnInit {
   Error: string = "";
   Success: string = "";
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) { }
+  constructor(private route: ActivatedRoute, private apiService: ApiService,private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) { }
+  get today() {
+    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+  }
 
   ngOnInit() {
     // this.userName = this.route.snapshot.params["userName"];
@@ -317,12 +321,12 @@ export class EditDriverComponent implements OnInit {
       driverLoadPercentageOf: this.mockData.payment.driverLoadPercentageOf,
     };
     this.licence = {
-      driverContractStart: JSON.stringify(this.mockData.licence.driverContractStart),
-      driverContractEnd: this.mockData.licence.driverContractEnd.toString(),
-      driverMedicalRenewal: this.mockData.licence.driverMedicalRenewal.toString(),
+      driverContractStart: this.mockData.licence.driverContractStart,
+      driverContractEnd: this.mockData.licence.driverContractEnd,
+      driverMedicalRenewal: this.mockData.licence.driverMedicalRenewal,
       driverLicenseNumber: this.mockData.licence.driverLicenseNumber,
-      driverBirthDate: this.mockData.licence.driverBirthDate.toString(),
-      driverLicenseExpiry: this.mockData.licence.driverLicenseExpiry.toString(),
+      driverBirthDate: this.mockData.licence.driverBirthDate,
+      driverLicenseExpiry: this.mockData.licence.driverLicenseExpiry,
       driverLicenseStateID: this.mockData.licence.driverLicenseStateID,
       driverVehicleType: this.mockData.licence.driverVehicleType,
     };
