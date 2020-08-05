@@ -5,6 +5,7 @@ import { catchError, map, mapTo, tap } from "rxjs/operators";
 import { from, of } from "rxjs";
 import {AwsUploadService} from '../../../../aws-upload.service';
 import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { booleanObjectType } from 'aws-sdk/clients/iam';
 
 declare var jquery: any;
 declare var $: any;
@@ -40,15 +41,17 @@ export class AddFuelEntryComponent implements OnInit {
      amountPaid : 0.0,
      date: "",
      fuelType: "",
-     tripID: "",    
+    //  tripID: "",    
      costLabel : "Cost/gallon", 
  };
+ reimburseToDriver:boolean;
+ deductFromPay : boolean;
  payment = {
   paidBy: "",
   paymentMode : "",
   reference : "",
-  reimburseToDriver : "",
-  deductFromPay : "",
+  reimburseToDriver : false,
+  deductFromPay : false,
  };
  fuelStop = {  
   vendorID : "",
@@ -110,7 +113,7 @@ export class AddFuelEntryComponent implements OnInit {
       });
   }
    getCities() {
-    this.apiService.getData('cities/state' + this.fuelStop.stateID)
+    this.apiService.getData('cities/state/' + this.fuelStop.stateID)
     .subscribe((result: any) => {
       this.cities = result.Items;
     });
@@ -170,7 +173,7 @@ export class AddFuelEntryComponent implements OnInit {
         amountPaid : this.basic.amountPaid,
         date: this.basic.date,
         fuelType: this.basic.fuelType,
-        tripID: this.basic.tripID,  
+        // tripID: this.basic.tripID,  
            
     },     
       payment:{
@@ -196,8 +199,7 @@ export class AddFuelEntryComponent implements OnInit {
         description : this.additional.description,
        }
     };
-console.log(data);
-return;
+ console.log(data);
     this.apiService.postData("fuelEntries", data).subscribe({
       complete: () => {},
       error: (err) => {
@@ -232,7 +234,7 @@ return;
         this.response = res;
         this.hasSuccess = true;
         this.Success = "Fuel entry Added successfully";
-        this.basic.vehicleID = "";
+        // this.basic.vehicleID = "";
         // this.vendorID = "";
         // this.location = "";
         // this.odometer = "";

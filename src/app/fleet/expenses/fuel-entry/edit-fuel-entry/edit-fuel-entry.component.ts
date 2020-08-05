@@ -42,12 +42,14 @@ export class EditFuelEntryComponent implements OnInit {
     tripID: "",
     costLabel: "Cost/gallon",
   };
+  deductFromPay: boolean;
+  reimburseToDriver: boolean;
   payment = {
     paidBy: "",
     paymentMode: "",
     reference: "",
-    reimburseToDriver: "",
-    deductFromPay: "",
+    reimburseToDriver: false,
+    deductFromPay: false,
   };
   fuelStop = {
     vendorID: "",
@@ -101,36 +103,38 @@ export class EditFuelEntryComponent implements OnInit {
       vehicleFuelQtyAmt: "1000",
       vehicleFuelQtyUnit: "gallons",
       vehicleID: "28460da0-c285-11ea-a7a0-935b4b2d3f74",
-      costLabel : "Cost/gallon", 
+      costLabel: "Cost/gallon",
     },
     payment: {
       deductFromPay: true,
       paidBy: "Person 1",
       paymentMode: "Check",
       reference: "111111",
-      reimburseToDriver: true
+      reimburseToDriver: false
     },
-    additional:{
-avgGVW: "10-15,000 lbs",
-description: "this is a description of fuel entry",
-odometer: "12000"},
-fuelStop:{
-cityID: "",
-countryID: "8e8a0700-8979-11ea-94e8-ddabdd2e57f0",
-stateID: "51a0ce90-897a-11ea-94e8-ddabdd2e57f0",
-vendorID: "12ac0c10-9139-11ea-a5bf-c1c713a14945"},
-dispatch:{
-dispatchAssociate: "Yes",
-dispatchID: "DIS-2536"
-}
+    additional: {
+      avgGVW: "10-15,000 lbs",
+      description: "this is a description of fuel entry",
+      odometer: "12000"
+    },
+    fuelStop: {
+      cityID: "",
+      countryID: "8e8a0700-8979-11ea-94e8-ddabdd2e57f0",
+      stateID: "51a0ce90-897a-11ea-94e8-ddabdd2e57f0",
+      vendorID: "12ac0c10-9139-11ea-a5bf-c1c713a14945"
+    },
+    dispatch: {
+      dispatchAssociate: "Yes",
+      dispatchID: "DIS-2536"
+    }
 
   }
   constructor(private apiService: ApiService,
     private route: ActivatedRoute,
     private awsUS: AwsUploadService, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) { }
-    get today() {
-      return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
-    }
+  get today() {
+    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+  }
 
   ngOnInit() {
     // this.entryID = this.route.snapshot.params["entryID"];
@@ -160,7 +164,7 @@ dispatchID: "DIS-2536"
     setTimeout(() => {
       this.getStates();
     }, 2000);
-  
+
   }
   fetchVehicles() {
     this.apiService.getData("vehicles").subscribe((result: any) => {
@@ -209,15 +213,15 @@ dispatchID: "DIS-2536"
       date: this.mockData.basic.date,
       fuelType: this.mockData.basic.fuelType,
       tripID: this.mockData.basic.tripID,
-      costLabel : this.mockData.basic.costLabel
+      costLabel: this.mockData.basic.costLabel
 
     };
     this.payment = {
       paidBy: this.mockData.payment.paidBy,
       paymentMode: this.mockData.payment.paymentMode,
       reference: this.mockData.payment.reference,
-      reimburseToDriver: this.mockData.payment.reimburseToDriver.toString(),
-      deductFromPay: this.mockData.payment.deductFromPay.toString(),
+      reimburseToDriver: this.mockData.payment.reimburseToDriver,
+      deductFromPay: this.mockData.payment.deductFromPay,
     };
     this.fuelStop = {
       vendorID: this.mockData.fuelStop.vendorID,
@@ -260,52 +264,52 @@ dispatchID: "DIS-2536"
     this.hasSuccess = false;
 
     const data = {
-      basic : {
-        unitType : this.basic.unitType,
+      basic: {
+        unitType: this.basic.unitType,
         vehicleID: this.basic.vehicleID,
-        vehicleFuelQty : this.basic.vehicleFuelQty,   
-        vehicleFuelQtyUnit : this.basic.vehicleFuelQtyUnit,
-        vehicleFuelQtyAmt : this.basic.vehicleFuelQtyAmt,  
+        vehicleFuelQty: this.basic.vehicleFuelQty,
+        vehicleFuelQtyUnit: this.basic.vehicleFuelQtyUnit,
+        vehicleFuelQtyAmt: this.basic.vehicleFuelQtyAmt,
         reeferID: this.basic.reeferID,
-        reeferFuelQty : this.basic.reeferFuelQty,
-        reeferFuelQtyUnit : this.basic.reeferFuelQtyUnit,
-        reeferFuelQtyAmt : this.basic.reeferFuelQtyAmt,   
-        DEFFuelQty : this.basic.DEFFuelQty,
-        DEFFuelQtyUnit : this.basic.DEFFuelQtyUnit,
-        DEFFuelQtyAmt : this.basic.DEFFuelQtyAmt,
-        discount : this.basic.discount,
-        totalAmount : this.basic.totalAmount,
-        costPerGallon : this.basic.costPerGallon,
-        amountPaid : this.basic.amountPaid,
+        reeferFuelQty: this.basic.reeferFuelQty,
+        reeferFuelQtyUnit: this.basic.reeferFuelQtyUnit,
+        reeferFuelQtyAmt: this.basic.reeferFuelQtyAmt,
+        DEFFuelQty: this.basic.DEFFuelQty,
+        DEFFuelQtyUnit: this.basic.DEFFuelQtyUnit,
+        DEFFuelQtyAmt: this.basic.DEFFuelQtyAmt,
+        discount: this.basic.discount,
+        totalAmount: this.basic.totalAmount,
+        costPerGallon: this.basic.costPerGallon,
+        amountPaid: this.basic.amountPaid,
         date: this.basic.date,
         fuelType: this.basic.fuelType,
-        tripID: this.basic.tripID,  
-           
-    },     
-      payment:{
+        tripID: this.basic.tripID,
+
+      },
+      payment: {
         paidBy: this.payment.paidBy,
         paymentMode: this.payment.paymentMode,
-        reference : this.payment.reference,
-        reimburseToDriver : this.payment.reimburseToDriver,
-        deductFromPay : this.payment.deductFromPay,
+        reference: this.payment.reference,
+        reimburseToDriver: this.payment.reimburseToDriver,
+        deductFromPay: this.payment.deductFromPay,
       },
-      fuelStop : {      
-        vendorID : this.fuelStop.vendorID,
-        countryID : this.fuelStop.countryID,
-        stateID : this.fuelStop.stateID,
-        cityID : this.fuelStop.cityID,
-       },
-       dispatch : {
-        dispatchAssociate : this.dispatch.dispatchAssociate,
-        dispatchID : this.dispatch.dispatchID
+      fuelStop: {
+        vendorID: this.fuelStop.vendorID,
+        countryID: this.fuelStop.countryID,
+        stateID: this.fuelStop.stateID,
+        cityID: this.fuelStop.cityID,
       },
-       additional : {
-        avgGVW : this.additional.avgGVW,
-        odometer : this.additional.odometer,
-        description : this.additional.description,
-       }
+      dispatch: {
+        dispatchAssociate: this.dispatch.dispatchAssociate,
+        dispatchID: this.dispatch.dispatchID
+      },
+      additional: {
+        avgGVW: this.additional.avgGVW,
+        odometer: this.additional.odometer,
+        description: this.additional.description,
+      }
     };
-    console.log(data);return;
+    console.log(data); return;
     this.apiService.putData("fuelEntries", data).subscribe({
       complete: () => { },
       error: (err) => {
@@ -338,30 +342,30 @@ dispatchID: "DIS-2536"
   throwErrors() {
     this.form.showErrors(this.errors);
   }
-  onChangeUnitType(value: any){
-    this.basic.unitType = value;  
+  onChangeUnitType(value: any) {
+    this.basic.unitType = value;
     this.basic.vehicleFuelQtyAmt = 0;
     this.basic.reeferFuelQtyAmt = 0;
     this.basic.vehicleFuelQty = 0;
     this.basic.reeferFuelQty = 0;
     this.calculate();
   }
-  changeFuelUnit(){
-    if((this.basic.vehicleFuelQtyUnit == "gallons") || (this.basic.reeferFuelQtyUnit == "gallons")){
-         this.basic.costLabel = "Cost/gallon";
-         this.basic.DEFFuelQtyUnit = "gallons";
+  changeFuelUnit() {
+    if ((this.basic.vehicleFuelQtyUnit == "gallons") || (this.basic.reeferFuelQtyUnit == "gallons")) {
+      this.basic.costLabel = "Cost/gallon";
+      this.basic.DEFFuelQtyUnit = "gallons";
     }
-   else if((this.basic.vehicleFuelQtyUnit == "litres") || (this.basic.reeferFuelQtyUnit == "litres")){
+    else if ((this.basic.vehicleFuelQtyUnit == "litres") || (this.basic.reeferFuelQtyUnit == "litres")) {
       this.basic.costLabel = "Cost/litre";
       this.basic.DEFFuelQtyUnit = "litres";
- }
+    }
   }
-  calculate(){
+  calculate() {
     this.basic.totalAmount = Number(this.basic.vehicleFuelQtyAmt) + Number(this.basic.DEFFuelQtyAmt) + Number(this.basic.reeferFuelQtyAmt);
     var units = Number(this.basic.vehicleFuelQty) + Number(this.basic.DEFFuelQty) + Number(this.basic.reeferFuelQty);
     // this.basic.costPerGallon = Math.round(this.basic.totalAmount/units);
     this.basic.amountPaid = this.basic.totalAmount - this.basic.discount;
-    this.basic.costPerGallon = Math.round(this.basic.amountPaid/units);
+    this.basic.costPerGallon = Math.round(this.basic.amountPaid / units);
   }
   uploadFile(event) {
     this.imageError = '';

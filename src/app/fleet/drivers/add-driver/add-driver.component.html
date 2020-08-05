@@ -1,747 +1,781 @@
 <section class="body">
-  <!-- start: header -->
-  <app-header></app-header>
+   <!-- start: header -->
+   <app-header></app-header>
 
-  <!-- end: header -->
+   <!-- end: header -->
 
-  <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <app-sidebar></app-sidebar>
-    <!-- end: sidebar -->
-    
-    <section role="main" class="content-body pl-0 pr-0 ">
-      <header class="page-header px-5">
-         <div class="row pr-5 " style="padding-top:10px;">
-            <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-               {{title}}
+   <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->
+
+      <section role="main" class="content-body pl-0 pr-0 ">
+         <header class="page-header px-5">
+            <div class="row pr-5 " style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                  {{title}}
+               </div>
+               <div class="col-md-8  col-lg-8 text-right pr-4">
+                  <a [routerLink]="['/fleet', 'drivers', 'Drivers-List']" class="btn btn-default btn-sm"><i
+                        class="fas fa-list"></i> Drivers List</a>
+               </div>
             </div>
-            <div class="col-md-8  col-lg-8 text-right pr-4">                               
-               <a [routerLink]="['/fleet', 'drivers', 'Drivers-List']"  class="btn btn-default btn-sm"><i class="fas fa-list"></i> Drivers List</a>
-            </div>
-         </div>
-      </header>
-      <div class="row text-dark">
-         <div class="col pr-0">
-            <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
-               <div class="card-body">
-                  <div class="m-2">
-                     <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                        <li class="nav-item">
-                           <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Details</a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="false">Address</a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="nav-link" id="payment-tab" data-toggle="tab" href="#payment" role="tab" aria-controls="payment" aria-selected="false">Payment & licence Details</a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="nav-link" id="Driverhos-tab" data-toggle="tab" href="#Driverhos" role="tab" aria-controls="Driverhos" aria-selected="false">HOS Compliance</a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="nav-link" id="emergency-tab" data-toggle="tab" href="#emergency" role="tab" aria-controls="emergency" aria-selected="false">Emergency Contact</a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="nav-link" id="aDetails-tab" data-toggle="tab" href="#aDetails" role="tab" aria-controls="aDetails" aria-selected="false">Additional Details</a>
-                        </li>
-                     </ul>
-                  </div>
-                  <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-                     <div class="tab-pane show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">
-                        <div>
-                           <div class="form-group row">
-                              <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                                    >Basic Details</label>
-                              </div>
-                       
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
-                                    <div class="col-lg-12 pt-2">
+         </header>
+         <div class="row text-dark">
+            <div class="col pr-0">
+               <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
+                  <div class="card-body">
+                     <div class="m-2">
+                        <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                           <li class="nav-item">
+                              <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab"
+                                 aria-controls="basic" aria-selected="true">Basic Details</a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab"
+                                 aria-controls="address" aria-selected="false">Address</a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link" id="payment-tab" data-toggle="tab" href="#payment" role="tab"
+                                 aria-controls="payment" aria-selected="false">Payment & licence Details</a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link" id="Driverhos-tab" data-toggle="tab" href="#Driverhos" role="tab"
+                                 aria-controls="Driverhos" aria-selected="false">HOS Compliance</a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link" id="emergency-tab" data-toggle="tab" href="#emergency" role="tab"
+                                 aria-controls="emergency" aria-selected="false">Emergency Contact</a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link" id="aDetails-tab" data-toggle="tab" href="#aDetails" role="tab"
+                                 aria-controls="aDetails" aria-selected="false">Additional Details</a>
+                           </li>
+                        </ul>
+                     </div>
+                     <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
+                        <div class="tab-pane show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">
+                           <div>
+                              <div class="form-group row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Basic
+                                       Details</label>
+                                 </div>
+
+                                 <div class="col-lg-5 offset-lg-1">
                                     <div class="row">
-                                    <div class="col-lg-3">
-                                       <label class="control-label font-weight-bold text-lg-right"
-                                         >Driver Type:</label>
-                                    </div>
-                                    <div class="col-lg-2 px-0">
-                                       <div class="radio">
-                                          <label>
-                                          <input type="radio" name="driverType"
-                                          id="driver_employee" [checked]="basic.driverType ==='Employee'" value="Employee" (change) = "onChangeDriverType('Employee')">
-                                          Employee
-                                          </label>
-                                       </div>
-                                    </div>
-                                    <div class="col-lg-3  pr-0">
-                                       <div class="radio">
-                                          <label>
-                                          <input type="radio" name="driverType"
-                                             id="driver_contractor" [checked]="basic.driverType ==='Contractor'" value="Contractor"  (change) = "onChangeDriverType('Contractor')">
-                                          Contractor
-                                          </label>
-                                       </div>
-                                    </div>
-                                 </div>
-                                    </div>
-                                    <div class="col-lg-10" id="companyDiv" *ngIf="basic.driverType ==='Contractor'">
-                                       <label class="control-label font-weight-bold text-lg-right pt-3"
-                                          >Company ID</label>
-                                       <input type="text" class="form-control" name="companyID" [(ngModel)]="basic.companyID">
-                                    </div>
-                                    <div class="col-lg-10" id="employeeIDDiv" *ngIf="basic.driverType ==='Employee'">
-                                       <label class="control-label font-weight-bold text-lg-right pt-3"
-                                          >Employee ID</label>
-                                       <input type="text" class="form-control" name="employeeID" [(ngModel)]="basic.employeeID" >
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >User Name</label>
-                                       <input type="text" class="form-control"  name="userName"
-                                       [(ngModel)]="basic.userName"
-                                       minlength="8">
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Driver First Name</label>
-                                       <input type="text" class="form-control"  name="firstName"
-                                       [(ngModel)]="basic.firstName"
-                                       maxlength="50">
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Driver Last Name</label>
-                                       <input type="text" class="form-control"  name="lastName"
-                                       [(ngModel)]="basic.lastName"
-                                       maxlength="50">
-                                    </div>
-                                    
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Driver ID</label>
-                                       <input type="text" class="form-control"  name="driverID" [(ngModel)]="basic.driverID">
-                                    </div>
-                                  
-                                    <div class="col-lg-10">
-                                       <label
-                                          class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
-                                          >Group</label>
-                                       <div class="row">
-                                          <div class="col-lg-11">
-                                             <select
-                                                data-plugin-selectTwo
-                                                class="form-control populate" name="groupID" [(ngModel)]="basic.groupID">
-                                                <!-- <optgroup label=""> -->
-                                                  <option *ngFor="let q of groups" value="{{q.groupID}}">{{q.groupName}}</option>
-
-                                                <!-- </optgroup> -->
-                                             </select>
-                                          </div>
-                                          <div class="col-lg-1 pl-0">
-                                             <a [routerLink]="" (click)="createGroupModal()" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row" >
-                                    <div class="col-lg-10  text-center">
-                                       <div id="male_photo"  *ngIf="basic.driverGender === 'Male'">
-                                          <img class="business_image_style" id="male_image"
-                                             src="assets\img\driver\male.png">
-                                       </div>
-                                       <div id="female_photo"  *ngIf="basic.driverGender === 'Female'">
-                                          <img class="business_image_style" id="female_image"
-                                             src="assets\img\driver\female.png">
-                                       </div>
-                                       <div class="mt-1">
-                                       <div class="btn btn-sm btn-success" style="position: relative;"><i class="fas fa-plus"></i> Add Photo
-                            <input type="file" multiple class="hidden_input1" id="fileToUpload" name="fileToUpload" (change)="uploadFile($event)"   
-                            >
-                         
-                          </div>
-                          <p class="text text-danger" *ngIf="imageError !== ''">
-                            {{ imageError }}
-                          </p>
-                                       </div>
-                                    </div>
-                                    <div class="col-lg-12 pt-3">
-                                       <div class="row">
-                                          <div class="col-lg-3">
-                                             <label class="control-label font-weight-bold text-lg-right"
-                                                >Driver Gender:</label>
-                                          </div>
-                                          <div class="col-lg-2 px-0">
-                                             <div class="radio">
-                                                <label>
-                                                <input type="radio" name="driverGender"
-                                                   id="driver_male" onclick="driver_gender()" checked value="Male" (change)="onChangeDriverGender('Male')">
-                                                Male
-                                                </label>
+                                       <div class="col-lg-12 pt-2">
+                                          <div class="row">
+                                             <div class="col-lg-3">
+                                                <label class="control-label font-weight-bold text-lg-right">Driver
+                                                   Type:</label>
                                              </div>
-                                          </div>
-                                          <div class="col-lg-3  pr-0">
-                                             <div class="radio">
-                                                <label>
-                                                <input type="radio" name="driverGender"
-                                                   id="driver_female" onclick="driver_gender()" value="Female" (change)="onChangeDriverGender('Female')">
-                                                Female
-                                                </label>
+                                             <div class="col-lg-2 px-0">
+                                                <div class="radio">
+                                                   <label>
+                                                      <input type="radio" name="driverType" id="driver_employee"
+                                                         [checked]="basic.driverType ==='Employee'" value="Employee"
+                                                         (change)="onChangeDriverType('Employee')">
+                                                      Employee
+                                                   </label>
+                                                </div>
+                                             </div>
+                                             <div class="col-lg-3  pr-0">
+                                                <div class="radio">
+                                                   <label>
+                                                      <input type="radio" name="driverType" id="driver_contractor"
+                                                         [checked]="basic.driverType ==='Contractor'" value="Contractor"
+                                                         (change)="onChangeDriverType('Contractor')">
+                                                      Contractor
+                                                   </label>
+                                                </div>
                                              </div>
                                           </div>
                                        </div>
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Work Phone</label>
-                                       <input type="text" class="form-control" name="phone"
-                                       [(ngModel)]="basic.phone" >
-                                      
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Work Email</label>
-                                       <input type="text" class="form-control"  name="email"
-                                       [(ngModel)]="basic.email"
-                                       maxlength="100">
-                                    </div>
-                                 </div>
-                                 
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <!-- ADDRESS -->
-                     <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
-                        <div>
-                           <div class="form-group row">
-                           <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                                    >Address Details</label>
-                              </div>
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Address Type</label>
-                                       <select data-plugin-selectTwo class="form-control populate" name="addressType" [(ngModel)]="address.addressType">
-                                          <optgroup label="Select Address Type">
-                                             <option value="Work">Work</option>
-                                             <option value="Home">Home</option>
-                                             <option value="Office">Office</option>
-                                          </optgroup>
-                                       </select>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-lg-6"></div>
-                              <div class="col-lg-3 offset-lg-1 pt-4">
-                                 <label class="control-label font-weight-bold text-lg-right pt-2"
-                                    >Select Country</label>
-                                 <select data-plugin-selectTwo class="form-control populate"  name="driverCountry"
-                                 [(ngModel)]="address.driverCountry"
-                                 (change)="getStates()">
-                                    <optgroup label="Select Country">
-                                      <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
-
-                                    </optgroup>
-                                 </select>
-                              </div>
-                              <div class="col-lg-6 pt-4">
-                                 <label class="control-label font-weight-bold text-lg-right pt-2"
-                                    >Start typing your location, we'll pull
-                                 address automatically from Map</label>
-                                 <input type="text" class="form-control" 
-                                    placeholder="Type Address">
-                                 <div class="checkbox-custom pt-2">
-                                    <input type="checkbox" name="terms" id="manualAddress" onchange="manualAddressFn()">
-                                    <label for="manualAddress">Type Manually</label>
-                                 </div>
-                              </div>
-                              <div class="col-lg-1 mar-top-37 text-right pt-4">
-                                 <button class="btn btn-dark" type="submit"
-                                    style="width: 100px;">Clear</button>
-                              </div>
-                              <div class="col-lg-5 offset-lg-1 pt-3">
-                                 <div class="row">
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Select State</label>
-                                       <select data-plugin-selectTwo class="form-control populate manualAddressInput"  disabled name="driverStateID"
-                                       [(ngModel)]="address.driverStateID" (change)="getCities()">
-                                       <optgroup label="">
-                                        <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
-                                       </optgroup>
-                                       </select>
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Select City</label>
-                                       <select data-plugin-selectTwo class="form-control populate manualAddressInput" disabled name="driverCityID" [(ngModel)]="address.driverCityID">
-                                        <optgroup label="">
-                                          <option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
-                                         </optgroup>
-                                       </select>
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Zip Code</label>
-                                       <input type="text" class="form-control manualAddressInput" name="addressZip" disabled [(ngModel)]="address.addressZip">
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-lg-5 offset-lg-1 pt-4">
-                                 <div class="row">
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Address 1</label>
-                                       <input type="text" class="form-control manualAddressInput" name="driverAddress1" disabled [(ngModel)]="address.driverAddress1">
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Address 2</label>
-                                       <input type="text" class="form-control manualAddressInput" name="driverAddress2" disabled [(ngModel)]="address.driverAddress2">
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <!-- Payment -->
-                    <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
-                        <div>
-                           <div class="form-group row">
-                              <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                                    >Payment Details</label>
-                              </div>
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Default Payment Type</label>
-                                       <select data-plugin-selectTwo class="form-control populate" name="driverPayType" [(ngModel)]="payment.driverPayType" >
-                                          <optgroup label="Select Type">
-                                             <option value="Pay Per Mile">Pay Per Mile</option>
-                                             <option value="Percentage">Percentage</option>
-                                             <option value="Pay Per Hour">Pay Per Hour</option>
-                                             
-                                          </optgroup>
-                                       </select>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row" id="payPerHour"  *ngIf="payment.driverPayType ==='Pay Per Hour'">
-                                    <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2" >Rate ($)</label>
-                                       <input type="number" class="form-control" name="driverPerHourRate" [(ngModel)]="payment.driverPerHourRate">
-                                    </div>
-                                 </div>
-                                 <div class="row" id="payPercentage" *ngIf="payment.driverPayType ==='Percentage'">
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Load Pay Percent</label>
-                                       <div class="row">
-                                          <div class="col-lg-2">
-                                             <input type="number" class="form-control" name=" driverLoadPercentage " [(ngModel)] = "payment. driverLoadPercentage ">
-                                          </div>
-                                          <div class="col-lg-2 px-0">
-                                             <label class="font-weight-bold">%</label>
-                                             <label class="font-weight-bold pull-right">of</label>
-                                          </div>
-                                          <div class="col-lg-8">
-                                             <select data-plugin-selectTwo class="form-control populate" name=" driverLoadPercentageOf" [(ngModel)]="payment. driverLoadPercentageOf">
-                                                <optgroup label="Select Endorsement">
-                                                   <option value="Hauling Fees">Hauling Fees</option>
-                                                   <option value="Hauling + Fuel Surcharge">Hauling + Fuel Surcharge</option>
-                                                   <option value="Total Income">Total Income</option>
-                                                </optgroup>
-                                             </select>
-                                          </div>
+                                       <div class="col-lg-10" id="companyDiv" *ngIf="basic.driverType ==='Contractor'">
+                                          <label class="control-label font-weight-bold text-lg-right pt-3">Company
+                                             ID</label>
+                                          <input type="text" class="form-control" name="companyID"
+                                             [(ngModel)]="basic.companyID">
                                        </div>
-                                    </div>
-                                 </div>
-                                 <div  id="payPerMile"  *ngIf="payment.driverPayType ==='Pay Per Mile'">
-                                    <div class="row">
-                                       <div class="col-lg-5">
-                                          <label class="control-label font-weight-bold text-lg-right pt-2"
-                                             >Loaded Miles ($)</label>
-                                          <input type="number" class="form-control" name="driverLoadedMiles" [(ngModel)]="payment.driverLoadedMiles">
-                                       </div>
-                                       <div class="col-lg-5">
-                                          <label class="control-label font-weight-bold text-lg-right pt-2"
-                                             >Empty Miles ($)</label>
-                                          <input type="number" class="form-control" name="driverEmptyMiles" [(ngModel)]="payment.driverEmptyMiles">
+                                       <div class="col-lg-10" id="employeeIDDiv" *ngIf="basic.driverType ==='Employee'">
+                                          <label class="control-label font-weight-bold text-lg-right pt-3">Employee
+                                             ID</label>
+                                          <input type="text" class="form-control" name="employeeID"
+                                             [(ngModel)]="basic.employeeID">
                                        </div>
                                        <div class="col-lg-10">
-                                          <label class="control-label font-weight-bold text-lg-right pt-2"
-                                             >Calculate Empty Miles for a Dispatch After</label>
-                                          <input type="number" class="form-control" name="calculateEmptyMiles" [(ngModel)]="payment.calculateEmptyMiles">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">User
+                                             Name</label>
+                                          <input type="text" class="form-control" name="userName"
+                                             [(ngModel)]="basic.userName" minlength="8">
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Driver First
+                                             Name</label>
+                                          <input type="text" class="form-control" name="firstName"
+                                             [(ngModel)]="basic.firstName" maxlength="50">
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Driver Last
+                                             Name</label>
+                                          <input type="text" class="form-control" name="lastName"
+                                             [(ngModel)]="basic.lastName" maxlength="50">
+                                       </div>
+
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Driver
+                                             ID</label>
+                                          <input type="text" class="form-control" name="driverID"
+                                             [(ngModel)]="basic.driverID">
+                                       </div>
+
+                                       <div class="col-lg-10">
+                                          <label
+                                             class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right">Group</label>
+                                          <div class="row">
+                                             <div class="col-lg-11">
+                                                <select data-plugin-selectTwo class="form-control populate"
+                                                   name="groupID" [(ngModel)]="basic.groupID">
+                                                   <!-- <optgroup label=""> -->
+                                                   <option *ngFor="let q of groups" value="{{q.groupID}}">
+                                                      {{q.groupName}}</option>
+
+                                                   <!-- </optgroup> -->
+                                                </select>
+                                             </div>
+                                             <div class="col-lg-1 pl-0">
+                                                <a [routerLink]="" (click)="createGroupModal()"
+                                                   class="modal-with-form btn btn-sm btn-success"><i
+                                                      class="fas fa-plus"></i></a>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                       <div class="col-lg-10  text-center">
+                                          <div id="male_photo" *ngIf="basic.driverGender === 'Male'">
+                                             <img class="business_image_style" id="male_image"
+                                                src="assets\img\driver\male.png">
+                                          </div>
+                                          <div id="female_photo" *ngIf="basic.driverGender === 'Female'">
+                                             <img class="business_image_style" id="female_image"
+                                                src="assets\img\driver\female.png">
+                                          </div>
+                                          <div class="mt-1">
+                                             <div class="btn btn-sm btn-success" style="position: relative;"><i
+                                                   class="fas fa-plus"></i> Add Photo
+                                                <input type="file" multiple class="hidden_input1" id="fileToUpload"
+                                                   name="fileToUpload" (change)="uploadFile($event)">
+
+                                             </div>
+                                             <p class="text text-danger" *ngIf="imageError !== ''">
+                                                {{ imageError }}
+                                             </p>
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-12 pt-3">
+                                          <div class="row">
+                                             <div class="col-lg-3">
+                                                <label class="control-label font-weight-bold text-lg-right">Driver
+                                                   Gender:</label>
+                                             </div>
+                                             <div class="col-lg-2 px-0">
+                                                <div class="radio">
+                                                   <label>
+                                                      <input type="radio" name="driverGender" id="driver_male"
+                                                         onclick="driver_gender()" checked value="Male"
+                                                         (change)="onChangeDriverGender('Male')">
+                                                      Male
+                                                   </label>
+                                                </div>
+                                             </div>
+                                             <div class="col-lg-3  pr-0">
+                                                <div class="radio">
+                                                   <label>
+                                                      <input type="radio" name="driverGender" id="driver_female"
+                                                         onclick="driver_gender()" value="Female"
+                                                         (change)="onChangeDriverGender('Female')">
+                                                      Female
+                                                   </label>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Work
+                                             Phone</label>
+                                          <input type="text" class="form-control" name="phone"
+                                             [(ngModel)]="basic.phone">
+
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Work
+                                             Email</label>
+                                          <input type="text" class="form-control" name="email" [(ngModel)]="basic.email"
+                                             maxlength="100">
+                                       </div>
+                                    </div>
+
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <!-- ADDRESS -->
+                        <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+                           <div>
+                              <div class="form-group row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Address
+                                       Details</label>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                             Type</label>
+                                          <select data-plugin-selectTwo class="form-control populate" name="addressType"
+                                             [(ngModel)]="address.addressType">
+                                             <optgroup label="Select Address Type">
+                                                <option value="Work">Work</option>
+                                                <option value="Home">Home</option>
+                                                <option value="Office">Office</option>
+                                             </optgroup>
+                                          </select>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-6"></div>
+                                 <div class="col-lg-3 offset-lg-1 pt-4">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                       Country</label>
+                                    <select data-plugin-selectTwo class="form-control populate" name="driverCountry"
+                                       [(ngModel)]="address.driverCountry" (change)="getStates()">
+                                       <optgroup label="Select Country">
+                                          <option *ngFor="let country of countries" value="{{country.countryID}}">
+                                             {{country.countryName}}</option>
+
+                                       </optgroup>
+                                    </select>
+                                 </div>
+                                 <div class="col-lg-6 pt-4">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Start typing your
+                                       location, we'll pull
+                                       address automatically from Map</label>
+                                    <input type="text" class="form-control" placeholder="Type Address">
+                                    <div class="checkbox-custom pt-2">
+                                       <input type="checkbox" name="terms" id="manualAddress"
+                                          onchange="manualAddressFn()">
+                                       <label for="manualAddress">Type Manually</label>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-1 mar-top-37 text-right pt-4">
+                                    <button class="btn btn-dark" type="submit" style="width: 100px;">Clear</button>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1 pt-3">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                             State</label>
+                                          <select data-plugin-selectTwo class="form-control populate manualAddressInput"
+                                             disabled name="driverStateID" [(ngModel)]="address.driverStateID"
+                                             (change)="getCities()">
+                                             <optgroup label="">
+                                                <option *ngFor="let state of states" value="{{state.stateID}}">
+                                                   {{state.stateName}}</option>
+                                             </optgroup>
+                                          </select>
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                             City</label>
+                                          <select data-plugin-selectTwo class="form-control populate manualAddressInput"
+                                             disabled name="driverCityID" [(ngModel)]="address.driverCityID">
+                                             <optgroup label="">
+                                                <option *ngFor="let city of cities" value="{{city.cityID}}">
+                                                   {{city.cityName}}</option>
+                                             </optgroup>
+                                          </select>
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                             Code</label>
+                                          <input type="text" class="form-control manualAddressInput" name="addressZip"
+                                             disabled [(ngModel)]="address.addressZip">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1 pt-4">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                             1</label>
+                                          <input type="text" class="form-control manualAddressInput"
+                                             name="driverAddress1" disabled [(ngModel)]="address.driverAddress1">
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                             2</label>
+                                          <input type="text" class="form-control manualAddressInput"
+                                             name="driverAddress2" disabled [(ngModel)]="address.driverAddress2">
                                        </div>
                                     </div>
                                  </div>
                               </div>
                            </div>
-                           <div class="form-group row">
-                              <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                                    >Licence Details</label>
-                              </div>
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >CDL Number</label>
-                                       <input type="text" class="form-control"  name="driverLicenseNumber"
-                                       [(ngModel)]="licence.driverLicenseNumber"
-                                       minlength="5"
-                                       maxlength="20" >
+                        </div>
+                        <!-- Payment -->
+                        <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+                           
+                              <div class="form-group row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Payment
+                                       Details</label>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Default
+                                             Payment Type</label>
+                                          <select data-plugin-selectTwo class="form-control populate"
+                                             name="driverPayType" [(ngModel)]="payment.driverPayType">
+                                             <optgroup label="Select Type">
+                                                <option value="Pay Per Mile">Pay Per Mile</option>
+                                                <option value="Percentage">Percentage</option>
+                                                <option value="Pay Per Hour">Pay Per Hour</option>
+
+                                             </optgroup>
+                                          </select>
+                                       </div>
                                     </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Licence Expiration</label>
-                                          <div class="input-group">
-                                             <span class="input-group-prepend positionsta">
-                                               <span class="input-group-text" (click)="licenseExpiry.toggle()"
-                                                 ><i class="fas fa-calendar-alt"></i
-                                               ></span>
-                                             </span>
-                                             <input
-                                               class="form-control"
-                                               placeholder="Select Date"
-                                               name="driverLicenseExpiry"
-                                       [(ngModel)]="licence.driverLicenseExpiry" ngbDatepicker #licenseExpiry="ngbDatepicker"
-                                             />
-                                           </div>
-                                      
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row" id="payPerHour" *ngIf="payment.driverPayType ==='Pay Per Hour'">
+                                       <div class="col-lg-5">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Rate
+                                             ($)</label>
+                                          <input type="number" class="form-control" name="driverPerHourRate"
+                                             [(ngModel)]="payment.driverPerHourRate">
+                                       </div>
                                     </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Contract Start Date</label>
-                                          <div class="input-group">
-                                             <span class="input-group-prepend positionsta">
-                                               <span class="input-group-text" (click)="contractStart.toggle()"
-                                                 ><i class="fas fa-calendar-alt"></i
-                                               ></span>
-                                             </span>
-                                             <input
-                                               class="form-control"
-                                               placeholder="Select Date"
-                                               name="driverContractStart" [(ngModel)]="licence.driverContractStart" ngbDatepicker #contractStart="ngbDatepicker"
-                                             />
-                                           </div>
-                                       
+                                    <div class="row" id="payPercentage" *ngIf="payment.driverPayType ==='Percentage'">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Load Pay
+                                             Percent</label>
+                                          <div class="row">
+                                             <div class="col-lg-2">
+                                                <input type="number" class="form-control" name=" driverLoadPercentage "
+                                                   [(ngModel)]="payment. driverLoadPercentage ">
+                                             </div>
+                                             <div class="col-lg-2 px-0">
+                                                <label class="font-weight-bold">%</label>
+                                                <label class="font-weight-bold pull-right">of</label>
+                                             </div>
+                                             <div class="col-lg-8">
+                                                <select data-plugin-selectTwo class="form-control populate"
+                                                   name=" driverLoadPercentageOf"
+                                                   [(ngModel)]="payment. driverLoadPercentageOf">
+                                                   <optgroup label="Select Endorsement">
+                                                      <option value="Hauling Fees">Hauling Fees</option>
+                                                      <option value="Hauling + Fuel Surcharge">Hauling + Fuel Surcharge
+                                                      </option>
+                                                      <option value="Total Income">Total Income</option>
+                                                   </optgroup>
+                                                </select>
+                                             </div>
+                                          </div>
+                                       </div>
                                     </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Select Vehicle Type</label>
-                                       <select data-plugin-selectTwo class="form-control populate" name="driverVehicleType" [(ngModel)]="licence.driverVehicleType">
-                                          <optgroup label="Select Vehicle Type">
-                                             <option value="Heavy Truck">Heavy Truck</option>
-                                             <option value="Light Truck">Light Truck</option>
-                                          </optgroup>
-                                       </select>
+                                    <div id="payPerMile" *ngIf="payment.driverPayType ==='Pay Per Mile'">
+                                       <div class="row">
+                                          <div class="col-lg-5">
+                                             <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
+                                                Miles ($)</label>
+                                             <input type="number" class="form-control" name="driverLoadedMiles"
+                                                [(ngModel)]="payment.driverLoadedMiles">
+                                          </div>
+                                          <div class="col-lg-5">
+                                             <label class="control-label font-weight-bold text-lg-right pt-2">Empty
+                                                Miles ($)</label>
+                                             <input type="number" class="form-control" name="driverEmptyMiles"
+                                                [(ngModel)]="payment.driverEmptyMiles">
+                                          </div>
+                                          <div class="col-lg-10">
+                                             <label class="control-label font-weight-bold text-lg-right pt-2">Calculate
+                                                Empty Miles for a Dispatch After</label>
+                                             <input type="number" class="form-control" name="calculateEmptyMiles"
+                                                [(ngModel)]="payment.calculateEmptyMiles">
+                                          </div>
+                                       </div>
                                     </div>
                                  </div>
                               </div>
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Issued State</label>
-                                       <select data-plugin-selectTwo class="form-control populate"    name="driverLicenseStateID"
-                                       [(ngModel)]="licence.driverLicenseStateID">
-                                       <optgroup label="">
-                                        <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
-                                      </optgroup>
-                                       </select>
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Medical Card Renewal</label>
+                              <div class="form-group row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Licence
+                                       Details</label>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">CDL
+                                             Number</label>
+                                          <input type="text" class="form-control" name="driverLicenseNumber"
+                                             [(ngModel)]="licence.driverLicenseNumber" minlength="5" maxlength="20">
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Licence
+                                             Expiration</label>
                                           <div class="input-group">
                                              <span class="input-group-prepend positionsta">
-                                               <span class="input-group-text" (click)="medicalRenewal.toggle()"
-                                                 ><i class="fas fa-calendar-alt"></i
-                                               ></span>
+                                                <span class="input-group-text" (click)="licenseExpiry.toggle()"><i
+                                                      class="fas fa-calendar-alt"></i></span>
                                              </span>
-                                             <input
-                                               class="form-control"
-                                               placeholder="Select Date"
-                                               name="driverMedicalRenewal" [(ngModel)]="licence.driverMedicalRenewal" ngbDatepicker #medicalRenewal="ngbDatepicker"
-                                             />
-                                           </div>                                       
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Contract End Date</label>
+                                             <input class="form-control" placeholder="Select Date"
+                                                name="driverLicenseExpiry" [(ngModel)]="licence.driverLicenseExpiry"
+                                                ngbDatepicker #licenseExpiry="ngbDatepicker" />
+                                          </div>
+
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Contract
+                                             Start Date</label>
                                           <div class="input-group">
                                              <span class="input-group-prepend positionsta">
-                                               <span class="input-group-text" (click)="contractEnd.toggle()"
-                                                 ><i class="fas fa-calendar-alt"></i
-                                               ></span>
+                                                <span class="input-group-text" (click)="contractStart.toggle()"><i
+                                                      class="fas fa-calendar-alt"></i></span>
                                              </span>
-                                             <input
-                                               class="form-control"
-                                               placeholder="Select Date"
-                                               name="driverContractEnd" [(ngModel)]="licence.driverContractEnd" ngbDatepicker #contractEnd="ngbDatepicker"
-                                             />
-                                           </div>
-                                     
+                                             <input class="form-control" placeholder="Select Date"
+                                                name="driverContractStart" [(ngModel)]="licence.driverContractStart"
+                                                ngbDatepicker #contractStart="ngbDatepicker" />
+                                          </div>
+
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                             Vehicle Type</label>
+                                          <select data-plugin-selectTwo class="form-control populate"
+                                             name="driverVehicleType" [(ngModel)]="licence.driverVehicleType">
+                                             <optgroup label="Select Vehicle Type">
+                                                <option value="Heavy Truck">Heavy Truck</option>
+                                                <option value="Light Truck">Light Truck</option>
+                                             </optgroup>
+                                          </select>
+                                       </div>
                                     </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Birth Date</label>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Issued
+                                             State</label>
+                                          <select data-plugin-selectTwo class="form-control populate"
+                                             name="driverLicenseStateID" [(ngModel)]="licence.driverLicenseStateID">
+                                             <optgroup label="">
+                                                <option *ngFor="let state of states" value="{{state.stateID}}">
+                                                   {{state.stateName}}</option>
+                                             </optgroup>
+                                          </select>
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Medical Card
+                                             Renewal</label>
                                           <div class="input-group">
                                              <span class="input-group-prepend positionsta">
-                                               <span class="input-group-text" (click)="birthDate.toggle()"
-                                                 ><i class="fas fa-calendar-alt"></i
-                                               ></span>
+                                                <span class="input-group-text" (click)="medicalRenewal.toggle()"><i
+                                                      class="fas fa-calendar-alt"></i></span>
                                              </span>
-                                             <input
-                                               class="form-control"
-                                               placeholder="Select Date"
-                                               name="driverBirthDate" [(ngModel)]="licence.driverBirthDate" ngbDatepicker #birthDate="ngbDatepicker"
-                                             />
-                                           </div>
-                                
+                                             <input class="form-control" placeholder="Select Date"
+                                                name="driverMedicalRenewal" [(ngModel)]="licence.driverMedicalRenewal"
+                                                ngbDatepicker #medicalRenewal="ngbDatepicker" />
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Contract End
+                                             Date</label>
+                                          <div class="input-group">
+                                             <span class="input-group-prepend positionsta">
+                                                <span class="input-group-text" (click)="contractEnd.toggle()"><i
+                                                      class="fas fa-calendar-alt"></i></span>
+                                             </span>
+                                             <input class="form-control" placeholder="Select Date"
+                                                name="driverContractEnd" [(ngModel)]="licence.driverContractEnd"
+                                                ngbDatepicker #contractEnd="ngbDatepicker" />
+                                          </div>
+
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Birth
+                                             Date</label>
+                                          <div class="input-group">
+                                             <span class="input-group-prepend positionsta">
+                                                <span class="input-group-text" (click)="birthDate.toggle()"><i
+                                                      class="fas fa-calendar-alt"></i></span>
+                                             </span>
+                                             <input class="form-control" placeholder="Select Date"
+                                                name="driverBirthDate" [(ngModel)]="licence.driverBirthDate"
+                                                ngbDatepicker #birthDate="ngbDatepicker" />
+                                          </div>
+
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                          
+                        </div>
+                        <div class="tab-pane fade" id="Driverhos" role="tabpanel" aria-labelledby="Driverhos-tab">
+                           <div>
+                              <div class="form-group row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Compliance
+                                       Details</label>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label
+                                             class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Status</label>
+                                          <select data-plugin-selectTwo class="form-control populate"
+                                             name="HOSCompliance.status" [(ngModel)]="HOSCompliance.status">
+                                             <optgroup label="">
+                                                <option value="Non Exempted">Non Exempted</option>
+                                                <option value="Exempted">Exempted</option>
+                                             </optgroup>
+                                          </select>
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label
+                                             class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Write
+                                             Remarks if driver is Exempted.</label>
+                                          <textarea class="form-control" rows="4" name="exemptedNotes"
+                                             [(ngModel)]="HOSCompliance.exemptedNotes"></textarea>
+                                       </div>
+                                       <div class="col-lg-5 pt-3">
+                                          <div class="checkbox-custom">
+                                             <input type="checkbox" name="driverAllowPC"
+                                                [(ngModel)]="HOSCompliance.driverAllowPC" checked
+                                                value="Allow Personal Conveyance">
+                                             <label class="control-label font-weight-bold">Allow Personal Conveyance
+                                                (PC)</label>
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-5 pt-3">
+                                          <div class="checkbox-custom">
+                                             <input type="checkbox" name="driverAllowYM"
+                                                [(ngModel)]="HOSCompliance.driverAllowYM" value="Allow Yard Move">
+                                             <label class="control-label font-weight-bold">Allow Yard Move (YM)</label>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Type</label>
+                                          <select data-plugin-selectTwo class="form-control populate"
+                                             name="HOSCompliance.type" [(ngModel)]="HOSCompliance.type">
+                                             <optgroup label="">
+                                                <option value="ELD">ELD</option>
+                                                <option value="Log Book">Log Book</option>
+                                             </optgroup>
+                                          </select>
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Cycle</label>
+                                          <select data-plugin-selectTwo class="form-control populate"
+                                             name="HOSCompliance.cycleID" [(ngModel)]="HOSCompliance.cycleID">
+                                             <optgroup label="">
+                                                <option *ngFor="let cycle of cycles" value="{{cycle.cycleID}}">
+                                                   {{cycle.cycleName}}</option>
+                                             </optgroup>
+                                          </select>
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Home
+                                             Terminal</label>
+                                          <select data-plugin-selectTwo class="form-control populate" name="yardID"
+                                             [(ngModel)]="HOSCompliance.yardID">
+                                             <optgroup label="">
+                                                <option *ngFor="let yard of yards" value="{{yard.yardID}}">
+                                                   {{yard.yardName}}</option>
+                                             </optgroup>
+                                          </select>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="tab-pane fade" id="emergency" role="tabpanel" aria-labelledby="emergency-tab">
+                           <div>
+                              <div class="form-group row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Emergency
+                                       Contact Details</label>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Name</label>
+                                          <input type="text" class="form-control" name="emergencyContactName"
+                                             [(ngModel)]="emergencyContact.emergencyContactName">
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                          <input type="text" class="form-control" name="emergencyContactPhone"
+                                             [(ngModel)]="emergencyContact.emergencyContactPhone">
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label
+                                             class="control-label font-weight-bold text-lg-right pt-2">Address</label>
+                                          <textarea class="form-control" rows="3" name="emergencyContactAddress"
+                                             [(ngModel)]="emergencyContact.emergencyContactAddress"></textarea>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label
+                                             class="control-label font-weight-bold text-lg-right pt-2">Relationship</label>
+                                          <input type="text" class="form-control" name="emergencyContactRelationship"
+                                             [(ngModel)]="emergencyContact.emergencyContactRelationship">
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                          <input type="text" class="form-control" name="emergencyContactEmail"
+                                             [(ngModel)]="emergencyContact.emergencyContactEmail">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="tab-pane fade" id="aDetails" role="tabpanel" aria-labelledby="aDetails-tab">
+                           <div>
+                              <div class="form-group row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Additional
+                                       Details</label>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2"><img
+                                                src="assets/img/business/fb.png" class="social-icons"></label>
+                                          <input type="text" class="form-control" placeholder="Enter  Facebook  Profile"
+                                             name="driverFacebook" [(ngModel)]="additionalDetails.driverFacebook">
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2"><img
+                                                src="assets/img/business/linkedin.png" class="social-icons"></label>
+                                          <input type="text" class="form-control" placeholder="Enter LinkedIn Profile"
+                                             name="driverLinkedIn" [(ngModel)]="additionalDetails.driverLinkedIn">
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2"><img
+                                                src="assets/img/business/blog.png" class="social-icons"></label>
+                                          <input type="text" class="form-control" placeholder="Enter  Blog Profile"
+                                             name="driverBlog" [(ngModel)]="additionalDetails.driverBlog">
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Notes &
+                                             Description</label>
+                                          <textarea class="form-control" rows="3" name="additionalNotes"
+                                             [(ngModel)]="additionalDetails.additionalNotes"></textarea>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2"><img
+                                                src="assets/img/business/twitter.png" class="social-icons"></label>
+                                          <input type="text" class="form-control" placeholder="Enter  Twitter Profile"
+                                             name="driverTwitter" [(ngModel)]="additionalDetails.driverTwitter">
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2"><img
+                                                src="assets/img/business/instagram.png" class="social-icons"></label>
+                                          <input type="text" class="form-control" placeholder="Enter  Instagram Profile"
+                                             name="driverInstagram" [(ngModel)]="additionalDetails.driverInstagram">
+                                       </div>
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2"><img
+                                                src="assets/img/business/tumblr.png" class="social-icons"></label>
+                                          <input type="text" class="form-control" placeholder="Enter  Tumblr Profile"
+                                             name="driverTumblr" [(ngModel)]="additionalDetails.driverTumblr">
+                                       </div>
                                     </div>
                                  </div>
                               </div>
                            </div>
                         </div>
                      </div>
-                    <div class="tab-pane fade" id="Driverhos" role="tabpanel" aria-labelledby="Driverhos-tab">
-                        <div >
-                           <div class="form-group row">
-                           <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                                    >Compliance Details</label>
-                              </div>
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
-                                    <div class="col-lg-10">
-                                       <label
-                                          class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
-                                          >Status</label>
-                                       <select
-                                          data-plugin-selectTwo
-                                          class="form-control populate"
-                                          name="HOSCompliance.status"  [(ngModel)]="HOSCompliance.status">
-                                          <optgroup label="">
-                                             <option value="Non Exempted">Non Exempted</option>
-                                             <option value="Exempted">Exempted</option>
-                                          </optgroup>
-                                       </select>
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Write Remarks if driver is Exempted.</label>
-                                       <textarea class="form-control" rows="4" name="exemptedNotes" [(ngModel)]="HOSCompliance.exemptedNotes"></textarea>
-                                    </div>
-                                    <div class="col-lg-5 pt-3">
-                                       <div class="checkbox-custom">
-                                          <input type="checkbox" name="driverAllowPC" [(ngModel)]="HOSCompliance.driverAllowPC" checked value="Allow Personal Conveyance" >
-                                          <label class="control-label font-weight-bold">Allow Personal Conveyance (PC)</label>
-                                       </div>
-                                    </div>
-                                    <div class="col-lg-5 pt-3">
-                                       <div class="checkbox-custom">
-                                          <input type="checkbox"  name="driverAllowYM" [(ngModel)]="HOSCompliance.driverAllowYM" value="Allow Yard Move">
-                                          <label class="control-label font-weight-bold">Allow Yard Move (YM)</label>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
-                                    <div class="col-lg-10">
-                                       <label
-                                          class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Type</label
-                                          >
-                                       <select
-                                          data-plugin-selectTwo
-                                          class="form-control populate"   name="HOSCompliance.type"
-                                          [(ngModel)]="HOSCompliance.type">
-                                          <optgroup label="">
-                                             <option value="ELD">ELD</option>
-                                             <option value="Log Book">Log Book</option>
-                                          </optgroup>
-                                       </select>
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label
-                                          class="control-label font-weight-bold text-lg-right pt-2">Cycle</label>
-                                       <select
-                                          data-plugin-selectTwo
-                                          class="form-control populate"   name="HOSCompliance.cycleID"
-                                          [(ngModel)]="HOSCompliance.cycleID">
-                                          <optgroup label="">
-                                            <option *ngFor="let cycle of cycles" value="{{cycle.cycleID}}">{{cycle.cycleName}}</option>
-                                          </optgroup>
-                                       </select>
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label
-                                          class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Home Terminal</label
-                                          >
-                                       <select
-                                          data-plugin-selectTwo
-                                          class="form-control populate"  name="yardID"
-                                          [(ngModel)]="HOSCompliance.yardID">
-                                          <optgroup label="">
-                                            <option *ngFor="let yard of yards" value="{{yard.yardID}}">{{yard.yardName}}</option>
-                                          </optgroup>
-                                       </select>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                       <div class="tab-pane fade" id="emergency" role="tabpanel" aria-labelledby="emergency-tab">
-                        <div>
-                           <div class="form-group row">
-                           <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                                    >Emergency Contact Details</label>
-                              </div>
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Name</label>
-                                       <input type="text" class="form-control" name="emergencyContactName" [(ngModel)] = "emergencyContact.emergencyContactName">
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Phone</label>
-                                       <input type="text" class="form-control" name="emergencyContactPhone" [(ngModel)] = "emergencyContact.emergencyContactPhone" >
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Address</label>
-                                       <textarea class="form-control" rows="3" name="emergencyContactAddress" [(ngModel)] = "emergencyContact.emergencyContactAddress"
-                                          ></textarea>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Relationship</label>
-                                       <input type="text" class="form-control" name="emergencyContactRelationship" [(ngModel)] = "emergencyContact.emergencyContactRelationship">
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Email</label>
-                                       <input type="text" class="form-control" name="emergencyContactEmail" [(ngModel)] = "emergencyContact.emergencyContactEmail" >
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="tab-pane fade" id="aDetails" role="tabpanel" aria-labelledby="aDetails-tab">
-                        <div >
-                           <div class="form-group row">
-                           <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                                    >Additional Details</label>
-                              </div>
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"	><img src="assets/img/business/fb.png" class="social-icons"></label>
-                                       <input type="text" class="form-control"  placeholder="Enter  Facebook  Profile" name="driverFacebook" [(ngModel)]="additionalDetails.driverFacebook">
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"	><img src="assets/img/business/linkedin.png" class="social-icons"></label>
-                                       <input type="text" class="form-control"  placeholder="Enter LinkedIn Profile" name="driverLinkedIn" [(ngModel)]="additionalDetails.driverLinkedIn">
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"	><img src="assets/img/business/blog.png" class="social-icons"></label>
-                                       <input type="text" class="form-control"  placeholder="Enter  Blog Profile" name="driverBlog" [(ngModel)]="additionalDetails.driverBlog">
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Notes & Description</label>
-                                       <textarea class="form-control" rows="3" name="additionalNotes" [(ngModel)] = "additionalDetails.additionalNotes"
-                                          ></textarea>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"	><img src="assets/img/business/twitter.png" class="social-icons"></label>
-                                       <input type="text" class="form-control"  placeholder="Enter  Twitter Profile" name="driverTwitter" [(ngModel)]="additionalDetails.driverTwitter">
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"	><img src="assets/img/business/instagram.png" class="social-icons"></label>
-                                       <input type="text" class="form-control"  placeholder="Enter  Instagram Profile" name="driverInstagram" [(ngModel)]="additionalDetails.driverInstagram">
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"	><img src="assets/img/business/tumblr.png" class="social-icons"></label>
-                                       <input type="text" class="form-control"  placeholder="Enter  Tumblr Profile" name="driverTumblr" [(ngModel)]="additionalDetails.driverTumblr">
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div> 
                   </div>
-               </div>
-               <div class="form-group row mt-3">
-                  <div class="col-lg-11 text-right ">
-                     <button class="btn btn-default">Cancel</button>
-                     <button class="btn btn-success" (click)="addDriver()">Submit</button>                            
+                  <div class="form-group row mt-3">
+                     <div class="col-lg-11 text-right ">
+                        <button class="btn btn-default">Cancel</button>
+                        <button class="btn btn-success" (click)="addDriver()">Submit</button>
+                     </div>
                   </div>
-               </div>
-               <div class="form-group row">
-                <div class="col-lg-12">
-                  <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
-                  <p class="text text-success" *ngIf="hasSuccess">
-                    {{ Success }}
-                  </p>
-                </div>
-              </div>
-            </form>
+                  <div class="form-group row">
+                     <div class="col-lg-12">
+                        <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
+                        <p class="text text-success" *ngIf="hasSuccess">
+                           {{ Success }}
+                        </p>
+                     </div>
+                  </div>
+               </form>
+            </div>
          </div>
-      </div>
-   </section>
-  </div>
+      </section>
+   </div>
 </section>
 
 <!-- Add Group MODAL -->
 <div id="addGroupModal" class="modal fade" role="dialog">
    <div class="modal-dialog">
-    
-     <div class="modal-content">
-       <div class="modal-header">
-          <h4>Add Group</h4>
-         <button type="button" class="close pt-4" data-dismiss="modal">
-           &times;
-         </button>
-       </div>
-       <form class="form-horizontal form-bordered" method="get"  name="form" id="form1_">
-       <div class="modal-body">
-         
-         <label class="control-label">Group Name</label>
-          <input type="text" class="form-control" name="groupNameModal" [(ngModel)]="groupNameModal">
-       </div>
-       <div class="modal-footer">
-         <button type="button" (click)="addGroup()" class="btn btn-success" data-dismiss="modal">
-          Save
-         </button>
-         <p class="text text-success" *ngIf="hasSuccess">
-            {{ Success }}
-          </p>
-       </div>
-      </form>
-     </div>
+
+      <div class="modal-content">
+         <div class="modal-header text-dark">
+            <h4>Add Group</h4>
+            <button type="button" class="close pt-4" data-dismiss="modal">
+               &times;
+            </button>
+         </div>
+         <form class="form-horizontal form-bordered" method="get" name="form" id="form1_">
+            <div class="modal-body  text-dark">
+               <div class="row">
+                  <div class="col-lg-6">
+                     <label class="control-label font-weight-bold">Group Name</label>
+                     <input type="text" class="form-control" name="groupNameModal" [(ngModel)]="groupNameModal">
+                  </div>
+                  <div class="col-lg-6">
+                     <label class="control-label font-weight-bold">Group Type</label>
+                    <input type="text" class="form-control" name="groupTypeModal" [(ngModel)]="groupTypeModal">
+                  </div>
+               </div>
+               <div class="row pt-2">
+                  <div class="col-lg-12">
+                     <label class="control-label font-weight-bold">Description </label>
+                     <textarea rows="3" class="form-control" name="groupDescriptionModal" [(ngModel)]="groupDescriptionModal"></textarea>
+                  </div>
+               </div>
+               
+            </div>
+            <div class="modal-footer">
+               <button type="button" (click)="addGroup()" class="btn btn-success" data-dismiss="modal">
+                  Save
+               </button>
+               <p class="text text-success" *ngIf="hasSuccess">
+                  {{ Success }}
+               </p>
+            </div>
+         </form>
+      </div>
    </div>
- </div>
+</div>

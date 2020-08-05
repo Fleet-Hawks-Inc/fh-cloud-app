@@ -183,23 +183,7 @@ function primary_meter_reading()
 }
 
 // UNIT TYPE IN FUEL ENTRY
-function fuel_unit()
-{
-   if(document.getElementById("fuel_unit_reefer").checked){
-      document.getElementById("fuelReeferQty").style.display = "block";  
-      document.getElementById("fuelReefer").style.display = "block"; 
-      
-      document.getElementById("fuelVehicleQty").style.display = "none"; 
-      document.getElementById("fuelVehicle").style.display = "none"; 
 
-   }
-   if(document.getElementById("fuel_unit_vehicle").checked){
-      document.getElementById("fuelVehicleQty").style.display = "block"; 
-      document.getElementById("fuelVehicle").style.display = "block";  
-      document.getElementById("fuelReeferQty").style.display = "none";  
-      document.getElementById("fuelReefer").style.display = "none";     
-   }
-}
 
 //ADDING ATTACH PHOTO LINES
 var newPhotoLine = '<div class="col-lg-10"><label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach</label><input type="file" class="form-control p-0" id="inputDefault"></div><div class="col-lg-2  mar-top-37"><button type="button" class="btn btn-sm btn-success"><i class="fas fa-times"></i></button></div>';
@@ -478,23 +462,7 @@ function manualAddressFn()
    }
 }
    // UNIT TYPE IN FUEL ENTRY
-   function fuel_unit()
-   {
-      if(document.getElementById("fuel_unit_reefer").checked){
-         document.getElementById("fuelReeferQty").style.display = "block";  
-         document.getElementById("fuelReefer").style.display = "block"; 
-         
-         document.getElementById("fuelVehicleQty").style.display = "none"; 
-         document.getElementById("fuelVehicle").style.display = "none"; 
-   
-      }
-      if(document.getElementById("fuel_unit_vehicle").checked){
-         document.getElementById("fuelVehicleQty").style.display = "block"; 
-         document.getElementById("fuelVehicle").style.display = "block";  
-         document.getElementById("fuelReeferQty").style.display = "none";  
-         document.getElementById("fuelReefer").style.display = "none";     
-      }
-   }
+ 
 //ADDRESS BOOK SCRIPT
 function openfeedback(){
   document.getElementById('feedbackBox').style.display = "block";

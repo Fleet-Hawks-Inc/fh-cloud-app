@@ -40,7 +40,7 @@
                                    <div class="radio">
                                       <label class="btn btn-md btn-default active csbtn">
                                       <input type="radio" name="unitType" [(ngModel)]="basic.unitType"
-                                         id="fuel_unit_vehicle" onclick="fuel_unit()" checked hidden value="Vehicle" (change) = "onChangeUnitType('Vehicle')">
+                                         id="fuel_unit_vehicle"  checked hidden value="Vehicle" (change) = "onChangeUnitType('Vehicle')">
                                       Vehicle
                                       </label>
                                    </div>
@@ -49,7 +49,7 @@
                                    <div class="radio">
                                       <label  class="btn btn-md btn-default csbtn">
                                       <input type="radio" name="unitType" [(ngModel)]="basic.unitType"
-                                         id="fuel_unit_reefer" onclick="fuel_unit()" hidden value="Reefer" (change) = "onChangeUnitType('Reefer')">
+                                         id="fuel_unit_reefer"  hidden value="Reefer" (change) = "onChangeUnitType('Reefer')">
                                       Reefer
                                       </label>
                                    </div>
@@ -183,7 +183,7 @@
                               </span>
                               <input
                                 class="form-control"
-                                placeholder="yyyy-mm-dd"
+                                placeholder="dd-mm-yyyy"
                                 name="date" [(ngModel)]="basic.date" ngbDatepicker #d="ngbDatepicker"
                               />
                             </div>
