@@ -4,11 +4,10 @@ import { ApiService } from "../../../api.service";
 import { environment } from '../../../../environments/environment';
 
 import { from } from "rxjs";
-//import { MapBoxService } from "../../../map-box.service";
-import { LeafletMapService } from './../../../services/leaflet-map.service';
+
 import { Subject, throwError } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
-
+import {HereMapService} from './../../../services/here-map.service'
 
 declare var $: any;
 declare var L: any;
@@ -63,8 +62,7 @@ export class AddGeofenceComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    //private mapBoxService: MapBoxService,
-    private leafMap: LeafletMapService,
+    private HereMapService: HereMapService,
     private apiService: ApiService
   ) { }
 
@@ -238,7 +236,7 @@ export class AddGeofenceComponent implements OnInit {
       debounceTime(400),
       distinctUntilChanged(),
       switchMap(term => {
-        return this.leafMap.searchEntries(term);
+        return this.HereMapService.searchEntries(term);
       }),
       catchError((e) => {
         return throwError(e);

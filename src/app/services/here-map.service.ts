@@ -14,6 +14,7 @@ export class HereMapService {
   public start: any;
 
   private platform: any;
+  
   private map: any;
   private ui: any;
   private readonly apiKey = environment.mapConfig.apiKey;
@@ -134,6 +135,9 @@ export class HereMapService {
   AutoSuggest Search Api v7
 */ 
   searchLocation = async (query) => {
+    this.platform = new H.service.Platform({
+      'apikey': this.apiKey,
+    });
     if(query != ''){
       const service = this.platform.getSearchService();
       const result = await service.geocode({ q: query });
