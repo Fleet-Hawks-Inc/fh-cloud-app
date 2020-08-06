@@ -1,223 +1,271 @@
 <section class="body">
-    <app-header></app-header>
-  
-    <div class="inner-wrapper">
+   <app-header></app-header>
+   <div class="inner-wrapper">
       <!-- start: sidebar -->
       <app-sidebar></app-sidebar>
       <!-- end: sidebar -->   
       <!-- <app-right-sidebar></app-right-sidebar>  -->
       <section role="main" class="content-body pl-0 pr-0">
-        <header class="page-header pl-5">
-           <h2>Live View</h2>
-           <div class="row" style="padding-top:10px;">
-              <div class="col-lg-7"></div>
-              <div class="col-lg-2">
-               
-              </div>
-              <div class="col-lg-3 text-right pl-0">
-               
-              </div>
-           </div>
-        </header>
-        <div class="mapclass drivermain">
-           <div id="map" class="mapclassmain"></div>
-           <!-- VEHICLE MAP LOCATIONS -->
-           <div class="vehicle_moving" id="vehicleLoc1"><i class="fas fa-location-arrow"></i></div>
-    
-           <div class="iconR" id="arrowR"  *ngIf="visible">
-            <a [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-right"></i></a>
-         </div>
-         <div class="iconL" id="arrowL" *ngIf="!visible">
-            <a  [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
-         </div>         
-           <form method=""  >
-              <div class="drivelist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverList"  *ngIf="visible" [@slideInOut]>
-                 <div class="driverdetail">
-                    <div class="row">
-                       <div class="col-lg-5">
-                          <p class="mb-2 text-5 font-weight-semibold text-dark"><a routerLink="/fleet/drivers/Driver-Profile">Manjit Singh </a><span class="onduty">ON</span>
-                       </div>
-                       <div class="col-lg-5">
-                       </div>
-                       <div class="col-lg-2 pl-0">
-                          <!-- <span class="pull-right btn btn-dark btn-xs" id="liveViewBtn1">Live View</span></p> -->
-                       </div>
-                    </div>
-                    <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span class="text-5">10D</span></p>
-                    <p class="driverstatus mb-0 text-dark pl-0">Kingston, Toronto, ON K7L 5K4 <i class="fas fa-map-marker-alt" title="Share Location"></i></p>
-                    
-                    <div class="row">
-                       <div class="col-lg-6">
-                          <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650 <a href="#" data-toggle="tooltip" title="Shared Live Location" class="mb-0 mt-0 btn btn-xs btn-dark"><i class="fas fa-share-alt"></i></a></p>
-                       </div>
-                       <div class="col-lg-6 text-right">
-                       <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356 <a href="#" data-toggle="tooltip" title="Shared Live Location" class="mb-0 mt-0 btn btn-xs btn-dark"><i class="fas fa-share-alt"></i></a></p>
-                       </div>
-                    </div>
-
-                    <p class="mb-2 mt-3 text-4 font-weight-semibold text-dark">Trip Info</p>
-                    <div class="tripscrolbar" style="overflow-x: scroll; overflow-y: hidden; width: 400px;">
-                       <div class="tripbar1"></div>
-                       <div class="tripbarfinish1"></div>
-                       <div class="tripdot1"></div>
-                       <div class="tripdt1">
-                          <p class="line-height-xs text-2 font-weight-bold">Pick 1<br>00:00</p>
-                       </div>
-                       <div class="triploc1">
-                          <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">P</span> Location1 </p>
-                       </div>
-                       <div class="tripdot2"></div>
-                       <div class="tripbarred2"></div>
-                       <div class="tripdot2"></div>
-                       <div class="tripdt2">
-                          <p class="line-height-xs text-2 font-weight-bold">Pick 2<br>00:00</p>
-                       </div>
-                       <div class="triploc2">
-                          <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">P</span> Location2</p>
-                       </div>
-                       <div class="tripbar3"></div>
-                       <div class=""></div>
-                       <div class="tripdot3"></div>
-                       <div class="tripdt3">
-                          <p class="line-height-xs text-2 font-weight-bold">Drop 3<br>00:00</p>
-                       </div>
-                       <div class="triploc3">
-                          <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">D</span> Location3</p>
-                       </div>
-                       <div class="tripbar4"></div>
-                       <div class="tripbarfinish4"></div>
-                       <div class="tripdot4"></div>
-                       <div class="tripdt4">
-                          <p class="line-height-xs text-2 font-weight-bold">Drop 4<br>00:00</p>
-                       </div>
-                       <div class="triploc4">
-                          <p class="line-height-xs text-2 font-weight-bold"><span class="text-dark font-weight-bold">D</span> Location4</p>
-                       </div>
-                    </div>
-                    <p class="mb-2 text-4 font-weight-semibold text-dark">Distance Travelled<span class="pull-right">500 Kms</span></p>
-                    <p class="mb-2 text-4 font-weight-semibold text-dark temp_graph">Temperature
-                       <span class="pull-right text-right">-10<sup>o</sup>C C to -20<sup>o</sup></span>
-                    </p>
-                    <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Status
-                       <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">On Time</button></span>
-                    </p>
-                    <p class="mb-2 text-4 font-weight-semibold text-dark">Load
-                       <a class="pull-right" href="">6104</a>
-                       <span class="pull-right FTLload">FTL</span>
-                    </p>
-                    <div style="display: block;">
-                       <div class="vinfo">
-                          <p class="mb-0 text-4 font-weight-semibold text-dark pl-3 pt-2">Vehicle Information</p>
-                          <hr class="solid mt-2 mb-2">
-                          <div class="vdetail">
-                             <p class="mb-0 text-3 font-weight-semibold text-dark">VIN<span class="pull-right">XJKDF853269522230000</span></p>
-                             <hr class="solid mt-2 mb-2">
-                             <p class="mb-0 text-3 font-weight-semibold text-dark">Engine<span class="pull-right">Running</span></p>
-                             <hr class="solid mt-2 mb-2">
-                             <p class="mb-0 text-3 font-weight-semibold text-dark">Engine Load<span class="pull-right">35%</span></p>
-                             <hr class="solid mt-2 mb-2">
-                             <p class="mb-0 text-3 font-weight-semibold text-dark">Engine Speed (RPM)<span class="pull-right">2280</span></p>
-                             <hr class="solid mt-2 mb-2">
-                             <p class="mb-0 text-3 font-weight-semibold text-dark">Engine Light<span class="pull-right">ON</span></p>
-                             <hr class="solid mt-2 mb-2">
-                             <p class="mb-0 text-3 font-weight-semibold text-dark">Battery Voltage<span class="pull-right">14.12 V</span></p>
-                             <hr class="solid mt-2 mb-2">
-                             <p class="mb-0 text-3 font-weight-semibold text-dark">Coolant Temp<span class="pull-right">180 F</span></p>
-                             <hr class="solid mt-2 mb-2">
-                             <p class="mb-0 text-3 font-weight-semibold text-dark">Fuel Rate<span class="pull-right">3.33 Gallons/Hour</span></p>
-                             <hr class="solid mt-2 mb-2">
-                             <p class="mb-0 text-3 font-weight-semibold text-dark">Odometer<span class="pull-right">0953250</span></p>
-                             <hr class="solid mt-2 mb-2">
-                             <div class="row">
-                                <div class="col-lg-9 mb-0 text-3 font-weight-semibold text-dark">DEF Capacity</div>
-                                <div class="col-lg-3 text-right">
-                                   <div class="progress progress-sm progress-half-rounded m-2 light">
-                                      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                                         60%
-                                      </div>
-                                   </div>
-                                </div>
-                             </div>
-                             <hr class="solid mt-2 mb-2">
-                             <div class="row">
-                                <div class="col-lg-9 mb-0 text-3 font-weight-semibold text-dark">Fuel Capacity</div>
-                                <div class="col-lg-3 text-right">
-                                   <div class="progress progress-sm progress-half-rounded m-2 light">
-                                      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                                         60%
-                                      </div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-                 </div>
-                
-              </div>
-              <div class="dashboard" id="dcam" >
-                 <div id="with_temp_graph">
-                 <div  class="row p-2" >
-                 <div class="col-lg-6">
-                             <h3 class="font-weight-bold text-4 text-dark mt-0">Dash Camera</h3>
-                             <img src="/assets/img/dash-cam2.jpg" class="img-fluid height300" />
-                          </div>
-                    <div class="col-lg-6">
-                       <div class="row">
-                          <div class="col-lg-4"><h3 class="font-weight-bold text-4 text-dark mt-0">Temperature Graph</h3>
-                          </div>
-                          <div class="col-lg-8">
-                           <ul class="nav nav-tabs graph-tabs" id="graph-tabs" role="tablist">
-                              <li class="nav-item">
-                                 <a class="nav-link active" id="reefer1-tab" data-toggle="tab" href="#reefer1" role="tab" aria-controls="reefer1" aria-selected="true">Reefer 1</a>
-                              </li>
-                              <li class="nav-item">
-                                 <a class="nav-link" id="reefer2-tab" data-toggle="tab" href="#reefer2" role="tab" aria-controls="reefer2" aria-selected="false">Reefer 2</a>
-                              </li>
-                              <li class="nav-item">
-                                 <a class="nav-link" id="reefer3-tab" data-toggle="tab" href="#reefer3" role="tab" aria-controls="reefer3" aria-selected="false">Reefer 3</a>
-                              </li>
-                           </ul>
-                          </div>
-                       </div>
-                      
-                       <div style="width:100%; height: 50%;">
-                        <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-                           <div class="tab-pane show active" id="reefer1" role="tabpanel" aria-labelledby="reefer1-tab">
-                              <div>
-                                 <button class="btn btn-default btn-xs" type="button" (click)="changeLineGraph()">Line Chart</button>
-                                 <button class="btn btn-default btn-xs" type="button" (click)="changeBarGraph()">Bar Chart</button>
-                               </div>
-                              <canvas id="canvas"></canvas>  
-                           </div>
-                           <!-- Reefer 2-->
-                           <div class="tab-pane fade" id="reefer2" role="tabpanel" aria-labelledby="reefer2-tab">
-                              <div>
-                                 <button class="btn btn-default btn-xs" type="button" (click)="changeLineGraph1()">Line Chart</button>
-                                 <button class="btn btn-default btn-xs" type="button" (click)="changeBarGraph1()">Bar Chart</button>
-                               </div>
-                              <canvas id="canvas1"></canvas> 
-                           </div>
-                            <!-- Reefer 3-->
-                            <div class="tab-pane fade" id="reefer3" role="tabpanel" aria-labelledby="reefer3-tab">
-                              <div>
-                                 <button class="btn btn-default btn-xs" type="button" (click)="changeLineGraph2()">Line Chart</button>
-                                 <button class="btn btn-default btn-xs" type="button" (click)="changeBarGraph2()">Bar Chart</button>
-                               </div>
-                              <canvas id="canvas2"></canvas> 
-                           </div>
-                          
+         <header class="page-header pl-5">
+            <h2>Live View</h2>
+            <div class="row" style="padding-top:10px;">
+               <div class="col-lg-7"></div>
+               <div class="col-lg-2">
+               </div>
+               <div class="col-lg-3 text-right pl-0">
+               </div>
+            </div>
+         </header>
+         <div class="mapclass drivermain">
+            <div id="map" class="mapclassmain"></div>
+            <!-- VEHICLE MAP LOCATIONS -->
+            <div class="vehicle_moving" id="vehicleLoc1"><i class="fas fa-location-arrow"></i></div>
+            <div class="iconR" id="arrowR"  *ngIf="visible">
+               <a [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="iconL" id="arrowL" *ngIf="!visible">
+               <a  [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
+            </div>
+            <form method=""  >
+               <div class="drivelist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverList"  *ngIf="visible" [@slideInOut]>                
+               <div class="driverdetail">
+                  <div class="driverleftmain">
+                     <div class="row">
+                        <div class="col-lg-5">
+                           <p class="mb-2 text-5 font-weight-semibold text-dark"><a routerLink="/fleet/drivers/Driver-Profile">Manjit Singh </a><span class="onduty">ON</span>
                         </div>
-                       </div>
-                      
-                       <br>
-                    </div>
-                 </div>
-                 </div>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-3 pl-0">
+                        </div>
+                     </div>
+                     <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span class="text-5">10D</span></p>
+                     <p class="driverstatus mb-0 text-dark pl-0">Kingston, Toronto, ON K7L 5K4 <i class="fas fa-map-marker-alt" title="Share Location"></i></p>
+                     <div class="row">
+                        <div class="col-lg-6">
+                           <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650 <a href="#" data-toggle="tooltip" title="Shared Live Location" class="mb-0 mt-0 btn btn-xs btn-dark"><i class="fas fa-share-alt"></i></a></p>
+                        </div>
+                        <div class="col-lg-6 text-right">
+                           <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356 <a href="#" data-toggle="tooltip" title="Shared Live Location" class="mb-0 mt-0 btn btn-xs btn-dark"><i class="fas fa-share-alt"></i></a></p>
+                        </div>
+                     </div>
+                     <p class="mb-2 text-4 font-weight-semibold text-dark temp_graph">Temperature
+                        <span class="pull-right text-right">Set: 15<sup>o</sup> - Actuall: 14<sup>o</sup></span>
+                     </p>
+                     <table class="table table-responsive-md table-sm table-bordered">
+                        <thead>
+                           <tr>
+                              <th (click)="showReefer1()">Refer 1</th>
+                              <th (click)="showReefer2()">Refer 2</th>
+                              <th (click)="showReefer3()">Refer 3</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td>14<sup>o</sup></td>
+                              <td>16<sup>o</sup></td>
+                              <td>15<sup>o</sup></td>
+                           </tr>
+                        </tbody>
+                     </table>
+                     <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Status
+                        <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">On Time</button></span>
+                     </p>
+                     <p class="mb-2 text-4 font-weight-semibold text-dark">Load
+                        <a class="pull-right" href="">6104</a>
+                        <span class="pull-right FTLload">FTL</span>
+                     </p>
+                  </div>
+                  <div class="driverrighttrip" >
+                     <p class="mb-2 t text-2 font-weight-semibold text-dark">Trip Info</p>
+                     <div class="tripsmain ml-3">
+                        <p class="tripcirlce">
+                           <a href="#" data-toggle="tooltip" data-placement="left" title="07:15AM, Toronto">D1</a>
+                        </p>
+                        <div class="tripvertibar"></div>
+                        <p class="tripcirlce">
+                           <a href="#" data-toggle="tooltip" data-placement="left" title="11:50PM, Calgary">D2</a>
+                        </p>
+                        <div class="tripvertibar"></div>
+                        <p class="tripcirlce">
+                           <a href="#" data-toggle="tooltip" data-placement="left" title="05:45AM, Regina">D3</a>
+                        </p>
+                        <div class="tripvertibar"></div>
+                        <p class="tripcirlce">
+                           <a href="#" data-toggle="tooltip" data-placement="left" title="10:10AM, Brampton">D4</a>
+                        </p>
+                     </div>
+                  </div>
+                  <div style="display: block; float: left; width:100%">
+                     <div class="vinfo">
+                        <p class="mb-0 text-4 font-weight-semibold text-dark pl-3 pt-2">Vehicle Information</p>
+                        <hr class="solid mt-2 mb-2">
+                        <div class="vdetail">
+                           <p class="mb-0 text-3 font-weight-semibold text-dark">VIN<span class="pull-right">XJKDF853269522230000</span></p>
+                           <hr class="solid mt-2 mb-2">
+                           <p class="mb-0 text-3 font-weight-semibold text-dark">Engine<span class="pull-right">Running</span></p>
+                           <hr class="solid mt-2 mb-2">
+                           <p class="mb-0 text-3 font-weight-semibold text-dark">Engine Load<span class="pull-right">35%</span></p>
+                           <hr class="solid mt-2 mb-2">
+                           <p class="mb-0 text-3 font-weight-semibold text-dark">Engine Speed (RPM)<span class="pull-right">2280</span></p>
+                           <hr class="solid mt-2 mb-2">
+                           <p class="mb-0 text-3 font-weight-semibold text-dark">Engine Light<span class="pull-right">ON</span></p>
+                           <hr class="solid mt-2 mb-2">
+                           <p class="mb-0 text-3 font-weight-semibold text-dark">Battery Voltage<span class="pull-right">14.12 V</span></p>
+                           <hr class="solid mt-2 mb-2">
+                           <p class="mb-0 text-3 font-weight-semibold text-dark">Coolant Temp<span class="pull-right">180 F</span></p>
+                           <hr class="solid mt-2 mb-2">
+                           <p class="mb-0 text-3 font-weight-semibold text-dark">Fuel Rate<span class="pull-right">3.33 Gallons/Hour</span></p>
+                           <hr class="solid mt-2 mb-2">
+                           <p class="mb-0 text-3 font-weight-semibold text-dark">Odometer<span class="pull-right">0953250</span></p>
+                           <hr class="solid mt-2 mb-2">
+                           <div class="row">
+                              <div class="col-lg-9 mb-0 text-3 font-weight-semibold text-dark">DEF Capacity</div>
+                              <div class="col-lg-3 text-right">
+                                 <div class="progress progress-sm progress-half-rounded m-2 light">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                       60%
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <hr class="solid mt-2 mb-2">
+                           <div class="row">
+                              <div class="col-lg-9 mb-0 text-3 font-weight-semibold text-dark">Fuel Capacity</div>
+                              <div class="col-lg-3 text-right">
+                                 <div class="progress progress-sm progress-half-rounded m-2 light">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                       60%
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+         </div>
+         <!-- <div class="dashboard" id="dcam" >
+            <div id="with_temp_graph">
+            <div  class="row p-2" >
+            <div class="col-lg-6">
+                        <h3 class="font-weight-bold text-4 text-dark mt-0">Dash Camera</h3>
+                        <img src="/assets/img/dash-cam2.jpg" class="img-fluid height300" />
+                     </div>
+               <div class="col-lg-6">
+                  <div class="row">
+                     <div class="col-lg-4"><h3 class="font-weight-bold text-4 text-dark mt-0">Temperature Graph</h3>
+                     </div>
+                     <div class="col-lg-8">
+                      <ul class="nav nav-tabs graph-tabs" id="graph-tabs" role="tablist">
+                         <li class="nav-item">
+                            <a class="nav-link active" id="reefer1-tab" data-toggle="tab" href="#reefer1" role="tab" aria-controls="reefer1" aria-selected="true">Reefer 1</a>
+                         </li>
+                         <li class="nav-item">
+                            <a class="nav-link" id="reefer2-tab" data-toggle="tab" href="#reefer2" role="tab" aria-controls="reefer2" aria-selected="false">Reefer 2</a>
+                         </li>
+                         <li class="nav-item">
+                            <a class="nav-link" id="reefer3-tab" data-toggle="tab" href="#reefer3" role="tab" aria-controls="reefer3" aria-selected="false">Reefer 3</a>
+                         </li>
+                      </ul>
+                     </div>
+                  </div>
+                 
+                  <div style="width:100%; height: 50%;">
+                   <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
+                      <div class="tab-pane show active" id="reefer1" role="tabpanel" aria-labelledby="reefer1-tab">
+                         <div>
+                            <button class="btn btn-default btn-xs" type="button" (click)="changeLineGraph()">Line Chart</button>
+                            <button class="btn btn-default btn-xs" type="button" (click)="changeBarGraph()">Bar Chart</button>
+                          </div>
+                         <canvas id="canvas"></canvas>  
+                      </div>
+                 
+                      <div class="tab-pane fade" id="reefer2" role="tabpanel" aria-labelledby="reefer2-tab">
+                         <div>
+                            <button class="btn btn-default btn-xs" type="button" (click)="changeLineGraph1()">Line Chart</button>
+                            <button class="btn btn-default btn-xs" type="button" (click)="changeBarGraph1()">Bar Chart</button>
+                          </div>
+                         <canvas id="canvas1"></canvas> 
+                      </div>
+                       
+                       <div class="tab-pane fade" id="reefer3" role="tabpanel" aria-labelledby="reefer3-tab">
+                         <div>
+                            <button class="btn btn-default btn-xs" type="button" (click)="changeLineGraph2()">Line Chart</button>
+                            <button class="btn btn-default btn-xs" type="button" (click)="changeBarGraph2()">Bar Chart</button>
+                          </div>
+                         <canvas id="canvas2"></canvas> 
+                      </div>
+                     
+                   </div>
+                  </div>
+                 
+                  <br>
+               </div>
+            </div>
+            </div>
+            </div> -->
+         <div class="dashboard" id="dcam" >
+            <div id="dashCamDiv" style="display: block;">
+               <div  class="row p-2" >
+                  <div class="col-lg-6">
+                  <h3 class="font-weight-bold text-4 text-dark mt-0">Front Camera</h3>
+                  <img src="assets/img/dash-cam2.jpg" class="img-fluid" />
+                  </div>
+                  <div class="col-lg-6">
+                  <h3 class="font-weight-bold text-4 text-dark mt-0">Back Camera</h3>
+                  <img src="assets/img/bv.png" class="img-fluid" />
+                  </div>
+               </div>
+            </div>
+            <!-- REEFER 1 DIV -->
+            <div id="reefer1Div" class="row p-2" style="display:none;">
+              <div class="row px-3 text-dark">
+                  <div class="col-lg-12">
+                  <h3>Reefer 1</h3>
+                  </div>
+                  <div class="col-lg-12">                        
+                  <button class="btn btn-default btn-xs" type="button" (click)="changeLineGraph()">Line Chart</button>
+                  <button class="btn btn-default btn-xs" type="button" (click)="changeBarGraph()">Bar Chart</button>                        
+                  </div>
+                  <div class="col-lg-12" style="height: 200px;">                       
+                  <canvas id="canvas"></canvas> 
+                  </div>
               </div>
-           </form>
-        </div>
-     </section>
-    </div>
-  </section>
-  
+            </div>
+             <!-- REEFER 2 DIV -->
+             <div id="reefer2Div" class="row p-2" style="display:none;">
+               <div class="row px-3 text-dark">
+                   <div class="col-lg-12">
+                   <h3>Reefer 2</h3>
+                   </div>
+                   <div class="col-lg-12">                        
+                   <button class="btn btn-default btn-xs" type="button" (click)="changeLineGraph1()">Line Chart</button>
+                   <button class="btn btn-default btn-xs" type="button" (click)="changeBarGraph1()">Bar Chart</button>                        
+                   </div>
+                   <div class="col-lg-12" style="height: 200px;">                       
+                   <canvas id="canvas1"></canvas> 
+                   </div>
+               </div>
+             </div>
+              <!-- REEFER 3 DIV -->
+              <div id="reefer3Div" class="row p-2" style="display:none;">
+               <div class="row px-3 text-dark">
+                   <div class="col-lg-12">
+                   <h3>Reefer 3</h3>
+                   </div>
+                   <div class="col-lg-12">                        
+                   <button class="btn btn-default btn-xs" type="button" (click)="changeLineGraph2()">Line Chart</button>
+                   <button class="btn btn-default btn-xs" type="button" (click)="changeBarGraph2()">Bar Chart</button>                        
+                   </div>
+                   <div class="col-lg-12" style="height: 200px;">                       
+                   <canvas id="canvas2"></canvas> 
+                   </div>
+               </div>
+             </div>
+         </div>
+         </form>
+   </div>
+   </section>
+   </div>
+</section>

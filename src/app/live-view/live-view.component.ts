@@ -65,13 +65,14 @@ export class LiveViewComponent implements OnInit {
     this.chart = new Chart('canvas',{
       type: this.graphType,
       data : {
-        labels: ['20:00', '22:00','31 July', '02:00', '04:00','06:00','08:00','10:00','12:00'],
+        labels: ['31 July 12:00', '31 July 18:00','1 Aug 00:00', '1 Aug 06:00', '1 Aug 12:00','1 Aug 18:00','2 Aug 00:00','2 Aug 06:00','2 Aug 12:00','2 Aug 18:00'],
         datasets: [{
           label: 'Set Temperature',
           fill: false,
           backgroundColor: '#9c9ea1',
           borderColor: '#9c9ea1',
           borderWidth: 1,
+          
           data: [
           33,35,30,29,28,30,25,24,30,33,35,30,29,28,30,25,24 
           ],
@@ -82,6 +83,7 @@ export class LiveViewComponent implements OnInit {
           backgroundColor: '#000',
           borderColor: '#000',
           borderWidth: 1,
+         
           data: [
             31,33,29,29,26,29,28,24,33,31,33,29,29,26,29,28,24,33
           ],
@@ -89,7 +91,8 @@ export class LiveViewComponent implements OnInit {
       ]
       },
       options:{
-        responsive: true,
+         responsive: true,   
+         maintainAspectRatio : false,     
         tooltips: {
           mode: 'index',
           intersect: false,
@@ -105,18 +108,21 @@ export class LiveViewComponent implements OnInit {
          }
         },
         scales: {
-          yAxes: [{
-            // ticks: {beginAtZero:true},
+          yAxes: [{            
             display: true,
             scaleLabel: {
               display: true,
               labelString: 'Temperature (F)'
             },
             ticks: {
-              beginAtZero:true,
+              min: 0,
+              max: 80,
+              stepSize: 10,
+              suggestedMin: 0,
+              suggestedMax: 80,
               // Include a dollar sign in the ticks
-              callback: function(value, index, values) {
-                  return   value + '°F';
+              callback: function (value, index, values) {
+                return value + '°F';
               }
           }
             
@@ -139,7 +145,7 @@ export class LiveViewComponent implements OnInit {
     this.chart1 = new Chart('canvas1',{
       type: this.graphType,
       data : {
-        labels: ['20:00', '22:00','31 July', '02:00', '04:00','06:00','08:00','10:00','12:00'],
+        labels: ['31 July 12:00', '31 July 18:00','1 Aug 00:00', '1 Aug 06:00', '1 Aug 12:00','1 Aug 18:00','2 Aug 00:00','2 Aug 06:00','2 Aug 12:00','2 Aug 18:00'],
         datasets: [{
           label: 'Set Temperature',
           fill: false,
@@ -164,6 +170,7 @@ export class LiveViewComponent implements OnInit {
       },
       options:{
         responsive: true,
+        maintainAspectRatio : false,
         tooltips: {
           mode: 'index',
           intersect: false,
@@ -187,7 +194,11 @@ export class LiveViewComponent implements OnInit {
               labelString: 'Temperature (F)'
             },
             ticks: {
-              beginAtZero:true,
+              min: 0,
+              max: 80,
+              stepSize: 10,
+              suggestedMin: 0,
+              suggestedMax: 80,
               // Include a dollar sign in the ticks
               callback: function(value, index, values) {
                   return   value + '°F';
@@ -213,7 +224,7 @@ export class LiveViewComponent implements OnInit {
     this.chart2 = new Chart('canvas2',{
       type: this.graphType,
       data : {
-        labels: ['20:00', '22:00','31 July', '02:00', '04:00','06:00','08:00','10:00','12:00'],
+        labels: ['31 July 12:00', '31 July 18:00','1 Aug 00:00', '1 Aug 06:00', '1 Aug 12:00','1 Aug 18:00','2 Aug 00:00','2 Aug 06:00','2 Aug 12:00','2 Aug 18:00'],
         datasets: [{
           label: 'Set Temperature',
           fill: false,
@@ -238,6 +249,7 @@ export class LiveViewComponent implements OnInit {
       },
       options:{
         responsive: true,
+        maintainAspectRatio : false,
         tooltips: {
           mode: 'index',
           intersect: false,
@@ -261,7 +273,11 @@ export class LiveViewComponent implements OnInit {
               labelString: 'Temperature (F)'
             },
             ticks: {
-              beginAtZero:true,
+              min: 0,
+              max: 80,
+              stepSize: 10,
+              suggestedMin: 0,
+              suggestedMax: 80,
               // Include a dollar sign in the ticks
               callback: function(value, index, values) {
                   return   value + '°F';
@@ -273,6 +289,30 @@ export class LiveViewComponent implements OnInit {
       }
     }); 
   }
+  showReefer1(){    
+     $(document).ready(function(){
+      $('#reefer1Div').show();
+      $('#reefer2Div').hide();
+      $('#reefer3Div').hide();
+      $('#dashCamDiv').hide();
+    });
+  }
+  showReefer2(){    
+    $(document).ready(function(){
+     $('#reefer1Div').hide();
+     $('#reefer2Div').show();
+     $('#reefer3Div').hide();
+     $('#dashCamDiv').hide();
+   });
+ }
+ showReefer3(){    
+  $(document).ready(function(){
+   $('#reefer1Div').hide();
+   $('#reefer2Div').hide();
+   $('#reefer3Div').show();
+   $('#dashCamDiv').hide();
+ });
+}
   valuechange() {
     this.visible = !this.visible;
   }

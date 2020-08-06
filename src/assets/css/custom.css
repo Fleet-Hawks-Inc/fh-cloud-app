@@ -754,14 +754,35 @@ position: absolute; left: 0; top: 60px; z-index: 100;}
 
 
 
+
 /* trip info new classes with new style 18.05.20 , trip info vertical */
 
 .tripsmain{height:130px; width: 100%; margin-top: 0px; position: relative;}
 
-.tripvertibar{width:2px; height:110px; border: dashed 1px #000;
-  position: absolute; left: 4px; top:0px; z-index: 500;}
-.tripvertifinish{width:2px; height:80px; background: #0fd50a;
+.tripvertibar{width:6px; height:50px; background: #939393;
+  float: left; margin-left: 10px;
+  }
+
+
+.tripcirlce{width: 100%; float: left; margin-bottom: 0px;}
+.tripcirlce a{width:25px; height:25px; border-radius: 50%; float: left;
+background: #646464; color: #fff; text-decoration: none;}
+
+.tripvet-scrollbar {
+	position: relative;
+	height: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.tripvet-scroll-y {
+	display: block;
+}
+
+.tripvertifinish{width:4px; height:80px; background: #0fd50a;
     position: absolute; left: 4px; top:0px; z-index: 500; }
+
+
 
 .tripvertiyellow{width:2px; height:80px; background: #ffa800;
       position: absolute; left: 4px; top:0px; z-index: 500; }
@@ -769,7 +790,8 @@ position: absolute; left: 0; top: 60px; z-index: 100;}
 .tripvertired{width:2px; height:30px; background: #ff0000;
         position: absolute; left: 4px; top:10px; z-index: 500; }
 
-.tripcirlce{width:10px; height:10px; border-radius: 50%;background: #141414;}
+
+
 
 .trip1{z-index:999; width: 100%;  position: absolute; left: 0; top: 30px;}
 .trip1 p{width: 100%; display: block; position: absolute; left: 20px; top:-10px;}

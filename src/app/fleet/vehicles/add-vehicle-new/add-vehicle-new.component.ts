@@ -52,6 +52,7 @@ expiryDate : NgbDateStruct;
   currentStatus = "";
   group = "";
   ownership = "";
+  enableIFTAReports:boolean = false;
   additionalDetails = {
     vehicleColor: "",
     bodyType: "",
@@ -149,7 +150,7 @@ expiryDate : NgbDateStruct;
     loan = {
       loanVendor : "",
       loanAmount : "",
-       aspiration : "",
+      loanAspiration : "",
        annualPercentageRate : "",
        downPayment : "",
        loanDate : "",
@@ -293,6 +294,7 @@ expiryDate : NgbDateStruct;
       currentStatus: this.currentStatus,
       groupID: this.group,
       ownership: this.ownership,
+      enableIFTAReports: this.enableIFTAReports,
       additionalDetails: {
         vehicleColor: this.additionalDetails.vehicleColor,
         bodyType: this.additionalDetails.bodySubType,
@@ -390,7 +392,7 @@ expiryDate : NgbDateStruct;
         loan : {
           loanVendor : this.loan.loanVendor,
           loanAmount : this.loan.loanAmount,
-           aspiration : this.loan.aspiration,
+          loanAspiration : this.loan.loanAspiration,
            annualPercentageRate : this.loan.annualPercentageRate,
            downPayment : this.loan.downPayment,
            loanDate : this.loan.loanDate,

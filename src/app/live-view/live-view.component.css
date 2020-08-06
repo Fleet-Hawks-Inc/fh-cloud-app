@@ -32,3 +32,15 @@
   .height300{
      height: 300px!important;
   }
+  .driverleftmain {
+    width: 87%;
+    float: left;
+    border-right: solid 1px #cfcfcf;
+    padding-right: 3%;
+}
+.driverrighttrip {
+  width: 10%;
+  float: left;
+  text-align: center;
+}
+
