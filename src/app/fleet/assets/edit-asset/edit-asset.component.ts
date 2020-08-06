@@ -14,6 +14,12 @@ declare var $: any;
 export class EditAssetComponent implements OnInit {
   title = "Edit Assets";
   errors = {};
+  assetsData = {
+    assetDetails: {},
+    insuranceDetails: {},
+    uploadedPhotos: {},
+    uploadedDocs: {}
+  };
   form;
   quantumSelected = '';
 
@@ -199,8 +205,9 @@ export class EditAssetComponent implements OnInit {
       currentStatus: this.currentStatus,
       timeCreated: this.timeCreated,
     };
+    console.log("log", data)
 
-    this.apiService.putData("assets", data).subscribe({
+    this.apiService.putData("assets", this.assetsData).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)

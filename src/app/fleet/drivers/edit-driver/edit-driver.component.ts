@@ -96,6 +96,7 @@ export class EditDriverComponent implements OnInit {
     this.apiService
       .getData(`users/${this.userName}`)
       .subscribe((result: any) => {
+        
         result = result.Items[0];
 
         this.userType = result.userType;
@@ -157,6 +158,7 @@ export class EditDriverComponent implements OnInit {
     this.apiService
       .getData(`drivers/userName/${this.userName}`)
       .subscribe((result: any) => {
+        
         result = result.Items[0];
         this.driverID = result.driverID;
         this.driverNumber = result.driverNumber;

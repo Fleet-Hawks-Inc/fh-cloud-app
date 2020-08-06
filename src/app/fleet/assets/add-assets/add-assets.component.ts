@@ -3,6 +3,7 @@ import { ApiService } from "../../../api.service";
 import { Router } from "@angular/router";
 import { catchError, map, mapTo, tap } from "rxjs/operators";
 import { from, of } from "rxjs";
+import { ToastrService } from 'ngx-toastr';
 declare var jquery: any;
 declare var $: any;
 
@@ -17,8 +18,7 @@ export class AddAssetsComponent implements OnInit {
   form;
   quantumSelected = '';
   assetsData = {
-    license: {},
-    assetInfo: {},
+    assetDetails: {},
     insuranceDetails: {},
     uploadedPhotos: {},
     uploadedDocs: {}
@@ -66,7 +66,7 @@ export class AddAssetsComponent implements OnInit {
   hasSuccess: boolean = false;
   Error: string = "";
   Success: string = "";
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService, private router: Router,private toastr: ToastrService) {}
 
   ngOnInit() {
     this.fetchQuantum();
@@ -100,6 +100,7 @@ export class AddAssetsComponent implements OnInit {
     this.apiService
       .getData(`vehicleModels/manufacturer/${this.assetInfo.manufacturerID}`)
       .subscribe((result: any) => {
+        console.log("manufac-id", result);
         this.models = result.Items;
       });
   }
@@ -189,25 +190,9 @@ export class AddAssetsComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        this.hasSuccess = true;
-        this.Success = "Asset added successfully";
-        this.assetName = "";
-        this.VIN = "";
-        this.assetType = "";
-        this.assetInfo.year = "";
-        this.assetInfo.manufacturerID = "";
-        this.assetInfo.modelID = "";
-        this.length = "";
-        this.axle = "";
-        this.GVWR = "";
-        this.GAWR = "";
-        this.license.stateID = "";
-        this.license.plateNumber = "";
-        this.ownerShip = "";
-        this.remarks = "";
-        this.ownerShipStatus = "";
-        this.quantumInfo.UID = "";
-        this.currentStatus = "";
+        this.toastr.success('Driver added successfully');
+        this.router.navigateByUrl('/fleet/assets/Assets-List');
+        
       },
     });
   }

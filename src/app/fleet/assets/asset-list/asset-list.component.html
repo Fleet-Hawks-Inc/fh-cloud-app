@@ -66,8 +66,8 @@
                   <div class="btn-group flex-wrap">
                      <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1" href="">Edit</a>
-                        <a class="dropdown-item text-1" href="">Deactivate</a>
+                        <a class="dropdown-item text-1" (click)="editAsset()" href="javascript:;">Edit</a>
+                        <a class="dropdown-item text-1" (click)="deleteAsset()" href="javascript:;">Delete</a>
                         <a class="dropdown-item text-1" href="">Import</a>
                         <a class="dropdown-item text-1" href="">Export</a>
                      </div>
@@ -199,25 +199,25 @@
                               <thead>
                                  <tr>
                                     <th><input (click)="checkuncheckall()" type="checkbox"></th>
-                                    <th>Asset</th>
+                                    <th>Asset ID</th> 
+                                    <th>Asset Name</th>
                                     <th>Type</th>
-                                    <th>Licence Plate</th>
-                                    <th>Battery Level</th>
-                                    <th>Asset Gateway S/N</th>
+                                    <th>Plate Number</th>
+                                    <th>Last Known Location</th>
                                     <th>Status</th>
                                  </tr>
                               </thead>
                               <tbody>
                               <tr *ngFor="let asset of assetsData;let i = index;">
-                                <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
+                                <td class="sorting_1"><input [checked]="isChecked" [(ngModel)]="asset.checked" (ngModelChange)="checkboxCount()" value="{{asset.assetName}}" type="checkbox"></td>
+                                <td>{{asset.assetID}}</td>
                                 <td routerLink="/fleet/assets/asset-detail/{{asset.assetID}}">{{ asset.assetName }}</td>
-                                <td>{{ asset.assetType }}</td>
-                                <td>{{ asset.license.plateNumber }}</td>
-                                <td></td>
-                                <td></td>
+                                <td>{{ asset.assetDetails.assetType }}</td>
+                                <td>{{ asset.assetDetails.plateNumber }}</td>
+                                <td>Live Location</td>
                                 <td>
                                   <span class="badge badge-secondary text-3">
-                                    {{asset.currentStatus}}
+                                       Active                                   
                                   </span>
                                 </td>
                                 </tr>
@@ -230,26 +230,30 @@
                               <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
                                <thead>
                                   <tr>
-                                     <th><input name="assetsCheck" (click)="checkuncheckall()" type="checkbox"></th>
-                                     <th>Asset</th>
-                                     <th>Type</th>
-                                     <th>Licence Plate</th>
-                                     <th>Battery Level</th>
-                                     <th>Asset Gateway S/N</th>
+                                     <th><input (click)="checkuncheckall()" type="checkbox"></th>
+                                     <th>Asset ID</th> 
+                                     <th>Asset Name</th>
+                                     <th>Fuel Level</th>
+                                     <th>Current Temp.</th>
+                                     <th>Set Temp.</th>
+                                     <th>Plate Number</th>
+                                     <th>Last Known Location</th>
                                      <th>Status</th>
                                   </tr>
                                </thead>
                                <tbody>
                                <tr *ngFor="let asset of assetsData;let i = index;" >
                                  <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
+                                 <td>{{ asset.assetID }}</td>
                                  <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
-                                 <td>{{ asset.assetType }}</td>
-                                 <td>{{ asset.license.plateNumber }}</td>
-                                 <td></td>
-                                 <td></td>
+                                 <td>Live Location</td>
+                                 <td>Live Location</td>
+                                 <td>Live Location</td>
+                                 <td>{{ asset.assetDetails.plateNumber }}</td>
+                                 <td>Live Location</td>
                                  <td>
                                    <span class="badge badge-secondary text-3">
-                                     {{asset.currentStatus}}
+                                    Active
                                    </span>
                                  </td>
                                  </tr>
@@ -262,26 +266,24 @@
                               <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
                                <thead>
                                   <tr>
-                                     <th><input (click)="checkuncheckall()"  type="checkbox"></th>
-                                     <th>Asset</th>
-                                     <th>Type</th>
-                                     <th>Licence Plate</th>
-                                     <th>Battery Level</th>
-                                     <th>Asset Gateway S/N</th>
-                                     <th>Status</th>
+                                    <th><input (click)="checkuncheckall()" type="checkbox"></th>
+                                    <th>Asset ID</th>
+                                    <th>Asset Name</th>
+                                    <th>Plate Number</th>
+                                    <th>Last Known Location</th>
+                                    <th>Status</th>
                                   </tr>
                                </thead>
                                <tbody>
-                               <tr *ngFor="let asset of assetsData;let i = index;">
+                                 <tr *ngFor="let asset of assetsData;let i = index;">
                                  <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
+                                 <td>{{ asset.assetID }}</td>
                                  <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
-                                 <td>{{ asset.assetType }}</td>
-                                 <td>{{ asset.license.plateNumber }}</td>
-                                 <td></td>
-                                 <td></td>
+                                 <td>{{ asset.assetDetails.plateNumber  }}</td>
+                                 <td>Live Location</td>
                                  <td>
                                    <span class="badge badge-secondary text-3">
-                                     {{asset.currentStatus}}
+                                    Active
                                    </span>
                                  </td>
                                  </tr>
@@ -295,25 +297,23 @@
                                <thead>
                                   <tr>
                                      <th><input (click)="checkuncheckall()" type="checkbox"></th>
-                                     <th>Asset</th>
-                                     <th>Type</th>
-                                     <th>Licence Plate</th>
-                                     <th>Battery Level</th>
-                                     <th>Asset Gateway S/N</th>
-                                     <th>Status</th>
+                                     <th>Asset ID</th>
+                                       <th>Asset Name</th>
+                                       <th>Plate Number</th>
+                                       <th>Last Known Location</th>
+                                       <th>Status</th>
                                   </tr>
                                </thead>
                                <tbody>
                                <tr *ngFor="let asset of assetsData;let i = index;">
                                  <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
+                                 <td>{{ asset.assetID }}</td>
                                  <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
-                                 <td>{{ asset.assetType }}</td>
-                                 <td>{{ asset.license.plateNumber }}</td>
-                                 <td></td>
-                                 <td></td>
+                                 <td>{{ asset.assetDetails.plateNumber  }}</td>
+                                 <td>Live Location</td>
                                  <td>
                                    <span class="badge badge-secondary text-3">
-                                     {{asset.currentStatus}}
+                                     Active
                                    </span>
                                  </td>
                                  </tr>
@@ -328,27 +328,25 @@
                                <thead>
                                   <tr>
                                      <th><input (click)="checkuncheckall()"  type="checkbox"></th>
-                                     <th>Asset</th>
-                                     <th>Type</th>
-                                     <th>Licence Plate</th>
-                                     <th>Battery Level</th>
-                                     <th>Asset Gateway S/N</th>
-                                     <th>Status</th>
+                                     <th>Asset ID</th>
+                                    <th>Asset Name</th>
+                                    <th>Plate Number</th>
+                                    <th>Last Known Location</th>
+                                    <th>Status</th>
                                   </tr>
                                </thead>
                                <tbody>
-                               <tr *ngFor="let asset of assetsData;let i = index;">
-                                 <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
-                                 <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
-                                 <td>{{ asset.assetType }}</td>
-                                 <td>{{ asset.license.plateNumber }}</td>
-                                 <td></td>
-                                 <td></td>
-                                 <td>
-                                   <span class="badge badge-secondary text-3">
-                                     {{asset.currentStatus}}
-                                   </span>
-                                 </td>
+                                 <tr *ngFor="let asset of assetsData;let i = index;">
+                                    <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
+                                    <td>{{ asset.assetID }}</td>
+                                    <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
+                                    <td>{{ asset.assetDetails.plateNumber  }}</td>
+                                    <td>Live Location</td>
+                                    <td>
+                                       <span class="badge badge-secondary text-3">
+                                          Active
+                                       </span>
+                                    </td>
                                  </tr>
                                </tbody>
                             </table>
@@ -427,7 +425,7 @@
                     <th>VIN</th>
                     <th>Edit</th>
                     <th>Delete</th>
-                    <!--<th class="d-lg-none">Operator</th>-->
+                    <th class="d-lg-none">Operator</th>-->
                     <!--<th class="d-lg-none">CSS grade</th>
                   </tr>
                 </thead>

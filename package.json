@@ -60,7 +60,7 @@
     "ng-multiselect-dropdown": "^0.2.10",
     "ng2-charts": "2.2.3",
     "ngx-mqtt": "^6.13.2",
-    "ngx-toastr": "10.0.4",
+    "ngx-toastr": "^11.3.3",
     "path": "0.12.7",
     "randomstring": "1.1.5",
     "rxjs": "6.4.0",

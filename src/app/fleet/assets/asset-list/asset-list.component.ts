@@ -13,6 +13,7 @@ export class AssetListComponent implements OnInit {
   title = "Assets List";
   assetsData = [];
   isChecked = false;
+  selectedAssetID : any;
 
   dtOptions: any = {};
   dtTrigger = new Subject();
@@ -40,6 +41,18 @@ export class AssetListComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
   
+  // Count Checkboxes
+  checkboxCount = () =>{
+    let count = 0;
+    this.assetsData.forEach(item=>{
+      if(item.checked){
+        console.log(item);
+        this.selectedAssetID = item.assetID;
+        count= count+1;
+      }  
+    })
+    console.log(count)
+  }
 
   fetchAssets() {
     this.apiService.getData("assets").subscribe({
@@ -48,7 +61,6 @@ export class AssetListComponent implements OnInit {
       },
       error: () => {},
       next: (result: any) => {
-        console.log("res",result);
         this.assetsData = result.Items;
         // Calling the DT trigger to manually render the table
         this.dtTrigger.next();
@@ -56,23 +68,27 @@ export class AssetListComponent implements OnInit {
     });
   }
 
-  deleteAsset(assetId) {
+  editAsset(){
+    console.log(this.selectedAssetID);
+    this.router.navigateByUrl('/fleet/assets/Edit-Asset/'+this.selectedAssetID)
+  }
+  deleteAsset() {
+    console.log(this.selectedAssetID)
      /******** Clear DataTable ************/
      if ($.fn.DataTable.isDataTable("#datatable-default")) {
       $("#datatable-default").DataTable().clear().destroy();
     }
     /******************************/
 
-    this.apiService.deleteData("assets/" + assetId).subscribe((result: any) => {
+    this.apiService.deleteData("assets/" + this.selectedAssetID).subscribe((result: any) => {
+      
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
       this.fetchAssets();
     });
   }
 
-  initDataTable() {
-    timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
-    });
-  }
+  
 
   
   checkuncheckall() {

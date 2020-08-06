@@ -89,7 +89,7 @@
                                    <div class="col-lg-10">
                                     
                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Tasks</label>
-                                      <ng-select [multiple]="true" [(ngModel)]="serviceData.subscribedUser" name="serviceData.subscribedUser" style="width: 100%;">
+                                      <ng-select [multiple]="true" [(ngModel)]="serviceData.serviceTasks" name="serviceData.serviceTasks" style="width: 100%;">
                                         <ng-option value="A/C Compressor Replacement">A/C Compressor Replacement</ng-option>
                                         <ng-option value="A/C Condenser Replacemen">A/C Condenser Replacement</ng-option>
                                         <ng-option value="A/C Diagnosis">A/C Diagnosis</ng-option>
@@ -220,14 +220,14 @@
                                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Time</label>
                                             <div class="row">
                                                <div class="col-lg-6">
-                                                  <input [(ngModel)]="serviceData.repeatByTime" name="serviceData.repeatByTime" type="number" class="form-control" >
+                                                  <input [(ngModel)]="serviceData.repeatByTime" name="serviceData.repeatByTime" type="text" class="form-control" >
                                                </div>
                                                <div class="col-lg-6 pl-0">
-                                                  <select [(ngModel)]="serviceData.timeWise" name="serviceData.timeWise" data-plugin-selectTwo class="form-control populate">
+                                                  <select [(ngModel)]="serviceData.repeatByDurationType" name="serviceData.repeatByDurationType" data-plugin-selectTwo class="form-control populate">
                                                      <optgroup label="">
-                                                        <option value="1">Days</option>
-                                                        <option value="2">Weeks</option>
-                                                        <option value="2">Months</option>
+                                                        <option value="Days">Days</option>
+                                                        <option value="Weeks">Weeks</option>
+                                                        <option value="Months">Months</option>
                                                      </optgroup>
                                                   </select>
                                                </div>
@@ -253,7 +253,7 @@
                           <div class="row pt-2">
                              <div class="col-lg-10">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle for Service Program</label>
-                                <ng-select [(ngModel)]="serviceData.vehicleForService" name="serviceData.vehicleForService" style="width: 100%;">
+                                <ng-select [(ngModel)]="serviceData.vehicleForServiceProgram" name="serviceData.vehicleForServiceProgram" style="width: 100%;">
                                       <ng-option value="Vehicle 1">Vehicle 1</ng-option>
                                       <ng-option value="Vehicle 2">Vehicle 2</ng-option>
                                       <ng-option value="Vehicle 3">Vehicle 3</ng-option>

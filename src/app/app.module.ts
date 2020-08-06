@@ -113,7 +113,7 @@ import { CycleListComponent } from './cycle-list/cycle-list.component';
 import { NavOpenedDirective } from './directives/nav-opened.directive';
 import {SharedModule} from './shared/shared.module';
 import {ChartsModule} from 'ng2-charts';
-import {ToastrModule} from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 //ngselect2
 //import { NgSelectModule } from '@ng-select/ng-select';
 
@@ -256,7 +256,7 @@ import { CarrierRegisterComponent } from './carrier-register/carrier-register.co
     BrowserAnimationsModule,
     ChartsModule,
     SharedModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot(), // ToastrModule added
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     NgMultiSelectDropDownModule.forRoot()
     //NgSelectModule
