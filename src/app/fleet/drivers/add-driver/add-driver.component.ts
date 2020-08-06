@@ -96,15 +96,15 @@ export class AddDriverComponent implements OnInit {
     emergencyContactRelationship: "",
     emergencyContactEmail: "",
   };
-  additionalDetails = {
-    driverTumblr: "",
-    driverFacebook: "",
-    driverInstagram: "",
-    driverTwitter: "",
-    driverBlog: "",
-    driverLinkedIn: "",
-    additionalNotes: "",
-  };
+  // additionalDetails = {
+  //   driverTumblr: "",
+  //   driverFacebook: "",
+  //   driverInstagram: "",
+  //   driverTwitter: "",
+  //   driverBlog: "",
+  //   driverLinkedIn: "",
+  //   additionalNotes: "",
+  // };
 
 
 
@@ -264,15 +264,15 @@ export class AddDriverComponent implements OnInit {
         emergencyContactRelationship: this.emergencyContact.emergencyContactRelationship,
         emergencyContactEmail: this.emergencyContact.emergencyContactEmail,
       },
-      additionalDetails: {
-        driverFacebook: this.additionalDetails.driverFacebook,
-        driverInstagram: this.additionalDetails.driverInstagram,
-        driverBlog: this.additionalDetails.driverBlog,
-        driverTumblr: this.additionalDetails.driverTumblr,
-        driverTwitter: this.additionalDetails.driverTwitter,
-        driverLinkedIn: this.additionalDetails.driverLinkedIn,
-        additionalNotes: this.additionalDetails.additionalNotes
-      },
+      // additionalDetails: {
+      //   driverFacebook: this.additionalDetails.driverFacebook,
+      //   driverInstagram: this.additionalDetails.driverInstagram,
+      //   driverBlog: this.additionalDetails.driverBlog,
+      //   driverTumblr: this.additionalDetails.driverTumblr,
+      //   driverTwitter: this.additionalDetails.driverTwitter,
+      //   driverLinkedIn: this.additionalDetails.driverLinkedIn,
+      //   additionalNotes: this.additionalDetails.additionalNotes
+      // },
 
     };
 
