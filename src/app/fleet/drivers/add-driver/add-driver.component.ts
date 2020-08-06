@@ -78,15 +78,16 @@ export class AddDriverComponent implements OnInit {
     driverVehicleType: "",
 
   };
-  formattedBirthDate: any = "";
+  driverAllowYM:boolean;
+  driverAllowPC : boolean;
   HOSCompliance = {
     status: "",
     type: "",
     cycleID: "",
     yardID: "",
     exemptedNotes: "",
-    driverAllowYM: "",
-    driverAllowPC: "",
+    driverAllowYM: false,
+    driverAllowPC: false,
   };
   emergencyContact = {
     emergencyContactName: "",
@@ -178,7 +179,7 @@ export class AddDriverComponent implements OnInit {
       });
   }
   getCities() {
-    this.apiService.getData('cities/state' + this.address.driverStateID)
+    this.apiService.getData('cities/state/' + this.address.driverStateID)
       .subscribe((result: any) => {
         this.cities = result.Items;
       });
@@ -276,7 +277,7 @@ export class AddDriverComponent implements OnInit {
     };
 
     console.log(data);
-    return;
+   
     this.apiService.postData('users', data).subscribe({
       complete: () => { },
       error: (err) => {
@@ -313,33 +314,33 @@ export class AddDriverComponent implements OnInit {
         this.hasSuccess = true;
         this.Success = "Driver Added successfully";
 
-        this.basic.userName = "";
-        this.basic.password = "";
-        this.basic.firstName = "";
-        this.basic.lastName = "";
-        this.address.addressType = "";
-        this.basic.phone = "";
-        this.basic.email = "";
-        this.basic.groupID = "";
-        this.licence.driverLicenseNumber = "";
+        // this.basic.userName = "";
+        // this.basic.password = "";
+        // this.basic.firstName = "";
+        // this.basic.lastName = "";
+        // this.address.addressType = "";
+        // this.basic.phone = "";
+        // this.basic.email = "";
+        // this.basic.groupID = "";
+        // this.licence.driverLicenseNumber = "";
 
-        this.licence.driverLicenseExpiry = "";
-        this.licence.driverLicenseStateID = "";
-        this.HOSCompliance = {
-          status: "",
-          type: "",
-          cycleID: "",
-          yardID: "",
-          exemptedNotes: "",
-          driverAllowYM: "",
-          driverAllowPC: "",
-        };
+        // this.licence.driverLicenseExpiry = "";
+        // this.licence.driverLicenseStateID = "";
+        // this.HOSCompliance = {
+        //   status: "",
+        //   type: "",
+        //   cycleID: "",
+        //   yardID: "",
+        //   exemptedNotes: "",
+        //   driverAllowYM: ,
+        //   driverAllowPC: ,
+        // };
 
-        this.groups = [];
-        this.countries = [];
-        this.states = [];
-        this.yards = [];
-        this.cycles = [];
+        // this.groups = [];
+        // this.countries = [];
+        // this.states = [];
+        // this.yards = [];
+        // this.cycles = [];
       },
     });
   }
@@ -398,7 +399,7 @@ export class AddDriverComponent implements OnInit {
       this.imageError = 'Invalid Image Format';
     }
   }
-
+//  Modal for creating group. 
   createGroupModal() {
     $(document).ready(function () {
       $('#addGroupModal').modal('show');

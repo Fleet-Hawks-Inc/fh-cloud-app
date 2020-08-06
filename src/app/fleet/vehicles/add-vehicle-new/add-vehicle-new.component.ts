@@ -66,7 +66,6 @@ expiryDate : NgbDateStruct;
     estimatedResaleValue : "",
     outServiceDate: "",
     outServiceOdometer : "",
-
   }
   dimensions = {
     width: "",
