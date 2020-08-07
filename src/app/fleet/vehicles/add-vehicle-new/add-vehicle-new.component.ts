@@ -40,17 +40,17 @@ expiryDate : NgbDateStruct;
   VIN = "";
   year = "";
   make = "";
-  model = "";
-  state = "";
+  modelId = "";
+  stateID = "";
   plateNumber = "";
   basicPrimaryMeter = "Miles";
   spRepeatTime = "";
   spRepeatTimeUnit = "";
   spRepeatOdometer = "";
   serviceProgramID = "";
-  inspectionFormID = "";
+  // inspectionFormID = "";
   currentStatus = "";
-  group = "";
+  groupID = "";
   ownership = "";
   enableIFTAReports:boolean = false;
   additionalDetails = {
@@ -280,19 +280,18 @@ expiryDate : NgbDateStruct;
       vehicleName: this.vehicleName,
       VIN: this.VIN,
       year: this.year,
-      manufacturerID: this.make,
-      modelID: this.model,
-      stateID: this.state,
+      make: this.make,
+      modelId: this.modelId,
+      stateID: this.stateID,
       countryID : this.countryID,
       plateNumber: this.plateNumber,
       basicPrimaryMeter:this.basicPrimaryMeter,
       spRepeatTime: this.spRepeatTime,
       spRepeatTimeUnit : this.spRepeatTimeUnit,
       spRepeatOdometer:this.spRepeatOdometer,
-      serviceProgramID: this.serviceProgramID,
-      inspectionFormID: this.inspectionFormID,
+      serviceProgramID: this.serviceProgramID,     
       currentStatus: this.currentStatus,
-      groupID: this.group,
+      groupID: this.groupID,
       ownership: this.ownership,
       enableIFTAReports: this.enableIFTAReports,
       additionalDetails: {
@@ -414,7 +413,7 @@ expiryDate : NgbDateStruct;
         hardAccelrationParameters: this.safetyParameters.hardAccelrationParameters,
         turningParameters: this.safetyParameters.turningParameters,
       },
-      quantumInfo: this.quantum
+      // quantumInfo: this.quantum
   };
 
 console.log(data);

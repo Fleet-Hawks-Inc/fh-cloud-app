@@ -125,8 +125,8 @@
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Model</label>
-                            <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="model"
-                              name="model">
+                            <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="modelId"
+                              name="modelId">
                               <optgroup label="">
                                 <option *ngFor="let val of models" value="{{val.modelID}}">{{val.name}}</option>
                               </optgroup>
@@ -147,8 +147,8 @@
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
-                            <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="state"
-                              name="state">
+                            <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="stateID"
+                              name="stateID">
                               <optgroup label="">
                                 <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}
                                 </option>
@@ -230,7 +230,7 @@
                                   Time</label>
                                 <div class="row">
                                   <div class="col-lg-6">
-                                    <input type="number" class="form-control" name="spRepeatTime"
+                                    <input type="text" class="form-control" name="spRepeatTime"
                                       [(ngModel)]="spRepeatTime">
                                   </div>
                                   <div class="col-lg-6 pl-0">
@@ -277,8 +277,8 @@
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Group</label>
-                            <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="group"
-                              name="group">
+                            <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="groupID"
+                              name="groupID">
                               <optgroup label="">
                                 <option *ngFor="let group of groups" value="{{group.groupID}}">{{group.groupName}}
                                 </option>
@@ -682,7 +682,7 @@
                               Expiry</label>
                             <div class="row">
                               <div class="col-lg-6 pr-0">
-                                <input type="number" class="form-control" name="reminderNumber"
+                                <input type="text" class="form-control" name="reminderNumber"
                                   [(ngModel)]="insurance.reminderNumber">
                               </div>
                               <div class="col-lg-6 pl-0">
@@ -1037,7 +1037,7 @@
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Annual Percentage
                               Rate</label>
-                            <input type="number" class="form-control" name="annualPercentageRate"
+                            <input type="text" class="form-control" name="annualPercentageRate"
                               [(ngModel)]="loan.annualPercentageRate"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Down Payment</label>

@@ -364,72 +364,48 @@
                <div class="col pr-0">
                   <section class="card">
                      <div class="card-body">
-                        <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
+                        <table class="table table-bordered table-responsive-lg table-striped mb-0"  #FhDataTable
+                        id="datatable-default">
                            <thead>
                               <tr>
                                  <th width="5%"><input type="checkbox"></th>
                                  <th width="10%">Unit Number</th>
-                                 <th width="10%">VIN</th>
+                                 <!-- <th width="10%">VIN</th>
                                  <th width="15%">Last Location</th>
                                  <th width="10%">Plate Exp</th>
                                  <th width="10%">Insurance Exp</th>
                                  <th width="10%">Status</th>
-                                 <th width="10%">Trip</th>
+                                 <th width="10%">Trip</th> -->
                               </tr>
                            </thead>
                            <tbody>
-                              <tr>
-                                 <td class="pl-3"><input type="checkbox"></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">111</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">987987</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Ontario</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Jun 6, 2020</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Jun 6, 2020</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Inactive</a></td>
-                                 <td><a href="#">111</a></td>
-                              </tr>
-                              <tr>
-                                 <td class="pl-3"><input type="checkbox"></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">222</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">987987</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Ottawa</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Mar 6, 2020</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Jun 6, 2020</a></td>
-                                 <td>Active</td>
-                                 <td><a href="#">222</a></td>
-                              </tr>
-                              <tr>
-                                 <td class="pl-3"><input type="checkbox"></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">333</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">987987</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Ottawa</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Mar 6, 2020</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Jun 6, 2020</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">In Shop</a></td>
-                                 <td><a href="#">333</a></td>
-                              </tr>
-                              <tr>
-                                 <td class="pl-3"><input type="checkbox"></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">444</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">987987</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Ottawa</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Mar 6, 2020</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Jun 6, 2020</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Inactive</a></td>
-                                 <td><a href="#">444</a></td>
-                              </tr>
-                              <tr>
-                                 <td class="pl-3"><input type="checkbox"></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">555</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">987987</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Ottawa</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Mar 6, 2020</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Jun 6, 2020</a></td>
-                                 <td><a routerLink="/fleet/vehicles/Vehicle-Details">Sold</a></td>
-                                 <td><a href="#">555</a></td>
-                              </tr>
+                              <tr *ngFor="let vehicle of vehicles">
+                                 <td><input type="checkbox" class="vehicle_checkbox" value="{{ vehicle.vehicleID }}"></td>
+                                 <td>{{ vehicle.vehicleName }}</td>                   
+                                 <!-- <td>{{vehicle.date }}</td>
+                                 <td>{{vehicle.odometer }}</td>
+                                 <td>{{vehicle.fuelType }}</td>
+                                 <td>{{vehicle.vehicleFuelQty }}</td>
+                                 <td>{{vehicle.DEFFuelQty }}</td>
+                                 <td>{{vehicle.costPerGallon }}</td>
+                                 <td>{{vehicle.amountPaid }}</td> -->
+                                 <!-- <td>{{ getVehicleName(fuelList.vehicleID) }} </td>-->
+                                  <!-- <td>{{getCountryName(fuelList.countryID)}} </td> -->
+                                 <td>
+                                   <a routerLink="/fleet/vehicles/Edit-Vehicle-New/{{vehicle.vehicleID }}"
+                                     >Edit</a
+                                   >
+                                 </td>
+                                 <td>
+                                   <a
+                                     [routerLink]=""
+                                     (click)="deleteVehicle(vehicle.vehicleI)"
+                                     >Delete</a
+                                   >
+                                 </td>               
+                               </tr>
                            </tbody>
-                        </table>
+                        </table> 
                      </div>
                   </section>
                </div>
