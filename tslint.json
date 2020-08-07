@@ -1,9 +1,11 @@
 {
-  "extends": "tslint-angular",
+  "extends": "tslint:recommended",
   "rules": {
-    "directive-selector": [true, "attribute", "foo", "camelCase"],
-    "component-selector": [true, "element", "foo", "kebab-case"]
-  },
+    "array-type": false,
+    "arrow-parens": false,
+    "deprecation": {
+      "severity": "warning"
+    },
     "component-class-suffix": true,
     "contextual-lifecycle": true,
     "directive-class-suffix": true,

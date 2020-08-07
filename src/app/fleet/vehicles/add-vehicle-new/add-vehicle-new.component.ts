@@ -2,20 +2,23 @@ import { Component, OnInit } from "@angular/core";
 import {ApiService} from '../../../api.service';
 import {Router} from '@angular/router';
 import {AwsUploadService} from '../../../aws-upload.service';
-
+import {from} from 'rxjs';
+import {map} from 'rxjs/operators';
 declare var $: any;
 
 @Component({
-  selector: "app-add-vehicle-new",
-  templateUrl: "./add-vehicle-new.component.html",
-  styleUrls: ["./add-vehicle-new.component.css"],
+  selector: 'app-add-vehicle-new',
+  templateUrl: './add-vehicle-new.component.html',
+  styleUrls: ['./add-vehicle-new.component.css'],
 })
 export class AddVehicleNewComponent implements OnInit {
   title = 'Add Vehicles';
-
-  activeTab = "details";
+  activeTab = 'details';
   imageError = '';
   fileName = '';
+
+  form;
+  errors = {};
   /**
    * Quantum prop
    */
@@ -192,6 +195,12 @@ export class AddVehicleNewComponent implements OnInit {
     $('#hardBreakingParametersValue').html(6);
     $('#hardAccelrationParametersValue').html(6);
     $('#turningParametersValue').html(6);
+
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
+    });
+
+
   }
 
   fetchServicePrograms(){
@@ -205,35 +214,35 @@ export class AddVehicleNewComponent implements OnInit {
       this.vendors = result.Items;
     });
   }
-  fetchManufacturers(){
+  fetchManufacturers() {
     this.apiService.getData('manufacturers')
       .subscribe((result: any) => {
         this.manufacturers = result.Items;
       });
   }
 
-  fetchCountries(){
+  fetchCountries() {
     this.apiService.getData('countries')
       .subscribe((result: any) => {
         this.countries = result.Items;
       });
   }
 
-  fetchGroups(){
+  fetchGroups() {
     this.apiService.getData('groups')
       .subscribe((result: any) => {
         this.groups = result.Items;
       });
   }
 
-  getStates(){
+  getStates() {
     this.apiService.getData('states/country/' + this.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
   }
 
-  getModels(){
+  getModels() {
     this.apiService.getData(`vehicleModels/manufacturer/${this.make}`)
       .subscribe((result: any) => {
         this.models = result.Items;
@@ -250,138 +259,151 @@ export class AddVehicleNewComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     const data = {
-      vehicleName: this.vehicleName,
-      VIN: this.VIN,
-      year: this.year,
-      manufacturerID: this.make,
-      modelID: this.model,
-      stateID: this.state,
-      countryID : this.countryID,
-      plateNumber: this.plateNumber,
-      basicPrimaryMeter:this.basicPrimaryMeter,
-      spRepeatTime: this.spRepeatTime,
-      spRepeatTimeUnit : this.spRepeatTimeUnit,
-      spRepeatOdometer:this.spRepeatOdometer,
-      serviceProgramID: this.serviceProgramID,
-      inspectionFormID: this.inspectionFormID,
-      currentStatus: this.currentStatus,
-      groupID: this.group,
-      ownership: this.ownership,
-      additionalDetails: {
-        vehicleColor: this.additionalDetails.vehicleColor,
-        bodyType: this.additionalDetails.bodySubType,
-        bodySubType: this.additionalDetails.bodySubType,
-        MSRP: this.additionalDetails.MSRP,
+      'vehicleName': this.vehicleName,
+      'VIN': this.VIN,
+      'year': this.year,
+      'manufacturerID': this.make,
+      'modelID': this.model,
+      'stateID': this.state,
+      'countryID' : this.countryID,
+      'plateNumber': this.plateNumber,
+      'basicPrimaryMeter':this.basicPrimaryMeter,
+      'spRepeatTime': this.spRepeatTime,
+      'spRepeatTimeUnit' : this.spRepeatTimeUnit,
+      'spRepeatOdometer':this.spRepeatOdometer,
+      'serviceProgramID': this.serviceProgramID,
+      'inspectionFormID': this.inspectionFormID,
+      'currentStatus': this.currentStatus,
+      'groupID': this.group,
+      'ownership': this.ownership,
+      'additionalDetails': {
+        'vehicleColor': this.additionalDetails.vehicleColor,
+        'bodyType': this.additionalDetails.bodySubType,
+        'bodySubType': this.additionalDetails.bodySubType,
+        'MSRP': this.additionalDetails.MSRP,
       },
-      insurance : {
-        issueDate: this.insurance.issueDate,
-        premiumAmount: this.insurance.premiumAmount,
-        premiumAmountUnit: this.insurance.premiumAmountUnit,
-        expiryDate: this.insurance.expiryDate,
-        vendorID: this.insurance.vendorID,
-        reminderNumber: this.insurance.reminderNumber,
-        reminderNumberUnits : this.insurance.reminderNumberUnits
-    
+      'insurance' : {
+        'issueDate': this.insurance.issueDate,
+        'premiumAmount': this.insurance.premiumAmount,
+        'premiumAmountUnit': this.insurance.premiumAmountUnit,
+        'expiryDate': this.insurance.expiryDate,
+        'vendorID': this.insurance.vendorID,
+        'reminderNumber': this.insurance.reminderNumber,
+        'reminderNumberUnits' : this.insurance.reminderNumberUnits
       },
-      lifeCycle: {
-        estimatedServiceLifeInMonths: this.lifeCycle.estimatedServiceLifeInMonths,
-        estimatedServiceLifeInMiles: this.lifeCycle.estimatedServiceLifeInMiles,
-        inServiceDate:this.lifeCycle.inServiceDate,
-        inServiceOdometer:this.lifeCycle.inServiceOdometer,
-        outServiceDate:this.lifeCycle.outServiceDate,
-        outServiceOdometer:this.lifeCycle.outServiceOdometer,
-        estimatedResaleValue:this.lifeCycle.estimatedResaleValue,
+      'lifeCycle': {
+        'estimatedServiceLifeInMonths': this.lifeCycle.estimatedServiceLifeInMonths,
+        'estimatedServiceLifeInMiles': this.lifeCycle.estimatedServiceLifeInMiles,
+        'inServiceDate':this.lifeCycle.inServiceDate,
+        'inServiceOdometer':this.lifeCycle.inServiceOdometer,
+        'outServiceDate':this.lifeCycle.outServiceDate,
+        'outServiceOdometer':this.lifeCycle.outServiceOdometer,
+        'estimatedResaleValue':this.lifeCycle.estimatedResaleValue,
       },
-      dimensions: {
-        width: this.dimensions.width,
-        height:  this.dimensions.height,
-        length: this.dimensions.length,
-        interiorVolume: this.dimensions.interiorVolume,
-        passengerVolume: this.dimensions.passengerVolume,
-        cargoVolume: this.dimensions.cargoVolume,
-        groundClearance: this.dimensions.groundClearance,
-        badLength: this.dimensions.badLength
+      'dimensions': {
+        'width': this.dimensions.width,
+        'height':  this.dimensions.height,
+        'length': this.dimensions.length,
+        'interiorVolume': this.dimensions.interiorVolume,
+        'passengerVolume': this.dimensions.passengerVolume,
+        'cargoVolume': this.dimensions.cargoVolume,
+        'groundClearance': this.dimensions.groundClearance,
+        'badLength': this.dimensions.badLength
       },
-      weight: {
-        curbWeight: this.weight.curbWeight,
-        grossVehicleWeightRating: this.weight.grossVehicleWeightRating
+      'weight': {
+        'curbWeight': this.weight.curbWeight,
+        'grossVehicleWeightRating': this.weight.grossVehicleWeightRating
       },
-      performace: {
-        towingCapacity: this.performace.towingCapacity,
-        maxPayload: this.performace.maxPayload
+      'performace': {
+        'towingCapacity': this.performace.towingCapacity,
+        'maxPayload': this.performace.maxPayload
       },
-      fuelEconomy: {
-        EPACity: this.fuelEconomy.EPACity,
-        EPAHighway: this.fuelEconomy.EPAHighway,
-        EPACombined: this.fuelEconomy.EPACombined
+      'fuelEconomy': {
+        'EPACity': this.fuelEconomy.EPACity,
+        'EPAHighway': this.fuelEconomy.EPAHighway,
+        'EPACombined': this.fuelEconomy.EPACombined
       },
-      fuel: {
-        fuelType: this.fuel.fuelType,
-        fuelQuality:this.fuel.fuelQuality,
-        fuelTank1Capacity: this.fuel.fuelTank1Capacity,
-        fuelTank2Capacity: this.fuel.fuelTank2Capacity
+      'fuel': {
+        'fuelType': this.fuel.fuelType,
+        'fuelQuality': this.fuel.fuelQuality,
+        'fuelTank1Capacity': this.fuel.fuelTank1Capacity,
+        'fuelTank2Capacity': this.fuel.fuelTank2Capacity
       },
-      oilCapacity: this.oilCapacity,
-      features: {
-        numberOfTires:this.features.numberOfTires,
-        driveType:this.features.driveType,
-        breakSystem: this.features.breakSystem,
-        wheelBase: this.features.wheelBase,
-        rearAxle: this.features.rearAxle,
-        frontTyreType: this.features.frontTyreType,
-        frontTrackWidth: this.features.frontTrackWidth,
-        frontWheelDiameter: this.features.frontWheelDiameter,
-        frontTyrePSI: this.features.frontTyrePSI,
-        rearTyreType: this.features.rearTyreType,
-        rearTrackWidth: this.features.rearTrackWidth,
-        rearWheelDiameter: this.features.rearWheelDiameter,
-        rearTyrePSI: this.features.rearTyreType
+      'oilCapacity': this.oilCapacity,
+      'features': {
+        'numberOfTires':this.features.numberOfTires,
+        'driveType':this.features.driveType,
+        'breakSystem': this.features.breakSystem,
+        'wheelBase': this.features.wheelBase,
+        'rearAxle': this.features.rearAxle,
+        'frontTyreType': this.features.frontTyreType,
+        'frontTrackWidth': this.features.frontTrackWidth,
+        'frontWheelDiameter': this.features.frontWheelDiameter,
+        'frontTyrePSI': this.features.frontTyrePSI,
+        'rearTyreType': this.features.rearTyreType,
+        'rearTrackWidth': this.features.rearTrackWidth,
+        'rearWheelDiameter': this.features.rearWheelDiameter,
+        'rearTyrePSI': this.features.rearTyreType
       },
-      engine : {
-        engineSummary : this.engine.engineSummary,
-        engineBrand : this.engine.engineBrand,
-        aspiration : this.engine.aspiration,
-        blockType : this.engine.blockType,
-        bore : this.engine.bore,
-        camType : this.engine.camType,
-        stroke : this.engine.stroke,
-        valves : this.engine.valves,
-        compression : this.engine.compression,
-        cylinders : this.engine.cylinders,
-        displacement : this.engine.displacement,
-        fuelInduction : this.engine.fuelInduction,
-        fuelQuality : this.engine.fuelQuality,
-        maxHP : this.engine.maxHP,
-        maxTorque : this.engine.maxTorque,
-        redlineRPM : this.engine.redlineRPM,
+      'engine' : {
+        'engineSummary' : this.engine.engineSummary,
+        'engineBrand' : this.engine.engineBrand,
+        'aspiration' : this.engine.aspiration,
+        'blockType' : this.engine.blockType,
+        'bore' : this.engine.bore,
+        'camType' : this.engine.camType,
+        'stroke' : this.engine.stroke,
+        'valves' : this.engine.valves,
+        'compression' : this.engine.compression,
+        'cylinders' : this.engine.cylinders,
+        'displacement' : this.engine.displacement,
+        'fuelInduction' : this.engine.fuelInduction,
+        'fuelQuality' : this.engine.fuelQuality,
+        'maxHP' : this.engine.maxHP,
+        'maxTorque' : this.engine.maxTorque,
+        'redlineRPM' : this.engine.redlineRPM,
         },
-        transmission : {
-          summary : this.transmission.summary,
-          brand : this.transmission.brand,
-          type: this.transmission.type,
-          gears : this.transmission.gears,
+        'transmission' : {
+          'summary' : this.transmission.summary,
+          'brand' : this.transmission.brand,
+          'type': this.transmission.type,
+          'gears' : this.transmission.gears,
         },
-      settings: {
-        primaryMeter: this.settings.primaryMeter,
-        fuelUnit: this.settings.fuelUnit,
-        measurementUnit: this.settings.measurementUnit
+      'settings': {
+        'primaryMeter': this.settings.primaryMeter,
+        'fuelUnit': this.settings.fuelUnit,
+        'measurementUnit': this.settings.measurementUnit
       },
-      safetyParameters: {
-        hardBreakingParameters: this.safetyParameters.hardBreakingParameters,
-        hardAccelrationParameters: this.safetyParameters.hardAccelrationParameters,
-        turningParameters: this.safetyParameters.turningParameters,
+      'safetyParameters': {
+        'hardBreakingParameters': this.safetyParameters.hardBreakingParameters,
+        'hardAccelrationParameters': this.safetyParameters.hardAccelrationParameters,
+        'turningParameters': this.safetyParameters.turningParameters,
       },
-      quantumInfo: this.quantum
+      'quantumInfo': this.quantum
   };
 
-console.log(data);
-return;
-    this.apiService.postData('vehicles', data).
-    subscribe({
+    this.apiService.postData('vehicles', data)
+      .subscribe({
       complete : () => {},
       error : (err) => {
-        this.hasError = true;
-        this.Error = err.error;
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
         this.response = res;
@@ -392,38 +414,38 @@ return;
       }
     });
   }
- 
-  onChangeBasicPrimaryMeter(value: any){
+
+  onChangeBasicPrimaryMeter(value: any) {
     this.basicPrimaryMeter = value;
     console.log(value);
-    
+
   }
-  onChangePrimaryMeter(value: any){
+  onChangePrimaryMeter(value: any) {
     this.settings.primaryMeter = value;
     console.log(value);
-    
+
   }
 
-  onChangeFuelUnit(value: any){
+  onChangeFuelUnit(value: any) {
     this.settings.fuelUnit = value;
   }
 
-  onChangeMeasurementUnit(value: any){
+  onChangeMeasurementUnit(value: any) {
     this.settings.measurementUnit = value;
   }
 
-  onChangeHardBreakingParameters(value: any){
+  onChangeHardBreakingParameters(value: any) {
     this.safetyParameters.hardBreakingParameters = value;
     console.log(value);
     $('#hardBreakingParametersValue').html(value);
   }
 
-  onChangeAccelrationParameters(value: any){
+  onChangeAccelrationParameters(value: any) {
     this.safetyParameters.hardAccelrationParameters = value;
     $('#hardAccelrationParametersValue').html(value);
   }
 
-  onChangeturningParameters(value: any){
+  onChangeturningParameters(value: any) {
     this.safetyParameters.turningParameters = value;
     $('#turningParametersValue').html(value);
   }
@@ -447,4 +469,9 @@ return;
       this.imageError = 'Invalid Image Format';
     }
   }
+
+  throwErrors() {
+    this.form.showErrors(this.errors);
+  }
+
 }
