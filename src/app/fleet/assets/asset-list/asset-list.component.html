@@ -199,7 +199,6 @@
                               <thead>
                                  <tr>
                                     <th><input (click)="checkuncheckall()" type="checkbox"></th>
-                                    <th>Asset ID</th> 
                                     <th>Asset Name</th>
                                     <th>Type</th>
                                     <th>Plate Number</th>
@@ -210,14 +209,13 @@
                               <tbody>
                               <tr *ngFor="let asset of assetsData;let i = index;">
                                 <td class="sorting_1"><input [checked]="isChecked" [(ngModel)]="asset.checked" (ngModelChange)="checkboxCount()" value="{{asset.assetName}}" type="checkbox"></td>
-                                <td>{{asset.assetID}}</td>
                                 <td routerLink="/fleet/assets/asset-detail/{{asset.assetID}}">{{ asset.assetName }}</td>
                                 <td>{{ asset.assetDetails.assetType }}</td>
                                 <td>{{ asset.assetDetails.plateNumber }}</td>
                                 <td>Live Location</td>
                                 <td>
                                   <span class="badge badge-secondary text-3">
-                                       Active                                   
+                                    {{ asset.assetDetails.currentStatus }}                                   
                                   </span>
                                 </td>
                                 </tr>
@@ -231,7 +229,6 @@
                                <thead>
                                   <tr>
                                      <th><input (click)="checkuncheckall()" type="checkbox"></th>
-                                     <th>Asset ID</th> 
                                      <th>Asset Name</th>
                                      <th>Fuel Level</th>
                                      <th>Current Temp.</th>
@@ -244,7 +241,6 @@
                                <tbody>
                                <tr *ngFor="let asset of assetsData;let i = index;" >
                                  <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
-                                 <td>{{ asset.assetID }}</td>
                                  <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
                                  <td>Live Location</td>
                                  <td>Live Location</td>
@@ -253,7 +249,7 @@
                                  <td>Live Location</td>
                                  <td>
                                    <span class="badge badge-secondary text-3">
-                                    Active
+                                    {{ asset.assetDetails.currentStatus }}
                                    </span>
                                  </td>
                                  </tr>
@@ -267,7 +263,6 @@
                                <thead>
                                   <tr>
                                     <th><input (click)="checkuncheckall()" type="checkbox"></th>
-                                    <th>Asset ID</th>
                                     <th>Asset Name</th>
                                     <th>Plate Number</th>
                                     <th>Last Known Location</th>
@@ -277,13 +272,12 @@
                                <tbody>
                                  <tr *ngFor="let asset of assetsData;let i = index;">
                                  <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
-                                 <td>{{ asset.assetID }}</td>
                                  <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
                                  <td>{{ asset.assetDetails.plateNumber  }}</td>
                                  <td>Live Location</td>
                                  <td>
                                    <span class="badge badge-secondary text-3">
-                                    Active
+                                    {{ asset.assetDetails.currentStatus }}
                                    </span>
                                  </td>
                                  </tr>
@@ -296,24 +290,23 @@
                               <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
                                <thead>
                                   <tr>
-                                     <th><input (click)="checkuncheckall()" type="checkbox"></th>
-                                     <th>Asset ID</th>
-                                       <th>Asset Name</th>
-                                       <th>Plate Number</th>
-                                       <th>Last Known Location</th>
-                                       <th>Status</th>
+                                    <th><input (click)="checkuncheckall()" type="checkbox"></th>
+                                    
+                                    <th>Asset Name</th>
+                                    <th>Plate Number</th>
+                                    <th>Last Known Location</th>
+                                    <th>Status</th>
                                   </tr>
                                </thead>
                                <tbody>
                                <tr *ngFor="let asset of assetsData;let i = index;">
                                  <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
-                                 <td>{{ asset.assetID }}</td>
-                                 <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
+                                  <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
                                  <td>{{ asset.assetDetails.plateNumber  }}</td>
                                  <td>Live Location</td>
                                  <td>
                                    <span class="badge badge-secondary text-3">
-                                     Active
+                                    {{ asset.assetDetails.currentStatus }}
                                    </span>
                                  </td>
                                  </tr>
@@ -327,8 +320,7 @@
                               <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
                                <thead>
                                   <tr>
-                                     <th><input (click)="checkuncheckall()"  type="checkbox"></th>
-                                     <th>Asset ID</th>
+                                    <th><input (click)="checkuncheckall()"  type="checkbox"></th>
                                     <th>Asset Name</th>
                                     <th>Plate Number</th>
                                     <th>Last Known Location</th>
@@ -338,13 +330,12 @@
                                <tbody>
                                  <tr *ngFor="let asset of assetsData;let i = index;">
                                     <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
-                                    <td>{{ asset.assetID }}</td>
                                     <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
                                     <td>{{ asset.assetDetails.plateNumber  }}</td>
                                     <td>Live Location</td>
                                     <td>
                                        <span class="badge badge-secondary text-3">
-                                          Active
+                                          {{ asset.assetDetails.currentStatus }}
                                        </span>
                                     </td>
                                  </tr>

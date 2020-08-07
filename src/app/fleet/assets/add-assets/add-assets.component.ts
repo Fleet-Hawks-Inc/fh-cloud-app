@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
+import {Title} from "@angular/platform-browser";
 import { ApiService } from "../../../api.service";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { catchError, map, mapTo, tap } from "rxjs/operators";
 import { from, of } from "rxjs";
 import { ToastrService } from 'ngx-toastr';
@@ -14,6 +15,7 @@ declare var $: any;
 })
 export class AddAssetsComponent implements OnInit {
   title = "Add Assets";
+  public assetID;
   errors = {};
   form;
   quantumSelected = '';
@@ -66,13 +68,21 @@ export class AddAssetsComponent implements OnInit {
   hasSuccess: boolean = false;
   Error: string = "";
   Success: string = "";
-  constructor(private apiService: ApiService, private router: Router,private toastr: ToastrService) {}
+  constructor(private apiService: ApiService,private route: ActivatedRoute,private titleService:Title, private router: Router,private toastr: ToastrService) {
+    
+  }
 
   ngOnInit() {
     this.fetchQuantum();
     this.fetchManufactuer();
     this.fetchCountries();
     this.fetchInspectionForms();
+    this.assetID = this.route.snapshot.params["assetID"];
+    if(this.route.snapshot.params["assetID"]){
+      this.titleService.setTitle("Update Asset");
+      this.fetchAsset()
+    } 
+    
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
@@ -199,5 +209,101 @@ export class AddAssetsComponent implements OnInit {
 
   throwErrors() {
     this.form.showErrors(this.errors);
+  }
+
+  fetchAsset() {
+    this.apiService
+      .getData("assets/" + this.assetID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+        console.log("assets", this.assetsData)
+        console.log(result);
+        this.assetsData['assetID'] = this.assetID;
+        this.assetsData['assetName'] = result.assetName;
+        this.assetsData['VIN'] = result.VIN;
+        this.assetsData['assetDetails']['assetType'] = result.assetDetails.assetType;
+        
+        this.assetsData['assetDetails']['year'] = result.assetDetails.year;
+        this.assetsData['assetDetails']['manufacturerID'] = result.assetDetails.manufacturerID;
+        this.assetsData['assetDetails']['modelID'] = result.assetDetails.modelID;
+        this.assetsData['assetDetails']['length'] = result.assetDetails.length;
+        this.assetsData['assetDetails']['lengthType'] = result.assetDetails.lengthType;
+        this.assetsData['assetDetails']['axle'] = result.assetDetails.axle;
+        this.assetsData['assetDetails']['GVWR'] = result.assetDetails.GVWR;
+        this.assetsData['assetDetails']['gvwrType'] = result.assetDetails.gvwrType;
+        this.assetsData['assetDetails']['GAWR'] = result.assetDetails.GAWR;
+        this.assetsData['assetDetails']['gawrType'] = result.assetDetails.gawrType;
+        this.assetsData['assetDetails']['ownerShip'] = result.assetDetails.ownerShip;
+        this.assetsData['assetDetails']['currentStatus'] = result.assetDetails.currentStatus;
+        this.assetsData['assetDetails']['plateNumber'] = result.assetDetails.plateNumber;
+        this.assetsData['assetDetails']['remarks'] = result.assetDetails.remarks;
+        this.assetsData['insuranceDetails']['dateOfIssue'] = result.insuranceDetails.dateOfIssue;
+        this.assetsData['insuranceDetails']['premiumAmount'] = result.insuranceDetails.premiumAmount;
+        this.assetsData['insuranceDetails']['premiumCurrencyType'] = result.insuranceDetails.premiumCurrencyType;
+        this.assetsData['insuranceDetails']['dateOfExpiry'] = result.insuranceDetails.dateOfExpiry;
+        this.assetsData['insuranceDetails']['dateOfIssue'] = result.insuranceDetails.dateOfIssue;
+        this.assetsData['insuranceDetails']['reminderBeforeExpiry'] = result.insuranceDetails.reminderBeforeExpiry;
+        this.assetsData['insuranceDetails']['reminderType'] = result.insuranceDetails.reminderType;
+        this.assetsData['insuranceDetails']['vendor'] = result.insuranceDetails.vendor;
+        this.assetsData['insuranceDetails']['vendor'] = result.insuranceDetails.vendor;
+        // this.assetsData['timeCreated'] = result.timeCreated;
+        // this.assetsData['timeModified'] = result.timeModified;
+        
+        // this.assetInfo.manufacturerID = result.assetInfo.manufacturerID;
+        // this.assetInfo.modelID = result.assetInfo.modelID;
+        // this.length = result.length;
+        // this.axle = result.axle;
+        // this.GVWR = result.GVWR;
+        // this.GAWR = result.GAWR;
+        // this.license.countryID = result.license.countryID;
+        // this.license.stateID = result.license.stateID;
+        // this.license.plateNumber = result.license.plateNumber;
+        // this.ownerShip = result.ownerShip;
+        // this.remarks = result.remarks;
+        // this.ownerShipStatus = result.ownerShipStatus;
+        // this.quantumInfo.UID = result.quantumInfo.UID;
+        // this.currentStatus = result.currentStatus;
+        // this.timeCreated = result.timeCreated;
+      });
+
+  }
+
+  updateAsset() {
+    this.hasError = false;
+    this.hasSuccess = false;
+
+    console.log("log", this.assetsData)
+    this.apiService.putData("assets", this.assetsData).subscribe({
+      complete: () => {},
+      error: (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              console.log("val", val)
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+              console.log(key);
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
+      },
+      next: (res) => {
+        console.log("res", res);
+        this.response = res;
+        this.hasSuccess = true;
+        this.toastr.success('Asset updated successfully');
+        this.router.navigateByUrl('/fleet/assets/Assets-List');
+        this.Success = "";
+      },
+    });
   }
 }

@@ -20,7 +20,7 @@
       <div class="row">
         <div class="col pr-0">
           <div class="card-body text-dark">
-            <form  class="form-horizontal form-bordered"
+            <form class="form-horizontal form-bordered"
             method="get"
             name="form"
             id="form_">
@@ -36,7 +36,7 @@
                         type="text"
                         class="form-control"
                         [(ngModel)]="assetsData.assetName"
-                        name="assetsData.assetName"
+                        name="assetName"
                       /> 
                     </div>
                   </div>
@@ -49,7 +49,7 @@
                         type="text"
                         class="form-control"
                         [(ngModel)]="assetsData.VIN"
-                        name="assetsData.VIN"
+                        name="VIN"
                       /> 
                     </div>
                   </div>
@@ -64,7 +64,7 @@
                     <div class="col-lg-10">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Asset Type</label>
                       <select [(ngModel)]="assetsData.assetDetails.assetType"
-                      name="assetsData.assetDetails.assetType" data-plugin-selectTwo class="form-control populate">
+                      name="assetDetails.assetType" data-plugin-selectTwo class="form-control populate">
                         <optgroup label="">
                           <option value="Auto Hauler">Auto Hauler</option>
                           <option value="Curtain Side">Curtain Side</option>
@@ -88,7 +88,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Year</label>
                       <select data-plugin-selectTwo
                           class="form-control populate"
-                          name="assetsData.assetDetails.year"
+                          name="assetDetails.year"
                           [(ngModel)]="assetsData.assetDetails.year"
                         >
                         <optgroup label="">
@@ -108,7 +108,7 @@
                       id="manufacturerID"
                       (change)="getModels()"
                       [(ngModel)]="assetsData.assetDetails.manufacturerID"
-                      name="assetsData.assetDetails.manufacturerID"> 
+                      name="assetDetails.manufacturerID"> 
                     </div>
                     <div class="col-lg-3">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Model</label>
@@ -116,7 +116,7 @@
                       class="form-control populate"
                       id="model"
                       [(ngModel)]="assetsData.assetDetails.modelID"
-                      name="assetsData.assetDetails.modelID"> </div>
+                      name="assetDetails.modelID"> </div>
                   </div>
                   <div class="row mt-2">
                     <div class="col-lg-5">
@@ -128,12 +128,12 @@
                             class="form-control"
                             id="length"
                             [(ngModel)]="assetsData.assetDetails.length"
-                            name="assetsData.assetDetails.length"
+                            name="assetDetails.length"
                           /> 
                         </div>
                         <div class="col-lg-6 pl-0">
                           <select [(ngModel)]="assetsData.assetDetails.lengthType"
-                          name="assetsData.assetDetails.lengthType" data-plugin-selectTwo class="form-control populate">
+                          name="assetDetails.lengthType" data-plugin-selectTwo class="form-control populate">
                             <optgroup label="">
                               <option value="Feet">Feet</option>
                               <option value="Meters">Meters</option>
@@ -146,7 +146,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Axles</label>
                       <select id="axle"
                         [(ngModel)]="assetsData.assetDetails.axle"
-                        name="assetsData.assetDetails.axle" class="form-control populate">
+                        name="assetDetails.axle" class="form-control populate">
                         <optgroup label="">
                           <option value="1">1</option>
                           <option value="2">2</option>
@@ -172,11 +172,11 @@
                             class="form-control"
                             id="GVWR"
                             [(ngModel)]="assetsData.assetDetails.GVWR"
-                            name="assetsData.assetDetails.GVWR"
+                            name="assetDetails.GVWR"
                           /> </div>
                         <div class="col-lg-6 pl-0">
                           <select [(ngModel)]="assetsData.assetDetails.gvwrType"
-                          name="assetsData.assetDetails.gvwrType" data-plugin-selectTwo class="form-control populate">
+                          name="assetDetails.gvwrType" data-plugin-selectTwo class="form-control populate">
                             <optgroup label="">
                               <option value="Pounds">Pounds</option>
                               <option value="Kilograms">Kilograms</option>
@@ -196,11 +196,11 @@
                             class="form-control"
                             id="GAWR"
                             [(ngModel)]="assetsData.assetDetails.GAWR"
-                            name="assetsData.assetDetails.GAWR"
+                            name="assetDetails.GAWR"
                           /> </div>
                         <div class="col-lg-6 pl-0">
                           <select [(ngModel)]="assetsData.assetDetails.gawrType"
-                          name="assetsData.assetDetails.gawrType" data-plugin-selectTwo class="form-control populate">
+                          name="assetDetails.gawrType" data-plugin-selectTwo class="form-control populate">
                             <optgroup label="">
                               <option value="Pounds">Pounds</option>
                               <option value="Kilograms">Kilograms</option>
@@ -216,15 +216,29 @@
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">Ownership</label>
                         <select data-plugin-selectTwo
-                        class="form-control populate"
-                        [(ngModel)]="assetsData.assetDetails.ownerShip"
-                        name="assetsData.assetDetails.ownerShip">
-                        <optgroup label="">
-                          <option value="1">Owned</option>
-                          <option value="2">Leased</option>
-                          <option value="2">Rented</option>
-                          <option value="2">Customer</option>
-                        </optgroup>
+                          class="form-control populate"
+                          [(ngModel)]="assetsData.assetDetails.ownerShip"
+                          name="assetDetails.ownerShip">
+                          <optgroup label="">
+                            <option value="Owned">Owned</option>
+                            <option value="Leased">Leased</option>
+                            <option value="Rented">Rented</option>
+                            <option value="Customer">Customer</option>
+                          </optgroup>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5">
+                      <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">Status</label>
+                        <select data-plugin-selectTwo
+                          class="form-control populate"
+                          [(ngModel)]="assetsData.assetDetails.currentStatus"
+                          name="assetDetails.currentStatus">
+                          <optgroup label="">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                          </optgroup>
                       </select>
                     </div>
                   </div>
@@ -236,7 +250,7 @@
                         class="form-control"
                         id="plateNumber"
                         [(ngModel)]="assetsData.assetDetails.plateNumber"
-                        name="assetsData.assetDetails.plateNumber"
+                        name="assetDetails.plateNumber"
                       /> 
                     </div>
                   </div>
@@ -247,7 +261,7 @@
                       rows="3"
                       id="remarks"
                       [(ngModel)]="assetsData.assetDetails.remarks"
-                      name="assetsData.assetDetails.remarks"></textarea>
+                      name="assetDetails.remarks"></textarea>
                     </div>
                   </div>
                 </div>
@@ -265,7 +279,7 @@
                       class="form-control"
                       id="dateOfIssue"
                       [(ngModel)]="assetsData.insuranceDetails.dateOfIssue"
-                      name="assetsData.insuranceDetails.dateOfIssue"> </div>
+                      name="insuranceDetails.dateOfIssue"> </div>
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold text-lg-right pt-2">Premium Amount</label>
                       <div class="row">
@@ -274,11 +288,11 @@
                             class="form-control"
                             id="premium-amount"
                             [(ngModel)]="assetsData.insuranceDetails.premiumAmount"
-                            name="assetsData.insuranceDetails.premiumAmount" />
+                            name="insuranceDetails.premiumAmount" />
                         </div>
                         <div class="col-lg-6 pl-0">
                           <select [(ngModel)]="assetsData.insuranceDetails.premiumCurrencyType"
-                          name="assetsData.insuranceDetails.premiumCurrencyType" data-plugin-selectTwo class="form-control populate">
+                          name="insuranceDetails.premiumCurrencyType" data-plugin-selectTwo class="form-control populate">
                             <optgroup label="">
                               <option value="USD">USD</option>
                               <option value="CAD">CAD</option>
@@ -295,18 +309,18 @@
                                 class="form-control"
                                 id="dateOfExpiry"
                                 [(ngModel)]="assetsData.insuranceDetails.dateOfExpiry"
-                                name="assetsData.insuranceDetails.dateOfExpiry" />
+                                name="insuranceDetails.dateOfExpiry" />
                           </div>
                           <div class="col-lg-5">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Reminder Before Expiry</label>
                               <div class="row">
                                 <div class="col-lg-6 pr-0"><input type="text" id="reminderBeforeExpiry"
                                   [(ngModel)]="assetsData.insuranceDetails.reminderBeforeExpiry"
-                                  name="assetsData.insuranceDetails.reminderBeforeExpiry" class="form-control" ></div>
+                                  name="insuranceDetails.reminderBeforeExpiry" class="form-control" ></div>
                                 <div class="col-lg-6 pl-0">
                                     <select id="reminderType"
                                     [(ngModel)]="assetsData.insuranceDetails.reminderType"
-                                    name="assetsData.insuranceDetails.reminderType" data-plugin-selectTwo class="form-control populate">
+                                    name="insuranceDetails.reminderType" data-plugin-selectTwo class="form-control populate">
                                       <optgroup label="">
                                           <option value="Day">Day(s)</option>
                                           <option value="Week">Week(s)</option>
@@ -324,7 +338,7 @@
                       <label class="control-label font-weight-bold text-lg-right pt-2">Vendor</label>
                       <select id="vendor"
                       [(ngModel)]="assetsData.insuranceDetails.vendor"
-                      name="assetsData.insuranceDetails.vendor" data-plugin-selectTwo class="form-control populate">
+                      name="insuranceDetails.vendor" data-plugin-selectTwo class="form-control populate">
                         <optgroup label="">
                           <option value="1">Vendor 1</option>
                           <option value="1">Vendor 2</option>
@@ -349,7 +363,7 @@
                     <div class="col-lg-10">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Attach Photo</label>
                       <input [(ngModel)]="assetsData.uploadedPhotos.photo"
-                      name="assetsData.uploadedPhotos.photo" type="file" multiple class="form-control p-0" id="inputDefault"> </div>
+                      name="uploadedPhotos.photo" type="file" multiple class="form-control p-0" id="inputDefault"> </div>
                     <div class="col-lg-2  mar-top-37">
                       <!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> --></div>
                   </div>
@@ -359,14 +373,18 @@
                     <div class="col-lg-10">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault1">Attach Document</label>
                       <input [(ngModel)]="assetsData.uploadedDocs.doc"
-                      name="assetsData.uploadedDocs.doc" type="file" multiple class="form-control p-0" id="inputDefault1"> </div>
+                      name="uploadedDocs.doc" type="file" multiple class="form-control p-0" id="inputDefault1"> </div>
                     <!-- <div class="col-lg-2  mar-top-37">
                       <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a></div> -->
                   </div>
                 </div>
               </div>
               <div class="form-group row">
-                <div class="col-lg-11 text-right"> <a href="" class="btn btn-default" id="">Cancel</a> <a href="javascript:;" (click)="addAsset()" class="btn btn-success" id="nextBtn">Save</a> </div>
+                <div class="col-lg-11 text-right"> 
+                  <a href="" class="btn btn-default" id="">Cancel</a> 
+                  <a href="javascript:;" (click)="addAsset()" class="btn btn-success" id="nextBtn">Save</a> 
+                  <a href="javascript:;" (click)="updateAsset()" class="btn btn-success">Update</a> 
+                </div>
               </div>
             </form>
           </div>
