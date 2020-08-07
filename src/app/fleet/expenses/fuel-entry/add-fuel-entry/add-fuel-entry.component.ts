@@ -17,57 +17,57 @@ declare var $: any;
 })
 export class AddFuelEntryComponent implements OnInit {
   title = "Add Fuel Entry";
-  date: NgbDateStruct;
+  
   imageError = '';
   fileName = '';
  
   /********** Form Fields ***********/
- basic = {
-     unitType : "Vehicle",
-     vehicleID: "",
-     vehicleFuelQty : 0.0,   
-     vehicleFuelQtyUnit : "",
-     vehicleFuelQtyAmt : 0.0,  
-     reeferID: "",
-     reeferFuelQty : 0.0,
-     reeferFuelQtyUnit : "",
-     reeferFuelQtyAmt : 0.0,   
-     DEFFuelQty : 0.0,
-     DEFFuelQtyUnit : "gallons",
-     DEFFuelQtyAmt : 0.0,
-     discount : 0.0,
-     totalAmount : 0.0,
-     costPerGallon : 0.0,
-     amountPaid : 0.0,
-     date: "",
-     fuelType: "",
-    //  tripID: "",    
-     costLabel : "Cost/gallon", 
- };
- reimburseToDriver:boolean;
- deductFromPay : boolean;
- payment = {
-  paidBy: "",
-  paymentMode : "",
-  reference : "",
-  reimburseToDriver : false,
-  deductFromPay : false,
- };
- fuelStop = {  
-  vendorID : "",
-  countryID : "",
-  stateID : "",
-  cityID : "",
- };
- dispatch = {
-   dispatchAssociate : "",
-   dispatchID : ""
- };
- additional ={
-  avgGVW : "",
-  odometer : "",
-  description : ""
- };
+
+     unitType :string =  'Vehicle';
+     vehicleID = "";
+     vehicleFuelQty : number = 0; 
+     vehicleFuelQtyUnit : string = 'gallons';
+     vehicleFuelQtyAmt : number = 0;  
+     reeferID = "";
+     reeferFuelQty : number = 0;
+     reeferFuelQtyUnit :string =  'gallons';
+     reeferFuelQtyAmt :number = 0;   
+     DEFFuelQty : number = 0;
+     DEFFuelQtyUnit :string =  'gallons';
+     DEFFuelQtyAmt : number = 0;
+     discount : number = 0;
+     totalAmount : number = 0;
+     costPerGallon : number = 0;
+     amountPaid : number = 0;
+     date: NgbDateStruct;
+     fuelType = "";
+    //  tripID: "";    
+     costLabel : string =  'Cost/gallon'; 
+
+
+ 
+ 
+  paidBy = "";
+  paymentMode  = "";
+  reference  = "";
+  reimburseToDriver:boolean = false;
+  deductFromPay : boolean = false;
+ 
+ 
+  vendorID  = "";
+  countryID  = "";
+  stateID  = "";
+  cityID  = "";
+ 
+ 
+   dispatchAssociate  = "";
+   dispatchID  = ""
+ 
+ 
+  avgGVW  = "";
+  odometer  = "";
+  description  = ""
+
  countries = [];
  states = [];
  cities = [];
@@ -107,13 +107,13 @@ export class AddFuelEntryComponent implements OnInit {
       });
   }
   getStates() {
-    this.apiService.getData('states/country/' + this.fuelStop.countryID)
+    this.apiService.getData('states/country/' + this.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
   }
    getCities() {
-    this.apiService.getData('cities/state/' + this.fuelStop.stateID)
+    this.apiService.getData('cities/state/' + this.stateID)
     .subscribe((result: any) => {
       this.cities = result.Items;
     });
@@ -154,50 +154,39 @@ export class AddFuelEntryComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      basic : {
-        unitType : this.basic.unitType,
-        vehicleID: this.basic.vehicleID,
-        vehicleFuelQty : this.basic.vehicleFuelQty,   
-        vehicleFuelQtyUnit : this.basic.vehicleFuelQtyUnit,
-        vehicleFuelQtyAmt : this.basic.vehicleFuelQtyAmt,  
-        reeferID: this.basic.reeferID,
-        reeferFuelQty : this.basic.reeferFuelQty,
-        reeferFuelQtyUnit : this.basic.reeferFuelQtyUnit,
-        reeferFuelQtyAmt : this.basic.reeferFuelQtyAmt,   
-        DEFFuelQty : this.basic.DEFFuelQty,
-        DEFFuelQtyUnit : this.basic.DEFFuelQtyUnit,
-        DEFFuelQtyAmt : this.basic.DEFFuelQtyAmt,
-        discount : this.basic.discount,
-        totalAmount : this.basic.totalAmount,
-        costPerGallon : this.basic.costPerGallon,
-        amountPaid : this.basic.amountPaid,
-        date: this.basic.date,
-        fuelType: this.basic.fuelType,
-        // tripID: this.basic.tripID,  
-           
-    },     
-      payment:{
-        paidBy: this.payment.paidBy,
-        paymentMode: this.payment.paymentMode,
-        reference : this.payment.reference,
-        reimburseToDriver : this.payment.reimburseToDriver,
-        deductFromPay : this.payment.deductFromPay,
-      },
-      fuelStop : {      
-        vendorID : this.fuelStop.vendorID,
-        countryID : this.fuelStop.countryID,
-        stateID : this.fuelStop.stateID,
-        cityID : this.fuelStop.cityID,
-       },
-       dispatch : {
-        dispatchAssociate : this.dispatch.dispatchAssociate,
-        dispatchID : this.dispatch.dispatchID
-      },
-       additional : {
-        avgGVW : this.additional.avgGVW,
-        odometer : this.additional.odometer,
-        description : this.additional.description,
-       }
+        unitType : this.unitType,
+        vehicleID: this.vehicleID,
+        vehicleFuelQty : this.vehicleFuelQty,   
+        vehicleFuelQtyUnit : this.vehicleFuelQtyUnit,
+        vehicleFuelQtyAmt : this.vehicleFuelQtyAmt,  
+        reeferID: this.reeferID,
+        reeferFuelQty : this.reeferFuelQty,
+        reeferFuelQtyUnit : this.reeferFuelQtyUnit,
+        reeferFuelQtyAmt : this.reeferFuelQtyAmt,   
+        DEFFuelQty : this.DEFFuelQty,
+        DEFFuelQtyUnit : this.DEFFuelQtyUnit,
+        DEFFuelQtyAmt : this.DEFFuelQtyAmt,
+        discount : this.discount,
+        totalAmount : this.totalAmount,
+        costPerGallon : this.costPerGallon,
+        amountPaid : this.amountPaid,
+        date: this.date,
+        fuelType: this.fuelType,
+        // tripID: this.tripID, 
+        paidBy: this.paidBy,
+        paymentMode: this.paymentMode,
+        reference : this.reference,
+        reimburseToDriver : this.reimburseToDriver,
+        deductFromPay : this.deductFromPay,
+        vendorID : this.vendorID,
+        countryID : this.countryID,
+        stateID : this.stateID,
+        cityID : this.cityID,
+        dispatchAssociate : this.dispatchAssociate,
+        dispatchID : this.dispatchID,
+        avgGVW : this.avgGVW,
+        odometer : this.odometer,
+        description : this.description,
     };
  console.log(data);
     this.apiService.postData("fuelEntries", data).subscribe({
@@ -234,7 +223,7 @@ export class AddFuelEntryComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.Success = "Fuel entry Added successfully";
-        // this.basic.vehicleID = "";
+        // this.vehicleID = "";
         // this.vendorID = "";
         // this.location = "";
         // this.odometer = "";
@@ -251,35 +240,35 @@ export class AddFuelEntryComponent implements OnInit {
     this.form.showErrors(this.errors);
   }
   onChangeUnitType(value: any){
-    this.basic.unitType = value; 
-    this.basic.vehicleFuelQtyAmt = 0;
-    this.basic.reeferFuelQtyAmt = 0;
-    this.basic.vehicleFuelQty = 0;
-    this.basic.reeferFuelQty = 0;
+    this.unitType = value; 
+    this.vehicleFuelQtyAmt = 0;
+    this.reeferFuelQtyAmt = 0;
+    this.vehicleFuelQty = 0;
+    this.reeferFuelQty = 0;
     this.calculate(); 
   }
   changeFuelUnit(){
-    if((this.basic.vehicleFuelQtyUnit == "gallons") || (this.basic.reeferFuelQtyUnit == "gallons")){
-         this.basic.costLabel = "Cost/gallon";
-         this.basic.DEFFuelQtyUnit = "gallons";
+    if((this.vehicleFuelQtyUnit == 'gallons') || (this.reeferFuelQtyUnit == 'gallons')){
+         this.costLabel = 'Cost/gallon';
+         this.DEFFuelQtyUnit = 'gallons';
     }
-   else if((this.basic.vehicleFuelQtyUnit == "litres") || (this.basic.reeferFuelQtyUnit == "litres")){
-      this.basic.costLabel = "Cost/litre";
-      this.basic.DEFFuelQtyUnit = "litres";
+   else if((this.vehicleFuelQtyUnit == 'litres') || (this.reeferFuelQtyUnit == 'litres')){
+      this.costLabel = 'Cost/litre';
+      this.DEFFuelQtyUnit = 'litres';
  }
   }
   calculate(){
-    this.basic.totalAmount = Number(this.basic.vehicleFuelQtyAmt) + Number(this.basic.DEFFuelQtyAmt) + Number(this.basic.reeferFuelQtyAmt);
-    var units = Number(this.basic.vehicleFuelQty) + Number(this.basic.DEFFuelQty) + Number(this.basic.reeferFuelQty);
-    // this.basic.costPerGallon = Math.round(this.basic.totalAmount/units);
-    this.basic.amountPaid = this.basic.totalAmount - this.basic.discount;
-    this.basic.costPerGallon = Math.round(this.basic.amountPaid/units);
+    this.totalAmount = Number(this.vehicleFuelQtyAmt) + Number(this.DEFFuelQtyAmt) + Number(this.reeferFuelQtyAmt);
+    var units = Number(this.vehicleFuelQty) + Number(this.DEFFuelQty) + Number(this.reeferFuelQty);
+    // this.costPerGallon = Math.round(this.totalAmount/units);
+    this.amountPaid = this.totalAmount - this.discount;
+    this.costPerGallon = Math.round(this.amountPaid/units);
   }
   // calculateTotal()
   // {
-  //   var units = Number(this.basic.vehicleFuelQty) + Number(this.basic.DEFFuelQty) + Number(this.basic.reeferFuelQty);
-  //   this.basic.amountPaid = this.basic.totalAmount - this.basic.discount;
-  //   this.basic.costPerGallon = Math.round(this.basic.amountPaid/units);
+  //   var units = Number(this.vehicleFuelQty) + Number(this.DEFFuelQty) + Number(this.reeferFuelQty);
+  //   this.amountPaid = this.totalAmount - this.discount;
+  //   this.costPerGallon = Math.round(this.amountPaid/units);
   // }
   uploadFile(event) {
     this.imageError = '';

@@ -86,6 +86,7 @@ import { DriverProfileComponent } from './drivers/driver-profile/driver-profile.
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgSelectConfig } from '@ng-select/ng-select'; 
 import { ɵs } from '@ng-select/ng-select';
+import {RouterModule} from '@angular/router';
 
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -151,7 +152,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
             NgSelectModule,
             CarouselModule,
             NgbModule,
-            NgMultiSelectDropDownModule.forRoot()
+            NgMultiSelectDropDownModule.forRoot(),
+            RouterModule
             
 
   ],

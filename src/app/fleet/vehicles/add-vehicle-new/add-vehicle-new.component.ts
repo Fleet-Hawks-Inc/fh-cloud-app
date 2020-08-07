@@ -418,7 +418,6 @@ expiryDate : NgbDateStruct;
   };
 
 console.log(data);
-return;
     this.apiService.postData('vehicles', data).
     subscribe({
       complete : () => {},

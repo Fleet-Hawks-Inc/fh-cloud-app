@@ -143,7 +143,7 @@ const routes: Routes = [
             component: FuelEntryListComponent,
           },
           {
-            path: "Edit-Fuel-Entry",
+            path: "Edit-Fuel-Entry/:entryID",
             component: EditFuelEntryComponent,
           },
           {

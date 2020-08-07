@@ -39,7 +39,7 @@
                                 <div class="col-lg-3">
                                    <div class="radio">
                                       <label class="btn btn-md btn-default active csbtn">
-                                      <input type="radio" name="unitType" [(ngModel)]="basic.unitType"
+                                      <input type="radio" name="unitType" [(ngModel)]="unitType"
                                          id="fuel_unit_vehicle"  checked hidden value="Vehicle" (change) = "onChangeUnitType('Vehicle')">
                                       Vehicle
                                       </label>
@@ -48,7 +48,7 @@
                                 <div class="col-lg-4 text-right">
                                    <div class="radio">
                                       <label  class="btn btn-md btn-default csbtn">
-                                      <input type="radio" name="unitType" [(ngModel)]="basic.unitType"
+                                      <input type="radio" name="unitType" [(ngModel)]="unitType"
                                          id="fuel_unit_reefer"  hidden value="Reefer" (change) = "onChangeUnitType('Reefer')">
                                       Reefer
                                       </label>
@@ -58,10 +58,10 @@
                              </div>
                           </div>
                        </div>
-                       <div class="row pt-3" id="fuelVehicle" *ngIf="basic.unitType ==='Vehicle'">
+                       <div class="row pt-3" id="fuelVehicle" *ngIf="unitType ==='Vehicle'">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vehicle</label>
-                             <select data-plugin-selectTwo class="form-control populate" name="vehicleID" [(ngModel)]="basic.vehicleID">
+                             <select data-plugin-selectTwo class="form-control populate" name="vehicleID" [(ngModel)]="vehicleID">
                                 <optgroup label="Select Truck">
                                    <option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleName}}</option>
                                 </optgroup>
@@ -69,11 +69,12 @@
                           </div>
                          
                        </div>
-                       <div class="row pt-3" id="fuelReefer" *ngIf="basic.unitType ==='Reefer'">
+                       <div class="row pt-3" id="fuelReefer" *ngIf="unitType ==='Reefer'">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reefer</label>
-                             <select data-plugin-selectTwo class="form-control populate">
+                             <select data-plugin-selectTwo class="form-control populate" name="reeferID" [(ngModel)]="reeferID">
                                 <optgroup label="Select Reefer">
+                                 <!-- <option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleName}}</option> -->
                                    <option value="Trailer 1">Trailer 1</option>
                                    <option value="Trailer 2">Trailer 2</option>
                                    <option value="Trailer 3">Trailer 3</option>
@@ -83,14 +84,14 @@
                           </div>
                         
                        </div>
-                       <div id="fuelVehicleQty"  *ngIf="basic.unitType ==='Vehicle'">
+                       <div id="fuelVehicleQty"  *ngIf="unitType ==='Vehicle'">
                           <div class="row">
                              <div class="col-lg-4">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vehicle Fuel Quantity</label>
-                                <input type="text" class="form-control" name="vehicleFuelQty" [(ngModel)]="basic.vehicleFuelQty" (change)="calculate()">
+                                <input type="number" class="form-control" name="vehicleFuelQty" [(ngModel)]="vehicleFuelQty" (change)="calculate()">
                              </div>
                              <div class="col-lg-2 qtumbtn px-0">
-                                <select data-plugin-selectTwo class="form-control populate" name="vehicleFuelQtyUnit" [(ngModel)]="basic.vehicleFuelQtyUnit" (change)="changeFuelUnit()">
+                                <select data-plugin-selectTwo class="form-control populate" name="vehicleFuelQtyUnit" [(ngModel)]="vehicleFuelQtyUnit" (change)="changeFuelUnit()">
                                    <optgroup label="">
                                       <option value="gallons">gallons</option>
                                       <option value="litres">litres</option>
@@ -99,18 +100,18 @@
                              </div>
                              <div class="col-lg-4">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Amount</label>
-                                <input type="text" class="form-control" name="vehicleFuelQtyAmt" [(ngModel)]="basic.vehicleFuelQtyAmt" (change)="calculate()">
+                                <input type="number" class="form-control" name="vehicleFuelQtyAmt" [(ngModel)]="vehicleFuelQtyAmt" (change)="calculate()">
                              </div>
                           </div>
                        </div>
-                       <div id="fuelReeferQty" *ngIf="basic.unitType ==='Reefer'">
+                       <div id="fuelReeferQty" *ngIf="unitType ==='Reefer'">
                           <div class="row" >
                              <div class="col-lg-4">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reefer Fuel Quantity</label>
-                                <input type="text" class="form-control" name="reeferFuelQty" [(ngModel)]="basic.reeferFuelQty" (change)="calculate()">
+                                <input type="number" class="form-control" name="reeferFuelQty" [(ngModel)]="reeferFuelQty" (change)="calculate()">
                              </div>
                              <div class="col-lg-2 qtumbtn px-0">
-                                <select data-plugin-selectTwo class="form-control populate" name="reeferFuelQtyUnit" [(ngModel)]="basic.reeferFuelQtyUnit" (change)="changeFuelUnit()">
+                                <select data-plugin-selectTwo class="form-control populate" name="reeferFuelQtyUnit" [(ngModel)]="reeferFuelQtyUnit" (change)="changeFuelUnit()">
                                    <optgroup label="">
                                       <option value="gallons">gallons</option>
                                       <option value="litres">litres</option>
@@ -119,23 +120,23 @@
                              </div>
                              <div class="col-lg-4">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Amount</label>
-                                <input type="text" class="form-control" name="reeferFuelQtyAmt" [(ngModel)]="basic.reeferFuelQtyAmt"  (change)="calculate()">
+                                <input type="number" class="form-control" name="reeferFuelQtyAmt" [(ngModel)]="reeferFuelQtyAmt"  (change)="calculate()">
                              </div>
                           </div>
                        </div>
                        <div class="row">
                           <div class="col-lg-4">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >DEF Fuel Quantity</label>
-                             <input type="text" class="form-control" name="DEFFuelQty" [(ngModel)]="basic.DEFFuelQty" (change)="calculate()">
+                             <input type="number" class="form-control" name="DEFFuelQty" [(ngModel)]="DEFFuelQty" (change)="calculate()">
                           </div>
                           <div class="col-lg-2 qtumbtn px-0">
                           
-                             <label class="control-label pl-2 text-lg-right" >{{basic.DEFFuelQtyUnit}}</label>
+                             <label class="control-label pl-2 text-lg-right" >{{DEFFuelQtyUnit}}</label>
 
                           </div>
                           <div class="col-lg-4">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Amount</label>
-                             <input type="text" class="form-control"  name="DEFFuelQtyAmt" [(ngModel)]="basic.DEFFuelQtyAmt" (change)="calculate()">
+                             <input type="number" class="form-control"  name="DEFFuelQtyAmt" [(ngModel)]="DEFFuelQtyAmt" (change)="calculate()">
                           </div>
                        </div>
                        <div class="row">
@@ -145,7 +146,7 @@
                           </div>
                           <div class="col-lg-4">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Total Amount</label>
-                             <label class="control-label font-weight-bold text-5"> ${{basic.totalAmount}}</label>
+                             <label class="control-label font-weight-bold text-5"> ${{totalAmount}}</label>
                           </div>
                        </div>
                        <div class="row">
@@ -155,19 +156,19 @@
                           </div>
                           <div class="col-lg-4">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount($)</label>
-                             <input type="text" class="form-control" name="discount" [(ngModel)]="basic.discount" (change)="calculate()">
+                             <input type="number" class="form-control" name="discount" [(ngModel)]="discount" (change)="calculate()">
                           </div>
                        </div>
                        <div class="row">
                           <div class="col-lg-4">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >{{basic.costLabel}}</label>
-                             <label class="control-label font-weight-bold text-5">${{basic.costPerGallon}}</label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >{{costLabel}}</label>
+                             <label class="control-label font-weight-bold text-5">${{costPerGallon}}</label>
                           </div>
                           <div class="col-lg-2 qtumbtn px-0">
                           </div>
                           <div class="col-lg-4">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Amount Paid</label>
-                             <label class="control-label font-weight-bold text-5">${{basic.amountPaid}}</label>
+                             <label class="control-label font-weight-bold text-5">${{amountPaid}}</label>
                           </div>
                        </div>
                     </div>
@@ -184,7 +185,7 @@
                               <input
                                 class="form-control"
                                 placeholder="dd-mm-yyyy"
-                                name="date" [(ngModel)]="basic.date" ngbDatepicker #d="ngbDatepicker"
+                                name="date" [(ngModel)]="date" ngbDatepicker #d="ngbDatepicker"
                               />
                             </div>
                           </div>
@@ -192,7 +193,7 @@
                        <div class="row">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Type</label>
-                             <select data-plugin-selectTwo class="form-control populate" name="fuelType" [(ngModel)]="basic.fuelType">
+                             <select data-plugin-selectTwo class="form-control populate" name="fuelType" [(ngModel)]="fuelType">
                                 <optgroup label="Select Fuel">
                                    <option value="Bio Diesel">Bio Diesel</option>
                                    <option value="Compressed Natural Gas">Compressed Natural Gas</option>
@@ -224,7 +225,7 @@
                        <div class="form-group row">
                           <div class="col-lg-5">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Paid By</label>
-                             <select data-plugin-selectTwo class="form-control populate" name="paidBy" [(ngModel)]="payment.paidBy">
+                             <select data-plugin-selectTwo class="form-control populate" name="paidBy" [(ngModel)]="paidBy">
                                 <optgroup label="Select Payer">
                                    <option value="Person 1">Person 1</option>
                                    <option value="Person 2">Person 2</option>
@@ -236,7 +237,7 @@
                           </div>
                           <div class="col-lg-5">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Payment Mode</label>
-                             <select data-plugin-selectTwo class="form-control populate" name="paymentMode" [(ngModel)]="payment.paymentMode">
+                             <select data-plugin-selectTwo class="form-control populate" name="paymentMode" [(ngModel)]="paymentMode">
                                 <optgroup label="Select Payment Mode">
                                    <option value="Cash">Cash</option>
                                    <option value="Check">Check</option>
@@ -251,19 +252,19 @@
                        <div class="row">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reference</label>
-                             <input type="text" class="form-control" name="reference" [(ngModel)]="payment.reference" >
+                             <input type="text" class="form-control" name="reference" [(ngModel)]="reference" >
                           </div>
                        </div>
                        <div class="row mt-2">
                           <div class="col-lg-5">
                              <div class="checkbox-custom">
-                                <input type="checkbox" name="reimburseToDriver" [(ngModel)]="payment.reimburseToDriver">
+                                <input type="checkbox" name="reimburseToDriver" [(ngModel)]="reimburseToDriver">
                                 <label class="control-label font-weight-bold">Reimburse to Driver?</label>
                              </div>
                           </div>
                           <div class="col-lg-5">
                              <div class="checkbox-custom">
-                                <input type="checkbox" name="deductFromPay" [(ngModel)]="payment.deductFromPay">
+                                <input type="checkbox" name="deductFromPay" [(ngModel)]="deductFromPay">
                                 <label class="control-label font-weight-bold">Deduct from Pay?</label>
                              </div>
                           </div>
@@ -278,7 +279,7 @@
                        <div class="row pt-2">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Country</label>
-                             <select data-plugin-selectTwo class="form-control populate" name="countryID" [(ngModel)]="fuelStop.countryID" (change)="getStates()">
+                             <select data-plugin-selectTwo class="form-control populate" name="countryID" [(ngModel)]="countryID" (change)="getStates()">
                               <optgroup label="Select Country">
                                 <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
 
@@ -290,7 +291,7 @@
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >State</label>
                              <select data-plugin-selectTwo class="form-control populate" name="stateID"
-                             [(ngModel)]="fuelStop.stateID" (change)="getCities()">
+                             [(ngModel)]="stateID" (change)="getCities()">
                               <optgroup label="">
                                 <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
                                </optgroup>>
@@ -303,7 +304,7 @@
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >City</label>
                              <select data-plugin-selectTwo class="form-control populate" name="cityID"
-                             [(ngModel)]="fuelStop.cityID">
+                             [(ngModel)]="cityID">
                               <optgroup label="">
                                 <option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
                                </optgroup>
@@ -313,7 +314,7 @@
                        <div class="row pt-2">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Truck Stop/Vendor</label>
-                             <select data-plugin-selectTwo class="form-control populate" name="vendorID" [(ngModel)]="fuelStop.vendorID">
+                             <select data-plugin-selectTwo class="form-control populate" name="vendorID" [(ngModel)]="vendorID">
                                 <optgroup label="Select Vendor">
                                   <option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.vendorName}}</option>
                                 </optgroup>
@@ -331,7 +332,7 @@
                       <div class="row pt-2">
                           <div class="col-lg-10">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Do you want to associate the receipt with Dispatch ID</label>
-                           <select data-plugin-selectTwo class="form-control populate" name="dispatchAssociate" [(ngModel)]="dispatch.dispatchAssociate">
+                           <select data-plugin-selectTwo class="form-control populate" name="dispatchAssociate" [(ngModel)]="dispatchAssociate">
                              <optgroup label="Select Option">
                                  <option value="Yes">Yes</option>
                                  <option value="No">No</option>
@@ -342,7 +343,7 @@
                       <div class="row pt-2">
                           <div class="col-lg-10">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Select Dispatch ID</label>
-                           <select data-plugin-selectTwo class="form-control populate" name="dispatchID" [(ngModel)]="dispatch.dispatchID">
+                           <select data-plugin-selectTwo class="form-control populate" name="dispatchID" [(ngModel)]="dispatchID">
                              <optgroup label="Select Dispatch">
                                  <option value="DIS-2536">DIS-2536</option>
                                  <option value="DI-0082">DI-0082</option>
@@ -363,7 +364,7 @@
                        <div class="row pt-2">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Average Gross Vehicle Weight</label>
-                             <select data-plugin-selectTwo class="form-control populate" name="avgGVW" [(ngModel)] ="additional.avgGVW">
+                             <select data-plugin-selectTwo class="form-control populate" name="avgGVW" [(ngModel)] ="avgGVW">
                                 <optgroup label="">
                                    <option value="10-15,000 lbs">10-15,000 lbs</option>
                                    <option value="15-20,000 lbs">15-20,000 lbs</option>
@@ -386,13 +387,13 @@
                        <div class="row pt-2">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Odometer Reading at Time of Fuelling</label>
-                             <input class="form-control" type="text" name="odometer" [(ngModel)] ="additional.odometer">
+                             <input class="form-control" type="text" name="odometer" [(ngModel)] ="odometer">
                           </div>
                        </div>
                        <div class="row pt-2">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Description</label>
-                             <textarea class="form-control" rows="3" name="description" [(ngModel)] ="additional.description"></textarea>
+                             <textarea class="form-control" rows="3" name="description" [(ngModel)] ="description"></textarea>
                           </div>
                        </div>
                     </div>

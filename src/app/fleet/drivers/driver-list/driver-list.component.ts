@@ -123,20 +123,16 @@ export class DriverListComponent implements OnInit {
   }
 
   checkBoxesLength(){
-    $(document).ready(function() {
-     
-      // $('.driver_checkbox:checked').each(function () {
-      //   var sThisVal = (this.checked ? $(this).val() : "");
-      //   alert(sThisVal);
-      // });
+    $(document).ready(function() {    
+    
      var c1 = $('.driver_checkbox:checked').length;
      if(c1==1){
               var sThisVal = $('.driver_checkbox:checked').val();
               alert(sThisVal);
      }
-     else{
-       alert("Select One Option for Editing");
-     }
+    //  else{
+    //    alert("Select One Option for Editing");
+    //  }
     });
   }
 }
