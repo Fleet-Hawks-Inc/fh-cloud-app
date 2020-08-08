@@ -15,7 +15,7 @@
                <div class="col-md-2 col-lg-2">
                   <div class="input-group input-group-md mb-3">
                      <ng-select [(ngModel)]="selectedAssets" name='search_asset' style="width: 100%;">
-                        <ng-option *ngFor="let item of assetsData" [value]="item.id">{{item.assetName}}</ng-option>
+                        <ng-option class="p-0" *ngFor="let item of assetsData" [value]="item.id"><a class="p-2 d-block" routerLink="/fleet/assets/asset-detail/{{item.assetID}}">{{item.assetName}}</a></ng-option>
                     </ng-select>
                   </div>
                </div>
@@ -172,19 +172,19 @@
          <div class="m-2">
             <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                <li class="nav-item">
-                  <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">All</a>
+                  <a class="nav-link active" (click)="filterData('all')" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">All</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" id="reefer-tab" data-toggle="tab" href="#reefer" role="tab" aria-controls="reefer" aria-selected="false">Reefer</a>
+                  <a class="nav-link" (click)="filterData('refer')" id="reefer-tab" data-toggle="tab" href="#reefer" role="tab" aria-controls="reefer" aria-selected="false">Reefer</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" id="dryBox-tab" data-toggle="tab" href="#dryBox" role="tab" aria-controls="dryBox" aria-selected="false">Dry Box</a>
+                  <a class="nav-link" (click)="filterData('drybox')" id="dryBox-tab" data-toggle="tab" href="#dryBox" role="tab" aria-controls="dryBox" aria-selected="false">Dry Box</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" id="flatBed-tab" data-toggle="tab" href="#flatBed" role="tab" aria-controls="flatBed" aria-selected="false">Flatbed</a>
+                  <a class="nav-link" (click)="filterData('flatbed')" id="flatBed-tab" data-toggle="tab" href="#flatBed" role="tab" aria-controls="flatBed" aria-selected="false">Flatbed</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" id="curtainSide-tab" data-toggle="tab" href="#curtainSide" role="tab" aria-controls="curtainSide" aria-selected="false">Curtain Side</a>
+                  <a class="nav-link" (click)="filterData('curtain')" id="curtainSide-tab" data-toggle="tab" href="#curtainSide" role="tab" aria-controls="curtainSide" aria-selected="false">Curtain Side</a>
                </li>
             </ul>
          </div>
@@ -214,7 +214,7 @@
                                 <td>{{ asset.assetDetails.plateNumber }}</td>
                                 <td>Live Location</td>
                                 <td>
-                                  <span class="badge badge-secondary text-3">
+                                  <span [ngClass]="asset.assetDetails.currentStatus === 'Active' ? 'badge-success' : 'badge-secondary'" class="badge text-3">
                                     {{ asset.assetDetails.currentStatus }}                                   
                                   </span>
                                 </td>

@@ -12,7 +12,7 @@
     <section role="main" class="content-body pt-0 pr-0 pl-0">
       <header class="page-header">
         <div class="row pr-5 " style="padding-top:10px;">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Add Asset </div>
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}} </div>
           <div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="/fleet/assets/Assets-List" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Assets List</a> </div>
         </div>
       </header>
@@ -103,20 +103,28 @@
                     </div>
                     <div class="col-lg-3 mx-4">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Make</label>
-                      <input data-plugin-selectTwo
-                      class="form-control populate"
-                      id="manufacturerID"
-                      (change)="getModels()"
-                      [(ngModel)]="assetsData.assetDetails.manufacturerID"
-                      name="assetDetails.manufacturerID"> 
+                      <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="assetsData.assetDetails.manufacturerID" name="assetDetails.manufacturerID"
+                      (change)="getModels()">
+                        <optgroup label="">
+                          <option *ngFor="let val of manufacturers" value="{{val.manufacturerID}}">{{val.name}}
+                          </option>
+                        </optgroup>
+                      </select>
                     </div>
                     <div class="col-lg-3">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Model</label>
-                      <input type="text" data-plugin-selectTwo
+                      <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="assetsData.assetDetails.modelID"
+                      name="assetDetails.modelID">
+                      <optgroup label="">
+                        <option *ngFor="let val of models" value="{{val.modelID}}">{{val.name}}</option>
+                      </optgroup>
+                    </select>
+                      <!-- <input type="text" data-plugin-selectTwo
                       class="form-control populate"
                       id="model"
                       [(ngModel)]="assetsData.assetDetails.modelID"
-                      name="assetDetails.modelID"> </div>
+                      name="assetDetails.modelID">--> 
+                    </div> 
                   </div>
                   <div class="row mt-2">
                     <div class="col-lg-5">
@@ -336,18 +344,11 @@
                   <div class="row">
                     <div class="col-lg-10">
                       <label class="control-label font-weight-bold text-lg-right pt-2">Vendor</label>
-                      <select id="vendor"
-                      [(ngModel)]="assetsData.insuranceDetails.vendor"
-                      name="insuranceDetails.vendor" data-plugin-selectTwo class="form-control populate">
-                        <optgroup label="">
-                          <option value="1">Vendor 1</option>
-                          <option value="1">Vendor 2</option>
-                          <option value="1">Vendor 3</option>
-                          <option value="1">Vendor 4</option>
-                          <option value="1">Vendor 5</option>
-                          <option value="1">Vendor 6</option>
-                          <option value="1">Vendor 7</option>
-                          <option value="1">Vendor 8</option>
+                      <select data-plugin-selectTwo class="form-control populate"  [(ngModel)]="assetsData.insuranceDetails.vendor"
+                      name="insuranceDetails.vendor">
+                        <optgroup label="Select Vendor">
+                          <option *ngFor="let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.vendorName}}
+                          </option>
                         </optgroup>
                       </select>
                     </div>
@@ -382,8 +383,8 @@
               <div class="form-group row">
                 <div class="col-lg-11 text-right"> 
                   <a href="" class="btn btn-default" id="">Cancel</a> 
-                  <a href="javascript:;" (click)="addAsset()" class="btn btn-success" id="nextBtn">Save</a> 
-                  <a href="javascript:;" (click)="updateAsset()" class="btn btn-success">Update</a> 
+                  <a href="javascript:;" *ngIf="!assetID" (click)="addAsset()" class="btn btn-success" id="nextBtn">Save</a> 
+                  <a href="javascript:;" *ngIf="assetID" (click)="updateAsset()" class="btn btn-success">Update</a> 
                 </div>
               </div>
             </form>
