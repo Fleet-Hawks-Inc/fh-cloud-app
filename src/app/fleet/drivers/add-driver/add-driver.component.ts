@@ -7,14 +7,15 @@ import { ApiService } from '../../../api.service';
 import { Auth } from 'aws-amplify';
 import { AwsUploadService } from '../../../aws-upload.service';
 import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import * as moment from "moment";
+import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
 declare var $: any;
 
 @Component({
   selector: 'app-add-driver',
   templateUrl: './add-driver.component.html',
   styleUrls: ['./add-driver.component.css'],
- 
+
 })
 export class AddDriverComponent implements OnInit {
   title = 'Add Driver';
@@ -33,97 +34,97 @@ export class AddDriverComponent implements OnInit {
   driverMedicalRenewal: NgbDateStruct;
   driverBirthDate: NgbDateStruct;
   driverLicenseExpiry: NgbDateStruct;
-
+  userType = 'driver';
   basic = {
-    driverType: "Employee",
-    companyID: "",
-    employeeID: "",
-    userName: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    driverID: "",
-    driverGender: "Male",
-    groupID: "",
-    phone: "",
-    email: "",
+    driverType: 'Employee',
+    companyID: '',
+    employeeID: '',
+    userName: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    // driverID: '',
+    driverGender: 'Male',
+    groupID: '',
+    phone: '',
+    email: '',
   };
   address = {
-    addressType: "",
-    driverCountry: "",
-    driverStateID: "",
-    driverCityID: "",
-    addressZip: "",
-    driverAddress1: "",
-    driverAddress2: "",
+    addressType: '',
+    driverCountry: '',
+    driverStateID: '',
+    driverCityID: '',
+    addressZip: '',
+    driverAddress1: '',
+    driverAddress2: '',
   };
   payment = {
-    driverPayType: "Pay Per Mile",
-    driverPerHourRate: "",
-    driverLoadedMiles: "",
-    driverEmptyMiles: "",
-    calculateEmptyMiles: "",
-    driverLoadPercentage: "",
-    driverLoadPercentageOf: "",
+    driverPayType: 'Pay Per Mile',
+    driverPerHourRate: '',
+    driverLoadedMiles: '',
+    driverEmptyMiles: '',
+    calculateEmptyMiles: '',
+    driverLoadPercentage: '',
+    driverLoadPercentageOf: '',
   };
 
   licence = {
-    driverContractStart: "",
-    driverContractEnd: "",
-    driverMedicalRenewal: "",
-    driverBirthDate: "",
-    driverLicenseNumber: "",
-    driverLicenseExpiry: "",
-    driverLicenseStateID: "",
-    driverVehicleType: "",
+    driverContractStart: '',
+    driverContractEnd: '',
+    driverMedicalRenewal: '',
+    driverBirthDate: '',
+    driverLicenseNumber: '',
+    driverLicenseExpiry: '',
+    driverLicenseStateID: '',
+    driverVehicleType: '',
 
   };
-  driverAllowYM:boolean;
-  driverAllowPC : boolean;
+  driverAllowYM: boolean;
+  driverAllowPC: boolean;
   HOSCompliance = {
-    status: "",
-    type: "",
-    cycleID: "",
-    yardID: "",
-    exemptedNotes: "",
+    status: '',
+    type: '',
+    cycleID: '',
+    yardID: '',
+    exemptedNotes: '',
     driverAllowYM: false,
     driverAllowPC: false,
   };
   emergencyContact = {
-    emergencyContactName: "",
-    emergencyContactPhone: "",
-    emergencyContactAddress: "",
-    emergencyContactRelationship: "",
-    emergencyContactEmail: "",
+    emergencyContactName: '',
+    emergencyContactPhone: '',
+    emergencyContactAddress: '',
+    emergencyContactRelationship: '',
+    emergencyContactEmail: '',
   };
   // additionalDetails = {
-  //   driverTumblr: "",
-  //   driverFacebook: "",
-  //   driverInstagram: "",
-  //   driverTwitter: "",
-  //   driverBlog: "",
-  //   driverLinkedIn: "",
-  //   additionalNotes: "",
+  //   driverTumblr: '',
+  //   driverFacebook: '',
+  //   driverInstagram: '',
+  //   driverTwitter: '',
+  //   driverBlog: '',
+  //   driverLinkedIn: '',
+  //   additionalNotes: '',
   // };
 
 
 
   groups = [];
-  groupNameModal = "";
+  groupNameModal = '';
   countries = [];
   states = [];
   cities = [];
   yards = [];
   cycles = [];
-  response: any = "";
+  response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = "";
-  Success: string = "";
-  rightSidebarShow: boolean = true;
+  Error = '';
+  Success = '';
+  rightSidebarShow = true;
 
-  constructor(private apiService: ApiService, private router: Router,
-    private awsUS: AwsUploadService, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) { }
+  constructor(private apiService: ApiService, private router: Router,private toaster: ToastrService,
+              private awsUS: AwsUploadService, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) { }
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -138,10 +139,10 @@ export class AddDriverComponent implements OnInit {
       this.form = $('#form_').validate();
     });
     $(document).ready(() => {
-      this.form = $("#form1_").validate();
+      this.form = $('#form1_').validate();
     });
-    this.basic.driverGender = "Male";
-    this.basic.driverType = "Employee";
+    this.basic.driverGender = 'Male';
+    this.basic.driverType = 'Employee';
   }
 
   fetchCycles() {
@@ -186,7 +187,7 @@ export class AddDriverComponent implements OnInit {
   }
 
   getToday(): string {
-    return new Date().toISOString().split('T')[0]
+    return new Date().toISOString().split('T')[0];
   }
 
   addGroup() {
@@ -203,18 +204,19 @@ export class AddDriverComponent implements OnInit {
     //   this.imageError = 'Please Choose Image To Upload';
     //   return;
     // }
-    this.register();
+    // this.register();
     this.errors = {};
     const data = {
+      userType: 'driver',
       basic: {
         driverType: this.basic.driverType,
         employeeID: this.basic.employeeID,
         companyID: this.basic.companyID,
         userName: this.basic.userName,
-        password: this.basic.password,
+        password: 'password',
         firstName: this.basic.firstName,
         lastName: this.basic.lastName,
-        driverID: this.basic.driverID,
+        // driverID: this.basic.driverID,
         driverGender: this.basic.driverGender,
         phone: this.basic.phone,
         email: this.basic.email,
@@ -277,7 +279,7 @@ export class AddDriverComponent implements OnInit {
     };
 
     console.log(data);
-   
+
     this.apiService.postData('users', data).subscribe({
       complete: () => { },
       error: (err) => {
@@ -286,24 +288,15 @@ export class AddDriverComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              // this.errors[key] = val.message;
-              // Or We Can Use This One To Extract Key
-              // const key = this.concatArray(path);
-              // this.errors[this.concatArray(path)] = val.message;
-              // if (key.length === 2) {
-              // this.errors[val.context.key] = val.message;
-              // } else {
-              // this.errors[key] = val.message;
-              // }
-              val.message = val.message.replace(/".*"/, 'This Field');
+              const key = val.message.match(/'([^']+)'/)[1];
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             }),
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
-              this.Success = "";
+              this.Success = '';
             },
             error: () => { },
             next: () => { }
@@ -311,27 +304,26 @@ export class AddDriverComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        this.hasSuccess = true;
-        this.Success = "Driver Added successfully";
+        this.toaster.success('Driver Added successfully');
 
-        // this.basic.userName = "";
-        // this.basic.password = "";
-        // this.basic.firstName = "";
-        // this.basic.lastName = "";
-        // this.address.addressType = "";
-        // this.basic.phone = "";
-        // this.basic.email = "";
-        // this.basic.groupID = "";
-        // this.licence.driverLicenseNumber = "";
+        // this.basic.userName = '';
+        // this.basic.password = '';
+        // this.basic.firstName = '';
+        // this.basic.lastName = '';
+        // this.address.addressType = '';
+        // this.basic.phone = '';
+        // this.basic.email = '';
+        // this.basic.groupID = '';
+        // this.licence.driverLicenseNumber = '';
 
-        // this.licence.driverLicenseExpiry = "";
-        // this.licence.driverLicenseStateID = "";
+        // this.licence.driverLicenseExpiry = '';
+        // this.licence.driverLicenseStateID = '';
         // this.HOSCompliance = {
-        //   status: "",
-        //   type: "",
-        //   cycleID: "",
-        //   yardID: "",
-        //   exemptedNotes: "",
+        //   status: '',
+        //   type: '',
+        //   cycleID: '',
+        //   yardID: '',
+        //   exemptedNotes: '',
         //   driverAllowYM: ,
         //   driverAllowPC: ,
         // };
@@ -353,31 +345,31 @@ export class AddDriverComponent implements OnInit {
   concatArray(path) {
     this.concatArrayKeys = '';
     for (const i in path) {
-      this.concatArrayKeys += path[i] + '.';
+      this.concatArrayKeys +=  path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(0, this.concatArrayKeys.length - 1);
     return this.concatArrayKeys;
   }
 
-  register = async () => {
-    try {
-      // This should go in Register component
-      let res = await Auth.signUp({
-        password: this.basic.password,
-        username: this.basic.userName,
-        attributes: {
-          email: this.basic.email,
-          phone_number: this.basic.phone,
-        },
-      });
+  // register = async () => {
+  //   try {
+  //     // This should go in Register component
+  //     const res = await Auth.signUp({
+  //       password: this.basic.password,
+  //       username: this.basic.userName,
+  //       attributes: {
+  //         email: this.basic.email,
+  //         phone_number: this.basic.phone,
+  //       },
+  //     });
 
-      console.log(res);
-    } catch (err) {
-      console.log("inside catch block");
-      // this.hasError = true;
-      // this.Error = err.message || 'Error during login';
-    }
-  };
+  //     console.log(res);
+  //   } catch (err) {
+  //     console.log('inside catch block');
+  //     // this.hasError = true;
+  //     // this.Error = err.message || 'Error during login';
+  //   }
+  // }
 
   // Driver Gender Value
   onChangeDriverGender(value: any) {
@@ -399,12 +391,9 @@ export class AddDriverComponent implements OnInit {
       this.imageError = 'Invalid Image Format';
     }
   }
-//  Modal for creating group. 
+  //  Modal for creating group.
   createGroupModal() {
-    $(document).ready(function () {
-      $('#addGroupModal').modal('show');
-    });
-  }
+      $('#addGroupModal').modal('show'); }
   changePaymentMode(value: any) {
     console.log(value);
   }

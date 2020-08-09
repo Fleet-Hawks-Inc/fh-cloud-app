@@ -73,7 +73,7 @@
                                              <div class="col-lg-2 px-0">
                                                 <div class="radio">
                                                    <label>
-                                                      <input type="radio" name="driverType" id="driver_employee"
+                                                      <input type="radio" name="basic.driverType" id="driver_employee"
                                                          [checked]="basic.driverType ==='Employee'" value="Employee"
                                                          (change)="onChangeDriverType('Employee')">
                                                       Employee
@@ -83,7 +83,7 @@
                                              <div class="col-lg-3  pr-0">
                                                 <div class="radio">
                                                    <label>
-                                                      <input type="radio" name="driverType" id="driver_contractor"
+                                                      <input type="radio" name="basic.driverType" id="driver_contractor"
                                                          [checked]="basic.driverType ==='Contractor'" value="Contractor"
                                                          (change)="onChangeDriverType('Contractor')">
                                                       Contractor
@@ -95,40 +95,40 @@
                                        <div class="col-lg-10" id="companyDiv" *ngIf="basic.driverType ==='Contractor'">
                                           <label class="control-label font-weight-bold text-lg-right pt-3">Company
                                              ID</label>
-                                          <input type="text" class="form-control" name="companyID"
+                                          <input type="text" class="form-control" name="basic.companyID"
                                              [(ngModel)]="basic.companyID">
                                        </div>
                                        <div class="col-lg-10" id="employeeIDDiv" *ngIf="basic.driverType ==='Employee'">
                                           <label class="control-label font-weight-bold text-lg-right pt-3">Employee
                                              ID</label>
-                                          <input type="text" class="form-control" name="employeeID"
+                                          <input type="text" class="form-control" name="basic.employeeID"
                                              [(ngModel)]="basic.employeeID">
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">User
                                              Name</label>
-                                          <input type="text" class="form-control" name="userName"
+                                          <input type="text" class="form-control" name="basic.userName"
                                              [(ngModel)]="basic.userName" minlength="8">
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Driver First
                                              Name</label>
-                                          <input type="text" class="form-control" name="firstName"
+                                          <input type="text" class="form-control" name="basic.firstName"
                                              [(ngModel)]="basic.firstName" maxlength="50">
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Driver Last
                                              Name</label>
-                                          <input type="text" class="form-control" name="lastName"
+                                          <input type="text" class="form-control" name="basic.lastName"
                                              [(ngModel)]="basic.lastName" maxlength="50">
                                        </div>
 
-                                       <div class="col-lg-10">
+                                       <!-- <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Driver
                                              ID</label>
-                                          <input type="text" class="form-control" name="driverID"
+                                          <input type="text" class="form-control" name="basic.driverID"
                                              [(ngModel)]="basic.driverID">
-                                       </div>
+                                       </div> -->
 
                                        <div class="col-lg-10">
                                           <label
@@ -207,14 +207,14 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Work
                                              Phone</label>
-                                          <input type="text" class="form-control" name="phone"
+                                          <input type="text" class="form-control" name="basic.phone"
                                              [(ngModel)]="basic.phone">
 
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Work
                                              Email</label>
-                                          <input type="text" class="form-control" name="email" [(ngModel)]="basic.email"
+                                          <input type="text" class="form-control" name="basic.email" [(ngModel)]="basic.email"
                                              maxlength="100">
                                        </div>
                                     </div>
@@ -236,7 +236,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                              Type</label>
-                                          <select data-plugin-selectTwo class="form-control populate" name="addressType"
+                                          <select data-plugin-selectTwo class="form-control populate" name="address.addressType"
                                              [(ngModel)]="address.addressType">
                                              <optgroup label="Select Address Type">
                                                 <option value="Work">Work</option>
@@ -251,7 +251,7 @@
                                  <div class="col-lg-3 offset-lg-1 pt-4">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                        Country</label>
-                                    <select data-plugin-selectTwo class="form-control populate" name="driverCountry"
+                                    <select data-plugin-selectTwo class="form-control populate" name="address.driverCountry"
                                        [(ngModel)]="address.driverCountry" (change)="getStates()">
                                        <optgroup label="Select Country">
                                           <option *ngFor="let country of countries" value="{{country.countryID}}">
@@ -280,7 +280,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                              State</label>
                                           <select data-plugin-selectTwo class="form-control populate manualAddressInput"
-                                             disabled name="driverStateID" [(ngModel)]="address.driverStateID"
+                                             disabled name="address.driverStateID" [(ngModel)]="address.driverStateID"
                                              (change)="getCities()">
                                              <optgroup label="">
                                                 <option *ngFor="let state of states" value="{{state.stateID}}">
@@ -292,7 +292,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                              City</label>
                                           <select data-plugin-selectTwo class="form-control populate manualAddressInput"
-                                             disabled name="driverCityID" [(ngModel)]="address.driverCityID">
+                                             disabled name="address.driverCityID" [(ngModel)]="address.driverCityID">
                                              <optgroup label="">
                                                 <option *ngFor="let city of cities" value="{{city.cityID}}">
                                                    {{city.cityName}}</option>
@@ -302,7 +302,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                              Code</label>
-                                          <input type="text" class="form-control manualAddressInput" name="addressZip"
+                                          <input type="text" class="form-control manualAddressInput" name="address.addressZip"
                                              disabled [(ngModel)]="address.addressZip">
                                        </div>
                                     </div>
@@ -313,13 +313,13 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                              1</label>
                                           <input type="text" class="form-control manualAddressInput"
-                                             name="driverAddress1" disabled [(ngModel)]="address.driverAddress1">
+                                             name="address.driverAddress1" disabled [(ngModel)]="address.driverAddress1">
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                              2</label>
                                           <input type="text" class="form-control manualAddressInput"
-                                             name="driverAddress2" disabled [(ngModel)]="address.driverAddress2">
+                                             name="address.driverAddress2" disabled [(ngModel)]="address.driverAddress2">
                                        </div>
                                     </div>
                                  </div>
@@ -340,7 +340,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Default
                                              Payment Type</label>
                                           <select data-plugin-selectTwo class="form-control populate"
-                                             name="driverPayType" [(ngModel)]="payment.driverPayType">
+                                             name="payment.driverPayType" [(ngModel)]="payment.driverPayType">
                                              <optgroup label="Select Type">
                                                 <option value="Pay Per Mile">Pay Per Mile</option>
                                                 <option value="Percentage">Percentage</option>
@@ -356,7 +356,7 @@
                                        <div class="col-lg-5">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Rate
                                              ($)</label>
-                                          <input type="number" class="form-control" name="driverPerHourRate"
+                                          <input type="text" class="form-control" name="payment.driverPerHourRate"
                                              [(ngModel)]="payment.driverPerHourRate">
                                        </div>
                                     </div>
@@ -366,7 +366,7 @@
                                              Percent</label>
                                           <div class="row">
                                              <div class="col-lg-2">
-                                                <input type="number" class="form-control" name=" driverLoadPercentage "
+                                                <input type="number" class="form-control" name="payment.driverLoadPercentage "
                                                    [(ngModel)]="payment. driverLoadPercentage ">
                                              </div>
                                              <div class="col-lg-2 px-0">
@@ -375,7 +375,7 @@
                                              </div>
                                              <div class="col-lg-8">
                                                 <select data-plugin-selectTwo class="form-control populate"
-                                                   name=" driverLoadPercentageOf"
+                                                   name="payment.driverLoadPercentageOf"
                                                    [(ngModel)]="payment. driverLoadPercentageOf">
                                                    <optgroup label="Select Endorsement">
                                                       <option value="Hauling Fees">Hauling Fees</option>
@@ -393,19 +393,19 @@
                                           <div class="col-lg-5">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                                                 Miles ($)</label>
-                                             <input type="number" class="form-control" name="driverLoadedMiles"
+                                             <input type="number" class="form-control" name="payment.driverLoadedMiles"
                                                 [(ngModel)]="payment.driverLoadedMiles">
                                           </div>
                                           <div class="col-lg-5">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Empty
                                                 Miles ($)</label>
-                                             <input type="number" class="form-control" name="driverEmptyMiles"
+                                             <input type="number" class="form-control" name="payment.driverEmptyMiles"
                                                 [(ngModel)]="payment.driverEmptyMiles">
                                           </div>
                                           <div class="col-lg-10">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Calculate
                                                 Empty Miles for a Dispatch After</label>
-                                             <input type="number" class="form-control" name="calculateEmptyMiles"
+                                             <input type="number" class="form-control" name="payment.calculateEmptyMiles"
                                                 [(ngModel)]="payment.calculateEmptyMiles">
                                           </div>
                                        </div>
@@ -422,7 +422,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">CDL
                                              Number</label>
-                                          <input type="text" class="form-control" name="driverLicenseNumber"
+                                          <input type="text" class="form-control" name="licence.driverLicenseNumber"
                                              [(ngModel)]="licence.driverLicenseNumber" minlength="5" maxlength="20">
                                        </div>
                                        <div class="col-lg-10">
@@ -434,7 +434,7 @@
                                                       class="fas fa-calendar-alt"></i></span>
                                              </span>
                                              <input class="form-control" placeholder="Select Date"
-                                                name="driverLicenseExpiry" [(ngModel)]="licence.driverLicenseExpiry"
+                                                name="licence.driverLicenseExpiry" [(ngModel)]="licence.driverLicenseExpiry"
                                                 ngbDatepicker #licenseExpiry="ngbDatepicker" />
                                           </div>
 
@@ -448,7 +448,7 @@
                                                       class="fas fa-calendar-alt"></i></span>
                                              </span>
                                              <input class="form-control" placeholder="Select Date"
-                                                name="driverContractStart" [(ngModel)]="licence.driverContractStart"
+                                                name="licence.driverContractStart" [(ngModel)]="licence.driverContractStart"
                                                 ngbDatepicker #contractStart="ngbDatepicker" />
                                           </div>
 
@@ -457,7 +457,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                              Vehicle Type</label>
                                           <select data-plugin-selectTwo class="form-control populate"
-                                             name="driverVehicleType" [(ngModel)]="licence.driverVehicleType">
+                                             name="licence.driverVehicleType" [(ngModel)]="licence.driverVehicleType">
                                              <optgroup label="Select Vehicle Type">
                                                 <option value="Heavy Truck">Heavy Truck</option>
                                                 <option value="Light Truck">Light Truck</option>
@@ -472,7 +472,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Issued
                                              State</label>
                                           <select data-plugin-selectTwo class="form-control populate"
-                                             name="driverLicenseStateID" [(ngModel)]="licence.driverLicenseStateID">
+                                             name="licence.driverLicenseStateID" [(ngModel)]="licence.driverLicenseStateID">
                                              <optgroup label="">
                                                 <option *ngFor="let state of states" value="{{state.stateID}}">
                                                    {{state.stateName}}</option>
@@ -488,7 +488,7 @@
                                                       class="fas fa-calendar-alt"></i></span>
                                              </span>
                                              <input class="form-control" placeholder="Select Date"
-                                                name="driverMedicalRenewal" [(ngModel)]="licence.driverMedicalRenewal"
+                                                name="licence.driverMedicalRenewal" [(ngModel)]="licence.driverMedicalRenewal"
                                                 ngbDatepicker #medicalRenewal="ngbDatepicker" />
                                           </div>
                                        </div>
@@ -501,7 +501,7 @@
                                                       class="fas fa-calendar-alt"></i></span>
                                              </span>
                                              <input class="form-control" placeholder="Select Date"
-                                                name="driverContractEnd" [(ngModel)]="licence.driverContractEnd"
+                                                name="licence.driverContractEnd" [(ngModel)]="licence.driverContractEnd"
                                                 ngbDatepicker #contractEnd="ngbDatepicker" />
                                           </div>
 
@@ -515,7 +515,7 @@
                                                       class="fas fa-calendar-alt"></i></span>
                                              </span>
                                              <input class="form-control" placeholder="Select Date"
-                                                name="driverBirthDate" [(ngModel)]="licence.driverBirthDate"
+                                                name="licence.driverBirthDate" [(ngModel)]="licence.driverBirthDate"
                                                 ngbDatepicker #birthDate="ngbDatepicker" />
                                           </div>
 
@@ -549,12 +549,12 @@
                                           <label
                                              class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Write
                                              Remarks if driver is Exempted.</label>
-                                          <textarea class="form-control" rows="4" name="exemptedNotes"
+                                          <textarea class="form-control" rows="4" name="HOSCompliance.exemptedNotes"
                                              [(ngModel)]="HOSCompliance.exemptedNotes"></textarea>
                                        </div>
                                        <div class="col-lg-5 pt-3">
                                           <div class="checkbox-custom">
-                                             <input type="checkbox" name="driverAllowPC"
+                                             <input type="checkbox" name="HOSCompliance.driverAllowPC"
                                                 [(ngModel)]="HOSCompliance.driverAllowPC" checked
                                                 value="Allow Personal Conveyance">
                                              <label class="control-label font-weight-bold">Allow Personal Conveyance
@@ -563,7 +563,7 @@
                                        </div>
                                        <div class="col-lg-5 pt-3">
                                           <div class="checkbox-custom">
-                                             <input type="checkbox" name="driverAllowYM"
+                                             <input type="checkbox" name="HOSCompliance.driverAllowYM"
                                                 [(ngModel)]="HOSCompliance.driverAllowYM" value="Allow Yard Move">
                                              <label class="control-label font-weight-bold">Allow Yard Move (YM)</label>
                                           </div>
@@ -595,7 +595,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Home
                                              Terminal</label>
-                                          <select data-plugin-selectTwo class="form-control populate" name="yardID"
+                                          <select data-plugin-selectTwo class="form-control populate" name="HOSCompliance.yardID"
                                              [(ngModel)]="HOSCompliance.yardID">
                                              <optgroup label="">
                                                 <option *ngFor="let yard of yards" value="{{yard.yardID}}">
@@ -619,18 +619,18 @@
                                     <div class="row">
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Name</label>
-                                          <input type="text" class="form-control" name="emergencyContactName"
+                                          <input type="text" class="form-control" name="emergencyContact.emergencyContactName"
                                              [(ngModel)]="emergencyContact.emergencyContactName">
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                          <input type="text" class="form-control" name="emergencyContactPhone"
+                                          <input type="text" class="form-control" name="emergencyContact.emergencyContactPhone"
                                              [(ngModel)]="emergencyContact.emergencyContactPhone">
                                        </div>
                                        <div class="col-lg-10">
                                           <label
                                              class="control-label font-weight-bold text-lg-right pt-2">Address</label>
-                                          <textarea class="form-control" rows="3" name="emergencyContactAddress"
+                                          <textarea class="form-control" rows="3" name="emergencyContact.emergencyContactAddress"
                                              [(ngModel)]="emergencyContact.emergencyContactAddress"></textarea>
                                        </div>
                                     </div>
@@ -640,12 +640,12 @@
                                        <div class="col-lg-10">
                                           <label
                                              class="control-label font-weight-bold text-lg-right pt-2">Relationship</label>
-                                          <input type="text" class="form-control" name="emergencyContactRelationship"
+                                          <input type="text" class="form-control" name="emergencyContact.emergencyContactRelationship"
                                              [(ngModel)]="emergencyContact.emergencyContactRelationship">
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                          <input type="text" class="form-control" name="emergencyContactEmail"
+                                          <input type="text" class="form-control" name="emergencyContact.emergencyContactEmail"
                                              [(ngModel)]="emergencyContact.emergencyContactEmail">
                                        </div>
                                     </div>

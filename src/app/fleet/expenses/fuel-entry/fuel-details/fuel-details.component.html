@@ -7,15 +7,15 @@
       <!-- start: sidebar -->
       <app-sidebar></app-sidebar>
       <!-- end: sidebar -->
-      <section role="main" class="content-body pl-0  pr-0">
+      <section role="main" class="content-body pl-0  pr-5">
         <header class="page-header pl-2">
            <div class="row pr-5 " style="padding-top:10px;">
               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                 Fuel Entry #15941858                     
+                 {{title}}                     
               </div>
-              <div class="col-md-8  col-lg-8 text-right pr-4">
+              <div class="col-md-8  col-lg-8 text-right pr-3">
                  <a routerLink="/fleet/expenses/fuel/Fuel-Entry-List" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Fuel List</a>  
-                 <div class="btn-group flex-wrap">
+                 <div class="btn-group flex-wrap mx-2">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                        <a class="modal-with-form dropdown-item text-1" href="#fuelCardTransaction">View Fuel Card Transaction Data</a>
@@ -42,43 +42,43 @@
                                    <tbody>
                                       <tr>
                                          <td width="40%" class="back-color-gray font-weight-bold">Vehicle</td>
-                                         <td  width="60%"><a href="#"  class="text-info">2100 [2016 Ford F-150]</a></td>
+                                         <td  width="60%"><a href="#"  class="text-info">{{vehicleID}}</a></td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Dispatch Number</td>
-                                         <td><a href="#" class="text-info">2100</a></td>
+                                         <td><a href="#" class="text-info">{{dispatchID}}</a></td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Date</td>
-                                         <td>Jun 15, 2020</td>
+                                         <td>{{date}}</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Odometer</td>
-                                         <td>56,398 mi</td>
+                                         <td>{{odometer}} mi</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Gallons (US)</td>
-                                         <td>56.8</td>
+                                         <td>{{vehicleFuelQty}}</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Price/Gallon</td>
-                                         <td>$2.5</td>
+                                         <td>${{costPerGallon}}</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Total</td>
-                                         <td>$56,38</td>
+                                         <td>${{amountPaid}}</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Fuel Type</td>
-                                         <td>Gasoline</td>
+                                         <td>{{fuelType}}</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Vendor</td>
-                                         <td>NAPA</td>
+                                         <td>{{vendorID}}</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Reference</td>
-                                         <td></td>
+                                         <td>{{reference}}</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Miles</td>

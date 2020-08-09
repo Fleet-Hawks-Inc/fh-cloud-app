@@ -368,30 +368,31 @@
                         id="datatable-default">
                            <thead>
                               <tr>
-                                 <th width="5%"><input type="checkbox"></th>
-                                 <th width="10%">Unit Number</th>
-                                 <!-- <th width="10%">VIN</th>
-                                 <th width="15%">Last Location</th>
-                                 <th width="10%">Plate Exp</th>
-                                 <th width="10%">Insurance Exp</th>
-                                 <th width="10%">Status</th>
-                                 <th width="10%">Trip</th> -->
+                                 <th><input type="checkbox"></th>
+                                 <th>VIN</th>
+                                 <th>Vehicle Name</th>
+                                 <th>Status</th>
+                                 <th>Plate Number</th>
+                                 <th>Make</th>
+                                 <th>Model</th>
+                                 <th>Color</th>
+                                 <th>Fuel Type</th>
                               </tr>
                            </thead>
                            <tbody>
                               <tr *ngFor="let vehicle of vehicles">
                                  <td><input type="checkbox" class="vehicle_checkbox" value="{{ vehicle.vehicleID }}"></td>
-                                 <td>{{ vehicle.vehicleName }}</td>                   
-                                 <!-- <td>{{vehicle.date }}</td>
-                                 <td>{{vehicle.odometer }}</td>
-                                 <td>{{vehicle.fuelType }}</td>
-                                 <td>{{vehicle.vehicleFuelQty }}</td>
-                                 <td>{{vehicle.DEFFuelQty }}</td>
-                                 <td>{{vehicle.costPerGallon }}</td>
-                                 <td>{{vehicle.amountPaid }}</td> -->
-                                 <!-- <td>{{ getVehicleName(fuelList.vehicleID) }} </td>-->
-                                  <!-- <td>{{getCountryName(fuelList.countryID)}} </td> -->
-                                 <td>
+                                 <td>{{ vehicle.VIN }}</td>
+                                 <td>{{ vehicle.vehicleName }}</td>  
+                                 <td>{{ vehicle.currentStatus }}</td>  
+                                 <td>{{ vehicle.plateNumber }}</td> 
+                                 <td>{{ vehicle.make }}</td>
+                                 <td>{{ vehicle.modelId }}</td>  
+                                 <td>{{ vehicle.additionalDetails.vehicleColor}}</td>  
+                                 <td>{{ vehicle.fuel.fuelType}}</td>        
+      
+                                
+                                 <!-- <td>
                                    <a routerLink="/fleet/vehicles/Edit-Vehicle-New/{{vehicle.vehicleID }}"
                                      >Edit</a
                                    >
@@ -402,7 +403,7 @@
                                      (click)="deleteVehicle(vehicle.vehicleI)"
                                      >Delete</a
                                    >
-                                 </td>               
+                                 </td>                -->
                                </tr>
                            </tbody>
                         </table> 

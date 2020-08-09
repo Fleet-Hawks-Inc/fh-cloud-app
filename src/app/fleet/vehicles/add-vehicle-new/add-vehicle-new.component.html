@@ -61,7 +61,7 @@
                         <div class="row">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="vehicleName" name="vehicleName"> </div>
+                            <input type="text" class="form-control"  [(ngModel)]="vehicleName" name="vehicleName"> </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">VIN</label>
                             <input type="text" class="form-control" [(ngModel)]="VIN" name="VIN"> </div>
@@ -342,11 +342,11 @@
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Color</label>
                             <input type="text" class="form-control" [(ngModel)]="additionalDetails.vehicleColor"
-                              name="vehicleColor"> </div>
+                              name="additionalDetails.vehicleColor"> </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">MSRP <span
                                 class="font-size-12"> (Manufacturer Suggested Retail Price)</span></label>
-                            <input type="text" class="form-control" name="MSRP" [(ngModel)]="additionalDetails.MSRP">
+                            <input type="text" class="form-control" name="additionalDetails.MSRP" [(ngModel)]="additionalDetails.MSRP">
                           </div>
                         </div>
                       </div>
@@ -355,7 +355,7 @@
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Body Type</label>
                             <select data-plugin-selectTwo class="form-control populate"
-                              [(ngModel)]="additionalDetails.bodyType" name="bodyType">
+                              [(ngModel)]="additionalDetails.bodyType" name="additionalDetails.bodyType">
                               <optgroup label="">
                                 <option value="1">Conventional</option>
                                 <option value="2">Full Size</option>
@@ -366,7 +366,7 @@
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Body Subtype</label>
                             <select data-plugin-selectTwo class="form-control populate"
-                              [(ngModel)]="additionalDetails.bodySubType" name="bodySubType">
+                              [(ngModel)]="additionalDetails.bodySubType" name="additionalDetails.bodySubType">
                               <optgroup label="">
                                 <option value="Cargo">Cargo</option>
                                 <option value="Sleeper Cab">Sleeper Cab</option>
@@ -402,7 +402,7 @@
                                 <span class="input-group-text" (click)="inServiceDate.toggle()"><i
                                     class="fas fa-calendar-alt"></i></span>
                               </span>
-                              <input class="form-control" placeholder="Select Date" name="inServiceDate"
+                              <input class="form-control" placeholder="Select Date" name="lifeCycle.inServiceDate"
                                 [(ngModel)]="lifeCycle.inServiceDate" ngbDatepicker #inServiceDate="ngbDatepicker" />
                             </div>
                           </div>
@@ -412,7 +412,7 @@
                         <div class="row">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">In-Service Odometer</label>
-                            <input type="text" class="form-control" name="inServiceOdometer"
+                            <input type="text" class="form-control" name="lifeCycle.inServiceOdometer"
                               [(ngModel)]="lifeCycle.inServiceOdometer"> </div>
                         </div>
                       </div>
@@ -428,12 +428,12 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Service Life in
                               Months</label>
                             <input type="text" class="form-control" [(ngModel)]="lifeCycle.estimatedServiceLifeInMonths"
-                              name="estimatedServiceLifeInMonths"> </div>
+                              name="lifeCycle.estimatedServiceLifeInMonths"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Service Life in
                               Miles</label>
                             <input type="text" class="form-control" [(ngModel)]="lifeCycle.estimatedServiceLifeInMiles"
-                              name="estimatedServiceLifeInMiles"> </div>
+                              name="lifeCycle.estimatedServiceLifeInMiles"> </div>
                         </div>
                       </div>
                       <div class="col-lg-5 offset-lg-1">
@@ -441,7 +441,7 @@
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Resale
                               Value</label>
-                            <input type="text" class="form-control" name="estimatedResaleValue"
+                            <input type="text" class="form-control" name="lifeCycle.estimatedResaleValue"
                               [(ngModel)]="lifeCycle.estimatedResaleValue"> </div>
                         </div>
                       </div>
@@ -489,19 +489,19 @@
                         <div class="row">
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Width</label>
-                            <input type="text" class="form-control" [(ngModel)]="dimensions.width" name="width"> </div>
+                            <input type="text" class="form-control" [(ngModel)]="dimensions.width" name="dimensions.width"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Height</label>
-                            <input type="text" class="form-control" [(ngModel)]="dimensions.height" name="height">
+                            <input type="text" class="form-control" [(ngModel)]="dimensions.height" name="dimensions.height">
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Length</label>
-                            <input type="text" class="form-control" [(ngModel)]="dimensions.length" name="length">
+                            <input type="text" class="form-control" [(ngModel)]="dimensions.length" name="dimensions.length">
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Ground Clearance</label>
                             <input type="text" class="form-control" [(ngModel)]="dimensions.groundClearance"
-                              name="groundClearance"> </div>
+                              name="dimensions.groundClearance"> </div>
 
                         </div>
                       </div>
@@ -510,19 +510,19 @@
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Interior Volume</label>
                             <input type="text" class="form-control" [(ngModel)]="dimensions.interiorVolume"
-                              name="interiorVolume"> </div>
+                              name="dimensions.interiorVolume"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Passenger Volume</label>
                             <input type="text" class="form-control" [(ngModel)]="dimensions.passengerVolume"
-                              name="passengerVolume"> </div>
+                              name="dimensions.passengerVolume"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Bed Length</label>
-                            <input type="text" class="form-control" [(ngModel)]="dimensions.bedLength" name="bedLength">
+                            <input type="text" class="form-control" [(ngModel)]="dimensions.bedLength" name="dimensions.bedLength">
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Volume</label>
                             <input type="text" class="form-control" [(ngModel)]="dimensions.cargoVolume"
-                              name="cargoVolume"> </div>
+                              name="dimensions.cargoVolume"> </div>
                         </div>
                       </div>
                     </div>
@@ -535,13 +535,13 @@
                         <div class="row">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Curb Weight</label>
-                            <input type="text" class="form-control" [(ngModel)]="weight.curbWeight" name="curbWeight">
+                            <input type="text" class="form-control" [(ngModel)]="weight.curbWeight" name="weight.curbWeight">
                           </div>
                         </div>
                         <div class="row pt-2">
                           <div class="col-lg-10">
                             <div class="checkbox-custom pt-2">
-                              <input type="checkbox" name="enableIFTAReports" [(ngModel)]="enableIFTAReports">
+                              <input type="checkbox" name="weight.enableIFTAReports" [(ngModel)]="enableIFTAReports">
                               <label >Enable IFTA Reporting</label>
                            </div>
                           </div>
@@ -553,7 +553,7 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Gross Vehicle Weight
                               Rating</label>
                             <input type="text" class="form-control" [(ngModel)]="weight.grossVehicleWeightRating"
-                              name="grossVehicleWeightRating"> </div>
+                              name="weight.grossVehicleWeightRating"> </div>
                         </div>
                       </div>
                     </div>
@@ -567,7 +567,7 @@
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Towing Capacity</label>
                             <input type="text" class="form-control" [(ngModel)]="performance.towingCapacity"
-                              name="towingCapacity"> </div>
+                              name="performance.towingCapacity"> </div>
                         </div>
                       </div>
                       <div class="col-lg-5 offset-lg-1">
@@ -575,7 +575,7 @@
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Max Payload</label>
                             <input type="text" class="form-control" [(ngModel)]="performance.maxPayload"
-                              name="maxPayload"> </div>
+                              name="performance.maxPayload"> </div>
                         </div>
                       </div>
                     </div>
@@ -588,12 +588,12 @@
                         <div class="row">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">EPA City</label>
-                            <input type="text" class="form-control" [(ngModel)]="fuelEconomy.EPACity" name="EPACity">
+                            <input type="text" class="form-control" [(ngModel)]="fuelEconomy.EPACity" name="fuelEconomy.EPACity">
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">EPA Highway</label>
                             <input type="text" class="form-control" [(ngModel)]="fuelEconomy.EPAHighway"
-                              name="EPAHighway"> </div>
+                              name="fuelEconomy.EPAHighway"> </div>
                         </div>
                       </div>
                       <div class="col-lg-5 offset-lg-1">
@@ -601,7 +601,7 @@
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">EPA Combined</label>
                             <input type="text" class="form-control" [(ngModel)]="fuelEconomy.EPACombined"
-                              name="EPACombined"> </div>
+                              name="fuelEconomy.EPACombined"> </div>
                         </div>
                       </div>
                     </div>
@@ -623,7 +623,7 @@
                                 <span class="input-group-text" (click)="inIssueDate.toggle()"><i
                                     class="fas fa-calendar-alt"></i></span>
                               </span>
-                              <input class="form-control" placeholder="Select Date" name="issueDate"
+                              <input class="form-control" placeholder="Select Date" name="insurance.issueDate"
                                 [(ngModel)]="insurance.issueDate" ngbDatepicker #inIssueDate="ngbDatepicker" />
                             </div>
 
@@ -632,11 +632,11 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Premium Amount</label>
                             <div class="row">
                               <div class="col-lg-6 pr-0">
-                                <input type="text" class="form-control" name="premiumAmount"
+                                <input type="text" class="form-control" name="insurance.premiumAmount"
                                   [(ngModel)]="insurance.premiumAmount">
                               </div>
                               <div class="col-lg-6 pl-0">
-                                <select data-plugin-selectTwo class="form-control populate" name="premiumAmountUnit"
+                                <select data-plugin-selectTwo class="form-control populate" name="insurance.premiumAmountUnit"
                                   [(ngModel)]="insurance.premiumAmountUnit">
                                   <optgroup label="">
                                     <option value="USD">USD</option>
@@ -652,7 +652,7 @@
                         <div class="row">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Vendor</label>
-                            <select data-plugin-selectTwo class="form-control populate" name="vendorID"
+                            <select data-plugin-selectTwo class="form-control populate" name="insurance.vendorID"
                               [(ngModel)]="insurance.vendorID">
                               <optgroup label="Select Vendor">
                                 <option *ngFor="let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.vendorName}}
@@ -673,7 +673,7 @@
                                 <span class="input-group-text" (click)="inExpiryDate.toggle()"><i
                                     class="fas fa-calendar-alt"></i></span>
                               </span>
-                              <input class="form-control" placeholder="Select Date" name="expiryDate"
+                              <input class="form-control" placeholder="Select Date" name="insurance.expiryDate"
                                 [(ngModel)]="insurance.expiryDate" ngbDatepicker #inExpiryDate="ngbDatepicker" />
                             </div>
                           </div>
@@ -682,11 +682,11 @@
                               Expiry</label>
                             <div class="row">
                               <div class="col-lg-6 pr-0">
-                                <input type="text" class="form-control" name="reminderNumber"
+                                <input type="text" class="form-control" name="insurance.reminderNumber"
                                   [(ngModel)]="insurance.reminderNumber">
                               </div>
                               <div class="col-lg-6 pl-0">
-                                <select data-plugin-selectTwo class="form-control populate" name="reminderNumberUnits"
+                                <select data-plugin-selectTwo class="form-control populate" name="insurance.reminderNumberUnits"
                                   [(ngModel)]="insurance.reminderNumberUnits">
                                   <optgroup label="">
                                     <option value="Day(s)">Day(s)</option>
@@ -717,7 +717,7 @@
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Type</label>
                             <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="fuel.fuelType"
-                              name="fuelType">
+                              name="fuel.fuelType">
                               <optgroup label="">
                                 <option value="CNG">CNG</option>
                                 <option value="Diesal">Diesal</option>
@@ -728,7 +728,7 @@
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Quality</label>
-                            <select data-plugin-selectTwo class="form-control populate" name="fuelQuality"
+                            <select data-plugin-selectTwo class="form-control populate" name="fuel.fuelQuality"
                               [(ngModel)]="fuel.fuelQuality">
                               <optgroup label="">
                                 <option value="Regular">Regular</option>
@@ -751,12 +751,12 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 1
                               Capacity</label>
                             <input type="text" class="form-control" [(ngModel)]="fuel.fuelTank1Capacity"
-                              name="fuelTank1Capacity"> </div>
+                              name="fuel.fuelTank1Capacity"> </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 2
                               Capacity</label>
                             <input type="text" class="form-control" [(ngModel)]="fuel.fuelTank2Capacity"
-                              name="fuelTank2Capacity"> </div>
+                              name="fuel.fuelTank2Capacity"> </div>
                         </div>
                       </div>
                     </div>
@@ -787,11 +787,11 @@
                         <div class="row">
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Number of Tires</label>
-                            <input type="text" class="form-control" name="numberOfTires"
+                            <input type="text" class="form-control" name="features.numberOfTires"
                               [(ngModel)]="features.numberOfTires"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Drive Type</label>
-                            <select data-plugin-selectTwo class="form-control populate" name="driveType"
+                            <select data-plugin-selectTwo class="form-control populate" name="features.driveType"
                               [(ngModel)]="features.driveType">
                               <optgroup label="">
                                 <option value="4x4"> 4x4</option>
@@ -804,7 +804,7 @@
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Brake System</label>
                             <select data-plugin-selectTwo class="form-control populate"
-                              [(ngModel)]="features.breakSystem" name="breakSystem">
+                              [(ngModel)]="features.breakSystem" name="features.breakSystem">
                               <optgroup label="">
                                 <option value="Disc">Disc</option>
                                 <option value="Drum">Drum</option>
@@ -813,11 +813,11 @@
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Wheelbase</label>
-                            <input type="text" class="form-control" [(ngModel)]="features.wheelBase" name="wheelBase">
+                            <input type="text" class="form-control" [(ngModel)]="features.wheelBase" name="features.wheelBase">
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Rear Axle</label>
-                            <input type="text" class="form-control" [(ngModel)]="features.rearAxle" name="rearAxle">
+                            <input type="text" class="form-control" [(ngModel)]="features.rearAxle" name="features.rearAxle">
                           </div>
                         </div>
                       </div>
@@ -826,36 +826,36 @@
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Front Tire Type</label>
                             <input type="text" class="form-control" [(ngModel)]="features.frontTyreType"
-                              name="frontTyreType"> </div>
+                              name="features.frontTyreType"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Rear Tire Type</label>
                             <input type="text" class="form-control" [(ngModel)]="features.rearTyreType"
-                              name="rearTyreType"> </div>
+                              name="features.rearTyreType"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Front Track Width</label>
                             <input type="text" class="form-control" [(ngModel)]="features.frontTrackWidth"
-                              name="frontTrackWidth"> </div>
+                              name="features.frontTrackWidth"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Rear Track Width</label>
                             <input type="text" class="form-control" [(ngModel)]="features.rearTrackWidth"
-                              name="rearTrackWidth"> </div>
+                              name="features.rearTrackWidth"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Front Wheel
                               Diameter</label>
                             <input type="text" class="form-control" [(ngModel)]="features.frontWheelDiameter"
-                              name="frontWheelDiameter"> </div>
+                              name="features.frontWheelDiameter"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Rear Wheel Diameter</label>
                             <input type="text" class="form-control" [(ngModel)]="features.rearWheelDiameter"
-                              name="rearWheelDiameter"> </div>
+                              name="features.rearWheelDiameter"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Front Tire PSI</label>
                             <input type="text" class="form-control" [(ngModel)]="features.frontTyrePSI"
-                              name="frontTyrePSI"> </div>
+                              name="features.frontTyrePSI"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Rear Tire PSI</label>
                             <input type="text" class="form-control" [(ngModel)]="features.rearTyrePSI"
-                              name="rearTyrePSI"> </div>
+                              name="features.rearTyrePSI"> </div>
                         </div>
                       </div>
                     </div>
@@ -875,11 +875,11 @@
                               [(ngModel)]="engine.engineSummary"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Engine Brand</label>
-                            <input type="text" class="form-control" name="engineBrand" [(ngModel)]="engine.engineBrand">
+                            <input type="text" class="form-control" name="engine.engineBrand" [(ngModel)]="engine.engineBrand">
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Aspiration</label>
-                            <select data-plugin-selectTwo class="form-control populate" name="aspiration"
+                            <select data-plugin-selectTwo class="form-control populate" name="engine.aspiration"
                               [(ngModel)]="engine.aspiration">
                               <optgroup label="">
                                 <option value="Naturally Aspirated">Naturally Aspirated</option>
@@ -890,14 +890,14 @@
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Block Type</label>
-                            <input type="text" class="form-control" name="blockType " [(ngModel)]="engine.blockType ">
+                            <input type="text" class="form-control" name="engine.blockType " [(ngModel)]="engine.blockType ">
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Bore</label>
-                            <input type="text" class="form-control" name="bore " [(ngModel)]="engine.bore "> </div>
+                            <input type="text" class="form-control" name="engine.bore " [(ngModel)]="engine.bore "> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Cam Type</label>
-                            <select data-plugin-selectTwo class="form-control populate" name="camType"
+                            <select data-plugin-selectTwo class="form-control populate" name="engine.camType"
                               [(ngModel)]="engine.camType">
                               <optgroup label="">
                                 <option value="DOHC">DOHC</option>
@@ -907,29 +907,29 @@
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Stroke</label>
-                            <input type="text" class="form-control" name="stroke" [(ngModel)]="engine.stroke"> </div>
+                            <input type="text" class="form-control" name="engine.stroke" [(ngModel)]="engine.stroke"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Valves</label>
-                            <input type="text" class="form-control" name="valves" [(ngModel)]="engine.valves"> </div>
+                            <input type="text" class="form-control" name="engine.valves" [(ngModel)]="engine.valves"> </div>
                         </div>
                       </div>
                       <div class="col-lg-5 offset-lg-1">
                         <div class="row">
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Compression</label>
-                            <input type="text" class="form-control" name="compression" [(ngModel)]="engine.compression">
+                            <input type="text" class="form-control" name="engine.compression" [(ngModel)]="engine.compression">
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Cylinders</label>
-                            <input type="text" class="form-control" name="cylinders" [(ngModel)]="engine.cylinders">
+                            <input type="text" class="form-control" name="engine.cylinders" [(ngModel)]="engine.cylinders">
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Displacement</label>
-                            <input type="text" class="form-control" name="displacement"
+                            <input type="text" class="form-control" name="engine.displacement"
                               [(ngModel)]="engine.displacement"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Induction</label>
-                            <select data-plugin-selectTwo class="form-control populate" name="fuelInduction"
+                            <select data-plugin-selectTwo class="form-control populate" name="engine.fuelInduction"
                               [(ngModel)]="engine.fuelInduction">
                               <optgroup label="">
                                 <option value="Common Rail Direct Injection">Common Rail Direct Injection</option>
@@ -941,7 +941,7 @@
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Quality</label>
-                            <select data-plugin-selectTwo class="form-control populate" name="fuelQuality"
+                            <select data-plugin-selectTwo class="form-control populate" name="engine.fuelQuality"
                               [(ngModel)]="engine.fuelQuality">
                               <optgroup label="">
                                 <option value="Regular">Regular</option>
@@ -958,14 +958,14 @@
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Max HP</label>
-                            <input type="text" class="form-control" name="maxHP" [(ngModel)]="engine.maxHP"> </div>
+                            <input type="text" class="form-control" name="engine.maxHP" [(ngModel)]="engine.maxHP"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Max Torque</label>
-                            <input type="text" class="form-control" name="maxTorque" [(ngModel)]="engine.maxTorque">
+                            <input type="text" class="form-control" name="engine.maxTorque" [(ngModel)]="engine.maxTorque">
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Redline RPM</label>
-                            <input type="text" class="form-control" name="redlineRPM" [(ngModel)]="engine.redlineRPM">
+                            <input type="text" class="form-control" name="engine.redlineRPM" [(ngModel)]="engine.redlineRPM">
                           </div>
                         </div>
                       </div>
@@ -979,11 +979,11 @@
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Transmission
                               Summary</label>
-                            <input type="text" class="form-control" name="summary" [(ngModel)]="transmission.summary">
+                            <input type="text" class="form-control" name="transmission.summary" [(ngModel)]="transmission.summary">
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Brand</label>
-                            <input type="text" class="form-control" name=" brand" [(ngModel)]="transmission. brand">
+                            <input type="text" class="form-control" name="transmission.brand" [(ngModel)]="transmission. brand">
                           </div>
                         </div>
                       </div>
@@ -991,7 +991,7 @@
                         <div class="row">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Type</label>
-                            <select data-plugin-selectTwo class="form-control populate" name="type"
+                            <select data-plugin-selectTwo class="form-control populate" name="transmission.type"
                               [(ngModel)]="transmission.type">
                               <optgroup label="">
                                 <option value="Automatic">Automatic</option>
@@ -1001,7 +1001,7 @@
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Gears</label>
-                            <input type="text" class="form-control" name="gears" [(ngModel)]="transmission.gears">
+                            <input type="text" class="form-control" name="transmission.gears" [(ngModel)]="transmission.gears">
                           </div>
                         </div>
                       </div>
@@ -1019,7 +1019,7 @@
                         <div class="row">
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Loan Vendor</label>
-                            <select data-plugin-selectTwo class="form-control populate"  name="loanVendor" [(ngModel)]="loan.loanVendor">
+                            <select data-plugin-selectTwo class="form-control populate"  name="loan.loanVendor" [(ngModel)]="loan.loanVendor">
                             <optgroup label="Select Vendor">
                               <option *ngFor="let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.vendorName}}
                               </option>
@@ -1028,20 +1028,20 @@
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Amount of Loan</label>
-                            <input type="text" class="form-control" name="loanAmount" [(ngModel)]="loan.loanAmount">
+                            <input type="text" class="form-control" name="loan.loanAmount" [(ngModel)]="loan.loanAmount">
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Aspiration</label>
-                            <input type="text" class="form-control" name="loanAspiration" [(ngModel)]="loan.loanAspiration">
+                            <input type="text" class="form-control" name="loan.loanAspiration" [(ngModel)]="loan.loanAspiration">
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Annual Percentage
                               Rate</label>
-                            <input type="text" class="form-control" name="annualPercentageRate"
+                            <input type="text" class="form-control" name="loan.annualPercentageRate"
                               [(ngModel)]="loan.annualPercentageRate"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Down Payment</label>
-                            <input type="text" class="form-control" name="downPayment" [(ngModel)]="loan.downPayment">
+                            <input type="text" class="form-control" name="loan.downPayment" [(ngModel)]="loan.downPayment">
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Date of Loan</label>
@@ -1050,13 +1050,13 @@
                                 <span class="input-group-text" (click)="LDate.toggle()"><i
                                     class="fas fa-calendar-alt"></i></span>
                               </span>
-                              <input class="form-control" placeholder="Select Date" name="loanDate"
+                              <input class="form-control" placeholder="Select Date" name="loan.loanDate"
                                 [(ngModel)]="loan.loanDate" ngbDatepicker #LDate="ngbDatepicker" />
                             </div>
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Monthly Payment</label>
-                            <input type="text" class="form-control" name="monthlyPayment"
+                            <input type="text" class="form-control" name="loan.monthlyPayment"
                               [(ngModel)]="loan.monthlyPayment"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">First Payment Date</label>
@@ -1065,7 +1065,7 @@
                                 <span class="input-group-text" (click)="FirstPayDate.toggle()"><i
                                     class="fas fa-calendar-alt"></i></span>
                               </span>
-                              <input class="form-control" placeholder="Select Date" name="firstPaymentDate"
+                              <input class="form-control" placeholder="Select Date" name="loan.firstPaymentDate"
                                 [(ngModel)]="loan.firstPaymentDate" ngbDatepicker #FirstPayDate="ngbDatepicker" />
                             </div>
                           </div>
@@ -1075,7 +1075,7 @@
                         <div class="row">
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Number of Payments</label>
-                            <input type="text" class="form-control" name="numberofPayments"
+                            <input type="text" class="form-control" name="loan.numberofPayments"
                               [(ngModel)]="loan.numberofPayments"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Loan End Date</label>
@@ -1084,21 +1084,21 @@
                                 <span class="input-group-text" (click)="LoanEndDate.toggle()"><i
                                     class="fas fa-calendar-alt"></i></span>
                               </span>
-                              <input class="form-control" placeholder="Select Date" name="loanEndDate"
+                              <input class="form-control" placeholder="Select Date" name="loan.loanEndDate"
                                 [(ngModel)]="loan.loanEndDate" ngbDatepicker #LoanEndDate="ngbDatepicker" />
                             </div>
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Account Number</label>
-                            <input type="text" class="form-control" name="accountNumber"
+                            <input type="text" class="form-control" name="loan.accountNumber"
                               [(ngModel)]="loan.accountNumber"> </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Generate Expenses:</label>
-                            <input type="text" class="form-control" name="generateExpenses"
+                            <input type="text" class="form-control" name="loan.generateExpenses"
                               [(ngModel)]="loan.generateExpenses"> </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Notes</label>
-                            <textarea class="form-control" rows="3" name="notes" [(ngModel)]="loan.notes"></textarea>
+                            <textarea class="form-control" rows="3" name="loan.notes" [(ngModel)]="loan.notes"></textarea>
                           </div>
 
 
