@@ -20,18 +20,21 @@ export class AwsUploadService {
   ];
   filename = '';
 
-  bucket = new S3(
-    {
-      accessKeyId: environment.awsBucket.accessKeyId,
-      secretAccessKey: environment.awsBucket.secretAccessKey,
-      region: environment.awsBucket.region
-    }
-  );
-  bucketName = environment.awsBucket.bucketName;
+  bucket;
+  bucketName;
 
 
 
-  constructor() { }
+  constructor() {
+    this.bucket = new S3(
+      {
+        accessKeyId: environment.awsBucket.accessKeyId,
+        secretAccessKey: environment.awsBucket.secretAccessKey,
+        region: environment.awsBucket.region
+      }
+    );
+    this.bucketName = environment.awsBucket.bucketName;
+   }
 
   uploadFile(folder, file) {
     const contentType = file.type;
@@ -45,7 +48,7 @@ export class AwsUploadService {
       Bucket: this.bucketName,
       Key: folder + '/' + filename,
       Body: file,
-      ACL: 'public-read',
+      ACL: 'private',
       ContentType: contentType
     };
     this.bucket.upload(params, ( err, data) => {

@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../api.service";
-import { Router } from "@angular/router";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import { from, of } from "rxjs";
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../api.service';
+import { Router } from '@angular/router';
+import { catchError, map, mapTo, tap } from 'rxjs/operators';
+import { from, of } from 'rxjs';
 import {AwsUploadService} from '../../../../aws-upload.service';
 import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { booleanObjectType } from 'aws-sdk/clients/iam';
@@ -11,78 +11,78 @@ declare var jquery: any;
 declare var $: any;
 
 @Component({
-  selector: "app-add-fuel-entry",
-  templateUrl: "./add-fuel-entry.component.html",
-  styleUrls: ["./add-fuel-entry.component.css"],
+  selector: 'app-add-fuel-entry',
+  templateUrl: './add-fuel-entry.component.html',
+  styleUrls: ['./add-fuel-entry.component.css'],
 })
 export class AddFuelEntryComponent implements OnInit {
-  title = "Add Fuel Entry";
-  
+  title = 'Add Fuel Entry';
   imageError = '';
   fileName = '';
  
   /********** Form Fields ***********/
 
-     unitType :string =  'Vehicle';
-     vehicleID = "";
-     vehicleFuelQty : number = 0; 
-     vehicleFuelQtyUnit : string = 'gallons';
-     vehicleFuelQtyAmt : number = 0;  
-     reeferID = "";
-     reeferFuelQty : number = 0;
-     reeferFuelQtyUnit :string =  'gallons';
-     reeferFuelQtyAmt :number = 0;   
-     DEFFuelQty : number = 0;
-     DEFFuelQtyUnit :string =  'gallons';
-     DEFFuelQtyAmt : number = 0;
-     discount : number = 0;
-     totalAmount : number = 0;
-     costPerGallon : number = 0;
-     amountPaid : number = 0;
+     unitType =  'Vehicle';
+     vehicleID = '';
+     vehicleFuelQty = 0;
+     vehicleFuelQtyUnit  = 'gallons';
+     vehicleFuelQtyAmt  = 0;
+     reeferID = '';
+     reeferFuelQty = 0;
+     reeferFuelQtyUnit  =  'gallons';
+     reeferFuelQtyAmt  = 0;
+     DEFFuelQty  = 0;
+     DEFFuelQtyUnit  =  'gallons';
+     DEFFuelQtyAmt  = 0;
+     discount  = 0;
+     totalAmount  = 0;
+     costPerGallon  = 0;
+     amountPaid  = 0;
      date: NgbDateStruct;
-     fuelType = "";
-    //  tripID: "";    
-     costLabel : string =  'Cost/gallon'; 
+     fuelType = '';
+    //  tripID: "";
+     costLabel  =  'Cost/gallon';
+     carrierID;
 
 
  
  
-  paidBy = "";
-  paymentMode  = "";
-  reference  = "";
-  reimburseToDriver:boolean = false;
-  deductFromPay : boolean = false;
+  paidBy = '';
+  paymentMode  = '';
+  reference  = '';
+  reimburseToDriver = false;
+  deductFromPay  = false;
  
  
-  vendorID  = "";
-  countryID  = "";
-  stateID  = "";
-  cityID  = "";
+  vendorID  = '';
+  countryID  = '';
+  stateID  = '';
+  cityID  = '';
  
  
-   dispatchAssociate  = "";
-   dispatchID  = ""
+   dispatchAssociate  = '';
+   dispatchID  = '';
  
  
-  avgGVW  = "";
-  odometer  = "";
-  description  = ""
-
+  avgGVW  = '';
+  odometer  = '';
+  description  = '';
+  
  countries = [];
  states = [];
  cities = [];
  vendors = [];
- vehicles = []; 
+ vehicles = [];
  trips = [];
   /******************/
 
   errors = {};
   form;
-  response: any = "";
-  hasError: boolean = false;
-  hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  response: any = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
 
 
  
@@ -119,34 +119,34 @@ export class AddFuelEntryComponent implements OnInit {
     });
    }
   fetchVehicles() {
-    this.apiService.getData("vehicles").subscribe((result: any) => {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
     });
   }
 
   fetchTrips() {
-    this.apiService.getData("trips").subscribe((result: any) => {
+    this.apiService.getData('trips').subscribe((result: any) => {
       this.trips = result.Items;
     });
   }
 
   fetchVendors() {
-    this.apiService.getData("vendors").subscribe((result: any) => {
+    this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
     });
   }
 
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
   addFuelEntry() {
-    // if (this.fileName === '') {
-    //   this.imageError = 'Please Choose Image To Upload';
-    //   return;
-    // }
+    if (this.fileName === '') {
+      this.imageError = 'Please Choose Image To Upload';
+      return;
+    }
 
     this.errors = {};
 
@@ -156,13 +156,13 @@ export class AddFuelEntryComponent implements OnInit {
     const data = {
         unitType : this.unitType,
         vehicleID: this.vehicleID,
-        vehicleFuelQty : this.vehicleFuelQty,   
+        vehicleFuelQty : this.vehicleFuelQty,
         vehicleFuelQtyUnit : this.vehicleFuelQtyUnit,
-        vehicleFuelQtyAmt : this.vehicleFuelQtyAmt,  
+        vehicleFuelQtyAmt : this.vehicleFuelQtyAmt,
         reeferID: this.reeferID,
         reeferFuelQty : this.reeferFuelQty,
         reeferFuelQtyUnit : this.reeferFuelQtyUnit,
-        reeferFuelQtyAmt : this.reeferFuelQtyAmt,   
+        reeferFuelQtyAmt : this.reeferFuelQtyAmt,
         DEFFuelQty : this.DEFFuelQty,
         DEFFuelQtyUnit : this.DEFFuelQtyUnit,
         DEFFuelQtyAmt : this.DEFFuelQtyAmt,
@@ -172,7 +172,7 @@ export class AddFuelEntryComponent implements OnInit {
         amountPaid : this.amountPaid,
         date: this.date,
         fuelType: this.fuelType,
-        // tripID: this.tripID, 
+        // tripID: this.tripID,
         paidBy: this.paidBy,
         paymentMode: this.paymentMode,
         reference : this.reference,
@@ -189,7 +189,7 @@ export class AddFuelEntryComponent implements OnInit {
         description : this.description,
     };
  console.log(data);
-    this.apiService.postData("fuelEntries", data).subscribe({
+    this.apiService.postData('fuelEntries', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -207,7 +207,7 @@ export class AddFuelEntryComponent implements OnInit {
               // } else {
               // this.errors[key] = val.message;
               // }
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -222,7 +222,7 @@ export class AddFuelEntryComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Fuel entry Added successfully";
+        this.Success = 'Fuel entry Added successfully';
         // this.vehicleID = "";
         // this.vendorID = "";
         // this.location = "";
@@ -240,7 +240,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.form.showErrors(this.errors);
   }
   onChangeUnitType(value: any){
-    this.unitType = value; 
+    this.unitType = value;
     this.vehicleFuelQtyAmt = 0;
     this.reeferFuelQtyAmt = 0;
     this.vehicleFuelQty = 0;
@@ -248,21 +248,21 @@ export class AddFuelEntryComponent implements OnInit {
     this.calculate(); 
   }
   changeFuelUnit(){
-    if((this.vehicleFuelQtyUnit == 'gallons') || (this.reeferFuelQtyUnit == 'gallons')){
+    if ((this.vehicleFuelQtyUnit === 'gallons') || (this.reeferFuelQtyUnit === 'gallons')) {
          this.costLabel = 'Cost/gallon';
          this.DEFFuelQtyUnit = 'gallons';
     }
-   else if((this.vehicleFuelQtyUnit == 'litres') || (this.reeferFuelQtyUnit == 'litres')){
+    if ((this.vehicleFuelQtyUnit === 'litres') || (this.reeferFuelQtyUnit === 'litres')) {
       this.costLabel = 'Cost/litre';
       this.DEFFuelQtyUnit = 'litres';
  }
   }
   calculate(){
     this.totalAmount = Number(this.vehicleFuelQtyAmt) + Number(this.DEFFuelQtyAmt) + Number(this.reeferFuelQtyAmt);
-    var units = Number(this.vehicleFuelQty) + Number(this.DEFFuelQty) + Number(this.reeferFuelQty);
+    const units = Number(this.vehicleFuelQty) + Number(this.DEFFuelQty) + Number(this.reeferFuelQty);
     // this.costPerGallon = Math.round(this.totalAmount/units);
     this.amountPaid = this.totalAmount - this.discount;
-    this.costPerGallon = Math.round(this.amountPaid/units);
+    this.costPerGallon = Math.round(this.amountPaid / units);
   }
   // calculateTotal()
   // {
@@ -270,10 +270,13 @@ export class AddFuelEntryComponent implements OnInit {
   //   this.amountPaid = this.totalAmount - this.discount;
   //   this.costPerGallon = Math.round(this.amountPaid/units);
   // }
-  uploadFile(event) {
+  uploadFile = async (event) => {
+    this.carrierID = await this.apiService.getCarrierID();
+    console.log('carrierID', this.carrierID);
     this.imageError = '';
     if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
-      this.fileName = this.awsUS.uploadFile('test', event.target.files.item(0));
+      this.fileName = this.awsUS.uploadFile(this.carrierID,
+       event.target.files.item(0));
     } else {
       this.fileName = '';
       this.imageError = 'Invalid Image Format';

@@ -35,20 +35,20 @@ export class AddDriverComponent implements OnInit {
   driverBirthDate: NgbDateStruct;
   driverLicenseExpiry: NgbDateStruct;
   userType = 'driver';
-  basic = {
-    driverType: 'Employee',
-    companyID: '',
-    employeeID: '',
-    userName: '',
-    password: '',
-    firstName: '',
-    lastName: '',
+  
+    driverType: 'employee';
+    companyID: '';
+    employeeID: '';
+    userName: '';
+    password: '';
+    firstName: '';
+    lastName: '';
     // driverID: '',
-    driverGender: 'Male',
-    groupID: '',
-    phone: '',
-    email: '',
-  };
+    driverGender: 'Male';
+    groupID: '';
+    phone: '';
+    email: '';
+  
   address = {
     addressType: '',
     driverCountry: '',
@@ -141,8 +141,8 @@ export class AddDriverComponent implements OnInit {
     $(document).ready(() => {
       this.form = $('#form1_').validate();
     });
-    this.basic.driverGender = 'Male';
-    this.basic.driverType = 'Employee';
+    this.driverGender = 'Male';
+    this.driverType = 'employee';
   }
 
   fetchCycles() {
@@ -208,20 +208,20 @@ export class AddDriverComponent implements OnInit {
     this.errors = {};
     const data = {
       userType: 'driver',
-      basic: {
-        driverType: this.basic.driverType,
-        employeeID: this.basic.employeeID,
-        companyID: this.basic.companyID,
-        userName: this.basic.userName,
+     
+        driverType: this.driverType,
+        employeeID: this.employeeID,
+        companyID: this.companyID,
+        userName: this.userName,
         password: 'password',
-        firstName: this.basic.firstName,
-        lastName: this.basic.lastName,
-        // driverID: this.basic.driverID,
-        driverGender: this.basic.driverGender,
-        phone: this.basic.phone,
-        email: this.basic.email,
-        groupID: this.basic.groupID,
-      },
+        firstName: this.firstName,
+        lastName: this.lastName,
+        // driverID: this..driverID,
+        driverGender: this.driverGender,
+        phone: this.phone,
+        email: this.email,
+        groupID: this.groupID,
+   
       address: {
         addressType: this.address.addressType,
         driverCountry: this.address.driverCountry,
@@ -373,12 +373,12 @@ export class AddDriverComponent implements OnInit {
 
   // Driver Gender Value
   onChangeDriverGender(value: any) {
-    this.basic.driverGender = value;
+    this.driverGender = value;
     console.log(value);
 
   }
   onChangeDriverType(value: any) {
-    this.basic.driverType = value;
+    this.driverType = value;
     console.log(value);
 
   }

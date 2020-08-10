@@ -42,7 +42,7 @@ export class FuelEntryListComponent implements OnInit {
   }
   ngOnInit() {
     this.fuelEntries();
-    this.fetchVehicles();
+    // this.fetchVehicles();
     this.fetchCountries();
   }
   // Select All Checkboxes
@@ -72,11 +72,12 @@ export class FuelEntryListComponent implements OnInit {
       this.deleteFuelEntry(delcheckbox[i]);
     }
   }
-  fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.vehicles = result.Items;
-    });
-  }
+  // fetchVehicle(ID) {
+  //   this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
+  //     this.vehicles = result.Items;
+  //     return this.vehicles[0].vehicleName;
+  //   });
+  // }
   fuelEntries() {
     this.apiService.getData('fuelEntries').subscribe({
       complete: () => {

@@ -59,7 +59,8 @@ export class FuelDetailsComponent implements OnInit {
     states = [];
     cities = [];
     errors = {};
-    vehicleName = [];
+    vehicleName = '';
+    vendorName = '';
     form;
     response: any = '';
     hasError = false;
@@ -72,8 +73,8 @@ export class FuelDetailsComponent implements OnInit {
     this.mapBoxService.initMapbox(-104.618896, 50.44521);
     this.entryID = this.route.snapshot.params['entryID'];
     this.fetchFuelEntry();
-    this.fetchVehicles();
-    this.fetchVendors();
+   
+   
     this.fetchTrips();
     this.fetchCountries();
   }
@@ -106,9 +107,10 @@ export class FuelDetailsComponent implements OnInit {
       this.getCities();
     }, 1500);
   }
-  fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
+  fetchVehicles(ID) {
+    this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
       this.vehicles = result.Items;
+      this.vehicleName =  this.vehicles[0].vehicleName;
     });
   }
   fetchCountries() {
@@ -121,12 +123,11 @@ export class FuelDetailsComponent implements OnInit {
       this.trips = result.Items;
     });
   }
-//  getVehicleName(ID){
-//    let v = this.vehicles.filter( el => el.vehicleID === ID );
-//  }
-  fetchVendors() {
-    this.apiService.getData('vendors').subscribe((result: any) => {
+
+  fetchVendors(ID) {
+    this.apiService.getData('vendors/' + ID).subscribe((result: any) => {
       this.vendors = result.Items;
+      this.vendorName = this.vendors[0].vendorName;
     });
   }
   fetchFuelEntry() {
@@ -134,7 +135,7 @@ export class FuelDetailsComponent implements OnInit {
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('result is:' + result);
+        // console.log('result is:' + result);
         this.unitType = result.unitType;
         this.vehicleID = result.vehicleID,
         this.vehicleFuelQty = +result.vehicleFuelQty,
@@ -179,9 +180,8 @@ export class FuelDetailsComponent implements OnInit {
           this.odometer = result.odometer,
           this.description = result.description,
 
-        setTimeout(() => {
-          this. fillCountry();
-        }, 2000);
+          this.fetchVehicles(this.vehicleID);
+        this.fetchVendors(this.vendorID);
 
       });
   }

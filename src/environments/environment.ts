@@ -23,10 +23,10 @@ export const environment = {
     APP_CLIENT_ID: '76l88g289vcgrd8jf54pbedgqq'
   },
   awsBucket: {
-    bucketName: 'fh-dashboard-assets',
-    accessKeyId: 'AKIARUNMEEHU3E2DK3S7',
-    secretAccessKey: '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',
-    region: 'ap-south-1'
+    bucketName: 'fh-cloud-service-uploads',
+    accessKeyId: 'CHANGE',
+    secretAccessKey: 'CHANGE',
+    region: 'us-east-2'
   },
   HOSTNAME :'myhome.anterbox.com',
   PORT : 9001,

@@ -73,9 +73,9 @@
                                              <div class="col-lg-2 px-0">
                                                 <div class="radio">
                                                    <label>
-                                                      <input type="radio" name="basic.driverType" id="driver_employee"
-                                                         [checked]="basic.driverType ==='Employee'" value="Employee"
-                                                         (change)="onChangeDriverType('Employee')">
+                                                      <input type="radio" name="driverType" id="driver_employee"
+                                                         [checked]="driverType ==='employee'" value="employee"
+                                                         (change)="onChangeDriverType('employee')">
                                                       Employee
                                                    </label>
                                                 </div>
@@ -83,51 +83,51 @@
                                              <div class="col-lg-3  pr-0">
                                                 <div class="radio">
                                                    <label>
-                                                      <input type="radio" name="basic.driverType" id="driver_contractor"
-                                                         [checked]="basic.driverType ==='Contractor'" value="Contractor"
-                                                         (change)="onChangeDriverType('Contractor')">
+                                                      <input type="radio" name="driverType" id="driver_contractor"
+                                                         [checked]="driverType ==='contractor'" value="contractor"
+                                                         (change)="onChangeDriverType('contractor')">
                                                       Contractor
                                                    </label>
                                                 </div>
                                              </div>
                                           </div>
                                        </div>
-                                       <div class="col-lg-10" id="companyDiv" *ngIf="basic.driverType ==='Contractor'">
+                                       <div class="col-lg-10" id="companyDiv" *ngIf="driverType ==='contractor'">
                                           <label class="control-label font-weight-bold text-lg-right pt-3">Company
                                              ID</label>
-                                          <input type="text" class="form-control" name="basic.companyID"
-                                             [(ngModel)]="basic.companyID">
+                                          <input type="text" class="form-control" name="companyID"
+                                             [(ngModel)]="companyID">
                                        </div>
-                                       <div class="col-lg-10" id="employeeIDDiv" *ngIf="basic.driverType ==='Employee'">
+                                       <div class="col-lg-10" id="employeeIDDiv" *ngIf="driverType ==='employee'">
                                           <label class="control-label font-weight-bold text-lg-right pt-3">Employee
                                              ID</label>
-                                          <input type="text" class="form-control" name="basic.employeeID"
-                                             [(ngModel)]="basic.employeeID">
+                                          <input type="text" class="form-control" name="employeeID"
+                                             [(ngModel)]="employeeID">
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">User
                                              Name</label>
-                                          <input type="text" class="form-control" name="basic.userName"
-                                             [(ngModel)]="basic.userName" minlength="8">
+                                          <input type="text" class="form-control" name="userName"
+                                             [(ngModel)]="userName" minlength="8">
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Driver First
                                              Name</label>
-                                          <input type="text" class="form-control" name="basic.firstName"
-                                             [(ngModel)]="basic.firstName" maxlength="50">
+                                          <input type="text" class="form-control" name="firstName"
+                                             [(ngModel)]="firstName" maxlength="50">
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Driver Last
                                              Name</label>
-                                          <input type="text" class="form-control" name="basic.lastName"
-                                             [(ngModel)]="basic.lastName" maxlength="50">
+                                          <input type="text" class="form-control" name="lastName"
+                                             [(ngModel)]="lastName" maxlength="50">
                                        </div>
 
                                        <!-- <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Driver
                                              ID</label>
-                                          <input type="text" class="form-control" name="basic.driverID"
-                                             [(ngModel)]="basic.driverID">
+                                          <input type="text" class="form-control" name="driverID"
+                                             [(ngModel)]="driverID">
                                        </div> -->
 
                                        <div class="col-lg-10">
@@ -136,7 +136,7 @@
                                           <div class="row">
                                              <div class="col-lg-11">
                                                 <select data-plugin-selectTwo class="form-control populate"
-                                                   name="groupID" [(ngModel)]="basic.groupID">
+                                                   name="groupID" [(ngModel)]="groupID">
                                                    <!-- <optgroup label=""> -->
                                                    <option *ngFor="let q of groups" value="{{q.groupID}}">
                                                       {{q.groupName}}</option>
@@ -156,11 +156,11 @@
                                  <div class="col-lg-5 offset-lg-1">
                                     <div class="row">
                                        <div class="col-lg-10  text-center">
-                                          <div id="male_photo" *ngIf="basic.driverGender === 'Male'">
+                                          <div id="male_photo" *ngIf="driverGender === 'Male'">
                                              <img class="business_image_style" id="male_image"
                                                 src="assets\img\driver\male.png">
                                           </div>
-                                          <div id="female_photo" *ngIf="basic.driverGender === 'Female'">
+                                          <div id="female_photo" *ngIf="driverGender === 'Female'">
                                              <img class="business_image_style" id="female_image"
                                                 src="assets\img\driver\female.png">
                                           </div>
@@ -207,14 +207,14 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Work
                                              Phone</label>
-                                          <input type="text" class="form-control" name="basic.phone"
-                                             [(ngModel)]="basic.phone">
+                                          <input type="text" class="form-control" name="phone"
+                                             [(ngModel)]="phone">
 
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Work
                                              Email</label>
-                                          <input type="text" class="form-control" name="basic.email" [(ngModel)]="basic.email"
+                                          <input type="text" class="form-control" name="email" [(ngModel)]="email"
                                              maxlength="100">
                                        </div>
                                     </div>
@@ -366,7 +366,7 @@
                                              Percent</label>
                                           <div class="row">
                                              <div class="col-lg-2">
-                                                <input type="number" class="form-control" name="payment.driverLoadPercentage "
+                                                <input type="text" class="form-control" name="payment.driverLoadPercentage "
                                                    [(ngModel)]="payment. driverLoadPercentage ">
                                              </div>
                                              <div class="col-lg-2 px-0">
