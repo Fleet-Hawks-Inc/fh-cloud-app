@@ -22,30 +22,22 @@ export class ItemsListComponent implements OnInit {
   fetchItems() {
     this.apiService.getData("items").subscribe({
       complete: () => {
-        this.initDataTable();
+        // this.initDataTable();
       },
       error: () => {},
       next: (result: any) => {
-        console.log(result);
+        console.log("reslt", result)
         this.items = result.Items;
       },
     });
   }
 
   deleteItem(itemID) {
-    /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable("#datatable-default")) {
-      $("#datatable-default").DataTable().clear().destroy();
-    }
-    /******************************/
+    
     this.apiService.deleteData("items/" + itemID).subscribe((result: any) => {
+      
       this.fetchItems();
     });
   }
 
-  initDataTable() {
-    timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
-    });
-  }
 }

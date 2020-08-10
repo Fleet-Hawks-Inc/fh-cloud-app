@@ -15,7 +15,7 @@
                <div class="col-md-2 col-lg-2">
                   <div class="input-group input-group-md mb-3">
                      <ng-select [(ngModel)]="selectedAssets" name='search_asset' style="width: 100%;">
-                        <ng-option class="p-0" *ngFor="let item of assetsData" [value]="item.id"><a class="p-2 d-block" routerLink="/fleet/assets/asset-detail/{{item.assetID}}">{{item.assetName}}</a></ng-option>
+                        <ng-option class="p-0" *ngFor="let item of allData" [value]="item.id"><a class="p-2 d-block" routerLink="/fleet/assets/asset-detail/{{item.assetID}}">{{item.assetName}}</a></ng-option>
                     </ng-select>
                   </div>
                </div>
@@ -167,24 +167,24 @@
             </div>
          </div>
       </div>
-      <!-- LIST VIEW OF ASSETS           -->
+      <!-- LIST VIEW OF ASSETS  -->
       <div id="list_view">
          <div class="m-2">
             <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                <li class="nav-item">
-                  <a class="nav-link active" (click)="filterData('all')" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">All</a>
+                  <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">All</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="filterData('refer')" id="reefer-tab" data-toggle="tab" href="#reefer" role="tab" aria-controls="reefer" aria-selected="false">Reefer</a>
+                  <a class="nav-link" id="reefer-tab" data-toggle="tab" href="#reefer" role="tab" aria-controls="reefer" aria-selected="false">Reefer</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="filterData('drybox')" id="dryBox-tab" data-toggle="tab" href="#dryBox" role="tab" aria-controls="dryBox" aria-selected="false">Dry Box</a>
+                  <a class="nav-link" id="dryBox-tab" data-toggle="tab" href="#dryBox" role="tab" aria-controls="dryBox" aria-selected="false">Dry Box</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="filterData('flatbed')" id="flatBed-tab" data-toggle="tab" href="#flatBed" role="tab" aria-controls="flatBed" aria-selected="false">Flatbed</a>
+                  <a class="nav-link" id="flatBed-tab" data-toggle="tab" href="#flatBed" role="tab" aria-controls="flatBed" aria-selected="false">Flatbed</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="filterData('curtain')" id="curtainSide-tab" data-toggle="tab" href="#curtainSide" role="tab" aria-controls="curtainSide" aria-selected="false">Curtain Side</a>
+                  <a class="nav-link" id="curtainSide-tab" data-toggle="tab" href="#curtainSide" role="tab" aria-controls="curtainSide" aria-selected="false">Curtain Side</a>
                </li>
             </ul>
          </div>
@@ -195,7 +195,7 @@
                      <div class="tab-content p-0" id="myTabContent">
                         <div class="tab-pane show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                            <div class="">
-                             <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
+                             <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="allData.length > 0">
                               <thead>
                                  <tr>
                                     <th><input (click)="checkuncheckall()" type="checkbox"></th>
@@ -207,7 +207,7 @@
                                  </tr>
                               </thead>
                               <tbody>
-                              <tr *ngFor="let asset of assetsData;let i = index;">
+                              <tr *ngFor="let asset of allData;let i = index;">
                                 <td class="sorting_1"><input [checked]="isChecked" [(ngModel)]="asset.checked" (ngModelChange)="checkboxCount()" value="{{asset.assetName}}" type="checkbox"></td>
                                 <td routerLink="/fleet/assets/asset-detail/{{asset.assetID}}">{{ asset.assetName }}</td>
                                 <td>{{ asset.assetDetails.assetType }}</td>
@@ -221,11 +221,14 @@
                                 </tr>
                               </tbody>
                            </table>
+                           <div *ngIf="!allData.length > 0" class="alert alert-info m-0" role="alert">
+                              No records found
+                           </div>
                            </div>
                         </div>
                         <div class="tab-pane fade" id="reefer" role="tabpanel" aria-labelledby="reefer-tab">
                            <div class="">
-                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
+                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="refers.length > 0">
                                <thead>
                                   <tr>
                                      <th><input (click)="checkuncheckall()" type="checkbox"></th>
@@ -239,7 +242,7 @@
                                   </tr>
                                </thead>
                                <tbody>
-                               <tr *ngFor="let asset of assetsData;let i = index;" >
+                               <tr *ngFor="let asset of refers;let i = index;" >
                                  <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
                                  <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
                                  <td>Live Location</td>
@@ -255,11 +258,14 @@
                                  </tr>
                                </tbody>
                             </table>
+                            <div *ngIf="!refers.length > 0" class="alert alert-info m-0" role="alert">
+                              No records found
+                           </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="dryBox" role="tabpanel" aria-labelledby="dryBox-tab">
                            <div class="">
-                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
+                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="drybox.length > 0">
                                <thead>
                                   <tr>
                                     <th><input (click)="checkuncheckall()" type="checkbox"></th>
@@ -270,7 +276,7 @@
                                   </tr>
                                </thead>
                                <tbody>
-                                 <tr *ngFor="let asset of assetsData;let i = index;">
+                                 <tr *ngFor="let asset of drybox;let i = index;">
                                  <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
                                  <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
                                  <td>{{ asset.assetDetails.plateNumber  }}</td>
@@ -283,11 +289,15 @@
                                  </tr>
                                </tbody>
                             </table>
+                            <div *ngIf="!drybox.length > 0" class="alert alert-info m-0" role="alert">
+                              No records found
+                           </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="flatBed" role="tabpanel" aria-labelledby="flatBed-tab">
                            <div class="">
-                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
+                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" 
+                                 datatable class="row-border hover table table-bordered table-striped mb-0" *ngIf="flatbed.length > 0">
                                <thead>
                                   <tr>
                                     <th><input (click)="checkuncheckall()" type="checkbox"></th>
@@ -299,7 +309,7 @@
                                   </tr>
                                </thead>
                                <tbody>
-                               <tr *ngFor="let asset of assetsData;let i = index;">
+                               <tr *ngFor="let asset of flatbed;let i = index;">
                                  <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
                                   <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
                                  <td>{{ asset.assetDetails.plateNumber  }}</td>
@@ -310,14 +320,22 @@
                                    </span>
                                  </td>
                                  </tr>
+                                 
                                </tbody>
-                            </table>
+                           </table>
+
+                            
+                           <div *ngIf="!flatbed.length > 0" class="alert alert-info m-0" role="alert">
+                              No records found
+                           </div>
+                              
                             </div>
                         </div>
 
                         <div class="tab-pane fade" id="curtainSide" role="tabpanel" aria-labelledby="curtainSide-tab">
                            <div class="">
-                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 ">
+                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" 
+                                 datatable class="row-border hover table table-bordered table-striped mb-0" *ngIf="curtainSlide.length > 0">
                                <thead>
                                   <tr>
                                     <th><input (click)="checkuncheckall()"  type="checkbox"></th>
@@ -328,7 +346,7 @@
                                   </tr>
                                </thead>
                                <tbody>
-                                 <tr *ngFor="let asset of assetsData;let i = index;">
+                                 <tr *ngFor="let asset of curtainSlide;let i = index;">
                                     <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
                                     <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
                                     <td>{{ asset.assetDetails.plateNumber  }}</td>
@@ -341,6 +359,9 @@
                                  </tr>
                                </tbody>
                             </table>
+                            <div *ngIf="!curtainSlide.length > 0" class="alert alert-info m-0" role="alert">
+                              No records found
+                           </div>
                             </div>
                         </div>
                      </div>

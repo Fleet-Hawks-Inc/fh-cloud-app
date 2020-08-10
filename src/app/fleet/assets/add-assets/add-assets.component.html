@@ -374,7 +374,7 @@
                     <div class="col-lg-10">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault1">Attach Document</label>
                       <input [(ngModel)]="assetsData.uploadedDocs.doc"
-                      name="uploadedDocs.doc" type="file" multiple class="form-control p-0" id="inputDefault1"> </div>
+                      name="uploadedDocs.doc" (change)="uploadFile($event)" type="file" multiple class="form-control p-0" id="inputDefault1"> </div>
                     <!-- <div class="col-lg-2  mar-top-37">
                       <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a></div> -->
                   </div>

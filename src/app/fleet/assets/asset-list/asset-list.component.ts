@@ -12,7 +12,11 @@ declare var $: any;
 })
 export class AssetListComponent implements OnInit {
   title = 'Assets List';
-  assetsData = [];
+  allData = [];
+  refers = [];
+  drybox = [];
+  flatbed = [];
+  curtainSlide = [];
   isChecked = false;
   selectedAssetID: any;
   assetCheckCount = null;
@@ -45,7 +49,7 @@ export class AssetListComponent implements OnInit {
   // Count Checkboxes
   checkboxCount = () => {
     this.assetCheckCount = 0;
-    this.assetsData.forEach(item => {
+    this.allData.forEach(item => {
       if (item.checked) {
         this.selectedAssetID = item.assetID;
         this.assetCheckCount = this.assetCheckCount + 1;
@@ -58,13 +62,23 @@ export class AssetListComponent implements OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        this.assetsData = result.Items;
+        this.allData = result.Items;
+        console.log(this.allData)
+        for (let i = 0; i < result.Items.length; i++) {
+          if (result.Items[i].assetDetails.assetType === 'Reefer') {
+            this.refers.push(this.allData[i]);
+          } else if (result.Items[i].assetDetails.assetType === 'Drybox') {
+            this.drybox.push(this.allData[i]);
+          } else if (result.Items[i].assetDetails.assetType === 'Flatbed') {
+            this.flatbed.push(this.allData[i]);
+          } else if (result.Items[i].assetDetails.assetType === 'Curtain Side') {
+            this.curtainSlide.push(this.allData[i]);
+          } else {
+            this.allData = this.allData;
+          }
+        }
       },
     });
-  }
-
-  filterData = (type: string) => {
-    console.log('type', type);
   }
 
   editAsset = () => {
@@ -75,13 +89,14 @@ export class AssetListComponent implements OnInit {
     }
   }
   deleteAsset = () => {
-    const selectedAssets = this.assetsData.filter(product => product.checked).map(p => p.assetID);
+    const selectedAssets = this.allData.filter(product => product.checked).map(p => p.assetID);
     if (selectedAssets && selectedAssets.length > 0) {
       for (const i of selectedAssets) {
         this.apiService.deleteData('assets/' + i).subscribe((result: any) => {
           this.fetchAssets();
+          this.toastr.success('Assets Deleted Successfully!');
         });
-        this.toastr.success('Assets Deleted Successfully!');
+       
       }
     }
   }

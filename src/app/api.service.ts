@@ -116,6 +116,24 @@ export class ApiService {
         ).subscribe();
   }
 
+  /*
+    * Getting CarrierId from current LoggedIn User
+  */
+  getCarrierID = async () => {
+    try {
+      const response: any = await Auth.currentSession();
+      if (response) {
+        return response.idToken.payload.carrierID;
+      } else {
+        return undefined;
+      }
+
+    } catch (error) {
+      return undefined;
+      console.log('Error gettting carrierId');
+    }
+  }
+
 
 
 

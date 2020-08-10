@@ -171,49 +171,46 @@
                         </div>
                      </div>
                      <div class="col-lg-5 offset-lg-1">
-                        <div  id="inventoryTrackDiv" style="display:none;">
-                           <div class="row">
-                              <div class="col-lg-3">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Quantity</label>
-                                 <input type="number" [(ngModel)]="inventaryData.quantity"
-                                 name="inventaryData.quantity" class="form-control">
+                        
+                        <label class="control-label font-weight-bold">Inventory Tracking</label>
+                           <div>
+                              <div class="row">
+                                 <div class="col-lg-3">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Quantity</label>
+                                    <input type="number" class="form-control">
+                                 </div>
+                              </div>
+                              <div class="row mt-2">
+                                 <div class="col-lg-3">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Reorder Point</label>
+                                    <input type="number" class="form-control">
+                                 </div>
+                                 <div class="col-lg-3 mx-4">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Reorder Quantity</label>
+                                    <input type="number" class="form-control">
+                                 </div>
+                                 <div class="col-lg-3">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Max. Quantity</label>
+                                    <input type="number" class="form-control">
+                                 </div>
+                              </div>
+                              <div class="row mt-2">
+                                 <div class="col-lg-3">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Lead Time</label>
+                                    <input type="number" class="form-control">
+                                 </div>
+                                 <div class="col-lg-6 mx-4">
+                                    <label class="font-weight-bold font-bold text-lg-right pt-2">Preferred Vendor</label>
+                                    <select data-plugin-selecttwo="" class="form-control populate">
+                                       <optgroup label="Select">
+                                          <option value="1" data-select2-id="143">Vendor Name 1</option>
+                                          <option value="2">Vendor Name 2</option>
+                                       </optgroup>
+                                    </select>
+                                 </div>
                               </div>
                            </div>
-                           <div class="row mt-2">
-                              <div class="col-lg-3">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Reorder Point</label>
-                                 <input type="number" [(ngModel)]="inventaryData.reorderPoint"
-                                 name="inventaryData.reorderPoint" class="form-control">
-                              </div>
-                              <div class="col-lg-3 mx-4">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Reorder Quantity</label>
-                                 <input type="number" [(ngModel)]="inventaryData.reorderQuality"
-                                 name="inventaryData.reorderQuality"  class="form-control">
-                              </div>
-                              <div class="col-lg-3">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Max. Quantity</label>
-                                 <input type="number" [(ngModel)]="inventaryData.maxQuantity"
-                                 name="inventaryData.maxQuantity" class="form-control">
-                              </div>
-                           </div>
-                           <div class="row mt-2">
-                              <div class="col-lg-3">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Lead Time</label>
-                                 <input type="number" [(ngModel)]="inventaryData.leadTime"
-                                 name="inventaryData.leadTime" class="form-control">
-                              </div>
-                              <div class="col-lg-3 mx-4">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Type</label>
-                                 <select [(ngModel)]="inventaryData.type"
-                                 name="inventaryData.type" data-plugin-selectTwo class="form-control populate">
-                                    <optgroup label="Select">
-                                       <option value="FIFO">FIFO</option>
-                                       <option value="LIFO">LIFO</option>
-                                    </optgroup>
-                                 </select>
-                              </div>
-                           </div>
-                        </div>
+                           
                      </div>
                   </div>
                   <div class="form-group row">
