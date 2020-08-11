@@ -5,6 +5,8 @@ import { timer } from 'rxjs';
 import { MapBoxService } from '../../../map-box.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { ToastrService } from 'ngx-toastr';
+
 
 
 declare var $: any;
@@ -33,13 +35,17 @@ export class VehicleListComponent implements OnInit {
   vehicles;
   dropdownList = [];
   selectedItems = [];
+  isChecked = false;
+  allData = [];
+  selectedVehicleID: any;
+  vehicleCheckCount = null;
   dropdownSettings: IDropdownSettings;
   defaultBindingsList = [
     { value: 1, label: 'Vilnius' },
     { value: 2, label: 'Kaunas' },
     { value: 3, label: 'Pavilnys' }
   ];
-  constructor(private apiService: ApiService, private router: Router, private mapBoxService: MapBoxService) {
+  constructor(private apiService: ApiService, private toastr: ToastrService, private router: Router, private mapBoxService: MapBoxService) {
 
   }
 
@@ -69,6 +75,42 @@ export class VehicleListComponent implements OnInit {
       allowSearchFilter: true
     };
   }
+   // Count Checkboxes
+   checkboxCount = () => {
+    this.vehicleCheckCount = 0;
+    this.allData.forEach(item => {
+      if (item.checked) {
+        this.selectedVehicleID = item.vehicleID;
+        this.vehicleCheckCount = this.vehicleCheckCount + 1;
+      }
+    });
+  }
+  editVehicle = () => {
+    if (this.vehicleCheckCount === 1) {
+      this.router.navigateByUrl('/fleet/vehicles/Edit-Vehicle-New/' + this.selectedVehicleID);
+    } else {
+      this.toastr.error('Please select only one vehicle!');
+    }
+  }
+  deleteVehicle = () => {
+    const selectedVehicles = this.allData.filter(product => product.checked).map(p => p.vehicleID);
+    if (selectedVehicles && selectedVehicles.length > 0) {
+      for (const i of selectedVehicles) {
+        this.apiService.deleteData('vehicles/' + i).subscribe((result: any) => {
+          this.fetchVehicles();
+          this.toastr.success('Vehicle Deleted Successfully!');
+        });
+      }
+    }
+  }
+
+  checkuncheckall = () => {
+    if (this.isChecked === true) {
+      this.isChecked = false;
+    } else {
+      this.isChecked = true;
+    }
+  }
   onItemSelect(item: any) {
     console.log(item);
   }
@@ -85,6 +127,7 @@ export class VehicleListComponent implements OnInit {
       },
       error: () => { },
       next: (result: any) => {
+        this.allData = result.Items;
         console.log(result);
         this.vehicles = result.Items;
       },
@@ -93,18 +136,18 @@ export class VehicleListComponent implements OnInit {
 
 
 
-  deleteVehicle(vehicleId) {
-    /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable('#datatable-default')) {
-      $('#datatable-default').DataTable().clear().destroy();
-    }
-    /******************************/
+  // deleteVehicle(vehicleId) {
+  //   /******** Clear DataTable ************/
+  //   if ($.fn.DataTable.isDataTable('#datatable-default')) {
+  //     $('#datatable-default').DataTable().clear().destroy();
+  //   }
+  //   /******************************/
 
-    this.apiService.deleteData('vehicles/' + vehicleId)
-      .subscribe((result: any) => {
-        this.fetchVehicles();
-      });
-  }
+  //   this.apiService.deleteData('vehicles/' + vehicleId)
+  //     .subscribe((result: any) => {
+  //       this.fetchVehicles();
+  //     });
+  // }
 
   initDataTable() {
     timer(200).subscribe(() => {

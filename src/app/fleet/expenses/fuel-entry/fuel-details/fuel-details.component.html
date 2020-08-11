@@ -136,10 +136,10 @@
                                    <div class="row">
                                       <div class="col-lg-6">
                                          <div class="vehicle-photo-box">
-                                            <img src="assets/img/truck1.jpg" height="180px" width="330px">
+                                            <img [src]="showImage" height="180px" width="330px">
                                             <hr class="m-3">
                                             <div class="row">
-                                               <div class="col-lg-8">Name of the Image</div>
+                                               <div class="col-lg-8">{{fileToUpload}}</div>
                                                <div class="col-lg-4 text-right">
                                                   <div class="btn-group flex-wrap mx-2">
                                                      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>

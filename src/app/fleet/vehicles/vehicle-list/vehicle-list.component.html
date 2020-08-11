@@ -79,8 +79,8 @@
                            aria-expanded="false">Actions<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                           <a class="dropdown-item text-1" href="#">Edit</a>
-                           <a class="dropdown-item text-1" href="">Delete</a>
+                           <a class="dropdown-item text-1" (click)="editVehicle()" href="javascript:;">Edit</a>
+                           <a class="dropdown-item text-1" (click)="deleteVehicle()" href="javascript:;">Delete</a>
                            <a class="dropdown-item text-1" href="">Import</a>
                            <a class="dropdown-item text-1" href="">Export</a>
                         </div>
@@ -368,7 +368,7 @@
                         id="datatable-default">
                            <thead>
                               <tr>
-                                 <th><input type="checkbox"></th>
+                                 <th><input (click)="checkuncheckall()" type="checkbox"></th>
                                  <th>VIN</th>
                                  <th>Vehicle Name</th>
                                  <th>Status</th>
@@ -381,7 +381,7 @@
                            </thead>
                            <tbody>
                               <tr *ngFor="let vehicle of vehicles">
-                                 <td><input type="checkbox" class="vehicle_checkbox" value="{{ vehicle.vehicleID }}"></td>
+                                 <td><input [checked]="isChecked" [(ngModel)]="vehicle.checked" (ngModelChange)="checkboxCount()" value="{{vehicle.vehicleName}}" type="checkbox"></td>
                                  <td>{{ vehicle.VIN }}</td>
                                  <td>{{ vehicle.vehicleName }}</td>  
                                  <td>{{ vehicle.currentStatus }}</td>  

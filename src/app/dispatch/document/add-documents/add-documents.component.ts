@@ -100,13 +100,13 @@ export class AddDocumentsComponent implements OnInit {
     this.form.showErrors(this.errors);
   }
 
-  uploadFile(event) {
-    this.imageError = '';
-    if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
-      this.fileName = this.awsUS.uploadFile('test', event.target.files.item(0));
-    } else {
-      this.fileName = '';
-      this.imageError = 'Invalid Document Format';
-    }
-  }
+  // uploadFile(event) {
+  //   this.imageError = '';
+  //   if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
+  //     this.fileName = this.awsUS.uploadFile('test', event.target.files.item(0));
+  //   } else {
+  //     this.fileName = '';
+  //     this.imageError = 'Invalid Document Format';
+  //   }
+  // }
 }

@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MapBoxService } from '../../../../map-box.service';
 import { ApiService } from '../../../../api.service';
 import { ActivatedRoute } from '@angular/router';
+import {environment} from '../../../../../environments/environment';
+import * as S3 from 'aws-sdk/clients/s3';
+import { AwsDownloadService } from 'src/app/aws-download.service';
+
+
+
 
 
 
@@ -14,7 +20,7 @@ export class FuelDetailsComponent implements OnInit {
   title = 'Fuel Entry';
   fuelList;
     /********** Form Fields ***********/
-
+    showImage: string;
     unitType = 'Vehicle';
     vehicleID = '';
     vehicleFuelQty = 0;
@@ -45,10 +51,11 @@ export class FuelDetailsComponent implements OnInit {
     stateID = '';
     cityID = '';
     dispatchAssociate = '';
-    dispatchID = ''; 
+    dispatchID = '';
     avgGVW = '';
     odometer = '';
     description = '';
+    fileToUpload = '';
     timeCreated: '';
     /******************/
     entryID = '';
@@ -67,16 +74,27 @@ export class FuelDetailsComponent implements OnInit {
     hasSuccess = false;
     Error = '';
     Success = '';
-  constructor( private mapBoxService: MapBoxService, private apiService: ApiService, private route: ActivatedRoute) { }
+    bucketName;
+    bucket;
+    carrierID;
+  constructor( private mapBoxService: MapBoxService, private apiService: ApiService, private route: ActivatedRoute, private fileDownload: AwsDownloadService){
+      this.bucket = new S3(
+      {
+        accessKeyId: environment.awsBucket.accessKeyId,
+        secretAccessKey: environment.awsBucket.secretAccessKey,
+        region: environment.awsBucket.region
+      }
+    );this.bucketName = environment.awsBucket.bucketName;
+   }
 
   ngOnInit() {
     this.mapBoxService.initMapbox(-104.618896, 50.44521);
     this.entryID = this.route.snapshot.params['entryID'];
     this.fetchFuelEntry();
-   
-   
     this.fetchTrips();
     this.fetchCountries();
+    this.carrierID = this.apiService.getCarrierID();
+
   }
   getStates() {
     this.apiService
@@ -179,9 +197,11 @@ export class FuelDetailsComponent implements OnInit {
         this.avgGVW = result.avgGVW,
           this.odometer = result.odometer,
           this.description = result.description,
+          this.fileToUpload = result.fileToUpload,
 
           this.fetchVehicles(this.vehicleID);
         this.fetchVendors(this.vendorID);
+        this.showImage = this.fileDownload.getFiles(this.carrierID, this.fileToUpload);
 
       });
   }

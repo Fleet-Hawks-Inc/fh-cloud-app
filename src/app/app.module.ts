@@ -1,11 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 // Select List
 import { NgSelectModule } from '@ng-select/ng-select';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -18,7 +18,7 @@ import { RFormsComponent } from './r-forms/r-forms.component';
 import { CompanyInfoComponent } from './company-info/company-info.component';
 import { AddQuantumComponent } from './add-quantum/add-quantum.component';
 // import { AddUserComponent } from './add-user/add-user.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { LogoutComponent } from './logout/logout.component';
 // import { EditVehicleComponent } from './edit-vehicle/edit-vehicle.component';
@@ -106,31 +106,31 @@ import { AddAlertComponent } from './add-alert/add-alert.component';
 import { EditAlertComponent } from './edit-alert/edit-alert.component';
 import { AlertListComponent } from './alert-list/alert-list.component';
 
-import {RouterModule} from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AddCycleComponent } from './add-cycle/add-cycle.component';
 import { EditCycleComponent } from './edit-cycle/edit-cycle.component';
 import { CycleListComponent } from './cycle-list/cycle-list.component';
 import { NavOpenedDirective } from './directives/nav-opened.directive';
-import {SharedModule} from './shared/shared.module';
-import {ChartsModule} from 'ng2-charts';
-import {ToastrModule} from 'ngx-toastr';
+import { SharedModule } from './shared/shared.module';
+import { ChartsModule } from 'ng2-charts';
+import { ToastrModule } from 'ngx-toastr';
 
 
 // Authentication
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 // JWT interceptors
 import { HttpInterceptorProviders } from './helpers/interceptor.provider';
-import {JwtInterceptor} from "./helpers/jwt.interceptor";
+import { JwtInterceptor } from './helpers/jwt.interceptor';
 
-//mqtt
-import {MqttModule, IMqttServiceOptions} from 'ngx-mqtt';
-import {environment} from "../environments/environment";
+// mqtt
+import { MqttModule, IMqttServiceOptions } from 'ngx-mqtt';
+import { environment } from '../environments/environment';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
   path: environment.MQTTPATH
-}
+};
 
 import { RegisterComponent } from './register/register.component';
 import { CarrierRegistrationComponent } from './carrier-registration/carrier-registration.component';
@@ -257,9 +257,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     HttpClientModule,
     NgSelectModule,
     CarouselModule,
-    FormsModule,  
+    FormsModule,
     ReactiveFormsModule,
-      NgbModule,
+    NgbModule,
     BrowserAnimationsModule,
     ChartsModule,
     SharedModule,
@@ -271,8 +271,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
   ],
   providers: [AmplifyService,
-      HttpInterceptorProviders
-    ],
+    HttpInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

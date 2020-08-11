@@ -45,29 +45,25 @@ export class AddFuelEntryComponent implements OnInit {
      carrierID;
 
 
- 
- 
   paidBy = '';
   paymentMode  = '';
   reference  = '';
   reimburseToDriver = false;
   deductFromPay  = false;
- 
- 
+
   vendorID  = '';
   countryID  = '';
   stateID  = '';
   cityID  = '';
- 
- 
+
    dispatchAssociate  = '';
    dispatchID  = '';
- 
- 
+
+
   avgGVW  = '';
   odometer  = '';
   description  = '';
-  
+  fileToUpload = [];
  countries = [];
  states = [];
  cities = [];
@@ -85,7 +81,7 @@ export class AddFuelEntryComponent implements OnInit {
   Success = '';
 
 
- 
+
   constructor(private apiService: ApiService,
               private router: Router,
               private awsUS: AwsUploadService, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {}
@@ -142,6 +138,7 @@ export class AddFuelEntryComponent implements OnInit {
     });
   }
 
+
   addFuelEntry() {
     if (this.fileName === '') {
       this.imageError = 'Please Choose Image To Upload';
@@ -187,7 +184,11 @@ export class AddFuelEntryComponent implements OnInit {
         avgGVW : this.avgGVW,
         odometer : this.odometer,
         description : this.description,
+        // fileToUpload : this.fileToUpload.split('\\').pop().split('/').pop(),
+        fileToUpload : this.fileToUpload,
+
     };
+
  console.log(data);
     this.apiService.postData('fuelEntries', data).subscribe({
       complete: () => {},
@@ -245,9 +246,9 @@ export class AddFuelEntryComponent implements OnInit {
     this.reeferFuelQtyAmt = 0;
     this.vehicleFuelQty = 0;
     this.reeferFuelQty = 0;
-    this.calculate(); 
+    this.calculate();
   }
-  changeFuelUnit(){
+  changeFuelUnit() {
     if ((this.vehicleFuelQtyUnit === 'gallons') || (this.reeferFuelQtyUnit === 'gallons')) {
          this.costLabel = 'Cost/gallon';
          this.DEFFuelQtyUnit = 'gallons';
@@ -272,15 +273,17 @@ export class AddFuelEntryComponent implements OnInit {
   // }
   uploadFile = async (event) => {
     this.carrierID = await this.apiService.getCarrierID();
-    console.log('carrierID', this.carrierID);
+     console.log('carrierID', this.carrierID);
     this.imageError = '';
     if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
       this.fileName = this.awsUS.uploadFile(this.carrierID,
-       event.target.files.item(0));
+       event.target.files.item(0), 'fuel-entry-');
+      // console.log('event target', event.target.files.item(0));
     } else {
       this.fileName = '';
       this.imageError = 'Invalid Image Format';
     }
   }
+
 
 }

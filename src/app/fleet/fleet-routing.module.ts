@@ -94,8 +94,8 @@ const routes: Routes = [
     children: [
       { path: 'Add-Vehicle-New', component: AddVehicleNewComponent },
       {
-        path: 'Edit-Vehicle-New',
-        component: EditVehicleNewComponent,
+        path: 'Edit-Vehicle-New/:vehicleID',
+        component: AddVehicleNewComponent,
       },
       {
         path: 'Vehicle-Details',

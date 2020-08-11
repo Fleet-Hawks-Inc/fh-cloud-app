@@ -35,20 +35,23 @@ export class AwsUploadService {
     );
     this.bucketName = environment.awsBucket.bucketName;
    }
-
-  uploadFile(folder, file) {
+//  getFileName(file){
+//   return file.substr(0, file.lastIndexOf('.'));
+//  }
+  uploadFile(folder, file, prependText) {
     const contentType = file.type;
     /*
       * Random Algo For Random Name, Need to Fix it
      */
-    let filename = Math.random().toString(36).substring(7);
+    // let filename = Math.random().toString(36).substring(7);
     const ext = this.imageExt[this.imageFormat(file)];
-    filename =  filename + ext;
+    // filename =  filename + ext;
+    let filename = prependText + file.name;
     const params = {
       Bucket: this.bucketName,
       Key: folder + '/' + filename,
       Body: file,
-      ACL: 'private',
+      ACL: 'public-read',
       ContentType: contentType
     };
     this.bucket.upload(params, ( err, data) => {

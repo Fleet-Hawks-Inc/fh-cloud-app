@@ -377,7 +377,7 @@
                        <div class="form-group row" id="attachPhotoLine">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Attach Photo</label>
-                             <input type="file" multiple class="form-control p-0" id="fileToUpload" name="fileToUpload" (change)="uploadFile($event)" >
+                             <input type="file" multiple class="form-control p-0" id="fileToUpload" [(ngModel)]= "fileToUpload"  name="fileToUpload" (change)="uploadFile($event)" >
                           </div>
                           <div class="col-lg-2  mar-top-37">
                           </div>

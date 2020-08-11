@@ -109,15 +109,15 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
   }
 
 
-  uploadFile(event) {
-    this.imageError = '';
-    if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
-      this.fileName = this.awsUS.uploadFile('test', event.target.files.item(0));
-     } else {
-      this.fileName = '';
-      this.imageError = 'Invalid Image Format';
-    }
-  }
+  // uploadFile(event) {
+  //   this.imageError = '';
+  //   if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
+  //     this.fileName = this.awsUS.uploadFile('test', event.target.files.item(0));
+  //    } else {
+  //     this.fileName = '';
+  //     this.imageError = 'Invalid Image Format';
+  //   }
+  // }
 
 
   addVehicleServiceLog() {
