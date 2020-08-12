@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import * as AWS from 'aws-sdk/global';
 import * as S3 from 'aws-sdk/clients/s3';
 import {environment} from '../environments/environment';
+
+import { async } from '@angular/core/testing';
 declare var $: any;
 @Injectable({
   providedIn: 'root'
 })
 export class AwsUploadService {
-
   validFormats = [
     'image/jpg',
     'image/jpeg',
@@ -35,19 +36,23 @@ export class AwsUploadService {
     );
     this.bucketName = environment.awsBucket.bucketName;
   }
+  
 
-  uploadFile(folder, file) {
-    const contentType = file.type;
+  uploadFile(folder, fileName, fileData) {
+    const contentType = fileData.type;
+    console.log('contentType', contentType);
     /*
       * Random Algo For Random Name, Need to Fix it
      */
+    /*
     let filename = Math.random().toString(36).substring(7);
     const ext = this.imageExt[this.imageFormat(file)];
-    filename =  filename + ext;
+    let filename =  file + ext;
+    */
     const params = {
       Bucket: this.bucketName,
-      Key: folder + '/' + filename,
-      Body: file,
+      Key: folder + '/' + fileName,
+      Body: fileData,
       ACL: 'private',
       ContentType: contentType
     };
@@ -57,10 +62,10 @@ export class AwsUploadService {
         return false;
       }
       console.log('Successfully uploaded file.', data);
-      this.filename = filename;
+      //this.filename = file;
      // return filename;
     });
-    return this.filename;
+    //return this.filename;
 
     //for upload progress
     /*bucket.upload(params).on('httpUploadProgress', function (evt) {
@@ -77,6 +82,34 @@ export class AwsUploadService {
 
   imageFormat(file) {
     return file && $.inArray(file['type'], this.validFormats);
+  }
+
+  getFiles = async(carriedID, filename) => {
+    
+    const s3 = new S3({
+      accessKeyId: environment.awsBucket.accessKeyId,
+      secretAccessKey: environment.awsBucket.secretAccessKey,
+      region: environment.awsBucket.region
+
+    });
+    const params = {
+        Bucket: this.bucketName, // your bucket name,
+        Key: `${carriedID}/${filename}` // path to the object you're looking for
+    }
+    let data = await s3.getObject(params).promise();
+    if (data) {
+      console.log('Successfully get files.', data);
+      const image = `data:${data.ContentType};base64,${this.encode(data.Body)}`;
+      return image;
+    } else {
+      console.log('Failed to retrieve an object: ');
+    }
+  }
+
+  encode(data)
+  {
+    const str = data.reduce((a , b) =>{ return a + String.fromCharCode(b)},'');
+    return btoa(str).replace(/.{76}(?=.)/g,'$&\n');
   }
 
   // getExtensionIndex(file) {

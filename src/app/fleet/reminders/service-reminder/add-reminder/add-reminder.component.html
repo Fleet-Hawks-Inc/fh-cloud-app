@@ -31,7 +31,7 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle</label>
-                                    <select [(ngModel)]="reminderData.vehicle" name="reminderData.vehicle" data-plugin-selectTwo class="form-control populate">
+                                    <select [(ngModel)]="reminderData.vehicleName" name="vehicleName" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
                                           <option value="Vehicle 1">Vehicle 1</option>
                                           <option value="Vehicle 2">Vehicle 2</option>
@@ -44,16 +44,20 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users</label>
-                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribedUser" name="reminderData.subscribedUser" style="width: 100%;">
+                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribedUser" name="subscribedUser" style="width: 100%;">
                                        <ng-option value="User 1">User 1</ng-option>
                                           <ng-option value="User 2">User 2</ng-option>
                                           <ng-option value="User 3">User 3</ng-option>
                                    </ng-select>
                                     <div class="checkbox-custom mt-2">
-                                    <input [(ngModel)]="reminderData.sendNotification" name="reminderData.sendNotification" type="checkbox">
+                                    <input [(ngModel)]="reminderData.sendNotification" name="sendNotification" type="checkbox">
                                     <label class="control-label font-weight-bold">Send Email Notification</label>
                                  </div>
                                  </div>
+                                 <div class="col-lg-1 pl-0">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">&nbsp;</label>
+                                      <a data-toggle="modal" data-target="#addsubsuser" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                    </div>
                                
                               </div>
                            </div>
@@ -61,7 +65,7 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Tasks</label>
-                                    <select [(ngModel)]="reminderData.serviceTask" name="reminderData.serviceTask" data-plugin-selectTwo class="form-control populate">
+                                    <select [(ngModel)]="reminderData.serviceTask" name="serviceTask" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
                                           <option value="1">Service Task 1</option>
                                           <option value="2">Service Task 2</option>
@@ -77,10 +81,10 @@
                                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Time</label>
                                           <div class="row">
                                              <div class="col-lg-6">
-                                                <input [(ngModel)]="reminderData.repeatByTime" name="reminderData.repeatByTime" type="number" class="form-control" >
+                                                <input [(ngModel)]="reminderData.repeatByTime" name="repeatByTime" type="number" class="form-control" >
                                              </div>
                                              <div class="col-lg-6 col-lg-pl-0">
-                                                <select [(ngModel)]="reminderData.repeatByDays" name="reminderData.repeatByDays" data-plugin-selectTwo class="form-control populate">
+                                                <select [(ngModel)]="reminderData.repeatByDurationType" name="repeatByDurationType" data-plugin-selectTwo class="form-control populate">
                                                    <optgroup label="">
                                                       <option value="1">Days</option>
                                                       <option value="2">Weeks</option>
@@ -92,7 +96,7 @@
                                        </div>
                                        <div class="col-lg-6">
                                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer <span id="primary_meter">miles</span></label>
-                                          <input [(ngModel)]="reminderData.repeatByOdometer" name="reminderData.repeatByOdometer" type="text" class="form-control">
+                                          <input [(ngModel)]="reminderData.repeatByOdometer" name="repeatByOdometer" type="text" class="form-control">
                                        </div>
                                     </div>
                                  </div>
@@ -103,7 +107,7 @@
                         <div class="form-group row pt-2">
                            <div class="col-lg-11 text-right">
                               <a href="" class="btn btn-default" id="">Cancel</a>
-                              <a (click)="addService()" class="btn btn-success" id="nextBtn">Save</a>
+                              <a (click)="addReminder()" class="btn btn-success" id="nextBtn">Save</a>
                            </div>
                         </div>
                      </form>
@@ -113,3 +117,63 @@
          </section>
     </div>
 </section>
+
+
+<!-- 
+<div id="addsubsuser" class="modal-block modal-block-primary mfp-hide">
+   <section class="card">
+         <header class="card-header">
+            <h2 class="card-title">Add Subscribed Users</h2>
+         </header>
+         <div class="card-body text-dark">
+            <form>
+               <div class="form-row">
+                  <div class="form-group col-lg-12">
+                     <label class="control-label font-weight-bold">Subscribed Users Name</label>
+                     <input type="text" class="form-control">
+                  </div>
+                 
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-lg-12">
+                     <div class="row">
+                        <div class="col-lg-12">
+                           <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">Any Note</label>
+                           <textarea class="form-control" rows="2" id="comment"></textarea>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </form>
+         </div>
+         <footer class="card-footer">
+            <div class="row">
+               <div class="col-md-12 text-right">
+                  <button class="btn btn-success modal-confirm">Save</button>
+                  <button class="btn btn-default modal-dismiss">Cancel</button>
+               </div>
+            </div>
+         </footer>
+      </section>
+</div> -->
+
+<!-- Modal -->
+<div class="modal fade" id="addsubsuser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         ...
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         <button type="button" class="btn btn-primary">Save changes</button>
+       </div>
+     </div>
+   </div>
+ </div>

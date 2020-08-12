@@ -66,19 +66,20 @@
                       <select [(ngModel)]="assetsData.assetDetails.assetType"
                       name="assetDetails.assetType" data-plugin-selectTwo class="form-control populate">
                         <optgroup label="">
-                          <option value="Auto Hauler">Auto Hauler</option>
-                          <option value="Curtain Side">Curtain Side</option>
+                          <option value="Reefer">Reefer</option>
                           <option value="Drybox">Drybox</option>
-                          <option value="Dump/Tipper">Dump/Tipper</option>
+                          <option value="Curtain Side">Curtain Side</option>
                           <option value="Flatbed">Flatbed</option>
+                          <!-- <option value="Dump/Tipper">Dump/Tipper</option>
                           <option value="Intermodel Chassis">Intermodel Chassis</option>
                           <option value="Livestock">Livestock</option>
                           <option value="Lowboy">Lowboy</option>
-                          <option value="Reefer">Reefer</option>
+                          
+                          <option value="Auto Hauler">Auto Hauler</option>
                           <option value="Stake">Stake</option>
                           <option value="Step Deck">Step Deck</option>
                           <option value="Tanker">Tanker</option>
-                          <option value="Other">Other</option>
+                          <option value="Other">Other</option> -->
                         </optgroup>
                       </select>
                     </div>
@@ -314,7 +315,7 @@
                           <div class="col-lg-5">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Date of Expiry</label>
                               <input type="text"
-                                class="form-control"
+                                class="form-control datepicker"
                                 id="dateOfExpiry"
                                 [(ngModel)]="assetsData.insuranceDetails.dateOfExpiry"
                                 name="insuranceDetails.dateOfExpiry" />
@@ -362,7 +363,7 @@
                 <div class="col-lg-5 offset-lg-1">
                   <div class="row pt-2">
                     <div class="col-lg-10">
-                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Attach Photo</label>
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2" (click)="getImages()" for="inputDefault">Attach Photo</label>
                       <input [(ngModel)]="assetsData.uploadedPhotos.photo"
                       name="uploadedPhotos.photo" type="file" multiple class="form-control p-0" id="inputDefault"> </div>
                     <div class="col-lg-2  mar-top-37">
@@ -374,7 +375,7 @@
                     <div class="col-lg-10">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault1">Attach Document</label>
                       <input [(ngModel)]="assetsData.uploadedDocs.doc"
-                      name="uploadedDocs.doc" (change)="uploadFile($event)" type="file" multiple class="form-control p-0" id="inputDefault1"> </div>
+                      name="uploadedDocs.doc" (change)="selectDocuments($event)" type="file" multiple class="form-control p-0" id="inputDefault1"> </div>
                     <!-- <div class="col-lg-2  mar-top-37">
                       <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a></div> -->
                   </div>

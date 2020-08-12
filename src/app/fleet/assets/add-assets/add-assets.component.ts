@@ -1,14 +1,17 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import {Title} from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { ApiService } from '../../../api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { catchError, map, mapTo, tap } from 'rxjs/operators';
 import { from, of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import {AwsUploadService} from '../../../aws-upload.service';
+import { AwsUploadService } from '../../../aws-upload.service';
+import { async } from '@angular/core/testing';
+import { v4 as uuidv4 } from 'uuid';
 
 declare var jquery: any;
 declare var $: any;
+declare var FileItem: any;
 
 @Component({
   selector: 'app-add-assets',
@@ -17,6 +20,9 @@ declare var $: any;
 })
 export class AddAssetsComponent implements OnInit {
   public assetID;
+  selectedFiles: FileList;
+  selectedFileNames: Map<any, any>;
+  
   pageTitle: string;
   errors = {};
   form;
@@ -25,7 +31,7 @@ export class AddAssetsComponent implements OnInit {
     assetDetails: {},
     insuranceDetails: {},
     uploadedPhotos: {},
-    uploadedDocs: {}
+    uploadedDocs: []
   };
   vendors = [];
   manufacturers = [];
@@ -39,7 +45,9 @@ export class AddAssetsComponent implements OnInit {
   fileName = '';
   carrierID: any;
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) {
+  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
+    private router: Router, private toastr: ToastrService) {
+      this.selectedFileNames = new Map<any, any>();
   }
 
   ngOnInit() {
@@ -50,7 +58,7 @@ export class AddAssetsComponent implements OnInit {
     if (this.assetID) {
       this.pageTitle = 'Edit Asset';
       this.fetchAssetByID();
-    }  else {
+    } else {
       this.pageTitle = 'Add Asset';
     }
     $(document).ready(() => {
@@ -58,18 +66,25 @@ export class AddAssetsComponent implements OnInit {
     });
   }
 
-
+  /*
+   * Get all manufacturers from api
+   */
   fetchManufactuer() {
     this.apiService.getData('manufacturers').subscribe((result: any) => {
       this.manufacturers = result.Items;
     });
   }
+  /*
+   * Get all vendors from api
+   */
   fetchVendors() {
     this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
     });
   }
-
+  /*
+   * Get all models from api
+   */
   getModels() {
     this.apiService
       .getData(`vehicleModels/manufacturer/${this.assetsData.assetDetails['manufacturerID']}`)
@@ -78,14 +93,16 @@ export class AddAssetsComponent implements OnInit {
       });
   }
 
-
+  /*
+   * Add new asset
+   */
   addAsset() {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    console.log('this.assetsData',this.assetsData);
+    console.log('this.assetsData', this.assetsData);
     this.apiService.postData('assets', this.assetsData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         from(err.error)
           .pipe(
@@ -103,14 +120,14 @@ export class AddAssetsComponent implements OnInit {
               this.throwErrors();
               this.Success = '';
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
-        console.log("add res", res);
         this.response = res;
-        this.toastr.success('Driver added successfully');
+        //this.uploadFiles();
+        this.toastr.success('Asset added successfully');
         this.router.navigateByUrl('/fleet/assets/Assets-List');
       },
     });
@@ -120,6 +137,9 @@ export class AddAssetsComponent implements OnInit {
     this.form.showErrors(this.errors);
   }
 
+  /*
+   * Fetch Asset details before updating
+  */
   fetchAssetByID() {
     this.apiService
       .getData('assets/' + this.assetID)
@@ -157,12 +177,14 @@ export class AddAssetsComponent implements OnInit {
       });
 
   }
-
+  /*
+   * Update asset
+  */
   updateAsset() {
     this.hasError = false;
     this.hasSuccess = false;
     this.apiService.putData('assets', this.assetsData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         from(err.error)
           .pipe(
@@ -179,8 +201,8 @@ export class AddAssetsComponent implements OnInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -192,16 +214,32 @@ export class AddAssetsComponent implements OnInit {
       },
     });
   }
+  /*
+   * Selecting files before uploading
+   */
+  selectDocuments(event) {
 
-  uploadFile = async (event) => {
-    this.carrierID = await this.apiService.getCarrierID();
-    console.log('carrierID', this.carrierID);
-    this.imageError = '';
-    if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
-      this.fileName = this.awsUS.uploadFile(this.carrierID, event.target.files.item(0));
-    } else {
-      this.fileName = '';
-      this.imageError = 'Invalid Document Format';
+    this.selectedFiles = event.target.files;
+    console.log('this.selectedFiles', event.target.files);
+    this.assetsData.uploadedDocs = [];
+    
+    for (let i = 0; i <= this.selectedFiles.item.length; i++) {
+      const randomFileGenerate = this.selectedFiles[i].name.split('.');
+      const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
+
+      this.selectedFileNames.set(fileName, this.selectedFiles[i]);
+      this.assetsData.uploadedDocs.push(fileName);
     }
+    console.log(this.assetsData);
+    this.uploadFiles();
+  }
+  /*
+   * Uploading files which selected
+   */
+  uploadFiles = async () => {
+    this.carrierID = await this.apiService.getCarrierID();
+    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
+      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
+    });
   }
 }
