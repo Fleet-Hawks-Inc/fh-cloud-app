@@ -24,7 +24,7 @@ export const environment = {
   },
   awsBucket: {
     bucketName: 'fh-cloud-service-uploads',
-    accessKeyId: 'CHANGE_ ME',
+    accessKeyId: 'CHANGE_ME',
     secretAccessKey: 'CHANGE_ME',
     region: 'us-east-2'
   },

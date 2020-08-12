@@ -20,7 +20,7 @@ export class FuelDetailsComponent implements OnInit {
   title = 'Fuel Entry';
   fuelList;
     /********** Form Fields ***********/
-    showImage: string;
+    
     unitType = 'Vehicle';
     vehicleID = '';
     vehicleFuelQty = 0;
@@ -77,6 +77,9 @@ export class FuelDetailsComponent implements OnInit {
     bucketName;
     bucket;
     carrierID;
+    imageArray = [];
+    showImage = [];
+    imageNameArray = [];
   constructor( private mapBoxService: MapBoxService, private apiService: ApiService, private route: ActivatedRoute, private fileDownload: AwsDownloadService){
       this.bucket = new S3(
       {
@@ -198,11 +201,29 @@ export class FuelDetailsComponent implements OnInit {
           this.odometer = result.odometer,
           this.description = result.description,
           this.fileToUpload = result.fileToUpload,
+          this.imageArray = result.uploadedFiles,
+          this.imageNameArray = result.testArray,
 
           this.fetchVehicles(this.vehicleID);
         this.fetchVendors(this.vendorID);
-        this.showImage = this.fileDownload.getFiles(this.carrierID, this.fileToUpload);
-
+         //console.log('image array' , this.imageArray);
+       // this.showImage = this.fileDownload.getFiles(this.carrierID, this.fileToUpload);
+       this.showImages();
       });
   }
+  showImages() {
+    for (let i = 0; i < this.imageArray.length; i++) {
+      let x = this.fileDownload.getFiles(this.carrierID, this.imageArray[i]);
+      this.showImage.push(x);
+    }
+    let o = new Object();
+    for(let a,b; a < this.showImage.length,b<this.imageNameArray.length; a++, b++){
+           o['this.showImage[a]'] = this.imageNameArray[b];
+    }
+    for(let i in o)
+{
+     console.log(i + "=" + o[i] + '<br>');
+}
+   // console.log('show images array' + this.imageNameArray);
+   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as AWS from 'aws-sdk/global';
 import * as S3 from 'aws-sdk/clients/s3';
 import {environment} from '../environments/environment';
+import { v4 as uuidv4 } from 'uuid';
 declare var $: any;
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class AwsUploadService {
     '.png'
   ];
   filename = '';
-
+   newArray = [];
   bucket;
   bucketName;
 
@@ -38,15 +39,20 @@ export class AwsUploadService {
 //  getFileName(file){
 //   return file.substr(0, file.lastIndexOf('.'));
 //  }
-  uploadFile(folder, file, prependText) {
+  uploadFile(folder, file) {
     const contentType = file.type;
     /*
       * Random Algo For Random Name, Need to Fix it
      */
-    // let filename = Math.random().toString(36).substring(7);
+    let filename = uuidv4(file);
+
     const ext = this.imageExt[this.imageFormat(file)];
-    // filename =  filename + ext;
-    let filename = prependText + file.name;
+    console.log('file extension' + ext);
+  
+    filename =  filename + ext;
+    this.newArray.push(filename);
+    console.log('New Aray in service' + this.newArray);
+     // let filename =  file.name;
     const params = {
       Bucket: this.bucketName,
       Key: folder + '/' + filename,
@@ -61,9 +67,9 @@ export class AwsUploadService {
       }
       console.log('Successfully uploaded file.', data);
       this.filename = filename;
-     // return filename;
     });
-    return this.filename;
+   // return this.filename;
+    return this.newArray;
 
     //for upload progress
     /*bucket.upload(params).on('httpUploadProgress', function (evt) {

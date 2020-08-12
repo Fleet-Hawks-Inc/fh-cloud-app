@@ -133,13 +133,14 @@
                                       </div>
                                    </div>
                                    <hr class="solid mt-3">
-                                   <div class="row">
-                                      <div class="col-lg-6">
+                                   <div class="row" >
+
+                                      <div class="col-lg-6" *ngFor='let image of showImage'>
                                          <div class="vehicle-photo-box">
-                                            <img [src]="showImage" height="180px" width="330px">
+                                            <img [src]="image" height="180px" width="330px">
                                             <hr class="m-3">
                                             <div class="row">
-                                               <div class="col-lg-8">{{fileToUpload}}</div>
+                                               <div class="col-lg-8">Image Name</div>
                                                <div class="col-lg-4 text-right">
                                                   <div class="btn-group flex-wrap mx-2">
                                                      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
@@ -152,7 +153,7 @@
                                             </div>
                                          </div>
                                       </div>
-                                      <div class="col-lg-6">
+                                      <!-- <div class="col-lg-6">
                                          <div class="vehicle-photo-box">
                                             <img src="assets/img/truck2.jpg" height="180px" width="330px">
                                             <hr class="m-3">
@@ -169,7 +170,7 @@
                                                </div>
                                             </div>
                                          </div>
-                                      </div>
+                                      </div> -->
                                    </div>
                                 </div>
                              </div>

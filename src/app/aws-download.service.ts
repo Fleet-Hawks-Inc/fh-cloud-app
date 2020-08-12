@@ -9,8 +9,7 @@ import {environment} from '../environments/environment';
 export class AwsDownloadService {
   bucket;
   bucketName;
-  files = [];
-  data ;
+  urlArray = [];
     // s3 = new AWS.S3();
   constructor() {
     this.bucket = new S3(
@@ -27,6 +26,7 @@ export class AwsDownloadService {
     let url = this.bucket.getSignedUrl('getObject', params);
     // console.log('carrier id in service', fileName);
     // console.log('url of image', url);
+    // this.urlArray.push(url);
     return  url;
    }
 }

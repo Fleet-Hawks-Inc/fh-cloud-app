@@ -6,6 +6,7 @@ import { from, of } from 'rxjs';
 import {AwsUploadService} from '../../../../aws-upload.service';
 import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { booleanObjectType } from 'aws-sdk/clients/iam';
+import { v4 as uuidv4 } from 'uuid';
 
 declare var jquery: any;
 declare var $: any;
@@ -19,7 +20,7 @@ export class AddFuelEntryComponent implements OnInit {
   title = 'Add Fuel Entry';
   imageError = '';
   fileName = '';
- 
+
   /********** Form Fields ***********/
 
      unitType =  'Vehicle';
@@ -43,7 +44,7 @@ export class AddFuelEntryComponent implements OnInit {
     //  tripID: "";
      costLabel  =  'Cost/gallon';
      carrierID;
-
+     selectedFiles: FileList;
 
   paidBy = '';
   paymentMode  = '';
@@ -70,6 +71,8 @@ export class AddFuelEntryComponent implements OnInit {
  vendors = [];
  vehicles = [];
  trips = [];
+ uploadedFiles = [];
+ testArray = [];
   /******************/
 
   errors = {};
@@ -140,16 +143,15 @@ export class AddFuelEntryComponent implements OnInit {
 
 
   addFuelEntry() {
-    if (this.fileName === '') {
-      this.imageError = 'Please Choose Image To Upload';
-      return;
-    }
-
+    // if (this.fileName === '') {
+    //   this.imageError = 'Please Choose Image To Upload';
+    //   return;
+    // }
+  
     this.errors = {};
 
     this.hasError = false;
     this.hasSuccess = false;
-
     const data = {
         unitType : this.unitType,
         vehicleID: this.vehicleID,
@@ -184,12 +186,13 @@ export class AddFuelEntryComponent implements OnInit {
         avgGVW : this.avgGVW,
         odometer : this.odometer,
         description : this.description,
-        // fileToUpload : this.fileToUpload.split('\\').pop().split('/').pop(),
-        fileToUpload : this.fileToUpload,
-
+       // fileToUpload : this.fileToUpload,
+         uploadedFiles : this.uploadedFiles,
+         testArray : this.testArray,
     };
 
  console.log(data);
+
     this.apiService.postData('fuelEntries', data).subscribe({
       complete: () => {},
       error: (err) => {
@@ -271,19 +274,64 @@ export class AddFuelEntryComponent implements OnInit {
   //   this.amountPaid = this.totalAmount - this.discount;
   //   this.costPerGallon = Math.round(this.amountPaid/units);
   // }
-  uploadFile = async (event) => {
-    this.carrierID = await this.apiService.getCarrierID();
-     console.log('carrierID', this.carrierID);
-    this.imageError = '';
-    if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
-      this.fileName = this.awsUS.uploadFile(this.carrierID,
-       event.target.files.item(0), 'fuel-entry-');
-      // console.log('event target', event.target.files.item(0));
-    } else {
-      this.fileName = '';
-      this.imageError = 'Invalid Image Format';
-    }
+  showFiles(file) {
+      this.testArray.push(file.name);
   }
-
+  // selectFiles(event){
+  //   for (let index = 0; index < event.target.files.length; index++) {
+  //     this.fileToUpload.push(event.target.files[index])
+  //   }
+  //   console.log(this.fileToUpload)
+    
+  // }
+  uploadFile = async (event) => {
+    this.selectedFiles = event.target.files;
+    for (let i = 0; i < this.selectedFiles.length; i++) {
+      this.showFiles(this.selectedFiles[i]);
+    }
+    console.log('Test Array Files', this.testArray);
+    this.carrierID = await this.apiService.getCarrierID();
+   // console.log('carrierID', this.carrierID);
+    this.imageError = '';
+    for (let j = 0; j < this.testArray.length; j++) {
+      if (this.awsUS.imageFormat(event.target.files.item(j)) !== -1) {
+        this.uploadedFiles = this.awsUS.uploadFile(this.carrierID,
+        event.target.files.item(j));
+       // console.log('event target', event.target.files.item(j));
+      } else {
+        this.fileName = '';
+        this.imageError = 'Invalid Image Format';
+      }
+    }
+    console.log('service returned array' + this.uploadedFiles);
+  }
+ /*
+   * Selecting files before uploading
+   */
+  selectFiles(event) {
+    this.selectedFiles = event.target.files;
+    this.uploadedFiles = [];
+    for (let i = 0; i < this.selectedFiles.length; i++) {
+      this.uploadedFiles.push(this.selectedFiles[i].name);
+      // this.uploadedFiles.push(uuidv4(this.selectedFiles[i].name));
+     // this.assetsData.uploadedDocs.push(uuidv4(randomFileGenerate));
+    }
+    console.log('uploaded Files', this.uploadedFiles);
+  }
+  /*
+   * Uploading files which selected
+   */
+  // uploadFile = async () => {
+  //   this.carrierID = await this.apiService.getCarrierID();
+  //   this.imageError = '';
+  //   if (this.uploadedFiles.length >= 0) {
+  //     for (let index = 0; index < this.uploadedFiles.length; index++) {
+  //       this.fileName = this.awsUS.uploadFile(this.carrierID, this.uploadedFiles[index]);
+  //     }
+  //   } else {
+  //     this.fileName = '';
+  //     this.imageError = 'Invalid Document Format';
+  //   }
+  // }
 
 }
