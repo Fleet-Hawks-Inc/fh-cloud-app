@@ -12,7 +12,7 @@
             <header class="page-header">
                <div class="row pr-5" style="padding-top:10px;">
                   <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                     New Service Reminder
+                     {{pageTitle}}
                   </div>
                   <div class="col-md-8  col-lg-8 text-right">
                      <a routerLink="/fleet/reminders/service-reminder/list" class="btn btn-default btn-sm mx-2" style="color:black;"><i class="fas fa-list"></i> Service Reminders</a>
@@ -22,7 +22,7 @@
             <div class="row">
                <div class="col">
                   <div class="card-body text-dark">
-                     <form class="form-horizontal form-bordered" method="get">
+                     <form id="form_" name="form" class="form-horizontal form-bordered" method="get">
                         <div class="row pt-2">
                            <div class="col-lg-12">
                               <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service Reminder Details</label>
@@ -33,9 +33,7 @@
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle</label>
                                     <select [(ngModel)]="reminderData.vehicleName" name="vehicleName" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
-                                          <option value="Vehicle 1">Vehicle 1</option>
-                                          <option value="Vehicle 2">Vehicle 2</option>
-                                          <option value="Vehicle 3">Vehicle 3</option>
+                                          <option *ngFor="let item of vehicles" value="{{item.vehicleName}}">{{item.vehicleName}}</option>
                                        </optgroup>
                                     </select>
                                  </div>
@@ -67,9 +65,124 @@
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Tasks</label>
                                     <select [(ngModel)]="reminderData.serviceTask" name="serviceTask" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
-                                          <option value="1">Service Task 1</option>
-                                          <option value="2">Service Task 2</option>
-                                          <option value="2">Service Task 3</option>
+                                          <option value="A/C Compressor Replacement">A/C Compressor Replacement</option>
+                                        <option value="A/C Condenser Replacemen">A/C Condenser Replacement</option>
+                                        <option value="A/C Diagnosis">A/C Diagnosis</option>
+                                        <option value="A/C Evaporator Replacement">A/C Evaporator Replacement</option>
+                                        <option value="A/C Inspection">A/C Inspection</option>
+                                        <option value="A/C Recharge">A/C Recharge</option>
+                                        <option value="Air Brake System Valve Inspection">Air Brake System Valve Inspection</option>
+                                        <option value="Air Cleaner Inspection">Air Cleaner Inspection</option>
+                                        <option value="Air Compressor Inspection">Air Compressor Inspection</option>
+                                        <option value="Air Dryer Desiccant Replacement">Air Dryer Desiccant Replacement</option>
+                                        <option value="Air Dryer Inspection">Air Dryer Inspection</option>
+                                        <option value="Air Filter Replacement">Air Filter Replacement</option>
+                                        
+                                        <option value="Alcohol Evaporator Cleaning">Alcohol Evaporator Cleaning</option>
+                                        <option value="Alternator Replacement">Alternator Replacement</option>
+                                        <option value="Automatic Drain Valve Inspection">Automatic Drain Valve Inspection</option>
+                                        <option value="Axle Lubricant and Filter Replacement">Axle Lubricant and Filter Replacement</option>
+                                        <option value="Ball Joint Replacement">Ball Joint Replacement</option>
+                                        <option value="Battery Inspection">Battery Inspection</option>
+                                        <option value="Battery-Powered HVAC System Inspection">Battery-Powered HVAC System Inspection</option>
+                                        <option value="Battery Replacement">Battery Replacement</option>
+                                        <option value="Brake Caliper Replacement">Brake Caliper Replacement</option>
+                                        <option value="Brake Camshaft Bracket Lubrication">Brake Camshaft Bracket Lubrication</option>
+                                        <option value="Brake Inspection">Brake Inspection</option>
+                                        <option value="Brake Pad(s) Replacement">Brake Pad(s) Replacement</option>
+                                        
+                                        <option value="Brake Rotor Replacement">Brake Rotor Replacement</option>
+                                        <option value="Brake Slack Adjuster Lubrication">Brake Slack Adjuster Lubrication</option>
+                                        <option value="Cabin Air FIlter Replacement">Cabin Air FIlter Replacement</option>
+                                        <option value="Cab Shock Absorber Bracket Torque Check">Cab Shock Absorber Bracket Torque Check</option>
+                                        <option value="Car Wash">Car Wash</option>
+                                        <option value="Catalytic Converter Replacement">Catalytic Converter Replacement</option>
+                                        <option value="Charging and Starting System Inspection">Charging and Starting System Inspection</option>
+                                        <option value="Charging System Diagnosis">Charging System Diagnosis</option>
+                                        <option value="Clutch Hydraulic Fluid Level Check"> Clutch Hydraulic Fluid Level Check</option>
+                                        <option value="Clutch Hydraulic Fluid Replacement">Clutch Hydraulic Fluid Replacement</option>
+                                        <option value="Clutch Release Bearing Lubrication">Clutch Release Bearing Lubrication</option>
+                                        <option value="Coolant Flush">Coolant Flush</option>
+                                        
+                                        <option value="Cooling System Fluid Level Inspection">Cooling System Fluid Level Inspection</option>
+                                        <option value="Clutch Hydraulic Fluid Replacement">Clutch Hydraulic Fluid Replacement</option>
+                                        <option value="Door Window Motor/Regulator Replacement">Door Window Motor/Regulator Replacement</option>
+                                        <option value="Drag Link Inspection">Drag Link Inspection</option>
+                                        <option value="Drive Axle Assembly Fluid Replacement">Drive Axle Assembly Fluid Replacement</option>
+                                        <option value="Driveline Inspection">Driveline Inspection</option>
+                                        <option value="Driveline Lubrication">Driveline Lubrication</option>
+                                        <option value="Engine Air Filter Replacement">Engine Air Filter Replacement</option>
+                                        <option value="Engine Belt Inspection">Engine Belt Inspection</option>
+                                        <option value="Engine Coolant Drain & Refill">Engine Coolant Drain & Refill</option>
+                                        <option value="Engine Coolant Replacement">Engine Coolant Replacement</option>
+                                        <option value="Engine/Drive Belt(s) Inspection">Engine/Drive Belt(s) Inspection</option>
+                                        
+                                        
+                                        <option value="Engine/Drive Belt(s) Replacement">Engine/Drive Belt(s) Replacement</option>
+                                        <option value="Engine Oil & Filter Replacement">Engine Oil & Filter Replacement</option>
+                                        <option value="Exhaust Manifold Replacement">Exhaust Manifold Replacement</option>
+                                        <option value="Exhaust System Inspection">Exhaust System Inspection</option>
+                                        <option value="Factory Scheduled Maintenance">Factory Scheduled Maintenance</option>
+                                        <option value="Fan Clutch Inspection">Fan Clutch Inspection</option>
+                                        <option value="Fifth Wheel Inspection">Fifth Wheel Inspection</option>
+                                        <option value="Fifth Wheel Lubrication">Fifth Wheel Lubrication</option>
+                                        <option value="Fuel Filter Replacement">Fuel Filter Replacement</option>
+                                        <option value="Fuel Injector Replacement">Fuel Injector Replacement</option>
+                                        <option value="Fuel Pump Replacement">Fuel Pump Replacement</option>
+                                        <option value="Fuel/Water Separator Filter Replacement"> Fuel/Water Separator Filter Replacement</option>
+                                        
+                                        <option value="Head Gasket(s) Replacement">Head Gasket(s) Replacement</option>
+                                        <option value="Heater Blower Motor Replacement">Heater Blower Motor Replacement</option>
+                                        <option value="Heater Control Valve Replacement">Heater Control Valve Replacement</option>
+                                        <option value="Heater Core Replacement">Heater Core Replacement</option>
+                                        <option value="Heater Hose Replacement">Heater Hose Replacement</option>
+                                        <option value="Ignition Coil Replacement">Ignition Coil Replacement</option>
+                                        <option value="Intake Manifold Gasket Replacement">Intake Manifold Gasket Replacement</option>
+                                        <option value="Knuckle Pin Lubrication">Knuckle Pin Lubrication</option>
+                                        <option value="Mirror Folding Check">Mirror Folding Check</option>
+                                        <option value="Oil Change">Oil Change</option>
+                                        <option value="Oil & Filter Change">Oil & Filter Change</option>
+                                        <option value=" Oil Pump Replacement"> Oil Pump Replacement</option>
+                                        
+                                        <option value="Other Maintenance">Other Maintenance</option>
+                                        <option value="Oxygen Sensor Replacement">Oxygen Sensor Replacement</option>
+                                        <option value="Power Steering Fluid and Filter Replacement">Power Steering Fluid and Filter Replacement</option>
+                                        <option value="Power Steering Fluid Level Inspection">Power Steering Fluid Level Inspection</option>
+                                        <option value="Power Steering Gear Lubrication">Power Steering Gear Lubrication</option>
+                                        <option value="Power Steering Hose Replacement">Power Steering Hose Replacement</option>
+                                        <option value="Power Steering Pump Replacement">Power Steering Pump Replacement</option>
+                                        <option value="Pressure Relief Cap Inspection">Pressure Relief Cap Inspection</option>
+                                        <option value="Radiator Repair">Radiator Repair</option>
+                                        <option value="Resurface Rotors">Resurface Rotors</option>
+                                        <option value="Rotate Tires"> Rotate Tires</option>
+                                        <option value="Rotor Replacement">Rotor Replacement</option>
+                                        
+                                        <option value="Spark Plug Replacement<">Spark Plug Replacement</option>
+                                        <option value="Spark Plugs Replacement">Spark Plugs Replacement</option>
+                                        <option value="Starter Replacement">Starter Replacement</option>
+                                        <option value="Steer Axle Hub Cap Vent Plug Inspection">Steer Axle Hub Cap Vent Plug Inspection</option>
+                                        <option value="Suspension Inspection">Suspension Inspection</option>
+                                        <option value="Suspension U-Bolt Torque Check">Suspension U-Bolt Torque Check</option>
+                                        <option value="Thermostat Replacement">Thermostat Replacement</option>
+                                        <option value="Tie Rod End Replacement">Tie Rod End Replacement</option>
+                                        <option value="Tie Rod Inspection">Tie Rod Inspection</option>
+                                        <option value="Tire Check">Tire Check</option>
+                                        <option value="Tire Replacement">Tire Replacement</option>
+                                        <option value="Tire Rotation">Tire Rotation</option>
+                                        
+                                        <option value="Tire Service">Tire Service</option>
+                                        <option value="Trailer Cable Inspection">Trailer Cable Inspection</option>
+                                        <option value="Transfer Case Fluid Replacement">Transfer Case Fluid Replacement</option>
+                                        <option value="Transmission Filter Replacement">Transmission Filter Replacement</option>
+                                        <option value="Transmission Fluid Drain & Refill">Transmission Fluid Drain & Refill</option>
+                                        <option value="Transmission Fluid Level Inspection">Transmission Fluid Level Inspection</option>
+                                        <option value="Transmission Fluid Replacement">Transmission Fluid Replacement</option>
+                                        <option value="Transmission Replacement"> Transmission Replacement</option>
+                                        <option value="Water Pump Replacement">Water Pump Replacement</option>
+                                        <option value="Wheel Alignment">Wheel Alignment</option>
+                                        <option value="Wheel Bearing Replacement"> Wheel Bearing Replacement</option>
+                                        <option value="Wheel Nut Check">Wheel Nut Check</option>
+                                        <option value="Windshield Wiper(s) Replacement">Windshield Wiper(s) Replacement</option>
                                        </optgroup>
                                     </select>
                                  </div>
@@ -106,7 +219,7 @@
                         </div>
                         <div class="form-group row pt-2">
                            <div class="col-lg-11 text-right">
-                              <a href="" class="btn btn-default" id="">Cancel</a>
+                              <a routerLink="/fleet/reminders/service-reminder/list" class="btn btn-default" id="">Cancel</a>
                               <a (click)="addReminder()" class="btn btn-success" id="nextBtn">Save</a>
                            </div>
                         </div>

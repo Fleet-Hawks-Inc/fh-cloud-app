@@ -50,6 +50,7 @@ export class AssetListComponent implements OnInit {
   checkboxCount = () => {
     this.assetCheckCount = 0;
     this.allData.forEach(item => {
+      console.log(item.checked);
       if (item.checked) {
         this.selectedAssetID = item.assetID;
         this.assetCheckCount = this.assetCheckCount + 1;
@@ -102,10 +103,13 @@ export class AssetListComponent implements OnInit {
   }
 
   checkuncheckall = () => {
-    if (this.isChecked === true) {
-      this.isChecked = false;
-    } else {
-      this.isChecked = true;
-    }
+    this.allData.forEach(item => {
+      if (item.checked === true) {
+        item.checked = false;
+      } else {
+        item.checked = true;
+      }
+    });
+    
   }
 }

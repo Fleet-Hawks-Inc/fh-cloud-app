@@ -165,8 +165,8 @@
                             aria-expanded="false">Actions<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                            <a class="dropdown-item text-1" href="edit-service-reminder.php">Edit</a>
-                            <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                            <a class="dropdown-item text-1" href="javascript:;" (click)="editAsset()">Edit</a>
+                            <a class="modal-with-form dropdown-item text-1" href="javascript:;" (click)="deleteAsset()">Delete</a>
                             <a class="dropdown-item text-1" href="">Import</a>
                             <a class="dropdown-item text-1" href="">Export</a>
                         </div>
@@ -201,16 +201,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td onclick="window.location='overdue-service-reminder-details.php';">Vehicle 1</td>
+                                <tr *ngFor="let item of remindersData;">
+                                    <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount()" value="{{item.vehicleName}}" type="checkbox"></td>
+                                    <td routerLink="/fleet/reminders/service-reminder/detail/{{item.remindersID}}">{{item.vehicleName}}</td>
                                     <td><span class="text-danger font-weight-bold font-size-12">Overdue</span><br><span
-                                            class="font-weight-bold" title="Service Task">Rotate Tires</span><br><span
+                                            class="font-weight-bold" title="Service Task">{{item.serviceTask}}</span><br><span
                                             class="font-size-12">Every 6 month(s) or 10,000 miles</span></td>
                                     <td><span>3 months from now</span></td>
                                     <td>Jun 1,2020</td>
                                     <td>Not Available</td>
-                                    <td><span class="text-success font-weight-bold font-size-12"> Active</span><br>0
+                                    <td><span class="text-success font-weight-bold font-size-12"> Active</span><br>{{item.subscribedUser.length}}
                                         subscribers</td>
                                     <td>
                                         <div class="btn-group flex-wrap">
@@ -223,78 +223,6 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td onclick="window.location='duesoon-service-reminder-details.php';">Vehicle 2</td>
-                                    <td onclick="window.location='duesoon-service-reminder-details.php';"><span
-                                            class="text-warning font-weight-bold font-size-12">Due Soon</span><br><span
-                                            class="font-weight-bold" title="Service Task">Oil Change</span><br><span
-                                            class="font-size-12">Every 6 month(s) or 10,000 miles</span></td>
-                                    <td><span>6 months from now</span></td>
-                                    <td>Jun 30,2020</td>
-                                    <td>Not Available</td>
-                                    <td><span class="text-success font-weight-bold font-size-12"> Active</span><br>1
-                                        subscribers</td>
-                                    <td>
-                                        <div class="btn-group flex-wrap">
-                                            <button type="button" class="btn p-0" data-toggle="dropdown"><i
-                                                    class="fas fa-ellipsis-h"></i></button>
-                                            <div class="dropdown-menu" role="menu">
-                                                <a class="dropdown-item text-1" href="service-entry.php">Enter Service</a>
-                                                <a class="dropdown-item text-1" href="#">Send Notifications</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td onclick="window.location='overdue-service-reminder-details.php';">Vehicle 3</td>
-                                    <td onclick="window.location='overdue-service-reminder-details.php';"><span
-                                            class="text-danger font-weight-bold font-size-12">Overdue</span><br><span
-                                            class="font-weight-bold" title="Service Task">Tires Replacement</span><br><span
-                                            class="font-size-12">Every 6 month(s) or 10,000 miles</span></td>
-                                    <td><span>3 months from now</span></td>
-                                    <td>Jun 1,2020</td>
-                                    <td>Not Available</td>
-                                    <td><span class="text-success font-weight-bold font-size-12"> Active</span><br>3
-                                        subscribers</td>
-                                    <td>
-                                        <div class="btn-group flex-wrap">
-                                            <button type="button" class="btn p-0" data-toggle="dropdown"><i
-                                                    class="fas fa-ellipsis-h"></i></button>
-                                            <div class="dropdown-menu" role="menu">
-                                                <a class="dropdown-item text-1" href="service-entry.php">Enter Service</a>
-                                                <a class="dropdown-item text-1" href="#">Send Notifications</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td onclick="window.location='duesoon-service-reminder-details.php';">Vehicle 4</td>
-                                    <td onclick="window.location='duesoon-service-reminder-details.php';"><span
-                                            class="text-warning font-weight-bold font-size-12">Due Soon</span><br><span
-                                            class="font-weight-bold" title="Service Task">Rotate Tires</span><br><span
-                                            class="font-size-12">Every 6 month(s) or 10,000 miles</span></td>
-                                    <td><span>12 months from now</span></td>
-                                    <td>Jun 28,2020</td>
-                                    <td>0% Compliance</td>
-                                    <td><span class="text-success font-weight-bold font-size-12"> Active</span><br>0
-                                        subscribers</td>
-                                    <td>
-                                        <div class="btn-group flex-wrap">
-                                            <button type="button" class="btn p-0" data-toggle="dropdown"><i
-                                                    class="fas fa-ellipsis-h"></i></button>
-                                            <div class="dropdown-menu" role="menu">
-                                                <a class="dropdown-item text-1" href="service-entry.php">Enter Service</a>
-                                                <a class="dropdown-item text-1" href="#">Send Notifications</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-    
-    
-    
                             </tbody>
                         </table>
                     </div>

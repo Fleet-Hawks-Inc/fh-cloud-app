@@ -84,8 +84,7 @@ export class AwsUploadService {
     return file && $.inArray(file['type'], this.validFormats);
   }
 
-  getFiles = async(carriedID, filename) => {
-    
+  getFiles = async (carriedID, filename) => {
     const s3 = new S3({
       accessKeyId: environment.awsBucket.accessKeyId,
       secretAccessKey: environment.awsBucket.secretAccessKey,
@@ -96,7 +95,7 @@ export class AwsUploadService {
         Bucket: this.bucketName, // your bucket name,
         Key: `${carriedID}/${filename}` // path to the object you're looking for
     }
-    let data = await s3.getObject(params).promise();
+    const data = await s3.getObject(params).promise();
     if (data) {
       console.log('Successfully get files.', data);
       const image = `data:${data.ContentType};base64,${this.encode(data.Body)}`;
@@ -106,10 +105,11 @@ export class AwsUploadService {
     }
   }
 
-  encode(data)
-  {
-    const str = data.reduce((a , b) =>{ return a + String.fromCharCode(b)},'');
-    return btoa(str).replace(/.{76}(?=.)/g,'$&\n');
+  encode(data) {
+    const str = data.reduce((a , b) => {
+      return a + String.fromCharCode(b);
+    }, '');
+    return btoa(str).replace(/.{76}(?=.)/g, '$&\n');
   }
 
   // getExtensionIndex(file) {

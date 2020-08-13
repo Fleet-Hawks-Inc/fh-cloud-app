@@ -124,7 +124,7 @@ export class AddAssetsComponent implements OnInit {
             next: () => { },
           });
       },
-      next: (res) => {
+      next: (res) => { 
         this.response = res;
         //this.uploadFiles();
         this.toastr.success('Asset added successfully');

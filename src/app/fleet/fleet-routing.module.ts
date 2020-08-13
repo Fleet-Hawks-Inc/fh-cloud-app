@@ -204,7 +204,8 @@ const routes: Routes = [
         children: [
           { path: "list", component: ListingComponent },
           { path: "add-reminder", component: AddReminderComponent },
-          { path: "detail", component: ServiceRemindDetailComponent },
+          { path: "edit-reminder/:reminderID", component: AddReminderComponent },
+          { path: "detail/:reminderID", component: ServiceRemindDetailComponent },
         ],
       },
       {

@@ -14,7 +14,10 @@ declare var $: any;
   styleUrls: ['./add-reminder.component.css']
 })
 export class AddReminderComponent implements OnInit {
+  reminderID;
+  pageTitle;
   reminderData = {};
+  vehicles;
   form;
   errors = {};
   Error: string = '';
@@ -24,14 +27,42 @@ export class AddReminderComponent implements OnInit {
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
+    this.reminderID = this.route.snapshot.params['reminderID'];
+    if (this.reminderID) {
+      this.pageTitle = 'Edit Service Reminder';
+      this.fetchReminderByID();
+    } else {
+      this.pageTitle = 'Add Service Reminder';
+      this.fetchVehicles();
+    }
+
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
   }
 
-  addService() {
-    console.log(this.reminderData);
-  }
+   /*
+   * Fetch Reminder details before updating
+  */
+ fetchReminderByID() {
+  this.apiService
+    .getData('serviceReminders/' + this.reminderID)
+    .subscribe((result: any) => {
+      result = result.Items[0];
+      console.log(result)
+      this.reminderData['remindersID'] = this.reminderID;
+      this.reminderData['vehicleName'] = result.vehicleName;
+      this.reminderData['serviceTask'] = result.serviceTask;
+      this.reminderData['repeatByTime'] = result.repeatByTime;
+      this.reminderData['repeatByOdometer'] = result.repeatByOdometer;
+      this.reminderData['repeatByDurationType'] = result.repeatByDurationType;
+      result.subscribedUser.forEach(element => {
+        this.reminderData['subscribedUser'] = element;
+      });
+    });
+
+}
+
   addReminder() {
     this.errors = {};
     this.hasError = false;
@@ -70,4 +101,13 @@ export class AddReminderComponent implements OnInit {
   throwErrors() {
     this.form.showErrors(this.errors);
   }
+  
+  fetchVehicles() {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
+      this.vehicles = result.Items;
+      console.log(this.vehicles)
+    });
+  }
+
+ 
 }

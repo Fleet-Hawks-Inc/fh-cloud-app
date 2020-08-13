@@ -37,10 +37,10 @@
                                        <td class="back-color-gray font-weight-bold">VIN</td>
                                        <td>{{item.VIN}}</td>
                                     </tr>
-                                    <tr>
+                                    <!-- <tr>
                                        <td class="back-color-gray font-weight-bold">Asset Gateway S/N</td>
                                        <td>none</td>
-                                    </tr>
+                                    </tr> -->
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Type</td>
                                        <td>{{item.assetDetails.assetType}}</td>
@@ -119,9 +119,9 @@
                                    </div>
                                    <hr class="solid mt-3">
                                    <div class="row">
-                                      <div class="col-lg-6">
+                                      <div class="col-lg-6" *ngFor="let item of assetsImages;">
                                          <div class="vehicle-photo-box">
-                                            <img [src]="image" height="180px" width="330px">
+                                            <img [src]="item" height="180px" width="100%">
                                             <hr class="m-3">
                                             <div class="row">
                                                <div class="col-lg-8">Name of the Image</div>
@@ -138,27 +138,7 @@
                                             </div>
                                          </div>
                                       </div>
-                                      <img [src]="image" alt="" style="width: 200px; height: 300px;">
                                       
-                                      <div class="col-lg-6">
-                                         <div class="vehicle-photo-box">
-                                            <img src="assets/img/truck2.jpg" height="180px" width="330px">
-                                            <hr class="m-3">
-                                            <div class="row">
-                                               <div class="col-lg-8">Name of the Image</div>
-                                               <div class="col-lg-4 text-right">
-                                                  <div class="btn-group flex-wrap mx-2">
-                                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                                                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                                        <a class="dropdown-item text-1" href="">Crop/Rotate Image</a>
-                                                        <a class="dropdown-item text-1" href="">Edit</a>
-                                                        <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
-                                                     </div>
-                                                  </div>
-                                               </div>
-                                            </div>
-                                         </div>
-                                      </div>
                                    </div>
                                 </div>
                              </div>
