@@ -20,8 +20,7 @@ export class FuelDetailsComponent implements OnInit {
   title = 'Fuel Entry';
   fuelList;
     /********** Form Fields ***********/
-    
-    unitType = 'Vehicle';
+    unitType = 'vehicle';
     vehicleID = '';
     vehicleFuelQty = 0;
     vehicleFuelQtyUnit = 'gallons';
@@ -80,14 +79,18 @@ export class FuelDetailsComponent implements OnInit {
     imageArray = [];
     showImage = [];
     imageNameArray = [];
-  constructor( private mapBoxService: MapBoxService, private apiService: ApiService, private route: ActivatedRoute, private fileDownload: AwsDownloadService){
+    showImageDiv: boolean;
+    constructor( private mapBoxService: MapBoxService,
+                 private apiService: ApiService,
+                 private route: ActivatedRoute, private fileDownload: AwsDownloadService) {
       this.bucket = new S3(
       {
         accessKeyId: environment.awsBucket.accessKeyId,
         secretAccessKey: environment.awsBucket.secretAccessKey,
         region: environment.awsBucket.region
       }
-    );this.bucketName = environment.awsBucket.bucketName;
+    );
+   this.bucketName = environment.awsBucket.bucketName;
    }
 
   ngOnInit() {
@@ -202,7 +205,7 @@ export class FuelDetailsComponent implements OnInit {
           this.description = result.description,
           this.fileToUpload = result.fileToUpload,
           this.imageArray = result.uploadedFiles,
-          this.imageNameArray = result.testArray,
+          this.imageNameArray = result.imageNameArray,
 
           this.fetchVehicles(this.vehicleID);
         this.fetchVendors(this.vendorID);
@@ -211,19 +214,17 @@ export class FuelDetailsComponent implements OnInit {
        this.showImages();
       });
   }
-  showImages() {
+  async showImages() {
     for (let i = 0; i < this.imageArray.length; i++) {
-      let x = this.fileDownload.getFiles(this.carrierID, this.imageArray[i]);
+      let x = await this.fileDownload.getFiles(this.carrierID, this.imageArray[i]);
       this.showImage.push(x);
     }
-    let o = new Object();
-    for(let a,b; a < this.showImage.length,b<this.imageNameArray.length; a++, b++){
-           o['this.showImage[a]'] = this.imageNameArray[b];
+    if(this.imageArray.length > 0){
+      this.showImageDiv = true;
     }
-    for(let i in o)
-{
-     console.log(i + "=" + o[i] + '<br>');
-}
+    else{
+      this.showImageDiv = false;
+    }
    // console.log('show images array' + this.imageNameArray);
    }
 }

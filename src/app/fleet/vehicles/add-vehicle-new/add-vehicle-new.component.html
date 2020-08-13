@@ -162,7 +162,7 @@
                           <div class="col-lg-7 text-center"> <img class="business_image_style" id=""
                               src="\assets\img\truck.jpg">
                             <div class="mt-3">
-                              <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
+                              <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo(s)
                                 <input type="file" multiple class="hidden_input1" id="fileToUpload" name="fileToUpload"
                                   (change)="uploadFile($event)">
                               </div>
@@ -206,7 +206,7 @@
                               <div class="col-lg-2 px-0">
                                 <div class="radio">
                                   <label>
-                                    <input type="radio" name="basicPrimaryMeter"  [checked]="basicPrimaryMeter === 'Miles'"
+                                    <input type="radio" name="basicPrimaryMeter"  [checked]="basicPrimaryMeter === 'miles'"
                                       (change)="onChangeBasicPrimaryMeter('miles')" id="primary-meter-miles"
                                        checked> Miles </label>
                                 </div>
@@ -214,7 +214,7 @@
                               <div class="col-lg-3  pr-0">
                                 <div class="radio">
                                   <label>
-                                    <input type="radio" name="basicPrimaryMeter"  [checked]="basicPrimaryMeter === 'Kilometers'"
+                                    <input type="radio" name="basicPrimaryMeter"  [checked]="basicPrimaryMeter === 'kilometers'"
                                       (change)="onChangeBasicPrimaryMeter('kilometers')" id="primary-meter-kms"
                                       > Kilometers </label>
                                 </div>
@@ -378,7 +378,7 @@
                         <div class="row ">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Assign DVIR</label>
-                            <input type="file" class="form-control p-0">
+                            <input type="file" multiple class="form-control p-0" (change)="uploadDocument($event)">
                           </div>
                         </div>
                       </div>
@@ -1208,14 +1208,14 @@
                             <div class="radio">
                               <label>
                                 <input type="radio" id="imperial" (change)="onChangeMeasurementUnit('imperial')"
-                                  name="measurementUnit"> Imperial (inches, pounds, gallons, miles) </label>
+                                  name="measurementUnit" > Imperial (inches, pounds, gallons, miles) </label>
                             </div>
                           </div>
                           <div class="col-lg-10">
                             <div class="radio">
                               <label>
                                 <input type="radio" id="metric" (change)="onChangeMeasurementUnit('metric')"
-                                  name="measurementUnit"> Metric (centimeters, kilograms, liters, kilometers) </label>
+                                  name="measurementUnit" checked> Metric (centimeters, kilograms, liters, kilometers) </label>
                             </div>
                           </div>
                         </div>

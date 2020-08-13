@@ -47,7 +47,7 @@ export class AddVehicleNewComponent implements OnInit {
   modelId = '';
   stateID = '';
   plateNumber = '';
-  basicPrimaryMeter = 'Miles';
+  basicPrimaryMeter = 'miles';
   spRepeatTime = '';
   spRepeatTimeUnit = '';
   spRepeatOdometer = '';
@@ -177,6 +177,13 @@ export class AddVehicleNewComponent implements OnInit {
     turningParameters: ''
   };
   data;
+  uploadedFiles = [];
+  uploadedDocuments = [];
+  documentNameArray = [];
+  imageNameArray = [];
+  selectedFiles: FileList;
+  selectedDocuments: FileList;
+  carrierID;
   countryID = '';
   servicePrograms = [];
   inspectionForms = [];
@@ -221,7 +228,7 @@ export class AddVehicleNewComponent implements OnInit {
     this.safetyParameters.hardBreakingParameters = '6';
     this.safetyParameters.hardAccelrationParameters = '6';
     this.safetyParameters.turningParameters = '6';
-    this.basicPrimaryMeter = 'Miles';
+    this.basicPrimaryMeter = 'miles';
 
     $('#hardBreakingParametersValue').html(6);
     $('#hardAccelrationParametersValue').html(6);
@@ -431,7 +438,8 @@ export class AddVehicleNewComponent implements OnInit {
         hardAccelrationParameters: this.safetyParameters.hardAccelrationParameters,
         turningParameters: this.safetyParameters.turningParameters,
       },
-      // quantumInfo: this.quantum
+      uploadedFiles : this.uploadedFiles,
+      imageNameArray : this.imageNameArray,
     };
     this.apiService.postData('vehicles', data).
       subscribe({
@@ -443,7 +451,7 @@ export class AddVehicleNewComponent implements OnInit {
                 const path = val.path;
                 // We Can Use This Method
                 const key = val.message.match(/"([^']+)"/)[1];
-                console.log(key);
+                // console.log(key);
                 val.message = val.message.replace(/".*"/, 'This Field');
                 this.errors[key] = val.message;
               })
@@ -520,13 +528,13 @@ export class AddVehicleNewComponent implements OnInit {
           cargoVolume: result.dimensions.cargoVolume,
           groundClearance: result.dimensions.groundClearance,
           bedLength: result.dimensions.bedLength,
-        }
+        };
         this.additionalDetails = {
           vehicleColor: result.additionalDetails.vehicleColor,
           bodyType: result.additionalDetails.bodyType,
           bodySubType: result.additionalDetails.bodySubType,
           MSRP: result.additionalDetails.MSRP,
-        }
+        };
 
         this.lifeCycle = {
           inServiceDate: result.lifeCycle.inServiceDate,
@@ -563,7 +571,7 @@ export class AddVehicleNewComponent implements OnInit {
           maxHP: result.engine.maxHP,
           maxTorque: result.engine.maxTorque,
           redlineRPM: result.engine.redlineRPM,
-        }
+        };
         this.transmission = {
           summary: result.transmission.summary,
           brand: result.transmission.brand,
@@ -833,10 +841,10 @@ export class AddVehicleNewComponent implements OnInit {
               this.response = res;
               this.toaster.success('Vehicle Updated successfully');
               this.router.navigateByUrl('/fleet/vehicles/Vehicle-List');
-    
+
             }
           });
-    
+
       }
   onChangeBasicPrimaryMeter(value: any) {
         this.basicPrimaryMeter = value;
@@ -871,23 +879,59 @@ export class AddVehicleNewComponent implements OnInit {
         $('#turningParametersValue').html(value);
       }
 
-  quantumModal() {
-
-        $('#quantumModal').modal('show');
-
-      }
-
   onChange(newValue) {
         this.quantum = newValue;
         this.quantumSelected = newValue;
       }
-  // uploadFile(event) {
-  //   this.imageError = '';
-  //   if (this.awsUS.imageFormat(event.target.files.item(0)) !== -1) {
-  //     this.fileName = this.awsUS.uploadFile('test', event.target.files.item(0));
-  //   } else {
-  //     this.fileName = '';
-  //     this.imageError = 'Invalid Image Format';
-  //   }
-  // }
+      showFiles(file) {
+        this.imageNameArray.push(file.name);
+    }
+    uploadFile = async (event) => {
+      this.imageNameArray = [];
+      this.selectedFiles = event.target.files;
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        this.showFiles(this.selectedFiles[i]);
+      }
+      console.log('Name Array Files', this.imageNameArray);
+      this.carrierID = await this.apiService.getCarrierID();
+     // console.log('carrierID', this.carrierID);
+      this.imageError = '';
+      for (let j = 0; j < this.imageNameArray.length; j++) {
+        if (this.awsUS.imageFormat(event.target.files.item(j)) !== -1) {
+          this.uploadedFiles = this.awsUS.uploadFile(this.carrierID,
+          event.target.files.item(j));
+         // console.log('event target', event.target.files.item(j));
+        } else {
+          this.fileName = '';
+          this.imageError = 'Invalid Image Format';
+        }
+      }
+      console.log('service returned array' + this.uploadedFiles);
+    }
+    //  For uploading document
+    showDocuments(file) {
+      this.documentNameArray.push(file.name);
+  }
+    uploadDocument = async (event) => {
+      this.documentNameArray = [];
+      this.selectedDocuments = event.target.files;
+      for (let i = 0; i < this.selectedDocuments.length; i++) {
+        this.showDocuments(this.selectedDocuments[i]);
+      }
+      console.log('Name Array Documents', this.documentNameArray);
+      this.carrierID = await this.apiService.getCarrierID();
+     // console.log('carrierID', this.carrierID);
+      this.imageError = '';
+      for (let j = 0; j < this.documentNameArray.length; j++) {
+        if (this.awsUS.documentFormat(event.target.files.item(j)) !== -1) {
+          this.uploadedDocuments = this.awsUS.uploadDocument(this.carrierID,
+          event.target.files.item(j));
+         // console.log('event target', event.target.files.item(j));
+        } else {
+          this.fileName = '';
+          this.imageError = 'Invalid Document Format';
+        }
+      }
+      console.log('service returned array' + this.uploadedDocuments);
+    }
 }

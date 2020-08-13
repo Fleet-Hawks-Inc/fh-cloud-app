@@ -7,6 +7,8 @@ import {AwsUploadService} from '../../../../aws-upload.service';
 import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { booleanObjectType } from 'aws-sdk/clients/iam';
 import { v4 as uuidv4 } from 'uuid';
+import { ToastrService } from 'ngx-toastr';
+
 
 declare var jquery: any;
 declare var $: any;
@@ -23,7 +25,7 @@ export class AddFuelEntryComponent implements OnInit {
 
   /********** Form Fields ***********/
 
-     unitType =  'Vehicle';
+     unitType =  'vehicle';
      vehicleID = '';
      vehicleFuelQty = 0;
      vehicleFuelQtyUnit  = 'gallons';
@@ -72,7 +74,7 @@ export class AddFuelEntryComponent implements OnInit {
  vehicles = [];
  trips = [];
  uploadedFiles = [];
- testArray = [];
+ imageNameArray = [];
   /******************/
 
   errors = {};
@@ -87,7 +89,8 @@ export class AddFuelEntryComponent implements OnInit {
 
   constructor(private apiService: ApiService,
               private router: Router,
-              private awsUS: AwsUploadService, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {}
+              private awsUS: AwsUploadService, private toaster: ToastrService,
+              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {}
               get today() {
                 return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
               }
@@ -188,7 +191,7 @@ export class AddFuelEntryComponent implements OnInit {
         description : this.description,
        // fileToUpload : this.fileToUpload,
          uploadedFiles : this.uploadedFiles,
-         testArray : this.testArray,
+         imageNameArray : this.imageNameArray,
     };
 
  console.log(data);
@@ -225,17 +228,8 @@ export class AddFuelEntryComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        this.hasSuccess = true;
-        this.Success = 'Fuel entry Added successfully';
-        // this.vehicleID = "";
-        // this.vendorID = "";
-        // this.location = "";
-        // this.odometer = "";
-        // this.fuelType = "";
-        // this.tripID = "";
-        // this.date = "";
-        // this.price = "";
-        // this.volume = "";
+        this.toaster.success('Fuel Entry Added successfully');
+        this.router.navigateByUrl('/fleet/expenses/fuel/Fuel-Entry-List');
       },
     });
   }
@@ -268,32 +262,21 @@ export class AddFuelEntryComponent implements OnInit {
     this.amountPaid = this.totalAmount - this.discount;
     this.costPerGallon = Math.round(this.amountPaid / units);
   }
-  // calculateTotal()
-  // {
-  //   var units = Number(this.vehicleFuelQty) + Number(this.DEFFuelQty) + Number(this.reeferFuelQty);
-  //   this.amountPaid = this.totalAmount - this.discount;
-  //   this.costPerGallon = Math.round(this.amountPaid/units);
-  // }
-  showFiles(file) {
-      this.testArray.push(file.name);
+ showFiles(file) {
+      this.imageNameArray.push(file.name);
   }
-  // selectFiles(event){
-  //   for (let index = 0; index < event.target.files.length; index++) {
-  //     this.fileToUpload.push(event.target.files[index])
-  //   }
-  //   console.log(this.fileToUpload)
-    
-  // }
   uploadFile = async (event) => {
+    // Empty the array if user selects images again.
+    this.imageNameArray = [];
     this.selectedFiles = event.target.files;
     for (let i = 0; i < this.selectedFiles.length; i++) {
       this.showFiles(this.selectedFiles[i]);
     }
-    console.log('Test Array Files', this.testArray);
+    console.log('Name Array Files', this.imageNameArray);
     this.carrierID = await this.apiService.getCarrierID();
    // console.log('carrierID', this.carrierID);
     this.imageError = '';
-    for (let j = 0; j < this.testArray.length; j++) {
+    for (let j = 0; j < this.imageNameArray.length; j++) {
       if (this.awsUS.imageFormat(event.target.files.item(j)) !== -1) {
         this.uploadedFiles = this.awsUS.uploadFile(this.carrierID,
         event.target.files.item(j));
@@ -308,16 +291,14 @@ export class AddFuelEntryComponent implements OnInit {
  /*
    * Selecting files before uploading
    */
-  selectFiles(event) {
-    this.selectedFiles = event.target.files;
-    this.uploadedFiles = [];
-    for (let i = 0; i < this.selectedFiles.length; i++) {
-      this.uploadedFiles.push(this.selectedFiles[i].name);
-      // this.uploadedFiles.push(uuidv4(this.selectedFiles[i].name));
-     // this.assetsData.uploadedDocs.push(uuidv4(randomFileGenerate));
-    }
-    console.log('uploaded Files', this.uploadedFiles);
-  }
+  // selectFiles(event) {
+  //   this.selectedFiles = event.target.files;
+  //   this.uploadedFiles = [];
+  //   for (let i = 0; i < this.selectedFiles.length; i++) {
+  //     this.uploadedFiles.push(this.selectedFiles[i].name);
+  //   }
+  //   console.log('uploaded Files', this.uploadedFiles);
+  // }
   /*
    * Uploading files which selected
    */

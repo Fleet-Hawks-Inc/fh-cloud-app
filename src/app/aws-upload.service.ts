@@ -19,10 +19,17 @@ export class AwsUploadService {
     '.jpeg',
     '.png'
   ];
+  validDocumentFormats = [
+    'document/pdf',
+    'document/csv',
+  ];
+  documentExt = ['.pdf', '.csv'];
   filename = '';
-   newArray = [];
+  newArray = [];
   bucket;
   bucketName;
+  documentArray = [];
+  documentName = '';
 
 
 
@@ -48,7 +55,6 @@ export class AwsUploadService {
 
     const ext = this.imageExt[this.imageFormat(file)];
     console.log('file extension' + ext);
-  
     filename =  filename + ext;
     this.newArray.push(filename);
     console.log('New Aray in service' + this.newArray);
@@ -71,7 +77,7 @@ export class AwsUploadService {
    // return this.filename;
     return this.newArray;
 
-    //for upload progress
+    // for upload progress
     /*bucket.upload(params).on('httpUploadProgress', function (evt) {
               console.log(evt.loaded + ' of ' + evt.total + ' Bytes');
           }).send(function (err, data) {
@@ -92,5 +98,55 @@ export class AwsUploadService {
   //   //file && this.validFormats.includes(file['type']);
   //   return file && $.inArray(file['type'], this.validFormats);
   // }
+// For Uploading Document
+uploadDocument(folder, file) {
+  console.log('File in service' + file);
+  return;
+  const contentType = file.type;
+  /*
+    * Random Algo For Random Name, Need to Fix it
+   */
+  let filename = uuidv4(file);
+
+  const ext = this.documentExt[this.documentFormat(file)];
+  console.log('file extension' + ext);
+  filename =  filename + ext;
+  this.documentArray.push(filename);
+  console.log('New Aray in service' + this.documentArray);
+   // let filename =  file.name;
+  const params = {
+    Bucket: this.bucketName,
+    Key: folder + '/' + filename,
+    Body: file,
+    ACL: 'public-read',
+    ContentType: contentType
+  };
+  this.bucket.upload(params, ( err, data) => {
+    if (err) {
+      console.log('There was an error uploading your file: ', err);
+      return false;
+    }
+    console.log('Successfully uploaded file.', data);
+    this.filename = filename;
+  });
+ // return this.filename;
+  return this.documentArray;
+
+  // for upload progress
+  /*bucket.upload(params).on('httpUploadProgress', function (evt) {
+            console.log(evt.loaded + ' of ' + evt.total + ' Bytes');
+        }).send(function (err, data) {
+            if (err) {
+                console.log('There was an error uploading your file: ', err);
+                return false;
+            }
+            console.log('Successfully uploaded file.', data);
+            return true;
+        });*/
+        }
+        documentFormat(file) {
+          return file && $.inArray(file['type'],  this.validDocumentFormats);
+}
+
 
 }

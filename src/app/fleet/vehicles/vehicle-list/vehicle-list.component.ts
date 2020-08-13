@@ -128,8 +128,8 @@ export class VehicleListComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         this.allData = result.Items;
-        console.log(result);
         this.vehicles = result.Items;
+        console.log('Final result' + this.vehicles);
       },
     });
   }

@@ -98,7 +98,7 @@ const routes: Routes = [
         component: AddVehicleNewComponent,
       },
       {
-        path: 'Vehicle-Details',
+        path: 'Vehicle-Details/:vehicleID',
         component: VehicleDetailsComponent,
       },
       { path: 'Vehicle-List', component: VehicleListComponent },

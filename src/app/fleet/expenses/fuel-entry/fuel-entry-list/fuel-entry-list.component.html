@@ -151,13 +151,13 @@
                   <tr *ngFor="let fuelList of fuelLists">
                     <td><input type="checkbox" class="fuel_checkbox" (change)="toggleCheckbox()" value="{{ fuelList.entryID }}"></td>
                     <td routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">{{ fuelList.unitType }}</td>                   
-                    <td>{{ fuelList.date }}</td>
-                    <td>{{ fuelList.odometer }}</td>
-                    <td>{{ fuelList.fuelType }}</td>
-                    <td>{{ fuelList.vehicleFuelQty }}</td>
-                    <td>{{ fuelList.DEFFuelQty }}</td>
-                    <td>{{ fuelList.costPerGallon }}</td>
-                    <td>{{ fuelList.amountPaid }}</td>
+                    <td routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">{{ fuelList.date }}</td>
+                    <td routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">{{ fuelList.odometer }}</td>
+                    <td routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">{{ fuelList.fuelType }}</td>
+                    <td routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">{{ fuelList.vehicleFuelQty }}</td>
+                    <td routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">{{ fuelList.DEFFuelQty }}</td>
+                    <td routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">{{ fuelList.costPerGallon }}</td>
+                    <td routerLink="/fleet/expenses/fuel/Fuel-Details/{{ fuelList.entryID }}">{{ fuelList.amountPaid }}</td>
                     <!-- <td>{{ getVehicleName(fuelList.vehicleID) }} </td> -->
                     <!-- <td>{{getCountryName(fuelList.countryID)}} </td>  -->
                   

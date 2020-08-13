@@ -21,11 +21,11 @@ export class AwsDownloadService {
     );
     this.bucketName = environment.awsBucket.bucketName;
    }
-   getFiles(CID,fileName) {
+   getFiles(CID, fileName) {
     const params = {Bucket: this.bucketName, Key: CID.__zone_symbol__value + '/' + fileName };
     let url = this.bucket.getSignedUrl('getObject', params);
     // console.log('carrier id in service', fileName);
-    // console.log('url of image', url);
+   // console.log('url of image', url);
     // this.urlArray.push(url);
     return  url;
    }

@@ -382,28 +382,15 @@
                            <tbody>
                               <tr *ngFor="let vehicle of vehicles">
                                  <td><input [checked]="isChecked" [(ngModel)]="vehicle.checked" (ngModelChange)="checkboxCount()" value="{{vehicle.vehicleName}}" type="checkbox"></td>
-                                 <td>{{ vehicle.VIN }}</td>
-                                 <td>{{ vehicle.vehicleName }}</td>  
-                                 <td>{{ vehicle.currentStatus }}</td>  
-                                 <td>{{ vehicle.plateNumber }}</td> 
-                                 <td>{{ vehicle.make }}</td>
-                                 <td>{{ vehicle.modelId }}</td>  
-                                 <td>{{ vehicle.additionalDetails.vehicleColor}}</td>  
-                                 <td>{{ vehicle.fuel.fuelType}}</td>        
+                                 <td routerLink="/fleet/vehicles/Vehicle-Details/{{vehicle.vehicleID }}">{{ vehicle.VIN }}</td>
+                                 <td routerLink="/fleet/vehicles/Vehicle-Details/{{vehicle.vehicleID }}">{{ vehicle.vehicleName }}</td>  
+                                 <td routerLink="/fleet/vehicles/Vehicle-Details/{{vehicle.vehicleID }}">{{ vehicle.currentStatus }}</td>  
+                                 <td routerLink="/fleet/vehicles/Vehicle-Details/{{vehicle.vehicleID }}">{{ vehicle.plateNumber }}</td> 
+                                 <td routerLink="/fleet/vehicles/Vehicle-Details/{{vehicle.vehicleID }}">{{ vehicle.make }}</td>
+                                 <td routerLink="/fleet/vehicles/Vehicle-Details/{{vehicle.vehicleID }}">{{ vehicle.modelId }}</td>  
+                                 <td routerLink="/fleet/vehicles/Vehicle-Details/{{vehicle.vehicleID }}">{{ vehicle.additionalDetails.vehicleColor}}</td>  
+                                 <td routerLink="/fleet/vehicles/Vehicle-Details/{{vehicle.vehicleID }}">{{ vehicle.fuel.fuelType}}</td>      
       
-                                
-                                 <!-- <td>
-                                   <a routerLink="/fleet/vehicles/Edit-Vehicle-New/{{vehicle.vehicleID }}"
-                                     >Edit</a
-                                   >
-                                 </td>
-                                 <td>
-                                   <a
-                                     [routerLink]=""
-                                     (click)="deleteVehicle(vehicle.vehicleI)"
-                                     >Delete</a
-                                   >
-                                 </td>                -->
                                </tr>
                            </tbody>
                         </table> 

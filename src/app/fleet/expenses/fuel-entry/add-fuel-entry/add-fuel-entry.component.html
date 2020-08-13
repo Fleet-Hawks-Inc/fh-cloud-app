@@ -40,7 +40,7 @@
                                    <div class="radio">
                                       <label class="btn btn-md btn-default active csbtn">
                                       <input type="radio" name="unitType" [(ngModel)]="unitType"
-                                         id="fuel_unit_vehicle"  checked hidden value="Vehicle" (change) = "onChangeUnitType('Vehicle')">
+                                         id="fuel_unit_vehicle"  checked hidden value="vehicle" (change) = "onChangeUnitType('vehicle')">
                                       Vehicle
                                       </label>
                                    </div>
@@ -49,7 +49,7 @@
                                    <div class="radio">
                                       <label  class="btn btn-md btn-default csbtn">
                                       <input type="radio" name="unitType" [(ngModel)]="unitType"
-                                         id="fuel_unit_reefer"  hidden value="Reefer" (change) = "onChangeUnitType('Reefer')">
+                                         id="fuel_unit_reefer"  hidden value="reefer" (change) = "onChangeUnitType('reefer')">
                                       Reefer
                                       </label>
                                    </div>
@@ -58,7 +58,7 @@
                              </div>
                           </div>
                        </div>
-                       <div class="row pt-3" id="fuelVehicle" *ngIf="unitType ==='Vehicle'">
+                       <div class="row pt-3" id="fuelVehicle" *ngIf="unitType ==='vehicle'">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vehicle</label>
                              <select data-plugin-selectTwo class="form-control populate" name="vehicleID" [(ngModel)]="vehicleID">
@@ -69,7 +69,7 @@
                           </div>
                          
                        </div>
-                       <div class="row pt-3" id="fuelReefer" *ngIf="unitType ==='Reefer'">
+                       <div class="row pt-3" id="fuelReefer" *ngIf="unitType ==='reefer'">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reefer</label>
                              <select data-plugin-selectTwo class="form-control populate" name="reeferID" [(ngModel)]="reeferID">
@@ -84,7 +84,7 @@
                           </div>
                         
                        </div>
-                       <div id="fuelVehicleQty"  *ngIf="unitType ==='Vehicle'">
+                       <div id="fuelVehicleQty"  *ngIf="unitType ==='vehicle'">
                           <div class="row">
                              <div class="col-lg-4">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vehicle Fuel Quantity</label>
@@ -104,7 +104,7 @@
                              </div>
                           </div>
                        </div>
-                       <div id="fuelReeferQty" *ngIf="unitType ==='Reefer'">
+                       <div id="fuelReeferQty" *ngIf="unitType ==='reefer'">
                           <div class="row" >
                              <div class="col-lg-4">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reefer Fuel Quantity</label>

@@ -64,11 +64,11 @@
                                       </div>
                                       <div class="row m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Name:</div>
-                                         <div class="col-lg-8 p-2 border-box" >1100 [2018 Toyota Prius] </div>
+                                         <div class="col-lg-8 p-2 border-box" >{{vehicleName}} </div>
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Group:</div>
-                                         <div class="col-lg-8 p-2 border-box">Management</div>
+                                         <div class="col-lg-8 p-2 border-box">{{groupID}}</div>
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Operator:</div>
@@ -80,7 +80,7 @@
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Status:</div>
-                                         <div class="col-lg-8 p-2 border-box">Active</div>
+                                         <div class="col-lg-8 p-2 border-box">{{currentStatus}}</div>
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">VIN/SN:</div>
@@ -88,19 +88,19 @@
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">License Plate:</div>
-                                         <div class="col-lg-8 p-2 border-box" >13gtye</div>
+                                         <div class="col-lg-8 p-2 border-box" >{{plateNumber}}</div>
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Year:</div>
-                                         <div class="col-lg-8 p-2 border-box" >2017</div>
+                                         <div class="col-lg-8 p-2 border-box" >{{year}}</div>
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Make:</div>
-                                         <div class="col-lg-8 p-2 border-box">Ford</div>
+                                         <div class="col-lg-8 p-2 border-box">{{make}}</div>
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Model:</div>
-                                         <div class="col-lg-8 p-2 border-box">Sequential</div>
+                                         <div class="col-lg-8 p-2 border-box">{{modelId}}</div>
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Trim:</div>
@@ -108,27 +108,27 @@
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Registration State/Province:</div>
-                                         <div class="col-lg-8 p-2 border-box">0</div>
+                                         <div class="col-lg-8 p-2 border-box">{{stateID}}</div>
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Color:</div>
-                                         <div class="col-lg-8 p-2 border-box">Silver</div>
+                                         <div class="col-lg-8 p-2 border-box">{{additionalDetails.vehicleColor}}</div>
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Ownership:</div>
-                                         <div class="col-lg-8 p-2 border-box" >Owned</div>
+                                         <div class="col-lg-8 p-2 border-box" >{{ownership}}</div>
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Body Type:</div>
-                                         <div class="col-lg-8 p-2 border-box" >16</div>
+                                         <div class="col-lg-8 p-2 border-box" >{{additionalDetails.bodyType}}</div>
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Body Subtype:</div>
-                                         <div class="col-lg-8 p-2 border-box" ></div>
+                                         <div class="col-lg-8 p-2 border-box" >{{additionalDetails.bodySubType}}</div>
                                       </div>
                                       <div class="row  m-0">
                                          <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">MSRP:</div>
-                                         <div class="col-lg-8 p-2 border-box" >16,000</div>
+                                         <div class="col-lg-8 p-2 border-box" >{{additionalDetails.MSRP}}</div>
                                       </div>
                                    </div>
                                    <div id="linked-vehicle-details" class="mt-4">
@@ -152,9 +152,7 @@
                                       <div class="row  m-0">
                                          <div class="col-lg-12 p-2">
                                             <owl-carousel-o [options]="customOptions">
-                                                <ng-template carouselSlide><img src="/assets/img/truck.jpg" style="height: 318px; width: 475px;"></ng-template>  
-                                                <ng-template carouselSlide><img src="/assets/img/truck1.jpg" style="height: 318px; width: 475px;"></ng-template>  
-                                                <ng-template carouselSlide><img src="/assets/img/truck2.jpg" style="height: 318px; width: 475px;"></ng-template>  
+                                                <ng-template carouselSlide *ngFor='let image of showImage'><img [src]="image" style="height: 318px; width: 475px;"></ng-template>                                                    
                                               </owl-carousel-o>
                                          </div>
                                       </div>
@@ -951,31 +949,31 @@
                                 </div>
                                 <div class="row m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">In-Service Date:</div>
-                                   <div class="col-lg-8 p-2 border-box" >6 Jun </div>
+                                   <div class="col-lg-8 p-2 border-box" >{{lifeCycle.inServiceDate}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">In-Service Odometer:</div>
-                                   <div class="col-lg-8 p-2 border-box">759567</div>
+                                   <div class="col-lg-8 p-2 border-box">{{lifeCycle.inServiceOdometer}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Estimated Service Life in Months:</div>
-                                   <div class="col-lg-8 p-2 border-box">8 </div>
+                                   <div class="col-lg-8 p-2 border-box">{{lifeCycle.estimatedServiceLifeInMonths}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Estimated Service Life in Miles:</div>
-                                   <div class="col-lg-8 p-2 border-box">878997</div>
+                                   <div class="col-lg-8 p-2 border-box">{{lifeCycle.estimatedServiceLifeInMiles}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Estimated Resale Value:</div>
-                                   <div class="col-lg-8 p-2 border-box">87893</div>
+                                   <div class="col-lg-8 p-2 border-box">{{lifeCycle.estimatedResaleValue}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Out-of-Service Date:</div>
-                                   <div class="col-lg-8 p-2 border-box">9 Jun</div>
+                                   <div class="col-lg-8 p-2 border-box">{{lifeCycle.outServiceDate}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Out-of-Service Odometer:</div>
-                                   <div class="col-lg-8 p-2 border-box" >87987</div>
+                                   <div class="col-lg-8 p-2 border-box" >{{lifeCycle.outServiceOdometer}}</div>
                                 </div>
                              </div>
                           </div>
@@ -989,35 +987,35 @@
                                 </div>
                                 <div class="row m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Length:</div>
-                                   <div class="col-lg-8 p-2 border-box" >178.7 in </div>
+                                   <div class="col-lg-8 p-2 border-box" >{{dimensions.length}} in </div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Width:</div>
-                                   <div class="col-lg-8 p-2 border-box">74.3 in</div>
+                                   <div class="col-lg-8 p-2 border-box">{{dimensions.width}} in</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Height:</div>
-                                   <div class="col-lg-8 p-2 border-box">58.1 in </div>
+                                   <div class="col-lg-8 p-2 border-box">{{dimensions.height}} in </div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Interior Volume:</div>
-                                   <div class="col-lg-8 p-2 border-box">256 ft<span class="superscript">3</span></div>
+                                   <div class="col-lg-8 p-2 border-box">{{dimensions.interiorVolume}} ft<span class="superscript">3</span></div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Passenger Volume:</div>
-                                   <div class="col-lg-8 p-2 border-box">85.3</div>
+                                   <div class="col-lg-8 p-2 border-box">{{dimensions.passengerVolume}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Cargo Volume:</div>
-                                   <div class="col-lg-8 p-2 border-box">25 ft<span class="superscript">3</span></div>
+                                   <div class="col-lg-8 p-2 border-box">{{dimensions.cargoVolume}}<span class="superscript">3</span></div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Ground Clearance:</div>
-                                   <div class="col-lg-8 p-2 border-box" >5 in</div>
+                                   <div class="col-lg-8 p-2 border-box" >{{dimensions.groundClearance}} in</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Bed Length:</div>
-                                   <div class="col-lg-8 p-2 border-box" ></div>
+                                   <div class="col-lg-8 p-2 border-box" >{{dimensions.bedLength}}</div>
                                 </div>
                              </div>
                              <!-- WEIGHT DIV -->
@@ -1028,11 +1026,11 @@
                                 </div>
                                 <div class="row m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Curb Weight:</div>
-                                   <div class="col-lg-8 p-2 border-box" >3,098 lb</div>
+                                   <div class="col-lg-8 p-2 border-box" >{{weight.curbWeight}} lb</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Gross Vehicle Weight Rating:</div>
-                                   <div class="col-lg-8 p-2 border-box">74.3 in</div>
+                                   <div class="col-lg-8 p-2 border-box">{{weight.grossVehicleWeightRating}} in</div>
                                 </div>
                                 <div class="row m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-5">Performance</div>
@@ -1040,23 +1038,23 @@
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Towing Capacity:</div>
-                                   <div class="col-lg-8 p-2 border-box"></div>
+                                   <div class="col-lg-8 p-2 border-box">{{performance.towingCapacity}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Max Payload:</div>
-                                   <div class="col-lg-8 p-2 border-box">800 lb</div>
+                                   <div class="col-lg-8 p-2 border-box">{{performance.maxPayload}} lb</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">EPA City:</div>
-                                   <div class="col-lg-8 p-2 border-box">54 MPG</div>
+                                   <div class="col-lg-8 p-2 border-box">{{fuelEconomy.EPACity}} MPG</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">EPA Highway:</div>
-                                   <div class="col-lg-8 p-2 border-box">50 MPG</div>
+                                   <div class="col-lg-8 p-2 border-box">{{fuelEconomy.EPAHighway}} MPG</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">EPA Combined:</div>
-                                   <div class="col-lg-8 p-2 border-box" >52 MPG</div>
+                                   <div class="col-lg-8 p-2 border-box" >{{fuelEconomy.EPACombined}} MPG</div>
                                 </div>
                              </div>
                           </div>
@@ -1108,51 +1106,51 @@
                                 </div>
                                 <div class="row m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Loan Vendor:</div>
-                                   <div class="col-lg-8 p-2 border-box" >Vendor 1</div>
+                                   <div class="col-lg-8 p-2 border-box" >{{loan.loanVendor}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Amount of Loan:</div>
-                                   <div class="col-lg-8 p-2 border-box">12,000</div>
+                                   <div class="col-lg-8 p-2 border-box">{{loan.loanAmount}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Annual Percentage Rate:</div>
-                                   <div class="col-lg-8 p-2 border-box">2.0%</div>
+                                   <div class="col-lg-8 p-2 border-box">{{loan.annualPercentageRate}}%</div>
                                 </div>
                                 <div class="row m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Down Payment:</div>
-                                   <div class="col-lg-8 p-2 border-box" >2300</div>
+                                   <div class="col-lg-8 p-2 border-box" >{{loan.downPayment}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Date of Loan:</div>
-                                   <div class="col-lg-8 p-2 border-box">May 23,2020</div>
+                                   <div class="col-lg-8 p-2 border-box">{{loan.loanDate}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Monthly Payment:</div>
-                                   <div class="col-lg-8 p-2 border-box">1000</div>
+                                   <div class="col-lg-8 p-2 border-box">{{loan.monthlyPayment}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">First Payment Date:</div>
-                                   <div class="col-lg-8 p-2 border-box">Jun 23,2020</div>
+                                   <div class="col-lg-8 p-2 border-box">{{loan.firstPaymentDate}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Number of Payments:</div>
-                                   <div class="col-lg-8 p-2 border-box">12</div>
+                                   <div class="col-lg-8 p-2 border-box">{{loan.numberofPayments}}</div>
                                 </div>
                                 <div class="row m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Loan End Date:</div>
-                                   <div class="col-lg-8 p-2 border-box" >Jun 23,2021</div>
+                                   <div class="col-lg-8 p-2 border-box" >{{loan.loanEndDate}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Account Number:</div>
-                                   <div class="col-lg-8 p-2 border-box">333333</div>
+                                   <div class="col-lg-8 p-2 border-box">{{loan.accountNumber}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Notes:</div>
-                                   <div class="col-lg-8 p-2 border-box">test notes</div>
+                                   <div class="col-lg-8 p-2 border-box">{{loan.notes}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Generate Expenses:</div>
-                                   <div class="col-lg-8 p-2 border-box">No</div>
+                                   <div class="col-lg-8 p-2 border-box">{{loan.generateExpenses}}</div>
                                 </div>
                              </div>
                           </div>
@@ -1167,15 +1165,19 @@
                                    </div>
                                    <div class="row m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Fuel Type:</div>
-                                      <div class="col-lg-8 p-2 border-box" >Gasoline</div>
+                                      <div class="col-lg-8 p-2 border-box" >{{fuel.fuelType}}</div>
                                    </div>
+                                   <div class="row m-0">
+                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Fuel Quality:</div>
+                                    <div class="col-lg-8 p-2 border-box" >{{fuel.fuelQuality}}</div>
+                                 </div>
                                    <div class="row  m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Fuel Tank 1 Capacity:</div>
-                                      <div class="col-lg-8 p-2 border-box">11.3 Gallons (US)</div>
+                                      <div class="col-lg-8 p-2 border-box">{{fuel.fuelTank1Capacity}} Gallons (US)</div>
                                    </div>
                                    <div class="row  m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Fuel Tank 2 Capacity:</div>
-                                      <div class="col-lg-8 p-2 border-box"></div>
+                                      <div class="col-lg-8 p-2 border-box">{{fuel.fuelTank2Capacity}} Gallons (US)</div>
                                    </div>
                                 </div>
                                 <!-- WEIGHT DIV -->
@@ -1186,7 +1188,7 @@
                                    </div>
                                    <div class="row m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Oil Capacity:</div>
-                                      <div class="col-lg-8 p-2 border-box" >3.4</div>
+                                      <div class="col-lg-8 p-2 border-box" >{{oilCapacit}}</div>
                                    </div>
                                 </div>
                              </div>
@@ -1202,51 +1204,55 @@
                                    </div>
                                    <div class="row m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Drive Type:</div>
-                                      <div class="col-lg-8 p-2 border-box" >FWD </div>
+                                      <div class="col-lg-8 p-2 border-box" >{{features.driveType}} </div>
                                    </div>
                                    <div class="row  m-0">
+                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Number of Tires:</div>
+                                    <div class="col-lg-8 p-2 border-box">{{features.numberOfTires}}c</div>
+                                 </div>
+                                   <div class="row  m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Brake System:</div>
-                                      <div class="col-lg-8 p-2 border-box">Hydraulic</div>
+                                      <div class="col-lg-8 p-2 border-box">{{features.breakSystem}}</div>
                                    </div>
                                    <div class="row  m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Front Track Width:</div>
-                                      <div class="col-lg-8 p-2 border-box">8 </div>
+                                      <div class="col-lg-8 p-2 border-box">{{features.frontTrackWidth}}</div>
                                    </div>
                                    <div class="row  m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Rear Track Width:</div>
-                                      <div class="col-lg-8 p-2 border-box">60.7</div>
+                                      <div class="col-lg-8 p-2 border-box">{{features.rearTrackWidth}}</div>
                                    </div>
                                    <div class="row  m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Wheelbase:</div>
-                                      <div class="col-lg-8 p-2 border-box">103.4 in</div>
+                                      <div class="col-lg-8 p-2 border-box">{{features.wheelBase}} in</div>
                                    </div>
                                    <div class="row  m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Front Wheel Diameter:</div>
-                                      <div class="col-lg-8 p-2 border-box">15.5 * 6.5</div>
+                                      <div class="col-lg-8 p-2 border-box">{{features.frontWheelDiameter}}</div>
                                    </div>
                                    <div class="row  m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Rear Wheel Diameter:</div>
-                                      <div class="col-lg-8 p-2 border-box" >15.5 * 6.5</div>
+                                      <div class="col-lg-8 p-2 border-box" >{{features.rearWheelDiameter}}</div>
                                    </div>
                                    <div class="row  m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Rear Axle:</div>
-                                      <div class="col-lg-8 p-2 border-box"></div>
+                                      <div class="col-lg-8 p-2 border-box">{{features.rearAxle}}</div>
                                    </div>
                                    <div class="row  m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Front Tire Type:</div>
-                                      <div class="col-lg-8 p-2 border-box">P195/65R15 89S</div>
+                                      <div class="col-lg-8 p-2 border-box">{{features.frontTyreType}}</div>
                                    </div>
                                    <div class="row  m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Front Tire PSI	:</div>
-                                      <div class="col-lg-8 p-2 border-box"></div>
+                                      <div class="col-lg-8 p-2 border-box">{{features.frontTyrePSI}}</div>
                                    </div>
                                    <div class="row  m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Rear Tire Type:</div>
-                                      <div class="col-lg-8 p-2 border-box">P195/65R15 89S</div>
+                                      <div class="col-lg-8 p-2 border-box">{{features.rearTyreType}}</div>
                                    </div>
                                    <div class="row  m-0">
                                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Rear Tire PSI	:</div>
-                                      <div class="col-lg-8 p-2 border-box" ></div>
+                                      <div class="col-lg-8 p-2 border-box" >{{features.rearTyrePSI}}</div>
                                    </div>
                                 </div>
                              </div>
@@ -1261,63 +1267,63 @@
                                 </div>
                                 <div class="row m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Engine Summary:</div>
-                                   <div class="col-lg-8 p-2 border-box" >178.7 in </div>
+                                   <div class="col-lg-8 p-2 border-box" >{{engine.engineSummary}} </div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Engine Brand:</div>
-                                   <div class="col-lg-8 p-2 border-box"></div>
+                                   <div class="col-lg-8 p-2 border-box">{{engine.engineBrand}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Aspiration:</div>
-                                   <div class="col-lg-8 p-2 border-box">Naturally Aspirated</div>
+                                   <div class="col-lg-8 p-2 border-box">{{engine.aspiration}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Block Type:</div>
-                                   <div class="col-lg-8 p-2 border-box">1</div>
+                                   <div class="col-lg-8 p-2 border-box">{{engine.blockType}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Bore:</div>
-                                   <div class="col-lg-8 p-2 border-box">3.2 in</div>
+                                   <div class="col-lg-8 p-2 border-box">{{engine.bore}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Cam Type:</div>
-                                   <div class="col-lg-8 p-2 border-box">DOHC</div>
+                                   <div class="col-lg-8 p-2 border-box">{{engine.camType}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Compression:</div>
-                                   <div class="col-lg-8 p-2 border-box" >13</div>
+                                   <div class="col-lg-8 p-2 border-box" >{{engine.compression}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Cylinders:</div>
-                                   <div class="col-lg-8 p-2 border-box" >4</div>
+                                   <div class="col-lg-8 p-2 border-box" >{{engine.cylinders}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Displacement:</div>
-                                   <div class="col-lg-8 p-2 border-box"></div>
+                                   <div class="col-lg-8 p-2 border-box">{{engine.displacement}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Fuel Induction:</div>
-                                   <div class="col-lg-8 p-2 border-box">Sequential Multiport Fuel Injection</div>
+                                   <div class="col-lg-8 p-2 border-box">{{engine.fuelInduction}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Max HP:</div>
-                                   <div class="col-lg-8 p-2 border-box">121</div>
+                                   <div class="col-lg-8 p-2 border-box">{{engine.maxHP}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Max Torque:</div>
-                                   <div class="col-lg-8 p-2 border-box">0</div>
+                                   <div class="col-lg-8 p-2 border-box">{{engine.maxTorque}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Redline RPM:</div>
-                                   <div class="col-lg-8 p-2 border-box">0</div>
+                                   <div class="col-lg-8 p-2 border-box">{{engine.redlineRPM}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Stroke:</div>
-                                   <div class="col-lg-8 p-2 border-box" >3.5</div>
+                                   <div class="col-lg-8 p-2 border-box" >{{engine.stroke}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Valves:</div>
-                                   <div class="col-lg-8 p-2 border-box" >16</div>
+                                   <div class="col-lg-8 p-2 border-box" >{{engine.valves}}</div>
                                 </div>
                              </div>
                              <!-- Transmission DIV -->
@@ -1328,19 +1334,19 @@
                                 </div>
                                 <div class="row m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Transmission Summary:</div>
-                                   <div class="col-lg-8 p-2 border-box" >CVT</div>
+                                   <div class="col-lg-8 p-2 border-box" >{{transmission.summary}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Transmission Brand:</div>
-                                   <div class="col-lg-8 p-2 border-box"></div>
+                                   <div class="col-lg-8 p-2 border-box">{{transmission.brand}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Transmission Type:</div>
-                                   <div class="col-lg-8 p-2 border-box">Continuously Variable</div>
+                                   <div class="col-lg-8 p-2 border-box">{{transmission.type}}</div>
                                 </div>
                                 <div class="row  m-0">
                                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Transmission Gears:</div>
-                                   <div class="col-lg-8 p-2 border-box">0</div>
+                                   <div class="col-lg-8 p-2 border-box">{{transmission.gears}}</div>
                                 </div>
                              </div>
                           </div>
@@ -1365,7 +1371,7 @@
                                             <div class="col-lg-12">
                                                <div class="radio">
                                                   <label>
-                                                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                                                  <input type="radio" name="primaryMeter" value="option1" [checked]="settings.primaryMeter === 'miles'">
                                                   Miles
                                                   </label>
                                                </div>
@@ -1373,7 +1379,7 @@
                                             <div class="col-lg-12">
                                                <div class="radio">
                                                   <label>
-                                                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                                                  <input type="radio" name="primaryMeter" value="option1" [checked]="settings.primaryMeter === 'kilometers'">
                                                   Kilometers
                                                   </label>
                                                </div>
@@ -1385,7 +1391,7 @@
                                             <div class="col-lg-12">
                                                <div class="radio">
                                                   <label>
-                                                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                                                  <input type="radio"  name="fuelUnit"  value="option1" [checked]="settings.fuelUnit === 'gallon (US)'">
                                                   Gallons (US)
                                                   </label>
                                                </div>
@@ -1393,7 +1399,7 @@
                                             <div class="col-lg-12">
                                                <div class="radio">
                                                   <label>
-                                                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                                                  <input type="radio"  name="fuelUnit"  value="option1" [checked]="settings.fuelUnit === 'gallon (CA)'">
                                                   Gallons (CA)
                                                   </label>
                                                </div>
@@ -1401,7 +1407,7 @@
                                             <div class="col-lg-12">
                                                <div class="radio">
                                                   <label>
-                                                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                                                  <input type="radio"  name="fuelUnit"  value="option1" [checked]="settings.fuelUnit === 'liters'">
                                                   Litres
                                                   </label>
                                                </div>
@@ -1417,7 +1423,7 @@
                                          <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">Hard Breaking Parameters</label>
                                          <div class="slidecontainer">
                                             <input type="range" min="1" max="10" class="slider" id="hardBreakingParameters" (input)="onChangeHardBreakingParameters($event.target.value)" name="hardBreakingParameters">
-                                            <p>Value: <span id="hardBreakingParametersValue"></span></p>
+                                            <p>Value:{{safetyParameters.hardBreakingParameters}} </p>
                                          </div>
                                       </div>
                                       <div class="col-lg-4">
@@ -1425,7 +1431,7 @@
                                          </label>
                                          <div class="slidecontainer">
                                             <input type="range" min="1" max="10" class="slider" id="hardAccelrationParameters" #ranger="" (input)="onChangeAccelrationParameters($event.target.value)" name="hardAccelrationParameters">
-                                            <p>Value: <span id="hardAccelrationParametersValue"></span></p>
+                                            <p>Value: {{safetyParameters.hardAccelrationParameters}}</p>
                                          </div>
                                       </div>
                                       <div class="col-lg-4">
@@ -1433,7 +1439,7 @@
                                          </label>
                                          <div class="slidecontainer">
                                             <input type="range" min="1" max="10" class="slider" id="turningParameters" #ranger="" (input)="onChangeturningParameters($event.target.value)" name="turningParameters">
-                                            <p>Value: <span id="turningParametersValue"></span></p>
+                                            <p>Value:{{safetyParameters.turningParameters}}</p>
                                          </div>
                                       </div>
                                    </div>
@@ -1446,7 +1452,7 @@
                                             <div class="col-lg-12">
                                                <div class="radio">
                                                   <label>
-                                                  <input type="radio" name="optionsRadios4" id="optionsRadios4" value="option1" checked="">
+                                                  <input type="radio"  name="measurementUnit" id="imperial" value="option1" [checked]="safetyParameters.turningParameters === 'imperial'">
                                                   Imperial (inches, pounds, gallons, miles)
                                                   </label>
                                                </div>
@@ -1454,7 +1460,7 @@
                                             <div class="col-lg-12">
                                                <div class="radio">
                                                   <label>
-                                                  <input type="radio" name="optionsRadios4" id="optionsRadios4" value="option1" checked="">
+                                                  <input type="radio" id="metric"  name="measurementUnit" value="option1" [checked]="safetyParameters.turningParameters === 'metric'">
                                                   Metric (centimeters, kilograms, liters, kilometers)
                                                   </label>
                                                </div>

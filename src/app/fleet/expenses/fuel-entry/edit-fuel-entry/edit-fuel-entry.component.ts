@@ -143,6 +143,9 @@ export class EditFuelEntryComponent implements OnInit {
     this.fetchVendors();
     this.fetchTrips();
     this.fetchCountries();
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
+    });
   }
   getStates() {
     this.apiService
@@ -251,12 +254,7 @@ export class EditFuelEntryComponent implements OnInit {
       });
   }
 
-  ngAfterViewInit() {
-    $(document).ready(() => {
-      this.form = $('#form_').validate();
-    });
-  }
-
+ 
   updateFuelEntry() {
 
     // if (this.fileName === '') {
@@ -289,7 +287,7 @@ export class EditFuelEntryComponent implements OnInit {
       amountPaid: this.amountPaid,
       date: this.date,
       fuelType: this.fuelType,
-      // tripID: this.tripID, 
+      // tripID: this.tripID,
       paidBy: this.paidBy,
       paymentMode: this.paymentMode,
       reference: this.reference,
