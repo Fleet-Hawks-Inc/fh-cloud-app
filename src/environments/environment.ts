@@ -24,8 +24,8 @@ export const environment = {
   },
   awsBucket: {
     bucketName: 'fh-cloud-service-uploads',
-    accessKeyId: 'AKIARUNMEEHUQPFSCBPD',
-    secretAccessKey: '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',
+    accessKeyId: 'CHANGE_ME',
+    secretAccessKey: 'CHANGE_ME',
     region: 'us-east-2'
   },
   HOSTNAME :'myhome.anterbox.com',
