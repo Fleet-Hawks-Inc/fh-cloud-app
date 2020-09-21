@@ -76,6 +76,12 @@ export class AddDriverComponent implements OnInit {
     this.getToday();
     $(document).ready(() => {
       this.form = $('#form_').validate();
+
+      $('#document-two').hide();
+        $('#add-document').on('click', function(){
+        $(this).hide();
+        $('#document-two').show();
+        })
     });
   }
 

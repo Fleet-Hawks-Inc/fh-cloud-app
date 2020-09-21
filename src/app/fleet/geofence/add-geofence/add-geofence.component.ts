@@ -7,7 +7,7 @@ import { from } from "rxjs";
 
 import { Subject, throwError } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
-import {HereMapService} from './../../../services/here-map.service'
+import { HereMapService } from './../../../services/here-map.service'
 
 declare var $: any;
 declare var L: any;
@@ -32,7 +32,7 @@ export class AddGeofenceComponent implements OnInit {
   private readonly search: any;
   public searchTerm = new Subject<string>();
   public searchResults: any;
-  
+
 
   errors = {};
   form;
@@ -58,7 +58,7 @@ export class AddGeofenceComponent implements OnInit {
   Success: string = "";
 
 
-  
+
 
   constructor(
     private route: ActivatedRoute,
@@ -89,14 +89,14 @@ export class AddGeofenceComponent implements OnInit {
       apiKey: environment.mapConfig.apiKey
     }
     const style = 'normal.night';
-	  
+
     const hereTileUrl = `https://2.base.maps.ls.hereapi.com/maptile/2.1/trucktile/newest/${style}/{z}/{x}/{y}/512/png8?apiKey=${here.apiKey}&ppi=320&congestion=true`;
-    
+
     const map = L.map('map', {
-      	center: [37.773972, -122.431297],
-      	zoom: 17,
-      	layers: [L.tileLayer(hereTileUrl)]
-	  });
+      center: [37.773972, -122.431297],
+      zoom: 17,
+      layers: [L.tileLayer(hereTileUrl)]
+    });
     //L.marker([37.773972, -122.431297]).addTo(map);
 
     map.attributionControl.addAttribution('&copy; HERE 2020');
@@ -113,46 +113,46 @@ export class AddGeofenceComponent implements OnInit {
       removalMode: true,
       drawMarker: false
     });
-	  map.on('pm:create', (e) => {
-		  // alert('pm:create event fired. See console for details');
-		  const layer = e.layer;
-			
-			//console.log("lyr", layer)
+    map.on('pm:create', (e) => {
+      // alert('pm:create event fired. See console for details');
+      const layer = e.layer;
+
+      //console.log("lyr", layer)
       var polyedit = layer.toGeoJSON();
       this.geofenceData.geofence.type = polyedit.geometry.type;
       this.geofenceData.geofence.cords = polyedit.geometry.coordinates;
-			
-			console.log("created",this.geofenceData);
-      
-      layer.on('pm:edit',({layer}) => {
-        
+
+      console.log("created", this.geofenceData);
+
+      layer.on('pm:edit', ({ layer }) => {
+
         var polyedit = layer.toGeoJSON();
         this.geofenceData.geofence.type = polyedit.geometry.type;
         this.geofenceData.geofence.cords = polyedit.geometry.coordinates;
 
         //console.log("edited",this.geofenceData);
-        
-      })
-      
-  });
-	
-	map.on('pm:cut', function (e) {
-		  console.log('cut event on map');
-		  //console.log(e);
-	});
-	map.on('pm:remove', function (e) {
-		  console.log('pm:remove event fired.');
-		  // alert('pm:remove event fired. See console for details');
-		  //console.log(e);
-  });
-  
-  this.map = map;
-  
-  
-	
-}
 
-  
+      })
+
+    });
+
+    map.on('pm:cut', function (e) {
+      console.log('cut event on map');
+      //console.log(e);
+    });
+    map.on('pm:remove', function (e) {
+      console.log('pm:remove event fired.');
+      // alert('pm:remove event fired. See console for details');
+      //console.log(e);
+    });
+
+    this.map = map;
+
+
+
+  }
+
+
   addCategory() {
     this.errors = {};
     this.hasError = false;
@@ -244,25 +244,25 @@ export class AddGeofenceComponent implements OnInit {
     ).subscribe(res => {
       console.log("res", res);
       this.searchResults = res;
-      
+
     });
   }
 
-  searchDestination(loc,lat, lng){
+  searchDestination(loc, lat, lng) {
     this.destinationLocation = loc;
     this.marker = L.marker([lat, lng]).addTo(this.map);
     this.map.flyTo([lat, lng], 14, {
-        animate: true,
-        duration: 1.5
+      animate: true,
+      duration: 1.5
     });
     //this.map.removeLayer(this.marker)
-    
+
   }
-  
+
 
 
   // Use this function while updating edit page of Geofence
-  loadExistingGeoFence =(geofence:[]) =>{
+  loadExistingGeoFence = (geofence: []) => {
     //console.log(this.polygonData)
     // code goes here
     // var polygonPoints = [

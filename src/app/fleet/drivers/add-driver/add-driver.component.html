@@ -9,7 +9,905 @@
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
 
-    <section role="main" class="content-body">
+	<section role="main" class="content-body pt-0 pr-0 pl-0">
+		<header class="page-header">
+		   <h2>Add Driver</h2>
+		</header>
+		<div class="row text-dark">
+		   <div class="col pr-0 pb-3">
+			  <form class="form-horizontal form-bordered bg-white" method="get">
+				 <div class="p-2">
+					<ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+					   <li class="nav-item">
+						  <a class="nav-link active" id="addDriverBasic-tab" data-toggle="tab" href="#addDriverBasic" role="tab" aria-controls="addDriverBasic" aria-selected="true">Basic Details</a>
+					   </li>
+					   <li class="nav-item">
+						  <a class="nav-link" id="addDriverAddress-tab" data-toggle="tab" href="#addDriverAddress" role="tab" aria-controls="addDriverAddress" aria-selected="false">Address</a>
+					   </li>
+					   <li class="nav-item">
+						  <a class="nav-link" id="documents-tab" data-toggle="tab" href="#documents" role="tab" aria-controls="documents" aria-selected="false">Documents Details</a>
+					   </li>
+					   <li class="nav-item">
+						  <a class="nav-link" id="addDriverCrossBorder-tab" data-toggle="tab" href="#addDriverCrossBorder" role="tab" aria-controls="addDriverCrossBorder" aria-selected="false">Cross Border</a>
+					   </li>
+					   <li class="nav-item">
+						  <a class="nav-link" id="payment-tab" data-toggle="tab" href="#payment" role="tab" aria-controls="payment" aria-selected="false">Payment & licence Details</a>
+					   </li>
+					   <li class="nav-item">
+						  <a class="nav-link" id="Driverhos-tab" data-toggle="tab" href="#Driverhos" role="tab" aria-controls="Driverhos" aria-selected="false">HOS Compliance</a>
+					   </li>
+					   <li class="nav-item">
+						  <a class="nav-link" id="emergency-tab" data-toggle="tab" href="#emergency" role="tab" aria-controls="emergency" aria-selected="false">Emergency Contact</a>
+					   </li>
+					   <!--
+						  <li class="nav-item">
+							 <a class="nav-link" id="aDetails-tab" data-toggle="tab" href="#aDetails" role="tab" aria-controls="aDetails" aria-selected="false">Additional Details</a>
+						  </li>
+						  -->
+					</ul>
+				 </div>
+				 <div class="card-body">
+					<div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
+					   <div class="tab-pane show active" id="addDriverBasic" role="tabpanel" aria-labelledby="addDriverBasic-tab">
+						  <div>
+							 <div class="form-group row">
+								<div class="col-lg-10">
+								   <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
+									  >Basic Details</label>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-12 pt-2">
+										 <div class="row">
+											<div class="col-lg-3">
+											   <label class="control-label font-weight-bold text-lg-right"
+												  >Driver Type:</label>
+											</div>
+											<div class="col-lg-2 px-0">
+											   <div class="radio">
+												  <label>
+												  <input type="radio" name="driverType" onclick="driver_type()"
+													 id="driver_employee" class="driver-type" checked value="employee">
+												  Employee
+												  </label>
+											   </div>
+											</div>
+											<div class="col-lg-3  pr-0">
+											   <div class="radio">
+												  <label>
+												  <input type="radio" name="driverType" onclick="driver_type()"
+													 id="driver_contractor" class="driver-type" value="contractor">
+												  Contractor
+												  </label>
+											   </div>
+											</div>
+										 </div>
+									  </div>
+									  <div class="col-lg-10" id="companyDiv" style="display:none;">
+										 <label class="control-label font-weight-bold text-lg-right pt-3"
+											>Company ID</label>
+										 <input type="text" class="form-control" >
+									  </div>
+									  <div class="col-lg-10" id="employeeIDDiv">
+										 <label class="control-label font-weight-bold text-lg-right pt-3"
+											>Employee ID</label>
+										 <input type="text" class="form-control" >
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Driver Status</label>
+										 <select class="form-control">
+											<option>Active</option>
+											<option>InActive</option>
+										 </select>
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>User Name</label>
+										 <input type="text" class="form-control" >
+									  </div>
+									  <div class="col-lg-10">
+										 <div class="row">
+											<div class="col-lg-6">
+											   <label class="control-label font-weight-bold text-lg-right pt-2">Driver First Name</label>
+											   <input type="text" class="form-control">
+											</div>
+											<div class="col-lg-6">
+											   <label class="control-label font-weight-bold text-lg-right pt-2">Driver Last Name</label>
+											   <input type="text" class="form-control">
+											</div>
+										 </div>
+									  </div>
+									  
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Citizenship</label>
+										 <select class="form-control populate" data-plugin-selecttwo>
+											<option>Afghanistan</option>
+											<option>Albania</option>
+											<option>Algeria</option>
+											<option>Andorra</option>
+											<option>Angola</option>
+											<option>Antigua and Barbuda</option>
+											<option>Argentina</option>
+											<option>Armenia</option>
+											<option> Australia</option>
+											<option>Barbados</option>
+											<option>Belarus</option>
+											<option>Bulgaria</option>
+											<option> Canada</option>
+											<option> China</option>
+											<option>Guinea</option>
+										 </select>
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Assign Vehicle</label>
+										 <select class="form-control populate" data-plugin-selecttwo>
+											<option>Vehicle 1</option>
+											<option>Vehicle 2</option>
+											<option>Vehicle 3</option>
+											<option>Vehicle 4</option>
+										 </select>
+									  </div>
+									  <div class="col-lg-10">
+										 <label
+											class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
+											>Group</label>
+										 <div class="row">
+											<div class="col-lg-11">
+											   <select
+												  data-plugin-selectTwo
+												  class="form-control populate">
+												  <optgroup label="">
+													 <option value="">Group 1</option>
+													 <option value="">Group 2</option>
+												  </optgroup>
+											   </select>
+											</div>
+											<div class="col-lg-1 pl-0">
+											   <a href="#addgroup" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+											</div>
+										 </div>
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row" >
+									  <div class="col-lg-10  text-center">
+										 <div id="male_photo" style="display: block;">
+											<img class="business_image_style" id="male_photo" src="assets/img/driver/male.png">
+										 </div>
+										 <div id="female_photo" style="display: none;">
+											<img class="business_image_style" id="female_photo" src="assets/img/driver/female.png">
+										 </div>
+										 <div class="mt-1">
+											<div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
+											   <input type="file" multiple="" class="hidden_input1" />
+											</div>
+										 </div>
+									  </div>
+									  <div class="col-lg-12 pt-3">
+										 <div class="row">
+											<div class="col-lg-3">
+											   <label class="control-label font-weight-bold text-lg-right">Driver Gender:</label>
+											</div>
+											<div class="col-lg-2 px-0">
+											   <div class="radio">
+												  <label>
+													<input type="radio" name="driverGender" id="driver_male" onclick="driver_gender()" checked="" value="Male">
+												  Male
+												  </label>
+											   </div>
+											</div>
+											<div class="col-lg-3  pr-0">
+											   <div class="radio">
+												  <label>
+												  <input type="radio" name="driverGender" id="driver_female" onclick="driver_gender()" value="Female">
+												  Female
+												  </label>
+											   </div>
+											</div>
+										 </div>
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Work Phone</label>
+										 <input type="text" class="form-control" >
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Work Email</label>
+										 <input type="text" class="form-control" >
+									  </div>
+								   </div>
+								</div>
+							 </div>
+						  </div>
+					   </div>
+					   <!-- ADDRESS -->
+					   <div class="tab-pane fade" id="addDriverAddress" role="tabpanel" aria-labelledby="addDriverAddress-tab">
+						  <div>
+							 <div class="form-group row">
+								<div class="col-lg-10">
+								   <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
+									  >Address Details</label>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Address Type</label>
+										 <select data-plugin-selectTwo class="form-control populate">
+											<optgroup label="Select Address">
+											   <option value="1">Work</option>
+											   <option value="2">Home</option>
+											   <option value="2">Office</option>
+											</optgroup>
+										 </select>
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-6"></div>
+								<div class="col-lg-3 offset-lg-1 pt-4">
+								   <label class="control-label font-weight-bold text-lg-right pt-2"
+									  >Select Country</label>
+								   <select data-plugin-selectTwo class="form-control populate">
+									  <optgroup label="Select Country">
+										 <option value="1">Country 1</option>
+										 <option value="2">Country 2</option>
+										 <option value="2">Country 3</option>
+										 <option value="2">Country 4</option>
+									  </optgroup>
+								   </select>
+								</div>
+								<div class="col-lg-6 pt-4">
+								   <label class="control-label font-weight-bold text-lg-right pt-2"
+									  >Start typing your location, we'll pull
+								   address automatically from Map</label>
+								   <input type="text" class="form-control" 
+									  placeholder="Type Address">
+								   <div class="checkbox-custom pt-2">
+									  <input type="checkbox" name="terms">
+									  <label for="w1-terms">Type Manually</label>
+								   </div>
+								</div>
+								<div class="col-lg-1 mar-top-37 text-right pt-4">
+								   <button class="btn btn-dark" type="submit"
+									  style="width: 100px;">Clear</button>
+								</div>
+								<div class="col-lg-5 offset-lg-1 pt-3">
+								   <div class="row">
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Select State</label>
+										 <select data-plugin-selectTwo class="form-control populate">
+											<optgroup label="Select State">
+											   <option value="1">State 1</option>
+											   <option value="2">State 2</option>
+											   <option value="2">State 3</option>
+											   <option value="2">State 4</option>
+											</optgroup>
+										 </select>
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Select City</label>
+										 <select data-plugin-selectTwo class="form-control populate">
+											<optgroup label="Select City">
+											   <option value="1">City 1</option>
+											   <option value="2">City 2</option>
+											   <option value="2">City 3</option>
+											   <option value="2">City 4</option>
+											</optgroup>
+										 </select>
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Zip Code</label>
+										 <input type="text" class="form-control" >
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1 pt-4">
+								   <div class="row">
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Address 1</label>
+										 <input type="text" class="form-control" >
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Address 2</label>
+										 <input type="text" class="form-control" >
+									  </div>
+								   </div>
+								</div>
+							 </div>
+						  </div>
+					   </div>
+					   <!-- Travel -->
+					   <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
+						  <div>
+							 <div class="row">
+								<div class="col-lg-10">
+								   <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
+									  >Documents Details</label>
+								</div>
+							 </div>
+							 <div class="form-group row" id="document-one">
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2">
+										 Document Type</label>
+										 <select class="form-control populate" data-plugin-selecttwo>
+											<optgroup label="Select Document Type">
+											   <option value="1">Birth Certificate</option>
+											   <option value="2">Certificate of Naturalization</option>
+											   <option value="2">Citizenship Document Number (Citizenship Card)</option>
+											   <option value="2">DHS Refusee travel Document</option>
+											   <option value="2">Enhanced Driver</option>
+											   <option value="2">DHS Refusee travel Document</option>
+											   <option value="2">DHS Refusee travel Document</option>
+											</optgroup>
+										 </select>
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div>
+									  <div class="row">
+										 <div class="col-lg-5">
+											<label class="control-label font-weight-bold text-lg-right pt-2">Document#</label>
+											<input type="text" class="form-control" >
+										 </div>
+										 <div class="col-lg-5">
+											<label class="control-label font-weight-bold text-lg-right pt-2"
+											   >Issuing Authority</label>
+											<input type="text" class="form-control" >
+										 </div>
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-5">
+										 <label class="control-label font-weight-bold text-lg-right pt-2">
+										 Issuing Country</label>
+										 <select class="form-control populate" data-plugin-selecttwo>
+											<optgroup label="Select Country">
+											   <option>Afghanistan</option>
+											   <option>Albania</option>
+											   <option>Algeria</option>
+											   <option>Andorra</option>
+											   <option>Angola</option>
+											   <option>Antigua and Barbuda</option>
+											   <option>Argentina</option>
+											   <option>Armenia</option>
+											   <option> Australia</option>
+											   <option>Barbados</option>
+											   <option>Belarus</option>
+											   <option>Bulgaria</option>
+											   <option> Canada</option>
+											   <option> China</option>
+											   <option>Guinea</option>
+											</optgroup>
+										 </select>
+									  </div>
+									  <div class="col-lg-5">
+										 <label class="control-label font-weight-bold text-lg-right pt-2">
+										 Issuing State </label>
+										 <select class="form-control populate" data-plugin-selecttwo>
+											<optgroup label="Select State">
+											   <option value="2">Alberta</option>
+											   <option value="2">British Columbia</option>
+											   <option value="1">Ontario</option>
+											   <option value="2">Quebec</option>
+											   <option value="2">Manitoba</option>
+											   <option value="2">Nova Scotia</option>
+											   <option value="2">New Brunswick</option>
+											   <option value="2">Yukon</option>
+											   <option value="2">Ottawa</option>
+											   <option value="2">Vancouver</option>
+											   <option value="2">Winnipeg</option>
+											</optgroup>
+										 </select>
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-5">
+										 <label class="control-label font-weight-bold text-lg-right pt-2">
+										 Issue Date</label>
+										 <input type="text" data-plugin-datepicker="" class="form-control" >
+									  </div>
+									  <div class="col-5">         
+										 <label class="control-label font-weight-bold text-lg-right pt-2" >Expiry Date</label>
+										 <input type="text" data-plugin-datepicker="" class="form-control" >
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row mt-3">
+									  <div class="col-5">
+										 <a href="javascript:;" id="add-document" class="btn btn-success"><i class="fa fa-plus"></i> Add more document</a>
+									  </div>
+								   </div>
+								</div>
+							 </div>
+							 <div class="form-group row" id="document-two" style="display: none;">
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2">
+										 Document Type</label>
+										 <select class="form-control populate" data-plugin-selecttwo>
+											<optgroup label="Select Document Type">
+											   <option value="1">Birth Certificate</option>
+											   <option value="2">Certificate of Naturalization</option>
+											   <option value="2">Citizenship Document Number (Citizenship Card)</option>
+											   <option value="2">DHS Refusee travel Document</option>
+											   <option value="2">Enhanced Driver</option>
+											   <option value="2">DHS Refusee travel Document</option>
+											   <option value="2">DHS Refusee travel Document</option>
+											</optgroup>
+										 </select>
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div>
+									  <div class="row">
+										 <div class="col-lg-5">
+											<label class="control-label font-weight-bold text-lg-right pt-2">#Document</label>
+											<input type="text" class="form-control" >
+										 </div>
+										 <div class="col-lg-5">
+											<label class="control-label font-weight-bold text-lg-right pt-2"
+											   >Issuing Authority</label>
+											<input type="text" class="form-control" >
+										 </div>
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-5">
+										 <label class="control-label font-weight-bold text-lg-right pt-2">
+										 Issuing Country</label>
+										 <select class="form-control populate" data-plugin-selecttwo>
+											<optgroup label="Select Country">
+											   <option>Afghanistan</option>
+											   <option>Albania</option>
+											   <option>Algeria</option>
+											   <option>Andorra</option>
+											   <option>Angola</option>
+											   <option>Antigua and Barbuda</option>
+											   <option>Argentina</option>
+											   <option>Armenia</option>
+											   <option> Australia</option>
+											   <option>Barbados</option>
+											   <option>Belarus</option>
+											   <option>Bulgaria</option>
+											   <option> Canada</option>
+											   <option> China</option>
+											   <option>Guinea</option>
+											</optgroup>
+										 </select>
+									  </div>
+									  <div class="col-lg-5">
+										 <label class="control-label font-weight-bold text-lg-right pt-2">
+										 Issuing State </label>
+										 <select class="form-control populate" data-plugin-selecttwo>
+											<optgroup label="Select State">
+											   <option value="2">Alberta</option>
+											   <option value="2">British Columbia</option>
+											   <option value="1">Ontario</option>
+											   <option value="2">Quebec</option>
+											   <option value="2">Manitoba</option>
+											   <option value="2">Nova Scotia</option>
+											   <option value="2">New Brunswick</option>
+											   <option value="2">Yukon</option>
+											   <option value="2">Ottawa</option>
+											   <option value="2">Vancouver</option>
+											   <option value="2">Winnipeg</option>
+											</optgroup>
+										 </select>
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-5">
+										 <label class="control-label font-weight-bold text-lg-right pt-2">
+										 Issue Date</label>
+										 <input type="text" data-plugin-datepicker="" class="form-control" >
+									  </div>
+									  <div class="col-5">         
+										 <label class="control-label font-weight-bold text-lg-right pt-2" >Expiry Date</label>
+										 <input type="text" data-plugin-datepicker="" class="form-control" >
+									  </div>
+								   </div>
+								</div>
+							 </div>
+						  </div>
+					   </div>
+					   <!--    CROSS BORDER -->
+					   <div class="tab-pane fade" id="addDriverCrossBorder" role="tabpanel" aria-labelledby="addDriverCrossBorder-tab">
+						  <div>
+							 <div class="row">
+								<div class="col-lg-10">
+								   <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
+									  >Cross Border Details</label>
+								</div>
+							 </div>
+							 <div class="form-group row" id="document-one">
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-5">
+										 <label class="control-label font-weight-bold text-lg-right pt-2">ACI ID</label>
+										 <input type="text" class="form-control" >
+									  </div>
+									  <div class="col-lg-5">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>ACE ID</label>
+										 <input type="text" class="form-control" >
+									  </div>
+								   </div>
+								   <div class="row pt-2">
+									  <div class="col-lg-10">
+										 <div class="checkbox-custom pt-2">
+											<input type="checkbox" name="terms">
+											<label for="csa">CSA</label>
+										 </div>
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div>
+									  <div class="row">
+										 <div class="col-lg-5">
+											<label class="control-label font-weight-bold text-lg-right pt-2">FAST#</label>
+											<input type="text" class="form-control" >
+										 </div>
+										 <div class="col-lg-5">
+											<label class="control-label font-weight-bold text-lg-right pt-2"
+											   >FAST Expiry</label>
+											<input type="date" class="form-control" >
+										 </div>
+									  </div>
+								   </div>
+								</div>
+							 </div>
+						  </div>
+					   </div>
+					   <!-- Payment -->
+					   <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+						  <div>
+							<div class="form-group row">
+								<div class="col-lg-10">
+								   <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
+									  >Payment Details</label>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Default Payment Type</label>
+										 <select data-plugin-selectTwo class="form-control populate" id="paymentTypeForm" onchange="changePaymentModeForm()">
+											<optgroup label="Select Type">
+											   <option value="Pay Per Mile">Pay Per Mile</option>
+											   <option value="Percentage">Percentage</option>
+											   <option value="Pay Per Hour">Pay Per Hour</option>
+											</optgroup>
+										 </select>
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>SIN Number</label>
+										 <input type="text" class="form-control" >
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Federal Tax</label>
+										 <input type="text" class="form-control" >
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row" id="payPerHourForm" style="display: none;">
+									  <div class="col-lg-5">
+										 <label class="control-label font-weight-bold text-lg-right pt-2" >Rate ($)</label>
+										 <input type="number" class="form-control" >
+									  </div>
+								   </div>
+								   <div class="row" id="payPercentageForm" style="display: none;">
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Load Pay Percent</label>
+										 <div class="row">
+											<div class="col-lg-2">
+											   <input type="number" class="form-control" >
+											</div>
+											<div class="col-lg-2 px-0">
+											   <label class="font-weight-bold">%</label>
+											   <label class="font-weight-bold pull-right">of</label>
+											</div>
+											<div class="col-lg-8">
+											   <select data-plugin-selectTwo class="form-control populate">
+												  <optgroup label="Select ">
+													 <option value="1">Freight Fees</option>
+													 <option value="2">Freight + Fuel Surcharge</option>
+													 <option value="2">Total Income</option>
+												  </optgroup>
+											   </select>
+											</div>
+										 </div>
+									  </div>
+								   </div>
+								   <div>
+									  <div class="row" id="payPerMileForm" style="display: flex;">
+										 <div class="col-lg-5">
+											<label class="control-label font-weight-bold text-lg-right pt-2"
+											   >Loaded Miles ($)</label>
+											<input type="number" class="form-control" >
+										 </div>
+										 <div class="col-lg-5">
+											<label class="control-label font-weight-bold text-lg-right pt-2"
+											   >Empty Miles ($)</label>
+											<input type="number" class="form-control" >
+										 </div>
+										 </div>
+										 <div class="row">
+										 <div class="col-lg-10">
+											<label class="control-label font-weight-bold text-lg-right pt-2"
+											   >Local Tax</label>
+											<input type="text" class="form-control" >
+										 </div>
+										 <div class="col-lg-10">
+											<label class="control-label font-weight-bold text-lg-right pt-2"
+											   >Pay Period</label>
+											<select data-plugin-selectTwo class="form-control populate">
+											   <optgroup label="Select Pay Period">
+												  <option value="1">Weekly (52 pay periods a year)</option>
+												  <option value="1">Weekly (53 pay periods a year)</option>
+												  <option value="1">Biweekly (26 pay periods a year)</option>
+												  <option value="1">Biweekly (27 pay periods a year)</option>
+												  <option value="1">Monthly (12 pay periods a year)</option>
+												  <option value="1">Quaterly (4 pay periods a year)</option>
+												  <option value="1">Semi-Annually (2 pay periods a year)</option>
+												  <option value="1">Annually (1 pay periods a year)</option>
+											   </optgroup>
+											</select>
+										 </div>
+									  </div>
+								   </div>
+								</div>
+							 </div>
+							 <div class="form-group row">
+								<div class="col-lg-10">
+								   <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
+									  >Licence Details</label>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>CDL Number</label>
+										 <input type="text" class="form-control" >
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Licence Expiration</label>
+										 <input type="text" data-plugin-datepicker=""
+											class="form-control" placeholder="Select Date">
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Contract Start Date</label>
+										 <input type="text" data-plugin-datepicker=""
+											class="form-control" placeholder="Select Date">
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Select Vehicle Type</label>
+										 <select data-plugin-selectTwo class="form-control populate">
+											<optgroup label="Select Vehicle">
+											   <option value="1">Heavy Vehicle</option>
+											   <option value="2">Light Vehicle</option>
+											</optgroup>
+										 </select>
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Issued State</label>
+										 <select data-plugin-selectTwo class="form-control populate">
+											<optgroup label="Select State">
+											   <option value="1">State 1</option>
+											   <option value="2">State 2</option>
+											   <option value="2">State 3</option>
+											   <option value="2">State 4</option>
+											</optgroup>
+										 </select>
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Medical Card Renewal</label>
+										 <input type="text" data-plugin-datepicker=""
+											class="form-control" placeholder="Select Date">
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Contract End Date</label>
+										 <input type="text" data-plugin-datepicker=""
+											class="form-control" placeholder="Select Date">
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Birth Date</label>
+										 <input type="text" data-plugin-datepicker=""
+											class="form-control" placeholder="Select Date">
+									  </div>
+								   </div>
+								</div>
+							 </div>
+						  </div>
+					   </div>
+					   <div class="tab-pane fade" id="Driverhos" role="tabpanel" aria-labelledby="Driverhos-tab">
+						  <div>
+							 <div class="form-group row">
+								<div class="col-lg-10">
+								   <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
+									  >Compliance Details</label>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-10">
+										 <label
+											class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
+											>Status</label>
+										 <select
+											data-plugin-selectTwo
+											class="form-control populate"
+											name="HOSCompliance.status">
+											<optgroup label="">
+											   <option value="Non Exempted">Non Exempted</option>
+											   <option value="Exempted">Exempted</option>
+											</optgroup>
+										 </select>
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Write Remarks if driver is Exempted.</label>
+										 <textarea class="form-control" rows="4"></textarea>
+									  </div>
+									  <div class="col-lg-5 pt-3">
+										 <div class="checkbox-custom">
+											<input type="checkbox">
+											<label class="control-label font-weight-bold">Allow Personal Conveyance (PC)</label>
+										 </div>
+									  </div>
+									  <div class="col-lg-5 pt-3">
+										 <div class="checkbox-custom">
+											<input type="checkbox">
+											<label class="control-label font-weight-bold">Allow Yard Move (YM)</label>
+										 </div>
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-10">
+										 <label
+											class="control-label font-weight-bold text-lg-right pt-2"
+											>Type</label
+											>
+										 <select
+											data-plugin-selectTwo
+											class="form-control populate">
+											<optgroup label="">
+											   <option value="ELD">ELD</option>
+											   <option value="Log Book">Log Book</option>
+											</optgroup>
+										 </select>
+									  </div>
+									  <div class="col-lg-10">
+										 <label
+											class="control-label font-weight-bold text-lg-right pt-2">Cycle</label>
+										 <select
+											data-plugin-selectTwo
+											class="form-control populate">
+											<optgroup label="">
+											   <option value="">60 Hours/7 Days</option>
+											   <option value="">70 Hours/8 Days</option>
+											   <option value="">7 Days/Cycle 1</option>
+											   <option value="">14 Days/Cycle 2</option>
+											</optgroup>
+										 </select>
+									  </div>
+									  <div class="col-lg-10">
+										 <label
+											class="control-label font-weight-bold text-lg-right pt-2"
+											>Home Terminal</label>
+										 <select
+											data-plugin-selectTwo
+											class="form-control populate">
+											<optgroup label="">
+											   <option value="">Yard 1</option>
+											   <option value="">Yard 2</option>
+											   <option value="">Yard 3</option>
+											</optgroup>
+										 </select>
+									  </div>
+								   </div>
+								</div>
+							 </div>
+						  </div>
+					   </div>
+					   <div class="tab-pane fade" id="emergency" role="tabpanel" aria-labelledby="emergency-tab">
+						  <div>
+							 <div class="form-group row">
+								<div class="col-lg-10">
+								   <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
+									  >Emergency Contact Details</label>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Name</label>
+										 <input type="text" class="form-control" >
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Phone</label>
+										 <input type="text" class="form-control" >
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Address</label>
+										 <textarea class="form-control" rows="3"
+											></textarea>
+									  </div>
+								   </div>
+								</div>
+								<div class="col-lg-5 offset-lg-1">
+								   <div class="row">
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Relationship</label>
+										 <input type="text" class="form-control" >
+									  </div>
+									  <div class="col-lg-10">
+										 <label class="control-label font-weight-bold text-lg-right pt-2"
+											>Email</label>
+										 <input type="text" class="form-control" >
+									  </div>
+								   </div>
+								</div>
+							 </div>
+						  </div>
+					   </div>
+					   
+					</div>
+				 </div>
+				 <div class="form-group row mt-3">
+					<div class="col-lg-12 text-right pb-4 pr-5">
+					   <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button>
+					   <a href="drivers.php" class="btn btn-success">Submit</a>                            
+					</div>
+				 </div>
+			  </form>
+		   </div>
+		</div>
+	 </section>
+	
+	<!-- <section role="main" class="content-body">
       <header class="page-header">
         <h2>{{ title }}</h2>
 
@@ -162,9 +1060,9 @@
                       >Group
                     </label>
                     <select data-plugin-selectTwo class="form-control populate" name="groupID" [(ngModel)]="groupID">
-                      <!-- <optgroup label=""> -->
+                      
                         <option *ngFor="let q of groups" value="{{q.groupID}}">{{q.groupName}}</option>
-                      <!-- </optgroup> -->
+                      
                     </select>
 
                   </div>
@@ -377,7 +1275,6 @@
                       for="inputDefault"
                       >Per Mile</label
                     >
-                    <!--(input)="updateValidation('defaultContract', 'perMile')"-->
                     <input
                       type="text"
                       class="form-control"
@@ -511,7 +1408,6 @@
                 </div>
                 <div class="form-group row">
                   <div class="col-lg-12">
-                    <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
                     <p class="text text-success" *ngIf="hasSuccess">
                       {{ Success }}
                     </p>
@@ -522,6 +1418,6 @@
           </section>
         </div>
       </div>
-    </section>
+    </section> -->
   </div>
 </section>

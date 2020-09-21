@@ -12,6 +12,7 @@ declare var $: any;
 export class DriverListComponent implements OnInit {
   title = "Driver List";
   users = [];
+  dtOptions: any = {};
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -45,8 +46,37 @@ export class DriverListComponent implements OnInit {
   }
 
   initDataTable() {
-    timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
-    });
+    this.dtOptions = {
+      dom: 'Bfrtip', // lrtip to hide search field
+      processing: true,
+      columnDefs: [
+          {
+              targets: 0,
+              className: 'noVis'
+          },
+          {
+              targets: 1,
+              className: 'noVis'
+          },
+          {
+              targets: 2,
+              className: 'noVis'
+          },
+          {
+              targets: 3,
+              className: 'noVis'
+          },
+          {
+              targets: 4,
+              className: 'noVis'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      buttons: [
+        'colvis',
+      ],
+    };
   }
 }

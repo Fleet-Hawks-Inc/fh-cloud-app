@@ -16,7 +16,7 @@
                New Part
             </div>
             <div class="col-md-8  col-lg-8 text-right pr-4">                               
-               <a routerLink="/fleet/inventory/item/Item-List"  class="btn btn-default btn-sm"><i class="fas fa-list"></i>Inventory List</a>
+               <a href="inventory1.php"  class="btn btn-default btn-sm"><i class="fas fa-list"></i>Inventory List</a>
             </div>
          </div>
       </header>
@@ -32,22 +32,19 @@
                         <div class="row">
                            <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part Number</label>
-                              <input type="text" [(ngModel)]="inventaryData.partNumber"
-                              name="inventaryData.partNumber" class="form-control">
+                              <input type="text" class="form-control">
                            </div>
                         </div>
                         <div class="row mt-2">
                            <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Name</label>
-                              <input type="text" [(ngModel)]="inventaryData.name"
-                              name="inventaryData.name" class="form-control">
+                              <input type="text" class="form-control">
                            </div>
                         </div>
                         <div class="row mt-2">
                            <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Category</label>
-                              <select [(ngModel)]="inventaryData.category"
-                              name="inventaryData.category" data-plugin-selectTwo class="form-control populate">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Category</label>
+                              <select data-plugin-selectTwo class="form-control populate">
                                  <optgroup label="Select Category">
                                     <option value="1">Air Brake Systems</option>
                                     <option value="2">Air Filters</option>
@@ -68,19 +65,20 @@
                                  </optgroup>
                               </select>
                            </div>
+                           <div class="col-lg-2  mar-top-37">
+                                 <a href="#addInventoryCategoryModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                 </div>
                         </div>
                      </div>
                      <div class="col-lg-5 offset-lg-1">
                         <div class="row">
                            <div class="col-lg-5">
                               <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Unit Cost(base)</label>
-                              <input type="text" [(ngModel)]="inventaryData.unitCost"
-                              name="inventaryData.unitCost" class="form-control">
+                              <input type="text"  class="form-control">
                            </div>
                            <div class="col-lg-5">
                               <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Unit of Measure</label>
-                              <select [(ngModel)]="inventaryData.unitMeasure"
-                              name="inventaryData.unitMeasure" data-plugin-selectTwo class="form-control populate">
+                              <select data-plugin-selectTwo class="form-control populate">
                                  <optgroup label="Select Unit">
                                     <option value="1">Each</option>
                                     <option value="2">Gallon</option>
@@ -93,9 +91,8 @@
                         </div>
                         <div class="row mt-2">
                            <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Description</label>
-                              <textarea [(ngModel)]="inventaryData.description"
-                              name="inventaryData.description" class="form-control" rows="3"></textarea>
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Description</label>
+                              <textarea class="form-control" rows="3"></textarea>
                            </div>
                         </div>
                      </div>
@@ -115,18 +112,17 @@
                         <div class="row">
                            <div class="col-lg-10">
                               <label class="control-label pt-2 font-weight-bold">Select Warehouse</label>
-                              <select [(ngModel)]="inventaryData.warehouse"
-                              name="inventaryData.warehouse" data-plugin-selectTwo class="form-control populate">
+                              <select data-plugin-selectTwo class="form-control populate">
                                  <optgroup label="Select">
-                                    <option value="Warehouse 1">Warehouse 1</option>
-                                    <option value="Warehouse 2">Warehouse 2</option>
-                                    <option value="Warehouse 3">Warehouse 3</option>
-                                    <option value="Warehouse 4">Warehouse 4</option>
+                                    <option value="1">Warehouse 1</option>
+                                    <option value="2">Warehouse 2</option>
+                                    <option value="2">Warehouse 3</option>
+                                    <option value="2">Warehouse 4</option>
                                  </optgroup>
                               </select>
                            </div>
                            <div class="col-lg-2  mar-top-37">
-                              <a href="#addWarehouseModal" class="  modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                              <a href="#addWarehouseModal" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
                            </div>
                         </div>
                         <div class="row mt-2">
@@ -137,80 +133,72 @@
                                  <div class="col-lg-4"><label class="control-label font-weight-bold font-bold text-lg-right pt-2">Bin</label></div>
                               </div>
                               <div class="row">
-                                 <div class="col-lg-4"><input [(ngModel)]="inventaryData.aisle"
-                                    name="inventaryData.aisle" type="text" class="form-control"></div>
-                                 <div class="col-lg-4"><input [(ngModel)]="inventaryData.row"
-                                    name="inventaryData.row" type="text" class="form-control"></div>
-                                 <div class="col-lg-4"><input [(ngModel)]="inventaryData.bin"
-                                    name="inventaryData.bin" type="text" class="form-control"></div>
+                                 <div class="col-lg-4"><input type="text" class="form-control"></div>
+                                 <div class="col-lg-4"><input type="text" class="form-control"></div>
+                                 <div class="col-lg-4"><input type="text" class="form-control"></div>
                               </div>
                            </div>
                         </div>
                         <div class="row mt-2">
                            <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Vendor</label>
-                              <select [(ngModel)]="inventaryData.vendor"
-                              name="inventaryData.vendor" data-plugin-selectTwo class="form-control populate">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vendor</label>
+                              <select data-plugin-selectTwo class="form-control populate">
                                  <optgroup label="Select Vendor">
-                                    <option value="Vendor 1">Vendor 1</option>
-                                    <option value="Vendor 2">Vendor 2</option>
-                                    <option value="Vendor 3">Vendor 3</option>
-                                    <option value="Vendor 4">Vendor 4</option>
+                                    <option value="1">Vendor 1</option>
+                                    <option value="2">Vendor 2</option>
+                                    <option value="2">Vendor 3</option>
+                                    <option value="2">Vendor 4</option>
                                  </optgroup>
                               </select>
                            </div>
+                           <div class="col-lg-2  mar-top-37">
+                                 <a href="#addVendorModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                 </div>
                         </div>                                
-                        <div class="row mt-2">
-                           <div class="col-lg-10">
-                              <div class="checkbox-custom">
-                                 <input type="checkbox" [(ngModel)]="inventaryData.inventaryTracking"
-                                 name="inventaryData.inventaryTracking" id="inventoryTrackBtn" onclick="inventoryTrack()">
-                                 <label class="control-label font-weight-bold">Inventory Tracking</label>
-                              </div>
-                           </div>
-                        </div>
+                        
                      </div>
                      <div class="col-lg-5 offset-lg-1">
-                        
-                        <label class="control-label font-weight-bold">Inventory Tracking</label>
-                           <div>
-                              <div class="row">
-                                 <div class="col-lg-3">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Quantity</label>
-                                    <input type="number" class="form-control">
-                                 </div>
-                              </div>
-                              <div class="row mt-2">
-                                 <div class="col-lg-3">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Reorder Point</label>
-                                    <input type="number" class="form-control">
-                                 </div>
-                                 <div class="col-lg-3 mx-4">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Reorder Quantity</label>
-                                    <input type="number" class="form-control">
-                                 </div>
-                                 <div class="col-lg-3">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Max. Quantity</label>
-                                    <input type="number" class="form-control">
-                                 </div>
-                              </div>
-                              <div class="row mt-2">
-                                 <div class="col-lg-3">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Lead Time</label>
-                                    <input type="number" class="form-control">
-                                 </div>
-                                 <div class="col-lg-6 mx-4">
-                                    <label class="font-weight-bold font-bold text-lg-right pt-2">Preferred Vendor</label>
-                                    <select data-plugin-selecttwo="" class="form-control populate">
-                                       <optgroup label="Select">
-                                          <option value="1" data-select2-id="143">Vendor Name 1</option>
-                                          <option value="2">Vendor Name 2</option>
-                                       </optgroup>
-                                    </select>
-                                 </div>
+                     <label class="control-label font-weight-bold">Inventory Tracking</label>
+                        <div>
+                           <div class="row">
+                              <div class="col-lg-3">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Quantity</label>
+                                 <input type="number" class="form-control">
                               </div>
                            </div>
-                           
+                           <div class="row mt-2">
+                              <div class="col-lg-3">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reorder Point</label>
+                                 <input type="number" class="form-control">
+                              </div>
+                              <div class="col-lg-3 mx-4">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reorder Quantity</label>
+                                 <input type="number" class="form-control">
+                              </div>
+                              <div class="col-lg-3">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Max. Quantity</label>
+                                 <input type="number" class="form-control">
+                              </div>
+                           </div>
+                           <div class="row mt-2">
+                              <div class="col-lg-3">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Lead Time</label>
+                                 <input type="number" class="form-control">
+                              </div>
+                              <div class="col-lg-6 mx-4">
+                                 <label class="font-weight-bold font-bold text-lg-right pt-2">Preferred Vendor</label>
+                                 <select data-plugin-selectTwo class="form-control populate">
+                                    <optgroup label="Select">
+                                       <option value="1">Vendor Name 1</option>
+                                       <option value="2">Vendor Name 2</option>
+                                    </optgroup>
+                                 </select>
+                              </div>
+                              <div class="col-lg-2  mar-top-37 pl-0">
+                                 <a href="#addVendorModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                 </div>
+                           </div>
+                        </div>
                      </div>
                   </div>
                   <div class="form-group row">
@@ -228,20 +216,18 @@
                               <div class="row mt-2">
                                  <div class="col-lg-4">
                                     <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Days</label>
-                                    <input type="number" [(ngModel)]="inventaryData.warrantyDays"
-                                    name="inventaryData.warrantyDays" class="form-control">
+                                    <input type="text" class="form-control">
                                  </div>
                                  <div class="col-lg-4">
                                     <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Time</label>
-                                    <input type="text" [(ngModel)]="inventaryData.warrantyTime"
-                                    name="inventaryData.warrantyTime" class="form-control">
+                                    <input type="text" class="form-control">
                                  </div>
                               </div>
+                             
                               <div class="row mt-2">
                                  <div class="col-lg-12">
                                     <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Notes</label>
-                                    <textarea [(ngModel)]="inventaryData.notes"
-                                    name="inventaryData.notes" class="form-control" rows="3"></textarea>
+                                    <textarea class="form-control" rows="3"></textarea>
                                  </div>
                               </div>
                            </div>
@@ -250,9 +236,8 @@
                      <div class="col-lg-5 offset-lg-1">
                         <div class="row">
                            <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Attach Photo</label>
-                              <input [(ngModel)]="inventaryData.uploadedPhotos.photo"
-                              name="inventaryData.uploadedPhotos.photo" type="file"  class="form-control p-0" id="inputDefault">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Attach Photo</label>
+                              <input type="file"  class="form-control p-0" id="inputDefault">
                            </div>
                            <div class="col-lg-2  mar-top-37">
                               <!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
@@ -260,9 +245,8 @@
                         </div>
                         <div class="row mt-2">
                            <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Attach Document</label>
-                              <input type="file" [(ngModel)]="inventaryData.uploadedDocuments.docs"
-                              name="inventaryData.uploadedDocuments.docs" class="form-control p-0" id="inputDefault">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Attach Document</label>
+                              <input type="file" class="form-control p-0" id="inputDefault">
                            </div>
                            <div class="col-lg-2  mar-top-37">
                               <!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
@@ -272,8 +256,8 @@
                   </div>
                   <div class="form-group row">
                      <div class="col-lg-11 text-right">
-                        <a href="" class="btn btn-default" id="">Cancel</a>
-                        <a href="javascript:;" class="btn btn-success" (click)="addItem()" id="nextBtn">Save</a>
+                        <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button>
+                        <a href="inventory1.php" class="btn btn-success">Submit</a>
                      </div>
                   </div>
                </form>
@@ -287,80 +271,118 @@
 
 <!--  Add Warehouse-->
 <div id="addWarehouseModal" class="modal-block modal-block-primary mfp-hide">
-  <section class="card">
-     <header class="card-header">
-        <h2 class="card-title">Add Warehouse</h2>
-     </header>
-     <div class="card-body text-dark">
-        <form>
-           <div class="form-row">
-              <div class="form-group col-lg-12">
-                 <label class="control-label font-weight-bold">Warehouse Name</label>
-                 <input type="text" class="form-control">
-              </div>
-           </div>
-           <div class="form-row pt-3">
-              <div class="form-group col-lg-12">
-                 <label class="control-label text-4 font-weight-bold">Address</label>
-                 <div class="row">
-                    <div class="col-lg-6">
-                       <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">Select Country</label>
-                       <select data-plugin-selectTwo class="form-control populate">
-                          <optgroup label="Select Country">
-                             <option value="1">Country 1</option>
-                             <option value="2">Country 2</option>
-                             <option value="2">Country 3</option>
-                             <option value="2">Country 4</option>
-                          </optgroup>
-                       </select>
-                    </div>
-                    <div class="col-lg-6">
-                       <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">Select State</label>
-                       <select data-plugin-selectTwo class="form-control populate">
-                          <optgroup label="Select State">
-                             <option value="1">State 1</option>
-                             <option value="2">State 2</option>
-                             <option value="2">State 3</option>
-                             <option value="2">State 4</option>
-                          </optgroup>
-                       </select>
-                    </div>
-                 </div>
-                 <div class="row">
-                    <div class="col-lg-6">
-                       <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">Select City</label>
-                       <select data-plugin-selectTwo class="form-control populate">
-                          <optgroup label="Select City">
-                             <option value="1">City 1</option>
-                             <option value="2">City 2</option>
-                             <option value="2">City 3</option>
-                             <option value="2">City 4</option>
-                          </optgroup>
-                       </select>
-                    </div>
-                    <div class="col-lg-6">
-                       <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">ZIP Code</label>
-                       <input type="text" class="form-control">
-                    </div>
-                 </div>
-                 <div class="row">
-                   
-                    <div class="col-lg-12">
-                       <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">Street Address</label>
-                       <input type="text" class="form-control">
-                    </div>
-                 </div>
-              </div>
-           </div>
-        </form>
-     </div>
-     <footer class="card-footer">
-        <div class="row">
-           <div class="col-md-12 text-right">
-              <button class="btn btn-success modal-confirm">Save</button>
-              <button class="btn btn-default modal-dismiss">Cancel</button>
-           </div>
-        </div>
-     </footer>
-  </section>
+   <section class="card">
+         <header class="card-header">
+            <h2 class="card-title">Add Warehouse</h2>
+         </header>
+         <div class="card-body text-dark">
+            <form>
+               <div class="form-row">
+                  <div class="form-group col-lg-12">
+                     <label class="control-label font-weight-bold">Warehouse Name</label>
+                     <input type="text" class="form-control">
+                  </div>
+               </div>
+               <div class="form-row pt-3">
+                  <div class="form-group col-lg-12">
+                     <label class="control-label text-4 font-weight-bold">Address</label>
+                     <div class="row">
+                        <div class="col-lg-6">
+                           <label class="control-label font-weight-bold text-lg-right pt-2" >Select Country</label>
+                           <select data-plugin-selectTwo class="form-control populate">
+                              <optgroup label="Select Country">
+                                 <option value="1">Country 1</option>
+                                 <option value="2">Country 2</option>
+                                 <option value="2">Country 3</option>
+                                 <option value="2">Country 4</option>
+                              </optgroup>
+                           </select>
+                        </div>
+                        <div class="col-lg-6">
+                           <label class="control-label font-weight-bold text-lg-right pt-2" >Select State</label>
+                           <select data-plugin-selectTwo class="form-control populate">
+                              <optgroup label="Select State">
+                                 <option value="1">State 1</option>
+                                 <option value="2">State 2</option>
+                                 <option value="2">State 3</option>
+                                 <option value="2">State 4</option>
+                              </optgroup>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-lg-6">
+                           <label class="control-label font-weight-bold text-lg-right pt-2" >Select City</label>
+                           <select data-plugin-selectTwo class="form-control populate">
+                              <optgroup label="Select City">
+                                 <option value="1">City 1</option>
+                                 <option value="2">City 2</option>
+                                 <option value="2">City 3</option>
+                                 <option value="2">City 4</option>
+                              </optgroup>
+                           </select>
+                        </div>
+                        <div class="col-lg-6">
+                           <label class="control-label font-weight-bold text-lg-right pt-2" >ZIP Code</label>
+                           <input type="text" class="form-control">
+                        </div>
+                     </div>
+                     <div class="row">
+                     
+                        <div class="col-lg-12">
+                           <label class="control-label font-weight-bold text-lg-right pt-2" >Street Address</label>
+                           <input type="text" class="form-control">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </form>
+         </div>
+         <footer class="card-footer">
+            <div class="row">
+               <div class="col-md-12 text-right">
+                  <button type="button" class="btn btn-default modal-dismiss">Cancel</button>
+                  <button type="button" class="btn btn-success modal-dismiss">Save</button>
+               </div>
+            </div>
+         </footer>
+      </section>
+</div>
+
+
+<div id="addInventoryCategoryModal" class="modal-block  mfp-hide">
+   <section class="card">
+         <header class="card-header">
+            <h2 class="card-title">Add Inventory Category<span class="text-dark pull-right"><i class="fas fa-times"></i></span></h2>
+         </header>
+         <div class="card-body text-dark">
+            <form>
+               <div class="form-row">
+                  <div class="form-group col-lg-12">
+                     <label class="control-label font-weight-bold">Category Name</label>
+                     <input type="text" class="form-control">
+                  </div>
+                 
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-lg-12">
+                     <div class="row">
+                        <div class="col-lg-12">
+                           <label class="control-label font-weight-bold text-lg-right pt-2" >Description</label>
+                           <textarea class="form-control" rows="2" id="comment"></textarea>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </form>
+         </div>
+         <footer class="card-footer">
+            <div class="row">
+               <div class="col-md-12 text-right">
+                  <button class="btn btn-success modal-confirm">Save</button>
+                  <button class="btn btn-default modal-dismiss">Cancel</button>
+               </div>
+            </div>
+         </footer>
+      </section>
 </div>

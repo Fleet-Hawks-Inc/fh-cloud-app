@@ -49,16 +49,13 @@ export class AddReminderComponent implements OnInit {
     .getData('serviceReminders/' + this.reminderID)
     .subscribe((result: any) => {
       result = result.Items[0];
-      console.log(result)
+      console.log(result);
       this.reminderData['remindersID'] = this.reminderID;
       this.reminderData['vehicleName'] = result.vehicleName;
       this.reminderData['serviceTask'] = result.serviceTask;
       this.reminderData['repeatByTime'] = result.repeatByTime;
       this.reminderData['repeatByOdometer'] = result.repeatByOdometer;
       this.reminderData['repeatByDurationType'] = result.repeatByDurationType;
-      result.subscribedUser.forEach(element => {
-        this.reminderData['subscribedUser'] = element;
-      });
     });
 
 }

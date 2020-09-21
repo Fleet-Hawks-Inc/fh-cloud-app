@@ -41,38 +41,7 @@
                     </optgroup>
                  </select>
               </div>
-              <div class="col-lg-3 col-md-3">
-                 <div class="form-group row">
-                    <div class="col-lg-12">
-                     <ng-multiselect-dropdown [placeholder]="'custom placeholder'" [data]="dropdownList"
-                     [(ngModel)]="selectedItems" name="multiSelect" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
-                     (onSelectAll)="onSelectAll($event)">
-                  </ng-multiselect-dropdown>
-                       <!-- <div class="input-group input-group-select-append">
-                          <span class="input-group-prepend">
-                          <span class="input-group-text">
-                          <i class="fas fa-sitemap"></i>
-                          </span>
-                          </span>
-                          <select class="form-control" multiple="multiple" data-plugin-multiselect data-plugin-options='{ "maxHeight": 200, "enableCaseInsensitiveFiltering": true }' id="ms_example6">
-                             <optgroup label="Group1">
-                                <option value="analysis"  selected> Entire Fleet</option>
-                                <option value="algebra">Linear</option>
-                                <option value="discrete">Discrete</option>
-                                <option value="numerical">Numerical</option>
-                                <option value="probability">Probability</option>
-                             </optgroup>
-                             <optgroup label="Group2">
-                                <option value="programming">Name 1</option>
-                                <option value="automata">Automata Theory</option>
-                                <option value="complexity">Complexity Theory</option>
-                                <option value="software">Software Engineering</option>
-                             </optgroup>
-                          </select>
-                       </div> -->
-                    </div>
-                 </div>
-              </div>
+              
               <div class="col-md-1  col-lg-1">
                  <button type="submit" class="btn btn-sm btn-success">Search</button>
               </div>
@@ -170,7 +139,7 @@
                  
                   <ngb-panel id="static-1">
                      <ng-template ngbPanelTitle style="width: 100%!important;">
-                        <div   class=" d-flex align-items-center justify-content-between p-2">
+                        <div class=" d-flex align-items-center justify-content-between p-2">
                            <span><input type="checkbox"></span>
                            <span class="geoName text-dark">Geo-Fence Name 1 </span>
                            <span class="geofields text-dark text-center">100 street, King town,Ontario,Canada</span>

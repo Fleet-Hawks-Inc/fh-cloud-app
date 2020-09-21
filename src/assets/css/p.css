@@ -1,0 +1,143 @@
+.prtsidebar{
+  width: 50px;
+  height: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+  border-left: solid 1px #d7d7d7;
+  position: fixed;
+  z-index: 100;
+  right: 0;
+  top: 100px; bottom: 0;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.prtsidebar a{display: block; color: #757575; margin-bottom: 10px;}
+
+.prtsidebara{bottom:0px; right:16px; position: fixed;}
+
+.prtsidebar .prtsidebara a{display: block; color: #757575; margin-bottom: 10px;}
+
+
+
+/* ************************************************** NEW CLASSES START 16.07.20  ************************************************** */
+
+/* on hover show description of the driver on map view */
+
+.vehicle-description {
+  display: none;
+}
+
+.vehicle-item:hover .vehicle-description {
+  display: block; z-index: 99999;
+  position: absolute; color: #000000;
+  box-shadow: 0 0 10px #333;
+  width: 250px; min-height: 135px; font-size: 13px;
+  text-align: left; padding: 10px;
+  background: rgba(255,255,255, 1);
+}
+
+
+
+/* overivew new layout with vertical trip info */
+.driverleftmain{
+  width: 87%; float: left;
+  border-right: solid 1px #cfcfcf;
+  padding-right: 3%;
+
+}
+
+.driverrighttrip{
+  width: 10%; float: left;
+  text-align: center;
+}
+
+.driveredit-scrollbar {
+	position: relative;
+	height: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.driveredit-scroll-y {
+	display: block;
+}
+
+
+/* critical events new classes */
+.cmaindiv{background: #f9f9f9;}
+.cerbor{border-right: solid 1px #c6c6c6;}
+
+
+/* live view new classes */
+.tripbor{border-bottom: solid 1px #ebebeb;}
+
+
+/* new safety page */
+.safetytile {
+  background: #fff;
+  float: left;
+  width: 100%;
+  padding:3%;
+}
+
+
+
+/* create order page */
+.cotabdiv{min-height: 500px !important;}
+
+.btn-FTL {
+	color: #f37b4c;
+	background-color: #fff;
+	border-color: #f37b4c;
+	-webkit-box-shadow: none !important;
+	        box-shadow: none !important;
+}
+
+.btn-FTL:hover, .btn-FTL:active, .btn-FTL:focus {
+	color: #fff;
+	background-color: #f37b4c;
+	border-color: #f37b4c;
+}
+
+
+.btn-LTL {
+	color: #2b2b2b;
+	background-color: #fff;
+	border-color: #2b2b2b;
+	-webkit-box-shadow: none !important;
+          box-shadow: none !important;
+          /* color: rgb(0, 0, 0);
+          background-color: #f0f1f2; border-radius:25px; padding:20px;
+          background-image: none; font-size:17px;
+          border-color: #f0f1f2;
+          font-weight: 700; */
+}
+.btn-LTL .active, .btn-LTL:active{
+
+  color: rgb(255, 255, 255) !important;
+  background-color: rgb(34, 34, 34) !important;
+  border-color: rgb(34, 34, 34) !important;
+}
+/* .btn-LTL:hover, .btn-LTL:active, .btn-LTL:focus {
+	color: #fff;
+	background-color: #2b2b2b;
+	border-color: #2b2b2b;
+} */
+
+
+
+.btn-fleet {
+  color: rgb(0, 0, 0);
+  background-color: #f0f1f2; border-radius:10px; padding:5px;
+  background-image: none; font-size:13px;
+  border-color: #f0f1f2;
+  font-weight: 600;
+}
+
+.btn-fleet.active, .btn-fleet:active {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgb(34, 34, 34) !important;
+  border-color: rgb(34, 34, 34) !important;
+}

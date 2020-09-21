@@ -45,8 +45,8 @@ export class HereMapService {
       document.getElementById('map'),
       defaultLayers.vector.normal.truck,
       {
-        zoom: 13,
-        center: { lat: 51.053193, lng: -114.067266 },
+        zoom: 5,
+        center: {lat: 45.8598584, lng: -94.526364},
         pixelRatio: window.devicePixelRatio || 1
 
       }

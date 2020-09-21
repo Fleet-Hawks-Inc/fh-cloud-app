@@ -29,38 +29,10 @@
                      </div>
                   </div>
                </div>
-               <div class="col-lg-3 col-md-3">
-                  <div class="form-group row">
-                     <div class="col-lg-12">
-                        <div class="input-group input-group-select-append">
-                           <span class="input-group-prepend">
-                           <span class="input-group-text">
-                           <i class="fas fa-sitemap"></i>
-                           </span>
-                           </span>
-                           <select class="form-control" multiple="multiple" data-plugin-multiselect="" data-plugin-options="{ &quot;maxHeight&quot;: 200, &quot;enableCaseInsensitiveFiltering&quot;: true }" id="ms_example6" style="display: none;">
-                              <optgroup label="Group1">
-                                 <option value="analysis" selected=""> Entire Fleet</option>
-                                 <option value="algebra">Linear</option>
-                                 <option value="discrete">Discrete</option>
-                                 <option value="numerical">Numerical</option>
-                                 <option value="probability">Probability</option>
-                              </optgroup>
-                              <optgroup label="Group2">
-                                 <option value="programming">Name 1</option>
-                                 <option value="automata">Automata Theory</option>
-                                 <option value="complexity">Complexity Theory</option>
-                                 <option value="software">Software Engineering</option>
-                              </optgroup>
-                           </select><div class="btn-group"><button type="button" class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" title=" Entire Fleet"><span class="multiselect-selected-text"> Entire Fleet</span> <b class="caret"></b></button><ul class="multiselect-container dropdown-menu" style="max-height: 200px; overflow: hidden auto;"><div class="input-group"><span class="input-group-prepend"><span class="input-group-text"><i class="fas fa-search"></i></span></span><input class="form-control multiselect-search" type="text" placeholder="Search"></div><li class="multiselect-item multiselect-group"><label>Group1</label></li><li class="active"><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="analysis">  Entire Fleet</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="algebra"> Linear</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="discrete"> Discrete</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="numerical"> Numerical</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="probability"> Probability</label></a></li><li class="multiselect-item multiselect-group"><label>Group2</label></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="programming"> Name 1</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="automata"> Automata Theory</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="complexity"> Complexity Theory</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="software"> Software Engineering</label></a></li></ul></div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
                <div class="col-md-1  col-lg-1">
                   <button type="submit" class="btn btn-sm btn-success">Search</button>
                </div>
-               <div class="col-md-4  col-lg-4 text-right pr-5">
+               <div class="col-md-7  col-lg-7 text-right pr-5">
                   <button type="button" id="map_view_btn" class="btn btn-sm btn-default">Map View</button>
                   <button type="button" id="list_view_btn" class="btn btn-sm btn-success">List View</button>
                   <div class="btn-group flex-wrap">
@@ -169,10 +141,10 @@
       </div>
       <!-- LIST VIEW OF ASSETS  -->
       <div id="list_view">
-         <div class="m-2">
+         <div class="p-2">
             <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                <li class="nav-item">
-                  <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">All</a>
+                  <a class="nav-link active" id="all-tab" data-toggle="tab" href="#allassets" role="tab" aria-controls="allassets" aria-selected="true">All</a>
                </li>
                <li class="nav-item">
                   <a class="nav-link" id="reefer-tab" data-toggle="tab" href="#reefer" role="tab" aria-controls="reefer" aria-selected="false">Reefer</a>
@@ -193,176 +165,516 @@
                <section class="card">
                   <div class="card-body">
                      <div class="tab-content p-0" id="myTabContent">
-                        <div class="tab-pane show active" id="all" role="tabpanel" aria-labelledby="all-tab">
-                           <div class="">
-                             <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="allData.length > 0">
+                        <div class="tab-pane show active" id="allassets" role="tabpanel" aria-labelledby="all-tab">
+                           <table class="table table-bordered table-responsive-lg table-striped mb-0 allAssets-datatable">
                               <thead>
                                  <tr>
-                                    <th><input (click)="checkuncheckall()" type="checkbox"></th>
-                                    <th>Asset Name</th>
-                                    <th>Type</th>
-                                    <th>Plate Number</th>
-                                    <th>Last Known Location</th>
-                                    <th>Status</th>
+                                    <th width="5%"><input type="checkbox"></th>
+                                    
+                                    <th >Asset Name</th>
+                                    <th >Type</th>                                          
+                                    <th >Plate Number</th>
+                                    <th >Last Known Location</th>                                          
+                                    <th >Year</th>
+                                    <th >Make</th>
+                                    <th >Model</th>
+                                    <th >Ownership</th>
+                                    <th >Status</th>
                                  </tr>
                               </thead>
                               <tbody>
-                              <tr *ngFor="let asset of allData;let i = index;">
-                                <td class="sorting_1"><input [checked]="isChecked" [(ngModel)]="asset.checked" (ngModelChange)="checkboxCount()" value="{{asset.assetName}}" type="checkbox"></td>
-                                <td routerLink="/fleet/assets/asset-detail/{{asset.assetID}}">{{ asset.assetName }}</td>
-                                <td>{{ asset.assetDetails.assetType }}</td>
-                                <td>{{ asset.assetDetails.plateNumber }}</td>
-                                <td>Live Location</td>
-                                <td>
-                                  <span [ngClass]="asset.assetDetails.currentStatus === 'Active' ? 'badge-success' : 'badge-secondary'" class="badge text-3">
-                                    {{ asset.assetDetails.currentStatus }}                                   
-                                  </span>
-                                </td>
-                                </tr>
+                                 <tr onclick="window.location='asset1_details.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td >Test Asset</td>
+                                    <td>Reefer</td>                                          
+                                    <td>852963</td>
+                                    <td >Mississauga</td>
+                                    <td >2018</td>
+                                    <td >Freightliner</td>
+                                    <td >FR-1002</td>
+                                    <td >Rented</td>
+                                    <td><span class="badge badge-dark p-1">INACTIVE</span></td>
+
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                 
+                                    <td ><input type="checkbox"></td>
+                                    
+                                    <td >Test Asset</td>
+                                    <td >Drybox</td>
+                                    
+                                    <td>1316598</td>
+                                    <td >Ottawa</td>
+                                    <td >2016</td>
+                                    <td >FORD</td>
+                                    <td >F-35</td>
+                                    <td >Leased</td>
+                                    <td ><span class="badge badge-dark  p-1">ACTIVE</span></td>
+
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td>Test Asset</td>
+                                    <td >Curtain Side</td>
+                                    
+                                    <td >558877</td>
+                                    <td >Ottawa</td>
+                                    <td >2010</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Rented</td>
+                                    <td ><span class="badge badge-dark  p-1">ACTIVE</span></td>
+
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details.php'">
+                                    <td ><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">86429</td>
+                                    <td onclick="window.location='asset1_details.php'">Perth</td>
+                                    <td >2014</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Owned</td>
+                                    <td><span class="badge badge-dark p-1">INACTIVE</span></td>
+
+                                 </tr>
+
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td>Test Asset</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Flatbed</td>
+                                    
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">709060</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Thunder Bay</td>
+                                    <td >2017</td>
+                                    <td >Scania</td>
+                                    <td >SC-005</td>
+                                    <td >Rented</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+
+                                 </tr>
+
+                                 <tr onclick="window.location='asset1_details.php'">
+                                    <td ><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">1199</td>
+                                    <td onclick="window.location='asset1_details.php'">Welland</td>
+                                    <td >2010</td>
+                                    <td >Scania</td>
+                                    <td >SC-005</td>
+                                    <td >Leased</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+
+                                 </tr>
                               </tbody>
                            </table>
-                           <div *ngIf="!allData.length > 0" class="alert alert-info m-0" role="alert">
-                              No records found
-                           </div>
-                           </div>
                         </div>
                         <div class="tab-pane fade" id="reefer" role="tabpanel" aria-labelledby="reefer-tab">
-                           <div class="">
-                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="refers.length > 0">
-                               <thead>
-                                  <tr>
-                                     <th><input (click)="checkuncheckall()" type="checkbox"></th>
-                                     <th>Asset Name</th>
-                                     <th>Fuel Level</th>
-                                     <th>Current Temp.</th>
-                                     <th>Set Temp.</th>
-                                     <th>Plate Number</th>
-                                     <th>Last Known Location</th>
-                                     <th>Status</th>
-                                  </tr>
-                               </thead>
-                               <tbody>
-                               <tr *ngFor="let asset of refers;let i = index;" >
-                                 <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
-                                 <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
-                                 <td>Live Location</td>
-                                 <td>Live Location</td>
-                                 <td>Live Location</td>
-                                 <td>{{ asset.assetDetails.plateNumber }}</td>
-                                 <td>Live Location</td>
-                                 <td>
-                                   <span class="badge badge-secondary text-3">
-                                    {{ asset.assetDetails.currentStatus }}
-                                   </span>
-                                 </td>
-                                 </tr>
-                               </tbody>
-                            </table>
-                            <div *ngIf="!refers.length > 0" class="alert alert-info m-0" role="alert">
-                              No records found
-                           </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="dryBox" role="tabpanel" aria-labelledby="dryBox-tab">
-                           <div class="">
-                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="drybox.length > 0">
-                               <thead>
-                                  <tr>
-                                    <th><input (click)="checkuncheckall()" type="checkbox"></th>
-                                    <th>Asset Name</th>
-                                    <th>Plate Number</th>
-                                    <th>Last Known Location</th>
-                                    <th>Status</th>
-                                  </tr>
-                               </thead>
-                               <tbody>
-                                 <tr *ngFor="let asset of drybox;let i = index;">
-                                 <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
-                                 <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
-                                 <td>{{ asset.assetDetails.plateNumber  }}</td>
-                                 <td>Live Location</td>
-                                 <td>
-                                   <span class="badge badge-secondary text-3">
-                                    {{ asset.assetDetails.currentStatus }}
-                                   </span>
-                                 </td>
-                                 </tr>
-                               </tbody>
-                            </table>
-                            <div *ngIf="!drybox.length > 0" class="alert alert-info m-0" role="alert">
-                              No records found
-                           </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="flatBed" role="tabpanel" aria-labelledby="flatBed-tab">
-                           <div class="">
-                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" 
-                                 datatable class="row-border hover table table-bordered table-striped mb-0" *ngIf="flatbed.length > 0">
-                               <thead>
-                                  <tr>
-                                    <th><input (click)="checkuncheckall()" type="checkbox"></th>
+                           <table class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable">
+                              <thead>
+                                 <tr>
+                                    <th width="5%"><input type="checkbox"></th>
                                     
-                                    <th>Asset Name</th>
-                                    <th>Plate Number</th>
+                                    <th >Asset Name</th>
+                                    <th >Fuel Level</th>
+                                    <th >Current Temp.</th>
+                                    <th >Set Temp.</th>
+                                    
+                                    <th >Plate Number</th>
                                     <th>Last Known Location</th>
-                                    <th>Status</th>
-                                  </tr>
-                               </thead>
-                               <tbody>
-                               <tr *ngFor="let asset of flatbed;let i = index;">
-                                 <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
-                                  <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
-                                 <td>{{ asset.assetDetails.plateNumber  }}</td>
-                                 <td>Live Location</td>
-                                 <td>
-                                   <span class="badge badge-secondary text-3">
-                                    {{ asset.assetDetails.currentStatus }}
-                                   </span>
-                                 </td>
+                                    <th >Year</th>
+                                    <th >Make</th>
+                                    <th >Model</th>
+                                    <th >Ownership</th>
+                                    <th >Status</th>
                                  </tr>
-                                 
-                               </tbody>
+                              </thead>
+                              <tbody>
+                                 <tr onclick="window.location='asset1_details.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td >Asset Name B6-56892</td>
+                                    <td onclick="window.location='asset1_details.php'">50%</td>
+                                    <td onclick="window.location='asset1_details.php'">14</td>
+                                    <td onclick="window.location='asset1_details.php'">15</td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">708090</td>
+                                    <td onclick="window.location='asset1_details.php'">Fort Smith</td>
+                                    <td >2014</td>
+                                    <td >Freightliner</td>
+                                    <td >FR-1002</td>
+                                    <td >Owned</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">Test Asset 1</td>
+                                    <td onclick="window.location='asset1_details.php'">30%</td>
+                                    <td onclick="window.location='asset1_details.php'">14</td>
+                                    <td onclick="window.location='asset1_details.php'">15</td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">95123</td>
+                                    <td onclick="window.location='asset1_details.php'">Toronto</td>
+                                    <td >2016</td>
+                                    <td >FORD</td>
+                                    <td >FD-005</td>
+                                    <td >Rented</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">90%</td>
+                                    <td onclick="window.location='asset1_details.php'">14</td>
+                                    <td onclick="window.location='asset1_details.php'">15</td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">96388</td>
+                                    <td onclick="window.location='asset1_details.php'">Yarmouth</td>
+                                    <td >2010</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Leased</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
+                                    <td onclick="window.location='asset1_details.php'">85%</td>
+                                    <td onclick="window.location='asset1_details.php'">14</td>
+                                    <td onclick="window.location='asset1_details.php'">15</td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">29856311</td>
+                                    <td onclick="window.location='asset1_details.php'">Burlington</td>
+                                    <td >2017</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Owned</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details.php'">35%</td>
+                                    <td onclick="window.location='asset1_details.php'">14</td>
+                                    <td onclick="window.location='asset1_details.php'">15</td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">78900</td>
+                                    <td onclick="window.location='asset1_details.php'">Regina</td>
+                                    <td >2014</td>
+                                    <td >Freightliner</td>
+                                    <td >FR-1002</td>
+                                    <td >Owned</td>
+                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">Asset Name</td>
+                                    <td onclick="window.location='asset1_details.php'">12%</td>
+                                    <td onclick="window.location='asset1_details.php'">14</td>
+                                    <td onclick="window.location='asset1_details.php'">15</td>
+                                    
+                                    <td onclick="window.location='asset1_details.php'">6363</td>
+                                    <td onclick="window.location='asset1_details.php'">Midland</td>
+                                    <td >2018</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Leased</td>
+                                    <td><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                 </tr>
+                              </tbody>
                            </table>
+                        </div>
 
-                            
-                           <div *ngIf="!flatbed.length > 0" class="alert alert-info m-0" role="alert">
-                              No records found
-                           </div>
-                              
-                            </div>
+                        <div class="tab-pane fade" id="dryBox" role="tabpanel" aria-labelledby="dryBox-tab">
+                           <table class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable">
+                              <thead>
+                                 <tr>
+                                    <th width="5%"><input type="checkbox"></th>
+                                    
+                                    <th >Asset Name</th>
+                                    <th >Plate Number</th>
+                                    <th >Last Known Location</th>
+                                    <th >Year</th>
+                                    <th >Make</th>
+                                    <th >Model</th>
+                                    <th >Ownership</th>
+                                    <th >Status</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                    <td><input type="checkbox"></td>                                          
+                                    <td>Test Asset</td>
+                                    <td >35889</td>
+                                    <td>Delta</td>
+                                    <td >2018</td>
+                                    <td >Freightliner</td>
+                                    <td >FR-1002</td>
+                                    <td >Leased</td>
+                                    <td><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">789633</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Kamloops</td>
+                                    <td >2014</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Owned</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">20587</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Hope</td>
+                                    <td >2017</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Owned</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                 </tr>
+                                 <tr>
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">45600</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Brandon</td>
+                                    <td >2018</td>
+                                    <td >Freightliner</td>
+                                    <td >FR-1002</td>
+                                    <td >Leased</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">78922</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Thompson</td>
+                                    <td >2014</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Owned</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">449988</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Saint John</td>
+                                    <td >2017</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Leased</td>
+                                    <td ><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+
+                        <div class="tab-pane fade" id="flatBed" role="tabpanel" aria-labelledby="flatBed-tab">
+                           <table class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable">
+                              <thead>
+                                 <tr>
+                                    <th width="5%"><input type="checkbox"></th>
+                                    
+                                    <th >Asset Name</th>
+                                    <th >Plate Number</th>
+                                    <th >Last Known Location</th>
+                                    <th >Year</th>
+                                    <th >Make</th>
+                                    <th >Model</th>
+                                    <th >Ownership</th>
+                                    <th >Status</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr onclick="window.location='asset1_details-flatbed.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-flatbed.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'">25689562</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'">Toronto</td>
+                                    <td >2015</td>
+                                    <td >FORD</td>
+                                    <td >FD-005</td>
+                                    <td >Rented</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'"><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-flatbed.php'">
+                                    <td ><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-flatbed.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'">2356900</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'">Brampton</td>
+                                    <td >2018</td>
+                                    <td >Freightliner</td>
+                                    <td >FR-1002</td>
+                                    <td >Leased</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-flatbed.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-flatbed.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'">8527744</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'">Winnipeg</td>
+                                    <td >2014</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Owned</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'"><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-flatbed.php'">
+                                    <td ><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-flatbed.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'">5682344</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'">Regina</td>
+                                    <td >2017</td>
+                                    <td >GM</td>
+                                    <td >FR-1002</td>
+                                    <td >Rented</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-flatbed.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-flatbed.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'">447803</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'">Moncton</td>
+                                    <td >2018</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Leased</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-flatbed.php'"r>
+                                    <td ><input type="checkbox"></td>
+                                    
+                                    <td>Test Asset</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'">658311</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'">Surrey</td>
+                                    <td >2014</td>
+                                    <td >Freightliner</td>
+                                    <td >FR-1002</td>
+                                    <td >Owned</td>
+                                    <td onclick="window.location='asset1_details-flatbed.php'"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                 </tr>
+                              </tbody>
+                           </table>
                         </div>
 
                         <div class="tab-pane fade" id="curtainSide" role="tabpanel" aria-labelledby="curtainSide-tab">
-                           <div class="">
-                              <table [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" 
-                                 datatable class="row-border hover table table-bordered table-striped mb-0" *ngIf="curtainSlide.length > 0">
-                               <thead>
-                                  <tr>
-                                    <th><input (click)="checkuncheckall()"  type="checkbox"></th>
-                                    <th>Asset Name</th>
-                                    <th>Plate Number</th>
-                                    <th>Last Known Location</th>
-                                    <th>Status</th>
-                                  </tr>
-                               </thead>
-                               <tbody>
-                                 <tr *ngFor="let asset of curtainSlide;let i = index;">
-                                    <td class="sorting_1"><input [checked]="isChecked" value="{{asset.assetName}}" type="checkbox"></td>
-                                    <td routerLink="/fleet/assets/asset-detail">{{ asset.assetName }}</td>
-                                    <td>{{ asset.assetDetails.plateNumber  }}</td>
-                                    <td>Live Location</td>
-                                    <td>
-                                       <span class="badge badge-secondary text-3">
-                                          {{ asset.assetDetails.currentStatus }}
-                                       </span>
-                                    </td>
+                           <table class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable">
+                              <thead>
+                                 <tr>
+                                    <th width="5%"><input type="checkbox"></th>
+                                    
+                                    <th >Asset Name</th>
+                                    <th >Plate Number</th>
+                                    <th >Last Know Location</th>
+                                    <th >Year</th>
+                                    <th >Make</th>
+                                    <th >Model</th>
+                                    <th >Ownership</th>
+                                    <th >Status</th>
                                  </tr>
-                               </tbody>
-                            </table>
-                            <div *ngIf="!curtainSlide.length > 0" class="alert alert-info m-0" role="alert">
-                              No records found
-                           </div>
-                            </div>
+                              </thead>
+                              <tbody>
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td >Test Asset</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">78789</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Hamilton</td>
+                                    <td >2014</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Rented</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                    <td ><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">9090</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Kingston</td>
+                                    <td >2010</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Leased</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">7041</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">London</td>
+                                    <td >2018</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Owned</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">30309</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Kelowa</td>
+                                    <td >2017</td>
+                                    <td >Freightliner</td>
+                                    <td >FR-785</td>
+                                    <td >Rented</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">78984</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Windsor</td>
+                                    <td >2010</td>
+                                    <td >Freightliner</td>
+                                    <td >FR-1002</td>
+                                    <td >Leased</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                 </tr>
+                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                    <td><input type="checkbox"></td>
+                                    
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">753951</td>
+                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">North Bay</td>
+                                    <td >2014</td>
+                                    <td >GM</td>
+                                    <td >GM-345</td>
+                                    <td >Owned</td>
+                                    <td ><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                 </tr>
+                              </tbody>
+                           </table>
                         </div>
                      </div>
                   </div>

@@ -8,8 +8,343 @@
     <!-- start: sidebar -->
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
+	<section role="main" class="content-body pl-0 pr-0 pt-0">
+		<header class="page-header">
+			<div class="row pr-5 " style="padding-top:10px;">
+				<div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Add Asset </div>
+				<div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="/fleet/assets/Assets-List" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Assets List</a> </div>
+			</div>
+		</header>
+		<div class="row">
+			<div class="col pr-0">
+				<div class="card-body text-dark">
+					<form class="form-horizontal form-bordered" method="get">
+						<div class=" row">
+							<div class="col-lg-12">
+								<label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Basic Details</label>
+							</div>
+							<div class="col-lg-5 offset-lg-1">
+								<div class="row">
+									<div class="col-lg-10">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Asset Name/Number</label>
+										<input type="text" class="form-control"> </div>
+								</div>
+							</div>
+							<div class="col-lg-5 offset-lg-1">
+								<div class="row">
+									<div class="col-lg-10">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2">VIN</label>
+										<input type="text" class="form-control"> </div>
+								</div>
+							</div>
+						</div>
+						<div class=" row pt-3" >
+							<div class="col-lg-12">
+								<label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Asset Details</label>
+							</div>
+							<div class="col-lg-5 offset-lg-1">
+								<div class="row">
+									<div class="col-lg-10">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Asset Type</label>
+										<select data-plugin-selectTwo class="form-control populate" id="assetType" onchange="assetTypeFn()">
+											<optgroup label="">
+												<option value="1">Auto Hauler</option>
+												<option value="2">Curtain Side</option>
+												<option value="1">Drybox</option>
+												<option value="2">Dump/Tipper</option>
+												<option value="1">Flatbed</option>
+												<option value="2">Intermodel Chassis</option>
+												<option value="1">Livestock</option>
+												<option value="2">Lowboy</option>
+												<option value="reefer">Reefer</option>
+												<option value="2">Stake</option>
+												<option value="2">Step Deck</option>
+												<option value="2">Tanker</option>
+												<option value="2">Other</option>
+											</optgroup>
+										</select>
+									</div>
+								</div>
+								<div class="row" id="reeferIftaDiv" style="display:none;">
+									<div class="col-lg-10">
+										<div class="checkbox">
+										  <label>
+										  <input type="checkbox" value="">
+										  Is compliant for IFTA Reporting?
+										  </label>
+										</div>
+									</div>
+								</div>
+								<div class="row mt-2">
+									<div class="col-lg-3">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Year</label>
+										<select data-plugin-selectTwo class="form-control populate">
+											<optgroup label="">
+												<option value="1">2020</option>
+												<option value="2">2019</option>
+												<option value="2">2018</option>
+												<option value="2">2017</option>
+												<option value="2">2016</option>
+												<option value="2">2015</option>
+											</optgroup>
+										</select>
+									</div>
+									<div class="col-lg-3 mx-4">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Make</label>
+										<input type="text" class="form-control"> </div>
+									<div class="col-lg-3">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Model</label>
+										<input type="text" class="form-control"> </div>
+								</div>
+								<div class="row mt-2">
+									<div class="col-lg-5">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2">Length</label>
+										<div class="row">
+											<div class="col-lg-6 pr-0">
+												<input type="number" class="form-control"> </div>
+											<div class="col-lg-6 pl-0">
+												<select data-plugin-selectTwo class="form-control populate">
+													<optgroup label="">
+														<option value="1">Feet</option>
+														<option value="2">Meters</option>
+													</optgroup>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-5">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Axles</label>
+										<select data-plugin-selectTwo class="form-control populate">
+											<optgroup label="">
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="1">3</option>
+												<option value="2">4</option>
+												<option value="1">5</option>
+												<option value="2">6</option>
+												<option value="1">7</option>
+												<option value="2">8</option>
+												<option value="1">9</option>
+												<option value="2">10</option>
+											</optgroup>
+										</select>
+									</div>
+								</div>
+								<div class="row mt-2">
+									<div class="col-lg-5">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2">GVWR</label>
+										<div class="row">
+											<div class="col-lg-6 pr-0">
+												<input type="text" class="form-control"> </div>
+											<div class="col-lg-6 pl-0">
+												<select data-plugin-selectTwo class="form-control populate">
+													<optgroup label="">
+														<option value="1">Pounds</option>
+														<option value="2">Kilograms</option>
+													</optgroup>
+												</select>
+											</div>
+										</div>
+									</div>
+									<!-- </div>
+				 <div class="row mt-2"> -->
+									<div class="col-lg-5">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2">GAWR</label>
+										<div class="row">
+											<div class="col-lg-6 pr-0">
+												<input type="text" class="form-control"> </div>
+											<div class="col-lg-6 pl-0">
+												<select data-plugin-selectTwo class="form-control populate">
+													<optgroup label="">
+														<option value="1">Pounds</option>
+														<option value="2">Kilograms</option>
+													</optgroup>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+							
 
-    <section role="main" class="content-body pt-0 pr-0 pl-0">
+								<!-- 
+								<div class="row mt-4">
+									<div class="col-lg-3">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Asset Gateway</label>
+									</div>
+									<div class="col-lg-3 ml-4 pr-0">
+										<input type="text" class="form-control"> </div>
+									<div class="col-lg-4  pl-0"> <a href="#" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i> Assign Asset Gateway</a> </div>
+								</div>
+								-->
+
+							</div>
+							<div class="col-lg-5 offset-lg-1">
+								<div class="row">
+									<div class="col-lg-5">
+										<label class="control-label font-weight-bold text-lg-right pt-2" >Ownership</label>
+										<select data-plugin-selectTwo class="form-control populate">
+											<optgroup label="">
+												<option value="1">Owned</option>
+												<option value="2">Leased</option>
+												<option value="2">Rented</option>
+												<option value="2">Customer</option>
+											</optgroup>
+										</select>
+									</div>
+								</div>
+								<div class="row mt-2">
+									<div class="col-lg-10">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence State/Province</label>
+										<select data-plugin-selectTwo class="form-control populate">
+											<optgroup label="">
+												<option value="1">Country 1</option>
+												<option value="2">Country 2</option>
+												<option value="2">Country 3</option>
+												<option value="2">Country 4</option>
+											</optgroup>
+										</select>
+									</div>
+								</div>
+								<div class="row mt-2">
+									<div class="col-lg-10">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Plate Number</label>
+										<input class="form-control" type="text"> </div>
+								</div>
+								<div class="row mt-2">
+									<div class="col-lg-10">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes</label>
+										<textarea class="form-control" rows="3"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Insurance details -->
+						<div class="row pt-3">
+							<div class="col-lg-12">
+								<label class="control-label font-weight-bold font-weight-bold text-lg-right text-4 pt-2">Insurance Details</label>
+							</div>
+							<div class="col-lg-5 offset-lg-1">
+								<div class="row ">
+									<div class="col-lg-5">
+										<label class="control-label font-weight-bold text-lg-right pt-2">Date of Issue</label>
+										<input type="date" class="form-control"> </div>
+									<div class="col-lg-5">
+										<label class="control-label font-weight-bold text-lg-right pt-2">Premium Amount</label>
+										<div class="row">
+											<div class="col-lg-6 pr-0">
+												<input type="text" class="form-control">
+											</div>
+											<div class="col-lg-6 pl-0">
+												<select data-plugin-selectTwo class="form-control populate">
+													<optgroup label="">
+														<option value="1">USD</option>
+														<option value="2">CAD</option>
+													</optgroup>
+												</select>
+											</div>
+										</div>
+									</div>
+					</div>
+					<div class="row pt-2">
+						  <div class="col-lg-5">
+							 <label class="control-label font-weight-bold text-lg-right pt-2">Date of Expiry</label>
+							 <input type="date" class="form-control" >
+						  </div>
+						  <div class="col-lg-5">
+							 <label class="control-label font-weight-bold text-lg-right pt-2">Reminder Before Expiry</label>
+							 <div class="row">
+								<div class="col-lg-6 pr-0"><input type="number" class="form-control" ></div>
+								<div class="col-lg-6 pl-0">
+								   <select data-plugin-selectTwo class="form-control populate">
+									  <optgroup label="">
+										 <option value="1">Day(s)</option>
+										 <option value="2">Week(s)</option>
+										 <option value="2">Month(s)</option>
+									  </optgroup>
+								   </select>
+								</div>
+							 </div>
+						  </div>
+					   </div>
+							</div>
+							<div class="col-lg-5 offset-lg-1">
+								<div class="row">
+									<div class="col-lg-10">
+										<label class="control-label font-weight-bold text-lg-right pt-2">Vendor</label>
+										<select data-plugin-selectTwo class="form-control populate">
+											<optgroup label="">
+												<option value="1">Vendor 1</option>
+												<option value="1">Vendor 2</option>
+												<option value="1">Vendor 3</option>
+												<option value="1">Vendor 4</option>
+												<option value="1">Vendor 5</option>
+												<option value="1">Vendor 6</option>
+												<option value="1">Vendor 7</option>
+												<option value="1">Vendor 8</option>
+											</optgroup>
+										</select>
+									</div>
+									<div class="col-lg-2  mar-top-37">
+							 <a href="#addVendorModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+						  </div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group pt-3 row">
+							<div class="col-lg-12">
+								<label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Cross Border Details</label>
+							</div>
+							<div class="col-lg-5 offset-lg-1">
+								<div class="row pt-2">
+									<div class="col-lg-10">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2" >ACI ID</label>
+										<input type="text" multiple class="form-control" >
+									 </div>
+									
+								</div>
+							</div>
+							<div class="col-lg-5 offset-lg-1">
+								<div class="row pt-2">
+									<div class="col-lg-10">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2" >ACE ID</label>
+										<input type="text" multiple class="form-control" > </div>
+									
+								</div>
+							</div>
+						</div>
+						<div class="form-group pt-3 row">
+							<div class="col-lg-12">
+								<label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional Details</label>
+							</div>
+							<div class="col-lg-5 offset-lg-1">
+								<div class="row pt-2">
+									<div class="col-lg-10">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Attach Photo</label>
+										<input type="file" multiple class="form-control p-0" > </div>
+									<div class="col-lg-2  mar-top-37">
+										<!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> --></div>
+								</div>
+							</div>
+							<div class="col-lg-5 offset-lg-1">
+								<div class="row pt-2">
+									<div class="col-lg-10">
+										<label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Attach Document</label>
+										<input type="file" multiple class="form-control p-0" > </div>
+									<div class="col-lg-2  mar-top-37">
+										<!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> --></div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-lg-11 text-right"> <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button> <a href="assets1.php" class="btn btn-success">Submit</a> </div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+    <!-- <section role="main" class="content-body pt-0 pr-0 pl-0">
       <header class="page-header">
         <div class="row pr-5 " style="padding-top:10px;">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}} </div>
@@ -70,7 +405,7 @@
                           <option value="Drybox">Drybox</option>
                           <option value="Curtain Side">Curtain Side</option>
                           <option value="Flatbed">Flatbed</option>
-                          <!-- <option value="Dump/Tipper">Dump/Tipper</option>
+                          <option value="Dump/Tipper">Dump/Tipper</option>
                           <option value="Intermodel Chassis">Intermodel Chassis</option>
                           <option value="Livestock">Livestock</option>
                           <option value="Lowboy">Lowboy</option>
@@ -79,7 +414,7 @@
                           <option value="Stake">Stake</option>
                           <option value="Step Deck">Step Deck</option>
                           <option value="Tanker">Tanker</option>
-                          <option value="Other">Other</option> -->
+                          <option value="Other">Other</option>
                         </optgroup>
                       </select>
                     </div>
@@ -120,11 +455,11 @@
                         <option *ngFor="let val of models" value="{{val.modelID}}">{{val.name}}</option>
                       </optgroup>
                     </select>
-                      <!-- <input type="text" data-plugin-selectTwo
+                      <input type="text" data-plugin-selectTwo
                       class="form-control populate"
                       id="model"
                       [(ngModel)]="assetsData.assetDetails.modelID"
-                      name="assetDetails.modelID">--> 
+                      name="assetDetails.modelID">
                     </div> 
                   </div>
                   <div class="row mt-2">
@@ -194,8 +529,8 @@
                         </div>
                       </div>
                     </div>
-                    <!-- </div>
-                           <div class="row mt-2"> -->
+                    </div>
+                           <div class="row mt-2">
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">GAWR</label>
                       <div class="row">
@@ -275,7 +610,7 @@
                   </div>
                 </div>
               </div>
-              <!-- Insurance details -->
+             
               <div class="row pt-3">
                 <div class="col-lg-12">
                   <label class="control-label font-weight-bold font-weight-bold text-lg-right text-4 pt-2">Insurance Details</label>
@@ -367,7 +702,7 @@
                       <input [(ngModel)]="assetsData.uploadedPhotos.photo"
                       name="uploadedPhotos.photo" type="file" multiple class="form-control p-0" id="inputDefault"> </div>
                     <div class="col-lg-2  mar-top-37">
-                      <!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> --></div>
+                      <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a></div>
                   </div>
                 </div>
                 <div class="col-lg-5 offset-lg-1">
@@ -376,8 +711,8 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault1">Attach Document</label>
                       <input [(ngModel)]="assetsData.uploadedDocs.doc"
                       name="uploadedDocs.doc" (change)="selectDocuments($event)" type="file" multiple class="form-control p-0" id="inputDefault1"> </div>
-                    <!-- <div class="col-lg-2  mar-top-37">
-                      <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a></div> -->
+                    <div class="col-lg-2  mar-top-37">
+                      <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a></div>
                   </div>
                 </div>
               </div>
@@ -393,7 +728,7 @@
         </div>
       </div>
 
-      <!-- <div class="row">
+      <div class="row">
         <div class="col">
           <section class="card">
             <header class="card-header">
@@ -796,8 +1131,8 @@
             </div>
           </section>
         </div>
-      </div> -->
-    </section>
+      </div> 
+    </section> -->
   </div>
 </section>
 
