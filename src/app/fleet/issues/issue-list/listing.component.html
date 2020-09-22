@@ -35,24 +35,24 @@
                         <a class="dropdown-item text-1" href="">Export</a>
                         </div>
                     </div>
-                    <a routerLink="/fleet/maintenance/issues/add-issue" class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add Issue</a>
+                    <a href="add-issue.php" class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add Issue</a>
                 </div>
             </div>
             </header>
-        <!-- <section class="card">
+        <section class="card">
            <div class="row">
               <div class="col-lg-8">
                  <div class="wtopnav">
                     <ul>
-                       <li><a routerLink="/fleet/maintenance/issues/list"  class="active">Issues</a></li>
-                       <li><a routerLink="/fleet/maintenance/service-log/list" >Services </a></li>
+                       <li><a href="new-maintenance.php"  class="active">Issues</a></li>
+                       <li><a href="service-log1.php" >Services </a></li>
                     </ul>
                  </div>
               </div>
               <div class="col-lg-4 pt-1 text-right">
               </div>
            </div>
-        </section> -->
+        </section>
         <div class="row">
            <div class="col pr-0">
               <section class="card">
@@ -91,11 +91,11 @@
                                     <tbody>
                                         <tr>
                                         <td><input type="checkbox" /></td>
-                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Vehicle 1</td>
-                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Brakes Issue</td>
-                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Jun 5, 2020</td>
-                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Mr. Singh</td>
-                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Charles</td>
+                                        <td onclick="window.location='open-issue-details.php';">Vehicle 1</td>
+                                        <td onclick="window.location='open-issue-details.php';">Brakes Issue</td>
+                                        <td onclick="window.location='open-issue-details.php';">Jun 5, 2020</td>
+                                        <td onclick="window.location='open-issue-details.php';">Mr. Singh</td>
+                                        <td onclick="window.location='open-issue-details.php';">Charles</td>
                                         <td>
                                             <div class="btn-group flex-wrap">
                                                 <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>

@@ -112,6 +112,18 @@ export class AddVehicleNewComponent implements OnInit {
   Error : string = '';
   Success : string = '';
 
+
+  slides = [
+    {img: "assets/img/truck.jpg"},
+    {img: "assets/img/truck.jpg"},
+  ];
+  slideConfig = {"slidesToShow": 1,
+  "slidesToScroll": 1,
+  "dots": true,
+  "infinite": true,
+  "autoplay": true,
+  "autoplaySpeed": 1500};
+
   constructor(private apiService: ApiService,
     private router: Router) {}
 

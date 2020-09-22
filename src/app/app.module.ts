@@ -127,6 +127,8 @@ import {JwtInterceptor} from "./helpers/jwt.interceptor";
 import {MqttModule, IMqttServiceOptions} from 'ngx-mqtt';
 import {environment} from "../environments/environment";
 
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -258,8 +260,8 @@ import { CarrierRegisterComponent } from './carrier-register/carrier-register.co
     SharedModule,
     ToastrModule.forRoot(), // ToastrModule added
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
-    NgMultiSelectDropDownModule.forRoot()
-    //NgSelectModule
+    NgMultiSelectDropDownModule.forRoot(),
+    SlickCarouselModule
 
 
   ],

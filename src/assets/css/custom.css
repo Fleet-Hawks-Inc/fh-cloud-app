@@ -602,7 +602,7 @@ float:  left;
   .iconR a{background: #ebebeb;}
 
   .iconL{position: absolute;
-    right:-10px; 
+    right:0px; 
     top: 370px;
     }
   
@@ -1004,9 +1004,9 @@ right: 20px; top: 10px;
   /* Mapbox CSS */
   
         #map {
-          height:100vh;
+          /* height:100vh;
           top: 10;
-          bottom: 0;
+          bottom: 0; */
           width: 100%;
         }
         /* #map1 {

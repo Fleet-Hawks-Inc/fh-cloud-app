@@ -88,7 +88,7 @@ import { AssetDetailComponent } from './assets/asset-detail/asset-detail.compone
 import { ListingComponent } from './reminders/service-reminder/listing/listing.component';
 import { AddReminderComponent } from './reminders/service-reminder/add-reminder/add-reminder.component';
 
-//ngselect2
+// ngselect2
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgSelectConfig } from '@ng-select/ng-select'; 
 import { ɵs } from '@ng-select/ng-select';
@@ -99,13 +99,15 @@ import { ListContactRenewComponent } from './reminders/contact-renewals/list-con
 import { ServiceRemindDetailComponent } from './reminders/service-reminder/service-remind-detail/service-remind-detail.component';
 import { ContactRenewDetailComponent } from './reminders/contact-renewals/contact-renew-detail/contact-renew-detail.component';
 import { VehicleRenewDetailComponent } from './reminders/vehicle-renewals/vehicle-renew-detail/vehicle-renew-detail.component';
-//DataTable
+// DataTable
 import { DataTablesModule } from 'angular-datatables';
 import { ItemDetailComponent } from './inventory/items/item-detail/item-detail.component';
 import { IssueDetailComponent } from './maintenance/issues/issue-detail/issue-detail.component';
 import { ServiceDetailComponent } from './maintenance/service-log/service-detail/service-detail.component';
 import { ServiceProgramDetailComponent } from './maintenance/service-program/service-program-detail/service-program-detail.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { DriverDetailComponent } from './drivers/driver-detail/driver-detail.component';
 @NgModule({
   imports: [
     FleetRoutingModule,
@@ -116,7 +118,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     NgSelectModule,
     DataTablesModule,
     NgbModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    SlickCarouselModule
   ],
   declarations: [
     AddDriverComponent,
@@ -214,9 +217,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     IssueDetailComponent,
     ServiceDetailComponent,
     ServiceProgramDetailComponent,
-    
-    
-    
+    DriverDetailComponent,
   ],
   providers: [NgSelectConfig,ɵs],
 })
