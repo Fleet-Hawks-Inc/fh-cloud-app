@@ -164,7 +164,7 @@ html.fixed .content-body {
     background: #fff;
     position: relative;
 }
-#allContactsModal {
+#allContactsModal .modal-dialog{
     max-width: 1024px;
 }
 #canvas1,
@@ -430,7 +430,7 @@ html.fixed .content-body {
     max-width: 230px;
 }
 .header .logo {
-    width: 240px;
+    /* width: 240px; */
     display: inline-block;
 }
 #sidebar-left #menu ul.nav-main > li.nav-active > a {
@@ -483,4 +483,27 @@ html.fixed .content-body {
 #map_collapse_sidebar .card-body {
     max-height: calc(100vh - 230px);
     overflow: auto;
+}
+
+.modal-open .modal {
+    background: rgba(0,0,0,.4);
+}
+.modal .modal-dialog {
+    max-width: 900px;
+}
+.modal .modal-header{
+    background: #f6f6f6;
+    border-radius: 5px 5px 0 0 !important;
+    border-bottom: 1px solid #DADADA;
+    padding: 18px;
+    position: relative;
+} 
+.modal .modal-title{
+    color: #33353F;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 20px;
+    padding: 0;
+    margin: 0;
+    text-transform: none;
 }

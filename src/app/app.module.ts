@@ -128,7 +128,7 @@ import {MqttModule, IMqttServiceOptions} from 'ngx-mqtt';
 import {environment} from "../environments/environment";
 
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-
+import { NgxSpinnerModule } from "ngx-spinner";
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -261,8 +261,8 @@ import { CarrierRegisterComponent } from './carrier-register/carrier-register.co
     ToastrModule.forRoot(), // ToastrModule added
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     NgMultiSelectDropDownModule.forRoot(),
-    SlickCarouselModule
-
+    SlickCarouselModule,
+    NgxSpinnerModule
 
   ],
   providers: [AmplifyService,

@@ -30,7 +30,8 @@ export class AddAssetsComponent implements OnInit {
   assetsData = {
     assetDetails: {},
     insuranceDetails: {},
-    uploadedPhotos: {},
+    crossBorderDetails: {},
+    uploadedPhotos: [],
     uploadedDocs: []
   };
   vendors = [];
@@ -71,6 +72,7 @@ export class AddAssetsComponent implements OnInit {
    */
   fetchManufactuer() {
     this.apiService.getData('manufacturers').subscribe((result: any) => {
+      console.log('result.items', result)
       this.manufacturers = result.Items;
     });
   }
@@ -126,7 +128,7 @@ export class AddAssetsComponent implements OnInit {
       },
       next: (res) => { 
         this.response = res;
-        //this.uploadFiles();
+        this.uploadFiles();
         this.toastr.success('Asset added successfully');
         this.router.navigateByUrl('/fleet/assets/Assets-List');
       },
@@ -217,21 +219,33 @@ export class AddAssetsComponent implements OnInit {
   /*
    * Selecting files before uploading
    */
-  selectDocuments(event) {
-
+  selectDocuments(event, obj) {
     this.selectedFiles = event.target.files;
-    console.log('this.selectedFiles', event.target.files);
-    this.assetsData.uploadedDocs = [];
-    
-    for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-      const randomFileGenerate = this.selectedFiles[i].name.split('.');
-      const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
+    if (obj === 'uploadedDocs') {
+      //this.assetsData.uploadedDocs = [];
+      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
+        const randomFileGenerate = this.selectedFiles[i].name.split('.');
+        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
+        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
+        this.assetsData.uploadedDocs.push(fileName);
+      }
+    } else {
+      //this.assetsData.uploadedPhotos = [];
+      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
+        console.log('this.selectedFiles', this.selectedFiles);
+        console.log('this.selectedFiles.item.length', this.selectedFiles.item.length)
+        const randomFileGenerate = this.selectedFiles[i].name.split('.');
+        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
 
-      this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-      this.assetsData.uploadedDocs.push(fileName);
+        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
+        this.assetsData.uploadedPhotos.push(fileName);
+      }
     }
-    console.log(this.assetsData);
-    this.uploadFiles();
+    console.log("photos", this.assetsData.uploadedPhotos)
+    console.log("docs", this.assetsData.uploadedDocs)
+    
+    //console.log(this.assetsData);
+    //this.uploadFiles();
   }
   /*
    * Uploading files which selected

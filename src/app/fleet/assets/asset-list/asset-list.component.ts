@@ -3,6 +3,8 @@ import { ApiService } from '../../../api.service';
 import { Router } from '@angular/router';
 import { timer, Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from "ngx-spinner";
+
 declare var $: any;
 
 @Component({
@@ -24,7 +26,7 @@ export class AssetListComponent implements OnInit {
   dtOptions: any = {};
   dtTrigger = new Subject();
 
-  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) {}
+  constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) {}
 
   ngOnInit() {
 
@@ -91,12 +93,14 @@ export class AssetListComponent implements OnInit {
   }
 
   fetchAssets = () => {
+    this.spinner.show(); // loader init
     this.apiService.getData('assets').subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.allData = result.Items;
-        console.log(this.allData)
+        this.spinner.hide(); // loader hide
+        //console.log(this.allData)
         for (let i = 0; i < result.Items.length; i++) {
           if (result.Items[i].assetDetails.assetType === 'Reefer') {
             this.refers.push(this.allData[i]);
@@ -108,6 +112,7 @@ export class AssetListComponent implements OnInit {
             this.curtainSlide.push(this.allData[i]);
           } else {
             this.allData = this.allData;
+            console.log('this.allData', this.allData)
           }
         }
       },

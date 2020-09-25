@@ -66,8 +66,7 @@
 											<div class="col-lg-2 px-0">
 											   <div class="radio">
 												  <label>
-												  <input type="radio" name="driverType" onclick="driver_type()"
-													 id="driver_employee" class="driver-type" checked value="employee">
+												  <input name="driverType" [(ngModel)]="type" type="radio" [value]="1">
 												  Employee
 												  </label>
 											   </div>
@@ -75,24 +74,24 @@
 											<div class="col-lg-3  pr-0">
 											   <div class="radio">
 												  <label>
-												  <input type="radio" name="driverType" onclick="driver_type()"
-													 id="driver_contractor" class="driver-type" value="contractor">
+												  <input name="driverType" [(ngModel)]="type" type="radio" [value]="0">
 												  Contractor
 												  </label>
 											   </div>
 											</div>
 										 </div>
 									  </div>
-									  <div class="col-lg-10" id="companyDiv" style="display:none;">
+									  <div class="col-lg-10" id="employeeIDDiv" *ngIf="type == 1">
+										<label class="control-label font-weight-bold text-lg-right pt-3"
+										   >Employee ID</label>
+										<input type="text" class="form-control" >
+									 </div>
+									  <div class="col-lg-10" id="companyDiv" *ngIf="type == 0">
 										 <label class="control-label font-weight-bold text-lg-right pt-3"
 											>Company ID</label>
 										 <input type="text" class="form-control" >
 									  </div>
-									  <div class="col-lg-10" id="employeeIDDiv">
-										 <label class="control-label font-weight-bold text-lg-right pt-3"
-											>Employee ID</label>
-										 <input type="text" class="form-control" >
-									  </div>
+									  
 									  <div class="col-lg-10">
 										 <label class="control-label font-weight-bold text-lg-right pt-2"
 											>Driver Status</label>

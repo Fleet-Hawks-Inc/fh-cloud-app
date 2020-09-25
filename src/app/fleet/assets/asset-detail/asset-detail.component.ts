@@ -19,16 +19,53 @@ export class AssetDetailComponent implements OnInit {
   carrierID;
 
   // Charts
-  public barChartOptions = {
+  public chartOptions = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: true,
+    scales: {
+      yAxes: [{
+         // ticks: {beginAtZero:true},
+         display: true,
+         scaleLabel: {
+            display: true,
+            labelString: 'Temperature (F)'
+         },
+         ticks: {
+            min: 0,
+            // max: 80,
+            stepSize: 5,
+            suggestedMin: 0,
+            // suggestedMax: 80,
+            // Include a degree sign in the ticks
+            callback: (value, index, values) => {
+               return value + '°F';
+            }
+         }
+      }]
+   }
   };
-  public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-  public barChartType = 'line';
-  public barChartLegend = true;
-  public barChartData = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Set'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Actual'}
+  public chartLabels = ['31 July 12:00', '31 July 18:00', '1 Aug 00:00', '1 Aug 06:00',
+              '1 Aug 12:00', '1 Aug 18:00', '2 Aug 00:00', '2 Aug 06:00', '2 Aug 12:00', '2 Aug 18:00'];
+  public chartType = 'line';
+  public chartLegend = true;
+  public chartData = [
+    { data: [12, 15, 17, 13, 15, 12, 18, 12, 18, 13, 10, 14, 12],
+      label: 'Set',
+      fill: false,
+      backgroundColor: '#9c9ea1',
+      borderColor: '#9c9ea1',
+      pointBackgroundColor: '#9c9ea1',
+      borderWidth: 1,
+    },
+    {
+      data: [10, 14, 12, 11, 14, 11, 15, 12, 16, 14, 11, 13, 14],
+      label: 'Actual',
+      fill: false,
+      backgroundColor: '#000',
+      borderColor: '#000',
+      pointBackgroundColor: '#000',
+      borderWidth: 1,
+    }
   ];
   constructor(public hereMap: HereMapService, private domSanitizer: DomSanitizer, private awsUS: AwsUploadService,
               private apiService: ApiService, private route: ActivatedRoute) { }

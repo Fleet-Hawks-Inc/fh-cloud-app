@@ -62,6 +62,7 @@
     "ng2-charts": "2.2.3",
     "ngx-mqtt": "^6.13.2",
     "ngx-slick-carousel": "^0.5.1",
+    "ngx-spinner": "^8.1.0",
     "ngx-toastr": "^11.3.3",
     "path": "0.12.7",
     "randomstring": "1.1.5",

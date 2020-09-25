@@ -26,7 +26,7 @@ export class JwtInterceptor implements HttpInterceptor {
                 switchMap((auth: any) => { // switchMap() is used instead of map().
                     //console.log(auth);
                     const jwt = auth.accessToken.jwtToken;
-                    console.log(auth);
+                    //console.log(auth);
 
                     const withAuthRequest = request.clone({
                         setHeaders: {
@@ -40,7 +40,7 @@ export class JwtInterceptor implements HttpInterceptor {
                     // });
 
                     //console.log('JST', jwt);
-                    console.log('Cloned', withAuthRequest);
+                    //console.log('Cloned', withAuthRequest);
                     return next.handle(withAuthRequest);
                 })
                 // ,

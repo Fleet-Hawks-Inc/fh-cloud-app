@@ -26,20 +26,16 @@
          <div id="map" class="mapclassmain"></div>
          <!-- VEHICLE MAP LOCATIONS -->
          <div class="vehicle_moving" id="vehicleLoc1"><i class="fas fa-location-arrow"></i></div>
-         <div class="iconR" id="arrowR">
-            <a href="#"><i class="fas fa-arrow-right"></i></a>
+         <div class="iconR" id="arrowR" *ngIf="visible">
+            <a href="javascript:;" (click)="valuechange()"><i class="fas fa-arrow-right"></i></a>
          </div>
-         <div class="iconL" id="arrowL" style="display: none">
-            <a href="#"><i class="fas fa-arrow-left"></i></a>
+         <div class="iconL" id="arrowL" *ngIf="!visible">
+            <a href="javascript:;" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
          </div>
-         <div class="iconT" id="arrowb">
-            <a href="#"><i class="fas fa-arrow-up"></i></a>
-         </div>
-         <div class="iconB" id="arrowt" style="display: none">
-            <a href="#"><i class="fas fa-arrow-bottom"></i></a>
-         </div>
+         
          <form method=""  >
-            <div class="drivelist" style="overflow-y: scroll;display: block; overflow-x: hidden; height: 100%;" id="driverList">
+            <div class="drivelist" *ngIf="visible" 
+            [@slideInOut] style="overflow-y: scroll;display: block; overflow-x: hidden; height: 100%;" id="driverList">
                <div class="driverdetail">
                   <div class="">
                      <div class="row">
@@ -303,14 +299,9 @@
                   <ngx-slick-carousel class="carousel" 
                   #slickModal="slick-carousel" 
                   [config]="slideConfig" 
-                  (init)="slickInit($event)"
-                  (breakpoint)="breakpoint($event)"
-                  (afterChange)="afterChange($event)"
-                  (beforeChange)="beforeChange($event)">
+                  (init)="slickInit($event)">
                   <div ngxSlickItem *ngFor="let slide of slides" class="slide">
-                    <div>
-                      <canvas id="canvas1"></canvas> 
-                   </div>
+                    <img src="{{slide.img}}" alt="">
                   </div>
                 </ngx-slick-carousel>
                   <div  class="row p-2" >

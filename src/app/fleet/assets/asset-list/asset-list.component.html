@@ -1,3 +1,5 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner>
+
 <section class="body">
   <!-- start: header -->
   <app-header></app-header>
@@ -172,109 +174,32 @@
                                     <th width="5%"><input type="checkbox"></th>
                                     
                                     <th>Asset Name</th>
-                                    <th >Type</th>                                          
-                                    <th >Plate Number</th>
-                                    <th >Last Known Location</th>                                          
-                                    <th >Year</th>
-                                    <th >Make</th>
-                                    <th >Model</th>
-                                    <th >Ownership</th>
-                                    <th >Status</th>
+                                    <th>Type</th>                                          
+                                    <th>Plate Number</th>
+                                    <th>Last Known Location</th>                                          
+                                    <th>Year</th>
+                                    <th>Make</th>
+                                    <th>Model</th>
+                                    <th>Ownership</th>
+                                    <th>Status</th>
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr>
+                                 <tr *ngFor="let item of allData;">
                                     <td><input type="checkbox"></td>
                                     
-                                    <td routerLink="/fleet/assets/asset-detail">Test Asset</td>
-                                    <td>Reefer</td>                                          
-                                    <td>852963</td>
+                                    <td routerLink="/fleet/assets/asset-detail/{{item.assetID}}">{{item.assetName}}</td>
+                                    <td>{{item.assetDetails.assetType}}</td>                                          
+                                    <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td >Mississauga</td>
-                                    <td >2018</td>
-                                    <td >Freightliner</td>
-                                    <td >FR-1002</td>
-                                    <td >Rented</td>
-                                    <td><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                    <td >{{item.assetDetails.year}}</td>
+                                    <td >{{item.assetDetails.manufacturerID}}</td>
+                                    <td >{{item.assetDetails.modelID}}</td>
+                                    <td >{{item.assetDetails.ownerShip}}</td>
+                                    <td><span class="badge badge-dark p-1">{{item.assetDetails.currentStatus}}</span></td>
 
                                  </tr>
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
-                                 
-                                    <td ><input type="checkbox"></td>
-                                    
-                                    <td >Test Asset</td>
-                                    <td >Drybox</td>
-                                    
-                                    <td>1316598</td>
-                                    <td >Ottawa</td>
-                                    <td >2016</td>
-                                    <td >FORD</td>
-                                    <td >F-35</td>
-                                    <td >Leased</td>
-                                    <td ><span class="badge badge-dark  p-1">ACTIVE</span></td>
-
-                                 </tr>
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
-                                    <td><input type="checkbox"></td>
-                                    
-                                    <td>Test Asset</td>
-                                    <td >Curtain Side</td>
-                                    
-                                    <td >558877</td>
-                                    <td >Ottawa</td>
-                                    <td >2010</td>
-                                    <td >GM</td>
-                                    <td >GM-345</td>
-                                    <td >Rented</td>
-                                    <td ><span class="badge badge-dark  p-1">ACTIVE</span></td>
-
-                                 </tr>
-                                 <tr onclick="window.location='asset1_details.php'">
-                                    <td ><input type="checkbox"></td>
-                                    
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
-                                    
-                                    <td onclick="window.location='asset1_details.php'">86429</td>
-                                    <td onclick="window.location='asset1_details.php'">Perth</td>
-                                    <td >2014</td>
-                                    <td >GM</td>
-                                    <td >GM-345</td>
-                                    <td >Owned</td>
-                                    <td><span class="badge badge-dark p-1">INACTIVE</span></td>
-
-                                 </tr>
-
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
-                                    <td><input type="checkbox"></td>
-                                    
-                                    <td>Test Asset</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Flatbed</td>
-                                    
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">709060</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Thunder Bay</td>
-                                    <td >2017</td>
-                                    <td >Scania</td>
-                                    <td >SC-005</td>
-                                    <td >Rented</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
-
-                                 </tr>
-
-                                 <tr onclick="window.location='asset1_details.php'">
-                                    <td ><input type="checkbox"></td>
-                                    
-                                    <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details.php'">Reefer</td>
-                                    
-                                    <td onclick="window.location='asset1_details.php'">1199</td>
-                                    <td onclick="window.location='asset1_details.php'">Welland</td>
-                                    <td >2010</td>
-                                    <td >Scania</td>
-                                    <td >SC-005</td>
-                                    <td >Leased</td>
-                                    <td onclick="window.location='asset1_details.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
-
-                                 </tr>
+                                
                               </tbody>
                            </table>
                         </div>
@@ -284,18 +209,18 @@
                                  <tr>
                                     <th width="5%"><input type="checkbox"></th>
                                     
-                                    <th >Asset Name</th>
-                                    <th >Fuel Level</th>
-                                    <th >Current Temp.</th>
-                                    <th >Set Temp.</th>
+                                    <th>Asset Name</th>
+                                    <th>Fuel Level</th>
+                                    <th>Current Temp.</th>
+                                    <th>Set Temp.</th>
                                     
-                                    <th >Plate Number</th>
+                                    <th>Plate Number</th>
                                     <th>Last Known Location</th>
-                                    <th >Year</th>
-                                    <th >Make</th>
-                                    <th >Model</th>
-                                    <th >Ownership</th>
-                                    <th >Status</th>
+                                    <th>Year</th>
+                                    <th>Make</th>
+                                    <th>Model</th>
+                                    <th>Ownership</th>
+                                    <th>Status</th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -416,7 +341,7 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                 <tr routerLink="/fleet/assets/asset-detail">
                                     <td><input type="checkbox"></td>                                          
                                     <td>Test Asset</td>
                                     <td >35889</td>
@@ -427,60 +352,60 @@
                                     <td >Leased</td>
                                     <td><span class="badge badge-dark  p-1">ACTIVE</span></td>
                                  </tr>
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                 <tr routerLink="/fleet/assets/asset-detail">
                                     <td><input type="checkbox"></td>
                                     
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">789633</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Kamloops</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Test Asset</td>
+                                    <td routerLink="/fleet/assets/asset-detail">789633</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Kamloops</td>
                                     <td >2014</td>
                                     <td >GM</td>
                                     <td >GM-345</td>
                                     <td >Owned</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                    <td routerLink="/fleet/assets/asset-detail"><span class="badge badge-dark p-1">INACTIVE</span></td>
                                  </tr>
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                 <tr routerLink="/fleet/assets/asset-detail">
                                     <td><input type="checkbox"></td>
                                     
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">20587</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Hope</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Test Asset</td>
+                                    <td routerLink="/fleet/assets/asset-detail">20587</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Hope</td>
                                     <td >2017</td>
                                     <td >GM</td>
                                     <td >GM-345</td>
                                     <td >Owned</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                    <td routerLink="/fleet/assets/asset-detail"><span class="badge badge-dark  p-1">ACTIVE</span></td>
                                  </tr>
                                  <tr>
                                     <td><input type="checkbox"></td>
                                     
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">45600</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Brandon</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Test Asset</td>
+                                    <td routerLink="/fleet/assets/asset-detail">45600</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Brandon</td>
                                     <td >2018</td>
                                     <td >Freightliner</td>
                                     <td >FR-1002</td>
                                     <td >Leased</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                    <td routerLink="/fleet/assets/asset-detail"><span class="badge badge-dark  p-1">ACTIVE</span></td>
                                  </tr>
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                 <tr routerLink="/fleet/assets/asset-detail">
                                     <td><input type="checkbox"></td>
                                     
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">78922</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Thompson</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Test Asset</td>
+                                    <td routerLink="/fleet/assets/asset-detail">78922</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Thompson</td>
                                     <td >2014</td>
                                     <td >GM</td>
                                     <td >GM-345</td>
                                     <td >Owned</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                    <td routerLink="/fleet/assets/asset-detail"><span class="badge badge-dark p-1">INACTIVE</span></td>
                                  </tr>
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                 <tr routerLink="/fleet/assets/asset-detail">
                                     <td><input type="checkbox"></td>
                                     
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">449988</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Saint John</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Test Asset</td>
+                                    <td routerLink="/fleet/assets/asset-detail">449988</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Saint John</td>
                                     <td >2017</td>
                                     <td >GM</td>
                                     <td >GM-345</td>
@@ -601,72 +526,72 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                 <tr routerLink="/fleet/assets/asset-detail">
                                     <td><input type="checkbox"></td>
                                     
                                     <td >Test Asset</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">78789</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Hamilton</td>
+                                    <td routerLink="/fleet/assets/asset-detail">78789</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Hamilton</td>
                                     <td >2014</td>
                                     <td >GM</td>
                                     <td >GM-345</td>
                                     <td >Rented</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                    <td routerLink="/fleet/assets/asset-detail"><span class="badge badge-dark  p-1">ACTIVE</span></td>
                                  </tr>
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                 <tr routerLink="/fleet/assets/asset-detail">
                                     <td ><input type="checkbox"></td>
                                     
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">9090</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Kingston</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Test Asset</td>
+                                    <td routerLink="/fleet/assets/asset-detail">9090</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Kingston</td>
                                     <td >2010</td>
                                     <td >GM</td>
                                     <td >GM-345</td>
                                     <td >Leased</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                    <td routerLink="/fleet/assets/asset-detail"><span class="badge badge-dark p-1">INACTIVE</span></td>
                                  </tr>
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                 <tr routerLink="/fleet/assets/asset-detail">
                                     <td><input type="checkbox"></td>
                                     
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">7041</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">London</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Test Asset</td>
+                                    <td routerLink="/fleet/assets/asset-detail">7041</td>
+                                    <td routerLink="/fleet/assets/asset-detail">London</td>
                                     <td >2018</td>
                                     <td >GM</td>
                                     <td >GM-345</td>
                                     <td >Owned</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                    <td routerLink="/fleet/assets/asset-detail"><span class="badge badge-dark  p-1">ACTIVE</span></td>
                                  </tr>
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><input type="checkbox"></td>
+                                 <tr routerLink="/fleet/assets/asset-detail">
+                                    <td routerLink="/fleet/assets/asset-detail"><input type="checkbox"></td>
                                     
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">30309</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Kelowa</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Test Asset</td>
+                                    <td routerLink="/fleet/assets/asset-detail">30309</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Kelowa</td>
                                     <td >2017</td>
                                     <td >Freightliner</td>
                                     <td >FR-785</td>
                                     <td >Rented</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                    <td routerLink="/fleet/assets/asset-detail"><span class="badge badge-dark p-1">INACTIVE</span></td>
                                  </tr>
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                 <tr routerLink="/fleet/assets/asset-detail">
                                     <td><input type="checkbox"></td>
                                     
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">78984</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Windsor</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Test Asset</td>
+                                    <td routerLink="/fleet/assets/asset-detail">78984</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Windsor</td>
                                     <td >2010</td>
                                     <td >Freightliner</td>
                                     <td >FR-1002</td>
                                     <td >Leased</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'"><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                    <td routerLink="/fleet/assets/asset-detail"><span class="badge badge-dark  p-1">ACTIVE</span></td>
                                  </tr>
-                                 <tr onclick="window.location='asset1_details-drybox-flat-curtain.php'">
+                                 <tr routerLink="/fleet/assets/asset-detail">
                                     <td><input type="checkbox"></td>
                                     
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">753951</td>
-                                    <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">North Bay</td>
+                                    <td routerLink="/fleet/assets/asset-detail">Test Asset</td>
+                                    <td routerLink="/fleet/assets/asset-detail">753951</td>
+                                    <td routerLink="/fleet/assets/asset-detail">North Bay</td>
                                     <td >2014</td>
                                     <td >GM</td>
                                     <td >GM-345</td>

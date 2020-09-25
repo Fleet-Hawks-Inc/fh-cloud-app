@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import { MultiSidebarComponents } from './sidebars/multi-sidebar.component';
 import {HeaderComponent} from './header/header.component';
+import { FixedRightSidebarComponent } from './sidebars/fixed-right-sidebar/fixed-right-sidebar.component';
+import { AddressBookComponent } from './popups/address-book/address-book.component';
 
 
 @NgModule({
@@ -20,6 +22,8 @@ import {HeaderComponent} from './header/header.component';
     SidebarComponent,
     MultiSidebarComponents,
     HeaderComponent,
+    FixedRightSidebarComponent,
+    AddressBookComponent,
     
   ],
   exports: [

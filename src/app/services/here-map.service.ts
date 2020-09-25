@@ -36,7 +36,6 @@ export class HereMapService {
    * Initialize maps
    */
   mapInit = () => {
-    
     this.platform = new H.service.Platform({
       'apikey': this.apiKey,
     });
@@ -89,11 +88,7 @@ export class HereMapService {
     zoom.setAlignment('bottom-left');
     scalebar.setAlignment('bottom-left');
      return this.map;
-  } 
-
-  
-
- 
+  }
 
   /**
    * This method get current location of user. Currently it is using browsser navigater to get location
@@ -113,14 +108,13 @@ export class HereMapService {
         const currentLoc = new H.map.Marker({ lat: position.coords.latitude, lng: position.coords.longitude });
         this.map.removeObjects(this.map.getObjects());
         this.map.addObject(currentLoc);
-       
 
       });
     }
   }
 /*
   AutoSuggest Search Api v6
-*/ 
+*/
   searchLocationOld(query): Observable<any> {
     const URL = 'https://autocomplete.geocoder.ls.hereapi.com/6.2/suggest.json';
     return this.http.get(URL + '?apiKey=' + this.apiKey + '&query=' + query  )
@@ -138,7 +132,7 @@ export class HereMapService {
     this.platform = new H.service.Platform({
       'apikey': this.apiKey,
     });
-    if(query != ''){
+    if (query != '') {
       const service = this.platform.getSearchService();
       const result = await service.geocode({ q: query });
       if (result && result.items.length > 0) {
@@ -150,13 +144,10 @@ export class HereMapService {
             q: query
           }
         );
-        return response.items
+        return response.items;
       }
     }
-    
   }
-  
-
   // returns the response
   public searchEntries(query) {
     return this.searchLocation(query);

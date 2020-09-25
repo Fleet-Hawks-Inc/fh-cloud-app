@@ -108,6 +108,8 @@ import { ServiceProgramDetailComponent } from './maintenance/service-program/ser
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { DriverDetailComponent } from './drivers/driver-detail/driver-detail.component';
+import { NgxSpinnerModule } from "ngx-spinner";
+
 @NgModule({
   imports: [
     FleetRoutingModule,
@@ -119,7 +121,8 @@ import { DriverDetailComponent } from './drivers/driver-detail/driver-detail.com
     DataTablesModule,
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
-    SlickCarouselModule
+    SlickCarouselModule,
+    NgxSpinnerModule
   ],
   declarations: [
     AddDriverComponent,
