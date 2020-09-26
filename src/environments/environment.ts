@@ -23,16 +23,16 @@ export const environment = {
     APP_CLIENT_ID: '76l88g289vcgrd8jf54pbedgqq'
   },
   awsBucket: {
-    bucketName: 'fh-cloud-service-uploads',
-    accessKeyId: 'AKIARUNMEEHUQQMNVKMF',
-    secretAccessKey: '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',
-    region: 'us-east-2'
+    bucketName: 'fh-assets',
+    accessKeyId: 'GHFFH56588GJH',
+    secretAccessKey: 'kgjkfsui45345jhklfvjdlkgjhh',
+    region: 'us-east-1'
   },
-  HOSTNAME :'myhome.anterbox.com',
+  HOSTNAME: 'myhome.anterbox.com',
   PORT : 9001,
   MQTTPATH : '/',
   mapConfig: {
-    apiKey: 'lIoqoqWBD3Op-8TVFDBPM9pj3kTQKIyCuH8Q_2RDR1c'  
+    apiKey: 'lIoqoqWBD3Op-8TVFDBPM9pj3kTQKIyCuH8Q_2RDR1c'
   },
 };
 

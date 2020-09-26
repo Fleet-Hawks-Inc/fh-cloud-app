@@ -91,6 +91,7 @@ export class AddAssetsComponent implements OnInit {
     this.apiService
       .getData(`vehicleModels/manufacturer/${this.assetsData.assetDetails['manufacturerID']}`)
       .subscribe((result: any) => {
+        console.log(result)
         this.models = result.Items;
       });
   }
@@ -128,7 +129,7 @@ export class AddAssetsComponent implements OnInit {
       },
       next: (res) => { 
         this.response = res;
-        this.uploadFiles();
+        this.uploadFiles(); // upload selected files to bucket
         this.toastr.success('Asset added successfully');
         this.router.navigateByUrl('/fleet/assets/Assets-List');
       },
