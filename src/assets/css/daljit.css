@@ -507,3 +507,17 @@ html.fixed .content-body {
     margin: 0;
     text-transform: none;
 }
+
+.ng-select {
+    border: none;
+    padding: 0;
+}
+.ng-select .select2 {
+    border: 1px solid #ced4da;
+    width: 100% !important;
+    border-radius: 4px;
+    height: calc(1.5em + .75rem + 2px)
+}
+.ng-select .select2-selection--single {
+    border: none !important;
+}

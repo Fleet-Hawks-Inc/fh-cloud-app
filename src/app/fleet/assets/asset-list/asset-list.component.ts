@@ -112,7 +112,6 @@ export class AssetListComponent implements OnInit {
             this.curtainSlide.push(this.allData[i]);
           } else {
             this.allData = this.allData;
-            console.log('this.allData', this.allData)
           }
         }
       },
@@ -141,6 +140,7 @@ export class AssetListComponent implements OnInit {
 
   checkuncheckall = () => {
     this.allData.forEach(item => {
+      console.log(item);
       if (item.checked === true) {
         item.checked = false;
       } else {

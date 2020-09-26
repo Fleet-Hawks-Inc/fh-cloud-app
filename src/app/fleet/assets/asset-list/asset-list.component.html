@@ -171,9 +171,9 @@
                            <table class="table table-bordered table-responsive-lg table-striped mb-0 allAssets-datatable">
                               <thead>
                                  <tr>
-                                    <th width="5%"><input type="checkbox"></th>
+                                    <th width="5%"><input (change)="checkuncheckall()" type="checkbox"></th>
                                     
-                                    <th>Asset Name</th>
+                                    <th>Asset Name/Number</th>
                                     <th>Type</th>                                          
                                     <th>Plate Number</th>
                                     <th>Last Known Location</th>                                          
@@ -188,15 +188,15 @@
                                  <tr *ngFor="let item of allData;">
                                     <td><input type="checkbox"></td>
                                     
-                                    <td routerLink="/fleet/assets/asset-detail/{{item.assetID}}">{{item.assetName}}</td>
+                                    <td routerLink="/fleet/assets/asset-detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.assetType}}</td>                                          
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
-                                    <td >Mississauga</td>
+                                    <td >Live Location</td>
                                     <td >{{item.assetDetails.year}}</td>
-                                    <td >{{item.assetDetails.manufacturerID}}</td>
-                                    <td >{{item.assetDetails.modelID}}</td>
+                                    <td >{{item.assetDetails.manufacturer}}</td>
+                                    <td >{{item.assetDetails.model}}</td>
                                     <td >{{item.assetDetails.ownerShip}}</td>
-                                    <td><span class="badge badge-dark p-1">{{item.assetDetails.currentStatus}}</span></td>
+                                    <td><span class="badge badge-dark p-1 text-uppercase">{{item.assetDetails.currentStatus}}</span></td>
 
                                  </tr>
                                 

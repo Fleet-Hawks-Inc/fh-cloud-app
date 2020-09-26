@@ -8,6 +8,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../aws-upload.service';
 import { async } from '@angular/core/testing';
 import { v4 as uuidv4 } from 'uuid';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 
 declare var jquery: any;
 declare var $: any;
@@ -22,7 +24,6 @@ export class AddAssetsComponent implements OnInit {
   public assetID;
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
-  
   pageTitle: string;
   errors = {};
   form;
@@ -46,8 +47,43 @@ export class AddAssetsComponent implements OnInit {
   fileName = '';
   carrierID: any;
 
+  countries = [
+    {
+      id: 'Alabama',
+      text: 'Alabama'
+    },
+    {
+      id: 'Arkansas',
+      text: 'Arkansas'
+    },
+    {
+      id: 'California',
+      text: 'California'
+    },
+    {
+      id: 'New Hampshire',
+      text: 'New Hampshire'
+    },
+    {
+      id: 'New Jersey',
+      text: 'New Jersey'
+    },
+    {
+      id: 'Washington',
+      text: 'Washington'
+    },
+    {
+      id: 'Quebec',
+      text: 'Quebec'
+    },
+    {
+      id: 'Saskatchewen',
+      text: 'Saskatchewen'
+    }
+  ];
+
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
-    private router: Router, private toastr: ToastrService) {
+              private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) {
       this.selectedFileNames = new Map<any, any>();
   }
 
@@ -72,8 +108,9 @@ export class AddAssetsComponent implements OnInit {
    */
   fetchManufactuer() {
     this.apiService.getData('manufacturers').subscribe((result: any) => {
-      console.log('result.items', result)
+      console.log(this.countries);
       this.manufacturers = result.Items;
+      console.log(this.manufacturers)
     });
   }
   /*
@@ -87,12 +124,14 @@ export class AddAssetsComponent implements OnInit {
   /*
    * Get all models from api
    */
-  getModels() {
+  getModels(event) {
+    this.spinner.show(); // loader init
+    const id = event.target.options[event.target.options.selectedIndex].id;
     this.apiService
-      .getData(`vehicleModels/manufacturer/${this.assetsData.assetDetails['manufacturerID']}`)
+      .getData(`vehicleModels/manufacturer/${id}`)
       .subscribe((result: any) => {
-        console.log(result)
         this.models = result.Items;
+        this.spinner.hide(); // loader hide
       });
   }
 
@@ -127,7 +166,7 @@ export class AddAssetsComponent implements OnInit {
             next: () => { },
           });
       },
-      next: (res) => { 
+      next: (res) => {
         this.response = res;
         this.uploadFiles(); // upload selected files to bucket
         this.toastr.success('Asset added successfully');
@@ -231,7 +270,6 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.uploadedDocs.push(fileName);
       }
     } else {
-      //this.assetsData.uploadedPhotos = [];
       for (let i = 0; i <= this.selectedFiles.item.length; i++) {
         console.log('this.selectedFiles', this.selectedFiles);
         console.log('this.selectedFiles.item.length', this.selectedFiles.item.length)
@@ -242,11 +280,6 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.uploadedPhotos.push(fileName);
       }
     }
-    console.log("photos", this.assetsData.uploadedPhotos)
-    console.log("docs", this.assetsData.uploadedDocs)
-    
-    //console.log(this.assetsData);
-    //this.uploadFiles();
   }
   /*
    * Uploading files which selected
@@ -256,5 +289,14 @@ export class AddAssetsComponent implements OnInit {
     this.selectedFileNames.forEach((fileData: any, fileName: string) => {
       this.awsUS.uploadFile(this.carrierID, fileName, fileData);
     });
+  }
+
+  // Changing gvwr/gawr values
+  gwr(value, el) {
+    if (el === 'GVWR_Unit') {
+      this.assetsData.assetDetails['GAWR_Unit'] = value;
+    } else {
+      this.assetsData.assetDetails['GVWR_Unit'] = value;
+    }
   }
 }

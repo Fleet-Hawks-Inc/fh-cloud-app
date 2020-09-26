@@ -97,7 +97,7 @@ export class AwsUploadService {
     }
     const data = await s3.getObject(params).promise();
     if (data) {
-      console.log('Successfully get files.', data);
+      //console.log('Successfully get files.', data);
       const image = `data:${data.ContentType};base64,${this.encode(data.Body)}`;
       return image;
     } else {

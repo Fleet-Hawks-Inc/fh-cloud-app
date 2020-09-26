@@ -1,3 +1,4 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner>
 <section class="body">
     <!-- start: header -->
     <app-header></app-header>
@@ -30,33 +31,30 @@
                               <table class="table table-bordered table-responsive-lg" *ngFor="let item of assetData">
                                  <tbody>
                                     <tr>
-                                       <td width="40%" class="back-color-gray font-weight-bold">Asset Name/ID</td>
-                                       <td  width="60%">{{item.assetName}} / {{item.assetID}} </td>
+                                       <td width="40%" class="back-color-gray font-weight-bold">Asset Name/Number</td>
+                                       <td  width="60%">{{item.assetIdentification}} </td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">VIN</td>
                                        <td>{{item.VIN}}</td>
                                     </tr>
-                                    <!-- <tr>
-                                       <td class="back-color-gray font-weight-bold">Asset Gateway S/N</td>
-                                       <td>none</td>
-                                    </tr> -->
+                                    
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Type</td>
                                        <td>{{item.assetDetails.assetType}}</td>
                                     </tr>
                                     <tr>
-                                       <td class="back-color-gray font-weight-bold">Plate Number</td>
-                                       <td>{{item.assetDetails.plateNumber}}</td>
+                                       <td class="back-color-gray font-weight-bold">Licence Plate Number &  Licence State</td>
+                                       <td>{{item.assetDetails.licencePlateNumber}} & {{item.assetDetails.licenceStateID}}</td>
                                     </tr>
                                     
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Year, Make & Model</td>
-                                       <td>{{item.assetDetails.year}}, {{item.assetDetails.manufacturerID}} & {{item.assetDetails.modelID}}</td>
+                                       <td>{{item.assetDetails.year}}, {{item.assetDetails.manufacturer}} & {{item.assetDetails.model}}</td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Length</td>
-                                       <td>{{item.assetDetails.length}} {{item.assetDetails.lengthType}}</td>
+                                       <td>{{item.assetDetails.length}} {{item.assetDetails.lengthUnit}}</td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Axles</td>
@@ -64,11 +62,11 @@
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">GVWR</td>
-                                       <td>{{item.assetDetails.GVWR}} {{item.assetDetails.gvwrType}}</td>
+                                       <td>{{item.assetDetails.GVWR}} {{item.assetDetails.GVWR_Unit}}</td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">GAWR</td>
-                                       <td>{{item.assetDetails.GAWR}} {{item.assetDetails.gawrType}}</td>
+                                       <td>{{item.assetDetails.GAWR}} {{item.assetDetails.GAWR_Unit}}</td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Ownership</td>
@@ -84,6 +82,39 @@
                               </table>
                              </div>
                           </div>
+                          <div class="row mt-3">
+                           <div class="col-lg-12">
+                              <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Insurance Details</label>
+                           </div>
+                           <div class="col-lg-12">
+                            <table class="table table-bordered table-responsive-lg" *ngFor="let item of assetData">
+                               <tbody>
+                                  <tr>
+                                     <td width="40%" class="back-color-gray font-weight-bold">Date of Issue</td>
+                                     <td  width="60%">{{item.insuranceDetails.dateOfIssue}} </td>
+                                  </tr>
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Date of Expiry</td>
+                                     <td>{{item.insuranceDetails.dateOfExpiry}}</td>
+                                  </tr>
+                                  
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Premium Amount</td>
+                                     <td>{{item.insuranceDetails.premiumAmount}} {{item.insuranceDetails.premiumCurrency}}</td>
+                                  </tr>
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Reminder Before Expiry</td>
+                                     <td>{{item.insuranceDetails.reminderBefore}} {{item.insuranceDetails.reminderBeforeUnit}}</td>
+                                  </tr>
+                                  
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Vendor</td>
+                                     <td>{{item.insuranceDetails.vendor}}</td>
+                                  </tr>
+                               </tbody>
+                            </table>
+                           </div>
+                        </div>
                        </div>
                        <div class="col-lg-6">
                           <div class="row">
@@ -131,7 +162,8 @@
                                    <div class="row">
                                       <div class="col-lg-6" *ngFor="let item of assetsImages;">
                                          <div class="vehicle-photo-box">
-                                            <img [src]="item" height="180px" width="100%">
+                                            <img [src]="item" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
+                                            <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
                                             <hr class="m-3">
                                             <div class="row">
                                                <div class="col-lg-8">Name of the Image</div>

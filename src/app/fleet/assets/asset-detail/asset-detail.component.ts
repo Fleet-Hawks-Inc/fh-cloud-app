@@ -3,7 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HereMapService } from './../../../services/here-map.service';
 import {ApiService} from '../../../api.service';
 import {AwsUploadService} from '../../../aws-upload.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-asset-detail',
@@ -12,7 +13,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class AssetDetailComponent implements OnInit {
   image;
+  docs: SafeResourceUrl;
   public assetsImages = [];
+  public assetsDocs = [];
   public assetID;
   public assetData: any;
   public deviceData: any;
@@ -68,7 +71,7 @@ export class AssetDetailComponent implements OnInit {
     }
   ];
   constructor(public hereMap: HereMapService, private domSanitizer: DomSanitizer, private awsUS: AwsUploadService,
-              private apiService: ApiService, private route: ActivatedRoute) { }
+              private apiService: ApiService, private route: ActivatedRoute, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.hereMap.mapInit(); // Initialize map
@@ -81,12 +84,15 @@ export class AssetDetailComponent implements OnInit {
    * fetch Asset data
    */
   fetchAsset() {
+    this.spinner.show(); // loader init
     this.apiService
       .getData(`assets/${this.assetID}`)
       .subscribe((result: any) => {
         if (result) {
           this.assetData = result['Items'];
+          console.log(this.assetData)
           this.getImages();
+          this.spinner.hide(); // loader hide
         }
       }, (err) => {
         console.log('asset detail', err);
@@ -108,9 +114,13 @@ export class AssetDetailComponent implements OnInit {
   getImages = async () => {
     this.carrierID = await this.apiService.getCarrierID();
     for (let i = 0; i <= this.assetData.length; i++) {
-      this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles(this.carrierID, this.assetData[0].uploadedDocs[i]));
+      // this.docs = this.domSanitizer.bypassSecurityTrustResourceUrl(
+              //await this.awsUS.getFiles(this.carrierID, this.assetData[0].uploadedDocs[i]));
+      // this.assetsDocs.push(this.docs)
+      this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles(this.carrierID, this.assetData[0].uploadedPhotos[i]));
       this.assetsImages.push(this.image);
     }
+    
   }
 
 }

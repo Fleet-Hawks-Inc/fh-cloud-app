@@ -1,3 +1,4 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner>
 <section class="body">
 	<!-- start: header -->
 	<app-header></app-header>
@@ -116,11 +117,11 @@
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Make</label>
 											<select 
 												data-plugin-selectTwo
-												[(ngModel)]="assetsData.assetDetails.manufacturerID" 
-												name="assetDetails.manufacturerID" 
+												[(ngModel)]="assetsData.assetDetails.manufacturer" 
+												name="assetDetails.manufacturer" 
 												class="form-control"
-												(change)="getModels()">
-												<option *ngFor="let item of manufacturers" value="{{item.manufacturerID}}">{{item.name}}</option>
+												(change)="getModels($event)">
+												<option *ngFor="let item of manufacturers" id="{{item.manufacturerID}}" value="{{item.name}}">{{item.name}}</option>
 											</select> 
 										</div>
 										<div class="col-lg-3">
@@ -128,10 +129,10 @@
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Model</label>
 											<select 
 											data-plugin-selectTwo
-											[(ngModel)]="assetsData.assetDetails.modelID" 
-											name="assetDetails.modelID" 
+											[(ngModel)]="assetsData.assetDetails.model" 
+											name="assetDetails.model" 
 											class="form-control">
-											<option *ngFor="let val of models" value="{{val.modelID}}">{{val.name}}</option>
+											<option *ngFor="let val of models" value="{{val.name}}">{{val.name}}</option>
 											</select> 
 										</div>
 									</div>
@@ -181,7 +182,8 @@
 												<div class="col-lg-6 pl-0">
 													<select 
 														[(ngModel)]="assetsData.assetDetails.GVWR_Unit" 
-														name="assetDetails.GVWR_Unit" 
+                            name="assetDetails.GVWR_Unit" 
+                            (change)="gwr($event.target.value, 'GVWR_Unit')"
 														data-plugin-selectTwo 
 														class="form-control populate">
 														<optgroup label="">
@@ -200,7 +202,13 @@
 												<div class="col-lg-6 pr-0">
 													<input [(ngModel)]="assetsData.assetDetails.GAWR" name="assetDetails.GAWR" type="text" class="form-control"> </div>
 												<div class="col-lg-6 pl-0">
-													<select [(ngModel)]="assetsData.assetDetails.GAWR_Unit" name="assetDetails.GAWR_Unit" data-plugin-selectTwo class="form-control populate">
+                          <select 
+                            [(ngModel)]="assetsData.assetDetails.GAWR_Unit" 
+                            name="assetDetails.GAWR_Unit" 
+                            data-plugin-selectTwo 
+                            class="form-control populate"
+                            (change)="gwr($event.target.value, 'GAWR_Unit')"
+                            >
 														<optgroup label="">
 															<option value="Pounds">Pounds</option>
 															<option value="Kilograms">Kilograms</option>
@@ -234,8 +242,76 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
-												State/Province</label>
-											<select [(ngModel)]="assetsData.assetDetails.licenceStateID" name="assetDetails.licenceStateID" data-plugin-selectTwo class="form-control populate">
+                        State/Province</label>
+                        <ng-select2 
+                          [(ngModel)]="assetsData.assetDetails.licenceStateID" name="assetDetails.licenceStateID"
+                          [data]="countries"
+                          [placeholder]="''"
+                          class="form-control ng-select populate"
+                        >		
+                        <!-- <option value="Alabama">Alabama</option>
+													<option value="Arkansas">Arkansas</option>
+													<option value="Alaska">Alaska</option>
+                          <option value="Arizona">Arizona</option>
+                          <option value="Alberta">Alberta</option>
+                          <option value="British Columbia">British Columbia</option>
+                          <option value="California">California</option>
+                          <option value="Colorado">Colorado</option>
+                          <option value="Connecticut">Connecticut</option>
+                          <option value="Delaware">Delaware</option>
+                          <option value="Florida">Florida</option>
+                          <option value="Georgia">Georgia</option>
+                          <option value="Hawaii">Hawaii</option>
+                          <option value="Idaho">Idaho</option>
+                          <option value="Illinois">Illinois</option>
+                          <option value="Labrador">Labrador</option>
+                          <option value="Indiana">Indiana</option>
+                          <option value="Iowa">Iowa</option>
+                          <option value="Kansas">Kansas</option>
+                          <option value="Kentucky">Kentucky</option>
+                          <option value="Louisiana">Louisiana</option>
+                          <option value="Maine">Maine</option>
+                          <option value="Maryland">Maryland</option>
+                          <option value="Maryland">Massachusetts</option>
+                          <option value="Manitoba">Manitoba</option>
+                          <option value="Michigan">Michigan</option>
+                          <option value="Minnesota">Minnesota</option>
+                          <option value="Mississippi">Mississippi</option>
+                          <option value="Missouri">Missouri</option>
+                          <option value="Montana">Montana</option>
+                          <option value="Nebraska">Nebraska</option>
+                          <option value="Nevada">Nevada</option>
+                          <option value="New Hampshire">New Hampshire</option>
+                          <option value="New Jersey">New Jersey</option>
+                          <option value="Nova Scotia">	Nova Scotia</option>
+                          <option value="New Mexico">New Mexico</option>
+                          <option value="New York">New York</option>
+                          <option value="North Carolina">North Carolina</option>
+                          <option value="North Dakota">North Dakota</option>
+                          <option value="Newfoundland">Newfoundland</option>
+                          <option value="Ohio">Ohio</option>
+                          <option value="Oklahoma">Oklahoma</option>
+                          <option value="Ontario">Ontario</option>
+                          <option value="Oregon">Oregon</option>
+                          <option value="Pennsylvania">Pennsylvania</option>
+                          <option value="Prince Edward Is.">Prince Edward Is.</option>
+                          <option value="Rhode Island">Rhode Island</option>
+                          <option value="South Carolina">South Carolina</option>
+                          <option value="South Dakota">South Dakota</option>
+                          <option value="Saskatchewen">Saskatchewen</option>
+                          <option value="Tennessee">Tennessee</option>
+                          <option value="Texas">Texas</option>
+                          <option value="Utah">Utah</option>
+                          <option value="Vermont">Vermont</option>
+                          <option value="Virginia">Virginia</option>
+                          <option value="Washington">Washington</option>
+                          <option value="West Virginia">West Virginia</option>
+                          <option value="Wisconsin">Wisconsin</option>
+                          <option value="Wyoming">Wyoming</option>
+                          <option value="Quebec">Quebec</option>
+                          <option value="Yukon">Yukon</option> -->
+                      </ng-select2>
+											<!-- <select [(ngModel)]="assetsData.assetDetails.licenceStateID" name="assetDetails.licenceStateID" data-plugin-selectTwo class="form-control populate">
 												<optgroup label="">
 													<option value="Alabama">Alabama</option>
 													<option value="Arkansas">Arkansas</option>
@@ -299,7 +375,7 @@
                           <option value="Quebec">Quebec</option>
                           <option value="Yukon">Yukon</option>
                         </optgroup>
-											</select>
+											</select> -->
 										</div>
 									</div>
 									<div class="row mt-2">
@@ -330,7 +406,11 @@
 										<div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Date of
 												Issue</label>
-											<input [(ngModel)]="assetsData.insuranceDetails.dateOfIssue" name="insuranceDetails.dateOfIssue" type="date" class="form-control"> </div>
+                      <input 
+                        [(ngModel)]="assetsData.insuranceDetails.dateOfIssue" name="insuranceDetails.dateOfIssue" 
+                        type="date" 
+                        class="form-control"> 
+                      </div>
 										<div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Premium
 												Amount</label>
@@ -383,7 +463,7 @@
 												<optgroup label="">
 													<option 
 														*ngFor="let vendor of vendors" 
-														value="{{vendor.vendorID}}">
+														value="{{vendor.vendorName}}">
 														{{vendor.vendorName}}
 													</option>
 												</optgroup>

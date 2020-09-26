@@ -26,7 +26,6 @@
             "styles": [
               "src/assets/css/jquerytable.css",
               "src/styles.css",
-              "src/assets/vendor/select2/css/select2.css",
               "src/assets/vendor/select2-bootstrap-theme/select2-bootstrap.min.css",
               "node_modules/ngx-toastr/toastr.css",
 
@@ -35,7 +34,8 @@
               "node_modules/datatables.net-colreorder-dt/css/colReorder.dataTables.css",
               "node_modules/datatables.net-buttons-dt/css/buttons.dataTables.css",
               "node_modules/slick-carousel/slick/slick.scss",
-                "node_modules/slick-carousel/slick/slick-theme.scss"
+                "node_modules/slick-carousel/slick/slick-theme.scss",
+                "node_modules/select2/dist/css/select2.min.css"
             ],
             "scripts": [
               "src/assets/vendor/jquery/jquery.js",
@@ -63,7 +63,8 @@
               "node_modules/datatables.net-buttons/js/buttons.flash.js",
               "node_modules/datatables.net-buttons/js/buttons.html5.js",
               "node_modules/datatables.net-buttons/js/buttons.print.js",
-              "node_modules/slick-carousel/slick/slick.min.js"
+              "node_modules/slick-carousel/slick/slick.min.js",
+              "node_modules/select2/dist/js/select2.min.js"
               
             ]
           },
