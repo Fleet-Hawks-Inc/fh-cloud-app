@@ -20,19 +20,132 @@ export class AssetListComponent implements OnInit {
   flatbed = [];
   curtainSlide = [];
   isChecked = false;
+  headCheckbox = false;
   selectedAssetID: any;
   assetCheckCount = null;
 
-  dtOptions: any = {};
+  allOptions: any = {};
+  reeferOptions: any = {};
+  dryboxOptions: any = {};
+  flatbedOptions: any = {};
+  curtainOptions: any = {};
+  
+
   dtTrigger = new Subject();
 
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) {}
 
   ngOnInit() {
+      this.dataTableOptions();
+      this.fetchAssets();
+  }
 
-    this.dtOptions = {
-      dom: 'Bfrtip', // lrtip to hide search field
+  ngOnDestroy = (): void => {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+
+  dataTableOptions = () => {
+    this.allOptions = { // All list options
+      pageLength: 10,
       processing: true,
+      dom: 'Bfrtip',
+      // Configure the buttons
+      buttons: [
+         {
+              extend: 'colvis',
+              columns: ':not(.noVis)'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      columnDefs: [
+        {
+            targets: 0,
+            className: 'noVis'
+        },
+        {
+            targets: 1,
+            className: 'noVis'
+        },
+        {
+            targets: 2,
+            className: 'noVis'
+        },
+        {
+            targets: 3,
+            className: 'noVis'
+        },
+        {
+            targets: 4,
+            className: 'noVis'
+        },
+        {
+            targets: 9,
+            className: 'noVis'
+        }
+    ],
+
+    };
+
+    this.reeferOptions = { // Reefer list options
+      pageLength: 10,
+      processing: true,
+      dom: 'Bfrtip',
+      // Configure the buttons
+      buttons: [
+         {
+              extend: 'colvis',
+              columns: ':not(.noVis)'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      columnDefs: [
+        {
+            targets: 0,
+            className: 'noVis'
+        },
+        {
+            targets: 1,
+            className: 'noVis'
+        },
+        {
+            targets: 2,
+            className: 'noVis'
+        },
+        {
+            targets: 3,
+            className: 'noVis'
+        },
+        {
+            targets: 4,
+            className: 'noVis'
+        },
+        {
+            targets: 9,
+            className: 'noVis'
+        }
+    ],
+
+    };
+
+    this.dryboxOptions = this.flatbedOptions = this.curtainOptions = { // Reefer list options
+      pageLength: 10,
+      processing: true,
+      dom: 'Bfrtip',
+      // Configure the buttons
+      buttons: [
+         {
+              extend: 'colvis',
+              columns: ':not(.noVis)'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
       columnDefs: [
           {
               targets: 0,
@@ -51,45 +164,12 @@ export class AssetListComponent implements OnInit {
               className: 'noVis'
           },
           {
-              targets: 4,
-              className: 'noVis'
-          },
-          {
-              targets: 9,
+              targets: 8,
               className: 'noVis'
           }
       ],
-      buttons: [
-          {
-              extend: 'colvis',
-              columns: ':not(.noVis)'
-          }
-      ],
-      colReorder: {
-        fixedColumnsLeft: 1
-      },
-      // buttons: [
-      //   'colvis',
-      // ],
+
     };
-    this.fetchAssets();
-  }
-
-  ngOnDestroy = (): void => {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  // Count Checkboxes
-  checkboxCount = () => {
-    this.assetCheckCount = 0;
-    this.allData.forEach(item => {
-      console.log(item.checked);
-      if (item.checked) {
-        this.selectedAssetID = item.assetID;
-        this.assetCheckCount = this.assetCheckCount + 1;
-      }
-    });
   }
 
   fetchAssets = () => {
@@ -138,15 +218,39 @@ export class AssetListComponent implements OnInit {
     }
   }
 
-  checkuncheckall = () => {
-    this.allData.forEach(item => {
-      console.log(item);
-      if (item.checked === true) {
-        item.checked = false;
-      } else {
-        item.checked = true;
+  uncheckCheckbox = () => {
+    this.isChecked = false;
+    this.headCheckbox = false;
+  }
+
+  // Count Checkboxes
+  checkboxCount = (arr) => {
+    console.log('count', arr);
+    this.assetCheckCount = 0;
+    arr.forEach(item => {
+      console.log(item.checked);
+      if (item.checked) {
+        this.selectedAssetID = item.assetID;
+        this.assetCheckCount = this.assetCheckCount + 1;
       }
     });
+  }
+  
+  // checked-unchecked all checkboxes
+  checkuncheckall = (ev) => {
+    if (ev.target.checked === true) {
+      this.isChecked = true;
+    } else {
+      this.isChecked = false;
+    }
+    // arr.forEach(item => {
+    //   console.log(item);
+    //   if (item.checked === true) {
+    //     item.checked = false;
+    //   } else {
+    //     item.checked = true;
+    //   }
+    // });
     
   }
 }

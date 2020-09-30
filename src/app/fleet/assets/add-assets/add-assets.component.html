@@ -60,15 +60,17 @@
 												Type</label>
 											<select data-plugin-selectTwo [(ngModel)]="assetsData.assetDetails.assetType" name="assetDetails.assetType" class="form-control populate" id="assetType" >
 												<optgroup label="">
-													<option value="Auto Hauler">Auto Hauler</option>
+                          <option value="Reefer">Reefer</option>
+                          <option value="Drybox">Drybox</option>
+                          <option value="Flatbed">Flatbed</option>
 													<option value="Curtain Side">Curtain Side</option>
-													<option value="Drybox">Drybox</option>
+													
 													<option value="Dump/Tipper">Dump/Tipper</option>
-													<option value="Flatbed">Flatbed</option>
+													<option value="Auto Hauler">Auto Hauler</option>
 													<option value="Intermodel Chassis">Intermodel Chassis</option>
 													<option value="Livestock">Livestock</option>
 													<option value="Lowboy">Lowboy</option>
-													<option value="Reefer">Reefer</option>
+													
 													<option value="Stake">Stake</option>
 													<option value="Step Deck">Step Deck</option>
 													<option value="Tanker">Tanker</option>
@@ -537,7 +539,10 @@
 								<div class="col-lg-11 text-right"> 
 									<button type="button" class="btn btn-default"
 										onclick="goBack()">Cancel</button> 
-									<a (click)="addAsset()" class="btn btn-success">Submit</a> </div>
+                  <!-- <a (click)="addAsset()" class="btn btn-success">Submit</a>  -->
+                  <a href="javascript:;" *ngIf="!assetID" (click)="addAsset()" class="btn btn-success" id="nextBtn">Save</a> 
+                  <a href="javascript:;" *ngIf="assetID" (click)="updateAsset()" class="btn btn-success">Update</a> 
+                </div>
 							</div>
 						</form>
 					</div>

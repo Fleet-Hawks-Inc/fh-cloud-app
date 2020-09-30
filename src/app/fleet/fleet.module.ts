@@ -111,6 +111,7 @@ import { DriverDetailComponent } from './drivers/driver-detail/driver-detail.com
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgSelect2Module } from 'ng-select2';
 
+
 @NgModule({
   imports: [
     FleetRoutingModule,

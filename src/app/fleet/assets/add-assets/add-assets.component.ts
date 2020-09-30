@@ -108,7 +108,6 @@ export class AddAssetsComponent implements OnInit {
    */
   fetchManufactuer() {
     this.apiService.getData('manufacturers').subscribe((result: any) => {
-      console.log(this.countries);
       this.manufacturers = result.Items;
       console.log(this.manufacturers)
     });
@@ -187,33 +186,37 @@ export class AddAssetsComponent implements OnInit {
       .getData('assets/' + this.assetID)
       .subscribe((result: any) => {
         result = result.Items[0];
+        console.log('result', result);
         this.assetsData['assetID'] = this.assetID;
-        this.assetsData['assetName'] = result.assetName;
+        this.assetsData['assetIdentification'] = result.assetIdentification;
         this.assetsData['VIN'] = result.VIN;
         this.assetsData['assetDetails']['assetType'] = result.assetDetails.assetType;
         this.assetsData['assetDetails']['year'] = result.assetDetails.year;
-        this.assetsData['assetDetails']['manufacturerID'] = result.assetDetails.manufacturerID;
-        this.assetsData['assetDetails']['modelID'] = result.assetDetails.modelID;
+        this.assetsData['assetDetails']['manufacturer'] = result.assetDetails.manufacturer;
+        // this.getModels();
+        this.assetsData['assetDetails']['model'] = result.assetDetails.model;
         this.assetsData['assetDetails']['length'] = result.assetDetails.length;
-        this.assetsData['assetDetails']['lengthType'] = result.assetDetails.lengthType;
+        this.assetsData['assetDetails']['lengthUnit'] = result.assetDetails.lengthUnit;
         this.assetsData['assetDetails']['axle'] = result.assetDetails.axle;
         this.assetsData['assetDetails']['GVWR'] = result.assetDetails.GVWR;
-        this.assetsData['assetDetails']['gvwrType'] = result.assetDetails.gvwrType;
+        this.assetsData['assetDetails']['GVWR_Unit'] = result.assetDetails.GVWR_Unit;
         this.assetsData['assetDetails']['GAWR'] = result.assetDetails.GAWR;
-        this.assetsData['assetDetails']['gawrType'] = result.assetDetails.gawrType;
+        this.assetsData['assetDetails']['GAWR_Unit'] = result.assetDetails.GAWR_Unit;
         this.assetsData['assetDetails']['ownerShip'] = result.assetDetails.ownerShip;
         this.assetsData['assetDetails']['currentStatus'] = result.assetDetails.currentStatus;
-        this.assetsData['assetDetails']['plateNumber'] = result.assetDetails.plateNumber;
+        this.assetsData['assetDetails']['licenceStateID'] = result.assetDetails.licenceStateID;
+        this.assetsData['assetDetails']['licencePlateNumber'] = result.assetDetails.licencePlateNumber;
         this.assetsData['assetDetails']['remarks'] = result.assetDetails.remarks;
         this.assetsData['insuranceDetails']['dateOfIssue'] = result.insuranceDetails.dateOfIssue;
         this.assetsData['insuranceDetails']['premiumAmount'] = result.insuranceDetails.premiumAmount;
-        this.assetsData['insuranceDetails']['premiumCurrencyType'] = result.insuranceDetails.premiumCurrencyType;
+        this.assetsData['insuranceDetails']['premiumCurrency'] = result.insuranceDetails.premiumCurrency;
         this.assetsData['insuranceDetails']['dateOfExpiry'] = result.insuranceDetails.dateOfExpiry;
         this.assetsData['insuranceDetails']['dateOfIssue'] = result.insuranceDetails.dateOfIssue;
-        this.assetsData['insuranceDetails']['reminderBeforeExpiry'] = result.insuranceDetails.reminderBeforeExpiry;
-        this.assetsData['insuranceDetails']['reminderType'] = result.insuranceDetails.reminderType;
+        this.assetsData['insuranceDetails']['reminderBefore'] = result.insuranceDetails.reminderBefore;
+        this.assetsData['insuranceDetails']['reminderBeforeUnit'] = result.insuranceDetails.reminderBeforeUnit;
         this.assetsData['insuranceDetails']['vendor'] = result.insuranceDetails.vendor;
-        this.assetsData['insuranceDetails']['vendor'] = result.insuranceDetails.vendor;
+        this.assetsData['crossBorderDetails']['ACE_ID'] = result.crossBorderDetails.ACE_ID;
+        this.assetsData['crossBorderDetails']['ACI_ID'] = result.crossBorderDetails.ACI_ID;
         // this.assetsData['timeCreated'] = result.timeCreated;
         // this.assetsData['timeModified'] = result.timeModified;
       });
@@ -271,8 +274,6 @@ export class AddAssetsComponent implements OnInit {
       }
     } else {
       for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-        console.log('this.selectedFiles', this.selectedFiles);
-        console.log('this.selectedFiles.item.length', this.selectedFiles.item.length)
         const randomFileGenerate = this.selectedFiles[i].name.split('.');
         const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
 
