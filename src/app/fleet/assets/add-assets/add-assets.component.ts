@@ -182,6 +182,7 @@ export class AddAssetsComponent implements OnInit {
    * Fetch Asset details before updating
   */
   fetchAssetByID() {
+    this.spinner.show(); // loader init
     this.apiService
       .getData('assets/' + this.assetID)
       .subscribe((result: any) => {
@@ -217,8 +218,7 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData['insuranceDetails']['vendor'] = result.insuranceDetails.vendor;
         this.assetsData['crossBorderDetails']['ACE_ID'] = result.crossBorderDetails.ACE_ID;
         this.assetsData['crossBorderDetails']['ACI_ID'] = result.crossBorderDetails.ACI_ID;
-        // this.assetsData['timeCreated'] = result.timeCreated;
-        // this.assetsData['timeModified'] = result.timeModified;
+        this.spinner.hide(); // loader hide
       });
 
   }

@@ -19,6 +19,7 @@ export class AssetListComponent implements OnInit {
   drybox = [];
   flatbed = [];
   curtainSlide = [];
+  checked = false;
   isChecked = false;
   headCheckbox = false;
   selectedAssetID: any;
@@ -218,20 +219,25 @@ export class AssetListComponent implements OnInit {
     }
   }
 
-  uncheckCheckbox = () => {
-    this.isChecked = false;
+  uncheckCheckbox = (arr) => {
+    arr.forEach(item => {
+      item.checked = false;
+    });
     this.headCheckbox = false;
   }
 
   // Count Checkboxes
   checkboxCount = (arr) => {
-    console.log('count', arr);
     this.assetCheckCount = 0;
     arr.forEach(item => {
-      console.log(item.checked);
       if (item.checked) {
         this.selectedAssetID = item.assetID;
         this.assetCheckCount = this.assetCheckCount + 1;
+        if (arr.length === this.assetCheckCount) {
+          this.headCheckbox = true;
+        }
+      } else {
+        this.headCheckbox = false;
       }
     });
   }
@@ -243,14 +249,5 @@ export class AssetListComponent implements OnInit {
     } else {
       this.isChecked = false;
     }
-    // arr.forEach(item => {
-    //   console.log(item);
-    //   if (item.checked === true) {
-    //     item.checked = false;
-    //   } else {
-    //     item.checked = true;
-    //   }
-    // });
-    
   }
 }

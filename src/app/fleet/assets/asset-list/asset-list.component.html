@@ -146,19 +146,19 @@
          <div class="p-2">
             <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                <li class="nav-item">
-                  <a class="nav-link active" (click)="uncheckCheckbox()" id="all-tab" data-toggle="tab" href="#allassets" role="tab" aria-controls="allassets" aria-selected="true">All</a>
+                  <a class="nav-link active" (click)="uncheckCheckbox(allData)" id="all-tab" data-toggle="tab" href="#allassets" role="tab" aria-controls="allassets" aria-selected="true">All</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox()" id="reefer-tab" data-toggle="tab" href="#reefer" role="tab" aria-controls="reefer" aria-selected="false">Reefer</a>
+                  <a class="nav-link" (click)="uncheckCheckbox(refers)" id="reefer-tab" data-toggle="tab" href="#reefer" role="tab" aria-controls="reefer" aria-selected="false">Reefer</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox()" id="dryBox-tab" data-toggle="tab" href="#dryBox" role="tab" aria-controls="dryBox" aria-selected="false">Dry Box</a>
+                  <a class="nav-link" (click)="uncheckCheckbox(drybox)" id="dryBox-tab" data-toggle="tab" href="#dryBox" role="tab" aria-controls="dryBox" aria-selected="false">Dry Box</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox()" id="flatBed-tab" data-toggle="tab" href="#flatBed" role="tab" aria-controls="flatBed" aria-selected="false">Flatbed</a>
+                  <a class="nav-link" (click)="uncheckCheckbox(flatbed)" id="flatBed-tab" data-toggle="tab" href="#flatBed" role="tab" aria-controls="flatBed" aria-selected="false">Flatbed</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox()" id="curtainSide-tab" data-toggle="tab" href="#curtainSide" role="tab" aria-controls="curtainSide" aria-selected="false">Curtain Side</a>
+                  <a class="nav-link" (click)="uncheckCheckbox(curtainSlide)" id="curtainSide-tab" data-toggle="tab" href="#curtainSide" role="tab" aria-controls="curtainSide" aria-selected="false">Curtain Side</a>
                </li>
             </ul>
          </div>
@@ -266,7 +266,7 @@
                               </thead>
                               <tbody>
                                  <tr *ngFor="let item of drybox;">
-                                    <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(dryBox)" value="{{item.assetIdentification}}" type="checkbox"></td>                                          
+                                    <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(drybox)" value="{{item.assetIdentification}}" type="checkbox"></td>                                          
                                     <td routerLink="/fleet/assets/asset-detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td>Live Location</td>
@@ -289,7 +289,7 @@
                            <table datatable [dtOptions]="flatbedOptions" class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="flatbed.length > 0" >
                               <thead>
                                  <tr>
-                                    <th width="5%"><input type="checkbox"></th>
+                                    <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th>
                                     
                                     <th>Asset Name</th>
                                     <th>Plate Number</th>
@@ -326,7 +326,7 @@
                            <table datatable [dtOptions]="curtainOptions" class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="curtainSlide.length > 0" >
                               <thead>
                                  <tr>
-                                    <th width="5%"><input type="checkbox"></th>
+                                    <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th>
                                     
                                     <th >Asset Name</th>
                                     <th >Plate Number</th>
