@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AuthService } from './auth.service';
+import { AuthService } from './services/auth.service';
 
 import { LeftBarComponent } from './left-bar/left-bar.component';
 import { RFormsComponent } from './r-forms/r-forms.component';
@@ -126,7 +126,7 @@ import { AccountsModule } from './accounts/accounts.module';
 import { SafetyModule } from './safety/safety.module';
 
 import {ChartsModule} from 'ng2-charts';
-import {Role} from '../objects/objects';
+import {Role} from './models/objects';
 import {CarrierRegistrationComponent} from "./carrier-registration/carrier-registration.component";
 import {CarrierRegisterComponent} from "./carrier-register/carrier-register.component";
 

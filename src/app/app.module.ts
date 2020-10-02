@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 
@@ -12,30 +12,27 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
-// import {AddVehicleComponent} from './add-vehicle/add-vehicle.component';
+
 import { LeftBarComponent } from './left-bar/left-bar.component';
 import { RFormsComponent } from './r-forms/r-forms.component';
 import { CompanyInfoComponent } from './company-info/company-info.component';
 import { AddQuantumComponent } from './add-quantum/add-quantum.component';
-// import { AddUserComponent } from './add-user/add-user.component';
+
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-// import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
+
 import { LogoutComponent } from './logout/logout.component';
-// import { EditVehicleComponent } from './edit-vehicle/edit-vehicle.component';
+
 import { HealthcheckComponent } from './healthcheck/healthcheck.component';
 import { QuantumsComponent } from './quantums/quantums.component';
 import { EditQuantumComponent } from './edit-quantum/edit-quantum.component';
-// import { UserListComponent } from './user-list/user-list.component';
-// import { EditUserComponent } from './edit-user/edit-user.component';
+
 import { AddGroupComponent } from './add-group/add-group.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { EditGroupComponent } from './edit-group/edit-group.component';
 import { AddExpensesComponent } from './add-expenses/add-expenses.component';
 import { ExpensesListComponent } from './expenses-list/expenses-list.component';
 import { EditExpensesComponent } from './edit-expenses/edit-expenses.component';
-// import { DocumentsComponent } from './documents/documents.component';
-// import { AddDocumentsComponent } from './add-documents/add-documents.component';
-// import { EditDocumentsComponent } from './edit-documents/edit-documents.component';
+
 import { AddTripsComponent } from './add-trips/add-trips.component';
 import { TripsListComponent } from './trips-list/trips-list.component';
 import { EditTripComponent } from './edit-trip/edit-trip.component';
@@ -51,35 +48,26 @@ import { DailyInspectionListComponent } from './daily-inspection-list/daily-insp
 import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { EditCustomerComponent } from './edit-customer/edit-customer.component';
 import { CustomersComponent } from './customers/customers.component';
-// import { AddYardComponent } from './add-yard/add-yard.component';
-// import { EditYardComponent } from './edit-yard/edit-yard.component';
-// import { YardsComponent } from './yards/yards.component';
+
 import { AddInsuranceComponent } from './add-insurance/add-insurance.component';
 import { EditInsuranceComponent } from './edit-insurance/edit-insurance.component';
 import { InsurancesComponent } from './insurances/insurances.component';
-// import { AddContactComponent } from './add-contact/add-contact.component';
-// import { EditContactComponent } from './edit-contact/edit-contact.component';
-// import { ContactsComponent } from './contacts/contacts.component';
+
 import { AddReceiverComponent } from './add-receiver/add-receiver.component';
 import { EditReceiverComponent } from './edit-receiver/edit-receiver.component';
 import { ReceiversComponent } from './receivers/receivers.component';
-// import { AddAddressComponent } from './add-address/add-address.component';
-// import { EditAddressComponent } from './edit-address/edit-address.component';
-// import { AddressesComponent } from './addresses/addresses.component';
+
 import { AddInspectionFormComponent } from './add-inspection-form/add-inspection-form.component';
 import { EditInspectionFormComponent } from './edit-inspection-form/edit-inspection-form.component';
 import { InspectionFormsComponent } from './inspection-forms/inspection-forms.component';
-// import { AddAccountComponent } from './add-account/add-account.component';
-// import { EditAccountComponent } from './edit-account/edit-account.component';
-// import { AccountsComponent } from './accounts/accounts.component';
+
 import { AddCertificateComponent } from './add-certificate/add-certificate.component';
 import { EditCertificateComponent } from './edit-certificate/edit-certificate.component';
 import { CertificatesComponent } from './certificates/certificates.component';
 import { AddCarrierComponent } from './add-carrier/add-carrier.component';
 import { EditCarrierComponent } from './edit-carrier/edit-carrier.component';
 import { CarriersComponent } from './carriers/carriers.component';
-// import { AddVehicleNewComponent } from './add-vehicle-new/add-vehicle-new.component';
-// import { EditVehicleNewComponent } from './edit-vehicle-new/edit-vehicle-new.component';
+
 
 import { MapDashboardComponent } from './map-dashboard/map-dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -119,15 +107,15 @@ import { ToastrModule } from 'ngx-toastr';
 // Authentication
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 // JWT interceptors
-import { HttpInterceptorProviders } from './helpers/interceptor.provider';
-import {JwtInterceptor} from "./helpers/jwt.interceptor";
+import { HttpInterceptorProviders } from './interceptors/interceptor.provider';
 
-//mqtt
+
+// mqtt
 import {MqttModule, IMqttServiceOptions} from 'ngx-mqtt';
-import {environment} from "../environments/environment";
+import {environment} from '../environments/environment';
 
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgSelect2Module } from 'ng-select2';
 import {DataTablesModule} from 'angular-datatables';
 
@@ -135,9 +123,9 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
   path: environment.MQTTPATH
-}
+};
 
-import { RegisterComponent } from './register/register.component';
+
 import { CarrierRegistrationComponent } from './carrier-registration/carrier-registration.component';
 import { CarrierRegisterComponent } from './carrier-register/carrier-register.component';
 @NgModule({
@@ -145,31 +133,20 @@ import { CarrierRegisterComponent } from './carrier-register/carrier-register.co
     AppComponent,
     LoginComponent,
     DashboardComponent,
-
-
     LeftBarComponent,
     RFormsComponent,
     CompanyInfoComponent,
     AddQuantumComponent,
-
-
     LogoutComponent,
-
     HealthcheckComponent,
     QuantumsComponent,
     EditQuantumComponent,
-
-
     AddGroupComponent,
     GroupListComponent,
     EditGroupComponent,
-
     AddExpensesComponent,
     ExpensesListComponent,
     EditExpensesComponent,
-    // DocumentsComponent,
-    // AddDocumentsComponent,
-    // EditDocumentsComponent,
     AddTripsComponent,
     TripsListComponent,
     EditTripComponent,
@@ -185,39 +162,22 @@ import { CarrierRegisterComponent } from './carrier-register/carrier-register.co
     AddCustomerComponent,
     EditCustomerComponent,
     CustomersComponent,
-    // AddYardComponent,
-    // EditYardComponent,
-    // YardsComponent,
     AddInsuranceComponent,
     EditInsuranceComponent,
     InsurancesComponent,
-
-    // AddContactComponent,
-    // EditContactComponent,
-    // ContactsComponent,
     AddReceiverComponent,
     EditReceiverComponent,
     ReceiversComponent,
-    // AddAddressComponent,
-    // EditAddressComponent,
-    // AddressesComponent,
     AddInspectionFormComponent,
     EditInspectionFormComponent,
     InspectionFormsComponent,
-    // AddAccountComponent,
-    // EditAccountComponent,
-    // AccountsComponent,
     AddCertificateComponent,
     EditCertificateComponent,
     CertificatesComponent,
     AddCarrierComponent,
     EditCarrierComponent,
     CarriersComponent,
-    // AddVehicleNewComponent,
-
-
     MapDashboardComponent,
-
     AddTicketTypeComponent,
     EditTicketTypeComponent,
     TicketTypeListComponent,
@@ -239,7 +199,6 @@ import { CarrierRegisterComponent } from './carrier-register/carrier-register.co
     AddAlertComponent,
     EditAlertComponent,
     AlertListComponent,
-
     AddCycleComponent,
     EditCycleComponent,
     CycleListComponent,
@@ -256,7 +215,7 @@ import { CarrierRegisterComponent } from './carrier-register/carrier-register.co
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-      NgbModule,
+    NgbModule,
     BrowserAnimationsModule,
     ChartsModule,
     SharedModule,
