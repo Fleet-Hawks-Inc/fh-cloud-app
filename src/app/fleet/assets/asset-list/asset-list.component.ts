@@ -50,6 +50,10 @@ export class AssetListComponent implements OnInit {
     this.allOptions = { // All list options
       pageLength: 10,
       processing: true,
+      select: {
+          style:    'multi',
+          selector: 'td:first-child'
+      },
       dom: 'Bfrtip',
       // Configure the buttons
       buttons: [
@@ -63,9 +67,14 @@ export class AssetListComponent implements OnInit {
       },
       columnDefs: [
         {
-            targets: 0,
-            className: 'noVis'
-        },
+          orderable: false,
+          className: 'select-checkbox',
+          targets:   0
+      },
+        // {
+        //     targets: 0,
+        //     className: 'noVis'
+        // },
         {
             targets: 1,
             className: 'noVis'
@@ -230,9 +239,12 @@ export class AssetListComponent implements OnInit {
   checkboxCount = (arr) => {
     this.assetCheckCount = 0;
     arr.forEach(item => {
-      if (item.checked) {
+      console.log("item", item);
+      console.log("array", arr);
+      if (item.checked === true) {
         this.selectedAssetID = item.assetID;
         this.assetCheckCount = this.assetCheckCount + 1;
+        console.log('check', arr.length, this.assetCheckCount)
         if (arr.length === this.assetCheckCount) {
           this.headCheckbox = true;
         }

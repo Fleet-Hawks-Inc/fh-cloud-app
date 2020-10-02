@@ -17,6 +17,16 @@ export class AddDriverComponent implements OnInit {
   errors = {};
   form;
   concatArrayKeys = '';
+  manualAddress: boolean;
+  driverData = {
+    address: {},
+    documentDetails: {},
+    crossBorderDetails: {},
+    paymentDetails: {},
+    licenceDetails: {},
+    hosDetails: {},
+    emergencyDetails: {},
+  };
   /**
    * Form Props
    */
@@ -126,41 +136,41 @@ export class AddDriverComponent implements OnInit {
   addDriver() {
     this.register();
     this.errors = {};
-    const data = {
-      userType: this.userType,
-      userName: this.userName,
-      password: this.password,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      address: this.address,
-      phone: this.phone,
-      email: this.email,
-      groupID: this.groupID,
-      loginEnabled: this.loginEnabled,
-      driverNumber: this.driverNumber,
-      driverLicenseNumber: this.driverLicenseNumber,
-      driverLicenseType: this.driverLicenseType,
-      driverLicenseExpiry: this.driverLicenseExpiry,
-      driverLicenseStateID: this.driverLicenseStateID,
-      HOSCompliance: {
-        status: this.HOSCompliance.status,
-        type: this.HOSCompliance.type,
-        cycleID: this.HOSCompliance.cycleID,
-      },
-      defaultContract: {
-        perMile: this.defaultContract.perMile,
-        team: this.defaultContract.team,
-        hourly: this.defaultContract.hourly,
-        pickOrDrop: this.defaultContract.pickOrDrop,
-      },
-      fixed: {
-        amount: this.fixed.amount,
-        type: this.fixed.type,
-      },
-      yardID: this.yardID,
-    };
-
-    this.apiService.postData('users', data).subscribe({
+    // const data = {
+    //   userType: this.userType,
+    //   userName: this.userName,
+    //   password: this.password,
+    //   firstName: this.firstName,
+    //   lastName: this.lastName,
+    //   address: this.address,
+    //   phone: this.phone,
+    //   email: this.email,
+    //   groupID: this.groupID,
+    //   loginEnabled: this.loginEnabled,
+    //   driverNumber: this.driverNumber,
+    //   driverLicenseNumber: this.driverLicenseNumber,
+    //   driverLicenseType: this.driverLicenseType,
+    //   driverLicenseExpiry: this.driverLicenseExpiry,
+    //   driverLicenseStateID: this.driverLicenseStateID,
+    //   HOSCompliance: {
+    //     status: this.HOSCompliance.status,
+    //     type: this.HOSCompliance.type,
+    //     cycleID: this.HOSCompliance.cycleID,
+    //   },
+    //   defaultContract: {
+    //     perMile: this.defaultContract.perMile,
+    //     team: this.defaultContract.team,
+    //     hourly: this.defaultContract.hourly,
+    //     pickOrDrop: this.defaultContract.pickOrDrop,
+    //   },
+    //   fixed: {
+    //     amount: this.fixed.amount,
+    //     type: this.fixed.type,
+    //   },
+    //   yardID: this.yardID,
+    // };
+    console.log('this.driverData', this.driverData);
+    this.apiService.postData('drivers', this.driverData).subscribe({
       complete: () => {},
       error : (err) => {
         from(err.error)

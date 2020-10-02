@@ -172,7 +172,7 @@
                               <thead>
                                  <tr>
                                     <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th>
-                                    
+                                    <!-- <th></th> -->
                                     <th>Asset Name/Number</th>
                                     <th>Type</th>                                          
                                     <th>Plate Number</th>
@@ -186,8 +186,8 @@
                               </thead>
                               <tbody>
                                  <tr *ngFor="let item of allData;">
-                                    <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(allData)" value="{{item.assetIdentification}}" type="checkbox"></td>
-                                    
+                                    <!-- <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(allData)" value="{{item.assetIdentification}}" type="checkbox"></td> -->
+                                    <td></td>
                                     <td routerLink="/fleet/assets/asset-detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.assetType}}</td>                                          
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
