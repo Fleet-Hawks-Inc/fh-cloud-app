@@ -1,13 +1,9 @@
 import { NgModule } from '@angular/core';
-
 import { FleetRoutingModule } from './fleet-routing.module';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
-
-
 
 import {ChartsModule} from 'ng2-charts';
 // ngselect2
@@ -25,13 +21,158 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgSelect2Module } from 'ng-select2';
 
+import {
+  AddDriverComponent,
+  EditDriverComponent,
+  DriverListComponent,
+  DriverDetailComponent,
+  AddVehicleNewComponent,
+  EditVehicleNewComponent,
+  VehicleListComponent,
+  AddUserComponent,
+  EditUserComponent,
+  UserListComponent,
+  AddYardComponent,
+  EditYardComponent,
+  YardsComponent,
+  AddAssetsComponent,
+  AssetListComponent,
+  AssetDetailComponent,
+  AddFuelEntryComponent,
+  FuelEntryListComponent,
+  EditFuelEntryComponent,
+  AddTicketComponent,
+  TicketsComponent,
+  EditTicketComponent,
+  AddExpenseTypeComponent,
+  ExpenseTypeListComponent,
+  EditExpenseTypeComponent,
+  ListingComponent,
+  AddReminderComponent,
+  ServiceRemindDetailComponent,
+  VehicleRenewListComponent,
+  VehicleRenewAddComponent,
+  VehicleRenewDetailComponent,
+  ListContactRenewComponent,
+  AddContactRenewComponent,
+  ContactRenewDetailComponent,
+  IssueListComponent,
+  AddIssueComponent,
+  IssueDetailComponent,
+  ServiceListComponent,
+  AddServiceComponent,
+  ServiceDetailComponent,
+  AddServiceProgramComponent,
+  ServiceProgramListComponent,
+  EditServiceProgramComponent,
+  ServiceProgramDetailComponent,
+  AddVendorComponent,
+  VendorsListComponent,
+  EditVendorComponent,
+  AddVehicleServiceLogComponent,
+  VehicleServiceLogsComponent,
+  EditVehicleServiceLogComponent,
+  AddItemComponent,
+  ItemsListComponent,
+  ItemDetailComponent,
+  EditItemComponent,
+  AddItemGroupComponent,
+  ItemGroupListComponent,
+  EditItemGroupComponent,
+  AddEntryComponent,
+  EntriesComponent,
+  EditEntryComponent,
+  AddStockAssignmentComponent,
+  StockAssignmentListComponent,
+  EditStockAssignmentComponent,
+  InventoryStockStatementComponent,
+  AddGeofenceComponent,
+  EditGeofenceComponent,
+  GeofenceListComponent,
+  GraphComponent,
+  DashboardDriverComponent
+} from './index';
+
+const COMPONENTS = [
+  AddDriverComponent,
+  EditDriverComponent,
+  DriverListComponent,
+  DriverDetailComponent,
+  AddVehicleNewComponent,
+  EditVehicleNewComponent,
+  VehicleListComponent,
+  AddUserComponent,
+  EditUserComponent,
+  UserListComponent,
+  AddYardComponent,
+  EditYardComponent,
+  YardsComponent,
+  AddAssetsComponent,
+  AssetListComponent,
+  AssetDetailComponent,
+  AddFuelEntryComponent,
+  FuelEntryListComponent,
+  EditFuelEntryComponent,
+  AddTicketComponent,
+  TicketsComponent,
+  EditTicketComponent,
+  AddExpenseTypeComponent,
+  ExpenseTypeListComponent,
+  EditExpenseTypeComponent,
+  ListingComponent,
+  AddReminderComponent,
+  ServiceRemindDetailComponent,
+  VehicleRenewListComponent,
+  VehicleRenewAddComponent,
+  VehicleRenewDetailComponent,
+  ListContactRenewComponent,
+  AddContactRenewComponent,
+  ContactRenewDetailComponent,
+  IssueListComponent,
+  AddIssueComponent,
+  IssueDetailComponent,
+  ServiceListComponent,
+  AddServiceComponent,
+  ServiceDetailComponent,
+  AddServiceProgramComponent,
+  ServiceProgramListComponent,
+  EditServiceProgramComponent,
+  ServiceProgramDetailComponent,
+  AddVendorComponent,
+  VendorsListComponent,
+  EditVendorComponent,
+  AddVehicleServiceLogComponent,
+  VehicleServiceLogsComponent,
+  EditVehicleServiceLogComponent,
+  AddItemComponent,
+  ItemsListComponent,
+  ItemDetailComponent,
+  EditItemComponent,
+  AddItemGroupComponent,
+  ItemGroupListComponent,
+  EditItemGroupComponent,
+  AddEntryComponent,
+  EntriesComponent,
+  EditEntryComponent,
+  AddStockAssignmentComponent,
+  StockAssignmentListComponent,
+  EditStockAssignmentComponent,
+  InventoryStockStatementComponent,
+  AddGeofenceComponent,
+  EditGeofenceComponent,
+  GeofenceListComponent,
+  GraphComponent,
+  DashboardDriverComponent
+];
+
+
 
 @NgModule({
   imports: [
     FleetRoutingModule,
-            FormsModule,
-            CommonModule,
-            SharedModule,
+    FormsModule,
+    CommonModule,
+    SharedModule,
     ChartsModule,
     NgSelectModule,
     DataTablesModule,
@@ -41,103 +182,9 @@ import { NgSelect2Module } from 'ng-select2';
     NgxSpinnerModule,
     NgSelect2Module
   ],
+  exports: [...COMPONENTS],
   declarations: [
-    AddDriverComponent,
-    EditDriverComponent,
-    DriverListComponent,
-
-    AddVehicleComponent,
-    EditVehicleComponent,
-
-    AddVehicleNewComponent,
-    EditVehicleNewComponent,
-    VehicleListComponent,
-
-    UserListComponent,
-    AddUserComponent,
-    EditUserComponent,
-
-    YardsComponent,
-    AddYardComponent,
-    EditYardComponent,
-
-    AddAssetsComponent,
-    EditAssetComponent,
-    AssetListComponent,
-
-    AddFuelEntryComponent,
-    EditFuelEntryComponent,
-    FuelEntryListComponent,
-
-    AddTicketComponent,
-    EditTicketComponent,
-    TicketsComponent,
-
-    AddExpenseTypeComponent,
-    EditExpenseTypeComponent,
-    ExpenseTypeListComponent,
-
-    AddVendorComponent,
-    EditVendorComponent,
-    VendorsListComponent,
-
-    AddVehicleServiceLogComponent,
-    EditVehicleServiceLogComponent,
-    VehicleServiceLogsComponent,
-
-    AddServiceProgramComponent,
-    EditServiceProgramComponent,
-    ServiceProgramListComponent,
-
-    AddItemComponent,
-    EditItemComponent,
-    ItemsListComponent,
-
-    AddItemGroupComponent,
-    EditItemGroupComponent,
-    ItemGroupListComponent,
-
-    AddEntryComponent,
-    EditEntryComponent,
-    EntriesComponent,
-
-    AddStockAssignmentComponent,
-    EditStockAssignmentComponent,
-    StockAssignmentListComponent,
-
-    InventoryStockStatementComponent,
-
-    AddGeofenceComponent,
-    EditGeofenceComponent,
-    GeofenceListComponent,
-
-    GraphComponent,
-
-    DashboardDriverComponent,
-
-    IssueListComponent,
-
-    AddIssueComponent,
-
-    ServiceListComponent,
-
-    AddServiceComponent,
-
-    AssetDetailComponent,
-    ListingComponent,
-    AddReminderComponent,
-    VehicleRenewAddComponent,
-    VehicleRenewListComponent,
-    AddContactRenewComponent,
-    ListContactRenewComponent,
-    ServiceRemindDetailComponent,
-    ContactRenewDetailComponent,
-    VehicleRenewDetailComponent,
-    ItemDetailComponent,
-    IssueDetailComponent,
-    ServiceDetailComponent,
-    ServiceProgramDetailComponent,
-    DriverDetailComponent,
+    ...COMPONENTS
   ],
   providers: [NgSelectConfig, ɵs],
 })
