@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {Role, User} from '../../objects/objects';
 import {Auth} from 'aws-amplify';
 
 @Component({

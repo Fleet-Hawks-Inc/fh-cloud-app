@@ -1,9 +1,7 @@
-import {Router, ActivatedRoute, Params} from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-
-import { HereMapService } from '../services/here-map.service';
+import { HereMapService } from '../../services/here-map.service';
 import { Subject, throwError } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 
@@ -53,7 +51,7 @@ export class MapDashboardComponent implements OnInit {
   constructor(private HereMap: HereMapService) { }
 
   ngOnInit() {
-    
+
     this.platform = new H.service.Platform({
       apikey: this.apiKey,
     });

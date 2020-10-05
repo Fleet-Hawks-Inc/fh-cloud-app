@@ -1,8 +1,8 @@
-import { Injectable,ViewChild, Input, ElementRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from './../../environments/environment';
-import { Observable, of, empty} from 'rxjs';
+import { Observable} from 'rxjs';
 import { map } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var H: any;
 declare var L: any;
 
@@ -10,11 +10,11 @@ declare var L: any;
   providedIn: 'root'
 })
 export class HereMapService {
-  
+
   public start: any;
 
   private platform: any;
-  
+
   private map: any;
   private ui: any;
   private readonly apiKey = environment.mapConfig.apiKey;
@@ -67,7 +67,7 @@ export class HereMapService {
 
       parameters
     );
-    
+
     // This display the current traffic detail -> Green Means Free, Yellow means Moderate Congestion
     // Red means High Congestion
     this.map.addLayer(defaultLayers.vector.normal.traffic);
@@ -124,10 +124,10 @@ export class HereMapService {
       })
       );
   }
-  
+
   /*
   AutoSuggest Search Api v7
-*/ 
+*/
   searchLocation = async (query) => {
     this.platform = new H.service.Platform({
       'apikey': this.apiKey,
