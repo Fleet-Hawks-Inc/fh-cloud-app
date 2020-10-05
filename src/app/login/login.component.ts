@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {ApiService} from '../api.service';
-import {AuthService} from '../auth.service';
-import {Role, User} from '../../objects/objects';
+import {ApiService} from '../services/api.service';
+import {AuthService} from '../services/auth.service';
+import {Role, User} from '../models/objects';
 import { Auth } from 'aws-amplify';
 
 @Component({
