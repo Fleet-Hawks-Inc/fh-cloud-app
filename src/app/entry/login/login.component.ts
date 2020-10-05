@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {ApiService} from '../services/api.service';
-import {AuthService} from '../services/auth.service';
-import {Role, User} from '../models/objects';
+import {ApiService} from '../../services/api.service';
+import {AuthService} from '../../services/auth.service';
+import {Role, User} from '../../models/objects';
 import { Auth } from 'aws-amplify';
 
 @Component({
@@ -15,12 +15,12 @@ export class LoginComponent implements OnInit {
   userName: string;
   email: string;
   password: string;
-  response : any = '';
-  hasError : boolean = false;
-  Error: string = '';
+  response: any = '';
+  hasError  = false;
+  Error = '';
   showSigupCode = true;
   signUpCode = '';
-  error : string = '';
+  error  = '';
 
   constructor(private apiService: ApiService,
               private router: Router,
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
        // console.log("clickes");
       },
       next: (res) => {
-        const user : User =   { id: '1',
+        const user: User =   { id: '1',
           username: 'admin',
           firstName: 'Admin',
           lastName: 'User',
@@ -75,9 +75,7 @@ export class LoginComponent implements OnInit {
       this.error = `Error occured while sending code ${err}`;
       this.showSigupCode = true;
     }
-
-  } ;
-
+  }
   /** Cognito user action */
   loginAction1 = async () => {
     try {
@@ -98,7 +96,7 @@ export class LoginComponent implements OnInit {
         this.Error = 'User has not active devices';
 
       } else {
-        console.log("user logged In");
+        console.log('user logged In');
 
         /**
          * For the Role Management
