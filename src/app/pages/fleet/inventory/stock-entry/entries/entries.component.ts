@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../../services/api.service';
+import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-entries",
-  templateUrl: "./entries.component.html",
-  styleUrls: ["./entries.component.css"],
+  selector: 'app-entries',
+  templateUrl: './entries.component.html',
+  styleUrls: ['./entries.component.css'],
 })
 export class EntriesComponent implements OnInit {
-  title = "Stock Entry List";
+  title = 'Stock Entry List';
   entries;
 
   constructor(private apiService: ApiService, private router: Router) {}
@@ -20,7 +20,7 @@ export class EntriesComponent implements OnInit {
   }
 
   fetchEntries() {
-    this.apiService.getData("stockEntries").subscribe({
+    this.apiService.getData('stockEntries').subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -34,12 +34,12 @@ export class EntriesComponent implements OnInit {
 
   deleteEntry(documentId) {
     /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable("#datatable-default")) {
-      $("#datatable-default").DataTable().clear().destroy();
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
     this.apiService
-      .deleteData("StockEntries/" + documentId)
+      .deleteData('StockEntries/' + documentId)
       .subscribe((result: any) => {
         this.fetchEntries();
       });
@@ -47,7 +47,7 @@ export class EntriesComponent implements OnInit {
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 }

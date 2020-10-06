@@ -1,10 +1,9 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import { Router } from "@angular/router";
-import {ApiService} from "../../../../api.service";
-import {catchError, map, mapTo, tap} from 'rxjs/operators';
-import {from, of} from 'rxjs';
-declare var jquery: any;
+import { Router } from '@angular/router';
+import {ApiService} from '../../../../../services/api.service';
+import { map} from 'rxjs/operators';
+import {from} from 'rxjs';
+
 declare var $: any;
 
 
@@ -15,7 +14,7 @@ declare var $: any;
 })
 export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   title = 'Add Service Program';
-  
+
   meterText = 'Miles';
   serviceData = {}
 
@@ -31,11 +30,11 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
 
   /******************/
 
-  response : any = '';
-  hasError : boolean = false;
-  hasSuccess: boolean = false;
-  Error : string = '';
-  Success : string = '';
+  response  = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -51,7 +50,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
 
 
   addServiceProgram() {
-    console.log("service program",this.serviceData);
+    console.log('service program',this.serviceData);
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
@@ -71,7 +70,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
               map((val: any) => {
                 const path = val.path;
                 // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
+                const key = val.message.match(/'([^']+)'/)[1];
                 // console.log(key);
                 // this.errors[key] = val.message;
                 // Or We Can Use This One To Extract Key
@@ -82,7 +81,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
                 // } else {
                 // this.errors[key] = val.message;
                 // }
-                val.message = val.message.replace(/".*"/, "This Field");
+                val.message = val.message.replace(/'.*'/, 'This Field');
                 this.errors[key] = val.message;
                 // console.log(this.errors);
               })
@@ -95,7 +94,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
               next: () => {},
             });
         },
-        next: (res) => {
+        next: (res: any) => {
           this.programName = '';
           this.repeatByTime = '';
           this.repeatByOdometer = '';
@@ -112,6 +111,6 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     this.form.showErrors(this.errors);
   }
 
-  
+
 
 }

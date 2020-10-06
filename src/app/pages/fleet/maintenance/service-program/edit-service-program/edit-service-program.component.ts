@@ -1,9 +1,8 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../../../../api.service";
-import {catchError, map, mapTo, tap} from 'rxjs/operators';
-import {from, of} from 'rxjs';
-declare var jquery: any;
+import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../../../../../services/api.service';
+import { map} from 'rxjs/operators';
+import {from} from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -66,11 +65,11 @@ export class EditServiceProgramComponent implements OnInit, AfterViewInit {
     this.hasSuccess = false;
 
     const data = {
-      "programID": this.programID,
-      "programName": this.programName,
-      "repeatByTime" : this.repeatByTime,
-      "repeatByOdometer": this.repeatByOdometer,
-      "description": this.description,
+      'programID': this.programID,
+      'programName': this.programName,
+      'repeatByTime' : this.repeatByTime,
+      'repeatByOdometer': this.repeatByOdometer,
+      'description': this.description,
     };
 
     this.apiService.putData('servicePrograms', data)
@@ -80,7 +79,7 @@ export class EditServiceProgramComponent implements OnInit, AfterViewInit {
           from(err.error)
             .pipe(
               map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
+                val.message = val.message.replace(/'.*'/, 'This Field');
                 this.errors[val.context.key] = val.message;
               }),
             )

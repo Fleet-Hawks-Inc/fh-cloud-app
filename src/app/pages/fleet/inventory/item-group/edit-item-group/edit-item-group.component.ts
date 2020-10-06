@@ -1,40 +1,39 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { ApiService } from "../../../../api.service";
-import { from, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { Object } from "aws-sdk/clients/s3";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
-  selector: "app-edit-item-group",
-  templateUrl: "./edit-item-group.component.html",
-  styleUrls: ["./edit-item-group.component.css"],
+  selector: 'app-edit-item-group',
+  templateUrl: './edit-item-group.component.html',
+  styleUrls: ['./edit-item-group.component.css'],
 })
 export class EditItemGroupComponent implements OnInit {
-  title = "Edit Item Group";
+  title = 'Edit Item Group';
   errors = {};
   form;
-  concatArrayKeys = "";
+  concatArrayKeys = '';
   /********** Form Fields ***********/
-  groupID = "";
-  groupName = "";
-  description = "";
-  timeCreated = "";
+  groupID = '';
+  groupName = '';
+  description = '';
+  timeCreated = '';
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.groupID = this.route.snapshot.params["groupID"];
+    this.groupID = this.route.snapshot.params['groupID'];
 
     this.apiService
-      .getData("itemGroups/" + this.groupID)
+      .getData('itemGroups/' + this.groupID)
       .subscribe((result: any) => {
         result = result.Items[0];
 
@@ -44,7 +43,7 @@ export class EditItemGroupComponent implements OnInit {
       });
 
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -59,7 +58,7 @@ export class EditItemGroupComponent implements OnInit {
       timeCreated: this.timeCreated,
     };
 
-    this.apiService.putData("itemGroups", data).subscribe({
+    this.apiService.putData('itemGroups', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -67,9 +66,9 @@ export class EditItemGroupComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
 
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -84,7 +83,7 @@ export class EditItemGroupComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Item Group updated successfully";
+        this.Success = 'Item Group updated successfully';
       },
     });
   }
@@ -93,9 +92,9 @@ export class EditItemGroupComponent implements OnInit {
   }
 
   concatArray(path) {
-    this.concatArrayKeys = "";
+    this.concatArrayKeys = '';
     for (const i in path) {
-      this.concatArrayKeys += path[i] + ".";
+      this.concatArrayKeys += path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(
       0,

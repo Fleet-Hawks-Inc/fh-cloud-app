@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../../services/api.service';
+import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-service-program-list",
-  templateUrl: "./service-program-list.component.html",
-  styleUrls: ["./service-program-list.component.css"],
+  selector: 'app-service-program-list',
+  templateUrl: './service-program-list.component.html',
+  styleUrls: ['./service-program-list.component.css'],
 })
 export class ServiceProgramListComponent implements OnInit {
-  title = "Service Program List";
+  title = 'Service Program List';
   programs;
 
   constructor(private apiService: ApiService, private router: Router) {}
@@ -20,7 +20,7 @@ export class ServiceProgramListComponent implements OnInit {
   }
 
   fetchPrograms() {
-    this.apiService.getData("servicePrograms").subscribe({
+    this.apiService.getData('servicePrograms').subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -34,13 +34,13 @@ export class ServiceProgramListComponent implements OnInit {
 
   deleteProgram(programId) {
     /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable("#datatable-default")) {
-      $("#datatable-default").DataTable().clear().destroy();
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
 
     this.apiService
-      .deleteData("servicePrograms/" + programId)
+      .deleteData('servicePrograms/' + programId)
       .subscribe((result: any) => {
         this.fetchPrograms();
       });
@@ -48,7 +48,7 @@ export class ServiceProgramListComponent implements OnInit {
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 }

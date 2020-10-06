@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../../services/api.service';
+import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-item-group-list",
-  templateUrl: "./item-group-list.component.html",
-  styleUrls: ["./item-group-list.component.css"],
+  selector: 'app-item-group-list',
+  templateUrl: './item-group-list.component.html',
+  styleUrls: ['./item-group-list.component.css'],
 })
 export class ItemGroupListComponent implements OnInit {
-  title = "Item Group List";
+  title = 'Item Group List';
   itemGroups = [];
 
   constructor(private apiService: ApiService, private router: Router) {}
@@ -20,7 +20,7 @@ export class ItemGroupListComponent implements OnInit {
   }
 
   fetchItemGroups() {
-    this.apiService.getData("itemGroups").subscribe({
+    this.apiService.getData('itemGroups').subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -34,13 +34,13 @@ export class ItemGroupListComponent implements OnInit {
 
   deleteItemGroup(groupId) {
     /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable("#datatable-default")) {
-      $("#datatable-default").DataTable().clear().destroy();
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
 
     this.apiService
-      .deleteData("itemGroups/" + groupId)
+      .deleteData('itemGroups/' + groupId)
       .subscribe((result: any) => {
         this.fetchItemGroups();
       });
@@ -48,7 +48,7 @@ export class ItemGroupListComponent implements OnInit {
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 }

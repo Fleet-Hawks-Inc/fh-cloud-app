@@ -1,10 +1,9 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MapBoxService } from '../../../map-box.service';
-import { ApiService } from '../../../api.service';
+import { MapBoxService } from '../../../../services/map-box.service';
+import { ApiService } from '../../../../services/api.service';
 import {  map } from 'rxjs/operators';
-import { from, of } from 'rxjs';
-declare var jquery: any;
+import { from } from 'rxjs';
 declare var $: any;
 
 @Component({

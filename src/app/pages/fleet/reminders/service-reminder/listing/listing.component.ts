@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from './../../../../api.service';
+import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
@@ -32,7 +32,7 @@ export class ListingComponent implements OnInit {
     });
   }
 
-  
+
   deleteAsset = () => {
     const selectedAssets = this.remindersData.filter(product => product.checked).map(p => p.remindersID);
     if (selectedAssets && selectedAssets.length > 0) {

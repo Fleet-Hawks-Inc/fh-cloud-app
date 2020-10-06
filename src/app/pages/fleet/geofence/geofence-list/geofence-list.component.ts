@@ -1,7 +1,7 @@
-import { Component, OnInit ,ViewChild } from "@angular/core";
-import { ApiService } from "../../../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../services/api.service';
+import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 
@@ -58,7 +58,7 @@ export class GeofenceListComponent implements OnInit {
     console.log(items);
   }
   fetchGeofences() {
-      this.apiService.getData("geofences").subscribe({
+      this.apiService.getData('geofences').subscribe({
         complete: () => {
           this.initDataTable();
         },
@@ -72,8 +72,8 @@ export class GeofenceListComponent implements OnInit {
 
   deleteGeofence(geofenceID) {
      /******** Clear DataTable ************/
-     if ($.fn.DataTable.isDataTable("#datatable-default")) {
-      $("#datatable-default").DataTable().clear().destroy();
+     if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
 
@@ -85,7 +85,7 @@ export class GeofenceListComponent implements OnInit {
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 

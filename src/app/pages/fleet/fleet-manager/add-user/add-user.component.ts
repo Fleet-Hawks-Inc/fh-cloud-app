@@ -1,54 +1,53 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { ApiService } from "../../../api.service";
-import { from, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { Object } from "aws-sdk/clients/s3";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService } from '../../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
-  selector: "app-add-user",
-  templateUrl: "./add-user.component.html",
-  styleUrls: ["./add-user.component.css"],
+  selector: 'app-add-user',
+  templateUrl: './add-user.component.html',
+  styleUrls: ['./add-user.component.css'],
 })
 export class AddUserComponent implements OnInit {
-  parentTitle = "Fleet Managers";
-  title = "Add Fleet Manager";
+  parentTitle = 'Fleet Managers';
+  title = 'Add Fleet Manager';
   errors = {};
   form;
-  concatArrayKeys = "";
+  concatArrayKeys = '';
 
   /**
    * Form Props
    */
-  userType = "manager"; //default
-  userName = "";
-  password = "";
-  firstName = "";
-  lastName = "";
-  address = "";
-  phone = "";
-  email = "";
-  groupID = "";
+  userType = 'manager'; //default
+  userName = '';
+  password = '';
+  firstName = '';
+  lastName = '';
+  address = '';
+  phone = '';
+  email = '';
+  groupID = '';
   loginEnabled = true;
 
   groups = [];
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
     this.fetchGroups();
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
   fetchGroups() {
-    this.apiService.getData("groups").subscribe((result: any) => {
+    this.apiService.getData('groups').subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
@@ -68,7 +67,7 @@ export class AddUserComponent implements OnInit {
       loginEnabled: this.loginEnabled,
     };
 
-    this.apiService.postData("users", data).subscribe({
+    this.apiService.postData('users', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -76,16 +75,16 @@ export class AddUserComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               console.log(key);
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
-              this.Success = "";
+              this.Success = '';
             },
             error: () => {},
             next: () => {},
@@ -94,16 +93,16 @@ export class AddUserComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Fleet manager added successfully";
+        this.Success = 'Fleet manager added successfully';
 
-        this.userName = "";
-        this.password = "";
-        this.firstName = "";
-        this.lastName = "";
-        this.address = "";
-        this.phone = "";
-        this.email = "";
-        this.groupID = "";
+        this.userName = '';
+        this.password = '';
+        this.firstName = '';
+        this.lastName = '';
+        this.address = '';
+        this.phone = '';
+        this.email = '';
+        this.groupID = '';
         this.groups = [];
       },
     });
@@ -114,9 +113,9 @@ export class AddUserComponent implements OnInit {
   }
 
   concatArray(path) {
-    this.concatArrayKeys = "";
+    this.concatArrayKeys = '';
     for (const i in path) {
-      this.concatArrayKeys += path[i] + ".";
+      this.concatArrayKeys += path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(
       0,

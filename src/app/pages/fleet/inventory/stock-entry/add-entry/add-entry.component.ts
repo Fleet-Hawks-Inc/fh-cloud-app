@@ -1,35 +1,34 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../api.service";
-import { Router } from "@angular/router";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import { from, of } from "rxjs";
-// declare var jquery: any;
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../../services/api.service';
+import { Router } from '@angular/router';
+import {  map } from 'rxjs/operators';
+import { from } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-add-entry",
-  templateUrl: "./add-entry.component.html",
-  styleUrls: ["./add-entry.component.css"],
+  selector: 'app-add-entry',
+  templateUrl: './add-entry.component.html',
+  styleUrls: ['./add-entry.component.css'],
 })
 export class AddEntryComponent implements OnInit {
-  title = "Add Stock Entry";
+  title = 'Add Stock Entry';
 
   /********** Form Fields ***********/
 
   items = [];
   vendors = [];
-  itemID = "";
-  totalQuantity = "";
-  vendorID = "";
-  description = "";
+  itemID = '';
+  totalQuantity = '';
+  vendorID = '';
+  description = '';
   /******************/
   form;
   errors = {};
-  response: any = "";
+  response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
@@ -41,13 +40,13 @@ export class AddEntryComponent implements OnInit {
   }
 
   fetchItems() {
-    this.apiService.getData("items").subscribe((result: any) => {
+    this.apiService.getData('items').subscribe((result: any) => {
       this.items = result.Items;
     });
   }
 
   fetchVendors() {
-    this.apiService.getData("vendors").subscribe((result: any) => {
+    this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
     });
   }
@@ -67,7 +66,7 @@ export class AddEntryComponent implements OnInit {
       description: this.description,
     };
 
-    this.apiService.postData("stockEntries", data).subscribe({
+    this.apiService.postData('stockEntries', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -75,9 +74,9 @@ export class AddEntryComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
 
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -92,11 +91,11 @@ export class AddEntryComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Stock entry added successfully";
-        this.itemID = "";
-        this.totalQuantity = "";
-        this.vendorID = "";
-        this.description = "";
+        this.Success = 'Stock entry added successfully';
+        this.itemID = '';
+        this.totalQuantity = '';
+        this.vendorID = '';
+        this.description = '';
       },
     });
   }

@@ -1,19 +1,18 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../api.service";
-import { Router } from "@angular/router";
-import { from, of } from "rxjs";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import {AwsUploadService} from '../../../../aws-upload.service';
-declare var jquery: any;
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../../services/api.service';
+import { Router } from '@angular/router';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import {AwsUploadService} from '../../../../../services/aws-upload.service';
 declare var $: any;
 
 @Component({
-  selector: "app-add-vehicle-service-log",
-  templateUrl: "./add-vehicle-service-log.component.html",
-  styleUrls: ["./add-vehicle-service-log.component.css"],
+  selector: 'app-add-vehicle-service-log',
+  templateUrl: './add-vehicle-service-log.component.html',
+  styleUrls: ['./add-vehicle-service-log.component.css'],
 })
 export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
-  title = "Add vehicle Service Log";
+  title = 'Add vehicle Service Log';
 
   imageError = '';
   fileName = '';
@@ -23,26 +22,26 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
 
   /********** Form Fields ***********/
 
-  vehicleID = "";
-  vendorID = "";
-  taskDescription = "";
-  serviceType = "";
-  value = "";
-  odometer = "";
-  attachStockItem = "";
+  vehicleID = '';
+  vendorID = '';
+  taskDescription = '';
+  serviceType = '';
+  value = '';
+  odometer = '';
+  attachStockItem = '';
 
   /******************/
-  quantity = "";
-  itemID = "";
+  quantity = '';
+  itemID = '';
   selectedItems = [];
   items = [];
   vehicles = [];
   vendors = [];
-  response: any = "";
+  response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(private apiService: ApiService,
               private router: Router,
               private awsUS: AwsUploadService) {}
@@ -60,19 +59,19 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
   }
 
   fetchVehicles() {
-    this.apiService.getData("vehicles").subscribe((result: any) => {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
     });
   }
 
   fetchItems() {
-    this.apiService.getData("items").subscribe((result: any) => {
+    this.apiService.getData('items').subscribe((result: any) => {
       this.items = result.Items;
     });
   }
 
   fetchVendors() {
-    this.apiService.getData("vendors").subscribe((result: any) => {
+    this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
     });
   }
@@ -84,7 +83,7 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
     );
     if (item.length > 0) {
       alert(
-        "Its already added or you can delete the existing item to change quantity."
+        'Its already added or you can delete the existing item to change quantity.'
       );
       return false;
     }
@@ -96,7 +95,7 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
         itemID: this.itemID,
         quantity: this.quantity,
       });
-    } 
+    }
   }
 
   removeItem(index) {
@@ -141,7 +140,7 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
       attachStockItem: this.selectedItems,
     };
 
-    this.apiService.postData("vehicleServiceLogs", data).subscribe({
+    this.apiService.postData('vehicleServiceLogs', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -149,9 +148,9 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               console.log(key);
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -166,16 +165,16 @@ export class AddVehicleServiceLogComponent implements OnInit, AfterViewInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Vehicle Service log added successfully";
+        this.Success = 'Vehicle Service log added successfully';
         this.vehicleID = '';
         this.vendorID = '';
         this.taskDescription = '';
         this.value = '';
         this.odometer = '';
-        this.serviceType = "";
+        this.serviceType = '';
         this.selectedItems = [];
-        this.itemID = "";
-        this.quantity = "";
+        this.itemID = '';
+        this.quantity = '';
       },
     });
 

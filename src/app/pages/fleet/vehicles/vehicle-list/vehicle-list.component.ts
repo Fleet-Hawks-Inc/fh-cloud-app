@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../../../api.service";
-import {Router} from "@angular/router";
-import { timer } from "rxjs";
+import {ApiService} from '../../../../services/api.service';
+import {Router} from '@angular/router';
+import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -24,7 +24,7 @@ export class VehicleListComponent implements OnInit {
   }
 
   fetchVehicles() {
-    this.apiService.getData("vehicles").subscribe({
+    this.apiService.getData('vehicles').subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -53,7 +53,7 @@ export class VehicleListComponent implements OnInit {
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 

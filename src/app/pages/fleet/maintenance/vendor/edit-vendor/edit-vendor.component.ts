@@ -1,51 +1,50 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { ApiService } from "../../../../api.service";
-import { from, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { MapBoxService } from "../../../../map-box.service";
-import { Object } from "aws-sdk/clients/s3";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { MapBoxService } from '../../../../../services/map-box.service';
 declare var $: any;
 
 @Component({
-  selector: "app-edit-vendor",
-  templateUrl: "./edit-vendor.component.html",
-  styleUrls: ["./edit-vendor.component.css"],
+  selector: 'app-edit-vendor',
+  templateUrl: './edit-vendor.component.html',
+  styleUrls: ['./edit-vendor.component.css'],
 })
 export class EditVendorComponent implements OnInit {
-  parentTitle = "Vendors";
-  title = "Edit Vendor";
+  parentTitle = 'Vendors';
+  title = 'Edit Vendor';
   errors = {};
   form;
-  concatArrayKeys = "";
+  concatArrayKeys = '';
 
   /**
    * Form Props
    */
-  vendorID = "";
-  vendorName = "";
-  vendorType = "";
+  vendorID = '';
+  vendorName = '';
+  vendorType = '';
   geoLocation = {
-    latitude: "",
-    longitude: "",
+    latitude: '',
+    longitude: '',
   };
-  geofence = "";
-  address = "";
-  stateID = "";
-  countryID = "";
-  taxID = "";
-  creditDays = "";
-  timeCreated = "";
+  geofence = '';
+  address = '';
+  stateID = '';
+  countryID = '';
+  taxID = '';
+  creditDays = '';
+  timeCreated = '';
 
   countries = [];
   states = [];
   taxAccounts = [];
 
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(
     private route: ActivatedRoute,
     private mapBoxService: MapBoxService,
@@ -53,17 +52,17 @@ export class EditVendorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.vendorID = this.route.snapshot.params["vendorID"];
+    this.vendorID = this.route.snapshot.params['vendorID'];
     this.fetchCountries();
     this.fetchAccounts();
     this.fetchVendor();
   }
 
   initMap() {
-    if ($("#map-div").is(":visible")) {
-      $("#map-div").hide("slow");
+    if ($('#map-div').is(':visible')) {
+      $('#map-div').hide('slow');
     } else {
-      $("#map-div").show("slow");
+      $('#map-div').show('slow');
     }
 
     //initiate map box
@@ -86,7 +85,7 @@ export class EditVendorComponent implements OnInit {
   }
 
   fetchCountries() {
-    this.apiService.getData("countries").subscribe((result: any) => {
+    this.apiService.getData('countries').subscribe((result: any) => {
       this.countries = result.Items;
     });
   }
@@ -145,7 +144,7 @@ export class EditVendorComponent implements OnInit {
       timeCreated: this.timeCreated,
     };
 
-    this.apiService.putData("vendors", data).subscribe({
+    this.apiService.putData('vendors', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -153,9 +152,9 @@ export class EditVendorComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               console.log(key);
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -170,7 +169,7 @@ export class EditVendorComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Vendor updated successfully";
+        this.Success = 'Vendor updated successfully';
       },
     });
   }
@@ -180,9 +179,9 @@ export class EditVendorComponent implements OnInit {
   }
 
   concatArray(path) {
-    this.concatArrayKeys = "";
+    this.concatArrayKeys = '';
     for (const i in path) {
-      this.concatArrayKeys += path[i] + ".";
+      this.concatArrayKeys += path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(
       0,

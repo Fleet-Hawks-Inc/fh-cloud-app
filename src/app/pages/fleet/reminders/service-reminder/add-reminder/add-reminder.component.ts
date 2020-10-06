@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../api.service';
-import { from, of } from 'rxjs';
-import { catchError, map, mapTo, tap } from 'rxjs/operators';
+import { ApiService } from '../../../../../services/api.service';
+import { from } from 'rxjs';
+import { map} from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
-
-declare var jquery: any;
 declare var $: any;
 
 @Component({
@@ -73,9 +71,9 @@ export class AddReminderComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               //console.log(key);
-              val.message = val.message.replace(/".*"/, 'This Field');
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -98,7 +96,7 @@ export class AddReminderComponent implements OnInit {
   throwErrors() {
     this.form.showErrors(this.errors);
   }
-  
+
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
@@ -106,5 +104,5 @@ export class AddReminderComponent implements OnInit {
     });
   }
 
- 
+
 }

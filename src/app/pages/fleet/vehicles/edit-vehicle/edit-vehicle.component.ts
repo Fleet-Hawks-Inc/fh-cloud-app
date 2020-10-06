@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../../../api.service";
+import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../../../../services/api.service';
 declare var $: any;
-declare var jQuery: any;
 @Component({
   selector: 'app-edit-vehicle',
   templateUrl: './edit-vehicle.component.html',
@@ -47,18 +46,18 @@ export class EditVehicleComponent implements OnInit {
 
   ngOnInit() {
     this.vehicleID = this.route.snapshot.params['vehicleId'];
-    console.log("id",this.vehicleID);
+    console.log('id',this.vehicleID);
       this.apiService.getData('quantums')
           .subscribe((result: any) => {
-              console.log("result items", result.items)
+              console.log('result items', result.items)
               this.quantumsList = result.Items;
           });
 
     this.apiService.getData('vehicles/' + this.vehicleID)
         .subscribe((result: any) => {
-            
+
             result = result.Items[0];
-             //console.log(result); 
+             //console.log(result);
             // this.abc = result['0'];
 
             //     'vehicleID': this.vehicleID,

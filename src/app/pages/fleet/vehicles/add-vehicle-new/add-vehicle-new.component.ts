@@ -1,17 +1,17 @@
-import { Component, OnInit } from "@angular/core";
-import {ApiService} from '../../../api.service';
+import { Component, OnInit } from '@angular/core';
+import {ApiService} from '../../../../services/api.service';
 import {Router} from '@angular/router';
 declare var $: any;
 
 @Component({
-  selector: "app-add-vehicle-new",
-  templateUrl: "./add-vehicle-new.component.html",
-  styleUrls: ["./add-vehicle-new.component.css"],
+  selector: 'app-add-vehicle-new',
+  templateUrl: './add-vehicle-new.component.html',
+  styleUrls: ['./add-vehicle-new.component.css'],
 })
 export class AddVehicleNewComponent implements OnInit {
   title = 'Add Vehicles';
 
-  activeTab = "details";
+  activeTab = 'details';
   /**
    * Quantum prop
    */
@@ -23,81 +23,81 @@ export class AddVehicleNewComponent implements OnInit {
   /**
    * Vehicle Prop
    */
-  vehicleName = "";
-  VIN = "";
-  year = "";
-  make = "";
-  model = "";
-  state = "";
-  plateNumber = "";
-  serviceProgramID = "";
-  inspectionFormID = "";
-  currentStatus = "";
-  group = "";
-  ownership = "";
+  vehicleName = '';
+  VIN = '';
+  year = '';
+  make = '';
+  model = '';
+  state = '';
+  plateNumber = '';
+  serviceProgramID = '';
+  inspectionFormID = '';
+  currentStatus = '';
+  group = '';
+  ownership = '';
   additionalDetails = {
-    vehicleColor: "",
-    bodyType: "",
-    bodySubType: "",
+    vehicleColor: '',
+    bodyType: '',
+    bodySubType: '',
   }
   lifeCycle = {
-    estimatedServiceLifeInMonths: "",
-    estimatedServiceLifeInMiles: ""
+    estimatedServiceLifeInMonths: '',
+    estimatedServiceLifeInMiles: ''
   }
   dimensions = {
-    width: "",
-    height:  "",
-    length: "",
-    interiorVolume: "",
-    passengerVolume: "",
-    cargoVolume: "",
-    groundClearance: "",
-    badLength: ""
+    width: '',
+    height:  '',
+    length: '',
+    interiorVolume: '',
+    passengerVolume: '',
+    cargoVolume: '',
+    groundClearance: '',
+    badLength: ''
   }
   weight = {
-    curbWeight: "",
-    grossVehicleWeightRating: ""
+    curbWeight: '',
+    grossVehicleWeightRating: ''
   }
   performace = {
-    towingCapacity: "",
-    maxPayload:  ""
+    towingCapacity: '',
+    maxPayload:  ''
   }
   fuelEconomy = {
-    EPACity: "",
-    EPAHighway: "",
-    EPACombined: ""
+    EPACity: '',
+    EPAHighway: '',
+    EPACombined: ''
   }
   fuel = {
-    fuelType: "",
-    fuelTank1Capacity: "",
-    fuelTank2Capacity: ""
+    fuelType: '',
+    fuelTank1Capacity: '',
+    fuelTank2Capacity: ''
   }
-  oilCapacity = "";
+  oilCapacity = '';
   features = {
-    breakSystem: "",
-    wheelBase: "",
-    rearAxle: "",
-    frontTyreType: "",
-    frontTrackWidth: "",
-    frontWheelDiameter: "",
-    frontTyrePSI: "",
-    rearTyreType: "",
-    rearTrackWidth: "",
-    rearWheelDiameter: "",
-    rearTyrePSI: ""
+    breakSystem: '',
+    wheelBase: '',
+    rearAxle: '',
+    frontTyreType: '',
+    frontTrackWidth: '',
+    frontWheelDiameter: '',
+    frontTyrePSI: '',
+    rearTyreType: '',
+    rearTrackWidth: '',
+    rearWheelDiameter: '',
+    rearTyrePSI: ''
   }
   settings = {
-    primaryMeter: "",
-    fuelUnit: "",
-    measurementUnit: ""
+    primaryMeter: '',
+    fuelUnit: '',
+    measurementUnit: ''
   }
   safetyParameters = {
-    hardBreakingParameters: "",
-    hardAccelrationParameters: "",
-    turningParameters: ""
+    hardBreakingParameters: '',
+    hardAccelrationParameters: '',
+    turningParameters: ''
   }
 
-  countryID = "";
+  countryID = '';
   servicePrograms =  [];
   inspectionForms = [];
   manufacturers = [];
@@ -114,15 +114,15 @@ export class AddVehicleNewComponent implements OnInit {
 
 
   slides = [
-    {img: "assets/img/truck.jpg"},
-    {img: "assets/img/truck.jpg"},
+    {img: 'assets/img/truck.jpg'},
+    {img: 'assets/img/truck.jpg'},
   ];
-  slideConfig = {"slidesToShow": 1,
-  "slidesToScroll": 1,
-  "dots": true,
-  "infinite": true,
-  "autoplay": true,
-  "autoplaySpeed": 1500};
+  slideConfig = {'slidesToShow': 1,
+  'slidesToScroll': 1,
+  'dots': true,
+  'infinite': true,
+  'autoplay': true,
+  'autoplaySpeed': 1500};
 
   constructor(private apiService: ApiService,
     private router: Router) {}
@@ -139,12 +139,12 @@ export class AddVehicleNewComponent implements OnInit {
       this.quantumsList = result.Items;
     });
 
-    this.settings.primaryMeter = "kilometers";
-    this.settings.fuelUnit = "liters";
-    this.settings.measurementUnit = "metric";
-    this.safetyParameters.hardBreakingParameters = "6";
-    this.safetyParameters.hardAccelrationParameters = "6";
-    this.safetyParameters.turningParameters = "6";
+    this.settings.primaryMeter = 'kilometers';
+    this.settings.fuelUnit = 'liters';
+    this.settings.measurementUnit = 'metric';
+    this.safetyParameters.hardBreakingParameters = '6';
+    this.safetyParameters.hardAccelrationParameters = '6';
+    this.safetyParameters.turningParameters = '6';
 
     $('#hardBreakingParametersValue').html(6);
     $('#hardAccelrationParametersValue').html(6);
@@ -194,7 +194,7 @@ export class AddVehicleNewComponent implements OnInit {
   }
 
   fetchInspectionForms() {
-    this.apiService.getData("inspectionForms/type/Vehicle").subscribe((result: any) => {
+    this.apiService.getData('inspectionForms/type/Vehicle').subscribe((result: any) => {
       this.inspectionForms = result.Items;
     });
   }
@@ -297,73 +297,73 @@ console.log(data);
     });
   }
   new_details() {
-    this.activeTab="details";
-    document.getElementById("vehicle_new_details").style.display = "block";
-    document.getElementById("vehicle_new_lifecycle").style.display = "none";
-    document.getElementById("vehicle_new_specifications").style.display =
-      "none";
-    document.getElementById("vehicle_new_fluids").style.display = "none";
-    document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_settings").style.display = "none";
+    this.activeTab='details';
+    document.getElementById('vehicle_new_details').style.display = 'block';
+    document.getElementById('vehicle_new_lifecycle').style.display = 'none';
+    document.getElementById('vehicle_new_specifications').style.display =
+      'none';
+    document.getElementById('vehicle_new_fluids').style.display = 'none';
+    document.getElementById('vehicle_new_wheels').style.display = 'none';
+    document.getElementById('vehicle_new_settings').style.display = 'none';
   }
   new_lifecycle() {
-    this.activeTab="lifeCycle";
-    document.getElementById("vehicle_new_details").style.display = "none";
-    document.getElementById("vehicle_new_lifecycle").style.display = "block";
-    document.getElementById("vehicle_new_specifications").style.display =
-      "none";
-    document.getElementById("vehicle_new_fluids").style.display = "none";
-    document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_settings").style.display = "none";
+    this.activeTab='lifeCycle';
+    document.getElementById('vehicle_new_details').style.display = 'none';
+    document.getElementById('vehicle_new_lifecycle').style.display = 'block';
+    document.getElementById('vehicle_new_specifications').style.display =
+      'none';
+    document.getElementById('vehicle_new_fluids').style.display = 'none';
+    document.getElementById('vehicle_new_wheels').style.display = 'none';
+    document.getElementById('vehicle_new_settings').style.display = 'none';
   }
   new_specifications() {
-    this.activeTab="specifications";
-    document.getElementById("vehicle_new_details").style.display = "none";
-    document.getElementById("vehicle_new_lifecycle").style.display = "none";
-    document.getElementById("vehicle_new_specifications").style.display =
-      "block";
-    document.getElementById("vehicle_new_fluids").style.display = "none";
-    document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_settings").style.display = "none";
+    this.activeTab='specifications';
+    document.getElementById('vehicle_new_details').style.display = 'none';
+    document.getElementById('vehicle_new_lifecycle').style.display = 'none';
+    document.getElementById('vehicle_new_specifications').style.display =
+      'block';
+    document.getElementById('vehicle_new_fluids').style.display = 'none';
+    document.getElementById('vehicle_new_wheels').style.display = 'none';
+    document.getElementById('vehicle_new_settings').style.display = 'none';
   }
   new_fluids() {
-    this.activeTab="fluids";
-    document.getElementById("vehicle_new_details").style.display = "none";
-    document.getElementById("vehicle_new_lifecycle").style.display = "none";
-    document.getElementById("vehicle_new_specifications").style.display =
-      "none";
-    document.getElementById("vehicle_new_fluids").style.display = "block";
-    document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_settings").style.display = "none";
+    this.activeTab='fluids';
+    document.getElementById('vehicle_new_details').style.display = 'none';
+    document.getElementById('vehicle_new_lifecycle').style.display = 'none';
+    document.getElementById('vehicle_new_specifications').style.display =
+      'none';
+    document.getElementById('vehicle_new_fluids').style.display = 'block';
+    document.getElementById('vehicle_new_wheels').style.display = 'none';
+    document.getElementById('vehicle_new_settings').style.display = 'none';
   }
   new_wheels() {
-    this.activeTab="wheel&Tyres";
-    document.getElementById("vehicle_new_details").style.display = "none";
-    document.getElementById("vehicle_new_lifecycle").style.display = "none";
-    document.getElementById("vehicle_new_specifications").style.display =
-      "none";
-    document.getElementById("vehicle_new_fluids").style.display = "none";
-    document.getElementById("vehicle_new_wheels").style.display = "block";
-    document.getElementById("vehicle_new_settings").style.display = "none";
+    this.activeTab='wheel&Tyres';
+    document.getElementById('vehicle_new_details').style.display = 'none';
+    document.getElementById('vehicle_new_lifecycle').style.display = 'none';
+    document.getElementById('vehicle_new_specifications').style.display =
+      'none';
+    document.getElementById('vehicle_new_fluids').style.display = 'none';
+    document.getElementById('vehicle_new_wheels').style.display = 'block';
+    document.getElementById('vehicle_new_settings').style.display = 'none';
   }
   new_engine() {
-    document.getElementById("vehicle_new_details").style.display = "none";
-    document.getElementById("vehicle_new_lifecycle").style.display = "none";
-    document.getElementById("vehicle_new_specifications").style.display =
-      "none";
-    document.getElementById("vehicle_new_fluids").style.display = "none";
-    document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_settings").style.display = "none";
+    document.getElementById('vehicle_new_details').style.display = 'none';
+    document.getElementById('vehicle_new_lifecycle').style.display = 'none';
+    document.getElementById('vehicle_new_specifications').style.display =
+      'none';
+    document.getElementById('vehicle_new_fluids').style.display = 'none';
+    document.getElementById('vehicle_new_wheels').style.display = 'none';
+    document.getElementById('vehicle_new_settings').style.display = 'none';
   }
   new_settings() {
-    this.activeTab="settings";
-    document.getElementById("vehicle_new_details").style.display = "none";
-    document.getElementById("vehicle_new_lifecycle").style.display = "none";
-    document.getElementById("vehicle_new_specifications").style.display =
-      "none";
-    document.getElementById("vehicle_new_fluids").style.display = "none";
-    document.getElementById("vehicle_new_wheels").style.display = "none";
-    document.getElementById("vehicle_new_settings").style.display = "block";
+    this.activeTab='settings';
+    document.getElementById('vehicle_new_details').style.display = 'none';
+    document.getElementById('vehicle_new_lifecycle').style.display = 'none';
+    document.getElementById('vehicle_new_specifications').style.display =
+      'none';
+    document.getElementById('vehicle_new_fluids').style.display = 'none';
+    document.getElementById('vehicle_new_wheels').style.display = 'none';
+    document.getElementById('vehicle_new_settings').style.display = 'block';
   }
 
   onChangePrimaryMeter(value: any){

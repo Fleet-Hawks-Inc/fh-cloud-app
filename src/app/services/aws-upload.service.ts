@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as AWS from 'aws-sdk/global';
 import * as S3 from 'aws-sdk/clients/s3';
-import {environment} from '../environments/environment';
-
-import { async } from '@angular/core/testing';
+import {environment} from '../../environments/environment';
 declare var $: any;
 @Injectable({
   providedIn: 'root'
@@ -36,7 +33,7 @@ export class AwsUploadService {
     );
     this.bucketName = environment.awsBucket.bucketName;
   }
-  
+
 
   uploadFile(folder, fileName, fileData) {
     const contentType = fileData.type;
@@ -62,13 +59,13 @@ export class AwsUploadService {
         return false;
       }
       console.log('Successfully uploaded file.', data);
-      //this.filename = file;
+      // this.filename = file;
      // return filename;
     });
     //return this.filename;
 
-    //for upload progress
-    /*bucket.upload(params).on('httpUploadProgress', function (evt) {
+    // for upload progress
+    /* bucket.upload(params).on('httpUploadProgress', function (evt) {
               console.log(evt.loaded + ' of ' + evt.total + ' Bytes');
           }).send(function (err, data) {
               if (err) {
@@ -97,7 +94,7 @@ export class AwsUploadService {
     }
     const data = await s3.getObject(params).promise();
     if (data) {
-      //console.log('Successfully get files.', data);
+      // console.log('Successfully get files.', data);
       const image = `data:${data.ContentType};base64,${this.encode(data.Body)}`;
       return image;
     } else {

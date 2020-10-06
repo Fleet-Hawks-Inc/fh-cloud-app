@@ -1,58 +1,58 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { ApiService } from "../../../api.service";
-import { from, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { Object } from "aws-sdk/clients/s3";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 declare var $: any;
 
 @Component({
-  selector: "app-edit-user",
-  templateUrl: "./edit-user.component.html",
-  styleUrls: ["./edit-user.component.css"],
+  selector: 'app-edit-user',
+  templateUrl: './edit-user.component.html',
+  styleUrls: ['./edit-user.component.css'],
 })
 export class EditUserComponent implements OnInit {
-  parentTitle = "Fleet Managers";
-  title = "Edit Fleet Manager";
+  parentTitle = 'Fleet Managers';
+  title = 'Edit Fleet Manager';
   errors = {};
   form;
-  concatArrayKeys = "";
+  concatArrayKeys = '';
 
   /**
    * Form Props
    */
-  userType = "";
-  userName = "";
-  password = "";
-  firstName = "";
-  lastName = "";
-  address = "";
-  phone = "";
-  email = "";
-  groupID = "";
+  userType = '';
+  userName = '';
+  password = '';
+  firstName = '';
+  lastName = '';
+  address = '';
+  phone = '';
+  email = '';
+  groupID = '';
   loginEnabled = true;
-  timeCreated = "";
+  timeCreated = '';
 
   groups = [];
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
-    this.userName = this.route.snapshot.params["userName"];
+    this.userName = this.route.snapshot.params['userName'];
     this.fetchUser();
     this.fetchGroups();
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
   fetchGroups() {
-    this.apiService.getData("groups").subscribe((result: any) => {
+    this.apiService.getData('groups').subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
@@ -93,7 +93,7 @@ export class EditUserComponent implements OnInit {
       loginEnabled: this.loginEnabled,
       timeCreated: this.timeCreated,
     };
-    this.apiService.putData("users", data).subscribe({
+    this.apiService.putData('users', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -101,9 +101,9 @@ export class EditUserComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               console.log(key);
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -118,7 +118,7 @@ export class EditUserComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Fleet manager updated successfully";
+        this.Success = 'Fleet manager updated successfully';
       },
     });
   }
@@ -128,9 +128,9 @@ export class EditUserComponent implements OnInit {
   }
 
   concatArray(path) {
-    this.concatArrayKeys = "";
+    this.concatArrayKeys = '';
     for (const i in path) {
-      this.concatArrayKeys += path[i] + ".";
+      this.concatArrayKeys += path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(
       0,

@@ -1,38 +1,37 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { ApiService } from "../../../../api.service";
-import { from, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { Object } from "aws-sdk/clients/s3";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService } from '../../../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
-  selector: "app-add-item-group",
-  templateUrl: "./add-item-group.component.html",
-  styleUrls: ["./add-item-group.component.css"],
+  selector: 'app-add-item-group',
+  templateUrl: './add-item-group.component.html',
+  styleUrls: ['./add-item-group.component.css'],
 })
 export class AddItemGroupComponent implements OnInit {
-  title = "Add Item Group";
+  title = 'Add Item Group';
   errors = {};
   form;
-  concatArrayKeys = "";
+  concatArrayKeys = '';
   /********** Form Fields ***********/
-  groupName = "";
-  description = "";
+  groupName = '';
+  description = '';
 
   /******************/
 
 
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -45,7 +44,7 @@ export class AddItemGroupComponent implements OnInit {
       description: this.description,
     };
 
-    this.apiService.postData("itemGroups", data).subscribe({
+    this.apiService.postData('itemGroups', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -53,9 +52,9 @@ export class AddItemGroupComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
 
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -70,9 +69,9 @@ export class AddItemGroupComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Item Group added successfully";
-        this.groupName = "";
-        this.description = "";
+        this.Success = 'Item Group added successfully';
+        this.groupName = '';
+        this.description = '';
       },
     });
   }
@@ -82,9 +81,9 @@ export class AddItemGroupComponent implements OnInit {
   }
 
   concatArray(path) {
-    this.concatArrayKeys = "";
+    this.concatArrayKeys = '';
     for (const i in path) {
-      this.concatArrayKeys += path[i] + ".";
+      this.concatArrayKeys += path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(
       0,

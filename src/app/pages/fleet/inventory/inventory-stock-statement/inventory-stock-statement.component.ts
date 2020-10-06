@@ -1,8 +1,6 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
-declare var $: any;
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inventory-stock-statement',
@@ -10,7 +8,7 @@ declare var $: any;
   styleUrls: ['./inventory-stock-statement.component.css']
 })
 export class InventoryStockStatementComponent implements OnInit {
-  title = "Stock Statement";
+  title = 'Stock Statement';
   items = [];
 
   constructor(private apiService: ApiService, private router: Router) {}
@@ -20,7 +18,7 @@ export class InventoryStockStatementComponent implements OnInit {
   }
 
   fetchItems() {
-    this.apiService.getData("items").subscribe((result: any) => {
+    this.apiService.getData('items').subscribe((result: any) => {
       this.items = result.Items;
     });
   }

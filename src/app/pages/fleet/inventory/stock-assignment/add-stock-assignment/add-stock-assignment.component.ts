@@ -1,27 +1,26 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { ApiService } from "../../../../api.service";
-import { catchError, map, mapTo, tap, retry } from "rxjs/operators";
-import { from, of } from "rxjs";
-declare var jquery: any;
+import {  Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../../../services/api.service';
+import { map} from 'rxjs/operators';
+import { from } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-add-stock-assignment",
-  templateUrl: "./add-stock-assignment.component.html",
-  styleUrls: ["./add-stock-assignment.component.css"],
+  selector: 'app-add-stock-assignment',
+  templateUrl: './add-stock-assignment.component.html',
+  styleUrls: ['./add-stock-assignment.component.css'],
 })
 export class AddStockAssignmentComponent implements OnInit {
-  title = "Add Stock Assignment";
+  title = 'Add Stock Assignment';
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
 
-  vehicleID = "";
-  itemID = "";
-  quantity = "";
+  vehicleID = '';
+  itemID = '';
+  quantity = '';
   totalQuantity: any = 0;
   selectedItems = [];
 
@@ -29,11 +28,11 @@ export class AddStockAssignmentComponent implements OnInit {
   vehicles = [];
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
@@ -43,13 +42,13 @@ export class AddStockAssignmentComponent implements OnInit {
   }
 
   fetchVehicles() {
-    this.apiService.getData("vehicles").subscribe((result: any) => {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
     });
   }
 
   fetchItems() {
-    this.apiService.getData("items").subscribe((result: any) => {
+    this.apiService.getData('items').subscribe((result: any) => {
       this.items = result.Items;
     });
   }
@@ -61,7 +60,7 @@ export class AddStockAssignmentComponent implements OnInit {
     );
     if (item.length > 0) {
       alert(
-        "Its already added in Assignment or you can delete the existing item to add new."
+        'Its already added in Assignment or you can delete the existing item to add new.'
       );
       return false;
     }
@@ -91,7 +90,7 @@ export class AddStockAssignmentComponent implements OnInit {
 
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -106,13 +105,13 @@ export class AddStockAssignmentComponent implements OnInit {
       totalQuantity: this.totalQuantity,
     };
    // console.log(data);return ;
-    this.apiService.postData("stockAssignments", data).subscribe({
+    this.apiService.postData('stockAssignments', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -121,10 +120,10 @@ export class AddStockAssignmentComponent implements OnInit {
           });
       },
       next: (res) => {
-        this.vehicleID = "";
-        this.quantity = "";
+        this.vehicleID = '';
+        this.quantity = '';
         this.hasSuccess = true;
-        this.Success = "Stock Assignment Added successfully";
+        this.Success = 'Stock Assignment Added successfully';
 
         this.selectedItems = [];
         this.totalQuantity = 0;

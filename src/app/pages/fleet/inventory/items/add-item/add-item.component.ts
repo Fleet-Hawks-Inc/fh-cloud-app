@@ -1,21 +1,20 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { ApiService } from "../../../../api.service";
-import { from, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { Object } from "aws-sdk/clients/s3";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService } from '../../../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
-  selector: "app-add-item",
-  templateUrl: "./add-item.component.html",
-  styleUrls: ["./add-item.component.css"],
+  selector: 'app-add-item',
+  templateUrl: './add-item.component.html',
+  styleUrls: ['./add-item.component.css'],
 })
 export class AddItemComponent implements OnInit {
-  title = "Add Item";
+  title = 'Add Item';
   errors = {};
   form;
-  concatArrayKeys = "";
+  concatArrayKeys = '';
   inventaryData = {
     uploadedPhotos: {},
     uploadedDocuments: {}
@@ -23,20 +22,20 @@ export class AddItemComponent implements OnInit {
   /**
    * Form props
    */
-  itemName = "";
-  description = "";
-  defaultPurchasePrice = "";
-  defaultPurchaseVendor = "";
-  defaultTaxAccount = "";
-  openingStock = "";
+  itemName = '';
+  description = '';
+  defaultPurchasePrice = '';
+  defaultPurchaseVendor = '';
+  defaultTaxAccount = '';
+  openingStock = '';
   vendors = [];
   taxAccounts = [];
 
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -44,12 +43,12 @@ export class AddItemComponent implements OnInit {
     this.fetchVendors();
     this.fetchAccounts();
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
   fetchVendors() {
-    this.apiService.getData("vendors").subscribe((result: any) => {
+    this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
     });
   }
@@ -77,7 +76,7 @@ export class AddItemComponent implements OnInit {
       openingStock: this.openingStock,
     };
 
-    this.apiService.postData("items", data).subscribe({
+    this.apiService.postData('items', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -85,9 +84,9 @@ export class AddItemComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
 
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -102,14 +101,14 @@ export class AddItemComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Item added successfully";
+        this.Success = 'Item added successfully';
 
-        this.itemName = "";
-        this.description = "";
-        this.defaultPurchasePrice = "";
-        this.defaultPurchaseVendor = "";
-        this.defaultTaxAccount = "";
-        this.openingStock = "";
+        this.itemName = '';
+        this.description = '';
+        this.defaultPurchasePrice = '';
+        this.defaultPurchaseVendor = '';
+        this.defaultTaxAccount = '';
+        this.openingStock = '';
         this.vendors = [];
         this.taxAccounts = [];
       },
@@ -121,9 +120,9 @@ export class AddItemComponent implements OnInit {
   }
 
   concatArray(path) {
-    this.concatArrayKeys = "";
+    this.concatArrayKeys = '';
     for (const i in path) {
-      this.concatArrayKeys += path[i] + ".";
+      this.concatArrayKeys += path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(
       0,

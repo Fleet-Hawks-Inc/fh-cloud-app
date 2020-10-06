@@ -1,69 +1,68 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { ApiService } from "../../../../api.service";
-import { from, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { MapBoxService } from "../../../../map-box.service";
-import { Object } from "aws-sdk/clients/s3";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService } from '../../../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { MapBoxService } from '../../../../../services/map-box.service';
 declare var $: any;
 
 @Component({
-  selector: "app-add-vendor",
-  templateUrl: "./add-vendor.component.html",
-  styleUrls: ["./add-vendor.component.css"],
+  selector: 'app-add-vendor',
+  templateUrl: './add-vendor.component.html',
+  styleUrls: ['./add-vendor.component.css'],
 })
 export class AddVendorComponent implements OnInit {
-  parentTitle = "Vendors";
-  title = "Add Vendor";
+  parentTitle = 'Vendors';
+  title = 'Add Vendor';
   errors = {};
   form;
-  concatArrayKeys = "";
+  concatArrayKeys = '';
 
   /**
    * Form Props
    */
-  vendorName = "";
-  vendorType = "";
+  vendorName = '';
+  vendorType = '';
   geoLocation = {
-    latitude: "",
-    longitude: "",
+    latitude: '',
+    longitude: '',
   };
-  address = "";
-  stateID = "";
-  countryID = "";
-  taxID = "";
-  creditDays = "";
+  address = '';
+  stateID = '';
+  countryID = '';
+  taxID = '';
+  creditDays = '';
 
   countries = [];
   states = [];
   taxAccounts = [];
 
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(private apiService: ApiService, private mapBoxService: MapBoxService, private router: Router) {}
 
   ngOnInit() {
     this.fetchCountries();
     this.fetchAccounts();
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
   initMap() {
-    if ($("#map-div").is(":visible")) {
-      $("#map-div").hide("slow");
+    if ($('#map-div').is(':visible')) {
+      $('#map-div').hide('slow');
     } else {
-      $("#map-div").show("slow");
+      $('#map-div').show('slow');
     }
     this.mapBoxService.initMapbox(-104.618896, 50.44521);
   }
 
   fetchCountries() {
-    this.apiService.getData("countries").subscribe((result: any) => {
+    this.apiService.getData('countries').subscribe((result: any) => {
       this.countries = result.Items;
     });
   }
@@ -104,7 +103,7 @@ export class AddVendorComponent implements OnInit {
       creditDays: this.creditDays,
     };
     console.log(data);
-    this.apiService.postData("vendors", data).subscribe({
+    this.apiService.postData('vendors', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -112,9 +111,9 @@ export class AddVendorComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               console.log(key);
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -130,19 +129,19 @@ export class AddVendorComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Vendor added successfully";
+        this.Success = 'Vendor added successfully';
         this.initMap();
-        this.vendorName = "";
-        this.vendorType = "";
+        this.vendorName = '';
+        this.vendorType = '';
         this.geoLocation = {
-          latitude: "",
-          longitude: "",
+          latitude: '',
+          longitude: '',
         };
-        this.address = "";
-        this.stateID = "";
-        this.countryID = "";
-        this.taxID = "";
-        this.creditDays = "";
+        this.address = '';
+        this.stateID = '';
+        this.countryID = '';
+        this.taxID = '';
+        this.creditDays = '';
       },
     });
   }
@@ -152,9 +151,9 @@ export class AddVendorComponent implements OnInit {
   }
 
   concatArray(path) {
-    this.concatArrayKeys = "";
+    this.concatArrayKeys = '';
     for (const i in path) {
-      this.concatArrayKeys += path[i] + ".";
+      this.concatArrayKeys += path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(
       0,

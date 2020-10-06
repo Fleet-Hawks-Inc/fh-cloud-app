@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
+import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import { LoginComponent } from './entry/login/login.component';
 import { DashboardComponent } from './entry/dashboard/dashboard.component';
 import { AuthService } from './services/auth.service';
@@ -138,12 +138,25 @@ import {Role} from './models/objects';
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: 'Login', component: LoginComponent },
+  {
+    path: 'Dashboard',
+    component: DashboardComponent,
+    canActivate: [AuthService],
+  },
+
+  {
+    path: 'Map-Dashboard',
+    component: MapDashboardComponent,
+    canActivate: [AuthService],
+  },
+  { path: 'healthcheck', component: HealthcheckComponent },
   // { path: 'Register', component: RegisterComponent },
   {
     path: 'fleet',
     // canActivate: [AuthService],
     // data: { roles: [Role.Admin] },
     loadChildren: () => import('./pages/fleet/fleet.module').then((m) => m.FleetModule) ,
+    data: { applyPreload: true }
   },
   {
     path: 'compliance',
@@ -161,17 +174,7 @@ const routes: Routes = [
     path: 'safety',
     loadChildren: () => import('./pages/safety/safety.module').then((m) => m.SafetyModule),
   },
-  {
-    path: 'Dashboard',
-    component: DashboardComponent,
-    canActivate: [AuthService],
-  },
 
-  {
-    path: 'Map-Dashboard',
-    component: MapDashboardComponent,
-    canActivate: [AuthService],
-  },
 
   // {
   //   path: 'Add-Vehicle',
@@ -183,12 +186,13 @@ const routes: Routes = [
   // { path: 'Edit-Vehicle/:vehicleId', component: EditVehicleComponent },
 
   { path: 'Left-Bar', component: LeftBarComponent },
+
   // { path: 'R-Forms', component: RFormsComponent },
   // { path: 'Add-Quantum', component: AddQuantumComponent },
   // { path: 'Edit-Quantum/:quantumId', component: EditQuantumComponent },
   // { path: 'Quantum-List', component: QuantumsComponent },
 
-  { path: 'healthcheck', component: HealthcheckComponent },
+
 
   // { path: 'Add-User', component: AddUserComponent },
   // { path: 'User-List', component: UserListComponent },
@@ -324,7 +328,11 @@ const routes: Routes = [
 
 ];
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,
+    // {
+    //   preloadingStrategy: PreloadAllModules
+    // }
+    )],
   exports: [RouterModule],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
 })

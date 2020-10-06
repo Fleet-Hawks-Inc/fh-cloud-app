@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../services/api.service';
+import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-user-list",
-  templateUrl: "./user-list.component.html",
-  styleUrls: ["./user-list.component.css"],
+  selector: 'app-user-list',
+  templateUrl: './user-list.component.html',
+  styleUrls: ['./user-list.component.css'],
 })
 export class UserListComponent implements OnInit {
-  title = "Fleet Manager List";
+  title = 'Fleet Manager List';
   users;
 
   constructor(private apiService: ApiService, private router: Router) {}
@@ -20,7 +20,7 @@ export class UserListComponent implements OnInit {
   }
 
   fetchUsers() {
-    this.apiService.getData("users/userType/manager").subscribe({
+    this.apiService.getData('users/userType/manager').subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -39,14 +39,14 @@ export class UserListComponent implements OnInit {
       }
       /******************************/
 
-    this.apiService.deleteData("users/" + userId).subscribe((result: any) => {
+    this.apiService.deleteData('users/' + userId).subscribe((result: any) => {
       this.fetchUsers();
     });
   }
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 }

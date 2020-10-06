@@ -1,52 +1,50 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { ApiService } from "../../../../api.service";
-import { from, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { Object } from "aws-sdk/clients/s3";
-declare var $: any;
+import { Component, OnInit } from '@angular/core';
+import {  ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
-  selector: "app-edit-item",
-  templateUrl: "./edit-item.component.html",
-  styleUrls: ["./edit-item.component.css"],
+  selector: 'app-edit-item',
+  templateUrl: './edit-item.component.html',
+  styleUrls: ['./edit-item.component.css'],
 })
 export class EditItemComponent implements OnInit {
-  title = "Edit Item";
+  title = 'Edit Item';
   errors = {};
   form;
-  concatArrayKeys = "";
+  concatArrayKeys = '';
 
   /**
    * Form props
    */
   taxAccounts = [];
   vendors: [];
-  itemID = "";
-  itemName = "";
-  description = "";
-  defaultPurchasePrice = "";
-  defaultPurchaseVendor = "";
-  defaultTaxAccount = "";
-  openingStock = "";
-  timeCreated = "";
+  itemID = '';
+  itemName = '';
+  description = '';
+  defaultPurchasePrice = '';
+  defaultPurchaseVendor = '';
+  defaultTaxAccount = '';
+  openingStock = '';
+  timeCreated = '';
 
-  response: any = "";
-  hasError: boolean = false;
-  hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  response: any = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
   ngOnInit() {
-    this.itemID = this.route.snapshot.params["itemID"];
+    this.itemID = this.route.snapshot.params['itemID'];
     this.fetchVendors();
     this.fetchItem();
     this.fetchAccounts();
   }
 
   fetchVendors() {
-    this.apiService.getData("vendors").subscribe((result: any) => {
+    this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
     });
   }
@@ -60,7 +58,7 @@ export class EditItemComponent implements OnInit {
   }
 
   fetchItem() {
-    this.apiService.getData("items/" + this.itemID).subscribe((result: any) => {
+    this.apiService.getData('items/' + this.itemID).subscribe((result: any) => {
       result = result.Items[0];
 
       this.itemID = result.itemID;
@@ -89,7 +87,7 @@ export class EditItemComponent implements OnInit {
       timeCreated: this.timeCreated,
     };
 
-    this.apiService.putData("items", data).subscribe({
+    this.apiService.putData('items', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -97,9 +95,9 @@ export class EditItemComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
 
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -114,7 +112,7 @@ export class EditItemComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Item updated successfully";
+        this.Success = 'Item updated successfully';
       },
     });
   }
@@ -124,9 +122,9 @@ export class EditItemComponent implements OnInit {
   }
 
   concatArray(path) {
-    this.concatArrayKeys = "";
+    this.concatArrayKeys = '';
     for (const i in path) {
-      this.concatArrayKeys += path[i] + ".";
+      this.concatArrayKeys += path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(
       0,

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../api.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../../../services/api.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-service-remind-detail',
@@ -18,7 +18,7 @@ export class ServiceRemindDetailComponent implements OnInit {
 
     this.fetchAsset();
   }
-  
+
   /**
    * fetch Asset data
    */
@@ -28,7 +28,7 @@ export class ServiceRemindDetailComponent implements OnInit {
       .subscribe((result: any) => {
         if (result) {
           this.reminderData = result['Items'];
-          console.log("reminderData", this.reminderData)
+          console.log('reminderData', this.reminderData)
         }
       }, (err) => {
         console.log('reminder detail', err);

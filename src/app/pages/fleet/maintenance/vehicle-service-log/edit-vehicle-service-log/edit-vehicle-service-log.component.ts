@@ -1,19 +1,18 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { ApiService } from "../../../../api.service";
-import { from, of } from "rxjs";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import {AwsUploadService} from '../../../../aws-upload.service';
-declare var jquery: any;
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import {AwsUploadService} from '../../../../../services/aws-upload.service';
 declare var $: any;
 
 @Component({
-  selector: "app-edit-vehicle-service-log",
-  templateUrl: "./edit-vehicle-service-log.component.html",
-  styleUrls: ["./edit-vehicle-service-log.component.css"],
+  selector: 'app-edit-vehicle-service-log',
+  templateUrl: './edit-vehicle-service-log.component.html',
+  styleUrls: ['./edit-vehicle-service-log.component.css'],
 })
 export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
-  title = "Edit Vehicle Service Log";
+  title = 'Edit Vehicle Service Log';
 
   errors = {};
   form;
@@ -24,36 +23,36 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
 
   /********** Form Fields ***********/
 
-  logID = "";
-  vehicleID = "";
-  vendorID = "";
-  taskDescription = "";
-  serviceType = "";
-  value = "";
-  odometer = "";
-  attachStockItem = "";
-  timeCreated = "";
+  logID = '';
+  vehicleID = '';
+  vendorID = '';
+  taskDescription = '';
+  serviceType = '';
+  value = '';
+  odometer = '';
+  attachStockItem = '';
+  timeCreated = '';
 
   /******************/
 
-  quantity = "";
-  itemID = "";
+  quantity = '';
+  itemID = '';
   selectedItems = [];
   items = [];
   vehicles = [];
   vendors = [];
-  response: any = "";
-  hasError: boolean = false;
-  hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  response: any = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
 
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private awsUS: AwsUploadService) {}
 
   ngOnInit() {
-    this.logID = this.route.snapshot.params["logID"];
+    this.logID = this.route.snapshot.params['logID'];
     this.fetchVehicles();
     this.fetchItems();
     this.fetchVendors();
@@ -62,7 +61,7 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
 
   fetchVehicleServiceLog() {
     this.apiService
-      .getData("vehicleServiceLogs/" + this.logID)
+      .getData('vehicleServiceLogs/' + this.logID)
       .subscribe((result: any) => {
         result = result.Items[0];
         this.vehicleID = result.vehicleID;
@@ -77,19 +76,19 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
   }
 
   fetchVehicles() {
-    this.apiService.getData("vehicles").subscribe((result: any) => {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
     });
   }
 
   fetchItems() {
-    this.apiService.getData("items").subscribe((result: any) => {
+    this.apiService.getData('items').subscribe((result: any) => {
       this.items = result.Items;
     });
   }
 
   fetchVendors() {
-    this.apiService.getData("vendors").subscribe((result: any) => {
+    this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
     });
   }
@@ -101,7 +100,7 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
     );
     if (item.length > 0) {
       alert(
-        "Its already added or you can delete the existing item to change quantity."
+        'Its already added or you can delete the existing item to change quantity.'
       );
       return false;
     }
@@ -124,7 +123,7 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -151,7 +150,7 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
       timeCreated: this.timeCreated,
     };
 
-    this.apiService.putData("vehicleServiceLogs", data).subscribe({
+    this.apiService.putData('vehicleServiceLogs', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -159,9 +158,9 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               console.log(key);
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -176,7 +175,7 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Vehicle Service log updated successfully";
+        this.Success = 'Vehicle Service log updated successfully';
       },
     });
   }

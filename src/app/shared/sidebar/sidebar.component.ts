@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
-import {SharedServiceService} from '../../shared-service.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {SharedServiceService} from '../../services/shared-service.service';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -27,7 +27,7 @@ export class SidebarComponent implements OnInit {
 
 
   Logout() {
-    console.log("clicked");
+    console.log('clicked');
     localStorage.removeItem('LoggedIn');
     localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);

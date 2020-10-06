@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../../../api.service';
+import {ApiService} from '../../../../services/api.service';
 import {Router} from '@angular/router';
 declare var $: any;
-declare var jQuery: any;
 @Component({
   selector: 'app-add-vehicle',
   templateUrl: './add-vehicle.component.html',

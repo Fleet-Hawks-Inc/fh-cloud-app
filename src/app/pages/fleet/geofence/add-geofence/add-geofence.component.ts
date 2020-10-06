@@ -1,23 +1,21 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { ApiService } from "../../../api.service";
-import { environment } from '../../../../environments/environment';
-
-import { from } from "rxjs";
-
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../../services/api.service';
+import { environment } from '../../../../../environments/environment';
+import { from } from 'rxjs';
 import { Subject, throwError } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
-import { HereMapService } from './../../../services/here-map.service'
+import { HereMapService } from '../../../../services/here-map.service'
 
 declare var $: any;
 declare var L: any;
 @Component({
-  selector: "app-add-geofence",
-  templateUrl: "./add-geofence.component.html",
-  styleUrls: ["./add-geofence.component.css"],
+  selector: 'app-add-geofence',
+  templateUrl: './add-geofence.component.html',
+  styleUrls: ['./add-geofence.component.css'],
 })
 export class AddGeofenceComponent implements OnInit {
-  title = "Add Geofence";
+  title = 'Add Geofence';
   geofenceData = {
     geofence: {
       type: '',
@@ -39,23 +37,23 @@ export class AddGeofenceComponent implements OnInit {
 
   /********** Form Fields ***********/
 
-  fenceName = "";
-  location = "";
-  geofenceType = "";
-  description = "";
+  fenceName = '';
+  location = '';
+  geofenceType = '';
+  description = '';
   geoLocation = {
-    latitude: "",
-    longitude: "",
+    latitude: '',
+    longitude: '',
   };
-  geofence = "";
-  geofenceNewCategory = "";
+  geofence = '';
+  geofenceNewCategory = '';
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
 
 
@@ -72,11 +70,11 @@ export class AddGeofenceComponent implements OnInit {
     this.searchLocation()
 
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
     //this.mapBoxService.initMapbox(-104.618896, 50.44521);
     $(document).ready(() => {
-      this.form = $("#form1_").validate();
+      this.form = $('#form1_').validate();
     });
   }
 
@@ -117,12 +115,12 @@ export class AddGeofenceComponent implements OnInit {
       // alert('pm:create event fired. See console for details');
       const layer = e.layer;
 
-      //console.log("lyr", layer)
+      //console.log('lyr', layer)
       var polyedit = layer.toGeoJSON();
       this.geofenceData.geofence.type = polyedit.geometry.type;
       this.geofenceData.geofence.cords = polyedit.geometry.coordinates;
 
-      console.log("created", this.geofenceData);
+      console.log('created', this.geofenceData);
 
       layer.on('pm:edit', ({ layer }) => {
 
@@ -130,7 +128,7 @@ export class AddGeofenceComponent implements OnInit {
         this.geofenceData.geofence.type = polyedit.geometry.type;
         this.geofenceData.geofence.cords = polyedit.geometry.coordinates;
 
-        //console.log("edited",this.geofenceData);
+        //console.log('edited',this.geofenceData);
 
       })
 
@@ -163,8 +161,8 @@ export class AddGeofenceComponent implements OnInit {
     console.log(data1);
   }
   addGeofence() {
-    console.log("data", this.polygonData);
-    console.log("geofence", this.geofenceData);
+    console.log('data', this.polygonData);
+    console.log('geofence', this.geofenceData);
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
@@ -182,13 +180,13 @@ export class AddGeofenceComponent implements OnInit {
     };
     console.log(data);
     return;
-    this.apiService.postData("geofences", data).subscribe({
+    this.apiService.postData('geofences', data).subscribe({
       complete: () => { },
       error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -201,13 +199,13 @@ export class AddGeofenceComponent implements OnInit {
           });
       },
       next: (res) => {
-        this.fenceName = "";
-        this.location = "";
-        this.description = "";
+        this.fenceName = '';
+        this.location = '';
+        this.description = '';
 
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Geofence Added successfully";
+        this.Success = 'Geofence Added successfully';
         // this.initMap();
         //this.mapBoxService.plottedMap = '';
 
@@ -242,7 +240,7 @@ export class AddGeofenceComponent implements OnInit {
         return throwError(e);
       }),
     ).subscribe(res => {
-      console.log("res", res);
+      console.log('res', res);
       this.searchResults = res;
 
     });
