@@ -22,10 +22,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgSelect2Module } from 'ng-select2';
 
 import {
-  AddDriverComponent,
-  EditDriverComponent,
-  DriverListComponent,
-  DriverDetailComponent,
   AddVehicleNewComponent,
   EditVehicleNewComponent,
   VehicleListComponent,
@@ -94,10 +90,6 @@ import {
 } from './index';
 
 const COMPONENTS = [
-  AddDriverComponent,
-  EditDriverComponent,
-  DriverListComponent,
-  DriverDetailComponent,
   AddVehicleNewComponent,
   EditVehicleNewComponent,
   VehicleListComponent,

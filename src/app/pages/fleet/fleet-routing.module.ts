@@ -2,10 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ChartsModule} from 'ng2-charts';
 import {
-  AddDriverComponent,
-  EditDriverComponent,
-  DriverListComponent,
-  DriverDetailComponent,
   AddVehicleNewComponent,
   EditVehicleNewComponent,
   VehicleListComponent,
@@ -74,10 +70,6 @@ import {
 } from './index';
 
 const COMPONENTS = [
-  AddDriverComponent,
-  EditDriverComponent,
-  DriverListComponent,
-  DriverDetailComponent,
   AddVehicleNewComponent,
   EditVehicleNewComponent,
   VehicleListComponent,
@@ -148,12 +140,7 @@ const COMPONENTS = [
 const routes: Routes = [
   {
     path: 'drivers',
-    children: [
-      { path: 'Add-Driver', component: AddDriverComponent },
-      { path: 'Edit-Driver/:userName', component: EditDriverComponent },
-      { path: 'Drivers-List', component: DriverListComponent },
-      { path: 'driver-detail', component: DriverDetailComponent}
-    ],
+    loadChildren: () => import('./drivers/drivers.module').then((m) => m.DriversModule) ,
   },
   {
     path: 'vehicles',
