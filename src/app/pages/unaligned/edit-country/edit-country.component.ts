@@ -1,42 +1,42 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
-import { ActivatedRoute } from "@angular/router";
-import { from } from "rxjs";
-import { map } from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { ActivatedRoute } from '@angular/router';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 @Component({
-  selector: "app-edit-country",
-  templateUrl: "./edit-country.component.html",
-  styleUrls: ["./edit-country.component.css"],
+  selector: 'app-edit-country',
+  templateUrl: './edit-country.component.html',
+  styleUrls: ['./edit-country.component.css'],
 })
 export class EditCountryComponent implements OnInit {
-  title = "Edit Country";
+  title = 'Edit Country';
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
 
-  countryID = "";
-  countryCode = "";
-  countryName = "";
-  timeCreated = "";
+  countryID = '';
+  countryCode = '';
+  countryName = '';
+  timeCreated = '';
 
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
-    this.countryID = this.route.snapshot.params["countryID"];
+    this.countryID = this.route.snapshot.params['countryID'];
 
     this.apiService
-      .getData("countries/" + this.countryID)
+      .getData('countries/' + this.countryID)
       .subscribe((result: any) => {
         //console.log(result);
         result = result.Items[0];
@@ -46,7 +46,7 @@ export class EditCountryComponent implements OnInit {
       });
 
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -61,14 +61,14 @@ export class EditCountryComponent implements OnInit {
       countryName: this.countryName,
       timeCreated: this.timeCreated,
     };
-  
-    this.apiService.putData("countries", data).subscribe({
+
+    this.apiService.putData('countries', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -79,7 +79,7 @@ export class EditCountryComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Country Updated successfully";
+        this.Success = 'Country Updated successfully';
       },
     });
   }

@@ -1,47 +1,47 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { ApiService } from "../api.service";
-import { from } from "rxjs";
-import { map } from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
-  selector: "app-add-model",
-  templateUrl: "./add-model.component.html",
-  styleUrls: ["./add-model.component.css"],
+  selector: 'app-add-model',
+  templateUrl: './add-model.component.html',
+  styleUrls: ['./add-model.component.css'],
 })
 export class AddModelComponent implements OnInit {
-  title = "Add Model";
+  title = 'Add Model';
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
 
-  name = "";
-  manufacturerID = "";
-  yearOfRelease = "";
+  name = '';
+  manufacturerID = '';
+  yearOfRelease = '';
   manufacturers = [];
 
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
     this.fetchManufacturers();
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
   fetchManufacturers() {
-    this.apiService.getData("manufacturers").subscribe((result: any) => {
+    this.apiService.getData('manufacturers').subscribe((result: any) => {
       this.manufacturers = result.Items;
     });
   }
@@ -57,13 +57,13 @@ export class AddModelComponent implements OnInit {
       name: this.name,
     };
 
-    this.apiService.postData("vehicleModels", data).subscribe({
+    this.apiService.postData('vehicleModels', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -72,13 +72,13 @@ export class AddModelComponent implements OnInit {
           });
       },
       next: (res) => {
-        this.name = "";
-        this.yearOfRelease = "";
-        this.manufacturerID = "";
+        this.name = '';
+        this.yearOfRelease = '';
+        this.manufacturerID = '';
 
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Model Added successfully";
+        this.Success = 'Model Added successfully';
       },
     });
   }

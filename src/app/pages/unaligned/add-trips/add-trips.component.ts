@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {ApiService} from "../api.service";
+import {ApiService} from '../../../services/api.service';
 
 @Component({
   selector: 'app-add-trips',
@@ -52,13 +52,13 @@ export class AddTripsComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "sourceAddress": this.sourceAddress,
-      "destinationAddress": this.destinationAddress,
-      "vehicleID": this.vehicleSelected,
-      "assetID": this.assetSelected,
-      "drivers": {
-        "driverID": this.driverID,
-        "driverContact": this.driverContact
+      'sourceAddress': this.sourceAddress,
+      'destinationAddress': this.destinationAddress,
+      'vehicleID': this.vehicleSelected,
+      'assetID': this.assetSelected,
+      'drivers': {
+        'driverID': this.driverID,
+        'driverContact': this.driverContact
       }
     };
 

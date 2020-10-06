@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-cycle-list",
-  templateUrl: "./cycle-list.component.html",
-  styleUrls: ["./cycle-list.component.css"],
+  selector: 'app-cycle-list',
+  templateUrl: './cycle-list.component.html',
+  styleUrls: ['./cycle-list.component.css'],
 })
 export class CycleListComponent implements OnInit {
-  title = "Cycle List";
+  title = 'Cycle List';
   cycles = [];
 
   constructor(private apiService: ApiService, private router: Router) {}
@@ -20,7 +20,7 @@ export class CycleListComponent implements OnInit {
   }
 
   fetchCycles() {
-    this.apiService.getData("cycles").subscribe({
+    this.apiService.getData('cycles').subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -34,19 +34,19 @@ export class CycleListComponent implements OnInit {
 
   deleteCycle(cycleID) {
     /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable("#datatable-default")) {
-      $("#datatable-default").DataTable().clear().destroy();
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
 
-    this.apiService.deleteData("cycles/" + cycleID).subscribe((result: any) => {
+    this.apiService.deleteData('cycles/' + cycleID).subscribe((result: any) => {
       this.fetchCycles();
     });
   }
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 }

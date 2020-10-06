@@ -1,42 +1,42 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
-import { Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: "app-add-quantum",
-  templateUrl: "./add-quantum.component.html",
-  styleUrls: ["./add-quantum.component.css"],
+  selector: 'app-add-quantum',
+  templateUrl: './add-quantum.component.html',
+  styleUrls: ['./add-quantum.component.css'],
 })
 export class AddQuantumComponent implements OnInit {
-  parentTitle = "Quantums";
-  title = "Add Quantum";
+  parentTitle = 'Quantums';
+  title = 'Add Quantum';
   carriers = [];
 
   /********** Form Fields ***********/
-  serialNo = "";
-  macId = "";
-  status = "";
-  year = "";
-  model = "";
-  carrierID = "";
-  simSerial = "";
-  phoneNumber = "";
-  serviceProvider = "";
-  currentFirmwareVersion = "";
-  applicationVersion = "";
-  lastCertificateRotation = "";
-  apiURL = "";
-  deviceType = "";
-  key = "";
-  secret: "";
+  serialNo = '';
+  macId = '';
+  status = '';
+  year = '';
+  model = '';
+  carrierID = '';
+  simSerial = '';
+  phoneNumber = '';
+  serviceProvider = '';
+  currentFirmwareVersion = '';
+  applicationVersion = '';
+  lastCertificateRotation = '';
+  apiURL = '';
+  deviceType = '';
+  key = '';
+  secret: '';
 
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
@@ -70,7 +70,7 @@ export class AddQuantumComponent implements OnInit {
         secret: this.secret
       }
     };
-    this.apiService.postData("devices", data).subscribe({
+    this.apiService.postData('devices', data).subscribe({
       complete: () => {},
       error: (err) => {
         this.hasError = true;
@@ -79,21 +79,21 @@ export class AddQuantumComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Device Added successfully";
+        this.Success = 'Device Added successfully';
 
-        this.serialNo = "";
-        this.macId = "";
-        this.status = "";
-        this.year = "";
-        this.model = "";
-        this.carrierID = "";
-        this.simSerial = "";
-        this.phoneNumber = "";
-        this.serviceProvider = "";
-        this.currentFirmwareVersion = "";
-        this.applicationVersion = "";
-        this.lastCertificateRotation = "";
-        this.apiURL = "";
+        this.serialNo = '';
+        this.macId = '';
+        this.status = '';
+        this.year = '';
+        this.model = '';
+        this.carrierID = '';
+        this.simSerial = '';
+        this.phoneNumber = '';
+        this.serviceProvider = '';
+        this.currentFirmwareVersion = '';
+        this.applicationVersion = '';
+        this.lastCertificateRotation = '';
+        this.apiURL = '';
       },
     });
   }
@@ -102,6 +102,6 @@ export class AddQuantumComponent implements OnInit {
     this.apiService.getData('carriers').subscribe((result) => {
       this.carriers = result.Items;
     })
-    
+
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../api.service";
+import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../../../services/api.service';
 
 @Component({
   selector: 'app-edit-customer',
@@ -60,14 +60,14 @@ export class EditCustomerComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "customerID": this.customerID,
-      "name" : this.name,
-      "address": this.address,
-      "phone": this.phone,
-      "fax": this.fax,
-      "email": this.email,
-      "taxID": this.taxID,
-      "customerCompanyNo": this.customerCompanyNo,
+      'customerID': this.customerID,
+      'name' : this.name,
+      'address': this.address,
+      'phone': this.phone,
+      'fax': this.fax,
+      'email': this.email,
+      'taxID': this.taxID,
+      'customerCompanyNo': this.customerCompanyNo,
     };
 
     this.apiService.putData('customers', data).

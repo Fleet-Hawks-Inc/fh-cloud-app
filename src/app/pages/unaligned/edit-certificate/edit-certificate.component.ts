@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../api.service";
+import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../../../services/api.service';
 
 @Component({
   selector: 'app-edit-certificate',
@@ -59,13 +59,13 @@ export class EditCertificateComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "certificateID": this.certificateID,
-      "rootCA": this.rootCA,
-      "certificate": this.certificate,
-      "privateKey": this.privateKey,
-      "publicKey": this.publicKey,
-      "certificateType": this.certificateType,
-      "currentStatus": this.currentStatus
+      'certificateID': this.certificateID,
+      'rootCA': this.rootCA,
+      'certificate': this.certificate,
+      'privateKey': this.privateKey,
+      'publicKey': this.publicKey,
+      'certificateType': this.certificateType,
+      'currentStatus': this.currentStatus
 
     };
 

@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-countries",
-  templateUrl: "./countries.component.html",
-  styleUrls: ["./countries.component.css"],
+  selector: 'app-countries',
+  templateUrl: './countries.component.html',
+  styleUrls: ['./countries.component.css'],
 })
 export class CountriesComponent implements OnInit {
-  title = "Country List";
+  title = 'Country List';
   countries;
   timeCreated;
 
@@ -21,7 +21,7 @@ export class CountriesComponent implements OnInit {
   }
 
   fetchCountries() {
-    this.apiService.getData("countries").subscribe({
+    this.apiService.getData('countries').subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -41,7 +41,7 @@ export class CountriesComponent implements OnInit {
     /******************************/
 
     this.apiService
-      .deleteData("countries/" + countryID)
+      .deleteData('countries/' + countryID)
       .subscribe((result: any) => {
         this.fetchCountries();
       });
@@ -49,7 +49,7 @@ export class CountriesComponent implements OnInit {
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 }

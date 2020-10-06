@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {Router} from "@angular/router";
+import {ApiService} from '../../../services/api.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-daily-inspection-list',

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {Router} from "@angular/router";
+import {ApiService} from '../../../services/api.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-service-vendor',
@@ -39,13 +39,13 @@ export class AddServiceVendorComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "vendorName": this.vendorName,
-      "geoLocation": {
-        "lat": this.lat,
-        "long": this.long
+      'vendorName': this.vendorName,
+      'geoLocation': {
+        'lat': this.lat,
+        'long': this.long
       },
-      "address": this.address,
-      "carrierID": this.carrierID
+      'address': this.address,
+      'carrierID': this.carrierID
     };
 
     this.apiService.postData('serviceVendors', data).

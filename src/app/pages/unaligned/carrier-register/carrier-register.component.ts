@@ -1,64 +1,64 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Auth } from "aws-amplify";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { ActivatedRoute } from '@angular/router';
+import { Auth } from 'aws-amplify';
 
 @Component({
-  selector: "app-carrier-register",
-  templateUrl: "./carrier-register.component.html",
-  styleUrls: ["./carrier-register.component.css"],
+  selector: 'app-carrier-register',
+  templateUrl: './carrier-register.component.html',
+  styleUrls: ['./carrier-register.component.css'],
 })
 export class CarrierRegisterComponent implements OnInit {
   activeTab = 1;
-  carrierID = "testing";
+  carrierID = 'testing';
   businessDetail = {
-    businessType: "",
-    carrierName: "",
-    dbaName: "",
-    EIN: "",
+    businessType: '',
+    carrierName: '',
+    dbaName: '',
+    EIN: '',
   };
   addressDetail = {
-    addressType: "",
-    countryID: "",
-    stateID: "",
-    cityID: "",
-    zipCode: "",
-    address1: "",
-    address2: "",
+    addressType: '',
+    countryID: '',
+    stateID: '',
+    cityID: '',
+    zipCode: '',
+    address1: '',
+    address2: '',
     geoLocation: {
-      lat: "",
-      lng: "",
+      lat: '',
+      lng: '',
     },
   };
   contactDetail = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    fax: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    fax: '',
   };
   superAdminInfo = {
-    email: "",
-    userName: "",
-    firstName: "",
-    lastName: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
-    language: "",
+    email: '',
+    userName: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
+    language: '',
   };
   socialNetwork = {
-    facebook: "",
-    twitter: "",
-    linkedin: "",
-    googlePlus: "",
-    blog: "",
-    tumblr: "",
+    facebook: '',
+    twitter: '',
+    linkedin: '',
+    googlePlus: '',
+    blog: '',
+    tumblr: '',
   };
-  notes: "";
+  notes: '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {
-    this.carrierID = this.route.snapshot.params["carrierID"];
+    this.carrierID = this.route.snapshot.params['carrierID'];
   }
 
   ngOnInit() {
@@ -81,7 +81,7 @@ export class CarrierRegisterComponent implements OnInit {
 
   getInfo() {
     this.apiService
-      .getData("carriers/register/" + this.carrierID)
+      .getData('carriers/register/' + this.carrierID)
       .subscribe((result: any) => {
         result = result.Items[0];
         this.carrierID = result.carrierID;
@@ -93,7 +93,7 @@ export class CarrierRegisterComponent implements OnInit {
 
   submit() {
     this.register();
-    
+
     let data = {
       carrierID: this.carrierID,
       businessDetail: this.businessDetail,
@@ -111,7 +111,7 @@ export class CarrierRegisterComponent implements OnInit {
       notes: this.notes,
     };
 
-    this.apiService.putData("carriers/register", data).subscribe({
+    this.apiService.putData('carriers/register', data).subscribe({
       complete: () => {},
       error: (err) => {
         // this.hasError = true;
@@ -135,12 +135,12 @@ export class CarrierRegisterComponent implements OnInit {
           email: this.superAdminInfo.email,
           phone_number: this.superAdminInfo.phone,
         },
-      });     
+      });
 
       console.log(res);
     } catch (err) {
-      console.log("inside catch block");
-      // this.hasError = true;  
+      console.log('inside catch block');
+      // this.hasError = true;
       // this.Error = err.message || 'Error during login';
     }
   };

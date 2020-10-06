@@ -1,9 +1,8 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../api.service";
-import {catchError, map, mapTo, tap} from 'rxjs/operators';
-import {from, of} from 'rxjs';
-declare var jquery: any;
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../../../services/api.service';
+import { map} from 'rxjs/operators';
+import {from} from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -60,7 +59,7 @@ export class AddTicketTypeComponent implements OnInit {
           from(err.error)
             .pipe(
               map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
+                val.message = val.message.replace(/'.*'/, 'This Field');
                 this.errors[val.context.key] = val.message;
               }),
             )

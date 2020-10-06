@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {Router} from "@angular/router";
+import {ApiService} from '../../../services/api.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-receiver',
@@ -41,12 +41,12 @@ export class AddReceiverComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "receiverName": this.receiverName,
-      "address": this.address,
-      "phone": this.phone,
-      "fax": this.fax,
-      "email": this.email,
-      "taxID": this.taxID,
+      'receiverName': this.receiverName,
+      'address': this.address,
+      'phone': this.phone,
+      'fax': this.fax,
+      'email': this.email,
+      'taxID': this.taxID,
     };
 
 

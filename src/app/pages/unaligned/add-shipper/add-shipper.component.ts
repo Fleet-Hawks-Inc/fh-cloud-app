@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {Router} from "@angular/router";
-
+import {ApiService} from '../../../services/api.service';
 @Component({
   selector: 'app-add-shipper',
   templateUrl: './add-shipper.component.html',
@@ -19,13 +17,13 @@ export class AddShipperComponent implements OnInit {
   /******************/
 
 
-  response : any ='';
-  hasError : boolean = false;
-  hasSuccess: boolean = false;
-  Error : string = '';
-  Success : string = '';
-  constructor(private apiService: ApiService,
-              private router: Router) {}
+  response = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
+  constructor(private apiService: ApiService
+             ) {}
 
   ngOnInit() {}
 
@@ -36,11 +34,11 @@ export class AddShipperComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "shipperName": this.shipperName,
-      "address": this.address,
-      "phone": this.phone,
-      "email": this.email,
-      "taxID": this.taxID
+      'shipperName': this.shipperName,
+      'address': this.address,
+      'phone': this.phone,
+      'email': this.email,
+      'taxID': this.taxID
     };
 
     this.apiService.postData('shippers', data).
@@ -50,7 +48,7 @@ export class AddShipperComponent implements OnInit {
         this.hasError = true;
         this.Error = err.error;
       },
-      next: (res) => {
+      next: (res: any) => {
         this.response = res;
         this.hasSuccess = true;
         this.Success = 'Shipper Added successfully';

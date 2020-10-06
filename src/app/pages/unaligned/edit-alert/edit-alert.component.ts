@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { ApiService } from "../api.service";
-import { from } from "rxjs";
-import { map } from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
@@ -11,28 +11,28 @@ declare var $: any;
   styleUrls: ['./edit-alert.component.css']
 })
 export class EditAlertComponent implements OnInit {
-  title = "Edit Alert";
+  title = 'Edit Alert';
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
 
-  alertID = "";
-  groupID = "";
-  parameter = "";
-  condition = "";
-  value = "";
-  timeCreated = "";
+  alertID = '';
+  groupID = '';
+  parameter = '';
+  condition = '';
+  value = '';
+  timeCreated = '';
 
   groups = [];
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
@@ -42,7 +42,7 @@ export class EditAlertComponent implements OnInit {
     this.fetchGroups();
     this.fetchAlert();
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -79,13 +79,13 @@ export class EditAlertComponent implements OnInit {
       timeCreated: this.timeCreated
     };
 
-    this.apiService.putData("alerts", data).subscribe({
+    this.apiService.putData('alerts', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -96,7 +96,7 @@ export class EditAlertComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Alert updated successfully";
+        this.Success = 'Alert updated successfully';
       },
     });
   }
