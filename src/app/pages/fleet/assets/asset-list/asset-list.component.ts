@@ -1,11 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ApiService } from '../../../api.service';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
-import { timer, Subject } from 'rxjs';
+import {  Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from "ngx-spinner";
-
-declare var $: any;
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-asset-list',
@@ -30,7 +28,7 @@ export class AssetListComponent implements OnInit {
   dryboxOptions: any = {};
   flatbedOptions: any = {};
   curtainOptions: any = {};
-  
+
 
   dtTrigger = new Subject();
 
@@ -223,7 +221,7 @@ export class AssetListComponent implements OnInit {
           this.fetchAssets();
           this.toastr.success('Assets Deleted Successfully!');
         });
-       
+
       }
     }
   }
@@ -239,8 +237,8 @@ export class AssetListComponent implements OnInit {
   checkboxCount = (arr) => {
     this.assetCheckCount = 0;
     arr.forEach(item => {
-      console.log("item", item);
-      console.log("array", arr);
+      console.log('item', item);
+      console.log('array', arr);
       if (item.checked === true) {
         this.selectedAssetID = item.assetID;
         this.assetCheckCount = this.assetCheckCount + 1;
@@ -253,7 +251,7 @@ export class AssetListComponent implements OnInit {
       }
     });
   }
-  
+
   // checked-unchecked all checkboxes
   checkuncheckall = (ev) => {
     if (ev.target.checked === true) {

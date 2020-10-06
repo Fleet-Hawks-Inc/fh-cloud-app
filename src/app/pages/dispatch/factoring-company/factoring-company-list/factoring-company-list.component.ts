@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../../../api.service";
-import {Router} from "@angular/router";
+import {ApiService} from '../../../../services/api.service';
+import {Router} from '@angular/router';
 import { timer } from 'rxjs';
 declare var $: any;
 
@@ -37,21 +37,22 @@ export class FactoringCompanyListComponent implements OnInit {
 
   deleteFactoringCompany(factoringCompanyID) {
 
-         /******** Clear DataTable ************/
-         if ($.fn.DataTable.isDataTable('#datatable-default')) {
-          $('#datatable-default').DataTable().clear().destroy();
-          }
-          /******************************/
+    /******** Clear DataTable ************/
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
+    }
+    /******************************/
+
 
     this.apiService.deleteData('factoringCompanies/' + factoringCompanyID)
-        .subscribe((result: any) => {
-          this.fetchFactoringCompany();
-        });
+      .subscribe((result: any) => {
+        this.fetchFactoringCompany();
+      });
   }
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 

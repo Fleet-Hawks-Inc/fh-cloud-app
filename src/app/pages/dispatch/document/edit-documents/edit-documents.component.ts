@@ -1,10 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../../../api.service";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import { from, of } from "rxjs";
-import {AwsUploadService} from '../../../aws-upload.service';
-declare var jquery: any;
+import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../../../../services/api.service';
+import { map } from 'rxjs/operators';
+import { from } from 'rxjs';
+import {AwsUploadService} from '../../../../services/aws-upload.service';
+
 declare var $: any;
 
 @Component({
@@ -16,7 +16,7 @@ export class EditDocumentsComponent implements OnInit,AfterViewInit {
   title = 'Edit Document';
 
   /********** Form Fields ***********/
- 
+
   imageError = '';
   fileName = '';
   errors = {};
@@ -51,7 +51,7 @@ export class EditDocumentsComponent implements OnInit,AfterViewInit {
   }
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -82,7 +82,7 @@ export class EditDocumentsComponent implements OnInit,AfterViewInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               // this.errors[key] = val.message;
               // Or We Can Use This One To Extract Key
               // const key = this.concatArray(path);
@@ -92,7 +92,7 @@ export class EditDocumentsComponent implements OnInit,AfterViewInit {
               // } else {
               // this.errors[key] = val.message;
               // }
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -109,7 +109,7 @@ export class EditDocumentsComponent implements OnInit,AfterViewInit {
         this.hasSuccess = true;
         this.Success = 'Document Updated successfully';
         this.documentType = '';
-       
+
       }
     });
   }

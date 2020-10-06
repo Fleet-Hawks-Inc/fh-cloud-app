@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { HereMapService } from './../../../services/here-map.service';
-import {ApiService} from '../../../api.service';
-import {AwsUploadService} from '../../../aws-upload.service';
+import { ActivatedRoute } from '@angular/router';
+import { HereMapService } from '../../../../services/here-map.service';
+import {ApiService} from '../../../../services/api.service';
+import {AwsUploadService} from '../../../../services/aws-upload.service';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -120,7 +120,7 @@ export class AssetDetailComponent implements OnInit {
       this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles(this.carrierID, this.assetData[0].uploadedPhotos[i]));
       this.assetsImages.push(this.image);
     }
-    
+
   }
 
 }

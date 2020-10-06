@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ApiService} from '../../../../services/api.service';
-import { from, of } from 'rxjs';
+import { from } from 'rxjs';
 import {map} from 'rxjs/operators';
 
 declare var $: any;

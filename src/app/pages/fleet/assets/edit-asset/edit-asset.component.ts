@@ -1,18 +1,17 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../api.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import { from, of } from "rxjs";
-declare var jquery: any;
+import {  Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../services/api.service';
+import {  ActivatedRoute } from '@angular/router';
+import {  map } from 'rxjs/operators';
+import { from } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-edit-asset",
-  templateUrl: "./edit-asset.component.html",
-  styleUrls: ["./edit-asset.component.css"],
+  selector: 'app-edit-asset',
+  templateUrl: './edit-asset.component.html',
+  styleUrls: ['./edit-asset.component.css'],
 })
 export class EditAssetComponent implements OnInit {
-  title = "Edit Assets";
+  title = 'Edit Assets';
   errors = {};
   assetsData = {
     assetDetails: {},
@@ -24,62 +23,62 @@ export class EditAssetComponent implements OnInit {
   quantumSelected = '';
 
   /********** Form Fields ***********/
-  assetID = "";
-  assetName = "";
-  VIN = "";
-  assetType = "";
+  assetID = '';
+  assetName = '';
+  VIN = '';
+  assetType = '';
   assetInfo = {
-    year: "",
-    manufacturerID: "",
-    modelID: "",
+    year: '',
+    manufacturerID: '',
+    modelID: '',
   };
-  length: "";
-  axle = "";
-  GVWR = "";
-  GAWR = "";
+  length: '';
+  axle = '';
+  GVWR = '';
+  GAWR = '';
   license = {
     countryID: '',
-    stateID: "",
-    plateNumber: "",
+    stateID: '',
+    plateNumber: '',
   };
 
-  ownerShip = "";
-  remarks = "";
-  ownerShipStatus = "";
+  ownerShip = '';
+  remarks = '';
+  ownerShipStatus = '';
   quantumInfo = {
-    UID: "",
+    UID: '',
   };
-  currentStatus = "";
-  timeCreated = "";
+  currentStatus = '';
+  timeCreated = '';
 
-  quantum = "";
+  quantum = '';
   quantumsList = [];
   /******************/
 
-  countryID = "";
-  countries = "";
+  countryID = '';
+  countries = '';
   manufacturers = [];
   states = [];
   models = [];
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.assetID = this.route.snapshot.params["assetID"];
+    this.assetID = this.route.snapshot.params['assetID'];
     this.fetchManufactuer();
     this.fetchCountries();
-    this.apiService.getData("quantums").subscribe((result: any) => {
+    this.apiService.getData('quantums').subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
 
     this.fetchAsset();
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -106,20 +105,20 @@ export class EditAssetComponent implements OnInit {
   }
 
   fetchManufactuer() {
-    this.apiService.getData("manufacturers").subscribe((result: any) => {
+    this.apiService.getData('manufacturers').subscribe((result: any) => {
       this.manufacturers = result.Items;
     });
   }
 
   fetchState() {
-    this.apiService.getData("states").subscribe((result: any) => {
+    this.apiService.getData('states').subscribe((result: any) => {
       this.states = result.Items;
     });
   }
 
   fetchAsset() {
     this.apiService
-      .getData("assets/" + this.assetID)
+      .getData('assets/' + this.assetID)
       .subscribe((result: any) => {
         result = result.Items[0];
        // console.log(result);
@@ -152,13 +151,13 @@ export class EditAssetComponent implements OnInit {
 
   quantumModal() {
     $(document).ready(function () {
-      $("#modalAnim").modal("show");
+      $('#modalAnim').modal('show');
     });
   }
 
   fillState() {
     this.apiService
-      .getData("states/" + this.countryID)
+      .getData('states/' + this.countryID)
       .subscribe((result: any) => {
         result = result.Items[0];
         this.countryID = result.countryID;
@@ -205,9 +204,9 @@ export class EditAssetComponent implements OnInit {
       currentStatus: this.currentStatus,
       timeCreated: this.timeCreated,
     };
-    console.log("log", data)
+    console.log('log', data)
 
-    this.apiService.putData("assets", this.assetsData).subscribe({
+    this.apiService.putData('assets', this.assetsData).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -215,9 +214,9 @@ export class EditAssetComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               console.log(key);
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -232,7 +231,7 @@ export class EditAssetComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Asset updated successfully";
+        this.Success = 'Asset updated successfully';
       },
     });
   }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../../../api.service";
-import {Router} from "@angular/router";
-import { timer } from "rxjs";
+import {ApiService} from '../../../../services/api.service';
+import {Router} from '@angular/router';
+import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -40,7 +40,7 @@ export class DocumentsComponent implements OnInit {
 
 
   deleteDocument(documentID) {
- 
+
                 /******** Clear DataTable ************/
                 if ($.fn.DataTable.isDataTable('#datatable-default')) {
                   $('#datatable-default').DataTable().clear().destroy();
@@ -55,7 +55,7 @@ export class DocumentsComponent implements OnInit {
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 

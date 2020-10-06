@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../../../api.service";
-import { from, of } from "rxjs";
+import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../../../../services/api.service';
+import { from } from 'rxjs';
 import {map} from 'rxjs/operators';
 declare var $: any;
 
@@ -18,17 +18,17 @@ export class EditReceiverComponent implements OnInit {
 
 
   /********** Form Fields ***********/
-  receiverID = "";
-  name = "";
-  phone = "";
-  email = "";
-  fax = "";
-  taxID = "";
-  response : any ="";
+  receiverID = '';
+  name = '';
+  phone = '';
+  email = '';
+  fax = '';
+  taxID = '';
+  response : any ='';
   hasError : boolean = false;
   hasSuccess: boolean = false;
-  Error : string = "";
-  Success : string = "";
+  Error : string = '';
+  Success : string = '';
 
 
 
@@ -41,8 +41,8 @@ export class EditReceiverComponent implements OnInit {
     this.fetchReceiver();
      $(document).ready(() => {
       this.form = $('#form_').validate();
-    });  
-  } 
+    });
+  }
 
   fetchReceiver()
   {
@@ -70,7 +70,7 @@ export class EditReceiverComponent implements OnInit {
       email: this.email,
       taxID: this.taxID
     };
-    console.log("Receiver Data",dataReceiver);
+    console.log('Receiver Data',dataReceiver);
 
     this.apiService.putData('receivers', dataReceiver).
     subscribe({
@@ -81,8 +81,8 @@ export class EditReceiverComponent implements OnInit {
             map((val: any) => {
                 const path = val.path;
                 // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
-                 val.message = val.message.replace(/".*"/, 'This Field');
+                const key = val.message.match(/'([^']+)'/)[1];
+                 val.message = val.message.replace(/'.*'/, 'This Field');
                 this.errors[key] = val.message;
               }),
           )

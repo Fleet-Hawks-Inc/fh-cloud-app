@@ -1,16 +1,13 @@
-import { Component, OnInit , AfterViewInit } from '@angular/core';
-import {ApiService} from "../../../api.service";
-import {Router} from "@angular/router";
-import {from, of} from 'rxjs';
+import { Component, OnInit  } from '@angular/core';
+import {ApiService} from "../../../../services/api.service";
+import {from} from 'rxjs';
 import {map} from 'rxjs/operators';
-import { MapBoxService } from "../../../map-box.service";
+import { MapBoxService } from "../../../../services/map-box.service";
 import * as MapboxDraw from '@mapbox/mapbox-gl-draw';
 import * as mapboxClient from '@mapbox/mapbox-sdk';
 import * as mapboxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment';
-import * as Geocoder from "@mapbox/mapbox-gl-geocoder";
-import { center } from '@turf/turf';
 declare var $: any;
 
 @Component({
@@ -60,7 +57,7 @@ export class AddFactoringCompanyComponent implements OnInit {
   lng = -104.618896;
   lat = 50.445210;
   mapboxDraw: MapboxDraw;
-  
+
   address = "";
   countryName ="";
   cityName = "";
@@ -69,7 +66,7 @@ export class AddFactoringCompanyComponent implements OnInit {
               private mapBoxService :MapBoxService
               ) {}
 
- 
+
   ngOnInit() {
     this.fetchCountries();
     this.map = new mapboxgl.Map({
@@ -97,7 +94,7 @@ export class AddFactoringCompanyComponent implements OnInit {
     } else {
       $("#map-div").show("slow");
     }
- 
+
     this.map = new mapboxgl.Map({
       container: 'map',
       style: this.style,
@@ -196,9 +193,9 @@ export class AddFactoringCompanyComponent implements OnInit {
           longitude: this.lng,
         }
       }
-   
+
     };
-     console.log("Factoring Company Data",dataFactoringCompany); 
+     console.log("Factoring Company Data",dataFactoringCompany);
 
      this.apiService.postData('factoringCompanies', dataFactoringCompany).
     subscribe({

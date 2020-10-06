@@ -1,77 +1,76 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import {ApiService} from '../../../api.service';
-import { from, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { Object } from "aws-sdk/clients/s3";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import {ApiService} from '../../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
-  selector: "app-edit-driver",
-  templateUrl: "./edit-driver.component.html",
-  styleUrls: ["./edit-driver.component.css"],
+  selector: 'app-edit-driver',
+  templateUrl: './edit-driver.component.html',
+  styleUrls: ['./edit-driver.component.css'],
 })
 export class EditDriverComponent implements OnInit {
-  title = "Edit Driver";
+  title = 'Edit Driver';
   errors = {};
   form;
-  concatArrayKeys = "";
+  concatArrayKeys = '';
 
   /**
    * Form Props
    */
-  userType = "";
-  userName = "";
-  password = "";
-  firstName = "";
-  lastName = "";
-  address = "";
-  phone = "";
-  email = "";
-  groupID = "";
+  userType = '';
+  userName = '';
+  password = '';
+  firstName = '';
+  lastName = '';
+  address = '';
+  phone = '';
+  email = '';
+  groupID = '';
   loginEnabled = true;
 
-  driverID = "";
-  driverNumber = "";
-  driverLicenseNumber = "";
-  driverLicenseType = "";
-  driverLicenseExpiry = "";
-  driverLicenseStateID = "";
+  driverID = '';
+  driverNumber = '';
+  driverLicenseNumber = '';
+  driverLicenseType = '';
+  driverLicenseExpiry = '';
+  driverLicenseStateID = '';
   HOSCompliance = {
-    status: "",
-    type: "",
-    cycleID: "",
+    status: '',
+    type: '',
+    cycleID: '',
   };
   defaultContract = {
-    perMile: "",
-    team: "",
-    hourly: "",
-    pickOrDrop: "",
+    perMile: '',
+    team: '',
+    hourly: '',
+    pickOrDrop: '',
   };
   fixed = {
-    amount: "",
-    type: "",
+    amount: '',
+    type: '',
   };
-  yardID = "";
-  timeCreated = "";
+  yardID = '';
+  timeCreated = '';
 
-  driverLicenseCountry = "";
+  driverLicenseCountry = '';
   groups = [];
   countries = [];
   states = [];
   yards = [];
   cycles = [];
 
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
-    this.userName = this.route.snapshot.params["userName"];
+    this.userName = this.route.snapshot.params['userName'];
     this.fetchGroups();
     this.fetchCountries();
     this.fetchYards();
@@ -84,7 +83,7 @@ export class EditDriverComponent implements OnInit {
   }
 
   fetchCycles() {
-    this.apiService.getData("cycles").subscribe((result: any) => {
+    this.apiService.getData('cycles').subscribe((result: any) => {
       this.cycles = result.Items;
     });
   }
@@ -96,7 +95,7 @@ export class EditDriverComponent implements OnInit {
     this.apiService
       .getData(`users/${this.userName}`)
       .subscribe((result: any) => {
-        
+
         result = result.Items[0];
 
         this.userType = result.userType;
@@ -113,26 +112,26 @@ export class EditDriverComponent implements OnInit {
   }
 
   fetchGroups() {
-    this.apiService.getData("groups").subscribe((result: any) => {
+    this.apiService.getData('groups').subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
 
   fetchCountries() {
-    this.apiService.getData("countries").subscribe((result: any) => {
+    this.apiService.getData('countries').subscribe((result: any) => {
       this.countries = result.Items;
     });
   }
 
   fetchYards() {
-    this.apiService.getData("yards").subscribe((result: any) => {
+    this.apiService.getData('yards').subscribe((result: any) => {
       this.yards = result.Items;
     });
   }
 
   getStates() {
     this.apiService
-      .getData("states/country/" + this.driverLicenseCountry)
+      .getData('states/country/' + this.driverLicenseCountry)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
@@ -140,7 +139,7 @@ export class EditDriverComponent implements OnInit {
 
   fillCountry() {
     this.apiService
-      .getData("states/" + this.driverLicenseStateID)
+      .getData('states/' + this.driverLicenseStateID)
       .subscribe((result: any) => {
         result = result.Items[0];
         this.driverLicenseCountry = result.countryID;
@@ -158,7 +157,7 @@ export class EditDriverComponent implements OnInit {
     this.apiService
       .getData(`drivers/userName/${this.userName}`)
       .subscribe((result: any) => {
-        
+
         result = result.Items[0];
         this.driverID = result.driverID;
         this.driverNumber = result.driverNumber;
@@ -227,7 +226,7 @@ export class EditDriverComponent implements OnInit {
       timeCreated: this.timeCreated
     };
 
-    this.apiService.putData("users", data).subscribe({
+    this.apiService.putData('users', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -235,9 +234,9 @@ export class EditDriverComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
 
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -252,7 +251,7 @@ export class EditDriverComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Driver updated successfully";
+        this.Success = 'Driver updated successfully';
       },
     });
   }
@@ -262,9 +261,9 @@ export class EditDriverComponent implements OnInit {
   }
 
   concatArray(path) {
-    this.concatArrayKeys = "";
+    this.concatArrayKeys = '';
     for (const i in path) {
-      this.concatArrayKeys += path[i] + ".";
+      this.concatArrayKeys += path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(
       0,

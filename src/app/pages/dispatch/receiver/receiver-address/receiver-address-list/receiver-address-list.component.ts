@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from "../../../../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
-import * as moment from "moment";
+import { ApiService } from '../../../../../services/api.service';
+import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -12,16 +10,16 @@ declare var $: any;
 })
 export class ReceiverAddressListComponent implements OnInit {
 
-  title = "Address List";
+  title = 'Address List';
   addresses = [];
   receivers = [];
-  receiverID = "";
+  receiverID = '';
   countries = [];
   states = [];
   cities = [];
-  countryName = "";
-  cityName = "";
-  stateName = "";
+  countryName = '';
+  cityName = '';
+  stateName = '';
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
@@ -51,7 +49,7 @@ export class ReceiverAddressListComponent implements OnInit {
       });
  }
   fetchreceivers() {
-    this.apiService.getData("receivers").subscribe((result: any) => {
+    this.apiService.getData('receivers').subscribe((result: any) => {
       this.receivers = result.Items;
     });
     //console.log(this.drivers);
@@ -88,7 +86,7 @@ export class ReceiverAddressListComponent implements OnInit {
   }
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 

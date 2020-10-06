@@ -1,35 +1,34 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../api.service";
-import { ActivatedRoute } from "@angular/router";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import { from, of } from "rxjs";
-import {AwsUploadService} from '../../../../aws-upload.service';
-declare var jquery: any;
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../../services/api.service';
+import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { from, of } from 'rxjs';
+import {AwsUploadService} from '../../../../../services/aws-upload.service';
 declare var $: any;
 
 @Component({
-  selector: "app-edit-fuel-entry",
-  templateUrl: "./edit-fuel-entry.component.html",
-  styleUrls: ["./edit-fuel-entry.component.css"],
+  selector: 'app-edit-fuel-entry',
+  templateUrl: './edit-fuel-entry.component.html',
+  styleUrls: ['./edit-fuel-entry.component.css'],
 })
 export class EditFuelEntryComponent implements OnInit {
-  title = "Edit Fuel Entry";
+  title = 'Edit Fuel Entry';
 
   imageError = '';
   fileName = '';
 
   /********** Form Fields ***********/
-  entryID: "";
-  vehicleID: "";
-  vendorID: "";
-  location: "";
-  odometer: "";
-  fuelType: "";
-  tripID: "";
-  date: "";
-  price: "";
-  volume: "";
-  timeCreated: "";
+  entryID: '';
+  vehicleID: '';
+  vendorID: '';
+  location: '';
+  odometer: '';
+  fuelType: '';
+  tripID: '';
+  date: '';
+  price: '';
+  volume: '';
+  timeCreated: '';
   /******************/
 
   vehicles = [];
@@ -37,17 +36,17 @@ export class EditFuelEntryComponent implements OnInit {
   trips = [];
   errors = {};
   form;
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(private apiService: ApiService,
               private route: ActivatedRoute,
               private awsUS: AwsUploadService) {}
 
   ngOnInit() {
-    this.entryID = this.route.snapshot.params["entryID"];
+    this.entryID = this.route.snapshot.params['entryID'];
 
     this.fetchFuelEntry();
     this.fetchVehicles();
@@ -56,26 +55,26 @@ export class EditFuelEntryComponent implements OnInit {
   }
 
   fetchVehicles() {
-    this.apiService.getData("vehicles").subscribe((result: any) => {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
     });
   }
 
   fetchTrips() {
-    this.apiService.getData("trips").subscribe((result: any) => {
+    this.apiService.getData('trips').subscribe((result: any) => {
       this.trips = result.Items;
     });
   }
 
   fetchVendors() {
-    this.apiService.getData("vendors").subscribe((result: any) => {
+    this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
     });
   }
 
   fetchFuelEntry() {
     this.apiService
-      .getData("fuelEntries/" + this.entryID)
+      .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
 
@@ -94,7 +93,7 @@ export class EditFuelEntryComponent implements OnInit {
 
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -124,7 +123,7 @@ export class EditFuelEntryComponent implements OnInit {
       timeCreated: this.timeCreated,
     };
     //console.log(data);return;
-    this.apiService.putData("fuelEntries", data).subscribe({
+    this.apiService.putData('fuelEntries', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -132,8 +131,8 @@ export class EditFuelEntryComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              val.message = val.message.replace(/".*"/, "This Field");
+              const key = val.message.match(/'([^']+)'/)[1];
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -148,7 +147,7 @@ export class EditFuelEntryComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Fuel entry updated successfully";
+        this.Success = 'Fuel entry updated successfully';
       },
     });
   }

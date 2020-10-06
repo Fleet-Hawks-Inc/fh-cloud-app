@@ -1,16 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from "../../../api.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { from, of } from 'rxjs';
+import { ApiService } from '../../../../services/api.service';
+import {  ActivatedRoute } from '@angular/router';
+import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { MapBoxService } from "../../../map-box.service";
-import * as MapboxDraw from '@mapbox/mapbox-gl-draw';
-import * as mapboxClient from '@mapbox/mapbox-sdk';
-import * as mapboxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
-import * as mapboxgl from 'mapbox-gl';
-import { environment } from 'src/environments/environment';
-import * as Geocoder from "@mapbox/mapbox-gl-geocoder";
-import { center } from '@turf/turf';
+
 declare var $: any;
 
 @Component({
@@ -27,24 +20,24 @@ export class EditFactoringCompanyComponent implements OnInit {
 
 
   /********** Form Fields ***********/
-  factoringCompanyID = "";
-  factoringCompanyName = "";
-  phone = "";
-  email = "";
-  fax = "";
+  factoringCompanyID = '';
+  factoringCompanyName = '';
+  phone = '';
+  email = '';
+  fax = '';
 
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private apiService: ApiService,
     private route: ActivatedRoute
   ) { }
- 
 
-  ngOnInit() {   
+
+  ngOnInit() {
    this.factoringCompanyID = this.route.snapshot.params['factoringCompanyID'];
     this.fetchFactoringCompany();
     $(document).ready(() => {
@@ -75,9 +68,9 @@ export class EditFactoringCompanyComponent implements OnInit {
       phone: this.phone,
       email: this.email,
       fax : this.fax,
-   
+
     };
-     console.log("Factoring Company Data",dataFactoringCompany);
+     console.log('Factoring Company Data',dataFactoringCompany);
 
 
      this.apiService.putData('factoringCompanies', dataFactoringCompany).
@@ -89,8 +82,8 @@ export class EditFactoringCompanyComponent implements OnInit {
             map((val: any) => {
                 const path = val.path;
                 // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
-                val.message = val.message.replace(/".*"/, 'This Field');
+                const key = val.message.match(/'([^']+)'/)[1];
+                val.message = val.message.replace(/'.*'/, 'This Field');
                 this.errors[key] = val.message;
               }),
           )
@@ -107,10 +100,10 @@ export class EditFactoringCompanyComponent implements OnInit {
         this.hasSuccess = true;
         this.Success = 'Factoring Company Updated Successfully';
 
-        this.factoringCompanyName = "";
-        this.fax = "";
-        this.phone = "";
-        this.email = "";
+        this.factoringCompanyName = '';
+        this.fax = '';
+        this.phone = '';
+        this.email = '';
 
       }
     });

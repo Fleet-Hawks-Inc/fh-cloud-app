@@ -1,17 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../../../api.service";
-import { from, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { MapBoxService } from "../../../map-box.service";
-import * as MapboxDraw from '@mapbox/mapbox-gl-draw';
-import * as mapboxClient from '@mapbox/mapbox-sdk';
-import * as mapboxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
-import * as mapboxgl from 'mapbox-gl';
-import { environment } from 'src/environments/environment';
-import * as Geocoder from "@mapbox/mapbox-gl-geocoder";
-import { center } from '@turf/turf';
-
+import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
@@ -26,18 +17,18 @@ export class EditShipperComponent implements OnInit {
   concatArrayKeys = '';
 
   /********** Form Fields ***********/
-  shipperID = "";
-  shipperName = "";
-  phone = "";
-  email = "";
-  fax = "";
-  taxID = "";
+  shipperID = '';
+  shipperName = '';
+  phone = '';
+  email = '';
+  fax = '';
+  taxID = '';
 
-  response : any ="";
+  response : any ='';
   hasError : boolean = false;
   hasSuccess: boolean = false;
-  Error : string = "";
-  Success : string = "";
+  Error : string = '';
+  Success : string = '';
 
 
   constructor(private apiService: ApiService,
@@ -48,12 +39,12 @@ export class EditShipperComponent implements OnInit {
     this.fetchShipper();
     $(document).ready(() => {
       this.form = $('#form_').validate();
-    }); 
+    });
   }
     fetchShipper(){
     this.apiService.getData('shippers/' + this.shipperID)
     .subscribe((result: any) => {
-      //console.log(result);
+      // console.log(result);
       result = result.Items[0];
       this.shipperName = result.shipperName;
       this.phone =  result.phone;
@@ -62,7 +53,7 @@ export class EditShipperComponent implements OnInit {
       this.taxID = result.taxID;
     });
   }
-  
+
   updateShipper() {
     this.errors = {};
 
@@ -76,11 +67,11 @@ export class EditShipperComponent implements OnInit {
       email: this.email,
       fax : this.fax,
       taxID: this.taxID,
-     
+
     };
 
 
-    console.log("Shipper Data",dataShipper); 
+    console.log('Shipper Data',dataShipper);
 
 
      this.apiService.putData('shippers', dataShipper).
@@ -92,8 +83,8 @@ export class EditShipperComponent implements OnInit {
             map((val: any) => {
                 const path = val.path;
                 // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
-                val.message = val.message.replace(/".*"/, 'This Field');
+                const key = val.message.match(/'([^']+)'/)[1];
+                val.message = val.message.replace(/'.*'/, 'This Field');
                 this.errors[key] = val.message;
               }),
           )
@@ -110,11 +101,11 @@ export class EditShipperComponent implements OnInit {
         this.hasSuccess = true;
         this.Success = 'Shipper Updated successfully';
 
-        this.shipperName = "";
-        this.phone = "";
-        this.email = "";
-        this.fax = "";
-        this.taxID = "";
+        this.shipperName = '';
+        this.phone = '';
+        this.email = '';
+        this.fax = '';
+        this.taxID = '';
       }
     });
 

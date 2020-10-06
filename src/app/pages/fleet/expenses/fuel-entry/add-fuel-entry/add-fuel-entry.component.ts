@@ -1,34 +1,33 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../api.service";
-import { Router } from "@angular/router";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import { from, of } from "rxjs";
-import {AwsUploadService} from '../../../../aws-upload.service';
-declare var jquery: any;
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../../services/api.service';
+import { Router } from '@angular/router';
+import {  map } from 'rxjs/operators';
+import { from } from 'rxjs';
+import {AwsUploadService} from '../../../../../services/aws-upload.service';
 declare var $: any;
 
 @Component({
-  selector: "app-add-fuel-entry",
-  templateUrl: "./add-fuel-entry.component.html",
-  styleUrls: ["./add-fuel-entry.component.css"],
+  selector: 'app-add-fuel-entry',
+  templateUrl: './add-fuel-entry.component.html',
+  styleUrls: ['./add-fuel-entry.component.css'],
 })
 export class AddFuelEntryComponent implements OnInit {
-  title = "Add Fuel Entry";
+  title = 'Add Fuel Entry';
 
   imageError = '';
   fileName = '';
 
   /********** Form Fields ***********/
 
-  vehicleID: "";
-  vendorID: "";
-  location: "";
-  odometer: "";
-  fuelType: "";
-  tripID: "";
-  date: "";
-  price: "";
-  volume: "";
+  vehicleID: '';
+  vendorID: '';
+  location: '';
+  odometer: '';
+  fuelType: '';
+  tripID: '';
+  date: '';
+  price: '';
+  volume: '';
   vehicles = [];
   vendors = [];
   trips = [];
@@ -36,11 +35,11 @@ export class AddFuelEntryComponent implements OnInit {
 
   errors = {};
   form;
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(private apiService: ApiService,
               private router: Router,
               private awsUS: AwsUploadService) {}
@@ -52,26 +51,26 @@ export class AddFuelEntryComponent implements OnInit {
   }
 
   fetchVehicles() {
-    this.apiService.getData("vehicles").subscribe((result: any) => {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
     });
   }
 
   fetchTrips() {
-    this.apiService.getData("trips").subscribe((result: any) => {
+    this.apiService.getData('trips').subscribe((result: any) => {
       this.trips = result.Items;
     });
   }
 
   fetchVendors() {
-    this.apiService.getData("vendors").subscribe((result: any) => {
+    this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
     });
   }
 
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -98,7 +97,7 @@ export class AddFuelEntryComponent implements OnInit {
       volume: this.volume,
     };
 
-    this.apiService.postData("fuelEntries", data).subscribe({
+    this.apiService.postData('fuelEntries', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -106,7 +105,7 @@ export class AddFuelEntryComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               // this.errors[key] = val.message;
               // Or We Can Use This One To Extract Key
               // const key = this.concatArray(path);
@@ -116,7 +115,7 @@ export class AddFuelEntryComponent implements OnInit {
               // } else {
               // this.errors[key] = val.message;
               // }
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -131,16 +130,16 @@ export class AddFuelEntryComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Fuel entry Added successfully";
-        this.vehicleID = "";
-        this.vendorID = "";
-        this.location = "";
-        this.odometer = "";
-        this.fuelType = "";
-        this.tripID = "";
-        this.date = "";
-        this.price = "";
-        this.volume = "";
+        this.Success = 'Fuel entry Added successfully';
+        this.vehicleID = '';
+        this.vendorID = '';
+        this.location = '';
+        this.odometer = '';
+        this.fuelType = '';
+        this.tripID = '';
+        this.date = '';
+        this.price = '';
+        this.volume = '';
       },
     });
   }

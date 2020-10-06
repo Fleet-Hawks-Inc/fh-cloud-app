@@ -1,19 +1,18 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import {from, of} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import {from} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Object} from 'aws-sdk/clients/s3';
-import {ApiService} from '../../../api.service';
-import { Auth } from "aws-amplify";
+import {ApiService} from '../../../../services/api.service';
+import { Auth } from 'aws-amplify';
 declare var $: any;
 
 @Component({
-  selector: "app-add-driver",
-  templateUrl: "./add-driver.component.html",
-  styleUrls: ["./add-driver.component.css"],
+  selector: 'app-add-driver',
+  templateUrl: './add-driver.component.html',
+  styleUrls: ['./add-driver.component.css'],
 })
 export class AddDriverComponent implements OnInit {
-  title = "Add Driver";
+  title = 'Add Driver';
   errors = {};
   form;
   concatArrayKeys = '';
@@ -30,51 +29,51 @@ export class AddDriverComponent implements OnInit {
   /**
    * Form Props
    */
-  userType = "driver"; //default
-  userName = "";
-  password = "";
-  firstName = "";
-  lastName = "";
-  address = "";
-  phone = "";
-  email = "";
-  groupID = "";
+  userType = 'driver'; //default
+  userName = '';
+  password = '';
+  firstName = '';
+  lastName = '';
+  address = '';
+  phone = '';
+  email = '';
+  groupID = '';
   loginEnabled = true;
-  driverNumber = "";
-  driverLicenseNumber = "";
-  driverLicenseType = "";
-  driverLicenseExpiry = "";
-  driverLicenseStateID = "";
+  driverNumber = '';
+  driverLicenseNumber = '';
+  driverLicenseType = '';
+  driverLicenseExpiry = '';
+  driverLicenseStateID = '';
   HOSCompliance = {
-    status: "",
-    type: "",
-    cycleID: "",
+    status: '',
+    type: '',
+    cycleID: '',
   };
   defaultContract = {
-    perMile: "",
-    team: "",
-    hourly: "",
-    pickOrDrop: "",
+    perMile: '',
+    team: '',
+    hourly: '',
+    pickOrDrop: '',
   };
   fixed = {
-    amount: "",
-    type: "",
+    amount: '',
+    type: '',
   };
-  yardID = "";
+  yardID = '';
 
 
 
-  driverLicenseCountry = "";
+  driverLicenseCountry = '';
   groups = [];
   countries = [];
   states = [];
   yards = [];
   cycles = [];
-  response: any = "";
+  response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -178,7 +177,7 @@ export class AddDriverComponent implements OnInit {
             map((val: any) => {
                 const path = val.path;
                 // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
+                const key = val.message.match(/'([^']+)'/)[1];
                 // this.errors[key] = val.message;
                 // Or We Can Use This One To Extract Key
                 // const key = this.concatArray(path);
@@ -188,14 +187,14 @@ export class AddDriverComponent implements OnInit {
                 // } else {
                 // this.errors[key] = val.message;
                 // }
-                val.message = val.message.replace(/".*"/, 'This Field');
+                val.message = val.message.replace(/'.*'/, 'This Field');
                 this.errors[key] = val.message;
               }),
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
-              this.Success = "";
+              this.Success = '';
             },
             error: () => { },
             next: () => { }
@@ -204,39 +203,39 @@ export class AddDriverComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Driver Added successfully";
+        this.Success = 'Driver Added successfully';
 
-        this.userName = "";
-        this.password = "";
-        this.firstName = "";
-        this.lastName = "";
-        this.address = "";
-        this.phone = "";
-        this.email = "";
-        this.groupID = "";
+        this.userName = '';
+        this.password = '';
+        this.firstName = '';
+        this.lastName = '';
+        this.address = '';
+        this.phone = '';
+        this.email = '';
+        this.groupID = '';
         this.loginEnabled = true;
-        this.driverNumber = "";
-        this.driverLicenseNumber = "";
-        this.driverLicenseType = "";
-        this.driverLicenseExpiry = "";
-        this.driverLicenseStateID = "";
+        this.driverNumber = '';
+        this.driverLicenseNumber = '';
+        this.driverLicenseType = '';
+        this.driverLicenseExpiry = '';
+        this.driverLicenseStateID = '';
         this.HOSCompliance = {
-          status: "",
-          type: "",
-          cycleID: "",
+          status: '',
+          type: '',
+          cycleID: '',
         };
         this.defaultContract = {
-          perMile: "",
-          team: "",
-          hourly: "",
-          pickOrDrop: "",
+          perMile: '',
+          team: '',
+          hourly: '',
+          pickOrDrop: '',
         };
         this.fixed = {
-          amount: "",
-          type: "",
+          amount: '',
+          type: '',
         };
-        this.yardID = "";
-        this.driverLicenseCountry = "";
+        this.yardID = '';
+        this.driverLicenseCountry = '';
         this.groups = [];
         this.countries = [];
         this.states = [];
@@ -270,14 +269,14 @@ export class AddDriverComponent implements OnInit {
           email: this.email,
           phone_number: this.phone,
         },
-      });     
+      });
 
       console.log(res);
     } catch (err) {
-      console.log("inside catch block");
-      // this.hasError = true;  
+      console.log('inside catch block');
+      // this.hasError = true;
       // this.Error = err.message || 'Error during login';
     }
   };
-  
+
 }

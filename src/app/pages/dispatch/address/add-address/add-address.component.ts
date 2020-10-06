@@ -210,7 +210,7 @@ export class AddAddressComponent implements OnInit, AfterViewInit {
             next: () => {}
           });
         },
-      next: (res) => {
+      next: (res: any) => {
         this.response = res;
         this.hasSuccess = true;
         this.Success = 'Address Added successfully'

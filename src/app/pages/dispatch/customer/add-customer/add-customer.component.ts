@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
 import {from} from 'rxjs';
 import {map} from 'rxjs/operators';
-import { MapBoxService } from '../../../map-box.service';
+import { MapBoxService } from '../../../../services/map-box.service';
 import * as MapboxDraw from '@mapbox/mapbox-gl-draw';
 import * as mapboxClient from '@mapbox/mapbox-sdk';
 import * as mapboxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';

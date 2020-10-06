@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../../../api.service";
-import {Router} from "@angular/router";
+import {ApiService} from '../../../../services/api.service';
+import {Router} from '@angular/router';
 import { timer } from 'rxjs';
 declare var $: any;
 
@@ -51,7 +51,7 @@ export class ShipperListComponent implements OnInit {
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 

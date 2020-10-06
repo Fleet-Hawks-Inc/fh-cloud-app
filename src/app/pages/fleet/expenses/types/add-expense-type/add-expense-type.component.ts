@@ -1,39 +1,38 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../api.service";
-import { Router } from "@angular/router";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import { from, of } from "rxjs";
-declare var jquery: any;
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../../services/api.service';
+import { Router } from '@angular/router';
+import {  map } from 'rxjs/operators';
+import { from } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-add-expense-type",
-  templateUrl: "./add-expense-type.component.html",
-  styleUrls: ["./add-expense-type.component.css"],
+  selector: 'app-add-expense-type',
+  templateUrl: './add-expense-type.component.html',
+  styleUrls: ['./add-expense-type.component.css'],
 })
 export class AddExpenseTypeComponent implements OnInit {
-  title = "Add Type";
+  title = 'Add Type';
 
   /********** Form Fields ***********/
-  expenseTypeName = "";
-  description = "";
+  expenseTypeName = '';
+  description = '';
 
   /******************/
 
   errors = {};
   form;
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {}
 
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -48,7 +47,7 @@ export class AddExpenseTypeComponent implements OnInit {
       description: this.description,
     };
 
-    this.apiService.postData("expenseTypes", data).subscribe({
+    this.apiService.postData('expenseTypes', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -56,9 +55,9 @@ export class AddExpenseTypeComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
 
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -73,9 +72,9 @@ export class AddExpenseTypeComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Expense Type added successfully";
-        this.expenseTypeName = "";
-        this.description = "";
+        this.Success = 'Expense Type added successfully';
+        this.expenseTypeName = '';
+        this.description = '';
       },
     });
   }

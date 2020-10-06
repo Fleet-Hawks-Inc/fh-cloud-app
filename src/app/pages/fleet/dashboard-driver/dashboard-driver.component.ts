@@ -1,49 +1,45 @@
-import { animate, style, transition, trigger } from "@angular/animations";
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-// import * as mapboxSdk from "@mapbox/mapbox-sdk";
-// import * as geocoding from "@mapbox/mapbox-sdk/services/geocoding";
-// import * as mapboxgl from "mapbox-gl";
-import { environment } from "src/environments/environment";
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
-import { Subscription } from "rxjs/index";
-import { HereMapService } from './../../services/here-map.service';
+import { Subscription } from 'rxjs';
+import { HereMapService } from '../../../services/here-map.service';
 
 
 declare var $: any;
 @Component({
-  selector: "app-dashboard-driver",
-  templateUrl: "./dashboard-driver.component.html",
-  styleUrls: ["./dashboard-driver.component.css"],
+  selector: 'app-dashboard-driver',
+  templateUrl: './dashboard-driver.component.html',
+  styleUrls: ['./dashboard-driver.component.css'],
   animations: [
-    trigger("slideInOut", [
-      transition(":enter", [
-        style({ transform: "translateX(100%)" }),
-        animate("400ms", style({ transform: "translateX(0%)" })),
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)' }),
+        animate('400ms', style({ transform: 'translateX(0%)' })),
       ]),
-      transition(":leave", [
-        animate("400ms", style({ transform: "translateX(100%)" })),
+      transition(':leave', [
+        animate('400ms', style({ transform: 'translateX(100%)' })),
       ]),
     ]),
   ],
 })
 export class DashboardDriverComponent implements OnInit {
-  title = "Map Dashboard";
+  title = 'Map Dashboard';
   isShow = false;
   isReeferGraph  = false;
   visible = true;
 
   slides = [
-    {img: "http://placehold.it/350x150/000000"},
-    {img: "http://placehold.it/350x150/111111"},
-    {img: "http://placehold.it/350x150/333333"},
-    {img: "http://placehold.it/350x150/666666"}
+    {img: 'http://placehold.it/350x150/000000'},
+    {img: 'http://placehold.it/350x150/111111'},
+    {img: 'http://placehold.it/350x150/333333'},
+    {img: 'http://placehold.it/350x150/666666'}
   ];
-  slideConfig = {"slidesToShow": 1,
-  "slidesToScroll": 1,
-  "dots": true,
-  "infinite": true,
-  "autoplay": true,
-  "autoplaySpeed": 1500};
+  slideConfig = {'slidesToShow': 1,
+  'slidesToScroll': 1,
+  'dots': true,
+  'infinite': true,
+  'autoplay': true,
+  'autoplaySpeed': 1500};
 
   //mqtt props
   private subscription: Subscription;
@@ -54,7 +50,7 @@ export class DashboardDriverComponent implements OnInit {
 
   // Mapbox Integration
 
-  style = "mapbox://styles/kunalfleethawks/ck86yfrzp0g3z1illpdp9hs3g";
+  style = 'mapbox://styles/kunalfleethawks/ck86yfrzp0g3z1illpdp9hs3g';
   lat = 0;
   lng = 0;
   isControlAdded = false;
@@ -117,7 +113,7 @@ export class DashboardDriverComponent implements OnInit {
     // this.map.flyTo({
     //   center: [lat, long],
     //   zoom: 15,
-    //   popup: "url(../../assets/img/map-arrow.png)"
+    //   popup: 'url(../../assets/img/map-arrow.png)'
     // });
   }
 
@@ -160,12 +156,12 @@ export class DashboardDriverComponent implements OnInit {
   }
 
   logMsg(message): void {
-    //console.log(message);
+    // console.log(message);
     // this.msglog.nativeElement.innerHTML += '<br><hr>' + message;
   }
 
   clear(): void {
-    //this.msglog.nativeElement.innerHTML = '';
+    // this.msglog.nativeElement.innerHTML = '';
   }
 
 }

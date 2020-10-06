@@ -1,19 +1,14 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { ApiService } from '../../../api.service';
+import {  Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../services/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { catchError, map, mapTo, tap } from 'rxjs/operators';
-import { from, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../aws-upload.service';
-import { async } from '@angular/core/testing';
+import { AwsUploadService } from '../../../../services/aws-upload.service';
 import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
-
-
-declare var jquery: any;
 declare var $: any;
-declare var FileItem: any;
+
 
 @Component({
   selector: 'app-add-assets',
@@ -150,9 +145,9 @@ export class AddAssetsComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               console.log(key);
-              val.message = val.message.replace(/".*"/, 'This Field');
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -236,9 +231,9 @@ export class AddAssetsComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               console.log(key);
-              val.message = val.message.replace(/".*"/, 'This Field');
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )

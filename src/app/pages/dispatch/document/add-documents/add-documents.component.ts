@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../../../api.service";
-import { Router } from "@angular/router";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import { from, of } from "rxjs";
-import {AwsUploadService} from '../../../aws-upload.service';
-declare var jquery: any;
-declare var $: any;
+import {ApiService} from '../../../../services/api.service';
+import { Router } from '@angular/router';
+import { map, } from 'rxjs/operators';
+import { from } from 'rxjs';
+import {AwsUploadService} from '../../../../services/aws-upload.service';
 
 @Component({
   selector: 'app-add-documents',
@@ -15,7 +13,7 @@ declare var $: any;
 export class AddDocumentsComponent implements OnInit {
 
   title = 'Add Document';
- 
+
   imageError = '';
   fileName = '';
   errors = {};
@@ -65,7 +63,7 @@ export class AddDocumentsComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               // this.errors[key] = val.message;
               // Or We Can Use This One To Extract Key
               // const key = this.concatArray(path);
@@ -75,7 +73,7 @@ export class AddDocumentsComponent implements OnInit {
               // } else {
               // this.errors[key] = val.message;
               // }
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -92,7 +90,7 @@ export class AddDocumentsComponent implements OnInit {
         this.hasSuccess = true;
         this.Success = 'Document Added successfully';
         this.documentType = '';
-       
+
       }
     });
   }

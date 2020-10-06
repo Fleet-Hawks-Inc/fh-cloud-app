@@ -1,45 +1,44 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../api.service";
-import { ActivatedRoute } from "@angular/router";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import { from, of } from "rxjs";
-declare var jquery: any;
+import {  Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../../services/api.service';
+import { ActivatedRoute } from '@angular/router';
+import {  map } from 'rxjs/operators';
+import { from } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-edit-expense-type",
-  templateUrl: "./edit-expense-type.component.html",
-  styleUrls: ["./edit-expense-type.component.css"],
+  selector: 'app-edit-expense-type',
+  templateUrl: './edit-expense-type.component.html',
+  styleUrls: ['./edit-expense-type.component.css'],
 })
 export class EditExpenseTypeComponent implements OnInit {
-  title = "Edit Type";
+  title = 'Edit Type';
 
   /********** Form Fields ***********/
-  expenseTypeID = "";
-  expenseTypeName = "";
-  description = "";
-  timeCreated = "";
+  expenseTypeID = '';
+  expenseTypeName = '';
+  description = '';
+  timeCreated = '';
 
   /******************/
 
   errors = {};
   form;
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.expenseTypeID = this.route.snapshot.params["expenseTypeID"];
+    this.expenseTypeID = this.route.snapshot.params['expenseTypeID'];
 
     this.fetchExpenseType();
   }
 
   fetchExpenseType() {
     this.apiService
-      .getData("expenseTypes/" + this.expenseTypeID)
+      .getData('expenseTypes/' + this.expenseTypeID)
       .subscribe((result: any) => {
         result = result.Items[0];
 
@@ -51,7 +50,7 @@ export class EditExpenseTypeComponent implements OnInit {
 
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -68,7 +67,7 @@ export class EditExpenseTypeComponent implements OnInit {
       timeCreated: this.timeCreated,
     };
 
-    this.apiService.putData("expenseTypes", data).subscribe({
+    this.apiService.putData('expenseTypes', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -76,9 +75,9 @@ export class EditExpenseTypeComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
 
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -93,7 +92,7 @@ export class EditExpenseTypeComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Expense Type updated successfully";
+        this.Success = 'Expense Type updated successfully';
       },
     });
   }

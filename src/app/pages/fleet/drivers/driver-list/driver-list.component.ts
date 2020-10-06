@@ -1,16 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import {ApiService} from '../../../api.service';
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import {ApiService} from '../../../../services/api.service';
+import { Router } from '@angular/router';
 declare var $: any;
 
 @Component({
-  selector: "app-driver-list",
-  templateUrl: "./driver-list.component.html",
-  styleUrls: ["./driver-list.component.css"],
+  selector: 'app-driver-list',
+  templateUrl: './driver-list.component.html',
+  styleUrls: ['./driver-list.component.css'],
 })
 export class DriverListComponent implements OnInit {
-  title = "Driver List";
+  title = 'Driver List';
   users = [];
   dtOptions: any = {};
 
@@ -21,7 +20,7 @@ export class DriverListComponent implements OnInit {
   }
 
   fetchUsers() {
-    this.apiService.getData("users/userType/driver").subscribe({
+    this.apiService.getData('users/userType/driver').subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -40,7 +39,7 @@ export class DriverListComponent implements OnInit {
       }
       /******************************/
 
-    this.apiService.deleteData("users/" + userName).subscribe((result: any) => {
+    this.apiService.deleteData('users/' + userName).subscribe((result: any) => {
       this.fetchUsers();
     });
   }

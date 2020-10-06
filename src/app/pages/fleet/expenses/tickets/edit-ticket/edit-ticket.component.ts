@@ -1,60 +1,59 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../api.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import { from, of } from "rxjs";
-declare var jquery: any;
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../../services/api.service';
+import {  ActivatedRoute } from '@angular/router';
+import {  map } from 'rxjs/operators';
+import { from, } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-edit-ticket",
-  templateUrl: "./edit-ticket.component.html",
-  styleUrls: ["./edit-ticket.component.css"],
+  selector: 'app-edit-ticket',
+  templateUrl: './edit-ticket.component.html',
+  styleUrls: ['./edit-ticket.component.css'],
 })
 export class EditTicketComponent implements OnInit {
-  title = "Edit Ticket";
+  title = 'Edit Ticket';
   users = [];
   errors = {};
   form;
   /********** Form Fields ***********/
 
-  ticketID = "";
-  userName = "";
-  ticketNumber = "";
-  ticketTypeID = "";
-  ticketValue = "";
-  description = "";
-  officeDetails = "";
-  timeCreated = "";
+  ticketID = '';
+  userName = '';
+  ticketNumber = '';
+  ticketTypeID = '';
+  ticketValue = '';
+  description = '';
+  officeDetails = '';
+  timeCreated = '';
   ticketTypes = [];
 
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
-    this.ticketID = this.route.snapshot.params["ticketID"];
+    this.ticketID = this.route.snapshot.params['ticketID'];
     this.fetchUsers();
     this.fetchTicketTypes();
     this.fetchTicket();
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
   fetchTicketTypes() {
-    this.apiService.getData("ticketTypes").subscribe((result: any) => {
+    this.apiService.getData('ticketTypes').subscribe((result: any) => {
       this.ticketTypes = result.Items;
     });
   }
 
   fetchUsers() {
     this.apiService
-      .getData("users/userType/driver")
+      .getData('users/userType/driver')
       .subscribe((result: any) => {
         this.users = result.Items;
       });
@@ -62,7 +61,7 @@ export class EditTicketComponent implements OnInit {
 
   fetchTicket() {
     this.apiService
-      .getData("tickets/" + this.ticketID)
+      .getData('tickets/' + this.ticketID)
       .subscribe((result: any) => {
         result = result.Items[0];
 
@@ -92,7 +91,7 @@ export class EditTicketComponent implements OnInit {
       timeCreated: this.timeCreated,
     };
 
-    this.apiService.putData("tickets", data).subscribe({
+    this.apiService.putData('tickets', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -100,9 +99,9 @@ export class EditTicketComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-             
-              val.message = val.message.replace(/".*"/, "This Field");
+              const key = val.message.match(/'([^']+)'/)[1];
+
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -117,7 +116,7 @@ export class EditTicketComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Ticket updated successfully";
+        this.Success = 'Ticket updated successfully';
       },
     });
   }

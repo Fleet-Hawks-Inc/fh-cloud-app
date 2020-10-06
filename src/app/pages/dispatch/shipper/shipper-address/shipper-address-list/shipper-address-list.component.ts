@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from "../../../../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
-import * as moment from "moment";
+import { ApiService } from '../../../../../services/api.service';
+import { timer } from 'rxjs';
+
 declare var $: any;
 
 @Component({
@@ -12,16 +11,16 @@ declare var $: any;
 })
 export class ShipperAddressListComponent implements OnInit {
 
-  title = "Address List";
+  title = 'Address List';
   addresses = [];
   shippers = [];
-  shipperID = "";
+  shipperID = '';
   countries = [];
   states = [];
   cities = [];
-  countryName = "";
-  cityName = "";
-  stateName = "";
+  countryName = '';
+  cityName = '';
+  stateName = '';
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
@@ -37,7 +36,7 @@ export class ShipperAddressListComponent implements OnInit {
 
 
   fetchShippers() {
-    this.apiService.getData("shippers").subscribe((result: any) => {
+    this.apiService.getData('shippers').subscribe((result: any) => {
       this.shippers = result.Items;
     });
   }
@@ -51,7 +50,7 @@ export class ShipperAddressListComponent implements OnInit {
           error: () => {},
           next: (result: any) => {
             this.addresses = result.Items;
-            console.log("shipper address after button click",this.addresses[0]);
+            console.log('shipper address after button click',this.addresses[0]);
             this.getStates();
             this.getCities();
           },
@@ -90,7 +89,7 @@ export class ShipperAddressListComponent implements OnInit {
   }
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 

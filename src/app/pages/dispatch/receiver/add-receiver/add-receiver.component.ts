@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../../../api.service";
-import {Router} from "@angular/router";
-import {from, of} from 'rxjs';
+import {ApiService} from '../../../../services/api.service';
+import {from} from 'rxjs';
 import {map} from 'rxjs/operators';
-import { MapBoxService } from "../../../map-box.service";
+import { MapBoxService } from '../../../../services/map-box.service';
 import * as MapboxDraw from '@mapbox/mapbox-gl-draw';
 import * as mapboxClient from '@mapbox/mapbox-sdk';
 import * as mapboxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment';
-
 declare var $: any;
 
 @Component({
@@ -26,32 +24,32 @@ export class AddReceiverComponent implements OnInit {
 
 
   /********** Form Fields ***********/
-  name = "";
+  name = '';
   receiverAddress = {
-    streetNumber : "",
-    streetName : "",
-    cityID : "",
-    stateID : "",
-    countryID : "",
-    addressZip : "",
+    streetNumber : '',
+    streetName : '',
+    cityID : '',
+    stateID : '',
+    countryID : '',
+    addressZip : '',
     geoLocation : {
-      latitude: "",
-      longitude: "",
+      latitude: '',
+      longitude: '',
     }
   };
-  phone = "";
-  email = "";
-  fax = "";
-  taxID = "";
+  phone = '';
+  email = '';
+  fax = '';
+  taxID = '';
   countries = [];
   states = [];
   cities = [];
   coordinates = [];
-  response : any ="";
+  response : any ='';
   hasError : boolean = false;
   hasSuccess: boolean = false;
-  Error : string = "";
-  Success : string = "";
+  Error : string = '';
+  Success : string = '';
 
 
   // MAP BOX Integration
@@ -60,16 +58,16 @@ export class AddReceiverComponent implements OnInit {
   lng = -104.618896;
   lat = 50.445210;
   mapboxDraw: MapboxDraw;
-  
-  address = "";
-  countryName ="";
-  cityName = "";
-  stateName = "";
+
+  address = '';
+  countryName ='';
+  cityName = '';
+  stateName = '';
   constructor(private apiService: ApiService,
               private mapBoxService :MapBoxService
               ) {}
 
- 
+
   ngOnInit() {
     this.fetchCountries();
     this.map = new mapboxgl.Map({
@@ -83,7 +81,7 @@ export class AddReceiverComponent implements OnInit {
   }
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
   initMap() {
@@ -91,13 +89,13 @@ export class AddReceiverComponent implements OnInit {
     this.stateName = this.states.filter(state => state.stateID == this.receiverAddress.stateID)[0].stateName;
     this.cityName = this.cities.filter(city => city.cityID == this.receiverAddress.cityID)[0].cityName;
 
-    this.address = this.receiverAddress.streetName + "," + this.receiverAddress.streetNumber +","+ this.receiverAddress.addressZip + ","+ this.cityName+" , " + this.stateName+ " , " + this.countryName;
-     if ($("#map-div").is(":visible")) {
-      $("#map-div").hide("slow");
+    this.address = this.receiverAddress.streetName + ',' + this.receiverAddress.streetNumber +','+ this.receiverAddress.addressZip + ','+ this.cityName+' , ' + this.stateName+ ' , ' + this.countryName;
+     if ($('#map-div').is(':visible')) {
+      $('#map-div').hide('slow');
     } else {
-      $("#map-div").show("slow");
+      $('#map-div').show('slow');
     }
- 
+
     this.map = new mapboxgl.Map({
       container: 'map',
       style: this.style,
@@ -108,7 +106,7 @@ export class AddReceiverComponent implements OnInit {
 
     });
     //Get address from controls
-    // const address = "7725 48 St SE, Calgary, AB T2C 2V3, Canada";
+    // const address = '7725 48 St SE, Calgary, AB T2C 2V3, Canada';
    const address = this.address;
     const baseClient = mapboxClient({ accessToken: environment.mapBox.accessToken });
     const localClient = mapboxGeocoding(baseClient);
@@ -123,8 +121,8 @@ export class AddReceiverComponent implements OnInit {
         // console.log(JSON.stringify(match.features[0].geometry.coordinates));
         this.lng = +JSON.stringify(match.features[0].geometry.coordinates[0]);
         this.lat = +JSON.stringify(match.features[0].geometry.coordinates[1]);
-        console.log("old longitude", this.lng);
-        console.log("old latitude", this.lat);
+        console.log('old longitude', this.lng);
+        console.log('old latitude', this.lat);
          var marker = new mapboxgl.Marker({
           draggable: true
         })
@@ -139,8 +137,8 @@ export class AddReceiverComponent implements OnInit {
           var lngLat = marker.getLngLat();
           this.lat = lngLat.lat;
           this.lng = lngLat.lng;
-          console.log("new longitude",this.lng);
-          console.log("new latitude",this.lat);
+          console.log('new longitude',this.lng);
+          console.log('new latitude',this.lat);
         });
       });
   }
@@ -197,7 +195,7 @@ export class AddReceiverComponent implements OnInit {
       }
     };
 
-    console.log("Receiver Data",dataReceiver); 
+    console.log('Receiver Data',dataReceiver);
 
     this.apiService.postData('receivers', dataReceiver).
     subscribe({
@@ -208,8 +206,8 @@ export class AddReceiverComponent implements OnInit {
             map((val: any) => {
                 const path = val.path;
                 // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
-                 val.message = val.message.replace(/".*"/, 'This Field');
+                const key = val.message.match(/'([^']+)'/)[1];
+                 val.message = val.message.replace(/'.*'/, 'This Field');
                 this.errors[key] = val.message;
               }),
           )
@@ -230,12 +228,12 @@ export class AddReceiverComponent implements OnInit {
         this.fax = '';
         this.email = '';
         this.taxID = '';
-        this.receiverAddress.streetNumber = "";
-        this.receiverAddress.streetName = "";
-        this.receiverAddress.cityID = "";
-        this.receiverAddress.stateID = "";
-        this.receiverAddress.countryID = "";
-        this.receiverAddress.addressZip = "";
+        this.receiverAddress.streetNumber = '';
+        this.receiverAddress.streetName = '';
+        this.receiverAddress.cityID = '';
+        this.receiverAddress.stateID = '';
+        this.receiverAddress.countryID = '';
+        this.receiverAddress.addressZip = '';
       }
     });
   }
