@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from "../api.service";
-import { Router } from "@angular/router";
+import { ApiService } from '../../../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-daily-inspection',
@@ -40,13 +40,13 @@ export class AddDailyInspectionComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "inspectionFormID": this.inspectionFormID,
-      "parameters": {
+      'inspectionFormID': this.inspectionFormID,
+      'parameters': {
         'a': this.parametersA,
         'b': this.parametersB
       },
-      "driverSignature": this.driverSignature,
-      "operationable": {
+      'driverSignature': this.driverSignature,
+      'operationable': {
         'a': this.operationableA,
         'b': this.operationableB
       }

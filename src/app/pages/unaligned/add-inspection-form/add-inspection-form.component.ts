@@ -1,242 +1,242 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
-import { Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: "app-add-inspection-form",
-  templateUrl: "./add-inspection-form.component.html",
-  styleUrls: ["./add-inspection-form.component.css"],
+  selector: 'app-add-inspection-form',
+  templateUrl: './add-inspection-form.component.html',
+  styleUrls: ['./add-inspection-form.component.css'],
 })
 export class AddInspectionFormComponent implements OnInit {
-  title = "Add Inspection Forms";
+  title = 'Add Inspection Forms';
 
   /********** Form Fields ***********/
 
-  titlee = "";
-  description = "";
-  inspectionType = "";
+  titlee = '';
+  description = '';
+  inspectionType = '';
   parameters = [
     {
-      name: "Air Lines",
+      name: 'Air Lines',
     },
     {
-      name: "Battery",
+      name: 'Battery',
     },
     {
-      name: "Belts",
+      name: 'Belts',
     },
     {
-      name: "Body/Doors​",
+      name: 'Body/Doors​',
     },
     {
-      name: "Brake Lines To Trailer",
+      name: 'Brake Lines To Trailer',
     },
     {
-      name: "Brakes",
+      name: 'Brakes',
     },
     {
-      name: "Cab/Doors/Windows​",
+      name: 'Cab/Doors/Windows​',
     },
     {
-      name: "Clutch",
+      name: 'Clutch',
     },
     {
-      name: "Coolant Leak​",
+      name: 'Coolant Leak​',
     },
     {
-      name: "Coolant Level",
+      name: 'Coolant Level',
     },
     {
-      name: "Drive Line​",
+      name: 'Drive Line​',
     },
     {
-      name: "Electric Lines To Trailer",
+      name: 'Electric Lines To Trailer',
     },
     {
-      name: "Emergency Brakes​",
+      name: 'Emergency Brakes​',
     },
     {
-      name: "Emergency Tire Chains",
+      name: 'Emergency Tire Chains',
     },
     {
-      name: "Exhaust",
+      name: 'Exhaust',
     },
     {
-      name: "Fifth-wheel",
+      name: 'Fifth-wheel',
     },
     {
-      name: "Fire Extinguisher",
+      name: 'Fire Extinguisher',
     },
     {
-      name: "Fuel Leak",
+      name: 'Fuel Leak',
     },
     {
-      name: "Gauges/Warning Indicators​",
+      name: 'Gauges/Warning Indicators​',
     },
     {
-      name: "Grease Leak",
+      name: 'Grease Leak',
     },
     {
-      name: "Horns​",
+      name: 'Horns​',
     },
     {
-      name: "Light Line",
+      name: 'Light Line',
     },
     {
-      name: "Lights",
+      name: 'Lights',
     },
     {
-      name: "Mirrors​",
+      name: 'Mirrors​',
     },
     {
-      name: "Oil Leak​",
+      name: 'Oil Leak​',
     },
     {
-      name: "Oil Level",
+      name: 'Oil Level',
     },
     {
-      name: "Other Coupling​",
+      name: 'Other Coupling​',
     },
     {
-      name: "Other Safety Equipment​",
+      name: 'Other Safety Equipment​',
     },
     {
-      name: "Parking Brake​",
+      name: 'Parking Brake​',
     },
     {
-      name: "Rear-End Protection​",
+      name: 'Rear-End Protection​',
     },
     {
-      name: "Reflectors",
+      name: 'Reflectors',
     },
     {
-      name: "Service Brakes",
+      name: 'Service Brakes',
     },
     {
-      name: "Spare Fuses​",
+      name: 'Spare Fuses​',
     },
     {
-      name: "Steering",
+      name: 'Steering',
     },
     {
-      name: "Suspension",
+      name: 'Suspension',
     },
     {
-      name: "Tie-Downs",
+      name: 'Tie-Downs',
     },
     {
-      name: "Tractor Air Pressure Warning Device​",
+      name: 'Tractor Air Pressure Warning Device​',
     },
     {
-      name: "Tractor Ammeter",
+      name: 'Tractor Ammeter',
     },
     {
-      name: "Tractor Body​",
+      name: 'Tractor Body​',
     },
     {
-      name: "Tractor Clearance Marker Lights​",
+      name: 'Tractor Clearance Marker Lights​',
     },
     {
-      name: "Tractor Cooling System",
+      name: 'Tractor Cooling System',
     },
     {
-      name: "Tractor Engine​",
+      name: 'Tractor Engine​',
     },
     {
-      name: "Tractor Frame Assembly",
+      name: 'Tractor Frame Assembly',
     },
     {
-      name: "Tractor Fuel System",
+      name: 'Tractor Fuel System',
     },
     {
-      name: "Tractor Glass",
+      name: 'Tractor Glass',
     },
     {
-      name: "Tractor Leaks",
+      name: 'Tractor Leaks',
     },
     {
-      name: "Tractor Oil Pressure​",
+      name: 'Tractor Oil Pressure​',
     },
     {
-      name: "Tractor Other Items​",
+      name: 'Tractor Other Items​',
     },
     {
-      name: "Tractor Rear Vision Mirror​",
+      name: 'Tractor Rear Vision Mirror​',
     },
     {
-      name: "Tractor Speedometer",
+      name: 'Tractor Speedometer',
     },
     {
-      name: "Tractor Stop/Turn Lights",
+      name: 'Tractor Stop/Turn Lights',
     },
     {
-      name: "Tractor Tail Lights",
+      name: 'Tractor Tail Lights',
     },
     {
-      name: "Tractor Tires",
+      name: 'Tractor Tires',
     },
     {
-      name: "Tractor Transmission​",
+      name: 'Tractor Transmission​',
     },
     {
-      name: "Triangles",
+      name: 'Triangles',
     },
     {
-      name: "Wheels/Rims/Lugs​",
+      name: 'Wheels/Rims/Lugs​',
     },
     {
-      name: "Windshield Wipers/Washers",
+      name: 'Windshield Wipers/Washers',
     },
     {
-      name: "Trailer Brake Connections",
+      name: 'Trailer Brake Connections',
     },
     {
-      name: "Trailer Brakes​",
+      name: 'Trailer Brakes​',
     },
     {
-      name: "Trailer Coupling King Pin",
+      name: 'Trailer Coupling King Pin',
     },
     {
-      name: "Trailer Doors​",
+      name: 'Trailer Doors​',
     },
     {
-      name: "Trailer Hitch",
+      name: 'Trailer Hitch',
     },
     {
-      name: "Trailer Landing Gear",
+      name: 'Trailer Landing Gear',
     },
     {
-      name: "Trailer Lights",
+      name: 'Trailer Lights',
     },
     {
-      name: "Trailer Reflectors​",
+      name: 'Trailer Reflectors​',
     },
     {
-      name: "Trailer Roof​",
+      name: 'Trailer Roof​',
     },
     {
-      name: "Trailer Suspension System​",
+      name: 'Trailer Suspension System​',
     },
     {
-      name: "Trailer Tarpaulin​",
+      name: 'Trailer Tarpaulin​',
     },
     {
-      name: "Trailer Tires",
+      name: 'Trailer Tires',
     },
     {
-      name: "Trailer Wheels/Rims/Lugs",
+      name: 'Trailer Wheels/Rims/Lugs',
     },
     {
-      name: "Trailer Wheels/Rims/Lugs",
+      name: 'Trailer Wheels/Rims/Lugs',
     },
   ];
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {}
@@ -252,7 +252,7 @@ export class AddInspectionFormComponent implements OnInit {
       parameters: this.parameters
     };
 
-    this.apiService.postData("inspectionForms", data).subscribe({
+    this.apiService.postData('inspectionForms', data).subscribe({
       complete: () => {},
       error: (err) => {
         this.hasError = true;
@@ -261,16 +261,16 @@ export class AddInspectionFormComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Inspection Form Added successfully";
-        this.titlee = "";
-        this.description = "";
+        this.Success = 'Inspection Form Added successfully';
+        this.titlee = '';
+        this.description = '';
       },
     });
   }
 
   cloneInput() {
     this.parameters.push({
-      name: "",
+      name: '',
     });
   }
 

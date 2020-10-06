@@ -1,48 +1,48 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { ApiService } from "../api.service";
-import { from } from "rxjs";
-import { map } from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
-  selector: "app-add-cycle",
-  templateUrl: "./add-cycle.component.html",
-  styleUrls: ["./add-cycle.component.css"],
+  selector: 'app-add-cycle',
+  templateUrl: './add-cycle.component.html',
+  styleUrls: ['./add-cycle.component.css'],
 })
 export class AddCycleComponent implements OnInit {
-  title = "Add Cycle";
+  title = 'Add Cycle';
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
 
-  cycleName = "";
-  continuousDriveTime = "";
-  minimumSubBreakTime = "";
-  totalDays = "";
-  continuousBreak = "";
-  totalDriveTime = "";
-  cycleChangeBreakHours = "";
-  totalCycleDriveTime = "";
-  totalOnDutyTime = "";
-  totalCycleOnDutyTime = "";
-  geofenceParams: "";
+  cycleName = '';
+  continuousDriveTime = '';
+  minimumSubBreakTime = '';
+  totalDays = '';
+  continuousBreak = '';
+  totalDriveTime = '';
+  cycleChangeBreakHours = '';
+  totalCycleDriveTime = '';
+  totalOnDutyTime = '';
+  totalCycleOnDutyTime = '';
+  geofenceParams: '';
 
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -65,13 +65,13 @@ export class AddCycleComponent implements OnInit {
       geofenceParams: this.geofenceParams,
     };
 
-    this.apiService.postData("cycles", data).subscribe({
+    this.apiService.postData('cycles', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -80,21 +80,21 @@ export class AddCycleComponent implements OnInit {
           });
       },
       next: (res) => {
-        this.cycleName = "";
-        this.continuousDriveTime = "";
-        this.minimumSubBreakTime = "";
-        this.totalDays = "";
-        this.continuousBreak = "";
-        this.totalDriveTime = "";
-        this.cycleChangeBreakHours = "";
-        this.totalCycleDriveTime = "";
-        this.totalOnDutyTime = "";
-        this.totalCycleOnDutyTime = "";
-        this.geofenceParams = "";
+        this.cycleName = '';
+        this.continuousDriveTime = '';
+        this.minimumSubBreakTime = '';
+        this.totalDays = '';
+        this.continuousBreak = '';
+        this.totalDriveTime = '';
+        this.cycleChangeBreakHours = '';
+        this.totalCycleDriveTime = '';
+        this.totalOnDutyTime = '';
+        this.totalCycleOnDutyTime = '';
+        this.geofenceParams = '';
 
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Cycle Added successfully";
+        this.Success = 'Cycle Added successfully';
       },
     });
   }

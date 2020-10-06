@@ -4,7 +4,6 @@ import { MapBoxService } from '../../../../services/map-box.service';
 import { Router } from '@angular/router';
 import {  map } from 'rxjs/operators';
 import { from } from 'rxjs';
-declare var jquery: any;
 declare var $: any;
 
 @Component({
@@ -13,29 +12,29 @@ declare var $: any;
   styleUrls: ['./add-yard.component.css'],
 })
 export class AddYardComponent implements OnInit, AfterViewInit {
-  title = "Add Yard";
+  title = 'Add Yard';
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
 
-  yardName = "";
-  description = "";
-  latitude = "";
-  longitude = "";
+  yardName = '';
+  description = '';
+  latitude = '';
+  longitude = '';
 
-  stateID = "";
-  countryID = "";
+  stateID = '';
+  countryID = '';
 
   /******************/
   countries = [];
   states = [];
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(
     private apiService: ApiService,
     private mapBoxService: MapBoxService,
@@ -47,17 +46,17 @@ export class AddYardComponent implements OnInit, AfterViewInit {
   }
 
   initMap() {
-    if ($("#map-div").is(":visible")) {
-      $("#map-div").hide("slow");
+    if ($('#map-div').is(':visible')) {
+      $('#map-div').hide('slow');
     } else {
-      $("#map-div").show("slow");
+      $('#map-div').show('slow');
     }
 
     this.mapBoxService.initMapbox(-104.618896, 50.44521);
   }
 
   fetchCountries() {
-    this.apiService.getData("countries").subscribe({
+    this.apiService.getData('countries').subscribe({
       complete: () => {
         //$('#countryId').select2()
       },
@@ -70,7 +69,7 @@ export class AddYardComponent implements OnInit, AfterViewInit {
 
   getStates() {
     this.apiService
-      .getData("states/country/" + this.countryID)
+      .getData('states/country/' + this.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
@@ -78,7 +77,7 @@ export class AddYardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -98,20 +97,20 @@ export class AddYardComponent implements OnInit, AfterViewInit {
         latitude: this.mapBoxService.latitude,
         longitude: this.mapBoxService.longitude,
       },
-      geofence: this.mapBoxService.plottedMap || "No GeofenceData",
+      geofence: this.mapBoxService.plottedMap || 'No GeofenceData',
       stateID: this.stateID,
       countryID: this.countryID,
     };
 
-    this.apiService.postData("yards", data).subscribe({
+    this.apiService.postData('yards', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
               const path = val.path;
-              const key = val.message.match(/"([^']+)"/)[1];
-              val.message = val.message.replace(/".*"/, "This Field");
+              const key = val.message.match(/'([^']+)'/)[1];
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -126,11 +125,11 @@ export class AddYardComponent implements OnInit, AfterViewInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Yard added successfully";
-        this.yardName = "";
-        this.countryID = "";
-        this.stateID = "";
-        this.description = "";
+        this.Success = 'Yard added successfully';
+        this.yardName = '';
+        this.countryID = '';
+        this.stateID = '';
+        this.description = '';
       },
     });
   }

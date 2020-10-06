@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {Router} from "@angular/router";
+import {ApiService} from '../../../services/api.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-expenses',
@@ -37,12 +37,12 @@ export class AddExpensesComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "expenseTypeID": this.expenseTypeID,
-      "userName": this.userName,
-      "expense": this.expense,
-      "location": this.location,
-      "attachmentID": this.attachmentID,
-      "tripID": this.tripID
+      'expenseTypeID': this.expenseTypeID,
+      'userName': this.userName,
+      'expense': this.expense,
+      'location': this.location,
+      'attachmentID': this.attachmentID,
+      'tripID': this.tripID
     };
 
 

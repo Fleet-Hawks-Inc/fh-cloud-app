@@ -1,44 +1,44 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { MapBoxService } from "../../../map-box.service";
-import { ApiService } from "../../../api.service";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import { from, of } from "rxjs";
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { MapBoxService } from '../../../map-box.service';
+import { ApiService } from '../../../api.service';
+import {  map } from 'rxjs/operators';
+import { from, of } from 'rxjs';
 declare var jquery: any;
 declare var $: any;
 
 @Component({
-  selector: "app-edit-yard",
-  templateUrl: "./edit-yard.component.html",
-  styleUrls: ["./edit-yard.component.css"],
+  selector: 'app-edit-yard',
+  templateUrl: './edit-yard.component.html',
+  styleUrls: ['./edit-yard.component.css'],
 })
 export class EditYardComponent implements OnInit, AfterViewInit {
-  title = "Edit Yard";
+  title = 'Edit Yard';
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
 
-  yardName = "";
-  description = "";
-  latitude = "";
-  longitude = "";
-  geofence = "";
-  stateID = "";
-  countryID = "";
-  timeCreated = "";
+  yardName = '';
+  description = '';
+  latitude = '';
+  longitude = '';
+  geofence = '';
+  stateID = '';
+  countryID = '';
+  timeCreated = '';
   /******************/
 
-  yardID = "";
+  yardID = '';
   countries = [];
   states = [];
 
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -47,10 +47,10 @@ export class EditYardComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    this.yardID = this.route.snapshot.params["yardID"];
+    this.yardID = this.route.snapshot.params['yardID'];
     this.fetchCountries();
 
-    this.apiService.getData("yards/" + this.yardID).subscribe((result: any) => {
+    this.apiService.getData('yards/' + this.yardID).subscribe((result: any) => {
       result = result.Items[0];
       // console.log(result);
       this.yardName = result.yardName;
@@ -71,10 +71,10 @@ export class EditYardComponent implements OnInit, AfterViewInit {
   }
 
   initMap() {
-    if ($("#map-div").is(":visible")) {
-      $("#map-div").hide("slow");
+    if ($('#map-div').is(':visible')) {
+      $('#map-div').hide('slow');
     } else {
-      $("#map-div").show("slow");
+      $('#map-div').show('slow');
     }
 
     //initiate map box
@@ -90,13 +90,13 @@ export class EditYardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
   fillCountry() {
     this.apiService
-      .getData("states/" + this.stateID)
+      .getData('states/' + this.stateID)
       .subscribe((result: any) => {
         console.log(result);
         result = result.Items[0];
@@ -109,14 +109,14 @@ export class EditYardComponent implements OnInit, AfterViewInit {
   }
 
   fetchCountries() {
-    this.apiService.getData("countries").subscribe((result: any) => {
+    this.apiService.getData('countries').subscribe((result: any) => {
       this.countries = result.Items;
     });
   }
 
   getStates() {
     this.apiService
-      .getData("states/country/" + this.countryID)
+      .getData('states/country/' + this.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
@@ -141,7 +141,7 @@ export class EditYardComponent implements OnInit, AfterViewInit {
       timeCreated: this.timeCreated,
     };
 
-    this.apiService.putData("yards", data).subscribe({
+    this.apiService.putData('yards', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -149,9 +149,9 @@ export class EditYardComponent implements OnInit, AfterViewInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
               console.log(key);
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -166,7 +166,7 @@ export class EditYardComponent implements OnInit, AfterViewInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Yard updated successfully";
+        this.Success = 'Yard updated successfully';
       },
     });
   }

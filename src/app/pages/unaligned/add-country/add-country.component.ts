@@ -1,38 +1,38 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { ApiService } from "../api.service";
-import { from } from "rxjs";
-import { map } from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 @Component({
-  selector: "app-add-country",
-  templateUrl: "./add-country.component.html",
-  styleUrls: ["./add-country.component.css"],
+  selector: 'app-add-country',
+  templateUrl: './add-country.component.html',
+  styleUrls: ['./add-country.component.css'],
 })
 export class AddCountryComponent implements OnInit {
-  title = "Add Country";
+  title = 'Add Country';
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
 
-  countryCode = "";
-  countryName = "";
+  countryCode = '';
+  countryName = '';
 
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -46,13 +46,13 @@ export class AddCountryComponent implements OnInit {
       countryName: this.countryName,
     };
 
-    this.apiService.postData("countries", data).subscribe({
+    this.apiService.postData('countries', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -61,12 +61,12 @@ export class AddCountryComponent implements OnInit {
           });
       },
       next: (res) => {
-        this.countryCode = "";
-        this.countryName = "";
+        this.countryCode = '';
+        this.countryName = '';
 
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Country Added successfully";
+        this.Success = 'Country Added successfully';
       },
     });
   }

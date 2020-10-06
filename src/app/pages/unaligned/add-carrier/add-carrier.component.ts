@@ -1,48 +1,47 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { ApiService } from "../api.service";
-import { from, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { Object } from "aws-sdk/clients/s3";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService } from '../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
-  selector: "app-add-carrier",
-  templateUrl: "./add-carrier.component.html",
-  styleUrls: ["./add-carrier.component.css"],
+  selector: 'app-add-carrier',
+  templateUrl: './add-carrier.component.html',
+  styleUrls: ['./add-carrier.component.css'],
 })
 export class AddCarrierComponent implements OnInit {
-  title = "Add Carrier";
-  activeTab = "company_settings";
+  title = 'Add Carrier';
+  activeTab = 'company_settings';
   errors = {};
   form;
-  concatArrayKeys = "";
+  concatArrayKeys = '';
   /********** Form Fields ***********/
 
-  carrierName = "";
-  taxID = "";
-  companyNumber = "";
+  carrierName = '';
+  taxID = '';
+  companyNumber = '';
   address = {
-    streetNo: "",
-    streetName: "",
-    cityID: "",
-    stateID: "",
-    zipCode: "",
-    countryID: "",
+    streetNo: '',
+    streetName: '',
+    cityID: '',
+    stateID: '',
+    zipCode: '',
+    countryID: '',
   };
-  superUserName = "";
+  superUserName = '';
   unitSettings = {
-    distanceUnit: "",
-    liquidUnit: "",
-    locale: "",
-    weightUnit: "",
-    temperatureUnit: "",
+    distanceUnit: '',
+    liquidUnit: '',
+    locale: '',
+    weightUnit: '',
+    temperatureUnit: '',
   };
   assetSettings = {
-    hardBreakingParameters: "",
-    hardAccelerationParameters: "",
-    corner: "",
-    fuelTheftAlertParameters: "",
+    hardBreakingParameters: '',
+    hardAccelerationParameters: '',
+    corner: '',
+    fuelTheftAlertParameters: '',
   };
   driverPerformance = {
     average: 20,
@@ -57,47 +56,47 @@ export class AddCarrierComponent implements OnInit {
   cities = [];
   states = [];
   countries = [];
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
     this.fetchCountries();
     this.fetchUsers();
 
-    this.assetSettings.hardBreakingParameters = "6";
-    this.assetSettings.hardAccelerationParameters = "6";
-    this.assetSettings.corner = "6";
-    this.assetSettings.fuelTheftAlertParameters = "6";
+    this.assetSettings.hardBreakingParameters = '6';
+    this.assetSettings.hardAccelerationParameters = '6';
+    this.assetSettings.corner = '6';
+    this.assetSettings.fuelTheftAlertParameters = '6';
 
-    $("#hardBreakingParametersValue").html(6);
-    $("#hardAccelerationParametersValue").html(6);
-    $("#cornerValue").html(6);
-    $("#fuelTheftAlertParametersValue").html(6);
+    $('#hardBreakingParametersValue').html(6);
+    $('#hardAccelerationParametersValue').html(6);
+    $('#cornerValue').html(6);
+    $('#fuelTheftAlertParametersValue').html(6);
 
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
   fetchCountries() {
-    this.apiService.getData("countries").subscribe((result: any) => {
+    this.apiService.getData('countries').subscribe((result: any) => {
       this.countries = result.Items;
     });
   }
 
   fetchUsers() {
-    this.apiService.getData("users").subscribe((result: any) => {
+    this.apiService.getData('users').subscribe((result: any) => {
       this.users = result.Items;
     });
   }
 
   getStates() {
     this.apiService
-      .getData("states/country/" + this.address.countryID)
+      .getData('states/country/' + this.address.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
@@ -105,34 +104,34 @@ export class AddCarrierComponent implements OnInit {
 
   getCities() {
     this.apiService
-      .getData("cities/state/" + this.address.stateID)
+      .getData('cities/state/' + this.address.stateID)
       .subscribe((result: any) => {
         this.cities = result.Items;
       });
   }
 
   company_settings() {
-    this.activeTab = "company_settings";
-    $("#company_settings").show();
-    $("#unit_settings, #asset_settings, #driver_performance").hide();
+    this.activeTab = 'company_settings';
+    $('#company_settings').show();
+    $('#unit_settings, #asset_settings, #driver_performance').hide();
   }
 
   unit_settings() {
-    this.activeTab = "unit_settings";
-    $("#unit_settings").show();
-    $("#company_settings, #asset_settings, #driver_performance").hide();
+    this.activeTab = 'unit_settings';
+    $('#unit_settings').show();
+    $('#company_settings, #asset_settings, #driver_performance').hide();
   }
 
   asset_settings() {
-    this.activeTab = "asset_settings";
-    $("#asset_settings").show();
-    $("#company_settings, #unit_settings, #driver_performance").hide();
+    this.activeTab = 'asset_settings';
+    $('#asset_settings').show();
+    $('#company_settings, #unit_settings, #driver_performance').hide();
   }
 
   driver_performance() {
-    this.activeTab = "driver_performance";
-    $("#driver_performance").show();
-    $("#company_settings, #asset_settings, #unit_settings").hide();
+    this.activeTab = 'driver_performance';
+    $('#driver_performance').show();
+    $('#company_settings, #asset_settings, #unit_settings').hide();
   }
 
   addCarrier() {
@@ -150,7 +149,7 @@ export class AddCarrierComponent implements OnInit {
       alert('Sum of driver performance must be 100')
       return false;
     }
-    
+
     const data = {
       carrierName: this.carrierName,
       taxID: this.taxID,
@@ -187,7 +186,7 @@ export class AddCarrierComponent implements OnInit {
       },
     };
     //  console.log(data);return;
-    this.apiService.postData("carriers", data).subscribe({
+    this.apiService.postData('carriers', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -195,8 +194,8 @@ export class AddCarrierComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              val.message = val.message.replace(/".*"/, "This Field");
+              const key = val.message.match(/'([^']+)'/)[1];
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -211,31 +210,31 @@ export class AddCarrierComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Carrier Added successfully";
-        this.carrierName = "";
-        this.taxID = "";
-        this.companyNumber = "";
+        this.Success = 'Carrier Added successfully';
+        this.carrierName = '';
+        this.taxID = '';
+        this.companyNumber = '';
         this.address = {
-          streetNo: "",
-          streetName: "",
-          cityID: "",
-          stateID: "",
-          zipCode: "",
-          countryID: "",
+          streetNo: '',
+          streetName: '',
+          cityID: '',
+          stateID: '',
+          zipCode: '',
+          countryID: '',
         };
-        this.superUserName = "";
+        this.superUserName = '';
         this.unitSettings = {
-          distanceUnit: "",
-          liquidUnit: "",
-          locale: "",
-          weightUnit: "",
-          temperatureUnit: "",
+          distanceUnit: '',
+          liquidUnit: '',
+          locale: '',
+          weightUnit: '',
+          temperatureUnit: '',
         };
         this.assetSettings = {
-          hardBreakingParameters: "",
-          hardAccelerationParameters: "",
-          corner: "",
-          fuelTheftAlertParameters: "",
+          hardBreakingParameters: '',
+          hardAccelerationParameters: '',
+          corner: '',
+          fuelTheftAlertParameters: '',
         };
         this.driverPerformance = {
           average: 20,
@@ -250,22 +249,22 @@ export class AddCarrierComponent implements OnInit {
 
   onChangeHardBreakingParameters(value: any) {
     this.assetSettings.hardBreakingParameters = value;
-    $("#hardBreakingParametersValue").html(value);
+    $('#hardBreakingParametersValue').html(value);
   }
 
   onChangeAccelrationParameters(value: any) {
     this.assetSettings.hardAccelerationParameters = value;
-    $("#hardAccelerationParametersValue").html(value);
+    $('#hardAccelerationParametersValue').html(value);
   }
 
   onChangeCorner(value: any) {
     this.assetSettings.corner = value;
-    $("#cornerValue").html(value);
+    $('#cornerValue').html(value);
   }
 
   onChangeFuelTheftAlertParameters(value: any) {
     this.assetSettings.fuelTheftAlertParameters = value;
-    $("#fuelTheftAlertParametersValue").html(value);
+    $('#fuelTheftAlertParametersValue').html(value);
   }
 
   throwErrors() {
@@ -273,9 +272,9 @@ export class AddCarrierComponent implements OnInit {
   }
 
   concatArray(path) {
-    this.concatArrayKeys = "";
+    this.concatArrayKeys = '';
     for (const i in path) {
-      this.concatArrayKeys += path[i] + ".";
+      this.concatArrayKeys += path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(
       0,

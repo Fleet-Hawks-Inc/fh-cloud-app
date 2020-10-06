@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {Router} from "@angular/router";
+import {ApiService} from '../../../services/api.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-certificate',
@@ -40,12 +40,12 @@ export class AddCertificateComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "rootCA": this.rootCA,
-      "certificate": this.certificate,
-      "privateKey": this.privateKey,
-      "publicKey" : this.publicKey,
-      "certificateType": this.certificateType,
-      "currentStatus": this.currentStatus 
+      'rootCA': this.rootCA,
+      'certificate': this.certificate,
+      'privateKey': this.privateKey,
+      'publicKey' : this.publicKey,
+      'certificateType': this.certificateType,
+      'currentStatus': this.currentStatus
     };
 
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../api.service';
+import {ApiService} from '../../../services/api.service';
 import {from} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
@@ -76,8 +76,8 @@ export class AddCityComponent implements OnInit {
 
     const data = {
 
-      "stateID": this.stateID,
-      "cityName": this.cityName,
+      'stateID': this.stateID,
+      'cityName': this.cityName,
 
     }
 
@@ -88,7 +88,7 @@ export class AddCityComponent implements OnInit {
           from(err.error)
             .pipe(
               map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
+                val.message = val.message.replace(/'.*'/, 'This Field');
                 this.errors[val.context.key] = val.message;
               }),
             )
