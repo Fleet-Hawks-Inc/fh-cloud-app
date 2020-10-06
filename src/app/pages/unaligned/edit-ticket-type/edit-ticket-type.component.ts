@@ -1,45 +1,44 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { ApiService } from "../api.service";
-import { catchError, map, mapTo, tap } from "rxjs/operators";
-import { from, of } from "rxjs";
-declare var jquery: any;
+import {  Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../services/api.service';
+import { map } from 'rxjs/operators';
+import { from } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-edit-ticket-type",
-  templateUrl: "./edit-ticket-type.component.html",
-  styleUrls: ["./edit-ticket-type.component.css"],
+  selector: 'app-edit-ticket-type',
+  templateUrl: './edit-ticket-type.component.html',
+  styleUrls: ['./edit-ticket-type.component.css'],
 })
 export class EditTicketTypeComponent implements OnInit {
-  title = "Edit Ticket Type";
+  title = 'Edit Ticket Type';
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
-  typeID = "";
-  typeName = "";
-  description = "";
-  timeCreated = "";
+  typeID = '';
+  typeName = '';
+  description = '';
+  timeCreated = '';
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
-    this.typeID = this.route.snapshot.params["typeID"];
+    this.typeID = this.route.snapshot.params['typeID'];
     this.fetchTicketType();
   }
 
   fetchTicketType() {
     this.apiService
-      .getData("ticketTypes")
+      .getData('ticketTypes')
       .subscribe((result: any) => {
         result = result.Items[0];
         this.typeName = result.typeName;
@@ -52,7 +51,7 @@ export class EditTicketTypeComponent implements OnInit {
 
   ngAfterViewInit() {
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
@@ -68,13 +67,13 @@ export class EditTicketTypeComponent implements OnInit {
       timeCreated: this.timeCreated
     };
 
-    this.apiService.putData("ticketTypes", data).subscribe({
+    this.apiService.putData('ticketTypes', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -85,7 +84,7 @@ export class EditTicketTypeComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Ticket Type updated successfully";
+        this.Success = 'Ticket Type updated successfully';
       },
     });
   }

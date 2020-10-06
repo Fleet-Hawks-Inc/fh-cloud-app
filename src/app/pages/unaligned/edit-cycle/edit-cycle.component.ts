@@ -1,56 +1,56 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { ApiService } from "../api.service";
-import { from } from "rxjs";
-import { map } from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
-  selector: "app-edit-cycle",
-  templateUrl: "./edit-cycle.component.html",
-  styleUrls: ["./edit-cycle.component.css"],
+  selector: 'app-edit-cycle',
+  templateUrl: './edit-cycle.component.html',
+  styleUrls: ['./edit-cycle.component.css'],
 })
 export class EditCycleComponent implements OnInit {
-  title = "Edit Cycle";
+  title = 'Edit Cycle';
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
-  cycleID = "";
-  cycleName = "";
-  continuousDriveTime = "";
-  minimumSubBreakTime = "";
-  totalDays = "";
-  continuousBreak = "";
-  totalDriveTime = "";
-  cycleChangeBreakHours = "";
-  totalCycleDriveTime = "";
-  totalOnDutyTime = "";
-  totalCycleOnDutyTime = "";
-  geofenceParams: "";
-  timeCreated = "";
+  cycleID = '';
+  cycleName = '';
+  continuousDriveTime = '';
+  minimumSubBreakTime = '';
+  totalDays = '';
+  continuousBreak = '';
+  totalDriveTime = '';
+  cycleChangeBreakHours = '';
+  totalCycleDriveTime = '';
+  totalOnDutyTime = '';
+  totalCycleOnDutyTime = '';
+  geofenceParams: '';
+  timeCreated = '';
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
-    this.cycleID = this.route.snapshot.params["cycleID"];
+    this.cycleID = this.route.snapshot.params['cycleID'];
     this.fetchCycle();
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
   fetchCycle() {
     this.apiService
-      .getData("cycles/" + this.cycleID)
+      .getData('cycles/' + this.cycleID)
       .subscribe((result: any) => {
         result = result.Items[0];
 
@@ -90,13 +90,13 @@ export class EditCycleComponent implements OnInit {
       timeCreated: this.timeCreated,
     };
 
-    this.apiService.putData("cycles", data).subscribe({
+    this.apiService.putData('cycles', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -107,7 +107,7 @@ export class EditCycleComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Cycle updated successfully";
+        this.Success = 'Cycle updated successfully';
       },
     });
   }

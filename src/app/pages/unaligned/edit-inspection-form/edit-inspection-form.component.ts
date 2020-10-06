@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../api.service";
+import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../../../services/api.service';
 
 @Component({
   selector: 'app-edit-inspection-form',
@@ -33,7 +33,7 @@ export class EditInspectionFormComponent implements OnInit {
     this.apiService.getData('inspectionForms/' + this.inspectionFormID)
         .subscribe((result: any) => {
           result = result.Items[0];
-         
+
           this.titlee = result.title;
           this.description = result.description;
 
@@ -50,9 +50,9 @@ export class EditInspectionFormComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "inspectionFormID": this.inspectionFormID,
-      "title": this.titlee,
-      "description": this.description
+      'inspectionFormID': this.inspectionFormID,
+      'title': this.titlee,
+      'description': this.description
     };
 
     this.apiService.putData('inspectionForms', data).

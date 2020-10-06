@@ -1,15 +1,15 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { ApiService } from "../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 declare var $: any;
 @Component({
-  selector: "app-trips-list",
-  templateUrl: "./trips-list.component.html",
-  styleUrls: ["./trips-list.component.css"],
+  selector: 'app-trips-list',
+  templateUrl: './trips-list.component.html',
+  styleUrls: ['./trips-list.component.css'],
 })
 export class TripsListComponent implements OnInit {
-  title = "Trips List";
+  title = 'Trips List';
   tripLists;
   // @ViewChild('FhDataTable', {static: false}) table;
   // dataTable: any;
@@ -23,7 +23,7 @@ export class TripsListComponent implements OnInit {
   }
 
   tripEntries() {
-    this.apiService.getData("trips").subscribe({
+    this.apiService.getData('trips').subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -37,12 +37,12 @@ export class TripsListComponent implements OnInit {
 
   deleteTrip(tripId) {
     /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable("#datatable-default")) {
-      $("#datatable-default").DataTable().clear().destroy();
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
 
-    this.apiService.deleteData("trips/" + tripId).subscribe((result: any) => {
+    this.apiService.deleteData('trips/' + tripId).subscribe((result: any) => {
       this.tripEntries();
     });
   }
@@ -50,7 +50,7 @@ export class TripsListComponent implements OnInit {
   /********Initialize Datatable, Wait To Load Records First ********/
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 }

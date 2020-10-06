@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../api.service';
+import {ApiService} from '../../../services/api.service';
 import {from} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
@@ -77,11 +77,11 @@ export class EditStateComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "stateID": this.stateID,
-      "countryID": this.country,
-      "stateName": this.stateName,
-      "stateCode": this.stateCode,
-      "timeCreated": this.timeCreated
+      'stateID': this.stateID,
+      'countryID': this.country,
+      'stateName': this.stateName,
+      'stateCode': this.stateCode,
+      'timeCreated': this.timeCreated
     };
 
     this.apiService.putData('states', data)
@@ -91,7 +91,7 @@ export class EditStateComponent implements OnInit {
           from(err.error)
             .pipe(
               map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
+                val.message = val.message.replace(/'.*'/, 'This Field');
                 this.errors[val.context.key] = val.message;
               }),
             )

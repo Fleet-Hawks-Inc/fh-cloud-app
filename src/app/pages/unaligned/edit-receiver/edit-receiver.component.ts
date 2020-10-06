@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../api.service";
+import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../../../services/api.service';
 
 @Component({
   selector: 'app-edit-receiver',
@@ -56,13 +56,13 @@ export class EditReceiverComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "receiverID": this.receiverID,
-      "receiverName": this.receiverName,
-      "address": this.address,
-      "phone": this.phone,
-      "fax": this.fax,
-      "email": this.email,
-      "taxID": this.taxID,
+      'receiverID': this.receiverID,
+      'receiverName': this.receiverName,
+      'address': this.address,
+      'phone': this.phone,
+      'fax': this.fax,
+      'email': this.email,
+      'taxID': this.taxID,
     };
 
     this.apiService.putData('receivers', data).

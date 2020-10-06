@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../api.service";
+import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../../../services/api.service';
 
 @Component({
   selector: 'app-edit-insurance',
@@ -54,11 +54,11 @@ export class EditInsuranceComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "insuranceID": this.insuranceID,
-      "vehicleID": this.vehicleID,
-      "dueDate": this.dueDate,
-      "insuranceAmount": this.insuranceAmount,
-      "vendorID": this.vendorID,
+      'insuranceID': this.insuranceID,
+      'vehicleID': this.vehicleID,
+      'dueDate': this.dueDate,
+      'insuranceAmount': this.insuranceAmount,
+      'vendorID': this.vendorID,
     };
 
     this.apiService.putData('insurances', data).

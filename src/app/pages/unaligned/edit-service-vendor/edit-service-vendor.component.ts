@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ApiService} from '../../../services/api.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-edit-service-vendor',
@@ -51,14 +51,14 @@ export class EditServiceVendorComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "vendorID": this.serviceVendorId,
-      "vendorName": this.vendorName,
-      "geoLocation": {
-        "lat": this.lat,
-        "long": this.long
+      'vendorID': this.serviceVendorId,
+      'vendorName': this.vendorName,
+      'geoLocation': {
+        'lat': this.lat,
+        'long': this.long
       },
-      "address": this.address,
-      "carrierID": this.carrierID
+      'address': this.address,
+      'carrierID': this.carrierID
     };
 
 

@@ -1,51 +1,51 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { ApiService } from "../api.service";
-import { from } from "rxjs";
-import { map } from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 @Component({
-  selector: "app-edit-model",
-  templateUrl: "./edit-model.component.html",
-  styleUrls: ["./edit-model.component.css"],
+  selector: 'app-edit-model',
+  templateUrl: './edit-model.component.html',
+  styleUrls: ['./edit-model.component.css'],
 })
 export class EditModelComponent implements OnInit {
-  title = "Edit Model";
+  title = 'Edit Model';
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
 
-  modelID = "";
-  manufacturerID = "";
-  name = "";
-  yearOfRelease = "";
-  timeCreated = "";
+  modelID = '';
+  manufacturerID = '';
+  name = '';
+  yearOfRelease = '';
+  timeCreated = '';
   manufacturers = [];
 
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
-    this.modelID = this.route.snapshot.params["modelID"];
+    this.modelID = this.route.snapshot.params['modelID'];
     this.fetchManufacturers();
     this.fetchModel();
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
   }
 
   fetchModel() {
     this.apiService
-      .getData("models/" + this.modelID)
+      .getData('models/' + this.modelID)
       .subscribe((result: any) => {
         result = result.Items[0];
         this.modelID = result.modelID;
@@ -57,7 +57,7 @@ export class EditModelComponent implements OnInit {
   }
 
   fetchManufacturers() {
-    this.apiService.getData("manufacturers").subscribe((result: any) => {
+    this.apiService.getData('manufacturers').subscribe((result: any) => {
       this.manufacturers = result.Items;
     });
   }
@@ -75,13 +75,13 @@ export class EditModelComponent implements OnInit {
       timeCreated: this.timeCreated,
     };
 
-    this.apiService.putData("models", data).subscribe({
+    this.apiService.putData('models', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -92,7 +92,7 @@ export class EditModelComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Model updated successfully";
+        this.Success = 'Model updated successfully';
       },
     });
   }

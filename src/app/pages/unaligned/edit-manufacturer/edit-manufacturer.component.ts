@@ -1,60 +1,60 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
-import { from } from "rxjs";
-import { map } from "rxjs/operators";
-import { ActivatedRoute } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 declare var $: any;
 
 @Component({
-  selector: "app-edit-manufacturer",
-  templateUrl: "./edit-manufacturer.component.html",
-  styleUrls: ["./edit-manufacturer.component.css"],
+  selector: 'app-edit-manufacturer',
+  templateUrl: './edit-manufacturer.component.html',
+  styleUrls: ['./edit-manufacturer.component.css'],
 })
 export class EditManufacturerComponent implements OnInit {
-  title = "Edit Manufacturer";
+  title = 'Edit Manufacturer';
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
-  manufacturerID = "";
-  manufacturerType = "";
-  name = "";
-  cityID = "";
-  stateID = "";
-  countryID = "";
-  customerCarePhone = "";
-  customerCareEmail = "";
-  timeCreated = "";
+  manufacturerID = '';
+  manufacturerType = '';
+  name = '';
+  cityID = '';
+  stateID = '';
+  countryID = '';
+  customerCarePhone = '';
+  customerCareEmail = '';
+  timeCreated = '';
   countries = [];
   states = [];
   cities = [];
 
   /******************/
 
-  response: any = "";
+  response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = "";
-  Success: string = "";
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
-    this.manufacturerID = this.route.snapshot.params["manufacturerID"];
+    this.manufacturerID = this.route.snapshot.params['manufacturerID'];
     this.fetchCountries();
     this.fetchManufacturer();
     // this.getStates();
 
     console.log(this.states);
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      this.form = $('#form_').validate();
     });
 
   }
 
   fetchManufacturer() {
-    this.apiService.getData("manufacturers/" + this.manufacturerID).subscribe((result: any) => {
+    this.apiService.getData('manufacturers/' + this.manufacturerID).subscribe((result: any) => {
       result = result.Items[0];
       // console.log(result);
       this.manufacturerType = result.manufacturerType;
@@ -69,7 +69,7 @@ export class EditManufacturerComponent implements OnInit {
   }
 
   fetchCountries() {
-    this.apiService.getData("countries").subscribe((result: any) => {
+    this.apiService.getData('countries').subscribe((result: any) => {
       this.countries = result.Items;
     });
 
@@ -83,7 +83,7 @@ export class EditManufacturerComponent implements OnInit {
       .subscribe((result: any) => {
         this.states = result.Items;
       });
-    
+
       setTimeout(() => {
         this.getCities();
       }, 2000);
@@ -113,13 +113,13 @@ export class EditManufacturerComponent implements OnInit {
       timeCreated: this.timeCreated
     };
 
-    this.apiService.putData("manufacturers", data).subscribe({
+    this.apiService.putData('manufacturers', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -130,7 +130,7 @@ export class EditManufacturerComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = "Manufacturer updated successfully";
+        this.Success = 'Manufacturer updated successfully';
       },
     });
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ApiService} from '../../../services/api.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-edit-trip',
@@ -74,14 +74,14 @@ export class EditTripComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "tripID": this.tripId,
-      "sourceAddress": this.sourceAddress,
-      "destinationAddress": this.destinationAddress,
-      "vehicleID": this.vehicleSelected,
-      "assetID": this.assetSelected,
-      "drivers": {
-        "driverID": this.driverID,
-        "driverContact": this.driverContact
+      'tripID': this.tripId,
+      'sourceAddress': this.sourceAddress,
+      'destinationAddress': this.destinationAddress,
+      'vehicleID': this.vehicleSelected,
+      'assetID': this.assetSelected,
+      'drivers': {
+        'driverID': this.driverID,
+        'driverContact': this.driverContact
       }
     };
 

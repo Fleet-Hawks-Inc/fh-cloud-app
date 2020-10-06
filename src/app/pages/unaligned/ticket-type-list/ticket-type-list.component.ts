@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-ticket-type-list",
-  templateUrl: "./ticket-type-list.component.html",
-  styleUrls: ["./ticket-type-list.component.css"],
+  selector: 'app-ticket-type-list',
+  templateUrl: './ticket-type-list.component.html',
+  styleUrls: ['./ticket-type-list.component.css'],
 })
 export class TicketTypeListComponent implements OnInit {
-  title = "Ticket Type List";
+  title = 'Ticket Type List';
   ticketTypes = [];
 
   constructor(private apiService: ApiService, private router: Router) {}
@@ -20,7 +20,7 @@ export class TicketTypeListComponent implements OnInit {
   }
 
   fetchTicketTypes() {
-    this.apiService.getData("ticketTypes").subscribe({
+    this.apiService.getData('ticketTypes').subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -34,13 +34,13 @@ export class TicketTypeListComponent implements OnInit {
 
   deleteTicketType(ticketID) {
     /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable("#datatable-default")) {
-      $("#datatable-default").DataTable().clear().destroy();
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
 
     this.apiService
-      .deleteData("ticketTypes/" + ticketID)
+      .deleteData('ticketTypes/' + ticketID)
       .subscribe((result: any) => {
         this.fetchTicketTypes();
       });
@@ -48,7 +48,7 @@ export class TicketTypeListComponent implements OnInit {
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 }

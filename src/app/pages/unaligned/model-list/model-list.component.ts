@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-model-list",
-  templateUrl: "./model-list.component.html",
-  styleUrls: ["./model-list.component.css"],
+  selector: 'app-model-list',
+  templateUrl: './model-list.component.html',
+  styleUrls: ['./model-list.component.css'],
 })
 export class ModelListComponent implements OnInit {
-  title = "Models List";
+  title = 'Models List';
   models = [];
 
   constructor(private apiService: ApiService, private router: Router) {}
@@ -20,7 +20,7 @@ export class ModelListComponent implements OnInit {
   }
 
   fetchModels() {
-    this.apiService.getData("vehicleModels").subscribe({
+    this.apiService.getData('vehicleModels').subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -34,19 +34,19 @@ export class ModelListComponent implements OnInit {
 
   deleteModel(modelID) {
     /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable("#datatable-default")) {
-      $("#datatable-default").DataTable().clear().destroy();
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
 
-    this.apiService.deleteData("vehicleModels/" + modelID).subscribe((result: any) => {
+    this.apiService.deleteData('vehicleModels/' + modelID).subscribe((result: any) => {
       this.fetchModels();
     });
   }
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 }

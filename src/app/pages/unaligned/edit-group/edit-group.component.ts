@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ApiService} from '../../../services/api.service';
+import {ActivatedRoute, Router} from '@angular/router';
 import {from} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -20,7 +20,7 @@ export class EditGroupComponent implements OnInit {
   description = '';
   groupType = '';
   groupId = '';
-  timeCreated = ""
+  timeCreated = ''
   /******************/
 
 
@@ -55,10 +55,10 @@ export class EditGroupComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "groupID": this.groupId,
-      "groupName": this.groupName,
-      "description": this.description,
-      "groupType": this.groupType,
+      'groupID': this.groupId,
+      'groupName': this.groupName,
+      'description': this.description,
+      'groupType': this.groupType,
       timeCreated: this.timeCreated
     };
 
@@ -72,9 +72,9 @@ export class EditGroupComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
+              const key = val.message.match(/'([^']+)'/)[1];
 
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
           )
@@ -103,11 +103,11 @@ export class EditGroupComponent implements OnInit {
   //     let length = key.length;
   //
   //     //make array of message to remove the fieldName
-  //     let message = errors[i].message.split(" ");
+  //     let message = errors[i].message.split(' ');
   //     delete message[0];
   //
   //     //new message
-  //     let modifiedMessage = `This field${message.join(" ")}`;
+  //     let modifiedMessage = `This field${message.join(' ')}`;
   //
   //     if (length == 1) {
   //       //single object
@@ -122,8 +122,8 @@ export class EditGroupComponent implements OnInit {
   //   console.log(this.validationErrors);
   // }
   //
-  // updateValidation(first, second = "") {
-  //   if (second == "") {
+  // updateValidation(first, second = '') {
+  //   if (second == '') {
   //     this.validationErrors[first].error = false;
   //   } else {
   //     this.validationErrors[first][second].error = false;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../api.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ApiService} from '../../../services/api.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-edit-quantum',
@@ -80,22 +80,22 @@ export class EditQuantumComponent implements OnInit {
 
     const data = {
       'quantumID': this.quantumId,
-      "sNo": this.serialNo,
-      "macID": this.macId,
-      "status": {
-        "year": this.year,
-        "model": this.model
+      'sNo': this.serialNo,
+      'macID': this.macId,
+      'status': {
+        'year': this.year,
+        'model': this.model
       },
-      "carrierID": this.carrierID,
-      "simDetails": {
-        "simNo": this.simSerial,
-        "phoneNo": this.phoneNumber
+      'carrierID': this.carrierID,
+      'simDetails': {
+        'simNo': this.simSerial,
+        'phoneNo': this.phoneNumber
       },
-      "currentFirmwareVersion": this.currentFirmwareVersion,
-      "applicationVersion": this.applicationVersion,
-      "lastCertificateRotation": this.lastCertificateRotation,
-      "apiURL": this.apiURL,
-      "currentStatus": this.status
+      'currentFirmwareVersion': this.currentFirmwareVersion,
+      'applicationVersion': this.applicationVersion,
+      'lastCertificateRotation': this.lastCertificateRotation,
+      'apiURL': this.apiURL,
+      'currentStatus': this.status
     };
 
 

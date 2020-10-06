@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {ApiService} from "../api.service";
+import {ActivatedRoute, Router} from '@angular/router';
+import {ApiService} from '../../../services/api.service';
 
 @Component({
   selector: 'app-edit-shipper',
@@ -51,12 +51,12 @@ export class EditShipperComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "shipperID": this.shipperID,
-      "shipperName": this.shipperName,
-      "address": this.address,
-      "phone": this.phone,
-      "email": this.email,
-      "taxID": this.taxID
+      'shipperID': this.shipperID,
+      'shipperName': this.shipperName,
+      'address': this.address,
+      'phone': this.phone,
+      'email': this.email,
+      'taxID': this.taxID
     };
 
 

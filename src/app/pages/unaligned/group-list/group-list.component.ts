@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../api.service";
-import { Router } from "@angular/router";
-import { timer } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: "app-group-list",
-  templateUrl: "./group-list.component.html",
-  styleUrls: ["./group-list.component.css"],
+  selector: 'app-group-list',
+  templateUrl: './group-list.component.html',
+  styleUrls: ['./group-list.component.css'],
 })
 export class GroupListComponent implements OnInit {
-  title = "Group List";
+  title = 'Group List';
   groups;
 
   constructor(private apiService: ApiService, private router: Router) {}
@@ -20,7 +20,7 @@ export class GroupListComponent implements OnInit {
   }
 
   fetchGroups() {
-    this.apiService.getData("groups").subscribe({
+    this.apiService.getData('groups').subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -34,19 +34,19 @@ export class GroupListComponent implements OnInit {
 
   deleteGroup(groupId) {
     /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable("#datatable-default")) {
-      $("#datatable-default").DataTable().clear().destroy();
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
 
-    this.apiService.deleteData("groups/" + groupId).subscribe((result: any) => {
+    this.apiService.deleteData('groups/' + groupId).subscribe((result: any) => {
       this.fetchGroups();
     });
   }
 
   initDataTable() {
     timer(200).subscribe(() => {
-      $("#datatable-default").DataTable();
+      $('#datatable-default').DataTable();
     });
   }
 }

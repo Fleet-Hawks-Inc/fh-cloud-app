@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ApiService} from "../api.service";
+import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../../../services/api.service';
 
 @Component({
   selector: 'app-edit-daily-inspection',
@@ -56,9 +56,9 @@ export class EditDailyInspectionComponent implements OnInit {
     this.hasSuccess = false;
 
     const data = {
-      "inspectionID": this.inspectionID,
+      'inspectionID': this.inspectionID,
       'inspectionFormID':  this.inspectionFormID,
-      "parameters": {
+      'parameters': {
         'a': this.parametersA,
         'b': this.parametersB
       },
