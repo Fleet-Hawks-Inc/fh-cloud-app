@@ -18,84 +18,152 @@ export class AddVehicleNewComponent implements OnInit {
   quantumsList = [];
   quantum = '';
   quantumSelected = '';
-  quantumStatus = '';
+  quantumcurrentStatus = '';
 
   /**
    * Vehicle Prop
    */
-  vehicleName = '';
+  vehicleIdentification = '';
+  vehicleType = '';
   VIN = '';
   year = '';
   make = '';
   model = '';
-  state = '';
   plateNumber = '';
+  stateID = '';
+  driverID = '';
+  teamDriverID = '';
   serviceProgramID = '';
-  inspectionFormID = '';
+  primaryMeter = '';
+  repeatByTime = '';
+  repeatByTimeUnit = '';
+  reapeatbyOdometerMiles = '';
   currentStatus = '';
-  group = '';
   ownership = '';
-  additionalDetails = {
-    vehicleColor: '',
-    bodyType: '',
-    bodySubType: '',
-  }
-  lifeCycle = {
-    estimatedServiceLifeInMonths: '',
-    estimatedServiceLifeInMiles: ''
-  }
-  dimensions = {
-    width: '',
-    height:  '',
+  groupID = '';
+  aceID = '';
+  aciID = '';
+  vehicleColor = '';
+  bodyType = '';
+  bodySubType = '';
+  msrp = '';
+  inspectionFormID = '';
+  lifeCycle =  {
+    inServiceDate: '',
+    inServiceOdometer: '',
+    estimatedServiceMonths: '',
+    estimatedServiceMiles: '',
+    estimatedResaleValue: '',
+    outOfServiceDate: '',
+    outOfServiceOdometer: '',
+  };
+  specifications = {
+    height: '',
+    heightUnit: '',
     length: '',
+    lengthUnit: '',
     interiorVolume: '',
-    passengerVolume: '',
+    passangerVolume: '',
+    groundClearnce: '',
+    groundClearnceUnit: '',
+    badLength: '',
+    badLengthUnit: '',
     cargoVolume: '',
-    groundClearance: '',
-    badLength: ''
-  }
-  weight = {
     curbWeight: '',
-    grossVehicleWeightRating: ''
-  }
-  performace = {
+    grossVehicleWeightRating: '',
+    iftaReporting: false,
     towingCapacity: '',
-    maxPayload:  ''
-  }
-  fuelEconomy = {
+    maxPayload: '',
     EPACity: '',
-    EPAHighway: '',
-    EPACombined: ''
-  }
-  fuel = {
+    EPACombined: '',
+    EPAHighway: ''
+  };
+  insurance = {
+    dateOfIssue: '',
+    premiumAmount: '',
+    premiumCurrency: '',
+    vendorID: '',
+    dateOfExpiry: '',
+    remiderEvery: ''
+  };
+  fluid = {
     fuelType: '',
-    fuelTank1Capacity: '',
-    fuelTank2Capacity: ''
-  }
-  oilCapacity = '';
-  features = {
-    breakSystem: '',
-    wheelBase: '',
+    fuelTankOneCapacity: '',
+    fuelQuality: '',
+    fuelTankTwoCapacity: '',
+    oilCapacity: ''
+  };
+  wheelsAndTyres = {
+    numberOfTyres: '',
+    driverType: '',
+    brakeSystem: '',
+    wheelbase: '',
     rearAxle: '',
     frontTyreType: '',
-    frontTrackWidth: '',
-    frontWheelDiameter: '',
-    frontTyrePSI: '',
     rearTyreType: '',
+    frontTrackWidth: '',
     rearTrackWidth: '',
+    frontWheelDiameter: '',
     rearWheelDiameter: '',
+    frontTyrePSI: '',
     rearTyrePSI: ''
-  }
+  };
+  engine = {
+    engineSummary: '',
+    engineBrand: '',
+    aspiration: '',
+    blockType: '',
+    bore: '',
+    camType: '',
+    stroke: '',
+    valves: '',
+    compression: '',
+    cylinders: '',
+    displacement: '',
+    fuelIndication: '',
+    fuelQuality: '',
+    maxHP: '',
+    maxTorque: '',
+    readlineRPM: '',
+    transmissionSummary: '',
+    transmissionType: '',
+    transmissonBrand: '',
+    transmissionGears: ''
+  };
+  purchase = {
+    purchaseVendorID: '',
+    warrantyExpirationDate: '',
+    purchasePrice: '',
+    warrantyExpirationMeter: '',
+    purchaseDate: '',
+    purchaseComments: '',
+    purchaseOdometer: ''
+  };
+  loan = {
+    loanVendorID: '',
+    amountOfLoan: '',
+    aspiration: '',
+    annualPercentageRate: '',
+    downPayment: '',
+    dateOfLoan: '',
+    monthlyPayment: '',
+    firstPaymentDate: '',
+    numberOfPayments: '',
+    loadEndDate: '',
+    accountNumber: '',
+    generateExpenses: '',
+    notes: ''
+  };
   settings = {
     primaryMeter: '',
     fuelUnit: '',
-    measurementUnit: ''
-  }
-  safetyParameters = {
-    hardBreakingParameters: '',
-    hardAccelrationParameters: '',
-    turningParameters: ''
-  }
+    hardBreakingParams: 0,
+    hardAccelrationParams: 0,
+    turningParams: 0,
+    measurmentUnit: ''
+  };
+
+
 
   countryID = '';
   servicePrograms =  [];
@@ -139,12 +207,9 @@ export class AddVehicleNewComponent implements OnInit {
       this.quantumsList = result.Items;
     });
 
-    this.settings.primaryMeter = 'kilometers';
-    this.settings.fuelUnit = 'liters';
-    this.settings.measurementUnit = 'metric';
-    this.safetyParameters.hardBreakingParameters = '6';
-    this.safetyParameters.hardAccelrationParameters = '6';
-    this.safetyParameters.turningParameters = '6';
+    this.settings.hardBreakingParams = 6;
+    this.settings.hardAccelrationParams = 6;
+    this.settings.turningParams = 6;
 
     $('#hardBreakingParametersValue').html(6);
     $('#hardAccelrationParametersValue').html(6);
@@ -203,83 +268,148 @@ export class AddVehicleNewComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     const data = {
-      vehicleName: this.vehicleName,
+      vehicleIdentification: this.vehicleIdentification,
+      vehicleType: this.vehicleType,
       VIN: this.VIN,
       year: this.year,
-      manufacturerID: this.make,
-      modelID: this.model,
-      stateID: this.state,
+      make: this.make,
+      model: this.model,
       plateNumber: this.plateNumber,
+      stateID: this.stateID,
+      driverID: this.driverID,
+      teamDriverID: this.teamDriverID,
       serviceProgramID: this.serviceProgramID,
-      inspectionFormID: this.inspectionFormID,
+      primaryMeter: this.primaryMeter,
+      repeatByTime: this.repeatByTime,
+      repeatByTimeUnit: this.repeatByTimeUnit,
+      reapeatbyOdometerMiles: this.reapeatbyOdometerMiles,
       currentStatus: this.currentStatus,
-      groupID: this.group,
       ownership: this.ownership,
-      additionalDetails: {
-        vehicleColor: this.additionalDetails.vehicleColor,
-        bodyType: this.additionalDetails.bodySubType,
-        bodySubType: this.additionalDetails.bodySubType
+      groupID: this.groupID,
+      aceID: this.aceID,
+      aciID: this.aciID,
+      vehicleColor: this.vehicleColor,
+      bodyType: this.bodyType,
+      bodySubType: this.bodySubType,
+      msrp: this.msrp,
+      inspectionFormID: this.inspectionFormID,
+      lifeCycle:  {
+        inServiceDate: this.lifeCycle.inServiceDate,
+        inServiceOdometer: this.lifeCycle.inServiceOdometer,
+        estimatedServiceMonths: this.lifeCycle.estimatedServiceMonths,
+        estimatedServiceMiles: this.lifeCycle.estimatedServiceMiles,
+        estimatedResaleValue: this.lifeCycle.estimatedResaleValue,
+        outOfServiceDate: this.lifeCycle.outOfServiceDate,
+        outOfServiceOdometer: this.lifeCycle.outOfServiceOdometer
       },
-      lifeCycle: {
-        estimatedServiceLifeInMonths: this.lifeCycle.estimatedServiceLifeInMonths,
-        estimatedServiceLifeInMiles: this.lifeCycle.estimatedServiceLifeInMiles
+      specifications: {
+        height: this.specifications.height,
+        heightUnit: this.specifications.heightUnit,
+        length: this.specifications.length,
+        lengthUnit: this.specifications.lengthUnit,
+        interiorVolume: this.specifications.interiorVolume,
+        passangerVolume: this.specifications.passangerVolume,
+        groundClearnce: this.specifications.groundClearnce,
+        groundClearnceUnit: this.specifications.groundClearnceUnit,
+        badLength: this.specifications.badLength,
+        badLengthUnit: this.specifications.badLengthUnit,
+        cargoVolume: this.specifications.cargoVolume,
+        curbWeight: this.specifications.curbWeight,
+        grossVehicleWeightRating: this.specifications.grossVehicleWeightRating,
+        iftaReporting: this.specifications.iftaReporting,
+        towingCapacity: this.specifications.towingCapacity,
+        maxPayload: this.specifications.maxPayload,
+        EPACity: this.specifications.EPACity,
+        EPACombined: this.specifications.EPACombined,
+        EPAHighway: this.specifications.EPAHighway
       },
-      dimensions: {
-        width: this.dimensions.width,
-        height:  this.dimensions.height,
-        length: this.dimensions.length,
-        interiorVolume: this.dimensions.interiorVolume,
-        passengerVolume: this.dimensions.passengerVolume,
-        cargoVolume: this.dimensions.cargoVolume,
-        groundClearance: this.dimensions.groundClearance,
-        badLength: this.dimensions.badLength
+      insurance: {
+        dateOfIssue: this.insurance.dateOfIssue,
+        premiumAcount: this.insurance.premiumAmount,
+        premiumCurrency: this.insurance.premiumCurrency,
+        vendorID: this.insurance.vendorID,
+        dateOfExpiry: this.insurance.dateOfExpiry,
+        remiderEvery: this.insurance.remiderEvery
       },
-      weight: {
-        curbWeight: this.weight.curbWeight,
-        grossVehicleWeightRating: this.weight.grossVehicleWeightRating
+      fluid: {
+        fuelType: this.fluid.fuelType,
+        fuelTankOneCapacity: this.fluid.fuelTankOneCapacity,
+        fuelQuality: this.fluid.fuelQuality,
+        fuelTankTwoCapacity: this.fluid.fuelTankTwoCapacity,
+        oilCapacity: this.fluid.oilCapacity
       },
-      performace: {
-        towingCapacity: this.performace.towingCapacity,
-        maxPayload: this.performace.maxPayload
+      wheelsAndTyres: {
+        numberOfTyres: this.wheelsAndTyres.numberOfTyres,
+        driverType: this.wheelsAndTyres.driverType,
+        brakeSystem: this.wheelsAndTyres.brakeSystem,
+        wheelbase: this.wheelsAndTyres.wheelbase,
+        rearAxle: this.wheelsAndTyres.rearAxle,
+        frontTyreType: this.wheelsAndTyres.frontTyreType,
+        rearTyreType: this.wheelsAndTyres.rearTyreType,
+        frontTrackWidth: this.wheelsAndTyres.frontTrackWidth,
+        rearTrackWidth: this.wheelsAndTyres.rearTrackWidth,
+        frontWheelDiameter: this.wheelsAndTyres.frontWheelDiameter,
+        rearWheelDiameter: this.wheelsAndTyres.rearWheelDiameter,
+        frontTyrePSI: this.wheelsAndTyres.frontTyrePSI,
+        rearTyrePSI: this.wheelsAndTyres.rearTyrePSI
       },
-      fuelEconomy: {
-        EPACity: this.fuelEconomy.EPACity,
-        EPAHighway: this.fuelEconomy.EPAHighway,
-        EPACombined: this.fuelEconomy.EPACombined
+      engine: {
+        engineSummary: this.engine.engineSummary,
+        engineBrand: this.engine.engineBrand,
+        aspiration: this.engine.aspiration,
+        blockType: this.engine.blockType,
+        bore: this.engine.bore,
+        camType: this.engine.camType,
+        stroke: this.engine.stroke,
+        valves: this.engine.valves,
+        compression: this.engine.compression,
+        cylinders: this.engine.cylinders,
+        displacement: this.engine.displacement,
+        fuelIndication: this.engine.fuelIndication,
+        fuelQuality: this.engine.fuelQuality,
+        maxHP: this.engine.maxHP,
+        maxTorque: this.engine.maxTorque,
+        readlineRPM: this.engine.readlineRPM,
+        transmissionSummary: this.engine.transmissionSummary,
+        transmissionType: this.engine.transmissionType,
+        transmissonBrand: this.engine.transmissonBrand,
+        transmissionGears: this.engine.transmissionGears
       },
-      fuel: {
-        fuelType: this.fuel.fuelType,
-        fuelTank1Capacity: this.fuel.fuelTank1Capacity,
-        fuelTank2Capacity: this.fuel.fuelTank2Capacity
+      purchase: {
+        purchaseVendorID: this.purchase.purchaseVendorID,
+        warrantyExpirationDate: this.purchase.warrantyExpirationDate,
+        purchasePrice: this.purchase.purchasePrice,
+        warrantyExpirationMeter: this.purchase.warrantyExpirationMeter,
+        purchaseDate: this.purchase.purchaseDate,
+        purchaseComments: this.purchase.purchaseComments,
+        purchaseOdometer: this.purchase.purchaseOdometer
       },
-      oilCapacity: this.oilCapacity,
-      features: {
-        breakSystem: this.features.breakSystem,
-        wheelBase: this.features.wheelBase,
-        rearAxle: this.features.rearAxle,
-        frontTyreType: this.features.frontTyreType,
-        frontTrackWidth: this.features.frontTrackWidth,
-        frontWheelDiameter: this.features.frontWheelDiameter,
-        frontTyrePSI: this.features.frontTyrePSI,
-        rearTyreType: this.features.rearTyreType,
-        rearTrackWidth: this.features.rearTrackWidth,
-        rearWheelDiameter: this.features.rearWheelDiameter,
-        rearTyrePSI: this.features.rearTyreType
+      loan: {
+        loanVendorID: this.loan.loanVendorID,
+        amountOfLoan: this.loan.amountOfLoan,
+        aspiration: this.loan.aspiration,
+        annualPercentageRate: this.loan.annualPercentageRate,
+        downPayment: this.loan.downPayment,
+        dateOfLoan: this.loan.dateOfLoan,
+        monthlyPayment: this.loan.monthlyPayment,
+        firstPaymentDate: this.loan.firstPaymentDate,
+        numberOfPayments: this.loan.numberOfPayments,
+        loadEndDate: this.loan.loadEndDate,
+        accountNumber: this.loan.accountNumber,
+        generateExpenses: this.loan.generateExpenses,
+        notes: this.loan.notes
       },
       settings: {
         primaryMeter: this.settings.primaryMeter,
         fuelUnit: this.settings.fuelUnit,
-        measurementUnit: this.settings.measurementUnit
-      },
-      safetyParameters: {
-        hardBreakingParameters: this.safetyParameters.hardBreakingParameters,
-        hardAccelrationParameters: this.safetyParameters.hardAccelrationParameters,
-        turningParameters: this.safetyParameters.turningParameters,
-      },
-      quantumInfo: this.quantum
+        hardBreakingParams: this.settings.hardBreakingParams,
+        hardAccelrationParams: this.settings.hardAccelrationParams,
+        turningParams: this.settings.turningParams,
+        measurmentUnit: this.settings.measurmentUnit
+      }
   };
 
-console.log(data);
+// console.log(data);return false;
     this.apiService.postData('vehicles', data).
     subscribe({
       complete : () => {},
@@ -296,80 +426,10 @@ console.log(data);
       }
     });
   }
-  new_details() {
-    this.activeTab='details';
-    document.getElementById('vehicle_new_details').style.display = 'block';
-    document.getElementById('vehicle_new_lifecycle').style.display = 'none';
-    document.getElementById('vehicle_new_specifications').style.display =
-      'none';
-    document.getElementById('vehicle_new_fluids').style.display = 'none';
-    document.getElementById('vehicle_new_wheels').style.display = 'none';
-    document.getElementById('vehicle_new_settings').style.display = 'none';
-  }
-  new_lifecycle() {
-    this.activeTab='lifeCycle';
-    document.getElementById('vehicle_new_details').style.display = 'none';
-    document.getElementById('vehicle_new_lifecycle').style.display = 'block';
-    document.getElementById('vehicle_new_specifications').style.display =
-      'none';
-    document.getElementById('vehicle_new_fluids').style.display = 'none';
-    document.getElementById('vehicle_new_wheels').style.display = 'none';
-    document.getElementById('vehicle_new_settings').style.display = 'none';
-  }
-  new_specifications() {
-    this.activeTab='specifications';
-    document.getElementById('vehicle_new_details').style.display = 'none';
-    document.getElementById('vehicle_new_lifecycle').style.display = 'none';
-    document.getElementById('vehicle_new_specifications').style.display =
-      'block';
-    document.getElementById('vehicle_new_fluids').style.display = 'none';
-    document.getElementById('vehicle_new_wheels').style.display = 'none';
-    document.getElementById('vehicle_new_settings').style.display = 'none';
-  }
-  new_fluids() {
-    this.activeTab='fluids';
-    document.getElementById('vehicle_new_details').style.display = 'none';
-    document.getElementById('vehicle_new_lifecycle').style.display = 'none';
-    document.getElementById('vehicle_new_specifications').style.display =
-      'none';
-    document.getElementById('vehicle_new_fluids').style.display = 'block';
-    document.getElementById('vehicle_new_wheels').style.display = 'none';
-    document.getElementById('vehicle_new_settings').style.display = 'none';
-  }
-  new_wheels() {
-    this.activeTab='wheel&Tyres';
-    document.getElementById('vehicle_new_details').style.display = 'none';
-    document.getElementById('vehicle_new_lifecycle').style.display = 'none';
-    document.getElementById('vehicle_new_specifications').style.display =
-      'none';
-    document.getElementById('vehicle_new_fluids').style.display = 'none';
-    document.getElementById('vehicle_new_wheels').style.display = 'block';
-    document.getElementById('vehicle_new_settings').style.display = 'none';
-  }
-  new_engine() {
-    document.getElementById('vehicle_new_details').style.display = 'none';
-    document.getElementById('vehicle_new_lifecycle').style.display = 'none';
-    document.getElementById('vehicle_new_specifications').style.display =
-      'none';
-    document.getElementById('vehicle_new_fluids').style.display = 'none';
-    document.getElementById('vehicle_new_wheels').style.display = 'none';
-    document.getElementById('vehicle_new_settings').style.display = 'none';
-  }
-  new_settings() {
-    this.activeTab='settings';
-    document.getElementById('vehicle_new_details').style.display = 'none';
-    document.getElementById('vehicle_new_lifecycle').style.display = 'none';
-    document.getElementById('vehicle_new_specifications').style.display =
-      'none';
-    document.getElementById('vehicle_new_fluids').style.display = 'none';
-    document.getElementById('vehicle_new_wheels').style.display = 'none';
-    document.getElementById('vehicle_new_settings').style.display = 'block';
-  }
+
 
   onChangePrimaryMeter(value: any){
     this.settings.primaryMeter = value;
-    console.log(value);
-    console.log(this.settings);
   }
 
   onChangeFuelUnit(value: any){
@@ -377,22 +437,21 @@ console.log(data);
   }
 
   onChangeMeasurementUnit(value: any){
-    this.settings.measurementUnit = value;
+    this.settings.measurmentUnit = value;
   }
 
   onChangeHardBreakingParameters(value: any){
-    this.safetyParameters.hardBreakingParameters = value;
-    console.log(value);
+    this.settings.hardBreakingParams = value;
     $('#hardBreakingParametersValue').html(value);
   }
 
   onChangeAccelrationParameters(value: any){
-    this.safetyParameters.hardAccelrationParameters = value;
+    this.settings.hardAccelrationParams = value;
     $('#hardAccelrationParametersValue').html(value);
   }
 
   onChangeturningParameters(value: any){
-    this.safetyParameters.turningParameters = value;
+    this.settings.turningParams = value;
     $('#turningParametersValue').html(value);
   }
 

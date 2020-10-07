@@ -14,8 +14,7 @@ export class VehicleListComponent implements OnInit {
   title = 'Vehicle List';
   vehicles;
 
-  constructor(private apiService: ApiService,
-              private router: Router) { }
+  constructor(private apiService: ApiService) { }
 
   ngOnInit() {
 

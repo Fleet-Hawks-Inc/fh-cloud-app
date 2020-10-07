@@ -2,9 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ChartsModule} from 'ng2-charts';
 import {
-  AddVehicleNewComponent,
-  EditVehicleNewComponent,
-  VehicleListComponent,
   AddUserComponent,
   EditUserComponent,
   UserListComponent,
@@ -70,9 +67,6 @@ import {
 } from './index';
 
 const COMPONENTS = [
-  AddVehicleNewComponent,
-  EditVehicleNewComponent,
-  VehicleListComponent,
   AddUserComponent,
   EditUserComponent,
   UserListComponent,
@@ -144,14 +138,7 @@ const routes: Routes = [
   },
   {
     path: 'vehicles',
-    children: [
-      { path: 'Add-Vehicle-New', component: AddVehicleNewComponent },
-      {
-        path: 'Edit-Vehicle-New/:vehicleID',
-        component: EditVehicleNewComponent,
-      },
-      { path: 'Vehicle-List', component: VehicleListComponent },
-    ],
+    loadChildren: () => import('./vehicles/vehicles.module').then((m) => m.VehiclesModule) ,
   },
   {
     path: 'fleet-manager',

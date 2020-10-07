@@ -1,5 +1,5 @@
-import {Component, OnInit, Inject } from '@angular/core';
-import {Router, ActivatedRoute, Params,  Event, NavigationStart, NavigationEnd, NavigationError} from '@angular/router';
+import {Component, OnInit, Inject, AfterContentChecked, ChangeDetectorRef} from '@angular/core';
+import {Router, ActivatedRoute, Params, Event, NavigationStart, NavigationEnd, NavigationError, NavigationCancel} from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 
 @Component({
@@ -7,9 +7,12 @@ import { DOCUMENT } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent  implements OnInit {
+export class AppComponent  implements OnInit, AfterContentChecked  {
   title = 'fleethawks-dashboard';
-  constructor(private router: Router, @Inject(DOCUMENT) private document: Document) {
+  loading = false;
+  constructor(private router: Router,
+              @Inject(DOCUMENT) private document: Document,
+              private changeDetector: ChangeDetectorRef) {
     // left sidebar collapsed on overview - fleet page
     const rootHtml = document.getElementsByTagName( 'html' )[0];
     this.router.events.subscribe((event: Event) => {
@@ -23,10 +26,38 @@ export class AppComponent  implements OnInit {
           rootHtml.classList.remove('sidebar-left-collapsed');
         }
       }
+
+
+      /**
+       * Loading Indicator
+       */
+      switch (true) {
+        case event instanceof NavigationStart: {
+          this.loading = true;
+          break;
+        }
+
+        case event instanceof NavigationEnd:
+        case event instanceof NavigationCancel:
+        case event instanceof NavigationError: {
+          this.loading = false;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+      /**
+       *
+       */
+
   });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
-
+  ngAfterContentChecked(): void {
+    this.changeDetector.detectChanges();
+  }
 }

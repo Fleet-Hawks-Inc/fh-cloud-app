@@ -108,7 +108,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 // JWT interceptors
 import { HttpInterceptorProviders } from './interceptors/interceptor.provider';
-
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 // mqtt
 import {MqttModule, IMqttServiceOptions} from 'ngx-mqtt';
@@ -218,6 +218,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     ReactiveFormsModule,
     NgbModule,
     BrowserAnimationsModule,
+    MatProgressBarModule,
     ChartsModule,
     SharedModule,
     ToastrModule.forRoot(), // ToastrModule added

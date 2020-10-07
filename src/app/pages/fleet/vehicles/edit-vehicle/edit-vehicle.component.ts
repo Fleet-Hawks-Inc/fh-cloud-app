@@ -33,14 +33,13 @@ export class EditVehicleComponent implements OnInit {
   /******************/
     quantumsList = '';
 
-  response : any = '';
-  hasError : boolean = false;
-  hasSuccess: boolean = false;
-  Error : string = '';
-  Success : string = '';
-
-
+  response = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
   vehicleId : string;
+
   constructor(private route: ActivatedRoute,
               private apiService: ApiService) { }
 
@@ -100,17 +99,17 @@ export class EditVehicleComponent implements OnInit {
           this.companyID = result.carrierID;
           this.lastServiceTime = result.lastServiceTime;
 
-          //this.quantum = result.quantum;
-          //this.quantumSelected = result.quantumSelected;
+          // this.quantum = result.quantum;
+          // this.quantumSelected = result.quantumSelected;
 
 
-         //console.log(result);
+         // console.log(result);
         });
 
 
 
 
-    //console.log(this.vehicleID);
+    // console.log(this.vehicleID);
   }
 
 
@@ -166,17 +165,8 @@ export class EditVehicleComponent implements OnInit {
         });
 
     }
-
-
     onChange(newValue) {
         this.quantum = newValue;
         this.quantumSelected = newValue;
     }
-
-
-
-
-
-
-
 }

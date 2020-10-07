@@ -22,9 +22,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgSelect2Module } from 'ng-select2';
 
 import {
-  AddVehicleNewComponent,
-  EditVehicleNewComponent,
-  VehicleListComponent,
   AddUserComponent,
   EditUserComponent,
   UserListComponent,
@@ -90,9 +87,6 @@ import {
 } from './index';
 
 const COMPONENTS = [
-  AddVehicleNewComponent,
-  EditVehicleNewComponent,
-  VehicleListComponent,
   AddUserComponent,
   EditUserComponent,
   UserListComponent,
