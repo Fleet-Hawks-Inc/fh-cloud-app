@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HereMapService } from '../../../../services/here-map.service';
+import { HereMapService } from '../../../../services';
 
 @Component({
   selector: 'app-driver-detail',

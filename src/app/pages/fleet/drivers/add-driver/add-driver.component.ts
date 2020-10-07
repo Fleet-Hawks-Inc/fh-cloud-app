@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {from} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {ApiService} from '../../../../services/api.service';
+import {ApiService} from '../../../../services';
 import { Auth } from 'aws-amplify';
 declare var $: any;
 

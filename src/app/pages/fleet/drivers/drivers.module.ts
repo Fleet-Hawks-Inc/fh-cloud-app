@@ -9,6 +9,7 @@ import {EditDriverComponent} from './edit-driver/edit-driver.component';
 import {DriverListComponent} from './driver-list/driver-list.component';
 import {DriverDetailComponent} from './driver-detail/driver-detail.component';
 import {SharedModule} from '../../../shared/shared.module';
+
 const routes: Routes = [
   { path: 'Add-Driver', component: AddDriverComponent },
   { path: 'Edit-Driver/:userName', component: EditDriverComponent },

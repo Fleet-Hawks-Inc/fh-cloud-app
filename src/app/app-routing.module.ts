@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import { LoginComponent } from './entry/login/login.component';
 import { DashboardComponent } from './entry/dashboard/dashboard.component';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './services/';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { LeftBarComponent } from './entry/left-bar/left-bar.component';
