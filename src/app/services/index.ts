@@ -5,3 +5,4 @@ export * from './aws-upload.service';
 export * from './here-map.service';
 export * from './map-box.service';
 export * from './shared-service.service';
+export * from './http-loading.service';
