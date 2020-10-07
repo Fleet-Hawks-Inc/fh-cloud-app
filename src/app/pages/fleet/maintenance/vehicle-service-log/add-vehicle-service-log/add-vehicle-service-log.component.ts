@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../../services/api.service';
+import { ApiService } from '../../../../../services';
 import { Router } from '@angular/router';
 import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
-import {AwsUploadService} from '../../../../../services/aws-upload.service';
+import {  map } from 'rxjs/operators';
+import {AwsUploadService} from '../../../../../services';
+
 declare var $: any;
 
 @Component({

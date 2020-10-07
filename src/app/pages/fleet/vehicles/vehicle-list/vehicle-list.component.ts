@@ -46,7 +46,7 @@ export class VehicleListComponent implements OnInit {
     this.apiService.deleteData('vehicles/' + vehicleId)
         .subscribe((result: any) => {
             this.fetchVehicles();
-        })
+        });
   }
 
   initDataTable() {

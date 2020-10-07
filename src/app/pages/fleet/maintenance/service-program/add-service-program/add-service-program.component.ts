@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
-import {ApiService} from '../../../../../services/api.service';
+import {ApiService} from '../../../../../services';
 import { map} from 'rxjs/operators';
 import {from} from 'rxjs';
 
@@ -30,11 +30,11 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
 
   /******************/
 
-  response  = '';
-  hasError = false;
-  hasSuccess = false;
-  Error = '';
-  Success = '';
+  response : any = '';
+  hasError : boolean = false;
+  hasSuccess: boolean = false;
+  Error : string = '';
+  Success : string = '';
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -94,7 +94,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
               next: () => {},
             });
         },
-        next: (res: any) => {
+        next: (res) => {
           this.programName = '';
           this.repeatByTime = '';
           this.repeatByOdometer = '';

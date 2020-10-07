@@ -31,16 +31,6 @@ export * from './expenses/types/add-expense-type/add-expense-type.component';
 export * from './expenses/types/edit-expense-type/edit-expense-type.component';
 export * from './expenses/types/expense-type-list/expense-type-list.component';
 
-export * from './maintenance/vendor/add-vendor/add-vendor.component';
-export * from './maintenance/vendor/edit-vendor/edit-vendor.component';
-export * from './maintenance/vendor/vendors-list/vendors-list.component';
-export * from './maintenance/vehicle-service-log/add-vehicle-service-log/add-vehicle-service-log.component';
-export * from './maintenance/vehicle-service-log/edit-vehicle-service-log/edit-vehicle-service-log.component';
-export * from './maintenance/vehicle-service-log/vehicle-service-logs/vehicle-service-logs.component';
-export * from './maintenance/service-program/add-service-program/add-service-program.component';
-export * from './maintenance/service-program/edit-service-program/edit-service-program.component';
-export * from './maintenance/service-program/service-program-list/service-program-list.component';
-
 export * from './inventory/items/add-item/add-item.component';
 export * from './inventory/items/edit-item/edit-item.component';
 export * from './inventory/items/items-list/items-list.component';
@@ -65,14 +55,6 @@ export * from './graphs/graph/graph.component';
 export * from './vehicles/add-vehicle/add-vehicle.component';
 export * from './vehicles/edit-vehicle/edit-vehicle.component';
 export * from './dashboard-driver/dashboard-driver.component';
-export * from './maintenance/issues/issue-list/issue-list.component';
-export * from './maintenance/issues/add-issue/add-issue.component';
-export * from './maintenance/service-log/service-list/service-list.component';
-export * from './maintenance/service-log/add-service/add-service.component';
-export * from './maintenance/issues/issue-detail/issue-detail.component';
-export * from './maintenance/service-log/service-detail/service-detail.component';
-export * from './maintenance/service-program/service-program-detail/service-program-detail.component';
-
 
 // Reminders
 export * from './reminders/service-reminder/listing/listing.component';

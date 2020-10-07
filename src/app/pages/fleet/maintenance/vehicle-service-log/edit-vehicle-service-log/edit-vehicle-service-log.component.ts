@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService } from '../../../../../services/api.service';
+import { ApiService } from '../../../../../services';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {AwsUploadService} from '../../../../../services/aws-upload.service';
+import {AwsUploadService} from '../../../../../services';
 declare var $: any;
 
 @Component({
@@ -42,10 +42,10 @@ export class EditVehicleServiceLogComponent implements OnInit, AfterViewInit {
   vehicles = [];
   vendors = [];
   response: any = '';
-  hasError = false;
-  hasSuccess = false;
-  Error = '';
-  Success = '';
+  hasError: boolean = false;
+  hasSuccess: boolean = false;
+  Error: string = '';
+  Success: string = '';
 
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,

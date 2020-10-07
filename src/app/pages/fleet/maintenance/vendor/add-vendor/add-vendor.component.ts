@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from '../../../../../services/api.service';
+import { ApiService } from '../../../../../services';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { MapBoxService } from '../../../../../services/map-box.service';
+import { MapBoxService } from '../../../../../services';
 declare var $: any;
 
 @Component({

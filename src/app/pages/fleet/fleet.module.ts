@@ -15,10 +15,11 @@ import { ɵs } from '@ng-select/ng-select';
 import { DataTablesModule } from 'angular-datatables';
 
 
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgSelect2Module } from 'ng-select2';
 
 import {
@@ -49,22 +50,6 @@ import {
   ListContactRenewComponent,
   AddContactRenewComponent,
   ContactRenewDetailComponent,
-  IssueListComponent,
-  AddIssueComponent,
-  IssueDetailComponent,
-  ServiceListComponent,
-  AddServiceComponent,
-  ServiceDetailComponent,
-  AddServiceProgramComponent,
-  ServiceProgramListComponent,
-  EditServiceProgramComponent,
-  ServiceProgramDetailComponent,
-  AddVendorComponent,
-  VendorsListComponent,
-  EditVendorComponent,
-  AddVehicleServiceLogComponent,
-  VehicleServiceLogsComponent,
-  EditVehicleServiceLogComponent,
   AddItemComponent,
   ItemsListComponent,
   ItemDetailComponent,
@@ -114,22 +99,6 @@ const COMPONENTS = [
   ListContactRenewComponent,
   AddContactRenewComponent,
   ContactRenewDetailComponent,
-  IssueListComponent,
-  AddIssueComponent,
-  IssueDetailComponent,
-  ServiceListComponent,
-  AddServiceComponent,
-  ServiceDetailComponent,
-  AddServiceProgramComponent,
-  ServiceProgramListComponent,
-  EditServiceProgramComponent,
-  ServiceProgramDetailComponent,
-  AddVendorComponent,
-  VendorsListComponent,
-  EditVendorComponent,
-  AddVehicleServiceLogComponent,
-  VehicleServiceLogsComponent,
-  EditVehicleServiceLogComponent,
   AddItemComponent,
   ItemsListComponent,
   ItemDetailComponent,
@@ -160,11 +129,11 @@ const COMPONENTS = [
     CommonModule,
     SharedModule,
     ChartsModule,
+    SlickCarouselModule,
     NgSelectModule,
     DataTablesModule,
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
-    SlickCarouselModule,
     NgxSpinnerModule,
     NgSelect2Module
   ],

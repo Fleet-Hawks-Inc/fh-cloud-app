@@ -12,12 +12,12 @@
             <header class="page-header">
                 <div class="row pr-5 " style="padding-top:10px;">
                     <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                        Add Issue
+                        {{title}}
                     </div>
 
                     <div class="col-md-8  col-lg-8 text-right pr-4">
 
-                        <a routerLink="/fleet/maintenance/issues/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Issues
+                        <a routerLink="/fleet/issues/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Issues
                             List</a>
 
 
@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col pr-0">
                     <div class="card-body text-dark">
-                        <form class="form-horizontal form-bordered" method="get">
+                        <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
                             <div class=" row">
                                 <div class="col-lg-12">
                                     <label
@@ -38,14 +38,23 @@
                                 <div class="col-lg-5 offset-lg-1">
                                     <div class="row">
                                         <div class="col-lg-10">
+                                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Issue Name</label>
+                                         <input type="text"  class="form-control" name="issueName" [(ngModel)]="issueName">
+                                       </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-lg-10">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Vehicle</label>
-                                            <select data-plugin-selectTwo class="form-control populate">
-                                                <optgroup label="Select Vehicle">
-                                                    <option value="1">Vehicle 1</option>
-                                                    <option value="2">Vehicle 2</option>
-                                                    <option value="2">Vehicle 3</option>
-                                                    <option value="2">Vehicle 4</option>
+                                            <!-- <select data-plugin-selectTwo class="form-control populate" name="vehicleID" [(ngModel)]="vehicleID">
+                                                <option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleName}}</option>
+                                            </select> -->
+                                            <select name="vehicleID" [(ngModel)]="vehicleID" data-plugin-selectTwo class="form-control populate">
+                                                <optgroup label="">
+                                                    <option value="User">User</option>
+                                                    <option value="Operator">Operator</option>
+                                                    <option value="Technician">Technician</option>
+                                                    <option value="Driver">Driver</option>
                                                 </optgroup>
                                             </select>
                                         </div>
@@ -56,8 +65,8 @@
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported
                                                 Date</label>
                                             
-                                                <input class="form-control" placeholder="yyyy-mm-dd"
-                                                name="dp" [(ngModel)]="issueData.date" name="issueData.date" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker">
+                                                <input class="form-control"  placeholder="dd-mm-yyyy"
+                                                 [(ngModel)]="reportedDate" name="reportedDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker">
                                                 
                                         </div>
                                     </div>
@@ -65,7 +74,7 @@
                                         <div class="col-lg-10">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Description</label>
-                                            <textarea [(ngModel)]="issueData.description" name="issueData.description" class="form-control" rows="3"></textarea>
+                                            <textarea [(ngModel)]="description" name="description" class="form-control" rows="3"></textarea>
                                         </div>
                                     </div>
 
@@ -75,7 +84,7 @@
                                         <div class="col-lg-10">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer</label>
-                                            <input [(ngModel)]="issueData.odometer" name="issueData.odometer" type="text" class="form-control">
+                                            <input [(ngModel)]="odometer" name="odometer" type="text" class="form-control">
                                         </div>
                                     </div>
                                     <div class="row pt-2">
@@ -83,7 +92,7 @@
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported
                                                 By</label>
-                                            <select [(ngModel)]="issueData.reportedBy" name="issueData.reportedBy" data-plugin-selectTwo class="form-control populate">
+                                            <select [(ngModel)]="reportedBy" name="reportedBy" data-plugin-selectTwo class="form-control populate">
                                                 <optgroup label="">
                                                     <option value="User">User</option>
                                                     <option value="Operator">Operator</option>
@@ -98,12 +107,12 @@
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned
                                                 To</label>
-                                            <select [(ngModel)]="issueData.assinedTo" name="issueData.assinedTo" data-plugin-selectTwo class="form-control populate">
+                                            <select [(ngModel)]="assignedTo" name="assignedTo" data-plugin-selectTwo class="form-control populate">
                                                 <optgroup label="">
-                                                    <option value="1">User</option>
-                                                    <option value="2">Operator</option>
-                                                    <option value="2">Technician</option>
-                                                    <option value="2">Driver</option>
+                                                    <option value="User">User</option>
+                                                    <option value="Operator">Operator</option>
+                                                    <option value="Technician">Technician</option>
+                                                    <option value="Driver">Driver</option>
                                                 </optgroup>
                                             </select>
                                         </div>
@@ -122,12 +131,14 @@
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
                                                 Photo</label>
-                                            <input type="file" [(ngModel)]="issueData.uploadedPhotos.photo" name="issueData.photo" class="form-control p-0">
-                                        </div>
+                                                <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" type="file" multiple class="form-control p-0">
+                                            </div> 
                                         <div class="col-lg-2  mar-top-37">
                                             <!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
                                         </div>
-
+                                        <!-- <p class="text text-danger" *ngIf="imageError !== ''">
+                                            {{ imageError }}
+                                          </p> -->
                                     </div>
                                 </div>
                                 <div class="col-lg-5 offset-lg-1">
@@ -136,7 +147,7 @@
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
                                                 Document</label>
-                                            <input type="file" [(ngModel)]="issueData.uploadedPhotos.doc" name="issueData.doc" class="form-control p-0">
+                                                <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple class="form-control p-0"> 
                                         </div>
                                         <div class="col-lg-2  mar-top-37">
                                             <!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
@@ -148,8 +159,8 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-11 text-right pr-0">
-                                    <a href="" class="btn btn-default" id="">Cancel</a>
-                                    <a (click)="addIssue()" class="btn btn-success">Save</a>
+                                    <button type="button" class="btn btn-default" >Cancel</button>
+                                    <button type="button" (click)="addIssue()" class="btn btn-success">Save</button>
 
 
                                 </div>

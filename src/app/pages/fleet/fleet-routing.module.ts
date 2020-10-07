@@ -29,22 +29,6 @@ import {
   ListContactRenewComponent,
   AddContactRenewComponent,
   ContactRenewDetailComponent,
-  IssueListComponent,
-  AddIssueComponent,
-  IssueDetailComponent,
-  ServiceListComponent,
-  AddServiceComponent,
-  ServiceDetailComponent,
-  AddServiceProgramComponent,
-  ServiceProgramListComponent,
-  EditServiceProgramComponent,
-  ServiceProgramDetailComponent,
-  AddVendorComponent,
-  VendorsListComponent,
-  EditVendorComponent,
-  AddVehicleServiceLogComponent,
-  VehicleServiceLogsComponent,
-  EditVehicleServiceLogComponent,
   AddItemComponent,
   ItemsListComponent,
   ItemDetailComponent,
@@ -94,22 +78,6 @@ const COMPONENTS = [
   ListContactRenewComponent,
   AddContactRenewComponent,
   ContactRenewDetailComponent,
-  IssueListComponent,
-  AddIssueComponent,
-  IssueDetailComponent,
-  ServiceListComponent,
-  AddServiceComponent,
-  ServiceDetailComponent,
-  AddServiceProgramComponent,
-  ServiceProgramListComponent,
-  EditServiceProgramComponent,
-  ServiceProgramDetailComponent,
-  AddVendorComponent,
-  VendorsListComponent,
-  EditVendorComponent,
-  AddVehicleServiceLogComponent,
-  VehicleServiceLogsComponent,
-  EditVehicleServiceLogComponent,
   AddItemComponent,
   ItemsListComponent,
   ItemDetailComponent,
@@ -252,88 +220,8 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'issues',
-    children: [
-      { path: 'list', component: IssueListComponent },
-      { path: 'add-issue', component: AddIssueComponent },
-      { path: 'issue-detail', component: IssueDetailComponent },
-    ],
-  },
-  {
     path: 'maintenance',
-    children: [
-      // {
-      //   path: 'issues',
-      //   children: [
-      //     { path: 'list', component: IssueListComponent },
-      //     { path: 'add-issue', component: AddIssueComponent },
-      //     { path: 'issue-detail', component: IssueDetailComponent },
-      //   ],
-      // },
-      {
-        path: 'service-log',
-        children: [
-          { path: 'list', component: ServiceListComponent },
-          { path: 'add-service', component: AddServiceComponent },
-          { path: 'service-detail', component: ServiceDetailComponent },
-        ],
-      },
-      {
-        path: 'service-program',
-        children: [
-          {
-            path: 'Add-Service-Program',
-            component: AddServiceProgramComponent,
-          },
-          {
-            path: 'Service-Program-List',
-            component: ServiceProgramListComponent,
-          },
-          {
-            path: 'Edit-Service-Program/:programID',
-            component: EditServiceProgramComponent,
-          },
-          {
-            path: 'service-program-detail',
-            component: ServiceProgramDetailComponent,
-          },
-        ],
-      },
-      {
-        path: 'vendor',
-        children: [
-          {
-            path: 'Add-Vendor',
-            component: AddVendorComponent,
-          },
-          {
-            path: 'Vendors-List',
-            component: VendorsListComponent,
-          },
-          {
-            path: 'Edit-Vendor/:vendorID',
-            component: EditVendorComponent,
-          },
-        ],
-      },
-      {
-        path: 'vehicle-service-log',
-        children: [
-          {
-            path: 'Add-Vehicle-Service-Log',
-            component: AddVehicleServiceLogComponent,
-          },
-          {
-            path: 'Vehicle-Service-Logs-List',
-            component: VehicleServiceLogsComponent,
-          },
-          {
-            path: 'Edit-Vehicle-Service-Log/:logID',
-            component: EditVehicleServiceLogComponent,
-          },
-        ],
-      },
-    ],
+    loadChildren: () => import('./maintenance/maintenance.module').then((m) => m.MaintenanceModule) ,
   },
   {
     path: 'inventory',

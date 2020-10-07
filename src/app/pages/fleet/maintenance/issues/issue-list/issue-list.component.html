@@ -29,13 +29,14 @@
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                         <a class="dropdown-item text-1" href="">Resolve via Service Entry</a>
-                        <a class="dropdown-item text-1" href="">Edit</a>
-                        <a class="dropdown-item text-1" href="">Delete</a>
+                        <a class="dropdown-item text-1" href="">Close</a>
+                        <a class="dropdown-item text-1" (click)="editIssue()" href="javascript:;">Edit</a>
+                        <a class="dropdown-item text-1" (click)="deleteIssue()" href="javascript:;">Delete</a>
                         <a class="dropdown-item text-1" href="">Import</a>
                         <a class="dropdown-item text-1" href="">Export</a>
                         </div>
                     </div>
-                    <a routerLink="/fleet/maintenance/issues/add-issue" class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add Issue</a>
+                    <a [routerLink]="['/fleet', 'issues', 'add-issue']" class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add Issue</a>
                 </div>
             </div>
             </header>
@@ -56,343 +57,33 @@
         <div class="row">
            <div class="col pr-0">
               <section class="card">
-                    <div class="card-body">
-                  
-                        <div class="mb-2">
-                            <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open" aria-selected="true">Open</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="overdue-tab" data-toggle="tab" href="#overdue" role="tab" aria-controls="overdue" aria-selected="false">Overdue</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="resolved-tab" data-toggle="tab" href="#resolved" role="tab" aria-controls="resolved" aria-selected="false">Resolved</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="closed-tab" data-toggle="tab" href="#closed" role="tab" aria-controls="closed" aria-selected="false">Closed</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="tab-content p-0" id="myTabContent">
-                            <div class="tab-pane show active" id="open" role="tabpanel" aria-labelledby="open-tab">
-                                <table class="table table-bordered table-responsive-lg table-striped mb-0">
-                                    <thead>
-                                        <tr>
-                                        <th width="5%"><input type="checkbox"></th>
-                                        <th>Vehicle</th>
-                                        <th>Issue</th>
-                                        <th width="10%">Reported On</th>
-                                        <th width="15%">Reported By</th>
-                                        <th width="15%">Assigned To</th>
-                                        <th width="5%"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                        <td><input type="checkbox" /></td>
-                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Vehicle 1</td>
-                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Brakes Issue</td>
-                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Jun 5, 2020</td>
-                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Mr. Singh</td>
-                                        <td routerLink="/fleet/maintenance/issues/issue-detail">Charles</td>
-                                        <td>
-                                            <div class="btn-group flex-wrap">
-                                                <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="dropdown-item text-1" href="service-entry.php">Resolve via Service Entry</a>
-                                                    <a class="modal-with-form dropdown-item text-1" href="#issueCloseModal">Close Issue</a>
-
-                                                </div>
-                                            </div>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='open-issue-details.php';">Vehicle 2</td>
-                                        <td onclick="window.location='open-issue-details.php';">Belts Issue</td>
-                                        <td onclick="window.location='open-issue-details.php';">Mar 3, 2020</td>
-                                        <td onclick="window.location='open-issue-details.php';">Mr. Kumar</td>
-                                        <td onclick="window.location='open-issue-details.php';">James</td>
-                                        <td>
-                                            <div class="btn-group flex-wrap">
-                                                <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="dropdown-item text-1" href="service-entry.php">Resolve via Service Entry</a>
-                                                    <a class="modal-with-form dropdown-item text-1" href="#issueCloseModal">Close Issue</a>
-
-                                                </div>
-                                            </div>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='open-issue-details.php';">Vehicle 3</td>
-                                        <td onclick="window.location='open-issue-details.php';">Oil Leakage</td>
-                                        <td onclick="window.location='open-issue-details.php';">May 5, 2020</td>
-                                        <td onclick="window.location='open-issue-details.php';">Mr. Gupta</td>
-                                        <td onclick="window.location='open-issue-details.php';">Tom</td>
-                                        <td>
-                                            <div class="btn-group flex-wrap">
-                                                <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="dropdown-item text-1" href="service-entry.php">Resolve via Service Entry</a>
-                                                    <a class="modal-with-form dropdown-item text-1" href="#issueCloseModal">Close Issue</a>
-
-                                                </div>
-                                            </div>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='open-issue-details.php';">Vehicle 4</td>
-                                        <td onclick="window.location='open-issue-details.php';">A/C Issue</td>
-                                        <td onclick="window.location='open-issue-details.php';">Jun 15, 2020</td>
-                                        <td onclick="window.location='open-issue-details.php';">Mr. Singh</td>
-                                        <td onclick="window.location='open-issue-details.php';">Charles</td>
-                                        <td>
-                                            <div class="btn-group flex-wrap">
-                                                <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="dropdown-item text-1" href="service-entry.php">Resolve via Service Entry</a>
-                                                    <a class="modal-with-form dropdown-item text-1" href="#issueCloseModal">Close Issue</a>
-
-                                                </div>
-                                            </div>
-                                        </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane fade" id="overdue" role="tabpanel" aria-labelledby="overdue-tab">
-                                <table class="table table-bordered table-responsive-lg table-striped mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th width="5%"><input type="checkbox"></th>
-                                            <th>Vehicle</th>
-                                            <th>Issue</th>
-                                            <th width="10%">Reported On</th>
-                                            <th width="15%">Reported By</th>
-                                            <th width="15%">Assigned To</th>
-                                            <th width="5%"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Vehicle 1</td>
-                                            <td onclick="window.location='overdue-issue-details.php';" style="color: red;">Brakes Issue</td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Jun 5, 2020</td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Mr. Singh</td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Charles</td>
-                                            <td>
-                                                <div class="btn-group flex-wrap">
-                                                    <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
-                                                    <div class="dropdown-menu" role="menu">
-                                                        <a class="dropdown-item text-1" href="">Resolve via Service Entry</a>
-                                                        <a class="modal-with-form dropdown-item text-1" href="#issueCloseModal">Close Issue</a>
-
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Vehicle 2</td>
-                                            <td onclick="window.location='overdue-issue-details.php';" style="color: red;">Belts Issue</td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Mar 3, 2020</td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Mr. Kumar</td>
-                                            <td onclick="window.location='overdue-issue-details.php';">James</td>
-                                            <td>
-                                                <div class="btn-group flex-wrap">
-                                                    <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
-                                                    <div class="dropdown-menu" role="menu">
-                                                        <a class="dropdown-item text-1" href="">Resolve via Service Entry</a>
-                                                        <a class="modal-with-form dropdown-item text-1" href="#issueCloseModal">Close Issue</a>
-
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Vehicle 3</td>
-                                            <td onclick="window.location='overdue-issue-details.php';" style="color: red;">Oil Leakage</td>
-                                            <td onclick="window.location='overdue-issue-details.php';">May 5, 2020</td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Mr. Gupta</td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Tom</td>
-                                            <td>
-                                                <div class="btn-group flex-wrap">
-                                                    <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
-                                                    <div class="dropdown-menu" role="menu">
-                                                        <a class="dropdown-item text-1" href="">Resolve via Service Entry</a>
-                                                        <a class="modal-with-form dropdown-item text-1" href="#issueCloseModal">Close Issue</a>
-
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Vehicle 4</td>
-                                            <td onclick="window.location='overdue-issue-details.php';" style="color: red;">A/C Issue</td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Jun 15, 2020</td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Mr. Singh</td>
-                                            <td onclick="window.location='overdue-issue-details.php';">Charles</td>
-                                            <td>
-                                                <div class="btn-group flex-wrap">
-                                                    <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
-                                                    <div class="dropdown-menu" role="menu">
-                                                        <a class="dropdown-item text-1" href="">Resolve via Service Entry</a>
-                                                        <a class="modal-with-form dropdown-item text-1" href="#issueCloseModal">Close Issue</a>
-
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane fade" id="resolved" role="tabpanel" aria-labelledby="resolved-tab">
-                                <table class="table table-bordered table-responsive-lg table-striped mb-0">
-                                    <thead>
-                                        <tr>
-                                        <th width="5%"><input type="checkbox"></th>
-                                        <th>Vehicle</th>
-                                        <th>Issue</th>
-                                        <th width="10%">Reported On</th>
-                                        <th width="10%">Resolved On</th>
-                                        <th width="15%">Reported By</th>
-                                        <th width="15%">Assigned To</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Vehicle 1</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Brakes Issue</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Jun 5, 2020</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Jun 25, 2020</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Mr. Singh</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Charles</td>
-                                        </tr>
-                                        <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Vehicle 2</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Belts Issue</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Mar 3, 2020</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Jun 30, 2020</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Mr. Kumar</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">James</td>
-                                        </tr>
-                                        <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Vehicle 3</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Oil Leakage</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">May 5, 2020</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Jun 5, 2020</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Mr. Gupta</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Tom</td>
-                                        </tr>
-                                        <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Vehicle 4</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">A/C Issue</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Jun 15, 2020</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">July 5, 2020</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Mr. Singh</td>
-                                        <td onclick="window.location='resolved-issue-details.php';">Charles</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane fade" id="closed" role="tabpanel" aria-labelledby="closed-tab">
-                                <table class="table table-bordered table-responsive-lg table-striped mb-0">
-                                    <thead>
-                                        <tr>
-                                        <th width="5%"><input type="checkbox"></th>
-                                        <th>Vehicle</th>
-                                        <th>Issue</th>
-                                        <th width="10%">Reported On</th>
-                                        <th width="15%">Reported By</th>
-                                        <th width="10%">Closed On</th>
-                                        <th width="15%">Closed By</th>
-                                        <th width="5%"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='closed-issue-details.php';">Vehicle 1</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Brakes Issue</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Jun 5, 2020</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Mr. Singh</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Jun 25, 2020</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Charles</td>
-                                        <td>
-                                            <div class="btn-group flex-wrap">
-                                                <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="modal-with-form dropdown-item text-1" href="#issueReopenModal">Reopen</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='closed-issue-details.php';">Vehicle 2</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Oil Leakage</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Jun 5, 2020</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Mr. Singh</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Jun 25, 2020</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Charles</td>
-                                        <td>
-                                            <div class="btn-group flex-wrap">
-                                                <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="modal-with-form dropdown-item text-1" href="#issueReopenModal">Reopen</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='closed-issue-details.php';">Vehicle 3</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Belts Issue</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Jun 5, 2020</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Mr. Singh</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Jun 25, 2020</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Charles</td>
-                                        <td>
-                                            <div class="btn-group flex-wrap">
-                                                <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="modal-with-form dropdown-item text-1" href="#issueReopenModal">Reopen</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='closed-issue-details.php';">Vehicle 4</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Broken Window</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Jun 5, 2020</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Mr. Singh</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Jun 25, 2020</td>
-                                        <td onclick="window.location='closed-issue-details.php';">Charles</td>
-                                        <td>
-                                            <div class="btn-group flex-wrap">
-                                                <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="modal-with-form dropdown-item text-1" href="#issueReopenModal">Reopen</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="card-body">                  
+                        <table class="table table-responsive-lg table-bordered table-striped mb-0" id="datatable-default">
+                            <thead>
+                               <tr>
+                                  <th><input type="checkbox"></th>
+                                  <th>Vehicle/Assets</th>
+                                  <th>Issue</th>                                  
+                                  <th>Reported On</th>
+                                  <th>Reported By</th>
+                                  <th>Assigned To</th>
+                                  <th>Status</th>
+                                
+                               </tr>
+                            </thead>
+                            <tbody>
+                               <tr *ngFor = "let issue of issues">
+                                  <td><input type="checkbox" [checked]="isChecked" [(ngModel)]="item.checked"  (ngModelChange)="checkboxCount(issues)" value="{{ issue.issueID }}"></td>
+                                  <td><span class="font-weight-bold line-height-lg">{{ issue.vehicleID }}</span></td>
+                                  <td>{{ issue.issueName }}</td>
+                                  <td>{{ issue.reportedDate }}</td>
+                                  <td>{{ issue.reportedBy }}</td>
+                                  <td>{{ issue.assignedTo }}</td>
+                                  <td><span class="badge badge-dark p-1">OPEN</span></td>
+                               </tr>                            
+                              
+                            </tbody>
+                         </table>
                     </div>
               </section>
             </div>

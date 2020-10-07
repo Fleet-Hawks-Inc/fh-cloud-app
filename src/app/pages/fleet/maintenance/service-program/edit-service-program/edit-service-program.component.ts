@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {ApiService} from '../../../../../services/api.service';
+import {ApiService} from '../../../../../services';
 import { map} from 'rxjs/operators';
 import {from} from 'rxjs';
 declare var $: any;
