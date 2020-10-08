@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../../../../services';
-import {Router} from '@angular/router';
+import { ApiService } from '../../../../services';
+import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { from } from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -27,8 +29,8 @@ export class AddVehicleNewComponent implements OnInit {
   vehicleType = '';
   VIN = '';
   year = '';
-  make = '';
-  model = '';
+  manufacturerID = '';
+  modelID = '';
   plateNumber = '';
   stateID = '';
   driverID = '';
@@ -48,7 +50,7 @@ export class AddVehicleNewComponent implements OnInit {
   bodySubType = '';
   msrp = '';
   inspectionFormID = '';
-  lifeCycle =  {
+  lifeCycle = {
     inServiceDate: '',
     inServiceOdometer: '',
     estimatedServiceMonths: '',
@@ -76,7 +78,7 @@ export class AddVehicleNewComponent implements OnInit {
     maxPayload: '',
     EPACity: '',
     EPACombined: '',
-    EPAHighway: ''
+    EPAHighway: '',
   };
   insurance = {
     dateOfIssue: '',
@@ -84,18 +86,18 @@ export class AddVehicleNewComponent implements OnInit {
     premiumCurrency: '',
     vendorID: '',
     dateOfExpiry: '',
-    remiderEvery: ''
+    remiderEvery: '',
   };
   fluid = {
     fuelType: '',
     fuelTankOneCapacity: '',
     fuelQuality: '',
     fuelTankTwoCapacity: '',
-    oilCapacity: ''
+    oilCapacity: '',
   };
   wheelsAndTyres = {
     numberOfTyres: '',
-    driverType: '',
+    driveType: '',
     brakeSystem: '',
     wheelbase: '',
     rearAxle: '',
@@ -106,7 +108,7 @@ export class AddVehicleNewComponent implements OnInit {
     frontWheelDiameter: '',
     rearWheelDiameter: '',
     frontTyrePSI: '',
-    rearTyrePSI: ''
+    rearTyrePSI: '',
   };
   engine = {
     engineSummary: '',
@@ -128,7 +130,7 @@ export class AddVehicleNewComponent implements OnInit {
     transmissionSummary: '',
     transmissionType: '',
     transmissonBrand: '',
-    transmissionGears: ''
+    transmissionGears: '',
   };
   purchase = {
     purchaseVendorID: '',
@@ -137,7 +139,7 @@ export class AddVehicleNewComponent implements OnInit {
     warrantyExpirationMeter: '',
     purchaseDate: '',
     purchaseComments: '',
-    purchaseOdometer: ''
+    purchaseOdometer: '',
   };
   loan = {
     loanVendorID: '',
@@ -152,7 +154,7 @@ export class AddVehicleNewComponent implements OnInit {
     loadEndDate: '',
     accountNumber: '',
     generateExpenses: '',
-    notes: ''
+    notes: '',
   };
   settings = {
     primaryMeter: '',
@@ -160,13 +162,11 @@ export class AddVehicleNewComponent implements OnInit {
     hardBreakingParams: 0,
     hardAccelrationParams: 0,
     turningParams: 0,
-    measurmentUnit: ''
+    measurmentUnit: '',
   };
 
-
-
   countryID = '';
-  servicePrograms =  [];
+  servicePrograms = [];
   inspectionForms = [];
   manufacturers = [];
   models = [];
@@ -174,26 +174,25 @@ export class AddVehicleNewComponent implements OnInit {
   states = [];
   groups = [];
 
-  response : any ='';
-  hasError : boolean = false;
+  errors = {};
+  form;
+  response: any = '';
+  hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error : string = '';
-  Success : string = '';
+  Error: string = '';
+  Success: string = '';
 
+  slides = [{ img: 'assets/img/truck.jpg' }, { img: 'assets/img/truck.jpg' }];
+  slideConfig = {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dots: true,
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 1500,
+  };
 
-  slides = [
-    {img: 'assets/img/truck.jpg'},
-    {img: 'assets/img/truck.jpg'},
-  ];
-  slideConfig = {'slidesToShow': 1,
-  'slidesToScroll': 1,
-  'dots': true,
-  'infinite': true,
-  'autoplay': true,
-  'autoplaySpeed': 1500};
-
-  constructor(private apiService: ApiService,
-    private router: Router) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
     this.fetchServicePrograms();
@@ -202,8 +201,7 @@ export class AddVehicleNewComponent implements OnInit {
     this.fetchCountries();
     this.fetchGroups();
 
-    this.apiService.getData('devices')
-    .subscribe((result: any) => {
+    this.apiService.getData('devices').subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
 
@@ -216,52 +214,52 @@ export class AddVehicleNewComponent implements OnInit {
     $('#turningParametersValue').html(6);
   }
 
-  fetchServicePrograms(){
-    this.apiService.getData('servicePrograms')
-      .subscribe((result: any) => {
-        this.servicePrograms = result.Items;
-      });
+  fetchServicePrograms() {
+    this.apiService.getData('servicePrograms').subscribe((result: any) => {
+      this.servicePrograms = result.Items;
+    });
   }
 
-  fetchManufacturers(){
-    this.apiService.getData('manufacturers')
-      .subscribe((result: any) => {
-        this.manufacturers = result.Items;
-      });
+  fetchManufacturers() {
+    this.apiService.getData('manufacturers').subscribe((result: any) => {
+      this.manufacturers = result.Items;
+    });
   }
 
-  fetchCountries(){
-    this.apiService.getData('countries')
-      .subscribe((result: any) => {
-        this.countries = result.Items;
-      });
+  fetchCountries() {
+    this.apiService.getData('countries').subscribe((result: any) => {
+      this.countries = result.Items;
+    });
   }
 
-  fetchGroups(){
-    this.apiService.getData('groups')
-      .subscribe((result: any) => {
-        this.groups = result.Items;
-      });
+  fetchGroups() {
+    this.apiService.getData('groups').subscribe((result: any) => {
+      this.groups = result.Items;
+    });
   }
 
-  getStates(){
-    this.apiService.getData('states/country/' + this.countryID)
+  getStates() {
+    this.apiService
+      .getData('states/country/' + this.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
   }
 
-  getModels(){
-    this.apiService.getData(`vehicleModels/manufacturer/${this.make}`)
+  getModels() {
+    this.apiService
+      .getData(`vehicleModels/manufacturer/${this.make}`)
       .subscribe((result: any) => {
         this.models = result.Items;
       });
   }
 
   fetchInspectionForms() {
-    this.apiService.getData('inspectionForms/type/Vehicle').subscribe((result: any) => {
-      this.inspectionForms = result.Items;
-    });
+    this.apiService
+      .getData('inspectionForms/type/Vehicle')
+      .subscribe((result: any) => {
+        this.inspectionForms = result.Items;
+      });
   }
 
   addVehicle() {
@@ -272,8 +270,8 @@ export class AddVehicleNewComponent implements OnInit {
       vehicleType: this.vehicleType,
       VIN: this.VIN,
       year: this.year,
-      make: this.make,
-      model: this.model,
+      manufacturerID: this.manufacturerID,
+      modelID: this.modelID,
       plateNumber: this.plateNumber,
       stateID: this.stateID,
       driverID: this.driverID,
@@ -293,14 +291,14 @@ export class AddVehicleNewComponent implements OnInit {
       bodySubType: this.bodySubType,
       msrp: this.msrp,
       inspectionFormID: this.inspectionFormID,
-      lifeCycle:  {
+      lifeCycle: {
         inServiceDate: this.lifeCycle.inServiceDate,
         inServiceOdometer: this.lifeCycle.inServiceOdometer,
         estimatedServiceMonths: this.lifeCycle.estimatedServiceMonths,
         estimatedServiceMiles: this.lifeCycle.estimatedServiceMiles,
         estimatedResaleValue: this.lifeCycle.estimatedResaleValue,
         outOfServiceDate: this.lifeCycle.outOfServiceDate,
-        outOfServiceOdometer: this.lifeCycle.outOfServiceOdometer
+        outOfServiceOdometer: this.lifeCycle.outOfServiceOdometer,
       },
       specifications: {
         height: this.specifications.height,
@@ -321,26 +319,26 @@ export class AddVehicleNewComponent implements OnInit {
         maxPayload: this.specifications.maxPayload,
         EPACity: this.specifications.EPACity,
         EPACombined: this.specifications.EPACombined,
-        EPAHighway: this.specifications.EPAHighway
+        EPAHighway: this.specifications.EPAHighway,
       },
       insurance: {
         dateOfIssue: this.insurance.dateOfIssue,
-        premiumAcount: this.insurance.premiumAmount,
+        premiumAmount: this.insurance.premiumAmount,
         premiumCurrency: this.insurance.premiumCurrency,
         vendorID: this.insurance.vendorID,
         dateOfExpiry: this.insurance.dateOfExpiry,
-        remiderEvery: this.insurance.remiderEvery
+        remiderEvery: this.insurance.remiderEvery,
       },
       fluid: {
         fuelType: this.fluid.fuelType,
         fuelTankOneCapacity: this.fluid.fuelTankOneCapacity,
         fuelQuality: this.fluid.fuelQuality,
         fuelTankTwoCapacity: this.fluid.fuelTankTwoCapacity,
-        oilCapacity: this.fluid.oilCapacity
+        oilCapacity: this.fluid.oilCapacity,
       },
       wheelsAndTyres: {
         numberOfTyres: this.wheelsAndTyres.numberOfTyres,
-        driverType: this.wheelsAndTyres.driverType,
+        driveType: this.wheelsAndTyres.driveType,
         brakeSystem: this.wheelsAndTyres.brakeSystem,
         wheelbase: this.wheelsAndTyres.wheelbase,
         rearAxle: this.wheelsAndTyres.rearAxle,
@@ -351,7 +349,7 @@ export class AddVehicleNewComponent implements OnInit {
         frontWheelDiameter: this.wheelsAndTyres.frontWheelDiameter,
         rearWheelDiameter: this.wheelsAndTyres.rearWheelDiameter,
         frontTyrePSI: this.wheelsAndTyres.frontTyrePSI,
-        rearTyrePSI: this.wheelsAndTyres.rearTyrePSI
+        rearTyrePSI: this.wheelsAndTyres.rearTyrePSI,
       },
       engine: {
         engineSummary: this.engine.engineSummary,
@@ -373,7 +371,7 @@ export class AddVehicleNewComponent implements OnInit {
         transmissionSummary: this.engine.transmissionSummary,
         transmissionType: this.engine.transmissionType,
         transmissonBrand: this.engine.transmissonBrand,
-        transmissionGears: this.engine.transmissionGears
+        transmissionGears: this.engine.transmissionGears,
       },
       purchase: {
         purchaseVendorID: this.purchase.purchaseVendorID,
@@ -382,7 +380,7 @@ export class AddVehicleNewComponent implements OnInit {
         warrantyExpirationMeter: this.purchase.warrantyExpirationMeter,
         purchaseDate: this.purchase.purchaseDate,
         purchaseComments: this.purchase.purchaseComments,
-        purchaseOdometer: this.purchase.purchaseOdometer
+        purchaseOdometer: this.purchase.purchaseOdometer,
       },
       loan: {
         loanVendorID: this.loan.loanVendorID,
@@ -397,7 +395,7 @@ export class AddVehicleNewComponent implements OnInit {
         loadEndDate: this.loan.loadEndDate,
         accountNumber: this.loan.accountNumber,
         generateExpenses: this.loan.generateExpenses,
-        notes: this.loan.notes
+        notes: this.loan.notes,
       },
       settings: {
         primaryMeter: this.settings.primaryMeter,
@@ -405,58 +403,74 @@ export class AddVehicleNewComponent implements OnInit {
         hardBreakingParams: this.settings.hardBreakingParams,
         hardAccelrationParams: this.settings.hardAccelrationParams,
         turningParams: this.settings.turningParams,
-        measurmentUnit: this.settings.measurmentUnit
-      }
-  };
+        measurmentUnit: this.settings.measurmentUnit,
+      },
+    };
 
-// console.log(data);return false;
-    this.apiService.postData('vehicles', data).
-    subscribe({
-      complete : () => {},
-      error : (err) => {
-        this.hasError = true;
-        this.Error = err.error;
+    this.apiService.postData('vehicles', data).subscribe({
+      complete: () => {},
+      error: (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/'([^']+)'/)[1];
+              console.log(key);
+              val.message = val.message.replace(/'.*'/, 'This Field');
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+              this.Success = '';
+            },
+            error: () => {},
+            next: () => {},
+          });
       },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
         this.Success = 'Vehicle Added successfully';
-
-
-      }
+      },
     });
   }
 
+  throwErrors() {
+    this.form.showErrors(this.errors);
+  }
 
-  onChangePrimaryMeter(value: any){
+  onChangePrimaryMeter(value: any) {
     this.settings.primaryMeter = value;
   }
 
-  onChangeFuelUnit(value: any){
+  onChangeFuelUnit(value: any) {
     this.settings.fuelUnit = value;
   }
 
-  onChangeMeasurementUnit(value: any){
+  onChangeMeasurementUnit(value: any) {
     this.settings.measurmentUnit = value;
   }
 
-  onChangeHardBreakingParameters(value: any){
+  onChangeHardBreakingParameters(value: any) {
     this.settings.hardBreakingParams = value;
     $('#hardBreakingParametersValue').html(value);
   }
 
-  onChangeAccelrationParameters(value: any){
+  onChangeAccelrationParameters(value: any) {
     this.settings.hardAccelrationParams = value;
     $('#hardAccelrationParametersValue').html(value);
   }
 
-  onChangeturningParameters(value: any){
+  onChangeturningParameters(value: any) {
     this.settings.turningParams = value;
     $('#turningParametersValue').html(value);
   }
 
   quantumModal() {
-    $( document ).ready(function() {
+    $(document).ready(function () {
       $('#quantumModal').modal('show');
     });
   }
@@ -464,6 +478,5 @@ export class AddVehicleNewComponent implements OnInit {
   onChange(newValue) {
     this.quantum = newValue;
     this.quantumSelected = newValue;
-   }
-
+  }
 }

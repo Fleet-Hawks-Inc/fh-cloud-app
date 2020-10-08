@@ -16,7 +16,7 @@ export class IssueListComponent implements OnInit {
   title = 'Issues List';
   issues: [];
   vehicles: [];
-  checked = false;
+  checked: any = false;
   isChecked = false;
   headCheckbox = false;
   selectedIssueID: any;
