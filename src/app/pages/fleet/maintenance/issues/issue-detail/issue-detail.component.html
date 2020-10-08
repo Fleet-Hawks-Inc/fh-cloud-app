@@ -12,11 +12,11 @@
             <header class="page-header">
                <div class="row pr-5 " style="padding-top:10px;">
                   <div class="col-md-4 col-lg-4">
-                     <span class=" font-weight-bold text-4 text-dark"> Issue #6454 </span> <span class="badge badge-danger text-3"> OPEN</span>
+                     <span class=" font-weight-bold text-4 text-dark"> Issue #{{issueID}} </span> <span class="badge badge-dark p-1"> OPEN</span>
                   </div>
                   <div class="col-md-8  col-lg-8 text-right pr-4">
-                     <a href="maintenance1.php" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Issues List</a>  
-                     <div class="btn-group flex-wrap">
+                     <a [routerLink]="['/fleet', 'issues', 'list']" class="btn btn-sm btn-default mr-1"><i class="fas fa-list"></i> Issues List</a>  
+                     <div class="btn-group flex-wrap mr-1">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Resolve<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                            <a class="dropdown-item text-1" href="service-entry.php">Resolve via Service Entry</a>
@@ -30,7 +30,7 @@
                            <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
                         </div>
                      </div>
-                     <a href="add-issue.php"  class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Issue</a>
+                     <!-- <a href="add-issue.php"  class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Issue</a> -->
                   </div>
                </div>
             </header>
@@ -41,8 +41,8 @@
                         <div class=" row">
                            <div class="col-lg-12">
                               <div class="row mb-3">
-                                 <div class="col-lg-12"><label class="control-label font-weight-bold text-4">Issue Name:</label><span class="font-weight-bold"> Flat Tire</span></div>
-                                 <div class="col-lg-12"><span class="font-weight-bold text-4">Description: </span>Bolt in back left side tire. Slow leak.</div>
+                                 <div class="col-lg-12"><label class="control-label font-weight-bold text-4">Issue Name:</label><span class="font-weight-bold"> {{issueName}}</span></div>
+                                 <div class="col-lg-12"><span class="font-weight-bold text-4">Description: </span>{{description}}</div>
                               </div>
                            </div>
                            <div class="col-lg-6">
@@ -52,23 +52,23 @@
                                        <tbody>
                                           <tr>
                                              <td width="40%" class="back-color-gray font-weight-bold">Vehicle</td>
-                                             <td  width="60%"><a href="vehicle-details2.php" class="text-info">2100 [2016 Ford F-150]</a></td>
+                                             <td  width="60%"><a routerLink="/fleet/vehicles/Vehicle-List" class="text-info">{{vehicleID}}</a></td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Reported Date</td>
-                                             <td>Jun 15, 2020</td>
+                                             <td>{{reportedDate}}</td>
                                           </tr>
-                                          <tr>
+                                          <!-- <tr>
                                              <td class="back-color-gray font-weight-bold">Source</td>
                                              <td></td>
-                                          </tr>
+                                          </tr> -->
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Odometer</td>
-                                             <td>56,398 mi</td>
+                                             <td>{{odometer}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Assigned To</td>
-                                             <td>Unassigned</td>
+                                             <td>{{assignedTo}}</td>
                                           </tr>
                                        </tbody>
                                     </table>
@@ -96,22 +96,21 @@
                               </div>
                               <!-- CUSTOM FIELDS TABLE -->
                               <div class="row">
-                                 <div class="col-lg-12"><label class="control-label font-weight-bold text-3">Custom Fields</label></div>
-                              </div>
-                              <div class="row">
                                  <div class="col-lg-12">
-                                    <table class="table table-bordered table-responsive-lg">
-                                       <tbody>
-                                          <tr>
-                                             <td  width="40%" class="back-color-gray font-weight-bold"></td>
-                                             <td  width="60%"></td>
-                                          </tr>
-                                          <tr>
-                                             <td class="back-color-gray font-weight-bold"></td>
-                                             <td></td>
-                                          </tr>
-                                       </tbody>
-                                    </table>
+                                    <div class="vehicle-common-box p-3">
+                                       <div class="row">
+                                          <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Document(s)</label></div>
+                                          <div class="col-lg-6 text-right">
+                                          </div>
+                                       </div>
+                                       <hr class="solid mt-2">
+                                       <div class="row">
+                                          <div class="col-lg-9">Name of the Document</div>
+                                          <div class="col-lg-3 text-right">
+                                             <a href="#deleteModal" class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
+                                          </div>
+                                       </div>
+                                    </div>
                                  </div>
                               </div>
                            </div>
@@ -124,28 +123,28 @@
                                        </div>
                                        <hr class="solid mt-2">
                                        <div class="row">
-                                          <div class="col-lg-9"><i class="fas fa-exclamation-circle"></i> Issue Created <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-size-12">By: Mr. Singh</span></div>
+                                          <div class="col-lg-9"><i class="fas fa-exclamation-circle"></i> Issue Created <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-size-12">By: {{reportedBy}}</span></div>
                                           <div class="col-lg-3 text-right">
-                                             2 weeks ago
+                                             {{reportedDate}}
                                           </div>
                                        </div>
                                     </div>
                                  </div>
                               </div>
-                              <div class="row pt-2">
+                              <div class="row pt-2" *ngIf="issueImages?.length">
                                  <div class="col-lg-12">
                                     <div class="vehicle-common-box p-3">
                                        <div class="row">
                                           <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label></div>
                                           <div class="col-lg-6 text-right">
-                                             <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo<input type="file" class="hidden_input"></div>
+                                             <!-- <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo<input type="file" class="hidden_input"></div> -->
                                           </div>
                                        </div>
                                        <hr class="solid mt-3">
                                        <div class="row">
-                                          <div class="col-lg-6">
+                                          <div class="col-lg-6" *ngFor="let photo of issueImages;">
                                              <div class="vehicle-photo-box">
-                                                <img src="assets/img/flat-tyre.jpg" height="180px" width="330px">
+                                                <img [src]="photo" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
                                                 <hr class="m-3">
                                                 <div class="row">
                                                    <div class="col-lg-8">Name of the Image</div>
@@ -153,7 +152,7 @@
                                                       <div class="btn-group flex-wrap mx-2">
                                                          <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
                                                          <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                                            <a class="dropdown-item text-1" href="">Crop/Rotate Image</a>
+                                                            
                                                             <a class="modal-with-form dropdown-item text-1" href="#editPhoto">Edit</a>
                                                             <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
                                                          </div>
@@ -185,25 +184,7 @@
                                     </div>
                                  </div>
                               </div>
-                              <div class="row pt-2">
-                                 <div class="col-lg-12">
-                                    <div class="vehicle-common-box p-3">
-                                       <div class="row">
-                                          <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Document(s)</label></div>
-                                          <div class="col-lg-6 text-right">
-                                             <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i><input type="file" class="hidden_input"> Add Documents</div>
-                                          </div>
-                                       </div>
-                                       <hr class="solid mt-3">
-                                       <div class="row">
-                                          <div class="col-lg-9">Name of the Document</div>
-                                          <div class="col-lg-3 text-right">
-                                             <a href="#deleteModal" class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
+                            
                            </div>
                         </div>
                      </form>

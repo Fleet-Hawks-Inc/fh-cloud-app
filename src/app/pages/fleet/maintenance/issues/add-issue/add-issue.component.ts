@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {  Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {AwsUploadService} from '../../../../../services';
 import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -15,10 +15,10 @@ declare var $: any;
   styleUrls: ['./add-issue.component.css']
 })
 export class AddIssueComponent implements OnInit {
-  title = 'Add Issue';
+  title: string;
   imageError = '';
   fileName = '';
-
+  public issueID;
   form;
   /**
    * Issue Prop
@@ -48,6 +48,7 @@ export class AddIssueComponent implements OnInit {
   // date: {year: number, month: number};
   constructor(private apiService: ApiService,
               private router: Router,
+              private route: ActivatedRoute,
               private awsUS: AwsUploadService, private toaster: ToastrService,
               private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
                 this.selectedFileNames = new Map<any, any>();
@@ -58,13 +59,20 @@ export class AddIssueComponent implements OnInit {
 
   ngOnInit() {
     this.fetchVehicles();
+    this.issueID = this.route.snapshot.params['issueID'];
+    if (this.issueID) {
+      this.title = 'Edit Asset';
+      this.fetchIssueByID();
+    } else {
+      this.title = 'Add Asset';
+    }
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
   }
   fetchVehicles() {
-    // this.apiService.getData('vehicles').subscribe((result: any) => {
-    //      this.vehicles = result.Items; });
+    this.apiService.getData('vehicles').subscribe((result: any) => {
+         this.vehicles = result.Items; });
     }
     getToday(): string {
       return new Date().toISOString().split('T')[0];
@@ -86,7 +94,7 @@ export class AddIssueComponent implements OnInit {
       assignedTo: this.assignedTo,
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
-    }
+    };
     console.log('Issue data on console', data);
     this.apiService.postData('issues/', data).
   subscribe({
@@ -97,9 +105,9 @@ export class AddIssueComponent implements OnInit {
           map((val: any) => {
             const path = val.path;
             // We Can Use This Method
-            const key = val.message.match(/'([^']+)'/)[1];
+            const key = val.message.match(/"([^']+)"/)[1];
             console.log(key);
-            val.message = val.message.replace(/'.*'/, 'This Field');
+            val.message = val.message.replace(/".*"/, 'This Field');
             this.errors[key] = val.message;
           })
         )
@@ -116,8 +124,7 @@ export class AddIssueComponent implements OnInit {
       this.response = res;
       this.uploadFiles(); // upload selected files to bucket
       this.toaster.success('Issue Added successfully');
-
-
+      this.router.navigateByUrl('/fleet/issues/list');
     }
   });
 }
@@ -156,4 +163,78 @@ throwErrors() {
       this.awsUS.uploadFile(this.carrierID, fileName, fileData);
     });
   }
+
+    /*
+   * Fetch Issue details before updating
+  */
+ fetchIssueByID() {
+ // this.spinner.show(); // loader init
+  this.apiService
+    .getData('issues/' + this.issueID)
+    .subscribe((result: any) => {
+      result = result.Items[0];
+      console.log('result', result);
+      this.issueID = this.issueID;
+      this.issueName = result.issueName;
+      this.vehicleID = result.vehicleID;
+      this.reportedDate = result.reportedDate;
+      this.description = result.description;
+      this.odometer = result.odometer;
+      this.reportedBy = result.reportedBy;
+      this.assignedTo = result.assignedTo;
+    });
+}
+
+/*
+   * Update Issue
+  */
+ updateIssue(){
+  this.errors = {};
+  this.hasError = false;
+  this.hasSuccess = false;
+  const data = {
+    issueName: this.issueName,
+    vehicleID: this.vehicleID,
+    reportedDate: this.reportedDate,
+    description: this.description,
+    odometer: this.odometer,
+    reportedBy: this.reportedBy,
+    assignedTo: this.assignedTo,
+    uploadedPhotos: this.uploadedPhotos,
+    uploadedDocs: this.uploadedDocs
+  };
+  console.log('Issue data on console', data);
+  this.apiService.putData('issues/', data).
+subscribe({
+  complete : () => {},
+  error: (err) => {
+    from(err.error)
+      .pipe(
+        map((val: any) => {
+          const path = val.path;
+          // We Can Use This Method
+          const key = val.message.match(/"([^']+)"/)[1];
+          console.log(key);
+          val.message = val.message.replace(/".*"/, 'This Field');
+          this.errors[key] = val.message;
+        })
+      )
+      .subscribe({
+        complete: () => {
+          this.throwErrors();
+          this.Success = '';
+        },
+        error: () => { },
+        next: () => { },
+      });
+  },
+  next: (res) => {
+    this.response = res;
+    this.uploadFiles(); // upload selected files to bucket
+    this.toaster.success('Issue Updated Successfully');
+
+
+  }
+});
+}
 }

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import {ApiService} from '../../../../../services';
 import { map} from 'rxjs/operators';
 import {from} from 'rxjs';
-
 declare var $: any;
 
 

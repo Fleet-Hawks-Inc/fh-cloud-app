@@ -4,7 +4,6 @@ import { ApiService } from '../../../../../services';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MapBoxService } from '../../../../../services';
-
 declare var $: any;
 
 @Component({

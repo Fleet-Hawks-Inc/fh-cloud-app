@@ -58,10 +58,10 @@
            <div class="col pr-0">
               <section class="card">
                     <div class="card-body">                  
-                        <table class="table table-responsive-lg table-bordered table-striped mb-0" id="datatable-default">
+                        <table class="table table-responsive-lg table-bordered table-striped mb-0">
                             <thead>
                                <tr>
-                                  <th><input type="checkbox"></th>
+                                  <th><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th>
                                   <th>Vehicle/Assets</th>
                                   <th>Issue</th>                                  
                                   <th>Reported On</th>
@@ -73,8 +73,8 @@
                             </thead>
                             <tbody>
                                <tr *ngFor = "let issue of issues">
-                                  <td><input type="checkbox" [checked]="isChecked" [(ngModel)]="item.checked"  (ngModelChange)="checkboxCount(issues)" value="{{ issue.issueID }}"></td>
-                                  <td><span class="font-weight-bold line-height-lg">{{ issue.vehicleID }}</span></td>
+                                  <td><input type="checkbox" [checked]="isChecked" [(ngModel)]="issue.checked"  (ngModelChange)="checkboxCount(issues)" value="{{ issue.issueID }}"></td>
+                                  <td routerLink="/fleet/issues/issue-detail/{{issue.issueID}}"><span class="font-weight-bold line-height-lg">{{ issue.vehicleID }}</span></td>
                                   <td>{{ issue.issueName }}</td>
                                   <td>{{ issue.reportedDate }}</td>
                                   <td>{{ issue.reportedBy }}</td>
