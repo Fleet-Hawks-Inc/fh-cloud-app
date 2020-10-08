@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { environment } from './../../environments/environment';
+import { environment } from '../../environments/environment';
 import { Observable} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var H: any;
-declare var L: any;
 
 @Injectable({
   providedIn: 'root'

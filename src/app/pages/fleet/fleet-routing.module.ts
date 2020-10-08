@@ -47,7 +47,8 @@ import {
   EditGeofenceComponent,
   GeofenceListComponent,
   GraphComponent,
-  DashboardDriverComponent
+  DashboardDriverComponent,
+  EditAssetComponent
 } from './index';
 
 const COMPONENTS = [
@@ -96,7 +97,8 @@ const COMPONENTS = [
   EditGeofenceComponent,
   GeofenceListComponent,
   GraphComponent,
-  DashboardDriverComponent
+  DashboardDriverComponent,
+  EditAssetComponent
 ];
 
 const routes: Routes = [

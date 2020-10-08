@@ -9,6 +9,7 @@ import {EditDriverComponent} from './edit-driver/edit-driver.component';
 import {DriverListComponent} from './driver-list/driver-list.component';
 import {DriverDetailComponent} from './driver-detail/driver-detail.component';
 import {SharedModule} from '../../../shared/shared.module';
+import { DataTablesModule } from 'angular-datatables';
 
 const routes: Routes = [
   { path: 'Add-Driver', component: AddDriverComponent },
@@ -29,7 +30,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DataTablesModule
   ],
 
 })

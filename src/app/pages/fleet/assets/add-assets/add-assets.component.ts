@@ -1,10 +1,10 @@
 import {  Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services/api.service';
+import { ApiService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services/aws-upload.service';
+import { AwsUploadService } from '../../../../services';
 import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;

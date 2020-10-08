@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services';
 import { Router } from '@angular/router';
-declare var $: any;
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-driver-list',
@@ -10,38 +10,69 @@ declare var $: any;
 })
 export class DriverListComponent implements OnInit {
   title = 'Driver List';
-  users = [];
+  driverCheckCount;
+  selectedDriverID;
+  drivers = [];
   dtOptions: any = {};
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) {}
 
   ngOnInit() {
-    this.fetchUsers();
+    this.fetchDrivers();
   }
 
-  fetchUsers() {
-    this.apiService.getData('users/userType/driver').subscribe({
+  fetchDrivers() {
+    this.apiService.getData('drivers').subscribe({
       complete: () => {
         this.initDataTable();
       },
       error: () => {},
       next: (result: any) => {
         console.log(result);
-        this.users = result.Items;
+        this.drivers = result.Items;
+        console.log('drivers',this.drivers)
       },
     });
   }
-
-  deleteUser(userName) {
-     /******** Clear DataTable ************/
-     if ($.fn.DataTable.isDataTable('#datatable-default')) {
-      $('#datatable-default').DataTable().clear().destroy();
+  checkboxCount = () => {
+    this.driverCheckCount = 0;
+    this.drivers.forEach(item => {
+      console.log('item', item);
+      if (item.checked) {
+        this.selectedDriverID = item.driverID;
+        this.driverCheckCount = this.driverCheckCount + 1;
       }
-      /******************************/
-
-    this.apiService.deleteData('users/' + userName).subscribe((result: any) => {
-      this.fetchUsers();
     });
+  }
+
+  editDriver = () => {
+    if (this.driverCheckCount === 1) {
+      this.router.navigateByUrl('/fleet/drivers/edit-driver/' + this.selectedDriverID);
+    } else {
+      this.toastr.error('Please select only one asset!');
+    }
+  }
+  deleteDriver() {
+    //  /******** Clear DataTable ************/
+    //  if ($.fn.DataTable.isDataTable('#datatable-default')) {
+    //   $('#datatable-default').DataTable().clear().destroy();
+    //   }
+    //   /******************************/
+    const selectedDrivers = this.drivers.filter(product => product.checked);
+    console.log(selectedDrivers);
+    if (selectedDrivers && selectedDrivers.length > 0) {
+      for (const i of selectedDrivers) {
+        this.apiService.deleteData('drivers/' + this.selectedDriverID).subscribe((result: any) => {
+          this.fetchDrivers();
+          if (selectedDrivers.length == 1) {
+            this.toastr.success('Driver Deleted Successfully!');
+          } else {
+            this.toastr.success('Drivers Deleted Successfully!');
+          }
+
+        });
+      }
+    }
   }
 
   initDataTable() {

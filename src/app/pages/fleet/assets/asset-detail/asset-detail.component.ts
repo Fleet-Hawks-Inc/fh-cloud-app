@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HereMapService } from '../../../../services/here-map.service';
-import {ApiService} from '../../../../services/api.service';
-import {AwsUploadService} from '../../../../services/aws-upload.service';
+import { HereMapService } from '../../../../services';
+import {ApiService} from '../../../../services';
+import {AwsUploadService} from '../../../../services';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
 

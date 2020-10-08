@@ -47,8 +47,8 @@
                   <div class="btn-group btn-group1 flex-wrap">
                      <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1" href="">Edit</a>
-                        <a class="dropdown-item text-1" href="">Delete</a>
+                        <a (click)="editDriver()" class="dropdown-item text-1" href="javascript:;">Edit</a>
+                        <a (click)="deleteDriver()" class="dropdown-item text-1" href="javascript:;">Delete</a>
                         <a class="dropdown-item text-1" href="">Import</a>
                         <a class="dropdown-item text-1" href="">Export</a>
                      </div>
@@ -221,274 +221,42 @@
             <div class="col">
                <section class="card">
                   <div class="card-body">
-                     <table class="table table-responsive-lg table-bordered table-striped mb-0 simple-table dataTable no-footer">
+                     <table datatable [dtOptions]="dtOptions" class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="drivers.length > 0" >
                         <thead>
                            <tr>
                               <th><input type="checkbox"></th>
                               
                               <th>Name</th>
-                              <th>Current Cycle</th>
-                              <th>Current Vehicle</th>
-                              <th>Assets Attached</th>
-                              <th>Phone / Email</th>
-                              <th>DL Number / DL State</th>
-                              <th>Document Type / Location</th>
-                              <th>Document Issue Date / Expiry date</th>
+                              <th>Duty Status</th>
+                              <th>Location</th>
+                              <th>Cur. Cycle</th>
+                              <th>Cur. Vehicle</th>
+                              <th>Assets</th>
+                              <th>Contact</th>
+                              <th>DL</th>
+                              <th>Document</th>
+                              <th>Status</th>
                            </tr>
                         </thead>
                         <tbody>
-                           <tr>
-                              <td><input type="checkbox"></td>
+                           <tr *ngFor="let driver of drivers;">
+                              <td><input [checked]="isChecked" [(ngModel)]="driver.checked" (ngModelChange)="checkboxCount()" value="{{driver.assetIdentification}}" type="checkbox"></td>
                               
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">David Thomas123</span> <span class="onduty pull-right">ON</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> 100 street Ontario,Toronto
+                              <td routerLink="/fleet/drivers/driver-detail/{{driver.driverID}}">
+                                 <span class="font-weight-bold line-height-lg">{{driver.firstName}} {{driver.lastName}}</span>
                               </td>
-                              <td>60 hours/7 days</td>
-                              <td>Scania</td>
-                              <td>4566</td>
-                              <td>8956231478 <br> davindthomas@live.com</td>
-                              <td>D6111-40700-61915 <br> NY</td>
-                              <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
+                              <td>Live Status</td>
+                              <td>{{driver.address.address1}} {{driver.address.city}} {{driver.address.state }} {{driver.address.country}}</td>
+                              <td>{{driver.hosDetails.hosCycle}}</td>
+                              <td>{{driver.assignedVehicle}}</td>
+                              <td>Live Status</td>
+                              <td><span class="font-weight-bold">Phone:</span>{{driver.workPhone}} <br> <span class="font-weight-bold">E-mail:</span>{{driver.workEmail}}</td>
+                              <td><span class="font-weight-bold">DL#:</span>{{driver.licenceDetails.CDL_Number}} <br><span class="font-weight-bold">DL State:</span> {{driver.licenceDetails.issuedState}}</td>
+                              <td><span class="font-weight-bold">Type#:</span>{{driver.documentDetails.documentType}} <br><span class="font-weight-bold">Issue State:</span>{{driver.licenceDetails.issuingState}}</td>
                               
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Ricky</span> <span class="offduty pull-right">OFF</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> 100 street Brampton
-                              </td>
-                              <td>70 hours/8 days</td>
-                              <td>Tesla</td>
-                              <td>3452</td>
-                              <td>9865320000 <br> rickyclark@hotmail.com</td>
-                              <td>B7878-66889-42128<br>ON</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
+                              <td>{{driver.driverStatus}}</td>
                            </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Anchal</span> <span class="dutyonly pull-right">D</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, California
-                              </td>
-                              <td>70 hours/8 days</td>
-                              <td>GMC</td>
-                              <td>11111</td>
-                              <td>789560000 <br>manjot@fleethawks.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Deep</span> <span class="dutyonly pull-right">D</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Brampton
-                              </td>
-                              <td>Cycle 1</td>
-                              <td>Ford</td>
-                              <td>2222</td>
-                              <td>789638521 <br>jack202020@hotmail.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Maninder</span> <span class="onduty pull-right">ON</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Winnipeg
-                              </td>
-                              <td>Cycle 2</td>
-                              <td>MAC</td>
-                              <td>7894563</td>
-                              <td>8596741230 <br>rishab.rajput@gmail.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Jatinder</span> <span class="ymduty pull-right">YM</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Surrey,British Columbia
-                              </td>
-                              <td>60 hours/7 days</td>
-                              <td>TATA</td>
-                              <td>45620</td>
-                              <td>4758691230 <br>samson.356595@hotmail.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">David Thomas123</span> <span class="onduty pull-right">ON</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> 100 street Ontario,Toronto
-                              </td>
-                              <td>60 hours/7 days</td>
-                              <td>Scania</td>
-                              <td>989865</td>
-                              <td>3625147890 <br>brick.fleet@fleethawks.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Ricky</span> <span class="offduty pull-right">OFF</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> 100 street Brampton
-                              </td>
-                              <td>70 hours/8 days</td>
-                              <td>Tesla</td>
-                              <td>505063</td>
-                              <td>3216549870 <br>garry.fleet@hotmail.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Anchal</span> <span class="dutyonly pull-right">D</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, California
-                              </td>
-                              <td>70 hours/8 days</td>
-                              <td>GMC</td>
-                              <td>809070</td>
-                              <td>3988521476 <br>manjit2015@fleethawks.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Deep</span> <span class="dutyonly pull-right">D</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Brampton
-                              </td>
-                              <td>Cycle 1</td>
-                              <td>Ford</td>
-                              <td>1594826</td>
-                              <td>4015935789 <br>clerk.fh@hotmail.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Maninder</span> <span class="onduty pull-right">ON</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Winnipeg
-                              </td>
-                              <td>Cycle 2</td>
-                              <td>MAC</td>
-                              <td>485926</td>
-                              <td>4560001233 <br>thomas420@gmail.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Jatinder</span> <span class="ymduty pull-right">YM</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Surrey,British Columbia
-                              </td>
-                              <td>60 hours/7 days</td>
-                              <td>TATA</td>
-                              <td>336655</td>
-                              <td>3030258963 <br>jatinder112233@hotmail.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">David Thomas123</span> <span class="onduty pull-right">ON</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> 100 street Ontario,Toronto
-                              </td>
-                              <td>60 hours/7 days</td>
-                              <td>Scania</td>
-                              <td>7890025</td>
-                              <td>3778091445 <br>davindthomas@live.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Ricky</span> <span class="offduty pull-right">OFF</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> 100 street Brampton
-                              </td>
-                              <td>70 hours/8 days</td>
-                              <td>Tesla</td>
-                              <td>8856932</td>
-                              <td>3145678920 <br>rick.rickfh@fleethawks.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Anchal</span> <span class="dutyonly pull-right">D</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, California
-                              </td>
-                              <td>70 hours/8 days</td>
-                              <td>GMC</td>
-                              <td>748596</td>
-                              <td>3164978215 <br>anchal.fh2020@live.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Deep</span> <span class="dutyonly pull-right">D</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Brampton
-                              </td>
-                              <td>Cycle 1</td>
-                              <td>Ford</td>
-                              <td>258369</td>
-                              <td>4152639870 <br>deep.jandu@hotmail.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Maninder</span> <span class="onduty pull-right">ON</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Winnipeg
-                              </td>
-                              <td>Cycle 2</td>
-                              <td>MAC</td>
-                              <td>45678900</td>
-                              <td>303029584 <br>manider.fh8080@fleethawks.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
-                           <tr>
-                              <td><input type="checkbox"></td>
-                              
-                              <td routerLink="/fleet/drivers/driver-detail"><span class="font-weight-bold line-height-lg">Jatinder</span> <span class="ymduty pull-right">YM</span>
-                                 <br><i class="fas fa-map-marker-alt"></i> Queen street, Surrey,British Columbia
-                              </td>
-                              <td>60 hours/7 days</td>
-                              <td>TATA</td>
-                              <td>1230456</td>
-                              <td>3164985752 <br>jat.inder.fh@fleethawks.com</td>
-                              <td>O4645-45345-26633 <br>NY</td>
-                               <td>Birth Certificate <br>Alberta, Canada</td>
-                              <td>19/08/2020 <br> 19/09/2020</td>
-                           </tr>
+                           
                         </tbody>
                      </table>
                   </div>

@@ -6,3 +6,4 @@ export * from './here-map.service';
 export * from './map-box.service';
 export * from './shared-service.service';
 export * from './http-loading.service';
+export * from './leaflet-map.service';

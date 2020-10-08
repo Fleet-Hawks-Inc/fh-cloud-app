@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services/api.service';
+import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
-import {  Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+
+declare var $: any;
 
 @Component({
   selector: 'app-asset-list',
@@ -29,7 +31,7 @@ export class AssetListComponent implements OnInit {
   flatbedOptions: any = {};
   curtainOptions: any = {};
 
-
+  message: any;
   dtTrigger = new Subject();
 
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) {}
@@ -44,6 +46,9 @@ export class AssetListComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
 
+  someClickHandler(info: any): void {
+    this.message = info.id + ' - ' + info.firstName;
+  }
   dataTableOptions = () => {
     this.allOptions = { // All list options
       pageLength: 10,
@@ -66,13 +71,9 @@ export class AssetListComponent implements OnInit {
       columnDefs: [
         {
           orderable: false,
-          className: 'select-checkbox',
+          className: 'select-checkbox noVis',
           targets:   0
       },
-        // {
-        //     targets: 0,
-        //     className: 'noVis'
-        // },
         {
             targets: 1,
             className: 'noVis'
@@ -94,6 +95,17 @@ export class AssetListComponent implements OnInit {
             className: 'noVis'
         }
     ],
+      rowCallback: (row: Node, allData: any[] | Object, index: number) => {
+        const self = this;
+        $('td', row).unbind('click');
+        $('td', row).bind('click', () => {
+          console.log(row);
+          console.log($(row).data().length);
+          self.someClickHandler(allData);
+          console.log(allData, this.message)
+        });
+        return row;
+      }
 
     };
 
@@ -234,23 +246,23 @@ export class AssetListComponent implements OnInit {
   }
 
   // Count Checkboxes
-  checkboxCount = (arr) => {
-    this.assetCheckCount = 0;
-    arr.forEach(item => {
-      console.log('item', item);
-      console.log('array', arr);
-      if (item.checked === true) {
-        this.selectedAssetID = item.assetID;
-        this.assetCheckCount = this.assetCheckCount + 1;
-        console.log('check', arr.length, this.assetCheckCount)
-        if (arr.length === this.assetCheckCount) {
-          this.headCheckbox = true;
-        }
-      } else {
-        this.headCheckbox = false;
-      }
-    });
-  }
+  // checkboxCount = (arr) => {
+  //   this.assetCheckCount = 0;
+  //   arr.forEach(item => {
+  //     console.log('item', item);
+  //     console.log('array', arr);
+  //     if (item.checked === true) {
+  //       this.selectedAssetID = item.assetID;
+  //       this.assetCheckCount = this.assetCheckCount + 1;
+  //       console.log('check', arr.length, this.assetCheckCount)
+  //       if (arr.length === this.assetCheckCount) {
+  //         this.headCheckbox = true;
+  //       }
+  //     } else {
+  //       this.headCheckbox = false;
+  //     }
+  //   });
+  // }
 
   // checked-unchecked all checkboxes
   checkuncheckall = (ev) => {

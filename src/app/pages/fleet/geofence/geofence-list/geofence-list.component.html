@@ -1,3 +1,4 @@
+
 <section class="body">
 
   <!-- start: header -->
@@ -45,12 +46,12 @@
               <div class="col-md-1  col-lg-1">
                  <button type="submit" class="btn btn-sm btn-success">Search</button>
               </div>
-              <div class="col-md-4  col-lg-4 text-right pr-5">
+              <div class="col-md-7  col-lg-7 text-right pr-5">
                  <div class="btn-group flex-wrap">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                       <a class="dropdown-item text-1" href="#">Edit</a>
-                       <a class="modal-with-form dropdown-item text-1" href="#">Delete</a>
+                       <a (click)="editGeofence()" class="dropdown-item text-1" href="javascript:;">Edit</a>
+                       <a (click)="deleteGeofence()" class=" dropdown-item text-1" href="javascript:;">Delete</a>
                        <a class="dropdown-item text-1" href="">Import</a>
                        <a class="dropdown-item text-1" href="">Export</a>
                     </div>
@@ -66,140 +67,41 @@
         <div class="col pr-0 pl-0">
            <section class="card">
               <div class="card-body pl-0 pt-0 text-dark">
-                 <!-- <div class="row">
-                    <div class="col-lg-12">
-                       <p class="hoshvalue">
-                          <span class="geofields text-4 font-weight-bold text-dark pl-2">Geo-Fence Name</span>
-                          <span class="geofields text-4 font-weight-bold text-dark text-center">Location</span>
-                          <span class="geofields text-4 font-weight-bold text-dark text-center">Type</span>
-                          <span class="geofieldsdesc text-4 font-weight-bold text-dark text-center">Description</span>
-                       </p>
-                    </div>
-                    <div class="col-lg-12">
-                       <div class="toggle toggle-primary mt-0" data-plugin-toggle="">
-                          <section class="toggle mt-0">
-                             <label><i class="fas fa-plus"></i><i class="fas fa-minus"></i>
-                             <span class="geofields text-dark">Geo-Fence Name 1 </span>
-                             <span class="geofields text-dark text-center">100 street, King town,Ontario,Canada</span>
-                             <span class="geofields text-dark text-center">Yard / Terminal</span>
-                             <span class="geofieldsdesc text-dark text-center">This is description of geo-fence1 which is located in Canada.</span>
-                             </label>
-                             <div class="toggle-content" style="display: none;">
-                                <div class="row">
-                                   <div class="col-lg-12">
-                                      <div id="map" class="mapclassmain" style="height: 600px;"></div>
-                                   </div>
-                                </div>
-                             </div>
-                          </section>
-                          <section class="toggle mt-0">
-                             <label><i class="fas fa-plus"></i><i class="fas fa-minus"></i>
-                             <span class="geofields text-dark">Geo-Fence Name 1 </span>
-                             <span class="geofields text-dark text-center">100 street, King town,Ontario,Canada</span>
-                             <span class="geofields text-dark text-center">Yard / Terminal</span>
-                             <span class="geofieldsdesc text-dark text-center">This is description of geo-fence1 which is located in Canada.</span>
-                             </label>
-                             <div class="toggle-content" style="display: none;">
-                                <div class="row">
-                                   <div class="col-lg-12">
-                                      <div id="map" class="mapclassmain" style="height: 600px;"></div>
-                                   </div>
-                                </div>
-                             </div>
-                          </section>
-                          <section class="toggle mt-0">
-                             <label><i class="fas fa-plus"></i><i class="fas fa-minus"></i>
-                             <span class="geofields text-dark">Geo-Fence Name 1 </span>
-                             <span class="geofields text-dark text-center">100 street, King town,Ontario,Canada</span>
-                             <span class="geofields text-dark text-center">Yard / Terminal</span>
-                             <span class="geofieldsdesc text-dark text-center">This is description of geo-fence1 which is located in Canada.</span>
-                             </label>
-                             <div class="toggle-content" style="display: none;">
-                                <div class="row">
-                                   <div class="col-lg-12">
-                                      <div id="map" class="mapclassmain" style="height: 600px;"></div>
-                                   </div>
-                                </div>
-                             </div>
-                          </section>
-                       </div>
-                    </div>
-                 </div> -->
                  <div class="row">
-                 <div class="col-lg-12">
-                  <p class="hoshvalue">
-                     <span class="geoName text-4 font-weight-bold text-dark pl-2">Geo-Fence Name</span>
-                     <span class="geoName text-4 font-weight-bold text-dark text-center">Location</span>
-                     <span class="geoName text-4 font-weight-bold text-dark text-center">Type</span>
-                     <span class="geofieldsdesc text-4 font-weight-bold text-dark text-center">Description</span>
-                  </p>
-               </div>
+                  <div class="col-lg-12">
+                     <p class="hoshvalue">
+                        <span class="geoName text-4 font-weight-bold text-dark pl-2">Geo-Fence Name</span>
+                        <span class="geoName text-4 font-weight-bold text-dark text-center">Location</span>
+                        <span class="geoName text-4 font-weight-bold text-dark text-center">Type</span>
+                        <span class="geofieldsdesc text-4 font-weight-bold text-dark text-center">Description</span>
+                     </p>
+                  </div>
               </div>
-               <ngb-accordion [closeOthers]="true" activeIds="static-1" >
+               <ngb-accordion class="geofence-listing" 
+                  [closeOthers]="true" 
+                  activeIds="static-1" 
+                  *ngFor="let geofence of geofences; let i = index"
+                  (panelChange)="beforeChange($event, geofence.geofence.cords)"
+                  >
                  
-                  <ngb-panel id="static-1">
+                  <ngb-panel id="panel{{i}}">
                      <ng-template ngbPanelTitle style="width: 100%!important;">
                         <div class=" d-flex align-items-center justify-content-between p-2">
-                           <span><input type="checkbox"></span>
-                           <span class="geoName text-dark">Geo-Fence Name 1 </span>
-                           <span class="geofields text-dark text-center">100 street, King town,Ontario,Canada</span>
-                           <span class="geoName text-dark text-center">Yard / Terminal</span>
-                           <span class="geofieldsdesc text-dark text-center">This is description of geo-fence1 which is located in Canada.</span>
+                           <span><input [(ngModel)]="geofence.checked" (ngModelChange)="checkboxCount()" value="{{geofence.geofenceName}}" type="checkbox"></span>
+                           <span class="geoName text-dark">{{geofence.geofenceName}} </span>
+                           <span class="geofields text-dark text-center">{{geofence.location}}</span>
+                           <span class="geoName text-dark text-center">{{geofence.geofenceType}}</span>
+                           <span class="geofieldsdesc text-dark text-center">{{geofence.description}}</span>
                           <!-- <button ngbPanelToggle class="btn btn-link p-0">Toggle first</button> -->
                         </div>
                       </ng-template>
                     <ng-template ngbPanelContent>
-                     Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
-                      aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                      sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,
-                      craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
-                      occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                      labore sustainable VHS.
+                     <div id="map" style="height: 400px;"></div>
                     </ng-template>
                   </ngb-panel>
-                  <ngb-panel id="static-2">
-                    <ng-template ngbPanelTitle style="width: 100%!important;">
-                     <div  class="d-flex align-items-center justify-content-between p-2">
-                        <span><input type="checkbox"></span>
-                           <span class="geoName text-dark">Geo-Fence Name 2 </span>
-                           <span class="geofields text-dark text-center">100 street, King town,Ontario,Canada</span>
-                           <span class="geoName text-dark text-center">Yard / Terminal</span>
-                           <span class="geofieldsdesc text-dark text-center">This is description of geo-fence1 which is located in Canada.</span>
-                       <!-- <button ngbPanelToggle class="btn btn-link p-0">Toggle first</button> -->
-                     </div>
-                    </ng-template>
-                    <ng-template ngbPanelContent>
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
-                      aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                      sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,
-                      craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
-                      occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                      labore sustainable VHS.
-                    </ng-template>
-                  </ngb-panel>
-                  <ngb-panel id="static-3">
-                     <ng-template ngbPanelTitle style="width: 100%!important;">
-                      <div  class="d-flex align-items-center justify-content-between p-2">
-                         <span><input type="checkbox"></span>
-                            <span class="geoName text-dark">Geo-Fence Name 3 </span>
-                            <span class="geofields text-dark text-center">100 street, King town,Ontario,Canada</span>
-                            <span class="geoName text-dark text-center">Yard / Terminal</span>
-                            <span class="geofieldsdesc text-dark text-center">This is description of geo-fence1 which is located in Canada.</span>
-                        <!-- <button ngbPanelToggle class="btn btn-link p-0">Toggle first</button> -->
-                      </div>
-                     </ng-template>
-                     <ng-template ngbPanelContent>
-                       Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
-                       aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                       sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,
-                       craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
-                       occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                       labore sustainable VHS.
-                     </ng-template>
-                   </ngb-panel>
-
-               
+                  <div *ngIf="!geofences.length > 0" class="alert alert-info m-0 text-center" role="alert"> No records found </div>
                 </ngb-accordion>
+                
             </div>
 
            </section>
