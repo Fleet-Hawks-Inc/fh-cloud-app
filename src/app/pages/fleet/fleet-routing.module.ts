@@ -51,6 +51,7 @@ import {
   EditAssetComponent
 } from './index';
 
+
 const COMPONENTS = [
   AddUserComponent,
   EditUserComponent,
