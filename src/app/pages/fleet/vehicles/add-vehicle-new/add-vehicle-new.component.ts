@@ -248,7 +248,7 @@ export class AddVehicleNewComponent implements OnInit {
 
   getModels() {
     this.apiService
-      .getData(`vehicleModels/manufacturer/${this.make}`)
+      .getData(`vehicleModels/manufacturer/${this.manufacturerID}`)
       .subscribe((result: any) => {
         this.models = result.Items;
       });

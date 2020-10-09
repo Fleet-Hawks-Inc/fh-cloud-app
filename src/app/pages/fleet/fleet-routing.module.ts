@@ -48,7 +48,9 @@ import {
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
-  EditAssetComponent
+  EditAssetComponent,
+  AddInventoryComponent,
+  InventoryListComponent
 } from './index';
 
 
@@ -99,7 +101,9 @@ const COMPONENTS = [
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
-  EditAssetComponent
+  EditAssetComponent,
+  AddInventoryComponent,
+  InventoryListComponent
 ];
 
 const routes: Routes = [
@@ -322,6 +326,14 @@ const routes: Routes = [
   {
     path: 'live-driver',
     component: DashboardDriverComponent,
+  },
+  {
+    path: 'inventory',
+    children: [
+      { path: 'Add-Inventory', component: AddInventoryComponent },
+      { path: 'Edit-Inventory/:inventoryID', component: AddInventoryComponent },
+      { path: 'Inventory-List', component: InventoryListComponent },
+    ],
   },
 ];
 
