@@ -67,7 +67,7 @@ const routes: Routes = [
         component: AddServiceProgramComponent,
       },
       {
-        path: 'Service-Program-List',
+        path: 'service-program-list',
         component: ServiceProgramListComponent,
       },
       {
@@ -75,7 +75,7 @@ const routes: Routes = [
         component: EditServiceProgramComponent,
       },
       {
-        path: 'service-program-detail',
+        path: 'service-program-detail/:programID',
         component: ServiceProgramDetailComponent,
       },
     ],

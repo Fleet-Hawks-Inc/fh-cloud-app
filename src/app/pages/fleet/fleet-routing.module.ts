@@ -310,9 +310,9 @@ const routes: Routes = [
   {
     path: 'geofence',
     children: [
-      { path: 'Add-Geofence', component: AddGeofenceComponent },
-      { path: 'Edit-Geofence/:fenceID', component: EditGeofenceComponent },
-      { path: 'Geofence-List', component: GeofenceListComponent },
+      { path: 'add-geofence', component: AddGeofenceComponent },
+      { path: 'edit-geofence/:fenceID', component: AddGeofenceComponent },
+      { path: 'geofence-list', component: GeofenceListComponent },
     ],
   },
   {

@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import {ApiService} from '../../../../../services';
 import { map} from 'rxjs/operators';
 import {from} from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+
 declare var $: any;
 
 
@@ -15,17 +17,31 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   title = 'Add Service Program';
 
   meterText = 'Miles';
-  serviceData = {}
+  serviceData = {
+    serviceScheduleDetails: [{
+      serviceTasks: '',
+      repeatByTime: '',
+      repeatByTimeUnit: '',
+      repeatByOdometer: ''
+    }]
+  };
+  addresses = [{
+    id: 0,
+    serviceTasks: '',
+      repeatByTime: '',
+      repeatByTimeUnit: '',
+      repeatByOdometer: ''
+  }];
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
 
-  programName ='';
-  repeatByTime = '';
-  repeatByOdometer = '';
-  description = '';
+  // programName ='';
+  // repeatByTime = '';
+  // repeatByOdometer = '';
+  // description = '';
 
   /******************/
 
@@ -35,7 +51,11 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   Error : string = '';
   Success : string = '';
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private toastr: ToastrService,
+  ) {}
 
 
   ngOnInit() {}
@@ -47,20 +67,14 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     });
   }
 
+  
 
   addServiceProgram() {
-    console.log('service program',this.serviceData);
+    console.log('service program', this.serviceData);
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
-    const data = {
-      programName: this.programName,
-      repeatByTime : this.repeatByTime,
-      repeatByOdometer: this.repeatByOdometer,
-      description: this.description,
-    };
-    console.log('data',data)
     this.apiService.postData('servicePrograms', this.serviceData).subscribe({
         complete : () => {},
         error: (err) => {
@@ -94,13 +108,15 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
             });
         },
         next: (res) => {
-          this.programName = '';
-          this.repeatByTime = '';
-          this.repeatByOdometer = '';
-          this.description = '';
+          // this.programName = '';
+          // this.repeatByTime = '';
+          // this.repeatByOdometer = '';
+          // this.description = '';
           this.response = res;
           this.hasSuccess = true;
-          this.Success = 'Service Program Added successfully';
+          //this.Success = 'Service Program Added successfully';
+          this.toastr.success('Service added successfully');
+          this.router.navigateByUrl('/fleet/maintenance/service-program/service-program-list');
 
         }
       });
@@ -110,6 +126,22 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     this.form.showErrors(this.errors);
   }
 
+
+  addTasks() {
+    let fields = this.addresses.push({
+      id: this.addresses.length + 1,
+      serviceTasks: '',
+      repeatByTime: '',
+      repeatByTimeUnit: '',
+      repeatByOdometer: ''
+    });
+    console.log('fields', fields)
+  }
+
+  removeTasks(i){
+    console.log(this.addresses.length)
+    this.addresses.splice(i, 1);
+  }
 
 
 }

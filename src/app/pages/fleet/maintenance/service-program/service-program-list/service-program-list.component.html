@@ -39,20 +39,7 @@
                     </div>
                 </form>
             </header>
-            <!-- <section class="card">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="wtopnav">
-                        <ul>
-                        <li><a routerLink="/fleet/maintenance/issues/list">Issues</a></li>
-                        <li><a routerLink="/fleet/maintenance/services/list" class="active">Services </a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 pt-1 text-right">
-                </div>
-            </div>
-            </section> -->
+            
             <div class="row">
                 <div class="col">
                     <section class="card">
@@ -63,7 +50,7 @@
                                         <a class="nav-link " routerLink="/fleet/maintenance/service-log/list" id="service-log-tab" data-toggle="tab" href="#service-log" role="tab" aria-controls="open" aria-selected="true">Service Log</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link active" routerLink="/fleet/maintenance/service-program/Service-Program-List" id="service-prog-tab" data-toggle="tab" role="tab" aria-controls="overdue" aria-selected="false">Service Programs</a>
+                                        <a class="nav-link active" routerLink="/fleet/maintenance/service-program/service-program-list" id="service-prog-tab" data-toggle="tab" role="tab" aria-controls="overdue" aria-selected="false">Service Programs</a>
                                     </li>
                                 </ul>
                             </div>
@@ -84,35 +71,11 @@
                                                        </tr>
                                                     </thead>
                                                     <tbody>
-                                                       <tr>
+                                                       <tr *ngFor="let program of programs;">
                                                          <td><input type="checkbox"></td>
-                                                          <td onclick="window.location='service-program-details.php';">Service Program 1</td>
-                                                          <td>This is service task description.This is service task description.</td>                                   
+                                                          <td routerLink="/fleet/maintenance/service-program/service-program-detail/{{program.programID}}">{{program.programName}}</td>
+                                                          <td>{{program.description}}</td>                                   
                                                        </tr>
-                                                       <tr>
-                                                         <td><input type="checkbox"></td>
-                                                          <td  onclick="window.location='service-program-details.php';">Service Program 2</td>
-                                                          <td>This is service task description.This is service task description.</td>                                   
-                                                       </tr>
-                                                       <tr>
-                                                         <td><input type="checkbox"></td>
-                                                          <td  onclick="window.location='service-program-details.php';">Service Program 3</td>
-                                                          <td>This is service task description.This is service task description.</td>                                   
-                                                       </tr>
-                                                       <tr>
-                                                         <td><input type="checkbox"></td>
-                                                          <td  onclick="window.location='service-program-details.php';">Service Program 4</td>
-                                                          <td>This is service task description.This is service task description.</td>                                   
-                                                       </tr>
-                                                       <tr>
-                                                         <td><input type="checkbox"></td>
-                                                          <td  onclick="window.location='service-program-details.php';">Service Program 5</td>
-                                                          <td>This is service task description.This is service task description.</td>                                   
-                                                       </tr>
-                                                       
-                                                      
-                                                    
-                                                      
                                                     </tbody>
                                                  </table>
                                               </div>
@@ -129,119 +92,3 @@
     </div>
 </section>
   
-
-<section class="body">
-  <!-- start: header -->
-  <app-header></app-header>
-  <!-- end: header -->
-
-  <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <app-sidebar></app-sidebar>
-    <!-- end: sidebar -->
-
-    <section role="main" class="content-body">
-      <header class="page-header">
-        <h2>{{ title }}</h2>
-
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a routerLink="">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li>
-              <span>Maintenance</span>
-            </li>
-            <li>
-              <span>{{ title }}</span>
-            </li>
-          </ol>
-        </div>
-      </header>
-
-      <section class="card mb-4">
-        <div class="card-body">
-          <h2 class="card-title mt-3 pull-left">{{ title }}</h2>
-          <div class="pull-right">
-            <div class="btn-group flex-wrap">
-              <button
-                type="button"
-                class="mb-1 mt-1 mr-1 btn btn-default dropdown-toggle"
-                data-toggle="dropdown"
-              >
-                <i class="fas fa-ellipsis-v"></i> Action
-                <span class="caret"></span>
-              </button>
-              <div class="dropdown-menu" role="menu">
-                <a class="dropdown-item text-1" href="#">Action</a>
-                <a class="dropdown-item text-1" href="#">Another action</a>
-                <a class="dropdown-item text-1" href="#">Something else here</a>
-                <a class="dropdown-item text-1" href="#">Separated link</a>
-              </div>
-            </div>
-
-            <a
-              routerLink="/fleet/maintenance/service-program/Add-Service-Program"
-              class="mb-1 mt-1 mr-1 btn btn-success"
-              ><i class="fas fa-plus"></i> Add Service Program</a
-            >
-          </div>
-        </div>
-      </section>
-
-      <div class="row">
-        <div class="col">
-          <section class="card">
-            <header class="card-header">
-              <h2 class="card-title">Service Program List</h2>
-            </header>
-            <div class="card-body">
-              <table
-                class="table table-bordered table-striped mb-0"
-                id="datatable-default"
-              >
-                <thead>
-                  <tr>
-                    <th>Program Name</th>
-                    <th>Repeat By Time</th>
-                    <th>Repeat By Odometer</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                    <!--<th class="d-lg-none">Operator</th>-->
-                    <!--<th class="d-lg-none">CSS grade</th>-->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let program of programs">
-                    <td>{{ program.programName }}</td>
-                    <td>{{ program.repeatByTime }}</td>
-                    <td>{{ program.repeatByOdometer }}</td>
-                    <td>
-                      <a
-                        routerLink="/fleet/maintenance/service-program/Edit-Service-Program/{{
-                          program.programID
-                        }}"
-                        >Edit</a
-                      >
-                    </td>
-                    <td>
-                      <a
-                        [routerLink]=""
-                        (click)="deleteProgram(program.programID)"
-                        >Delete</a
-                      >
-                    </td>
-                    <!--<td class="center d-lg-none">4</td>-->
-                    <!--<td class="center d-lg-none">X</td>-->
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </div>
-      </div>
-    </section>
-  </div>
-</section>
