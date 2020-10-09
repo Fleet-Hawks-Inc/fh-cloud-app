@@ -42,6 +42,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgSelect2Module } from 'ng-select2';
 import {DataTablesModule} from 'angular-datatables';
 import {PreLoadStrategy} from './preload/PreLoadStrategy';
+import { ModalDirective } from './directives/modal.directive';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
@@ -62,6 +63,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     HealthcheckComponent,
     MapDashboardComponent,
     NavOpenedDirective,
+    ModalDirective,
   ],
   imports: [
     AmplifyAngularModule,
