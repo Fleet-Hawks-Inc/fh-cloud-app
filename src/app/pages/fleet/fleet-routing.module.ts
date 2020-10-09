@@ -50,7 +50,8 @@ import {
   DashboardDriverComponent,
   EditAssetComponent,
   AddInventoryComponent,
-  InventoryListComponent
+  InventoryListComponent,
+  EditInventoryComponent
 } from './index';
 
 
@@ -103,7 +104,8 @@ const COMPONENTS = [
   DashboardDriverComponent,
   EditAssetComponent,
   AddInventoryComponent,
-  InventoryListComponent
+  InventoryListComponent,
+  EditInventoryComponent
 ];
 
 const routes: Routes = [
@@ -331,7 +333,7 @@ const routes: Routes = [
     path: 'inventory',
     children: [
       { path: 'Add-Inventory', component: AddInventoryComponent },
-      { path: 'Edit-Inventory/:inventoryID', component: AddInventoryComponent },
+      { path: 'Edit-Inventory/:itemID', component: EditInventoryComponent },
       { path: 'Inventory-List', component: InventoryListComponent },
     ],
   },

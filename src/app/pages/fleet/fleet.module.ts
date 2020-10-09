@@ -70,7 +70,8 @@ import {
   GraphComponent,
   DashboardDriverComponent,
   AddInventoryComponent,
-  InventoryListComponent
+  InventoryListComponent,
+  EditInventoryComponent
 } from './index';
 
 const COMPONENTS = [
@@ -121,7 +122,8 @@ const COMPONENTS = [
   GraphComponent,
   DashboardDriverComponent,
   AddInventoryComponent,
-  InventoryListComponent
+  InventoryListComponent,
+  EditInventoryComponent
 ];
 
 
@@ -198,7 +200,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   declarations: [
     ...COMPONENTS,
     AddInventoryComponent,
-    InventoryListComponent
+    InventoryListComponent,
+    EditInventoryComponent
   ],
   providers: [NgSelectConfig, ɵs],
 })

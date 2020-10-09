@@ -176,12 +176,13 @@ export class EditVehicleNewComponent implements OnInit {
   states = [];
   groups = [];
 
-  response = '';
-  hasError = false;
-  hasSuccess = false;
-  Error = '';
-  Success  = '';
-
+  errors = {};
+  form;
+  response: any = '';
+  hasError: boolean = false;
+  hasSuccess: boolean = false;
+  Error: string = '';
+  Success: string = '';
 
   slides = [
     {img: 'assets/img/truck.jpg'},
@@ -584,6 +585,10 @@ export class EditVehicleNewComponent implements OnInit {
 
       }
     });
+  }
+
+  throwErrors() {
+    this.form.showErrors(this.errors);
   }
 
   onChangeHardBreakingParameters(value: any){
