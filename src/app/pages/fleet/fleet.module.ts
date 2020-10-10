@@ -35,6 +35,7 @@ import {
   AddFuelEntryComponent,
   FuelEntryListComponent,
   EditFuelEntryComponent,
+  FuelEntryDetailsComponent,
   AddTicketComponent,
   TicketsComponent,
   EditTicketComponent,
@@ -70,6 +71,7 @@ import {
   GraphComponent,
   DashboardDriverComponent
 } from './index';
+// import { FuelEntryDetailsComponent } from './expenses/fuel-entry/fuel-entry-details/fuel-entry-details.component';
 
 const COMPONENTS = [
   AddUserComponent,
@@ -84,6 +86,7 @@ const COMPONENTS = [
   AddFuelEntryComponent,
   FuelEntryListComponent,
   EditFuelEntryComponent,
+  FuelEntryDetailsComponent,
   AddTicketComponent,
   TicketsComponent,
   EditTicketComponent,
@@ -192,8 +195,10 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   ],
   exports: [...COMPONENTS],
   declarations: [
-    ...COMPONENTS
+    ...COMPONENTS,
+    FuelEntryDetailsComponent
   ],
-  providers: [NgSelectConfig, ɵs],
+  providers: [NgSelectConfig, ɵs,{provide: NgbDateAdapter, useClass: CustomAdapter},
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}],
 })
 export class FleetModule {}

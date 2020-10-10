@@ -20,7 +20,7 @@ import {
   ServiceProgramDetailComponent,
   IssueListComponent,
   AddIssueComponent,
-  IssueDetailComponent
+  IssueDetailComponent,
 } from './index';
 
 const COMPONENTS = [
@@ -39,7 +39,7 @@ const COMPONENTS = [
   ServiceProgramDetailComponent,
   IssueListComponent,
   AddIssueComponent,
-  IssueDetailComponent
+  IssueDetailComponent,
 ];
 
 
@@ -119,7 +119,8 @@ const routes: Routes = [
     children: [
       { path: 'list', component: IssueListComponent },
       { path: 'add-issue', component: AddIssueComponent },
-      { path: 'issue-detail', component: IssueDetailComponent },
+      { path: 'issue-detail/:issueID', component: IssueDetailComponent },
+      { path: 'edit-issue/:issueID', component: AddIssueComponent },
     ],
   },
 

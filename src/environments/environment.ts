@@ -23,9 +23,9 @@ export const environment = {
     APP_CLIENT_ID: '76l88g289vcgrd8jf54pbedgqq'
   },
   awsBucket: {
-    bucketName: 'fh-assets',
-    accessKeyId: 'GHFFH56588GJH',
-    secretAccessKey: 'kgjkfsui45345jhklfvjdlkgjhh',
+    bucketName: 'fh-cloud-service-uploads',
+    accessKeyId: 'change-me',
+    secretAccessKey: 'change-me',
     region: 'us-east-1'
   },
   HOSTNAME: 'myhome.anterbox.com',

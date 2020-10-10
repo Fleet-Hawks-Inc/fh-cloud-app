@@ -17,7 +17,7 @@
 
                     <div class="col-md-8  col-lg-8 text-right pr-4">
 
-                        <a routerLink="/fleet/issues/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Issues
+                        <a routerLink="/fleet/maintenance/issues/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Issues
                             List</a>
 
 
@@ -159,10 +159,9 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-11 text-right pr-0">
-                                    <button type="button" class="btn btn-default"
-                                    onclick="goBack()">Cancel</button> 
-                                  <a href="javascript:;" *ngIf="!issueID" (click)="addIssue()" class="btn btn-success">Save</a> 
-                                  <a href="javascript:;" *ngIf="issueID" (click)="updateIssue()" class="btn btn-success">Update</a>
+                                  <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button> 
+                                  <button type="button" *ngIf="!issueID" (click)="addIssue()" class="btn btn-success">Save</button> 
+                                  <button type="button" *ngIf="issueID" (click)="updateIssue()" class="btn btn-success">Update</button>
                                 </div>
                             </div>
                         </form>
