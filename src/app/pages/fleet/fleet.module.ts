@@ -68,7 +68,10 @@ import {
   EditGeofenceComponent,
   GeofenceListComponent,
   GraphComponent,
-  DashboardDriverComponent
+  DashboardDriverComponent,
+  AddInventoryComponent,
+  InventoryListComponent,
+  EditInventoryComponent
 } from './index';
 
 const COMPONENTS = [
@@ -117,7 +120,10 @@ const COMPONENTS = [
   EditGeofenceComponent,
   GeofenceListComponent,
   GraphComponent,
-  DashboardDriverComponent
+  DashboardDriverComponent,
+  AddInventoryComponent,
+  InventoryListComponent,
+  EditInventoryComponent
 ];
 
 
@@ -192,7 +198,10 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   ],
   exports: [...COMPONENTS],
   declarations: [
-    ...COMPONENTS
+    ...COMPONENTS,
+    AddInventoryComponent,
+    InventoryListComponent,
+    EditInventoryComponent
   ],
   providers: [NgSelectConfig, ɵs],
 })
