@@ -16,7 +16,7 @@ export class IssueListComponent implements OnInit {
   title = 'Issues List';
   issues: [];
   vehicles: [];
-  checked = false;
+  checked: any = false;
   isChecked = false;
   headCheckbox = false;
   selectedIssueID: any;
@@ -58,6 +58,7 @@ export class IssueListComponent implements OnInit {
   }
   deleteIssue = () => {
     console.log('issues', this.issues);
+
     const selectedIssues = this.issues.filter((product: any) => product.checked).map((p: any) => p.issueID);
     if (selectedIssues && selectedIssues.length > 0) {
       for (const i of selectedIssues) {
@@ -67,6 +68,17 @@ export class IssueListComponent implements OnInit {
         });
       }
     }
+
+    // const selectedIssues = this.issues.filter(product => product.checked).map(p => p.issueID);
+    // if (selectedIssues && selectedIssues.length > 0) {
+    //   for (const i of selectedIssues) {
+    //     this.apiService.deleteData('issues/' + i).subscribe((result: any) => {
+    //       this.fetchIssues();
+    //       this.toastr.success('Issue Deleted Successfully!');
+    //     });
+    //   }
+    // }
+
   }
 
   uncheckCheckbox = (arr) => {

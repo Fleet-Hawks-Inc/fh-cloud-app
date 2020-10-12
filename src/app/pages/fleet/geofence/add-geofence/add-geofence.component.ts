@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../../services';
-import { LeafletMapService } from '../../../../services'
+import { LeafletMapService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { from } from 'rxjs';
 import { Subject, throwError } from 'rxjs';
@@ -58,9 +58,6 @@ export class AddGeofenceComponent implements OnInit {
   Error: string = '';
   Success: string = '';
 
-
-
-
   constructor(
     private route: ActivatedRoute,
     private HereMap: HereMapService,
@@ -83,8 +80,8 @@ export class AddGeofenceComponent implements OnInit {
     // here maps initialization
     this.map = this.LeafletMap.initGeoFenceMap();
     this.mapControls(this.map);
-    this.searchLocation()
-    //this.mapBoxService.initMapbox(-104.618896, 50.44521);
+    this.searchLocation();
+    
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
@@ -108,44 +105,39 @@ export class AddGeofenceComponent implements OnInit {
       // alert('pm:create event fired. See console for details');
       const layer = e.layer;
 
-      //console.log('lyr', layer)
-      var polyedit = layer.toGeoJSON();
-      this.geofenceData.geofence.type = polyedit.geometry.type;
-      this.geofenceData.geofence.cords = polyedit.geometry.coordinates;
-
-      //console.log('created', this.geofenceData);
+      const polyEdit = layer.toGeoJSON();
+      this.geofenceData.geofence.type = polyEdit.geometry.type;
+      this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
 
       layer.on('pm:edit', ({ layer }) => {
 
-        var polyedit = layer.toGeoJSON();
-        this.geofenceData.geofence.type = polyedit.geometry.type;
-        this.geofenceData.geofence.cords = polyedit.geometry.coordinates;
+        const polyEdit = layer.toGeoJSON();
+        this.geofenceData.geofence.type = polyEdit.geometry.type;
+        this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
 
-        //console.log('edited',this.geofenceData);
-
-      })
+      });
 
       layer.on('pm:update', ({ layer }) => {
 
-        var polyedit = layer.toGeoJSON();
-        this.geofenceData.geofence.type = polyedit.geometry.type;
-        this.geofenceData.geofence.cords = polyedit.geometry.coordinates;
+        const polyEdit = layer.toGeoJSON();
+        this.geofenceData.geofence.type = polyEdit.geometry.type;
+        this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
 
         console.log('update', this.geofenceData);
 
-      })
+      });
 
 
     });
 
     map.on('pm:cut', function (e) {
-      //console.log('cut event on map');
-      //console.log(e);
+      // console.log('cut event on map');
+      // console.log(e);
     });
     map.on('pm:remove', function (e) {
      // console.log('pm:remove event fired.');
       // alert('pm:remove event fired. See console for details');
-      //console.log(e);
+      // console.log(e);
     });
   }
 
@@ -189,9 +181,6 @@ export class AddGeofenceComponent implements OnInit {
         this.toastr.success('Geofence Added successfully');
         this.spinner.hide();
         this.router.navigateByUrl('/fleet/geofence/geofence-list');
-        // this.initMap();
-        //this.mapBoxService.plottedMap = '';
-
       },
     });
   }
@@ -212,7 +201,7 @@ export class AddGeofenceComponent implements OnInit {
       .getData('geofences/' + this.getGeofenceID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('result', result)
+        // console.log('result', result);
         this.geofenceData['geofenceID'] = this.getGeofenceID;
         this.geofenceData['geofenceName'] = result.geofenceName;
         this.geofenceData['location'] = result.location;
@@ -220,30 +209,43 @@ export class AddGeofenceComponent implements OnInit {
         this.geofenceData['geofenceType'] = result.geofenceType;
         this.geofenceData.geofence.type = result.geofence.type;
         this.geofenceData.geofence.cords = result.geofence.cords;
-        let new_cords = [];
+        const newCoords = [];
         for (let i = 0; i < result.geofence.cords[0].length - 1; i++) {
 
           for (let j = 0; j < result.geofence.cords[0][i].length - 1; j++) {
-            new_cords.push([result.geofence.cords[0][i][j + 1], result.geofence.cords[0][i][j]]);
+            newCoords.push([result.geofence.cords[0][i][j + 1], result.geofence.cords[0][i][j]]);
 
           }
         }
-        console.log(new_cords);
+        console.log(newCoords);
         // console.log(new_cords);
-        const poly = L.polygon(new_cords).addTo(this.map);
-        this.map.fitBounds(poly.getBounds());
+        const polylayer = L.polygon(newCoords).addTo(this.map);
+        if(newCoords.length > 0) {
+          this.map.fitBounds(polylayer.getBounds());
+        }
         this.mapControls(this.map);
-        // var drawnItems = new L.FeatureGroup();
-        // console.log('drawn', drawnItems);
-        // this.map.addLayer(drawnItems);
-        // var polyLayers = [];
+        polylayer.on('pm:update', (e) => {
+          const layer = e.layer;
+          // console.log("update", layer);
+          const polyEdit = layer.toGeoJSON();
+          this.geofenceData.geofence.type = polyEdit.geometry.type;
+          this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
+        });
 
-        // var polygon1 = L.polygon(new_cords);
-        // polyLayers.push(polygon1)
-        // console.log('drawn1', polyLayers);
-        // for(let layer1 of polyLayers) {
-        //   drawnItems.addLayer(layer1);
-        // }
+        polylayer.on('pm:drag', (e) => {
+          const layer = e.layer;
+          // console.log("pm:drag", layer);
+          const polyEdit = layer.toGeoJSON();
+          this.geofenceData.geofence.type = polyEdit.geometry.type;
+          this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
+        });
+        polylayer.on('pm:remove', (e) => {
+          const layer = e.layer;
+          console.log("pm:remove", layer);
+          const polyEdit = layer.toGeoJSON();
+          this.geofenceData.geofence.type = '';
+          this.geofenceData.geofence.cords[0] = [];
+        });
         this.spinner.hide();
       });
   }
@@ -320,16 +322,4 @@ export class AddGeofenceComponent implements OnInit {
   }
 
 
-
-  // Use this function while updating edit page of Geofence
-  // loadExistingGeoFence = (geofence: []) => {
-  //   console.log(this.polygonData)
-  //   //code goes here
-  //   var polygonPoints = [
-  //     [37.786617, -122.404654],
-  //     [37.797843, -122.407057],
-  //     [37.798962, -122.398260],
-  //     [37.794299, -122.395234]];
-  //   var poly = L.polygon(polygonPoints).addTo(map);
-  // }
 }

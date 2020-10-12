@@ -67,15 +67,15 @@ const routes: Routes = [
         component: AddServiceProgramComponent,
       },
       {
-        path: 'Service-Program-List',
+        path: 'service-program-list',
         component: ServiceProgramListComponent,
       },
       {
-        path: 'Edit-Service-Program/:programID',
-        component: EditServiceProgramComponent,
+        path: 'edit-service-program/:programID',
+        component: AddServiceProgramComponent,
       },
       {
-        path: 'service-program-detail',
+        path: 'service-program-detail/:programID',
         component: ServiceProgramDetailComponent,
       },
     ],
