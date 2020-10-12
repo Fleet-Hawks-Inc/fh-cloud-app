@@ -32,8 +32,8 @@ export class ServiceProgramListComponent implements OnInit {
       },
       error: () => {},
       next: (result: any) => {
-        console.log(result);
         this.programs = result.Items;
+        console.log('this.programs', this.programs);
         this.spinner.hide(); // loader hide
       },
     });

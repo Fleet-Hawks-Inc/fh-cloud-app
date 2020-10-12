@@ -64,17 +64,29 @@
                                                  <table class="table table-responsive-lg table-bordered table-striped mb-0">
                                                     <thead>
                                                        <tr>
-                                                          <th width="5%"><input type="checkbox"></th>
-                                                          <th width="35%">Service Program Name</th>
-                                                          <th  width="60%">Description</th> 
-                                                          
+                                                          <th width="25%">Service Program Name</th>
+                                                          <th width="60%">Description</th> 
+                                                          <th width="15%">Actions</th>
                                                        </tr>
                                                     </thead>
                                                     <tbody>
-                                                       <tr *ngFor="let program of programs;">
-                                                         <td><input type="checkbox"></td>
+                                                       <tr *ngFor="let program of programs; let i = index;">
                                                           <td routerLink="/fleet/maintenance/service-program/service-program-detail/{{program.programID}}">{{program.programName}}</td>
                                                           <td>{{program.description}}</td>                                   
+                                                          <td>
+                                                            <div class="dropdown dropright">
+                                                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                   <i class="fas fa-ellipsis-v"></i>
+                                                                </button>
+                                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                   <a class="dropdown-item" routerLink="/fleet/maintenance/service-program/edit-service-program/{{program.programID}}">Edit</a>
+                                                                   <a class="dropdown-item" href="#">Activate</a>
+                                                                </div>
+                                                              </div>
+                                                          </td>
+                                                       </tr>
+                                                       <tr *ngIf="!programs?.length > 0">
+                                                            <td colspan="3">No Data Found</td>
                                                        </tr>
                                                     </tbody>
                                                  </table>
