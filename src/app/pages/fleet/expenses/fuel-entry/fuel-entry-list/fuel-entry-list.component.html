@@ -114,7 +114,7 @@
 				>
 				  <thead>
 					<tr>
-						<th><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th>
+						<!-- <th><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
 						<th>Date</th>
 						<th>Time</th>
 						<th>Card Number</th>
@@ -154,20 +154,15 @@
 						<th>Chain</th>
 						<th>Ambest</th>
 						<th>MPU</th>
-						<!-- <th>Action</th>                 -->
+						<th>Action</th>                
 					 
 					 
 					</tr>
 				  </thead>
 				  <tbody>
 					<tr *ngFor="let fuelEntry of fuelList">
-						<td><input type="checkbox" [checked]="isChecked" [(ngModel)]="fuelEntry.checked"  (ngModelChange)="checkboxCount(fuelList)" value="{{ fuelEntry.entryID }}"></td>
-					  <!-- <td routerLink="/fleet/expenses/fuel/Fuel-Entry-Details/{{ fuelEntry.entryID }}">{{ fuelList.unitType }}</td> 					  
-					  <td routerLink="/fleet/expenses/fuel/Fuel-Entry-Details/{{ fuelEntry.entryID }}">{{ fuelList.fuelType }}</td>
-					  <td routerLink="/fleet/expenses/fuel/Fuel-Entry-Details/{{ fuelEntry.entryID }}">{{ fuelList.vehicleFuelQty }}</td>
-					  <td routerLink="/fleet/expenses/fuel/Fuel-Entry-Details/{{ fuelEntry.entryID }}">{{ fuelList.DEFFuelQty }}</td>
-					  <td routerLink="/fleet/expenses/fuel/Fuel-Entry-Details/{{ fuelEntry.entryID }}">{{ fuelList.costPerGallon }}</td>
-					  <td routerLink="/fleet/expenses/fuel/Fuel-Entry-Details/{{ fuelEntry.entryID }}">{{ fuelList.amountPaid }}</td> -->
+						<!-- <td><input type="checkbox" [checked]="isChecked" [(ngModel)]="fuelEntry.checked"  (ngModelChange)="checkboxCount(fuelList)" value="{{ fuelEntry.entryID }}"></td> -->
+					 
 					    <td routerLink="/fleet/expenses/fuel/Fuel-Entry-Details/{{ fuelEntry.entryID }}">{{ fuelEntry.date }}</td>
 						<td>Time</td>
 						<td >Card Number</td>
@@ -207,13 +202,13 @@
 						<td>Chain</td>
 						<td>Ambest</td>
 						<td>MPU</td>
-					  <!-- <td><div class="btn-group flex-wrap">
+					  <td><div class="btn-group flex-wrap">
 						<button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
 						<div class="dropdown-menu" role="menu">
 						   <a routerLink="/fleet/expenses/fuel/Edit-Fuel-Entry/{{fuelEntry.entryID }}" class="dropdown-item text-1" >Edit</a>
 						   <button type="button" class="dropdown-item text-1" (click)="deleteFuelEntry(fuelEntry.entryID)">Delete</button>
 						</div>
-					 </div></td>	 -->
+					 </div></td>	
 					</tr>
 				  </tbody>
 				</table>

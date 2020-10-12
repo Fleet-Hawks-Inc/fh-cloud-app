@@ -31,7 +31,7 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle</label>
-                                    <select [(ngModel)]="reminderData.vehicleID" name="vehicleID" data-plugin-selectTwo class="form-control populate">
+                                    <select [(ngModel)]="reminderData.reminderIdentification" name="reminderData.reminderIdentification" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
                                           <option *ngFor="let item of vehicles" value="{{item.vehicleID}}">{{item.vehicleIdentification}}</option>
                                        </optgroup>
@@ -41,19 +41,18 @@
                              
                               <div class="row pt-2">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users</label>
-                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribedUsers" name="subscribedUsers" style="width: 100%;">                                       
-                                       <ng-option value="User 1">User 1</ng-option>
-                                          <ng-option value="User 2">User 2</ng-option>
-                                          <ng-option value="User 3">User 3</ng-option>
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups</label>
+                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="reminderData.subscribers" style="width: 100%;" (change)="subscriberChange($event)">                                       
+                                       <ng-option *ngFor="let user of users" [value]="user">{{user.userName}}</ng-option>
+                                       <ng-option *ngFor="let group of groups" [value]="group">{{group.groupName}}</ng-option>
                                    </ng-select>
                                     <div class="checkbox-custom mt-2">
-                                    <input [(ngModel)]="reminderData.sendNotification" name="sendNotification" type="checkbox" [checked]="reminderData.sendNotification">
+                                    <input [(ngModel)]="reminderData.sendEmail" name="reminderData.sendEmail" type="checkbox" [checked]="reminderData.sendEmail">
                                     <label class="control-label font-weight-bold">Send Email Notification</label>
                                  </div>
                                  </div>
                                  <div class="col-lg-1 mar-top-37">
-                                      <a data-toggle="modal" data-target="#addsubsuser" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                      <a data-toggle="modal" data-target="#addsubsuser" class="modal-with-form btn btn-sm btn-success text-light"><i class="fas fa-plus"></i></a>
                                     </div>
                                
                               </div>
@@ -62,7 +61,7 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Tasks</label>
-                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.serviceTasks" name="serviceTasks">
+                                    <ng-select  [(ngModel)]="reminderData.reminderTasks.tasks" name="reminderData.reminderTasks.tasks">
                                       
                                           <ng-option value="A/C Compressor Replacement">A/C Compressor Replacement</ng-option>
                                         <ng-option value="A/C Condenser Replacemen">A/C Condenser Replacement</ng-option>
@@ -196,10 +195,10 @@
                                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Time</label>
                                           <div class="row">
                                              <div class="col-lg-6">
-                                                <input [(ngModel)]="reminderData.repeatByTime" name="repeatByTime" type="number" class="form-control" >
+                                                <input [(ngModel)]="reminderData.reminderTasks.repeatByTime" name="repeatByTime" type="number" class="form-control" >
                                              </div>
                                              <div class="col-lg-6 col-lg-pl-0">
-                                                <select [(ngModel)]="reminderData.repeatByDurationType" name="repeatByDurationType" data-plugin-selectTwo class="form-control populate">
+                                                <select [(ngModel)]="reminderData.reminderTasks.repeatByDurationType" name="reminderData.reminderTasks.repeatByDurationType" data-plugin-selectTwo class="form-control populate">
                                                    <optgroup label="">
                                                       <option value="Day(s)">Day(s)</option>
                                                       <option value="Week(s)">Week(s)</option>
@@ -211,7 +210,7 @@
                                        </div>
                                        <div class="col-lg-6">
                                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer <span id="primary_meter">miles</span></label>
-                                          <input [(ngModel)]="reminderData.repeatByOdometer" name="repeatByOdometer" type="text" class="form-control">
+                                          <input [(ngModel)]="reminderData.reminderTasks.repeatByOdometer" name="reminderData.reminderTasks.repeatByOdometer" type="text" class="form-control">
                                        </div>
                                     </div>
                                  </div>
@@ -220,10 +219,8 @@
                            </div>
                         </div>
                         <div class="form-group row pt-2">
-                           <div class="col-lg-11 text-right">
-                              
-                            
-                              <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button> 
+                           <div class="col-lg-11 text-right"> 
+                              <a href="javascript:;" (click)="cancel()" class="btn btn-default mr-1" >Cancel</a> 
                               <a href="javascript:;" *ngIf="!reminderID" (click)="addReminder()" class="btn btn-success" >Save</a> 
                               <a href="javascript:;" *ngIf="reminderID" (click)="updateReminder()" class="btn btn-success">Update</a>
                            </div>

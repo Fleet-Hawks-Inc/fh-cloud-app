@@ -45,11 +45,10 @@
                              
                               <div class="row pt-2">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users</label>
-                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribedUsers" name="reminderData.subscribedUsers" style="width: 100%;">
-                                       <ng-option value="User 1">User 1</ng-option>
-                                          <ng-option value="User 2">User 2</ng-option>
-                                          <ng-option value="User 3">User 3</ng-option>
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups</label>
+                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="reminderData.subscribers" style="width: 100%;" (change)="subscriberChange($event)">                                       
+                                       <ng-option *ngFor="let user of users" [value]="user">{{user.userName}}</ng-option>
+                                       <ng-option *ngFor="let group of groups" [value]="group">{{group.groupName}}</ng-option>
                                    </ng-select>
                                     <div class="checkbox-custom mt-2">
                                     <input [(ngModel)]="reminderData.sendNotification" name="reminderData.sendNotification" type="checkbox" [checked]="reminderData.sendNotification">

@@ -75,6 +75,8 @@ export class AddFuelEntryComponent implements OnInit {
  cities = [];
  vendors = [];
  vehicles = [];
+ assets = [];
+ reeferArray =[];
  trips = [];
   /******************/
 
@@ -140,7 +142,11 @@ export class AddFuelEntryComponent implements OnInit {
       this.vehicles = result.Items;
     });
   }
-
+  fetchAssets() {
+    this.apiService.getData('assets').subscribe((result: any) => {
+      this.assets = result.Items;
+    });
+  }
   fetchTrips() {
     this.apiService.getData('trips').subscribe((result: any) => {
       this.trips = result.Items;

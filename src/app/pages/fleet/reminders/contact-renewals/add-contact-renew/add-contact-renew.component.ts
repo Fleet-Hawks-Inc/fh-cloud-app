@@ -16,6 +16,8 @@ export class AddContactRenewComponent implements OnInit {
   pageTitle;
   reminderData = {};
   vehicles = [];
+  users = [];
+  groups = [];
   form;
   errors = {};
   Error: string = '';
@@ -34,16 +36,29 @@ export class AddContactRenewComponent implements OnInit {
     if (this.reminderID) {
       this.pageTitle = ' Edit Contact Renewal Reminder';
       this.fetchReminderByID();
+      this.fetchUsers();
+      this.fetchGroups();
     } else {
       this.pageTitle = ' Add Contact Renewal Reminder';
-      
+      this.fetchUsers();
+      this.fetchGroups();
     }
 
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
   }
-
+  fetchUsers() {
+    this.apiService.getData('users').subscribe((result: any) => {
+      this.users = result.Items;
+    });
+  }
+  fetchGroups() {
+    this.apiService.getData('groups').subscribe((result: any) => {
+      this.groups = result.Items;
+      console.log('Groups Data', this.groups);
+    });
+  }
   addRenewal() {
     this.errors = {};
     this.hasError = false;

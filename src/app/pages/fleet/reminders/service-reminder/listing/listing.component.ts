@@ -12,7 +12,7 @@ export class ListingComponent implements OnInit {
   public remindersData = [];
   vehicles = [];
   vehicleIdentification = '';
-
+  subscribedUsersArray = [];
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -25,6 +25,10 @@ export class ListingComponent implements OnInit {
       this.vehicleIdentification =  this.vehicles[0].vehicleIdentification;
      // console.log('vehicleId' , this.vehicleIdentification);
     });
+  }
+
+  getLengthOfArray(arr: any[]) {
+    return arr.length;
   }
   fetchReminders = () => {
     this.apiService.getData('serviceReminder').subscribe({
@@ -43,8 +47,8 @@ export class ListingComponent implements OnInit {
     this.apiService
       .deleteData('serviceReminder/' + entryID)
       .subscribe((result: any) => {
-        this.fetchReminders ();
         this.toastr.success('Service Reminder Deleted Successfully!');
+        this.fetchReminders ();
       });
   }
 }

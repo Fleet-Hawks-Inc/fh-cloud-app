@@ -5,6 +5,7 @@ import { map} from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Location } from '@angular/common';
 
 declare var $: any;
 
@@ -18,6 +19,8 @@ export class VehicleRenewAddComponent implements OnInit {
   pageTitle;
   reminderData = {};
   vehicles = [];
+  users = [];
+  groups = [];
   form;
   errors = {};
   Error: string = '';
@@ -26,18 +29,23 @@ export class VehicleRenewAddComponent implements OnInit {
   hasError = false;
   hasSuccess = false;
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
-              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) { }
+              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private location: Location) { }
               get today() {
                 return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
               }
   ngOnInit() {
     this.reminderID = this.route.snapshot.params['reminderID'];
     if (this.reminderID) {
-      this.pageTitle = 'Edit Service Reminder';
+      this.pageTitle = 'Edit Vehicle Renewal Reminder';
       this.fetchReminderByID();
-    } else {
-      this.pageTitle = 'Add Service Reminder';
       this.fetchVehicles();
+      this.fetchUsers();
+      this.fetchGroups();
+    } else {
+      this.pageTitle = 'Add Vehicle Renewal Reminder';
+      this.fetchVehicles();
+      this.fetchUsers();
+      this.fetchGroups();
     }
 
     $(document).ready(() => {
@@ -47,6 +55,17 @@ export class VehicleRenewAddComponent implements OnInit {
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
+    });
+  }
+  fetchUsers() {
+    this.apiService.getData('users').subscribe((result: any) => {
+      this.users = result.Items;
+    });
+  }
+  fetchGroups() {
+    this.apiService.getData('groups').subscribe((result: any) => {
+      this.groups = result.Items;
+      console.log('Groups Data', this.groups);
     });
   }
   addRenewal() {
@@ -103,6 +122,9 @@ export class VehicleRenewAddComponent implements OnInit {
           this.reminderData['vehicleID']  = result.vehicleID;
     });
 
+}
+cancel() {
+  this.location.back(); // <-- go back to previous location on cancel
 }
 throwErrors() {
   this.form.showErrors(this.errors);

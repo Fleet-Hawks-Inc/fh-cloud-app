@@ -94,17 +94,17 @@ export class FuelEntryListComponent implements OnInit {
       this.toastr.error('Please select only one entry!');
     }
   }
-  deleteFuelEntry = () => {
-    const selectedEntries = this.fuelList.filter((product: any) => product.checked).map((p: any) => p.entryID);
-    if (selectedEntries && selectedEntries.length > 0) {
-      for (const i of selectedEntries) {
-        this.apiService.deleteData('fuelEntries/' + i).subscribe((result: any) => {
-          this.fuelEntries();
-          this.toastr.success('Fuel Entry Deleted Successfully!');
-        });
-      }
-    }
-  }
+  // deleteFuelEntry = () => {
+  //   const selectedEntries = this.fuelList.filter((product: any) => product.checked).map((p: any) => p.entryID);
+  //   if (selectedEntries && selectedEntries.length > 0) {
+  //     for (const i of selectedEntries) {
+  //       this.apiService.deleteData('fuelEntries/' + i).subscribe((result: any) => {
+  //         this.fuelEntries();
+  //         this.toastr.success('Fuel Entry Deleted Successfully!');
+  //       });
+  //     }
+  //   }
+  // }
  // Count Checkboxes
  checkboxCount = (arr) => {
   this.fuelCheckCount = 0;
@@ -131,19 +131,19 @@ checkuncheckall = (ev) => {
     this.isChecked = false;
   }
 }
-  // deleteFuelEntry(entryID) {
-  //   /******** Clear DataTable ************/
-  //   if ($.fn.DataTable.isDataTable('#datatable-default')) {
-  //     $('#datatable-default').DataTable().clear().destroy();
-  //   }
-  //   /******************************/
-  //   this.apiService
-  //     .deleteData('fuelEntries/' + entryID)
-  //     .subscribe((result: any) => {
-  //       this.fuelEntries();
-  //       this.toastr.success('Fuel Entry Deleted Successfully!');
-  //     });
-  // }
+  deleteFuelEntry(entryID) {
+    /******** Clear DataTable ************/
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
+    }
+    /******************************/
+    this.apiService
+      .deleteData('fuelEntries/' + entryID)
+      .subscribe((result: any) => {
+        this.fuelEntries();
+        this.toastr.success('Fuel Entry Deleted Successfully!');
+      });
+  }
 
   initDataTable() {
     timer(200).subscribe(() => {

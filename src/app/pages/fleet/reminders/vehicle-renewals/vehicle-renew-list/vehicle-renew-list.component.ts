@@ -24,6 +24,9 @@ export class VehicleRenewListComponent implements OnInit {
      // console.log('vehicleId' , this.vehicleIdentification);
     });
   }
+  getLengthOfArray(arr: any[]) {
+    return arr.length;
+  }
   fetchRenewals = () => {
     this.apiService.getData('vehicleRenewal').subscribe({
       complete: () => {},
