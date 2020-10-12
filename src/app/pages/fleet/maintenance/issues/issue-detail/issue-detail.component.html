@@ -15,7 +15,7 @@
                      <span class=" font-weight-bold text-4 text-dark"> Issue #{{issueID}} </span> <span class="badge badge-dark p-1"> OPEN</span>
                   </div>
                   <div class="col-md-8  col-lg-8 text-right pr-4">
-                     <a [routerLink]="['/fleet', 'issues', 'list']" class="btn btn-sm btn-default mr-1"><i class="fas fa-list"></i> Issues List</a>  
+                     <a [routerLink]="['/fleet','maintenance', 'issues', 'list']" class="btn btn-sm btn-default mr-1"><i class="fas fa-list"></i> Issues List</a>  
                      <div class="btn-group flex-wrap mr-1">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Resolve<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -26,7 +26,7 @@
                      <div class="btn-group flex-wrap">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                           <a class="dropdown-item text-1" href="edit-issue.php">Edit </a>
+                           <a class="dropdown-item text-1" (click)="editIssue()" href="javascript:;">Edit</a>
                            <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
                         </div>
                      </div>
@@ -161,25 +161,6 @@
                                                 </div>
                                              </div>
                                           </div>
-                                          <!-- <div class="col-lg-6">
-                                             <div class="vehicle-photo-box">
-                                                <img src="img/truck2.jpg" height="180px" width="330px">
-                                                <hr class="m-3">
-                                                <div class="row">
-                                                   <div class="col-lg-8">Name of the Image</div>
-                                                   <div class="col-lg-4 text-right">
-                                                      <div class="btn-group flex-wrap mx-2">
-                                                         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                                                         <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                                            <a class="dropdown-item text-1" href="">Crop/Rotate Image</a>
-                                                            <a class="modal-with-form dropdown-item text-1" href="#editPhoto">Edit</a>
-                                                            <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
-                                                         </div>
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                             </div> -->
                                        </div>
                                     </div>
                                  </div>

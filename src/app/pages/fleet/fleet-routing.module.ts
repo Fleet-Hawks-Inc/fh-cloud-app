@@ -14,6 +14,7 @@ import {
   AddFuelEntryComponent,
   FuelEntryListComponent,
   EditFuelEntryComponent,
+  FuelEntryDetailsComponent,
   AddTicketComponent,
   TicketsComponent,
   EditTicketComponent,
@@ -68,6 +69,7 @@ const COMPONENTS = [
   AddFuelEntryComponent,
   FuelEntryListComponent,
   EditFuelEntryComponent,
+  FuelEntryDetailsComponent,
   AddTicketComponent,
   TicketsComponent,
   EditTicketComponent,
@@ -158,7 +160,12 @@ const routes: Routes = [
           },
           {
             path: 'Edit-Fuel-Entry/:entryID',
-            component: EditFuelEntryComponent,
+            component: AddFuelEntryComponent,
+          },
+          {
+            path: 'Fuel-Entry-Details/:entryID',
+            component: FuelEntryDetailsComponent,
+
           },
         ],
       },
@@ -215,7 +222,8 @@ const routes: Routes = [
         children: [
           { path: 'list', component: VehicleRenewListComponent },
           { path: 'add', component: VehicleRenewAddComponent },
-          { path: 'detail', component: VehicleRenewDetailComponent },
+          { path: 'edit/:reminderID', component: VehicleRenewAddComponent },
+          { path: 'detail/:reminderID', component: VehicleRenewDetailComponent },
         ],
       },
       {
@@ -223,7 +231,8 @@ const routes: Routes = [
         children: [
           { path: 'list', component: ListContactRenewComponent },
           { path: 'add', component: AddContactRenewComponent },
-          { path: 'detail', component: ContactRenewDetailComponent },
+          { path: 'edit/:reminderID', component: AddContactRenewComponent },
+          { path: 'detail/:reminderID', component: ContactRenewDetailComponent },
         ],
       },
     ],

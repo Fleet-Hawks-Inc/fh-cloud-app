@@ -12,7 +12,7 @@
             <header class="page-header">
                <div class="row pr-5" style="padding-top:10px;">
                   <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                     New Contact Renewal Reminder
+                    {{pageTitle}}
                   </div>
                   <div class="col-md-8  col-lg-8 text-right">
                      <a routerLink="/fleet/reminders/contact-renewals/list" class="btn btn-default btn-sm mx-2" style="color:black;"><i class="fas fa-list"></i> Contact Renewals</a>
@@ -31,7 +31,7 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Contact</label>
-                                    <select [(ngModel)]="reminderData.contact" name="reminderData.contact" data-plugin-selectTwo class="form-control populate">
+                                    <select [(ngModel)]="reminderData.contactID" name="reminderData.contactID" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
                                           <option value="Person 1">Person 1</option>
                                           <option value="Person 2">Person 2</option>
@@ -45,14 +45,13 @@
                              
                               <div class="row pt-2">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users</label>
-                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribedUser" name="reminderData.subscribedUser" style="width: 100%;">
-                                       <ng-option value="User 1">User 1</ng-option>
-                                          <ng-option value="User 2">User 2</ng-option>
-                                          <ng-option value="User 3">User 3</ng-option>
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups</label>
+                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="reminderData.subscribers" style="width: 100%;" (change)="subscriberChange($event)">                                       
+                                       <ng-option *ngFor="let user of users" [value]="user">{{user.userName}}</ng-option>
+                                       <ng-option *ngFor="let group of groups" [value]="group">{{group.groupName}}</ng-option>
                                    </ng-select>
                                     <div class="checkbox-custom mt-2">
-                                    <input [(ngModel)]="reminderData.sendNotification" name="reminderData.sendNotification" type="checkbox">
+                                    <input [(ngModel)]="reminderData.sendNotification" name="reminderData.sendNotification" type="checkbox" [checked]="reminderData.sendNotification">
                                     <label class="control-label font-weight-bold">Send Email Notification</label>
                                  </div>
                                  </div>
@@ -74,16 +73,20 @@
                               <div class="row pt-2">
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Date</label>
-                                    <input [(ngModel)]="reminderData.date" name="reminderData.date" type="date" class="form-control">
+                                    <input
+                                    class="form-control"
+                                    placeholder="dd-mm-yyyy"
+                                    name="reminderData.date" [(ngModel)]="reminderData.date"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
+                                  />
                                  </div>
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)</label>
                                     <div class="row">
                                           <div class="col-lg-4">
-                                             <input type="text" class="form-control" [(ngModel)]="reminderData.time" name="reminderData.time">
+                                             <input type="number" class="form-control" [(ngModel)]="reminderData.time" name="reminderData.time">
                                           </div>
                                         <div class="col-lg-8"> 
-                                           <select [(ngModel)]="reminderData.days" name="reminderData.days" data-plugin-selectTwo class="form-control populate">
+                                           <select [(ngModel)]="reminderData.timeType" name="reminderData.timeType" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
                                           <option value="Day (s)">Day (s)</option>
                                           <option value="Week (s)">Week (s)</option>
@@ -99,8 +102,9 @@
                         </div>
                         <div class="form-group row pt-2">
                            <div class="col-lg-11 text-right">
-                              <a href="" class="btn btn-default" id="">Cancel</a>
-                              <a (click)="addRenewal()" class="btn btn-success" id="nextBtn">Save</a>
+                              <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button> 
+                              <a href="javascript:;" *ngIf="!reminderID" (click)="addRenewal()" class="btn btn-success" >Save</a> 
+                              <a href="javascript:;" *ngIf="reminderID" (click)="updateRenewal()" class="btn btn-success">Update</a>
                            </div>
                         </div>
                      </form>
