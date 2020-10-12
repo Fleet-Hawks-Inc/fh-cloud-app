@@ -57,15 +57,15 @@ export class IssueListComponent implements OnInit {
   }
   deleteIssue = () => {
     console.log('issues', this.issues);
-    const selectedIssues = this.issues.filter(product => product.checked).map(p => p.issueID);
-    if (selectedIssues && selectedIssues.length > 0) {
-      for (const i of selectedIssues) {
-        this.apiService.deleteData('issues/' + i).subscribe((result: any) => {
-          this.fetchIssues();
-          this.toastr.success('Issue Deleted Successfully!');
-        });
-      }
-    }
+    // const selectedIssues = this.issues.filter(product => product.checked).map(p => p.issueID);
+    // if (selectedIssues && selectedIssues.length > 0) {
+    //   for (const i of selectedIssues) {
+    //     this.apiService.deleteData('issues/' + i).subscribe((result: any) => {
+    //       this.fetchIssues();
+    //       this.toastr.success('Issue Deleted Successfully!');
+    //     });
+    //   }
+    // }
   }
 
   uncheckCheckbox = (arr) => {
