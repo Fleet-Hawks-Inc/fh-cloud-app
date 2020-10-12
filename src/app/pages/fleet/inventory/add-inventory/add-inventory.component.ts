@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
-declare var $: any;
 
 @Component({
   selector: 'app-add-inventory',
