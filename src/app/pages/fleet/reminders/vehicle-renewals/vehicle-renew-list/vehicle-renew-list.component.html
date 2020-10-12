@@ -45,21 +45,18 @@
                         </div>
                     </div>
                     <div class="col-md-5  col-lg-5 text-right">
-
-                        <a routerLink="/fleet/reminders/vehicle-renewals/add" class="btn btn-sm btn-success"><i
-                                class="fas fa-plus"></i> Add Vehicle Renewal Service Reminder</a>
-                        <div class="btn-group flex-wrap">
+                        <div class="btn-group flex-wrap mr-1">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false">Actions<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a class="dropdown-item text-1" href="">Send Notifications</a>
-                                <a class="dropdown-item text-1" href="">Edit</a>
-                                <a class="dropdown-item text-1" href="">Delete</a>
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">                            
                                 <a class="dropdown-item text-1" href="">Import</a>
                                 <a class="dropdown-item text-1" href="">Export</a>
                             </div>
                         </div>
+                        <a routerLink="/fleet/reminders/vehicle-renewals/add" class="btn btn-sm btn-success "><i
+                                class="fas fa-plus"></i> Add Vehicle Renewal Service Reminder</a>
+                       
                     </div>
                 </div>
             </header>
@@ -67,8 +64,7 @@
                 <div class="wtopnav">
                     <ul class="nav nav-tabs top-tabs">
                         <li class="nav-item"><a class="nav-link" routerLink="/fleet/reminders/service-reminder/list">Service Reminders </a></li>
-                        <li class="nav-item"><a class="nav-link active" routerLink="/fleet/reminders/vehicle-renewals/list">Vehicle Renewals </a>
-                        </li>
+                        <li class="nav-item"><a class="nav-link active" routerLink="/fleet/reminders/vehicle-renewals/list">Vehicle Renewals </a></li>
                         <li class="nav-item"><a class="nav-link" routerLink="/fleet/reminders/contact-renewals/list">Contact Renewals </a></li>
                     </ul>
                 </div>
@@ -81,67 +77,36 @@
                                 id="simple-table">
                                 <thead>
                                     <tr>
-                                        <th width="5%"><input type="checkbox"></th>
+                                        
                                         <th width="45%">Vehicle</th>
                                         <th width="15%">Vehicle Renewal Type</th>
                                         <th width="15%">Due Date</th>
                                         <th width="15%">Subscribers</th>
+                                        <th width="5%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';">Vehicle 1</td>
+                                    <tr *ngFor="let item of remindersData;">
+                                        <td  routerLink="/fleet/reminders/vehicle-renewals/detail/{{item.entryID}}">{{ vehicleIdentification }}</td>
                                         <td onclick="window.location='vehicle-renewal-details.php';"><span
                                                 class="text-danger font-weight-bold font-size-12">Overdue</span><br><span
-                                                class="font-weight-bold" title="Task">Emission Test</span></td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';">Jun 29,2020</td>
+                                                class="font-weight-bold" title="Task">{{item.renewalType}}</span></td>
+                                        <td onclick="window.location='vehicle-renewal-details.php';">{{item.date}}</td>
                                         <td onclick="window.location='vehicle-renewal-details.php';"><span
-                                                class="text-success font-weight-bold font-size-12"> Active</span><br>0
+                                                class="text-success font-weight-bold font-size-12"> Active</span><br>{{ getLengthOfArray(item.subscribedUsers) }} 
                                             subscribers</td>
-
+                                            <td>
+                                                <div class="btn-group flex-wrap">
+                                                    <button type="button" class="btn p-0" data-toggle="dropdown"><i
+                                                            class="fas fa-ellipsis-v"></i></button>
+                                                    <div class="dropdown-menu" role="menu">
+                                                        <a class="dropdown-item text-1" href="#">Send Notifications</a>
+                                                        <a routerLink="/fleet/reminders/vehicle-renewals/edit/{{item.entryID }}" class="dropdown-item text-1" >Edit</a>
+                                                        <a href="javascript:;" class="dropdown-item text-1" (click)="deleteRenewal(item.entryID)">Delete</a>
+                                                    </div>
+                                                </div>
+                                            </td>
                                     </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';">Vehicle 2</td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';"><span
-                                                class="text-warning font-weight-bold font-size-12">Due
-                                                Soon</span><br><span class="font-weight-bold"
-                                                title="Task">Registration</span></td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';">Jun 29,2020</td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';"><span
-                                                class="text-success font-weight-bold font-size-12"> Active</span><br>1
-                                            subscribers</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';">Vehicle 3</td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';"><span
-                                                class="text-danger font-weight-bold font-size-12">Overdue</span><br><span
-                                                class="font-weight-bold" title="Task">Insurance</span></td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';">Jun 29,2020</td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';"><span
-                                                class="text-success font-weight-bold font-size-12"> Active</span><br>1
-                                            subscribers</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';">Vehicle 4</td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';"><span
-                                                class="text-warning font-weight-bold font-size-12">Due
-                                                Soon</span><br><span class="font-weight-bold"
-                                                title="Task">Registration</span></td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';">Jun 29,2020</td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';"><span
-                                                class="text-success font-weight-bold font-size-12"> Active</span><br>3
-                                            subscribers</td>
-
-                                    </tr>
-
-
-
                                 </tbody>
                             </table>
                         </div>

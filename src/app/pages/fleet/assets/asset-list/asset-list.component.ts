@@ -200,7 +200,7 @@ export class AssetListComponent implements OnInit {
       next: (result: any) => {
         this.allData = result.Items;
         this.spinner.hide(); // loader hide
-        //console.log(this.allData)
+        console.log(this.allData);
         for (let i = 0; i < result.Items.length; i++) {
           if (result.Items[i].assetDetails.assetType === 'Reefer') {
             this.refers.push(this.allData[i]);

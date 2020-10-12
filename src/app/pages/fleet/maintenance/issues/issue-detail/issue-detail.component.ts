@@ -34,6 +34,9 @@ export class IssueDetailComponent implements OnInit {
     this.issueID = this.route.snapshot.params['issueID'];
     this.fetchIssue();
   }
+  editIssue = () => {
+      this.router.navigateByUrl('/fleet/maintenance/issues/edit-issue/' + this.issueID);
+      }
   fetchIssue() {
     // this.spinner.show(); // loader init
     this.apiService

@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { v4 as uuidv4 } from 'uuid';
 import { from } from 'rxjs';
 import {  map } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 declare var $: any;
 @Component({
@@ -50,6 +51,7 @@ export class AddIssueComponent implements OnInit {
               private router: Router,
               private route: ActivatedRoute,
               private awsUS: AwsUploadService, private toaster: ToastrService,
+              private spinner: NgxSpinnerService,
               private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
                 this.selectedFileNames = new Map<any, any>();
               }
@@ -124,7 +126,7 @@ export class AddIssueComponent implements OnInit {
       this.response = res;
       this.uploadFiles(); // upload selected files to bucket
       this.toaster.success('Issue Added successfully');
-      this.router.navigateByUrl('/fleet/issues/list');
+      this.router.navigateByUrl('/fleet/maintenance/issues/list');
     }
   });
 }
@@ -168,7 +170,7 @@ throwErrors() {
    * Fetch Issue details before updating
   */
  fetchIssueByID() {
- // this.spinner.show(); // loader init
+  this.spinner.show(); // loader init
   this.apiService
     .getData('issues/' + this.issueID)
     .subscribe((result: any) => {

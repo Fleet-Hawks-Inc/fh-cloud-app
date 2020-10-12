@@ -24,6 +24,7 @@ export * from './assets/asset-detail/asset-detail.component';
 export * from './expenses/fuel-entry/add-fuel-entry/add-fuel-entry.component';
 export * from './expenses/fuel-entry/fuel-entry-list/fuel-entry-list.component';
 export * from './expenses/fuel-entry/edit-fuel-entry/edit-fuel-entry.component';
+export * from './expenses/fuel-entry/fuel-entry-details/fuel-entry-details.component';
 export * from './expenses/tickets/add-ticket/add-ticket.component';
 export * from './expenses/tickets/edit-ticket/edit-ticket.component';
 export * from './expenses/tickets/tickets/tickets.component';
@@ -69,7 +70,9 @@ export * from './reminders/vehicle-renewals/vehicle-renew-detail/vehicle-renew-d
 
 export * from './inventory/items/item-detail/item-detail.component';
 
+export * from './inventory/add-inventory/add-inventory.component';
 
-
+export * from './inventory/inventory-list/inventory-list.component';
+export * from './inventory/edit-inventory/edit-inventory.component';
 
 
