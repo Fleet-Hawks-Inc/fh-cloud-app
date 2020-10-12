@@ -1,0 +1,112 @@
+import { Component, OnInit } from '@angular/core';
+import {ApiService} from '../../../../services';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
+@Component({
+  selector: 'app-driver-list',
+  templateUrl: './driver-list.component.html',
+  styleUrls: ['./driver-list.component.css'],
+})
+export class DriverListComponent implements OnInit {
+  title = 'Driver List';
+  driverCheckCount;
+  selectedDriverID;
+  drivers = [];
+  dtOptions: any = {};
+
+  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) {}
+
+  ngOnInit() {
+    this.fetchDrivers();
+  }
+
+  fetchDrivers() {
+    this.apiService.getData('drivers').subscribe({
+      complete: () => {
+        this.initDataTable();
+      },
+      error: () => {},
+      next: (result: any) => {
+        console.log(result);
+        this.drivers = result.Items;
+        console.log('drivers',this.drivers)
+      },
+    });
+  }
+  checkboxCount = () => {
+    this.driverCheckCount = 0;
+    this.drivers.forEach(item => {
+      console.log('item', item);
+      if (item.checked) {
+        this.selectedDriverID = item.driverID;
+        this.driverCheckCount = this.driverCheckCount + 1;
+      }
+    });
+  }
+
+  editDriver = () => {
+    if (this.driverCheckCount === 1) {
+      this.router.navigateByUrl('/fleet/drivers/edit-driver/' + this.selectedDriverID);
+    } else {
+      this.toastr.error('Please select only one asset!');
+    }
+  }
+  deleteDriver() {
+    //  /******** Clear DataTable ************/
+    //  if ($.fn.DataTable.isDataTable('#datatable-default')) {
+    //   $('#datatable-default').DataTable().clear().destroy();
+    //   }
+    //   /******************************/
+    const selectedDrivers = this.drivers.filter(product => product.checked);
+    console.log(selectedDrivers);
+    if (selectedDrivers && selectedDrivers.length > 0) {
+      for (const i of selectedDrivers) {
+        this.apiService.deleteData('drivers/' + this.selectedDriverID).subscribe((result: any) => {
+          this.fetchDrivers();
+          if (selectedDrivers.length == 1) {
+            this.toastr.success('Driver Deleted Successfully!');
+          } else {
+            this.toastr.success('Drivers Deleted Successfully!');
+          }
+
+        });
+      }
+    }
+  }
+
+  initDataTable() {
+    this.dtOptions = {
+      dom: 'Bfrtip', // lrtip to hide search field
+      processing: true,
+      columnDefs: [
+          {
+              targets: 0,
+              className: 'noVis'
+          },
+          {
+              targets: 1,
+              className: 'noVis'
+          },
+          {
+              targets: 2,
+              className: 'noVis'
+          },
+          {
+              targets: 3,
+              className: 'noVis'
+          },
+          {
+              targets: 4,
+              className: 'noVis'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      buttons: [
+        'colvis',
+      ],
+    };
+  }
+}

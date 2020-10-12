@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-   BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
-  // BaseUrl: 'http://localhost:3000/api/v1/',
+   //BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
+  BaseUrl: 'http://localhost:3000/api/v1/',
   temp: 'search',
   LoginUrl: 'users/login',
   ApiKey: '',
@@ -23,14 +23,17 @@ export const environment = {
     APP_CLIENT_ID: '76l88g289vcgrd8jf54pbedgqq'
   },
   awsBucket: {
-    bucketName: 'fh-dashboard-assets',
-    accessKeyId: 'AKIARUNMEEHU3E2DK3S7',
-    secretAccessKey: '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',
-    region: 'ap-south-1'
+    bucketName: 'fh-assets',
+    accessKeyId: 'GHFFH56588GJH',
+    secretAccessKey: 'kgjkfsui45345jhklfvjdlkgjhh',
+    region: 'us-east-1'
   },
-  HOSTNAME :'myhome.anterbox.com',
+  HOSTNAME: 'myhome.anterbox.com',
   PORT : 9001,
   MQTTPATH : '/',
+  mapConfig: {
+    apiKey: 'lIoqoqWBD3Op-8TVFDBPM9pj3kTQKIyCuH8Q_2RDR1c'
+  },
 };
 
 

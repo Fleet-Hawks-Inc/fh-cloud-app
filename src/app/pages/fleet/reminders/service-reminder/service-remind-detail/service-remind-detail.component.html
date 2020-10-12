@@ -1,0 +1,115 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+  
+    <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->
+  
+      <section role="main" class="content-body pl-0 pt-0">
+        <header class="page-header">
+           <div class="row pr-5 " style="padding-top:10px;">
+              <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                 Rotate Tires  <span class="text-danger font-weight-bold font-size-12"> OVERDUE</span>
+              </div>
+              <div class="col-md-8  col-lg-8 text-right">     
+              <a href="service-reminders.php"  class="btn btn-default btn-sm"><i class="fas fa-list"></i> Service Reminders List</a>
+            
+                 <a href="service-entry.php"  class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Service</a>
+
+              </div>
+           </div>
+        </header>
+        <div class="row">
+           <div class="col">
+              <div class="card-body text-dark">
+                 <form class="form-horizontal form-bordered" method="get">
+                    <div class=" row">
+                       <div class="col-lg-12">
+                          <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Reminder Details</label>
+                       </div>
+                       <div class="w-100" *ngFor="let item of reminderData;">
+                           <div class="col-lg-10 offset-lg-1">
+                              <div class="row mb-3">
+                                 <div class="col-lg-12"><label class="control-label font-weight-bold text-5"> {{item.serviceTask}} <span
+                                          class="text-danger font-weight-bold font-size-12"> OVERDUE</span></label></div>
+                              </div>
+                           </div>
+                           
+                           <div class="col-lg-10 offset-lg-1">
+                              <table class="table table-responsive-lg table-bordered table-striped mb-0">
+                                 <thead>
+                                    <tr>
+                                       <th width="20%"> Vehicle</th>
+                                       <th width="15%">Schedule</th>
+                                       <th width="60%">Details</th>
+                                       <th width="5%"></th>
+                           
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr>
+                                       <td>{{item.vehicleName}}</td>
+                                       <td>3 months from now <br><span class="text-danger">2,147,462,369 mi ago</span></td>
+                                       <td>This is service task description.This is service task description.</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"
+                                                aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                           
+                                                <a class="dropdown-item text-1" href="">Enter Service</a>
+                                                <a class="dropdown-item text-1" href="">Send Notifications</a>
+                                                <a class="dropdown-item text-1" href="">Edit</a>
+                                                <a class="dropdown-item text-1" href="">Delete</a>
+                                                <a class="dropdown-item text-1" href="">View Full History</a>
+                           
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           
+                           </div>
+                           
+                           <!-- Compliance table -->
+                           <div class="col-lg-10 offset-lg-1 mt-4">
+                              <table class="table table-responsive-lg table-bordered table-striped mb-0">
+                                 <thead>
+                                    <tr>
+                                       <th width="25%"> Completed</th>
+                                       <th width="25%">Due</th>
+                                       <th width="25%">Compliance</th>
+                                       <th width="25%"></th>
+                           
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr>
+                                       <td>Mar 15,2020<br><span class="font-size-12">33,456 mi</span></td>
+                                       <td>Dec 15,2020<br><span class="font-size-12">50,456 mi</span></td>
+                                       <td>9 months <br><span class="font-size-12">Ahead of Schedule</span></td>
+                                       <td> <span class="text-danger">50,456 mi</span><br><span class="font-size-12">Behind Schedule</span>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           
+                           </div>
+                       </div>
+                     
+                    </div>
+                  
+                 
+                 </form>
+              </div>
+           </div>
+        </div>
+     </section>
+    </div>
+  </section>
+  

@@ -1,17 +1,17 @@
 import {AfterViewInit, Directive, HostBinding, HostListener, Input} from '@angular/core';
-import {SharedServiceService} from '../shared-service.service';
+import {SharedServiceService} from '../services/shared-service.service';
 import {timer} from 'rxjs';
 
 @Directive({
   selector: '[appNavOpened]'
 })
-export class NavOpenedDirective implements AfterViewInit{
+export class NavOpenedDirective implements AfterViewInit {
     @Input() expandedNav: string;
     @HostBinding('class.nav-expanded') isExpanded = false;
     @HostListener('click') toggleExpanded() {
       this.sharedService.activeSubNav.next(this.expandedNav);
-      //this.isExpanded = !this.isExpanded;
-      //console.log(this.expandedNav);
+      // this.isExpanded = !this.isExpanded;
+      // console.log(this.expandedNav);
     }
 
     constructor(private sharedService: SharedServiceService) {
@@ -23,11 +23,9 @@ export class NavOpenedDirective implements AfterViewInit{
             if (val === this.expandedNav) {
               this.isExpanded = !this.isExpanded;
             }
-          })
+          });
 
-      })
+      });
     }
-
     ngAfterViewInit() {}
-
 }
