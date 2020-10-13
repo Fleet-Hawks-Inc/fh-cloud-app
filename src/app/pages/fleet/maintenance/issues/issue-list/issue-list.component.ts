@@ -45,12 +45,13 @@ export class IssueListComponent implements OnInit {
       next: (result: any) => {
         console.log(result);
         this.issues = result.Items;
+      //  console.log('Array', this.issues);
       },
     });
   }
   editIssue = () => {
     if (this.issueCheckCount === 1) {
-      this.router.navigateByUrl('/fleet/issues/edit-issue/' + this.selectedIssueID);
+      this.router.navigateByUrl('/fleet/maintenance/issues/edit-issue/' + this.selectedIssueID);
     } else {
       this.toastr.error('Please select only one asset!');
     }
@@ -66,6 +67,17 @@ export class IssueListComponent implements OnInit {
         });
       }
     }
+
+    // const selectedIssues = this.issues.filter(product => product.checked).map(p => p.issueID);
+    // if (selectedIssues && selectedIssues.length > 0) {
+    //   for (const i of selectedIssues) {
+    //     this.apiService.deleteData('issues/' + i).subscribe((result: any) => {
+    //       this.fetchIssues();
+    //       this.toastr.success('Issue Deleted Successfully!');
+    //     });
+    //   }
+    // }
+
   }
 
   uncheckCheckbox = (arr) => {

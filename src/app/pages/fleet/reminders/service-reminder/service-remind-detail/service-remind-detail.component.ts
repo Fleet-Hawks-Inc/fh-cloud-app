@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
-import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-service-remind-detail',
@@ -9,30 +10,48 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ServiceRemindDetailComponent implements OnInit {
   reminderID;
-  public reminderData: any;
+  public reminderData: any = [];
+  vehicles = [];
+  vehicleIdentification = '';
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.reminderID = this.route.snapshot.params['reminderID']; // get reminderID from URL
 
-    this.fetchAsset();
+    this.fetchReminder();
   }
 
   /**
-   * fetch Asset data
+   * fetch Reminder data
    */
-  fetchAsset() {
+  fetchReminder() {
     this.apiService
-      .getData(`serviceReminders/${this.reminderID}`)
+      .getData(`serviceReminder/${this.reminderID}`)
       .subscribe((result: any) => {
         if (result) {
           this.reminderData = result['Items'];
-          console.log('reminderData', this.reminderData)
+          console.log('reminderData', this.reminderData);
+          this.fetchVehicles(this.reminderData[0].vehicleID);
         }
       }, (err) => {
         console.log('reminder detail', err);
       });
   }
-
+  fetchVehicles(ID) {
+    this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
+      this.vehicles = result.Items;
+     // console.log('VEHICLES', this.vehicles);
+      this.vehicleIdentification =  this.vehicles[0].vehicleIdentification;
+     // console.log('vehicleId' , this.vehicleIdentification);
+    });
+  }
+  deleteReminder(entryID) {
+    this.apiService
+      .deleteData('serviceReminder/' + entryID)
+      .subscribe((result: any) => {
+        this.toastr.success('Service Reminder Deleted Successfully!');
+        this.router.navigateByUrl('/fleet/reminders/service-reminder/list');
+      });
+  }
 }

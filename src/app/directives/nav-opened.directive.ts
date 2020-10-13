@@ -1,5 +1,5 @@
 import {AfterViewInit, Directive, HostBinding, HostListener, Input} from '@angular/core';
-import {SharedServiceService} from '../services/shared-service.service';
+import {SharedServiceService} from '../services';
 import {timer} from 'rxjs';
 
 @Directive({
