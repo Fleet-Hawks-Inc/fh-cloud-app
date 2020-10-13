@@ -58,7 +58,6 @@ export class IssueListComponent implements OnInit {
   }
   deleteIssue = () => {
     console.log('issues', this.issues);
-
     const selectedIssues = this.issues.filter((product: any) => product.checked).map((p: any) => p.issueID);
     if (selectedIssues && selectedIssues.length > 0) {
       for (const i of selectedIssues) {
