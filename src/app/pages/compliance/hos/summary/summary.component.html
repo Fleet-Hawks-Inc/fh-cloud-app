@@ -7,269 +7,1510 @@
     <!-- start: sidebar -->
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
-    <section role="main" class="content-body">
+
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header">
-        <h2>HOS Summary</h2>
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a href="index.html">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li><span>HOS Summary</span></li>
-          </ol>
-        </div>
-      </header>
+        <div class="row pl-3 pr-5" style="padding-top: 10px">
+          <div class="col-md-2 col-lg-2 font-weight-bold text-4 text-dark">
+            HOS Violations
+          </div>
 
-      <!--
-        <section class="card mb-4">
-         <div class="card-body">
-            <h2 class="card-title mt-3">Drivers Insights</h2>
-            
-            <div class="row">
-                 <div class="col-lg-2 col-md-12 text-left">
-                      <h1 class="font-weight-normal ditotald">112</h1>   
-                 </div>
-                 <div class="col-lg-2 col-md-12 mt-4">
-                     <div class="dionduty">
-                         ON DUTY
-                         <br>
-                         <span class="text-5">52</span>
-                     </div>    
-                 </div>
-                 <div class="col-lg-2 col-md-12 mt-4">
-                     <div class="didriving">
-                         ON DUTY
-                         <br>
-                         <span class="text-5">30</span>
-                     </div>    
-                 </div>
-                 <div class="col-lg-2 col-md-12 mt-4">
-                     <div class="dioffduty">
-                         ON DUTY
-                         <br>
-                         <span class="text-5">40</span>
-                     </div>    
-                 </div>
-             </div>
-         </div>
-      </section>
-      -->
-
-      <section class="card mb-4">
-        <div class="card-body">
-          <h2 class="card-title mt-3">Drivers Insights</h2>
-
-          <div class="row">
-            <div class="col-lg-3 col-md-12 mt-4">
-              <div class="maindriverbox">
-                <div class="driverbar">
-                  <span class="pull-right text-10 text-dark"
-                    ><i class="fas fa-user"></i
-                  ></span>
-                  <h2
-                    class="pull-left mt-0 text-5 font-weight-semibold text-dark"
-                  >
-                    Drivers
-                  </h2>
-                </div>
-
-                <div class="">
-                  <h1 class="ditotald">112</h1>
-                  <div class="pull-right text-right mt-2">
-                    <p class="mb-0 text-dark text-4 font-weight-semibold">
-                      52 ON
-                    </p>
-                    <p class="mb-0 text-dark text-4 font-weight-semibold">
-                      30 OFF
-                    </p>
-                    <p class="mb-0 text-dark text-4 font-weight-semibold">
-                      40 D
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-3 col-md-12 mt-4">
-              <div class="maindriverbox">
-                <div class="driverbar">
-                  <span class="pull-right text-10 text-dark"
-                    ><i class="fas fa-exclamation-triangle"></i
-                  ></span>
-                  <h2
-                    class="pull-left mt-0 text-5 font-weight-semibold text-dark"
-                  >
-                    Violation
-                  </h2>
-                </div>
-
-                <div class="">
-                  <h1 class="ditotald">14</h1>
-                  <div class="pull-right text-right mt-2">
-                    <p class="mb-0 text-dark text-4 font-weight-semibold">
-                      5 Break
-                    </p>
-                    <p class="mb-0 text-dark text-4 font-weight-semibold">
-                      5 Cycle
-                    </p>
-                    <p class="mb-0 text-dark text-4 font-weight-semibold">
-                      4 Drive
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-3 col-md-12 mt-4">
-              <div class="maindriverbox">
-                <div class="driverbar">
-                  <span class="pull-right text-10 text-dark"
-                    ><i class="fas fa-exclamation-triangle"></i
-                  ></span>
-                  <h2
-                    class="pull-left mt-0 text-5 font-weight-semibold text-dark"
-                  >
-                    Near Violation
-                  </h2>
-                </div>
-
-                <div class="">
-                  <h1 class="ditotald">95</h1>
-                  <div class="pull-right text-right mt-2">
-                    <p class="mb-0 text-dark text-4 font-weight-semibold">
-                      45 Break
-                    </p>
-                    <p class="mb-0 text-dark text-4 font-weight-semibold">
-                      30 Cycle
-                    </p>
-                    <p class="mb-0 text-dark text-4 font-weight-semibold">
-                      20 Drive
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-3 col-md-12 mt-4">
-              <div class="maindriverbox">
-                <div class="driverbar">
-                  <span class="pull-right text-10 text-dark"
-                    ><i class="fas fa-user"></i
-                  ></span>
-                  <h2
-                    class="pull-left mt-0 text-5 font-weight-semibold text-dark"
-                  >
-                    Unassigned
-                  </h2>
-                </div>
-
-                <div class="">
-                  <h1 class="ditotald">105</h1>
-                  <div class="pull-right text-right mt-2">
-                    <p class="mb-0 text-dark text-4 font-weight-semibold">
-                      52 ON
-                    </p>
-                    <p class="mb-0 text-dark text-4 font-weight-semibold">
-                      30 OFF
-                    </p>
-                    <p class="mb-0 text-dark text-4 font-weight-semibold">
-                      40 D
-                    </p>
-                  </div>
-                </div>
-              </div>
+          <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-sm mb-3">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search by driver by name"
+              />
             </div>
           </div>
+
+          <div class="col-lg-2 col-md-2">
+            <button class="btn btn-sm btn-success" type="submit">Search</button>
+          </div>
+
+          <div class="col-md-8 col-lg-8 text-right"></div>
         </div>
-      </section>
-
+      </header>
       <div class="row">
-        <div class="col-lg-12">
-          <section class="card">
-            <header class="card-header">
-              <!-- <div class="card-actions">
-                         <a href="#" class="card-action card-action-toggle" data-card-toggle=""></a>
-                         <a href="#" class="card-action card-action-dismiss" data-card-dismiss=""></a>
-                     </div> -->
-
-              <h2 class="card-title">HOS Information</h2>
-            </header>
-            <div class="card-body" style="display: block;">
-              <table class="table table-bordered table-striped mb-0">
-                <thead>
-                  <tr>
-                    <th>Driver/Vehicle</th>
-                    <th>Cycle</th>
-                    <th>Status</th>
-                    <th class="cell_width">Time to Break</th>
-                    <th class="cell_width">Daily Drive Time Remaining</th>
-                    <th class="cell_width">Cycle Drive Time Remaining</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-
-                <tr *ngFor="let summary of summary$ | async">
-
-                  <td>{{summary.driver}}</td>
-                  <td>{{summary.cycle}}</td>
-                  <td>{{summary.status}}</td>
-                  <td>
-                    <div class="progress progress-xs progress-squared light">
-                      <div
-                              class="progress-bar progress-bar-success"
-                              role="progressbar"
-                              [attr.aria-valuenow]="summary.timeToBreak.current"
-                              aria-valuemin="0"
-                              [attr.aria-valuemax]="summary.timeToBreak.max"
-                              style="width: 40%;"
+        <div class="col-lg-12 pr-0">
+          <section class="card mt-0 pr-0">
+            <div class="card-body pr-0">
+              <h2 class="card-title">Drivers Insights</h2>
+              <div class="row mx-1">
+                <div class="col-lg-3 col-md-12 mt-4">
+                  <div class="hos_top_box box_active" id="driver_details_box">
+                    <div class="driverbar">
+                      <span class="pull-right text-10 text-dark"
+                        ><i class="fas fa-user"></i
+                      ></span>
+                      <h2
+                        class="pull-left mt-0 text-5 font-weight-semibold text-dark"
                       >
-                        {{summary.timeToBreak.current*100/summary.timeToBreak.max  }}%
+                        Drivers
+                      </h2>
+                    </div>
+                    <div class="">
+                      <h1 class="ditotald">112</h1>
+                      <div class="pull-right text-right mt-2">
+                        <p class="mb-0 text-dark text-4 font-weight-semibold">
+                          52 ON
+                        </p>
+                        <p class="mb-0 text-dark text-4 font-weight-semibold">
+                          30 OFF
+                        </p>
+                        <p class="mb-0 text-dark text-4 font-weight-semibold">
+                          40 D
+                        </p>
                       </div>
                     </div>
-                    <div class="text-right">{{summary.timeToBreak.max * 1000 | date:'HH:mm:ss'}}</div>
-                  </td>
-                  <td>
-                    <div class="progress progress-xs progress-squared light">
-                      <div
-                              class="progress-bar progress-bar-success"
-                              role="progressbar"
-                              [attr.aria-valuenow]="summary.cycleDriveTimeRemaining.current"
-                              aria-valuemin="0"
-                              [attr.aria-valuemax]="summary.cycleDriveTimeRemaining.max"
-                              style="width: 30%;"
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-12 mt-4">
+                  <div class="hos_top_box" id="driver_violations_box">
+                    <div class="driverbar">
+                      <span class="pull-right text-10 text-dark"
+                        ><i class="fas fa-exclamation-triangle"></i
+                      ></span>
+                      <h2
+                        class="pull-left mt-0 text-5 font-weight-semibold text-dark"
                       >
-                        {{summary.cycleDriveTimeRemaining.current*100/summary.cycleDriveTimeRemaining.max  }}%
+                        Violation
+                      </h2>
+                    </div>
+                    <div class="">
+                      <h1 class="ditotald">14</h1>
+                      <div class="pull-right text-right mt-2">
+                        <p class="mb-0 text-dark text-4 font-weight-semibold">
+                          5 Break
+                        </p>
+                        <p class="mb-0 text-dark text-4 font-weight-semibold">
+                          5 Cycle
+                        </p>
+                        <p class="mb-0 text-dark text-4 font-weight-semibold">
+                          4 Drive
+                        </p>
                       </div>
                     </div>
-                    <div class="text-right">{{summary.cycleDriveTimeRemaining.max * 1000 | date:'HH:mm:ss'}}</div>
-                  </td>
-                  <td>
-                    <div class="progress progress-xs progress-squared light">
-                      <div
-                              class="progress-bar progress-bar-success"
-                              role="progressbar"
-                              [attr.aria-valuenow]="summary.dailyDriveTimeRemaining.current"
-                              aria-valuemin="0"
-                              [attr.aria-valuemax]="summary.dailyDriveTimeRemaining.max"
-                              style="width: 90%;"
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-12 mt-4">
+                  <div class="hos_top_box" id="driver_near_violations_box">
+                    <div class="driverbar">
+                      <span class="pull-right text-10 text-dark"
+                        ><i class="fas fa-exclamation-triangle"></i
+                      ></span>
+                      <h2
+                        class="pull-left mt-0 text-5 font-weight-semibold text-dark"
                       >
-                        {{summary.dailyDriveTimeRemaining.current*100/summary.dailyDriveTimeRemaining.max  }}%
+                        Near Violation
+                      </h2>
+                    </div>
+                    <div class="">
+                      <h1 class="ditotald">95</h1>
+                      <div class="pull-right text-right mt-2">
+                        <p class="mb-0 text-dark text-4 font-weight-semibold">
+                          45 Break
+                        </p>
+                        <p class="mb-0 text-dark text-4 font-weight-semibold">
+                          30 Cycle
+                        </p>
+                        <p class="mb-0 text-dark text-4 font-weight-semibold">
+                          20 Drive
+                        </p>
                       </div>
                     </div>
-                    <div class="text-right">{{summary.dailyDriveTimeRemaining.max * 1000 | date:'HH:mm:ss'}}</div>
-                  </td>
-
-                </tr>
-
-
-
-                </tbody>
-              </table>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-12 mt-4">
+                  <div class="hos_top_box" id="driver_uncertified_box">
+                    <div class="driverbar">
+                      <span class="pull-right text-10 text-dark"
+                        ><i class="fas fa-user"></i
+                      ></span>
+                      <h2
+                        class="pull-left mt-0 text-5 font-weight-semibold text-dark"
+                      >
+                        Uncertified Logs
+                      </h2>
+                    </div>
+                    <div class="">
+                      <h1 class="ditotald">112</h1>
+                      <div class="pull-right text-right mt-2">
+                        <p class="mb-0 text-dark text-4 font-weight-semibold">
+                          26 Waiting for Approval
+                        </p>
+                        <p class="mb-0 text-dark text-4 font-weight-semibold">
+                          30 Certified Today
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
+          <div class="row">
+            <div class="col-lg-12">
+              <section class="card">
+                <!-- NEAR VIOLATIONS -->
+                <div
+                  class="card-body"
+                  id="driver_near_violations_table"
+                  style="display: none"
+                >
+                  <table
+                    class="table table-bordered table-responsive-lg table-striped mb-0 simple-table"
+                  >
+                    <thead>
+                      <tr class="">
+                        <th class="width15">Driver</th>
+                        <th class="width15">Location</th>
+                        <th class="width5">Cycle</th>
+                        <th class="width15">Time to Shift</th>
+                        <th class="width15">Time to Break</th>
+                        <th class="width15">Daily Drive Time Remaining</th>
+                        <th class="width15">Cycle Drive Time Remaining</th>
+                        <th class="width5">Duty Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td onclick="window.location='driver-profile2.php';">
+                          <span class="font-weight-bold">David Thomas123</span>
+                        </td>
+                        <td>100 street Ontario,Toronto</td>
+                        <td>Cycle 1</td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="40"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 40%"
+                            >
+                              40%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="40"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 40%"
+                            >
+                              40%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="30"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 30%"
+                            >
+                              30%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="90"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 90%"
+                            >
+                              90%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td><span class="badge badge-dark p-1">ON</span></td>
+                      </tr>
+                      <tr>
+                        <td onclick="window.location='driver-profile2.php';">
+                          <span class="font-weight-bold">David Thomas123</span>
+                        </td>
+                        <td>100 street Ontario,Toronto</td>
+                        <td>Cycle 1</td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="40"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 40%"
+                            >
+                              40%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="40"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 40%"
+                            >
+                              40%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="30"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 30%"
+                            >
+                              30%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="90"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 90%"
+                            >
+                              90%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td><span class="badge badge-dark p-1">ON</span></td>
+                      </tr>
+                      <tr>
+                        <td onclick="window.location='driver-profile2.php';">
+                          <span class="font-weight-bold">David Thomas123</span>
+                        </td>
+                        <td>100 street Ontario,Toronto</td>
+                        <td>Cycle 1</td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="40"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 40%"
+                            >
+                              40%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="40"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 40%"
+                            >
+                              40%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="30"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 30%"
+                            >
+                              30%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="90"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 90%"
+                            >
+                              90%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td><span class="badge badge-dark p-1">ON</span></td>
+                      </tr>
+                      <tr>
+                        <td onclick="window.location='driver-profile2.php';">
+                          <span class="font-weight-bold">David Thomas123</span>
+                        </td>
+                        <td>100 street Ontario,Toronto</td>
+                        <td>Cycle 1</td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="40"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 40%"
+                            >
+                              40%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="40"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 40%"
+                            >
+                              40%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="30"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 30%"
+                            >
+                              30%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="90"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 90%"
+                            >
+                              90%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td><span class="badge badge-dark p-1">ON</span></td>
+                      </tr>
+                      <tr>
+                        <td onclick="window.location='driver-profile2.php';">
+                          <span class="font-weight-bold">David Thomas123</span>
+                        </td>
+                        <td>100 street Ontario,Toronto</td>
+                        <td>Cycle 1</td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="40"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 40%"
+                            >
+                              40%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="40"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 40%"
+                            >
+                              40%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="30"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 30%"
+                            >
+                              30%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td>
+                          <div
+                            class="progress progress-xs progress-squared light"
+                          >
+                            <div
+                              class="progress-bar progress-bar-success"
+                              role="progressbar"
+                              aria-valuenow="90"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 90%"
+                            >
+                              90%
+                            </div>
+                          </div>
+                          <div class="text-right">hh:mm:ss</div>
+                        </td>
+                        <td><span class="badge badge-dark p-1">ON</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- All Drivers Tables -->
+                <div
+                  class="card-body"
+                  id="driver_details_table"
+                  style="display: block"
+                >
+                  <div class="m-2">
+                    <ul
+                      class="nav nav-tabs top-tabs"
+                      id="top-tabs"
+                      role="tablist"
+                    >
+                      <li class="nav-item">
+                        <a
+                          class="nav-link active"
+                          id="allDriversHos-tab"
+                          data-toggle="tab"
+                          href="#allDriversHos"
+                          role="tab"
+                          aria-controls="allDriversHos"
+                          aria-selected="true"
+                          >All</a
+                        >
+                      </li>
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          id="onDriverDuty-tab"
+                          data-toggle="tab"
+                          href="#onDriverDuty"
+                          role="tab"
+                          aria-controls="onDriverDuty"
+                          aria-selected="false"
+                          >ON Duty</a
+                        >
+                      </li>
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          id="offDuty-tab"
+                          data-toggle="tab"
+                          href="#offDuty"
+                          role="tab"
+                          aria-controls="offDuty"
+                          aria-selected="false"
+                          >OFF Duty</a
+                        >
+                      </li>
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          id="sbDuty-tab"
+                          data-toggle="tab"
+                          href="#sbDuty"
+                          role="tab"
+                          aria-controls="sbDuty"
+                          aria-selected="false"
+                          >SB Duty</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <section class="card">
+                        <div class="card-body" style="display: block">
+                          <div class="tab-content p-0" id="myTabContent">
+                            <div
+                              class="tab-pane show active"
+                              id="allDriversHos"
+                              role="tabpanel"
+                              aria-labelledby="allDriversHos-tab"
+                            >
+                              <div class="">
+                                <table
+                                  class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                >
+                                  <thead>
+                                    <tr>
+                                      <th>Name</th>
+                                      <th>Location</th>
+                                      <th>Status</th>
+                                      <th>Current Vehicle</th>
+                                      <th>Assets Attached</th>
+                                      <th>DL State</th>
+                                      <th>DL Number</th>
+                                      <th>Duty Status</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >ON</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >SB</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >SB</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >ON</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >OFF</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >ON</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >PC</span
+                                        >
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            <div
+                              class="tab-pane fade"
+                              id="onDriverDuty"
+                              role="tabpanel"
+                              aria-labelledby="onDriverDuty-tab"
+                            >
+                              <div>
+                                <table
+                                  class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                >
+                                  <thead>
+                                    <tr>
+                                      <th>Name</th>
+                                      <th>Location</th>
+                                      <th>Status</th>
+                                      <th>Current Vehicle</th>
+                                      <th>Assets Attached</th>
+                                      <th>DL State</th>
+                                      <th>DL Number</th>
+                                      <th>Duty Status</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >ON</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >ON</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >ON</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >ON</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >ON</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >ON</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >ON</span
+                                        >
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            <div
+                              class="tab-pane fade"
+                              id="offDuty"
+                              role="tabpanel"
+                              aria-labelledby="offDuty-tab"
+                            >
+                              <div>
+                                <table
+                                  class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                >
+                                  <thead>
+                                    <tr>
+                                      <th>Name</th>
+                                      <th>Location</th>
+                                      <th>Status</th>
+                                      <th>Current Vehicle</th>
+                                      <th>Assets Attached</th>
+                                      <th>DL State</th>
+                                      <th>DL Number</th>
+                                      <th>Duty Status</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >OFF</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >OFF</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >OFF</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >OFF</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >OFF</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >OFF</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >OFF</span
+                                        >
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            <div
+                              class="tab-pane fade"
+                              id="sbDuty"
+                              role="tabpanel"
+                              aria-labelledby="sbDuty-tab"
+                            >
+                              <div class="">
+                                <table
+                                  class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                >
+                                  <thead>
+                                    <tr>
+                                      <th>Name</th>
+                                      <th>Location</th>
+                                      <th>Status</th>
+                                      <th>Current Vehicle</th>
+                                      <th>Assets Attached</th>
+                                      <th>DL State</th>
+                                      <th>DL Number</th>
+                                      <th>Duty Status</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >SB</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >SB</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >SB</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >SB</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >SB</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >SB</span
+                                        >
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        onclick="window.location='driver-profile2.php';"
+                                      >
+                                        David Thomas123
+                                      </td>
+                                      <td>100 street Ontario,Toronto</td>
+                                      <td>ELD</td>
+                                      <td>Scania</td>
+                                      <td>4566</td>
+                                      <td>NY</td>
+                                      <td>22232005</td>
+                                      <td>
+                                        <span class="badge badge-dark p-1"
+                                          >SB</span
+                                        >
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+                <!-- HOS Violations Tables -->
+                <div
+                  class="card-body"
+                  id="driver_violations_table"
+                  style="display: none"
+                >
+                  <table
+                    class="table table-bordered table-striped mb-0 simple-table"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Driver ID</th>
+                        <th>Driver Name</th>
+                        <th>Date & Time</th>
+                        <th>Location</th>
+                        <th>Violation Type</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td><span class="badge badge-dark p-1">OPEN</span></td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td><span class="badge badge-dark p-1">OPEN</span></td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td>
+                          <span class="badge badge-dark p-1">CLOSED</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td><span class="badge badge-dark p-1">OPEN</span></td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td>
+                          <span class="badge badge-dark p-1">CLOSED</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td><span class="badge badge-dark p-1">OPEN</span></td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td><span class="badge badge-dark p-1">OPEN</span></td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td>
+                          <span class="badge badge-dark p-1">CLOSED</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td><span class="badge badge-dark p-1">OPEN</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Uncertified Logs Table -->
+                <div
+                  class="card-body"
+                  id="driver_uncertified_table"
+                  style="display: none"
+                >
+                  <table
+                    class="table table-bordered table-striped mb-0 simple-table"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Driver</th>
+                        <th>Events</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Location</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>28/04/2020</td>
+                        <td>John</td>
+                        <td>Driving</td>
+                        <td>01:00</td>
+                        <td>02:30</td>
+                        <td>3455 King Street,Queen Town,Toronto,Canada</td>
+                        <td>
+                          <button class="btn btn-danger btn-sm mt-0">
+                            Reminder
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>28/04/2020</td>
+                        <td>Will</td>
+                        <td>Driving</td>
+                        <td>01:00</td>
+                        <td>02:30</td>
+                        <td>3455 King Street,Queen Town,Toronto,Canada</td>
+                        <td>
+                          <button class="btn btn-danger btn-sm mt-0">
+                            Reminder
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>28/04/2020</td>
+                        <td>David</td>
+                        <td>Driving</td>
+                        <td>01:00</td>
+                        <td>02:30</td>
+                        <td>3455 King Street,Queen Town,Toronto,Canada</td>
+                        <td>
+                          <button class="btn btn-danger btn-sm mt-0">
+                            Reminder
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- All Drivers HOS violations Tables -->
+                <div
+                  class="card-body"
+                  id="driver_violations_table"
+                  style="display: none"
+                >
+                  <table
+                    class="table table-bordered table-striped mb-0 simple-table"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Driver ID</th>
+                        <th>Driver Name</th>
+                        <th>Date & Time</th>
+                        <th>Location</th>
+                        <th>Violation Type</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td><span class="badge badge-dark p-1">OPEN</span></td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td><span class="badge badge-dark p-1">OPEN</span></td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td>
+                          <span class="badge badge-dark p-1">CLOSED</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td><span class="badge badge-dark p-1">OPEN</span></td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td>
+                          <span class="badge badge-dark p-1">CLOSED</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td><span class="badge badge-dark p-1">OPEN</span></td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td><span class="badge badge-dark p-1">OPEN</span></td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td>
+                          <span class="badge badge-dark p-1">CLOSED</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>656</td>
+                        <td>John Smith</td>
+                        <td>June 23, 2020 12:00 PM</td>
+                        <td>100a Street North-west</td>
+                        <td>Rolling Stop</td>
+                        <td><span class="badge badge-dark p-1">OPEN</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+          </div>
         </div>
       </div>
     </section>
