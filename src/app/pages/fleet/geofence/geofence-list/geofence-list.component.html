@@ -69,39 +69,82 @@
               <div class="card-body pl-0 pt-0 text-dark">
                  <div class="row">
                   <div class="col-lg-12">
-                     <p class="hoshvalue">
-                        <span class="geoName text-4 font-weight-bold text-dark pl-2">Geo-Fence Name</span>
+                     <table class="hoshvalue table text-4 font-weight-bold">
+                        <thead>
+                           <tr>
+                              <td style="width: 20%;" class="border-0 text-left">Geo-Fence Name</td>
+                              <td style="width: 20%;" class="border-0">Location</td>
+                              <td style="width: 20%;" class="border-0">Type</td>
+                              <td style="width: 30%;" class="border-0">Description</td>
+                              <td style="width: 10%;" class="border-0 text-right">Actions</td>
+                           </tr>
+                        </thead>
+                        <!-- <span class="geoName text-4 font-weight-bold text-dark pl-2"></span>
                         <span class="geoName text-4 font-weight-bold text-dark text-center">Location</span>
                         <span class="geoName text-4 font-weight-bold text-dark text-center">Type</span>
                         <span class="geofieldsdesc text-4 font-weight-bold text-dark text-center">Description</span>
-                     </p>
+                        <span class="geoName text-4 font-weight-bold text-dark text-right">Actions</span> -->
+                     </table>
                   </div>
               </div>
-               <ngb-accordion class="geofence-listing" 
+              
+               <!-- <ngb-accordion class="geofence-listing" 
                   [closeOthers]="true" 
-                  activeIds="static-1" 
                   *ngFor="let geofence of geofences; let i = index"
+                  activeIds="panel1"
                   (panelChange)="beforeChange($event, geofence.geofence.cords)"
                   >
                  
                   <ngb-panel id="panel{{i}}">
-                     <ng-template ngbPanelTitle style="width: 100%!important;">
-                        <div class=" d-flex align-items-center justify-content-between p-2">
-                           <span><input [(ngModel)]="geofence.checked" (ngModelChange)="checkboxCount()" value="{{geofence.geofenceName}}" type="checkbox"></span>
-                           <span class="geoName text-dark">{{geofence.geofenceName}} </span>
-                           <span class="geofields text-dark text-center">{{geofence.location}}</span>
-                           <span class="geoName text-dark text-center">{{geofence.geofenceType}}</span>
-                           <span class="geofieldsdesc text-dark text-center">{{geofence.description}}</span>
-                          <!-- <button ngbPanelToggle class="btn btn-link p-0">Toggle first</button> -->
-                        </div>
+                     <ng-template class="p-0 text-left" ngbPanelTitle style="width: 100%!important;">
+                        
+                           <table class="table m-0 text-left">
+                              <tbody>
+                                 <tr>
+                                    <td style="width: 20%;" class="border-0 text-left">{{geofence.geofenceName}}</td>
+                                    <td style="width: 20%;" class="border-0">{{geofence.location}}</td>
+                                    <td style="width: 20%;" class="border-0">{{geofence.geofenceType}}</td>
+                                    <td style="width: 30%;" class="border-0">{{geofence.description}}</td>
+                                    <td style="width: 10%;" class="border-0 text-right">
+                                       
+                                       <a class="p-0" routerLink="/fleet/geofence/edit-geofence/{{geofence.geofenceID}}"><i class="fas fa-ellipsis-v"></i></a></td>
+                                 </tr>
+                              </tbody>
+                           </table>
                       </ng-template>
                     <ng-template ngbPanelContent>
                      <div id="map" style="height: 400px;"></div>
                     </ng-template>
                   </ngb-panel>
                   <div *ngIf="!geofences.length > 0" class="alert alert-info m-0 text-center" role="alert"> No records found </div>
-                </ngb-accordion>
-                
+                </ngb-accordion> -->
+                <div *ngFor="let geofence of geofences;let index = index" class="" (click)="toggleAccordian(index, geofence.geofence.cords)">
+                  <table class="table m-0 text-left">
+                     <tbody>
+                        <tr>
+                           <td style="width: 20%;" class="border-0 text-left">{{geofence.geofenceName}}</td>
+                           <td style="width: 20%;" class="border-0">{{geofence.location}}</td>
+                           <td style="width: 20%;" class="border-0">{{geofence.geofenceType}}</td>
+                           <td style="width: 30%;" class="border-0">{{geofence.description}}</td>
+                           <td style="width: 10%;" class="border-0 text-right">
+                              <div class="dropdown dropright">
+                                 <button class="bg-transparent border-0" style="position: absolute;z-index: 9999;right: 5px;" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                 </button>
+                                 <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                    <a class="dropdown-item" routerLink="/fleet/geofence/edit-geofence/{{geofence.geofenceID}}">Edit</a>
+                                    <a class="dropdown-item" href="#">Activate</a>
+                                 </div>
+                               </div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <div *ngIf="visibleIndex === index" class="subheader">
+                     <div id="map" style="height: 400px;"></div>
+                  
+                  </div>
+               </div>
             </div>
 
            </section>

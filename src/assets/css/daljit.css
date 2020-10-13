@@ -521,3 +521,7 @@ html.fixed .content-body {
 .ng-select .select2-selection--single {
     border: none !important;
 }
+.geofence-listing .btn-link{
+    width: 100%;
+    text-decoration-line: none;
+}
