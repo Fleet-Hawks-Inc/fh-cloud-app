@@ -31,13 +31,13 @@ export class ListingComponent implements OnInit {
     return arr.length;
   }
   fetchReminders = () => {
-    this.apiService.getData('serviceReminder').subscribe({
+    this.apiService.getData('reminders').subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.remindersData = result.Items;
         console.log('Fetched data of service reminder', this.remindersData);
-        this.fetchVehicles(this.remindersData[0].vehicleID);
+        this.fetchVehicles(this.remindersData[0].reminderIdentification);
       },
     });
   }
@@ -45,10 +45,10 @@ export class ListingComponent implements OnInit {
 
  deleteReminder(entryID) {
     this.apiService
-      .deleteData('serviceReminder/' + entryID)
+      .deleteData('reminders/' + entryID)
       .subscribe((result: any) => {
         this.toastr.success('Service Reminder Deleted Successfully!');
-        this.fetchReminders ();
+        // this.fetchReminders ();
       });
   }
 }

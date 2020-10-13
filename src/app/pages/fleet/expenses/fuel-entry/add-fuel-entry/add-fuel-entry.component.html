@@ -86,11 +86,11 @@
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reefer</label>
                              <select data-plugin-selectTwo class="form-control populate" name="reeferID" [(ngModel)]="reeferID">
                                 <optgroup label="Select Reefer">
-                                 <!-- <option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleName}}</option> -->
-                                   <option value="Trailer 1">Trailer 1</option>
+                                 <option *ngFor="let reefer of reeferArray" value="{{reefer.assetID}}">{{reefer.assetIdentification}}</option>
+                                   <!-- <option value="Trailer 1">Trailer 1</option>
                                    <option value="Trailer 2">Trailer 2</option>
                                    <option value="Trailer 3">Trailer 3</option>
-                                   <option value="Trailer 4">Trailer 4</option>
+                                   <option value="Trailer 4">Trailer 4</option> -->
                                 </optgroup>
                              </select>
                           </div>

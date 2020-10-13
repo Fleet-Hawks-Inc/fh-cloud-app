@@ -1,0 +1,11 @@
+<form>
+<input type="text" name="firstname" [formControl]="fname">
+</form>
+
+<form [formGroup]="profileFormb">
+    <input type="text" name="firstname" formControlName="firstname">
+<input type="text" name="lastname" formControlName="lastname">
+    <input type="button" [disabled]="!profileFormb.valid" value="submit" (click)="fbcheck()">
+</form>
+<p>{{profileFormb.status}}</p>
+<p>{{buttonStatus}}</p>

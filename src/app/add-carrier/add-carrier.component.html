@@ -1,0 +1,609 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs pr-3">
+            <li>
+              <a routerLink="/">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li>
+              <a routerLink="/Carriers-List">
+                Carrier List
+              </a>
+            </li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+
+      <div class="row">
+        <div class="col">
+          <section class="card mb-3">
+            <div class="addv_topnav">
+              <ul class="pl-0 mt-2 mb-0">
+                <li
+                  (click)="company_settings()"
+                  [ngClass]="{ active: activeTab == 'company_settings' }"
+                  class="btn"
+                >
+                  Company Settings
+                </li>
+                <li
+                  (click)="unit_settings()"
+                  [ngClass]="{ active: activeTab == 'unit_settings' }"
+                  class="btn"
+                >
+                  Unit Settings
+                </li>
+                <li
+                  (click)="asset_settings()"
+                  [ngClass]="{ active: activeTab == 'asset_settings' }"
+                  class="btn"
+                >
+                  Asset Settings
+                </li>
+                <li
+                  (click)="driver_performance()"
+                  [ngClass]="{ active: activeTab == 'driver_performance' }"
+                  class="btn"
+                >
+                  Driver Performance
+                </li>
+              </ul>
+            </div>
+          </section>
+          <form
+            class="form-horizontal form-bordered"
+            method="get"
+            name="form"
+            id="form_"
+          >
+            <div class="card-body" id="company_settings">
+              <header class="card-header">
+                <h2 class="card-title">Company Settings</h2>
+              </header>
+              <div class="form-horizontal form-bordered">
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="carrierInput"
+                      >Carrier Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="carrierName"
+                      id="carrierInput"
+                      [(ngModel)]="carrierName"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="taxIdInput"
+                      >Tax ID</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="taxID"
+                      id="taxIdInput"
+                      [(ngModel)]="taxID"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="numberinput"
+                      >Company Number</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="companyNumber"
+                      id="numberinput"
+                      [(ngModel)]="companyNumber"
+                    />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-lg-right text-4 pt-2"
+                      >Address</label
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="streetInput"
+                      >Street No</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="address.streetNo"
+                      id="streetInput"
+                      [(ngModel)]="address.streetNo"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="streetNameInput"
+                      >Street Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="address.streetName"
+                      id="streetNameInput"
+                      [(ngModel)]="address.streetName"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="countryInput"
+                      >Country</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="address.countryID"
+                      id="countryInput"
+                      [(ngModel)]="address.countryID"
+                      (change)="getStates()"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let country of countries"
+                          value="{{ country.countryID }}"
+                          >{{ country.countryName }}</option
+                        >
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="stateInput"
+                      >State</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="address.stateID"
+                      [(ngModel)]="address.stateID"
+                      (change)="getCities()"
+                      id="stateInput"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let state of states"
+                          value="{{ state.stateID }}"
+                          >{{ state.stateName }}</option
+                        >
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="cityInput"
+                      >City</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="address.cityID"
+                      [(ngModel)]="address.cityID"
+                      id="cityInput"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let city of cities"
+                          value="{{ city.cityID }}"
+                          >{{ city.cityName }}</option
+                        >
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="zipInput"
+                      >Zip Code</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      name="address.zipCode"
+                      id="zipInput"
+                      min="1"
+                      maxlength="100"
+                      [(ngModel)]="address.zipCode"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="superUserInput"
+                      >Super User Name</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="superUserName"
+                      id="superUserInput"
+                      [(ngModel)]="superUserName"
+                    >
+                      <optgroup label="">
+                        <option
+                          *ngFor="let user of users"
+                          value="{{ user.userName }}"
+                          >{{ user.userName }}</option
+                        >
+                      </optgroup>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body" id="unit_settings">
+              <header class="card-header">
+                <h2 class="card-title">Unit Settings</h2>
+              </header>
+
+              <div class="form-horizontal form-bordered">
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Distance unit</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="unitSettings.distanceUnit"
+                      [(ngModel)]="unitSettings.distanceUnit"
+                    >
+                      <optgroup label="">
+                        <option value="Kms">Kms</option>
+                        <option value="Miles">Miles</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Liquid Unit</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="unitSettings.liquidUnit"
+                      [(ngModel)]="unitSettings.liquidUnit"
+                    >
+                      <optgroup label="">
+                        <option value="Gallons (US)">Gallons (US)</option>
+                        <option value="Gallons (CA)">Gallons (CA)</option>
+                        <option value="Liters">Liters</option>
+                      </optgroup>
+                    </select>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Locale</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="unitSettings.locale"
+                      [(ngModel)]="unitSettings.locale"
+                    >
+                      <optgroup label="">
+                        <option value="English">English</option>
+                        <option value="French">French</option>
+                      </optgroup>
+                    </select>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Weight Unit</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="unitSettings.weightUnit"
+                      [(ngModel)]="unitSettings.weightUnit"
+                    >
+                      <optgroup label="">
+                        <option value="Gram">Gram</option>
+                        <option value="Kilogram">Kilogram</option>
+                        <option value="Tonne">Tonne</option>
+                        <option value="Megatonne">Megatonne</option>
+                        <option value="Gigatonne">Gigatonne</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Temperature Unit</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="unitSettings.temperatureUnit"
+                      [(ngModel)]="unitSettings.temperatureUnit"
+                    >
+                      <optgroup label="">
+                        <option value="°C">°C</option>
+                        <option value="°F">°F</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body" id="asset_settings">
+              <header class="card-header">
+                <h2 class="card-title">Asset settings</h2>
+              </header>
+              <div class="form-horizontal form-bordered">
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Set Hard Breaking Parameters</label
+                    >
+                    <div class="slidecontainer">
+                      <input
+                        type="range"
+                        min="1"
+                        max="10"
+                        class="slider"
+                        id="hardBreakingParameters"
+                        (input)="
+                          onChangeHardBreakingParameters($event.target.value)
+                        "
+                        name="assetSettings.hardBreakingParameters"
+                      />
+                      <p>
+                        Value: <span id="hardBreakingParametersValue"></span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Set Hard Accelration Parameters
+                    </label>
+                    <div class="slidecontainer">
+                      <input
+                        type="range"
+                        min="1"
+                        max="10"
+                        class="slider"
+                        #ranger
+                        (input)="
+                          onChangeAccelrationParameters($event.target.value)
+                        "
+                      />
+                      <p>
+                        Value:
+                        <span id="hardAccelerationParametersValue"></span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Corner</label
+                    >
+                    <div class="slidecontainer">
+                      <input
+                        type="range"
+                        min="1"
+                        max="10"
+                        class="slider"
+                        id="corner"
+                        #ranger
+                        (input)="onChangeCorner($event.target.value)"
+                        name="assetSettings.corner"
+                      />
+                      <p>Value: <span id="cornerValue"></span></p>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Fuel Theft Alert Parameter</label
+                    >
+                    <div class="slidecontainer">
+                      <input
+                        type="range"
+                        min="1"
+                        max="10"
+                        class="slider"
+                        id="fuelTheftAlertParameters"
+                        #ranger
+                        (input)="
+                          onChangeFuelTheftAlertParameters($event.target.value)
+                        "
+                        name="assetSettings.fuelTheftAlertParametersValue"
+                      />
+                      <p>
+                        Value: <span id="fuelTheftAlertParametersValue"></span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body" id="driver_performance">
+              <header class="card-header">
+                <h2 class="card-title">Driver Performance</h2>
+              </header>
+              <div class="form-horizontal form-bordered">
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Average</label
+                    >
+                    <div class="input-group mb-3">
+                      <span class="input-group-prepend positionsta">
+                        <span class="input-group-text">%</span>
+                      </span>
+                      <input
+                        type="number"
+                        class="form-control"
+                        name="driverPerformance.average"
+                        [(ngModel)]="driverPerformance.average"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >HB</label
+                    >
+                    <div class="input-group mb-3">
+                      <span class="input-group-prepend positionsta">
+                        <span class="input-group-text">%</span>
+                      </span>
+                      <input
+                        type="number"
+                        class="form-control"
+                        name="driverPerformance.HB"
+                        [(ngModel)]="driverPerformance.HB"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >HA</label
+                    >
+                    <div class="input-group mb-3">
+                      <span class="input-group-prepend positionsta">
+                        <span class="input-group-text">%</span>
+                      </span>
+                      <input
+                        type="number"
+                        class="form-control"
+                        name="driverPerformance.HA"
+                        [(ngModel)]="driverPerformance.HA"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Corner</label
+                    >
+                    <div class="input-group mb-3">
+                      <span class="input-group-prepend positionsta">
+                        <span class="input-group-text">%</span>
+                      </span>
+                      <input
+                        type="number"
+                        class="form-control"
+                        name="driverPerformance.corner"
+                        [(ngModel)]="driverPerformance.corner"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >HOS Violations</label
+                    >
+                    <div class="input-group mb-3">
+                      <span class="input-group-prepend positionsta">
+                        <span class="input-group-text">%</span>
+                      </span>
+                      <input
+                        type="number"
+                        class="form-control"
+                        name="driverPerformance.HOSViolations"
+                        [(ngModel)]="driverPerformance.HOSViolations"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <button
+                  class="btn btn-dark mt-4 modal-confirm"
+                  (click)="addCarrier()"
+                >
+                  Submit
+                </button>
+                <button class="btn btn-default mt-4 modal-confirm">
+                  Cancel
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <!-- <p class="text text-danger" *ngIf="hasError">{{ Error }}</p> -->
+                <p class="text text-success" *ngIf="hasSuccess">
+                  {{ Success }}
+                </p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

@@ -1,0 +1,330 @@
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+
+    <!-- end: header -->
+
+
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body">
+            <header class="page-header">
+                <h2>{{title}}</h2>
+
+                <div class="right-wrapper text-right">
+                    <ol class="breadcrumbs">
+                        <li>
+                            <a href="/">
+                                <i class="fas fa-home"></i>
+                            </a>
+                        </li>
+                        <li><span>Vehicles</span></li>
+                        <li><span>{{title}}</span></li>
+                    </ol>
+
+
+                </div>
+            </header>
+
+
+
+            <div class="row">
+                <div class="col">
+                    <section class="card">
+                        <header class="card-header">
+
+
+                            <h2 class="card-title">Details</h2>
+                        </header>
+                        <div class="card-body">
+                            <form class="form-horizontal form-bordered" method="get">
+                                <div class="form-group row">
+                                    <!--<div class="col-lg-6">-->
+                                        <!--<label class="control-label text-lg-right pt-2" for="inputDefault">Vechile ID</label>-->
+                                        <!--<input type="text" class="form-control" [(ngModel)]="vehicleID" name="vehicle id">-->
+                                    <!--</div>-->
+                                    <div class="col-lg-12">
+                                        <label class="control-label text-lg-right pt-2" for="inputDefault">VIN</label>
+                                        <input type="text" class="form-control" id="inputDefault" [(ngModel)]="vin" name="vin">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label class="control-label text-lg-right text-dark text-4 pt-2" for="inputDefault">Vechile Info</label>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label class="control-label text-lg-right pt-2" for="inputDefault">Year</label>
+
+                                        <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="year" name="year">
+                                            <optgroup label="">
+                                                <option >1980</option>
+                                                <option >1981</option>
+                                                <option >1982</option>
+                                                <option >1983</option>
+                                                <option >1984</option>
+                                                <option >1985</option>
+                                                <option >1986</option>
+                                                <option >1987</option>
+                                                <option >1988</option>
+                                                <option >1989</option>
+                                                <option >1990</option>
+                                                <option >1991</option>
+                                                <option >1992</option>
+                                                <option >1993</option>
+                                                <option >1994</option>
+                                                <option >1995</option>
+                                                <option >1996</option>
+                                                <option >1997</option>
+                                                <option >1998</option>
+                                                <option >1999</option>
+                                                <option >2000</option>
+                                                <option >2001</option>
+                                                <option >2002</option>
+                                                <option >2003</option>
+                                                <option >2004</option>
+                                                <option >2005</option>
+                                                <option >2006</option>
+                                                <option >2007</option>
+                                                <option >2008</option>
+                                                <option >2009</option>
+                                                <option >2010</option>
+                                                <option >2011</option>
+                                                <option >2012</option>
+                                                <option >2013</option>
+                                                <option >2014</option>
+                                                <option >2015</option>
+                                                <option >2016</option>
+                                                <option >2017</option>
+                                                <option >2018</option>
+                                                <option >2019</option>
+                                                <option >2020</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="control-label text-lg-right pt-2" for="inputDefault">Make</label>
+                                        <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="make" name="make">
+                                            <optgroup label="">
+                                                <option value="1">Tesla</option>
+                                                <option >BMW</option>
+                                                <option >GM</option>
+                                                <option >Ford</option>
+                                                <option >Fiat</option>
+                                                <option >Daimler</option>
+                                                <option >Honda</option>
+                                                <option >Hyundai</option>
+                                                <option >Kia</option>
+                                                <option >Nissan</option>
+                                                <option >Rivian</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="control-label text-lg-right pt-2" for="inputDefault">Model</label>
+                                        <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="model" name="model">
+                                            <optgroup label="">
+                                                <option>ST8189LD</option>
+                                                <option >ZZ0189LD</option>
+                                                <option >FK36189D</option>
+                                                <option >IT55855G</option>
+                                                <option >POLD2132</option>
+                                                <option >QJ23659W</option>
+                                                <option >454564564</option>
+                                                <option >1231231456789</option>
+                                                <option >789798001</option>
+                                                <option >0416546503</option>
+                                                <option >KDF2355U</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label class="control-label text-lg-right pt-2" for="inputDefault">Fuel Type</label>
+                                        <input type="text" class="form-control"  [(ngModel)]="fuelType" name="fuel type">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label class="control-label text-lg-right text-dark text-4 pt-2" for="inputDefault">Licence</label>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label class="control-label text-lg-right pt-2" for="inputDefault">State</label>
+                                        <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="state" name="state">
+                                            <optgroup label="">
+                                                <option >California</option>
+                                                <option >Florida</option>
+                                                <option >New Jersey</option>
+                                                <option >New York</option>
+                                                <option >New Mexico</option>
+                                                <option >Texas</option>
+                                                <option >Washington</option>
+                                                <option >West Virginia</option>
+                                                <option >Nevada</option>
+                                                <option >Montana</option>
+
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="control-label text-lg-right pt-2" for="inputDefault">Plate Number</label>
+                                        <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="plateNumber" name="plate number">
+                                            <optgroup label="">
+                                                <option value="1">ST8189LD</option>
+                                                <option >ZZ0189LD</option>
+                                                <option >FK36189D</option>
+                                                <option >IT55855G</option>
+                                                <option >POLD2132</option>
+                                                <option >QJ23659W</option>
+                                                <option >454564564</option>
+                                                <option >1231231456789</option>
+                                                <option >789798001</option>
+                                                <option >0416546503</option>
+                                                <option >KDF2355U</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label class="control-label text-lg-right pt-2" for="inputDefault">Inspection Form</label>
+                                        <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="inspectionFormID" name="inspectionFormID">
+                                            <optgroup label="">
+                                                <option value="1">123</option>
+                                                <option >456</option>
+                                                <option >789</option>
+                                                <option >0123</option>
+                                                <option >456</option>
+                                                <option >789</option>
+                                                <option >0123</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label class="control-label text-lg-right text-dark text-4 pt-2" for="inputDefault">Quantum Info</label>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label class="control-label text-lg-right pt-2" for="inputDefault">Assigned Quantum</label>
+                                        <input class="form-control" id="inputDisabled" type="text" placeholder="Quantum has been assigned" disabled="" [(ngModel)]="quantum" name="UID">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <a class="qtumbtn mr-1 btn btn-success modal-with-zoom-anim ws-normal" [routerLink]="" (click)="quantumModal()"><i class="fas fa-plus"></i> Assign Quantum</a>
+                                    </div>
+
+
+
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-6">
+                                        <label class="control-label text-lg-right pt-2" for="inputDefault">Status</label>
+                                        <select data-plugin-selectTwo class="form-control populate" name="status" [(ngModel)]="quantumStatus">
+                                            <optgroup label="">
+                                                <option value="1">Enable</option>
+                                                <option >Disable</option>
+                                                <option >Out of Service</option>
+
+                                            </optgroup>
+                                        </select>
+                                        <button class="btn btn-dark mt-4 modal-confirm" (click)="addVehicle();">Submit</button>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="control-label text-lg-right pt-2" for="inputDefault">Last Service Time</label>
+                                        <input type="date" class="form-control"  [(ngModel)]="lastServiceTime" name="lastServiceTime">
+                                    </div>
+
+
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+
+                                        <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
+                                        <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
+                                    </div>
+                                </div>
+
+
+
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+
+
+    <div id="modalAnim" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <!--<h4 class="modal-title">Assign Quantum</h4>-->
+                </div>
+                <div class="modal-body">
+                    <h4 class="modal-title">Assign Quantum</h4>
+                    <select data-plugin-selectTwo class="form-control populate" [(ngModel)]="quantumSelected" name="quantum info" (ngModelChange)="onChange($event)">
+                        <option *ngFor="let q of quantumsList" value="{{q.quantumID}}">{{q.sNo}}</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--<div id="modalAnim" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">-->
+        <!--<section class="card">-->
+            <!--<header class="card-header">-->
+                <!--<h2 class="card-title">Assign Quantum</h2>-->
+            <!--</header>-->
+            <!--<div class="card-body">-->
+                <!--<div class="modal-wrapper">-->
+                    <!--<select data-plugin-selectTwo class="form-control populate" [(ngModel)]="vin" name="quantum info">-->
+                        <!--<optgroup label="">-->
+                            <!--<option value="1">Quantum 1</option>-->
+                            <!--<option >Quantum 2</option>-->
+                            <!--<option >Quantum 3</option>-->
+                            <!--<option value="2">Quantum 4</option>-->
+                            <!--<option value="2">Quantum 5</option>-->
+                        <!--</optgroup>-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<footer class="card-footer">-->
+                <!--<div class="row">-->
+                    <!--<div class="col-md-12 text-right">-->
+                        <!--<a class="btn btn-dark modal-confirm">Submit</a>-->
+                        <!--<button class="btn btn-default modal-dismiss">Cancel</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</footer>-->
+        <!--</section>-->
+    <!--</div>-->
+
+
+</section>

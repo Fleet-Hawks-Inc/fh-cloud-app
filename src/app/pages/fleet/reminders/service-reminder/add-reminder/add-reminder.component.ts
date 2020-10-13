@@ -5,7 +5,9 @@ import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import * as _ from 'lodash';
 declare var $: any;
+
 
 @Component({
   selector: 'app-add-reminder',
@@ -66,64 +68,69 @@ export class AddReminderComponent implements OnInit {
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
       this.groups = result.Items;
-      console.log('Groups Data', this.groups);
+     // console.log('Groups Data', this.groups);
     });
   }
   subscriberChange(event) {
-    console.log(event);
+    console.log('EVENT Data', event);
     this.finalSubscribers = [];
-    for (let i = 0; i < event.length; i++) {
-      if (event[i].userName !== undefined) {
-        // this.finalSubscribers.push(event[i].userName);
-        this.finalSubscribers.push({
-          subscriberType: 'user',
-          subscriberIdentification: event[i].userName
-        });
+   
+    // for (let i = 0; i < event.length; i++) {
+    //   if (event[i].userName !== undefined) {
+    //     // this.finalSubscribers.push(event[i].userName);
+    //     this.finalSubscribers.push({
+    //       subscriberType: 'user',
+    //       subscriberIdentification: event[i].userName
+    //     });
 
-      }
-      else {
-        // this.finalSubscribers.push(event[i].groupID);
-        this.finalSubscribers.push({
-          subscriberType: 'group',
-          subscriberIdentification: event[i].groupID
-        });
-      }
-    }
-    console.log('final array in for loop', this.finalSubscribers);
+    //   }
+    //   else {
+    //     // this.finalSubscribers.push(event[i].groupID);
+    //     this.finalSubscribers.push({
+    //       subscriberType: 'group',
+    //       subscriberIdentification: event[i].groupID
+    //     });
+    //   }
+    // }
+    //console.log('final array in for loop', this.finalSubscribers);
 
   }
   /*
   * Fetch Reminder details before updating
  */
-  fetchReminderByID() {
+ fetchReminderByID() {
     this.apiService
       .getData('reminders/' + this.reminderID)
       .subscribe((result: any) => {
         result = result.Items[0];
         console.log('Fetched data', result);
         for (let i = 0; i < result.subscribers.length; i++) {
-          console.log('block1 ');
           if (result.subscribers[i].subscriberType === 'user') {
-            console.log('block2 ');
-            let userName = result.subscribers[i].subscriberIdentification;
-            let isAvail = this.users.filter( e => e.userName === userName );
+            let subscribedUser = result.subscribers[i].subscriberIdentification;
+            let isAvail = _.filter(this.users, { userName: subscribedUser});
             console.log('isAval', isAvail);
-           if(isAvail.length > 0){
-             this.reminderData.subscribers.push(isAvail[0].userName);
-           }
+            if (isAvail.length > 0) {
+              this.reminderData.subscribers.push(isAvail[0]);
+            }
           } else {
-
+            let subscribedGroup = result.subscribers[i].subscriberIdentification;
+            let isAvail = _.filter(this.groups, { groupID: subscribedGroup});
+            console.log('isAval group', isAvail);
+            if (isAvail.length > 0) {
+              this.reminderData.subscribers.push(isAvail[0]);
+            }
           }
-          console.log('check', this.reminderData.subscribers);
+          console.log('Check in fetched', this.reminderData.subscribers);
         }
         this.reminderData['reminderID'] = this.reminderID;
         this.reminderData['reminderType'] = result.reminderType;
         this.reminderData['reminderIdentification'] = result.reminderIdentification;
-        this.reminderData['reminderTasks']['tasks'] = result.reminderTasks.tasks;
+        this.reminderData['reminderTasks']['task'] = result.reminderTasks.task;
         this.reminderData['reminderTasks']['repeatByTime'] = result.reminderTasks.repeatByTime;
         this.reminderData['reminderTasks']['repeatByOdometer'] = result.reminderTasks.repeatByOdometer;
         this.reminderData['reminderTasks']['repeatByDurationType'] = result.reminderTasks.repeatByDurationType;
         this.reminderData['sendEmail'] = result.sendEmail;
+        this.reminderData['subscribers'] = result.subscribers;
       });
 
   }
@@ -134,7 +141,7 @@ export class AddReminderComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    this.reminderData.subscribers = this.finalSubscribers;
+  //  this.reminderData.subscribers = this.finalSubscribers;
     console.log('Filled Reminder Data', this.reminderData);
     // console.log('subscribers', this.finalSubscribers);
     this.apiService.postData('reminders', this.reminderData).subscribe({
@@ -178,7 +185,7 @@ export class AddReminderComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     console.log('updated data', this.reminderData);
-    this.apiService.putData('serviceReminder', this.reminderData).subscribe({
+    this.apiService.putData('reminders', this.reminderData).subscribe({
       complete: () => { },
       error: (err) => {
         from(err.error)

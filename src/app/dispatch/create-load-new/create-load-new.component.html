@@ -1,0 +1,1115 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body">
+            <header class="page-header">
+                <h2>{{ title }}</h2>
+
+                <div class="right-wrapper text-right">
+                    <ol class="breadcrumbs">
+                        <li>
+                            <a href="/">
+                                <i class="fas fa-home"></i>
+                            </a>
+                        </li>
+                        <li><span>Vehicles</span></li>
+                        <li>
+                            <span>{{ title }}</span>
+                        </li>
+                    </ol>
+                </div>
+            </header>
+
+            <section class="card mb-4">
+                <div class="topnav">
+                    <ul>
+                        <li
+                                (click)="general()"
+                                [ngClass]="{ active: activeTab == 'general' }"
+                                class="btn"
+                        >
+                            General
+                        </li>
+                        <li
+                                (click)="pickUp()"
+                                [ngClass]="{ active: activeTab == 'pickUp' }"
+                                class="btn"
+                        >
+                            Pick Up
+                        </li>
+                        <li
+                                (click)="drop()"
+                                [ngClass]="{ active: activeTab == 'drop' }"
+                                class="btn"
+                        >
+                            Drop
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="row">
+                <div class="col">
+                    <section class="card">
+                        <div class="card-body">
+                            <form class="form-horizontal form-bordered" method="get">
+                                <div class="form-group row">
+                                    <div class="col-lg-12 text-right">
+                                        <p class="mb-0"><a href="#" class="blue1 font-weight-bold"><i class="fas fa-tools"></i> Load Setting</a></p>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-3 col-sm-12 col-xs-12 col-12 labelalign">
+                                                <label class="control-label font-weight-semibold mb-0 text-3 text-dark" for="inputDefault">Load Type</label>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                                <div class="radio-custom">
+                                                    <input type="radio" id="ftl" name="ftl" checked="">
+                                                    <label for="ftl">FTL</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                                <div class="radio-custom">
+                                                    <input type="radio" id="ltl" name="ltl">
+                                                    <label for="ltl">LTL</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Load Number</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <h4 class="mt-0 text-dark font-weight-bold text-4">Customer/Carrier/Broker</h4>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault"></label>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="radio-custom">
+                                                    <input type="radio" id="Customer" name="Customer" checked="">
+                                                    <label for="Customer">Customer</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="radio-custom">
+                                                    <input type="radio" id="Carrier" name="Carrier">
+                                                    <label for="Carrier">Carrier</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="radio-custom">
+                                                    <input type="radio" id="Broker" name="Broker">
+                                                    <label for="Broker">Broker</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Customer</label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <select data-plugin-selecttwo="" class="form-control select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="1" data-select2-id="3">Kristof</option>
+                                                        <option value="2">Harry</option>
+                                                        <option value="2">Brista</option>
+                                                        <option value="2">Carry</option>
+                                                        <option value="2">Laila</option>
+                                                        <option value="2">Manjot</option>
+                                                        <option value="2">Heera</option>
+                                                        <option value="2">Sagar</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="2" style="width: 355.75px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-k4w8-container"><span class="select2-selection__rendered" id="select2-k4w8-container" role="textbox" aria-readonly="true" title="Kristof">Kristof</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Account No</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="checkbox-custom checkbox-default">
+                                                    <input type="checkbox" id="checkboxExample1">
+                                                    <label for="checkboxExample1">CSA Eligible Load</label>
+                                                </div>
+                                                <p class="text-1 mb-0">
+                                                    (Customs Self Assessment Program For Canadian Cross Border)
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-3">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">CSA</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                &nbsp;
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Load Creation Date/Time</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="input-group">
+                                                    <input type="text" data-plugin-datepicker="" placeholder="day/month/year" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="hour:minute" id="timepicker">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Reference</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">C-TPAT</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group row divderrel">
+                                    <div class="midledriver">
+                                    </div>
+                                    <p class="mb-1 mt-1 mr-1 midleicon btn btn-default"><i class="fas fa-arrow-circle-right"></i></p>
+
+                                    <div class="col-lg-6">
+                                        <h4 class="mt-0 text-dark font-weight-bold text-4">Add Shipper</h4>
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Shipper</label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <select data-plugin-selecttwo="" class="form-control select2-hidden-accessible" data-select2-id="4" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="6">Manjot</option>
+                                                        <option value="2">Heera</option>
+                                                        <option value="2">Sagar</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="5" style="width: 355.75px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-xd67-container"><span class="select2-selection__rendered" id="select2-xd67-container" role="textbox" aria-readonly="true" title="Manjot">Manjot</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Pickup Location</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <select data-plugin-selecttwo="" class="form-control select2-hidden-accessible" data-select2-id="7" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="9">Calgary, Alberta</option>
+                                                        <option value="2">Delta, BC</option>
+                                                        <option value="2">Winnipeg, Manitoba</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="8" style="width: 355.75px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-9c0x-container"><span class="select2-selection__rendered" id="select2-9c0x-container" role="textbox" aria-readonly="true" title="Calgary, Alberta">Calgary, Alberta</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Pickup Date/Time</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="input-group">
+                                                    <input type="text" data-plugin-datepicker="" placeholder="day/month/year" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="hour:minute" id="timepicker2">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Pickup Instruction</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <textarea class="form-control" rows="3" id="textareaDefault" style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
+                                            </div>
+                                            <div class="col-lg-3">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Contact Person at PickUp</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Phone</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">BOL</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="fileupload fileupload-new" data-provides="fileupload">
+                                                    <div class="input-append">
+                                                        <div class="uneditable-input">
+                                                            <i class="fas fa-file fileupload-exists"></i>
+                                                            <span class="fileupload-preview"></span>
+                                                        </div>
+                                                        <span class="btn btn-default btn-file">
+                                                <span class="fileupload-exists">Change</span>
+                                                <span class="fileupload-new">Select file</span>
+                                                <input type="file">
+                                                </span>
+                                                        <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Reference</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Notes</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Temperature Required</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input type="text" class="form-control" placeholder="From" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="10" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="12">°C</option>
+                                                        <option value="2">°F</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="11" style="width: 98.5833px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-7tze-container"><span class="select2-selection__rendered" id="select2-7tze-container" role="textbox" aria-readonly="true" title="°C">°C</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input type="text" class="form-control" placeholder="To" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="13" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="15">°C</option>
+                                                        <option value="2">°F</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="14" style="width: 98.5833px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-iue0-container"><span class="select2-selection__rendered" id="select2-iue0-container" role="textbox" aria-readonly="true" title="°C">°C</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 col-sm-12 col-xs-12 col-12 labelalign">
+                                                <label class="control-label font-weight-semibold mb-0 text-3 text-dark" for="inputDefault">Will Driver Load ?</label>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                                <div class="radio-custom">
+                                                    <input type="radio" id="loadyes" name="loadyes" checked="">
+                                                    <label for="radioExample1">Yes</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                                <div class="radio-custom">
+                                                    <input type="radio" id="loadno" name="loadno">
+                                                    <label for="radioExample2">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="divcenter mt-2">
+                                            <p class="mb-1"><a href="#" class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Save</a></p>
+                                            <p class="mb-1"><a href="#" class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Save and Add Another</a></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <h4 class="mt-0 text-dark font-weight-bold text-4">Add Receiver</h4>
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Receiver</label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <select data-plugin-selecttwo="" class="form-control select2-hidden-accessible" data-select2-id="16" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="18">Manjot</option>
+                                                        <option value="2">Heera</option>
+                                                        <option value="2">Sagar</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="17" style="width: 355.75px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-hsdy-container"><span class="select2-selection__rendered" id="select2-hsdy-container" role="textbox" aria-readonly="true" title="Manjot">Manjot</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Drop Off Location</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <select data-plugin-selecttwo="" class="form-control select2-hidden-accessible" data-select2-id="19" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="21">Calgary, Alberta</option>
+                                                        <option value="2">Delta, BC</option>
+                                                        <option value="2">Winnipeg, Manitoba</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="20" style="width: 355.75px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-054t-container"><span class="select2-selection__rendered" id="select2-054t-container" role="textbox" aria-readonly="true" title="Calgary, Alberta">Calgary, Alberta</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Delivery Date/Time</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="input-group">
+                                                    <input type="text" data-plugin-datepicker="" placeholder="day/month/year" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="hour:minute" id="timepicker2">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Delivery Instruction</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <textarea class="form-control" rows="3" id="textareaDefault" style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
+                                            </div>
+                                            <div class="col-lg-3">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Contact Person at Delivery</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Phone</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Reference</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Notes</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Temperature Required</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input type="text" class="form-control" placeholder="From" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="22" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="24">°C</option>
+                                                        <option value="2">°F</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="23" style="width: 98.5833px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-7hxh-container"><span class="select2-selection__rendered" id="select2-7hxh-container" role="textbox" aria-readonly="true" title="°C">°C</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input type="text" class="form-control" placeholder="To" id="inputDefault">
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="25" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="27">°C</option>
+                                                        <option value="2">°F</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="26" style="width: 98.5833px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-1tk1-container"><span class="select2-selection__rendered" id="select2-1tk1-container" role="textbox" aria-readonly="true" title="°C">°C</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 col-sm-12 col-xs-12 col-12 labelalign">
+                                                <label class="control-label font-weight-semibold mb-0 text-3 text-dark" for="inputDefault">Will Driver Unload ?</label>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                                <div class="radio-custom">
+                                                    <input type="radio" id="unloadyes" name="unloadyes" checked="">
+                                                    <label for="radioExample1">Yes</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                                <div class="radio-custom">
+                                                    <input type="radio" id="unloadno" name="unloadno">
+                                                    <label for="radioExample2">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="divcenter mt-2">
+                                            <p class="mb-1"><a href="#" class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Save</a></p>
+                                            <p class="mb-1"><a href="#" class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Save and Add Another</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Shipper and reciver end -->
+
+                                <div class="form-group row">
+
+                                    <div class="col-lg-6">
+                                        <h4 class="mt-0 text-dark font-weight-bold text-4">Map Assets</h4>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Vehicle Information</label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="28" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="1" data-select2-id="30">Ford F-650</option>
+                                                        <option value="2">Peterbilt 386</option>
+                                                        <option value="2">G-3 Resources LLC Truck</option>
+                                                        <option value="2">7400 SBA Dump Truck</option>
+                                                        <option value="2">Kenworth T660</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="29" style="width: 355.75px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-uuj5-container"><span class="select2-selection__rendered" id="select2-uuj5-container" role="textbox" aria-readonly="true" title="Ford F-650">Ford F-650</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3">
+
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Assets</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="31" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="33">Asset 1</option>
+                                                        <option value="2">Asset 2</option>
+                                                        <option value="2">Asset 3</option>
+                                                        <option value="1">Asset 4</option>
+                                                        <option value="2">Asset 5</option>
+                                                        <option value="2">Asset 6</option>
+                                                        <option value="2">Asset 7</option>
+                                                        <option value="2">Asset 8</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="32" style="width: 355.75px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-4u7j-container"><span class="select2-selection__rendered" id="select2-4u7j-container" role="textbox" aria-readonly="true" title="Asset 1">Asset 1</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Selected Assets</label>
+                                            </div>
+                                            <div class="col-lg-6">
+
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Asset 1 <i class="fas fa-times"></i></button>
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Asset No 2nd <i class="fas fa-times"></i></button>
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Asset Number 3 <i class="fas fa-times"></i></button>
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">4th Asset <i class="fas fa-times"></i></button>
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">5 No Asset Detail <i class="fas fa-times"></i></button>
+                                            </div>
+                                            <div class="col-lg-3">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="col-lg-12">
+                                            <h4 class="mt-0 text-dark font-weight-bold text-4">Assign Load</h4>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Drivers</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="34" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="36">Brista</option>
+                                                        <option value="2">Carry</option>
+                                                        <option value="2">Laila</option>
+                                                        <option value="2">Manjot</option>
+                                                        <option value="2">Heera</option>
+                                                        <option value="2">Sagar</option>
+                                                        <option value="1">Kristof</option>
+                                                        <option value="2">Harry</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="35" style="width: 355.75px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-jvn8-container"><span class="select2-selection__rendered" id="select2-jvn8-container" role="textbox" aria-readonly="true" title="Brista">Brista</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Selected Drivers</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Manjot <i class="fas fa-times"></i></button>
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Heera <i class="fas fa-times"></i></button>
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Harry <i class="fas fa-times"></i></button>
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Sagar <i class="fas fa-times"></i></button>
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Laila <i class="fas fa-times"></i></button>
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Kristof <i class="fas fa-times"></i></button>
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Brista <i class="fas fa-times"></i></button>
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Jhon <i class="fas fa-times"></i></button>
+                                                <button type="button" onclick="this.style.visibility= 'hidden';" class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Gurjot <i class="fas fa-times"></i></button>
+                                            </div>
+
+                                            <div class="col-lg-3 mt-1">
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <div class="col-lg-12">
+                                        <h4 class="mt-0 text-dark font-weight-bold text-4">Freight Details</h4>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-2">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Estimated Length Required</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Estimated Weight Required</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Quantity</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">L x W x H</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+
+                                            <div class="col-lg-1">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">FC</label>
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="37" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="39">Na</option>
+                                                        <option value="2">50</option>
+                                                        <option value="2">55</option>
+                                                        <option value="2">60</option>
+                                                        <option value="2">65</option>
+                                                        <option value="2">70</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="38" style="width: 98.5667px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-lbp1-container"><span class="select2-selection__rendered" id="select2-lbp1-container" role="textbox" aria-readonly="true" title="Na">Na</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+
+                                            <div class="col-lg-1s">
+                                                <label class="control-label font-weight-semibold labelmt text-2 text-dark" for="inputDefault">Point of Contact</label>
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="40" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="42">Yes</option>
+                                                        <option value="2">No</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="41" style="width: 90.9px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-58dz-container"><span class="select2-selection__rendered" id="select2-58dz-container" role="textbox" aria-readonly="true" title="Yes">Yes</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Cargo Value</label>
+                                                <div class="input-group mb-3">
+                                             <span class="input-group-prepend positionsta">
+                                             <span class="input-group-text pt-0 pb-0">$</span>
+                                             </span>
+                                                    <input type="text" class="form-control" placeholder="Username">
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Another Line</a>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group row">
+
+                                    <div class="col-lg-6">
+                                        <h4 class="mt-0 text-dark font-weight-bold text-4">Additional Details</h4>
+
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="checkbox-custom checkbox-default">
+                                                    <input type="checkbox" id="droptrailer">
+                                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="droptrailer">Drop Trailer</label>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-lg-3">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Cargo Type</label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="43" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="1" data-select2-id="45">Ford F-650</option>
+                                                        <option value="2">Peterbilt 386</option>
+                                                        <option value="2">G-3 Resources LLC Truck</option>
+                                                        <option value="2">7400 SBA Dump Truck</option>
+                                                        <option value="2">Kenworth T660</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="44" style="width: 355.75px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-iz85-container"><span class="select2-selection__rendered" id="select2-iz85-container" role="textbox" aria-readonly="true" title="Ford F-650">Ford F-650</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3">
+
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Trailer Group</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="46" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="48">VAN</option>
+                                                        <option value="2">FLAT</option>
+                                                        <option value="2">DUBL</option>
+                                                        <option value="1">LOWB</option>
+                                                        <option value="2">STEP</option>
+                                                        <option value="2">CONT</option>
+                                                        <option value="2">REFR</option>
+                                                        <option value="2">EXPD</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="47" style="width: 355.75px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-s19p-container"><span class="select2-selection__rendered" id="select2-s19p-container" role="textbox" aria-readonly="true" title="VAN">VAN</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3">
+
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Trailer Type</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="49" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="51">Individual</option>
+                                                        <option value="2">Group</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="50" style="width: 355.75px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-bfxa-container"><span class="select2-selection__rendered" id="select2-bfxa-container" role="textbox" aria-readonly="true" title="Individual">Individual</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-3">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Load Type</label>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="checkbox-custom checkbox-default">
+                                                    <input type="checkbox" id="HazMat">
+                                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="HazMat">HazMat</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3">
+                                                <div class="checkbox-custom checkbox-default">
+                                                    <input type="checkbox" id="Load">
+                                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="Load">Oversize Load</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <div class="checkbox-custom checkbox-default">
+                                                    <input type="checkbox" id="Reefer">
+                                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="Reefer">Reefer</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <div class="checkbox-custom checkbox-default">
+                                                    <input type="checkbox" id="Tanker">
+                                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="Tanker">Tanker</label>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-lg-6">
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+
+                                    <div class="col-lg-8">
+                                        <h4 class="mt-0 text-dark font-weight-bold text-4">Charges</h4>
+
+
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Hauling Fee</label>
+                                            </div>
+                                            <div class="col-lg-3 col-md-12">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="52" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="1" data-select2-id="54">Flat Fee</option>
+                                                        <option value="2">Per Mile</option>
+                                                        <option value="2">Per Ton</option>
+                                                        <option value="2">Per Hundred Wt.</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="53" style="width: 227.167px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-bgu4-container"><span class="select2-selection__rendered" id="select2-bgu4-container" role="textbox" aria-readonly="true" title="Flat Fee">Flat Fee</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="input-group mb-3">
+                                             <span class="input-group-prepend positionsta">
+                                             <span class="input-group-text pt-0 pb-0">$</span>
+                                             </span>
+                                                    <input type="text" class="form-control" placeholder="0.00">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <p class="text-right">$0.00</p>
+                                            </div>
+
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Fuel Surcharge</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="55" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="57">Flat Fee</option>
+                                                        <option value="2">Percent</option>
+                                                        <option value="2">Per Mile</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="56" style="width: 227.167px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-qhqb-container"><span class="select2-selection__rendered" id="select2-qhqb-container" role="textbox" aria-readonly="true" title="Flat Fee">Flat Fee</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="input-group mb-3">
+                                             <span class="input-group-prepend positionsta">
+                                             <span class="input-group-text pt-0 pb-0">$</span>
+                                             </span>
+                                                    <input type="text" class="form-control" placeholder="0.00">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <p class="text-right">$0.00</p>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Accessorial Fee</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="58" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="60">Stop Off</option>
+                                                        <option value="2">Lumper</option>
+                                                        <option value="2">Detention</option>
+                                                        <option value="2">Tarp</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="59" style="width: 227.167px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-k2fw-container"><span class="select2-selection__rendered" id="select2-k2fw-container" role="textbox" aria-readonly="true" title="Stop Off">Stop Off</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="input-group mb-3">
+                                             <span class="input-group-prepend positionsta">
+                                             <span class="input-group-text pt-0 pb-0">$</span>
+                                             </span>
+                                                    <input type="text" class="form-control" placeholder="0.00">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <p class="text-right">$0.00</p>
+                                            </div>
+                                        </div>
+                                        <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Accessorial Fee</a>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 labelalign">
+                                                <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Accessorial Deduction</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="61" tabindex="-1" aria-hidden="true">
+                                                    <optgroup label="">
+                                                        <option value="2" data-select2-id="63">Stop Off</option>
+                                                        <option value="2">Lumper</option>
+                                                        <option value="2">Detention</option>
+                                                        <option value="2">Tarp</option>
+                                                    </optgroup>
+                                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="62" style="width: 227.167px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-wqex-container"><span class="select2-selection__rendered" id="select2-wqex-container" role="textbox" aria-readonly="true" title="Stop Off">Stop Off</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="input-group mb-3">
+                                             <span class="input-group-prepend positionsta">
+                                             <span class="input-group-text pt-0 pb-0">$</span>
+                                             </span>
+                                                    <input type="text" class="form-control" placeholder="0.00">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <p class="text-right">$0.00</p>
+                                            </div>
+                                        </div>
+                                        <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Accessorial Deduction</a>
+
+                                        <div class="row mt-3">
+
+                                            <div class="col-lg-9 bordtop pt-1">
+                                                <h5 class="text-right font-weight-semibold text-4 text-dark">Sub Total</h5>
+                                            </div>
+                                            <div class="col-lg-3 bordtop pt-1">
+                                                <p class="text-right">$0.00</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+
+                                            <div class="col-lg-9 pt-1 bordtop text-right">
+                                                <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Amount</a>
+                                            </div>
+                                            <div class="col-lg-3 bordtop pt-1">
+                                                <p class="text-right">$0.00</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+
+                                            <div class="col-lg-9 bordtop pt-1">
+                                                <h5 class="text-right font-weight-semibold text-4 text-dark">Total Amount</h5>
+                                            </div>
+                                            <div class="col-lg-3 bordtop pt-1">
+                                                <p class="text-right">$0.00</p>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="col-lg-4">
+
+                                        <div class="col-lg-12 bordall">
+                                            <h5 class="font-weight-semibold text-4 text-dark">Miles</h5>
+                                            <h5 class="text-4 text-dark mb-3">Calculated Using</h5>
+
+
+                                            <div class="col-lg-12 mb-3">
+                                                <div class="radio-custom">
+                                                    <input type="radio" id="gmaps" name="Customer" checked="">
+                                                    <label for="radioExample1">Google Maps</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-12 mb-3">
+                                                <div class="radio-custom">
+                                                    <input type="radio" id="Pcmiles" name="Customer" checked="">
+                                                    <label for="radioExample1">Pcmiles</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-12 mb-3">
+                                                <div class="radio-custom">
+                                                    <input type="radio" id="manual" name="Customer" checked="">
+                                                    <label for="radioExample1">Manual</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 mb-3">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Total Miles</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12 pl-0 mt-3">
+                                            <label class="control-label font-weight-bold text-4 text-dark" for="inputDefault">Remarks</label>
+                                            <textarea class="form-control" rows="10" id="textareaDefault"></textarea>
+                                        </div>
+
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <a href="#" class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a> <button class="btn btn-dark mt-1 modal-confirm">Create Load</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
