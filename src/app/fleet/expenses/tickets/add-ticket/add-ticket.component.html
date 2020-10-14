@@ -1,0 +1,165 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs pr-3">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li>
+              <span>Expenses</span>
+            </li>
+            <li>
+              <a routerLink="/fleet/expenses/tickets/Tickets-List">
+                <span>Ticket List</span>
+              </a>
+            </li>
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">Ticket</h2>
+            </header>
+            <div class="card-body">
+              <form class="form-horizontal form-bordered" method="get" id="form_" name="form">
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                    >Driver</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="userName"
+                      [(ngModel)]="userName">
+                      <optgroup label="">
+                        <option *ngFor="let user of users" value="{{user.userName}}">{{user.userName}}</option>
+                      </optgroup>
+                    </select>
+
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                    >Ticket Number</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="ticketNumber"
+                      [(ngModel)]="ticketNumber"
+                    required />
+
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                    >Ticket Type</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="ticketTypeID"
+                      [(ngModel)]="ticketTypeID">
+                      <optgroup label="">
+                        <option *ngFor="let ticketType of ticketTypes" value="{{ticketType.typeID}}">{{ticketType.typeName}}</option>
+                      </optgroup>
+                    </select>
+
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right text-dark text-4 pt-2"
+                      for="inputDefault"
+                    >Value</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="ticketValue"
+                      [(ngModel)]="ticketValue"
+                      required
+                    />
+
+                  </div>
+                  <div class="col-lg-8">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                    >Description</label
+                    >
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      name="description"
+                      [(ngModel)]="description"
+
+                    ></textarea>
+
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                    >Officer Details</label
+                    >
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      id="textareaDefault"
+                      name="officeDetails"
+                      [(ngModel)]="officeDetails"
+
+                    ></textarea>
+
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button class="btn btn-dark mt-4 modal-confirm" (click)="addTicket()" type="submit">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

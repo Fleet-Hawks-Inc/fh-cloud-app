@@ -1,0 +1,194 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>Invoice Aging Report</h2>
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs pr-3">
+            <li>
+              <a href="index.html">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li><span>Invoice Aging Report</span></li>
+          </ol>
+        </div>
+      </header>
+
+      <section class="card mb-4">
+        <div class="card-body">
+          <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-12">
+              <p class="mb-0">
+                This report is generated as of <strong>06/01/2020</strong>
+              </p>
+            </div>
+            <div class="col-lg-6 text-right col-md-12">
+              <a href="#" class="mb-1 mt-1 mr-1 btn-sm btn btn-dark"
+                ><i class="fas fa-print"></i> Print</a
+              >
+            </div>
+
+            <div class="col-lg-6 col-md-12 mt-4">
+              <div class="row pb-3 bgcol1">
+                <div class="col-lg-4 col-md-12 mt-4">
+                  <div class="maindriverbox">
+                    <div class="driverbar">
+                      <h3
+                        class="pull-left mt-0 mb-0 text-5 font-weight-semibold"
+                      >
+                        Total Receivable
+                      </h3>
+                    </div>
+                    <div class="">
+                      <h1 class="text-6 text-dark font-weight-bold mt-0 mb-0">
+                        $450.00
+                      </h1>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12 mt-4">
+                  <div class="maindriverbox">
+                    <div class="driverbar">
+                      <h3
+                        class="pull-left mt-0 mb-0 text-5 font-weight-semibold"
+                      >
+                        On/Before Due
+                      </h3>
+                    </div>
+                    <div class="">
+                      <h1 class="text-6 text-dark font-weight-bold mt-0 mb-0">
+                        $450.00
+                      </h1>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12 mt-4">
+                  <div class="maindriverbox">
+                    <div class="driverbar">
+                      <h3
+                        class="pull-left mt-0 mb-0 text-5 font-weight-semibold"
+                      >
+                        Past Due
+                      </h3>
+                    </div>
+                    <div class="">
+                      <h1 class="text-6 text-dark font-weight-bold mt-0 mb-0">
+                        $0.00
+                      </h1>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <div class="card-body">
+              <table
+                class="table table-bordered table-striped mb-0"
+                id="datatable-default"
+              >
+                <thead>
+                  <tr class="bgcol2">
+                    <th class="text-2" rowspan="2">Bill To</th>
+                    <th class="text-2" rowspan="2">Total Receivables</th>
+                    <th class="text-2" rowspan="2">On/Before Due</th>
+                    <th colspan="4" class="text-center">Past Due</th>
+                    <th class="text-2" rowspan="2">Action</th>
+                  </tr>
+
+                  <tr class="bgcol2">
+                    <th class="text-2">1-30 Days</th>
+                    <th class="text-2">31-60 Days</th>
+                    <th class="text-2">61-90 Days</th>
+                    <th class="text-2">Over 90 Days</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Ilod</td>
+                    <td>$450.00</td>
+                    <td>$450.00</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+
+                    <td class="actions">
+                      <a href="#" title="view receive payment"
+                        ><i class="fas fa-hand-holding-usd"></i
+                      ></a>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Ilod</td>
+                    <td>$450.00</td>
+                    <td>$450.00</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+
+                    <td class="actions">
+                      <a href="#" title="view receive payment"
+                        ><i class="fas fa-hand-holding-usd"></i
+                      ></a>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Ilod</td>
+                    <td>$450.00</td>
+                    <td>$450.00</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+
+                    <td class="actions">
+                      <a href="#" title="view receive payment"
+                        ><i class="fas fa-hand-holding-usd"></i
+                      ></a>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Ilod</td>
+                    <td>$450.00</td>
+                    <td>$450.00</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+
+                    <td class="actions">
+                      <a href="#" title="view receive payment"
+                        ><i class="fas fa-hand-holding-usd"></i
+                      ></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

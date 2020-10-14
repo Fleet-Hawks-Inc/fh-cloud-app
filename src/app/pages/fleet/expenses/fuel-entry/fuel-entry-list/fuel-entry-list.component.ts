@@ -87,50 +87,8 @@ export class FuelEntryListComponent implements OnInit {
     console.log(this.formattedToDate);
     return;
   }
-  editFuelEntry = () => {
-    if (this.fuelCheckCount === 1) {
-      this.router.navigateByUrl('/fleet/expenses/fuel/Edit-Fuel-Entry/' + this.selectedEntryID);
-    } else {
-      this.toastr.error('Please select only one entry!');
-    }
-  }
-  // deleteFuelEntry = () => {
-  //   const selectedEntries = this.fuelList.filter((product: any) => product.checked).map((p: any) => p.entryID);
-  //   if (selectedEntries && selectedEntries.length > 0) {
-  //     for (const i of selectedEntries) {
-  //       this.apiService.deleteData('fuelEntries/' + i).subscribe((result: any) => {
-  //         this.fuelEntries();
-  //         this.toastr.success('Fuel Entry Deleted Successfully!');
-  //       });
-  //     }
-  //   }
-  // }
- // Count Checkboxes
- checkboxCount = (arr) => {
-  this.fuelCheckCount = 0;
-  arr.forEach(item => {
-    console.log('item', item);
-    console.log('array', arr);
-    if (item.checked === true) {
-      this.selectedEntryID = item.entryID;
-      this.fuelCheckCount = this.fuelCheckCount + 1;
-      console.log('check', arr.length, this.fuelCheckCount);
-      if (arr.length === this.fuelCheckCount) {
-        this.headCheckbox = true;
-      }
-    } else {
-      this.headCheckbox = false;
-    }
-  });
-}
-// checked-unchecked all checkboxes
-checkuncheckall = (ev) => {
-  if (ev.target.checked === true) {
-    this.isChecked = true;
-  } else {
-    this.isChecked = false;
-  }
-}
+ 
+
   deleteFuelEntry(entryID) {
     /******** Clear DataTable ************/
     if ($.fn.DataTable.isDataTable('#datatable-default')) {
@@ -140,8 +98,9 @@ checkuncheckall = (ev) => {
     this.apiService
       .deleteData('fuelEntries/' + entryID)
       .subscribe((result: any) => {
+     //   this.spinner.show();
         this.fuelEntries();
-        this.toastr.success('Fuel Entry Deleted Successfully!');
+        this.toastr.success('Fuel Entry Deleted Successfully!');        
       });
   }
 

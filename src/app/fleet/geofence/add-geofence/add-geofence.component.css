@@ -1,0 +1,19 @@
+.brbtmgf{border-bottom: 0px !important;}
+.geofence-search {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    z-index: 9999;
+    width: 20rem;
+}
+.geofence-search ul{
+    list-style: none;
+}
+.geofence-search a {
+    text-decoration: none;
+    transition: all 0.3s linear 0s;
+}
+.geofence-search a:hover {
+    background-color: #363636;
+    color: #fff;
+}

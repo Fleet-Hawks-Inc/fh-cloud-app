@@ -1,0 +1,219 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner>
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+  
+    <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->
+  
+      <section role="main" class="content-body pl-0 pr-0 pt-0">
+        <header class="page-header">
+           <div class="row pr-5 " style="padding-top:10px;">
+              <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                 Asset Details                    
+              </div>
+           </div>
+        </header>
+        <div class="row">
+           <div class="col">
+              <div class="card-body text-dark">
+                 <form class="form-horizontal form-bordered" method="get">
+                 <div class=" row">
+                       <div class="col-lg-6">
+                          <div class="row">
+                             <div class="col-lg-12">
+                                <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Asset Details</label>
+                             </div>
+                             <div class="col-lg-12">
+                              <table class="table table-bordered table-responsive-lg" *ngFor="let item of assetData">
+                                 <tbody>
+                                    <tr>
+                                       <td width="40%" class="back-color-gray font-weight-bold">Asset Name/Number</td>
+                                       <td  width="60%">{{item.assetIdentification}} </td>
+                                    </tr>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">VIN</td>
+                                       <td>{{item.VIN}}</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Type</td>
+                                       <td>{{item.assetDetails.assetType}}</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Licence Plate Number &  Licence State</td>
+                                       <td>{{item.assetDetails.licencePlateNumber}} & {{item.assetDetails.licenceStateID}}</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Year, Make & Model</td>
+                                       <td>{{item.assetDetails.year}}, {{item.assetDetails.manufacturer}} & {{item.assetDetails.model}}</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Length</td>
+                                       <td>{{item.assetDetails.length}} {{item.assetDetails.lengthUnit}}</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Axles</td>
+                                       <td>{{item.assetDetails.axle}}</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">GVWR</td>
+                                       <td>{{item.assetDetails.GVWR}} {{item.assetDetails.GVWR_Unit}}</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">GAWR</td>
+                                       <td>{{item.assetDetails.GAWR}} {{item.assetDetails.GAWR_Unit}}</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Ownership</td>
+                                       <td>{{item.assetDetails.ownerShip}}</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">
+                                          Notes
+                                       </td>
+                                       <td>{{item.assetDetails.remarks}}</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                             </div>
+                          </div>
+                          <div class="row mt-3">
+                           <div class="col-lg-12">
+                              <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Insurance Details</label>
+                           </div>
+                           <div class="col-lg-12">
+                            <table class="table table-bordered table-responsive-lg" *ngFor="let item of assetData">
+                               <tbody>
+                                  <tr>
+                                     <td width="40%" class="back-color-gray font-weight-bold">Date of Issue</td>
+                                     <td  width="60%">{{item.insuranceDetails.dateOfIssue}} </td>
+                                  </tr>
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Date of Expiry</td>
+                                     <td>{{item.insuranceDetails.dateOfExpiry}}</td>
+                                  </tr>
+                                  
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Premium Amount</td>
+                                     <td>{{item.insuranceDetails.premiumAmount}} {{item.insuranceDetails.premiumCurrency}}</td>
+                                  </tr>
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Reminder Before Expiry</td>
+                                     <td>{{item.insuranceDetails.reminderBefore}} {{item.insuranceDetails.reminderBeforeUnit}}</td>
+                                  </tr>
+                                  
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Vendor</td>
+                                     <td>{{item.insuranceDetails.vendor}}</td>
+                                  </tr>
+                               </tbody>
+                            </table>
+                           </div>
+                        </div>
+                       </div>
+                       <div class="col-lg-6">
+                          <div class="row">
+                             <div class="col-lg-12">
+                                <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Device Specific Details</label>
+                             </div>
+                             <div class="col-lg-12">
+                              <table class="table table-striped table-bordered">
+                                 <thead>
+                                    <tr>
+                                       <th>Device SN</th>
+                                       <th>Device Name</th>
+                                       <th>Battery</th>
+                                       <th>Device Location</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr>
+                                       <td>2100</td>
+                                       <td><a class="text-info" href="devices-details1.php">Device Name</a></td>
+                                       <td>50%</td>
+                                       <td>Brampton</td>
+                                    </tr>
+                                    <tr>
+                                       <td>2100</td>
+                                       <td><a class="text-info" href="devices-details1.php">Device Name</a></td>
+                                       <td>50%</td>
+                                       <td>Brampton</td>
+                                    </tr>
+                                    <tr>
+                                       <td>2100</td>
+                                       <td><a class="text-info" href="devices-details1.php">Device Name</a></td>
+                                       <td>50%</td>
+                                       <td>Brampton</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                             </div>
+                             <div class="col-lg-12">
+                                <div class="vehicle-common-box p-3">
+                                   <div class="row">
+                                      <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label></div>
+                                   </div>
+                                   <hr class="solid mt-3">
+                                   <div class="row">
+                                      <div class="col-lg-6" *ngFor="let item of assetsImages;">
+                                         <div class="vehicle-photo-box">
+                                            <img [src]="item" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
+                                            <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
+                                            <hr class="m-3">
+                                            <div class="row">
+                                               <div class="col-lg-8">Name of the Image</div>
+                                               <div class="col-lg-4 text-right">
+                                                  <div class="btn-group flex-wrap mx-2">
+                                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                        <a class="dropdown-item text-1" href="">Crop/Rotate Image</a>
+                                                        <a class="modal-with-form dropdown-item text-1" href="#editPhoto">Edit</a>
+                                                        <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                                     </div>
+                                                  </div>
+                                               </div>
+                                            </div>
+                                         </div>
+                                      </div>
+                                      
+                                   </div>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-6">
+                           <div class="row">
+                              <div class="col-lg-12"><label class="control-label font-weight-bold text-3">Reefer Temperature Graph:</label><span
+                                    class="text-info"> 7576</span></div>
+                              <div class="col-lg-12">
+                                 <!-- Morris: Line -->
+                                 <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
+                                    [legend]="chartLegend" [chartType]="chartType">
+                                 </canvas>
+                              
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-6">
+                        <label class="control-label font-weight-bold text-3">Map Location:</label>
+                              <div id="map" style="height: 400px;width: 100%;"></div>
+                        </div>
+                     </div>
+                
+                 </form>
+              </div>
+           </div>
+        </div>
+     </section>
+  
+    </div>
+  </section>
+  

@@ -187,29 +187,28 @@
             <div class="col">
                 <section class="card">
                     <div class="card-body">
-                        <table class="table table-bordered table-responsive-lg table-striped mb-0" id="simple-table">
+                        <table class="table table-bordered table-responsive-lg table-striped mb-0" id="datatable-default">
                             <thead>
                                 <tr>                                 
                                     <th>Vehicle</th>
-                                    <th>Service Task & Schedule</th>
+                                    <th>Service Task </th>
                                     <th>Next Due</th>
                                     <th>Last Completed</th>
-                                    <!-- <th>Compliance</th> -->
                                     <th>Subscribers</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of remindersData;">
-                                    <td routerLink="/fleet/reminders/service-reminder/detail/{{item.entryID}}">{{ vehicleIdentification }}</td>
+                                    <td routerLink="/fleet/reminders/service-reminder/detail/{{item.entryID}}">{{item.reminderIdentification}}</td>
                                     <td routerLink="/fleet/reminders/service-reminder/detail/{{item.entryID}}"><span class="text-danger font-weight-bold font-size-12">Overdue</span><br>
-                                        <span class="font-weight-bold" title="Service Task" >{{item.serviceTasks}}</span><br>
-                                        <span class="font-size-12">Every {{item.repeatByTime}} {{item.repeatByDurationType}} or {{item.repeatByOdometer}} miles</span></td>
-                                    <td routerLink="/fleet/reminders/service-reminder/detail/{{item.entryID}}"><span>3 months from now</span> 10,000 miles from now</td>
-                                    <td routerLink="/fleet/reminders/service-reminder/detail/{{item.entryID}}">Jun 1,2020</td>
-                                    <!-- <td>Not Available</td> -->
+                                        <span class="font-weight-bold" title="Service Task" >{{item.reminderTasks.task}}</span><br>
+                                    </td> 
+                                    <td routerLink="/fleet/reminders/service-reminder/detail/{{item.entryID}}"><span>{{item.reminderTasks.remindByDays}} Days from now</span><br> {{item.reminderTasks.odometer}}miles from now</td>
+                                    <td routerLink="/fleet/reminders/service-reminder/detail/{{item.entryID}}">Jun 1,2020</td>                                  
                                     <td routerLink="/fleet/reminders/service-reminder/detail/{{item.entryID}}">
-                                        <span class="text-success font-weight-bold font-size-12"> Active</span><br>{{ getLengthOfArray(item.subscribedUsers) }}                                      
+                                        <span class="text-success font-weight-bold font-size-12"> Active</span><br>    
+                                        {{item.subscribers}}                                
                                         Subscriber(s)</td>
                                     <td>
                                         <div class="btn-group flex-wrap">
@@ -218,8 +217,8 @@
                                             <div class="dropdown-menu" role="menu">
                                                 <a class="dropdown-item text-1" href="service-entry.php">Enter Service</a>
                                                 <a class="dropdown-item text-1" href="#">Send Notifications</a>
-                                                <a routerLink="/fleet/reminders/service-reminder/edit-reminder/{{item.entryID }}" class="dropdown-item text-1" >Edit</a>
-                                                <a href="javascript:;" class="dropdown-item text-1" (click)="deleteReminder(item.entryID)">Delete</a>
+                                                <a routerLink="/fleet/reminders/service-reminder/edit-reminder/{{item.reminderID }}" class="dropdown-item text-1" >Edit</a>
+                                                <a href="javascript:;" class="dropdown-item text-1" (click)="deleteReminder(item.reminderID)">Delete</a>
                                             </div>
                                         </div>
                                     </td>

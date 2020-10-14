@@ -1,0 +1,208 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">Ticket</h2>
+            </header>
+            <div class="card-body">
+              <form class="form-horizontal form-bordered" method="get">
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Driver</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      (change)="updateValidation('userName')"
+                      name="userName"
+                      [(ngModel)]="userName"
+                      [ngClass]="{
+                        redBorder: validationErrors.userName.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option *ngFor="let user of users" value="{{user.userName}}">{{user.userName}}</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.userName.error == true"
+                      class="red"
+                      >{{ validationErrors.userName.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Ticket Number</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      (input)="updateValidation('ticketNumber')"
+                      name="ticketNumber"
+                      [(ngModel)]="ticketNumber"
+                      [ngClass]="{
+                        redBorder: validationErrors.ticketNumber.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.ticketNumber.error == true"
+                      class="red"
+                      >{{ validationErrors.ticketNumber.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Ticket Type</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      (change)="updateValidation('ticketType')"
+                      name="ticketType"
+                      [(ngModel)]="ticketType"
+                      [ngClass]="{
+                        redBorder: validationErrors.ticketType.error == true
+                      }"
+                    >
+                      <optgroup label="">
+                        <option value="1">Type 1</option>
+                        <option value="2">Type 2</option>
+                        <option value="2">Type 3</option>
+                      </optgroup>
+                    </select>
+                    <span
+                      *ngIf="validationErrors.ticketType.error == true"
+                      class="red"
+                      >{{ validationErrors.ticketType.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right text-dark text-4 pt-2"
+                      for="inputDefault"
+                      >Value</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      (input)="updateValidation('ticketValue')"
+                      name="ticketValue"
+                      [(ngModel)]="ticketValue"
+                      [ngClass]="{
+                        redBorder: validationErrors.ticketValue.error == true
+                      }"
+                    />
+                    <span
+                      *ngIf="validationErrors.ticketValue.error == true"
+                      class="red"
+                      >{{ validationErrors.ticketValue.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-8">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Description</label
+                    >
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      id="textareaDefault"
+                      (input)="updateValidation('description')"
+                      name="description"
+                      [(ngModel)]="description"
+                      [ngClass]="{
+                        redBorder: validationErrors.description.error == true
+                      }"
+                    ></textarea>
+                    <span
+                      *ngIf="validationErrors.description.error == true"
+                      class="red"
+                      >{{ validationErrors.description.message }}</span
+                    >
+                  </div>
+                  <div class="col-lg-4">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Officer Details</label
+                    >
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      id="textareaDefault"
+                      (input)="updateValidation('officeDetails')"
+                      name="officeDetails"
+                      [(ngModel)]="officeDetails"
+                      [ngClass]="{
+                        redBorder: validationErrors.officeDetails.error == true
+                      }"
+                    ></textarea>
+                    <span
+                      *ngIf="validationErrors.officeDetails.error == true"
+                      class="red"
+                      >{{ validationErrors.officeDetails.message }}</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button class="btn btn-dark mt-4 modal-confirm" (click)="addTicket()">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

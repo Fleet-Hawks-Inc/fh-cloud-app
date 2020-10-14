@@ -1,0 +1,340 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+  
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+        <section role="main" class="content-body pl-1  pr-0 pt-0">
+            <header class="page-header">
+               <div class="row pr-5" style="padding-top:10px;">
+                  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                     Service Program Details
+                  </div>
+                  <div class="col-md-8  col-lg-8 text-right">
+                     <a href="service-programs1.php" class="btn btn-default btn-sm mx-2" style="color:black;"><i class="fas fa-list"></i> Service Programs List</a>
+                     <a href="#addServiceScheduleModal" class="modal-with-form btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add Service Schedule</a>
+                     <a href="#vehicleServiceProgram" class="modal-with-form btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add Vehicle</a>
+                  </div>
+               </div>
+            </header>
+            <div class="row">
+               <div class="col pr-0">
+                  <section class="card">
+                     <div class="card-body">
+                        <div class="row">
+                           <div class="col-lg-12 font-weight-bold"><span class="text-4  text-dark">Service Program Name: </span><span class="text-4 text-info">Test Service Program</span></div>
+                           <div class="col-lg-12"><span class="text-4  font-weight-bold  text-dark">Description: </span><span class="text-3 text-dark">This is description of the service program.This is description of the service program.This is description of the service program.</span></div>
+                        </div>
+                        <div class="row mt-4">
+                           <div class="col-lg-4">
+                              <div class="row">
+                                 <div class="col-lg-12"><label class="text-dark control-label font-weight-bold text-4">List of Vehicles</label></div>
+                              </div>
+                              <table class="table table-responsive-lg table-bordered table-striped mb-0 assetDetailsTable">
+                                 <thead>
+                                    <tr>
+                                       <th width="95%">Vehicle Name</th>
+                                       <th  width="5%" ></th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr>
+                                       <td>Vehicle 1</td>
+                                       <td class="text-center">
+                                       <a class="modal-with-form text-danger" href="#deleteModal"><i class="fas fa-times"></i></a>
+
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Vehicle 2</td>
+                                       <td class="text-center">
+
+                                       <a class="modal-with-form text-danger" href="#deleteModal"><i class="fas fa-times"></i></a>
+
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Vehicle 3</td>
+                                       <td class="text-center">
+
+                                       <a class="modal-with-form text-danger" href="#deleteModal"><i class="fas fa-times"></i></a>
+
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Vehicle 4</td>
+                                       <td class="text-center">
+
+                                       <a class="modal-with-form text-danger" href="#deleteModal"><i class="fas fa-times"></i></a>
+
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Vehicle 5</td>
+                                       <td class="text-center">
+
+                                       <a class="modal-with-form text-danger" href="#deleteModal"><i class="fas fa-times"></i></a>
+
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Vehicle 6</td>
+                                       <td class="text-center">
+
+                                       <a class="modal-with-form text-danger" href="#deleteModal"><i class="fas fa-times"></i></a>
+                                         
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Vehicle 7</td>
+                                       <td class="text-center">
+
+                                       <a class="modal-with-form text-danger" href="#deleteModal"><i class="fas fa-times"></i></a>
+
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Vehicle 8</td>
+                                       <td class="text-center">
+
+                                       <a class="modal-with-form text-danger" href="#deleteModal"><i class="fas fa-times"></i></a>
+                                         
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Vehicle 9</td>
+                                       <td class="text-center">
+
+                                       <a class="modal-with-form text-danger" href="#deleteModal"><i class="fas fa-times"></i></a>
+                                         
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Vehicle 10</td>
+                                       <td class="text-center">
+
+                                       <a class="modal-with-form text-danger" href="#deleteModal"><i class="fas fa-times"></i></a>
+
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Vehicle 11</td>
+                                       <td class="text-center">
+
+                                       <a class="modal-with-form text-danger" href="#deleteModal"><i class="fas fa-times"></i></a>
+                                         
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div class="col-lg-8">
+                              <div class="row">
+                                 <div class="col-lg-12"><label class="text-dark control-label font-weight-bold text-4">Service Schedules</label></div>
+                              </div>
+                              <table class="table table-responsive-lg table-bordered table-striped mb-0 assetDetailsTable">
+                                 <thead>
+                                    <tr>
+                                       <th width="20%">Interval</th>
+                                       <th width="65%">Service Task</th>
+                                       <th  width="5%"></th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>Every 1 month(s) or 677 miles</td>
+                                       <td>A/C Compressor Replacement</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                <a class="dropdown-item text-1 modal-with-form" href="#editServiceScheduleModal">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </section>
+               </div>
+            </div>
+         </section>
+    </div>
+  </section>
+  

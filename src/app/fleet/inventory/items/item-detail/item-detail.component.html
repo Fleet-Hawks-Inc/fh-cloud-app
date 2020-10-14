@@ -1,0 +1,402 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+  
+    <!-- end: header -->
+  
+    <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->
+  
+    <section role="main" class="content-body pl-0 pt-0">
+        <header class="page-header">
+            <div class="row pr-5 " style="padding-top:10px;">
+                <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                    Inventory Details
+                </div>
+                <div class="col-md-8  col-lg-8 text-right">
+                    <a href="inventory1.php" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Inventory List</a>
+    
+                    <div class="btn-group flex-wrap">
+                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                            aria-expanded="false">Actions<span class="caret"></span></button>
+                        <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                            <a class="dropdown-item text-1" href="edit-inventory1.php">Edit </a>
+                            <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                        </div>
+                    </div>
+                    <a href="add-inventory1.php" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add
+                        Inventory</a>
+                </div>
+            </div>
+        </header>
+        <div class="row">
+            <div class="col">
+                <div class="card-body text-dark">
+                    <form class="form-horizontal form-bordered" method="get">
+                        <div class=" row">
+    
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <table class="table table-bordered table-responsive-lg">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="40%" class="back-color-gray font-weight-bold">Part Number
+                                                    </td>
+                                                    <td width="60%">2100</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="back-color-gray font-weight-bold">Part Name</td>
+                                                    <td>10-3-wt Oil</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="back-color-gray font-weight-bold">Category</td>
+                                                    <td>Oil</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="back-color-gray font-weight-bold">Vendor</td>
+                                                    <td><a href="#">Warren CAT</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="back-color-gray font-weight-bold">In Stock</td>
+                                                    <td>3445</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="back-color-gray font-weight-bold">Unit Cost</td>
+                                                    <td>$ 5.60</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="back-color-gray font-weight-bold">Unit Measure</td>
+                                                    <td>Gallon</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="back-color-gray font-weight-bold">Purchase Order Number</td>
+                                                    <td>54560</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="back-color-gray font-weight-bold">Description</td>
+                                                    <td>This is description of part.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- Warehouse TABLE -->
+                                <div class="row">
+                                    <div class="col-lg-12"><label class="control-label font-weight-bold text-3">Warehouse
+                                            Details</label></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <table class="table table-bordered table-responsive-lg">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="40%" class="back-color-gray font-weight-bold">Name</td>
+                                                    <td width="60%">TATA's Warehouse</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="back-color-gray font-weight-bold">Location</td>
+                                                    <td>100 street 34Ave King Town,City,Country</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- Warrenty TABLE -->
+                                <div class="row">
+                                    <div class="col-lg-12"><label class="control-label font-weight-bold text-3">Warrenty
+                                            Details</label></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <table class="table table-bordered table-responsive-lg">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="40%" class="back-color-gray font-weight-bold">Days</td>
+                                                    <td width="60%">20</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="back-color-gray font-weight-bold">Notes</td>
+                                                    <td>These are notes about warrenty.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+    
+                            </div>
+                            <div class="col-lg-6">
+    
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="vehicle-common-box p-3">
+                                            <div class="row">
+                                                <div class="col-lg-6"><label
+                                                        class="control-label font-weight-bold text-3">Photo(s)</label></div>
+                                                <div class="col-lg-6 text-right"><input type="file" hidden
+                                                        id="hidden_photo_input"><button type="button"
+                                                        class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
+                                                        Photo</button></div>
+                                            </div>
+                                            <hr class="solid mt-3">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="vehicle-photo-box">
+                                                        <img src="assets/img/truck1.jpg" height="180px" width="330px">
+                                                        <hr class="m-3">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">Name of the Image</div>
+                                                            <div class="col-lg-4 text-right">
+                                                                <div class="btn-group flex-wrap mx-2">
+                                                                    <button type="button"
+                                                                        class="btn btn-default btn-xs dropdown-toggle"
+                                                                        data-toggle="dropdown" aria-expanded="false"><span
+                                                                            class="caret"></span></button>
+                                                                    <div class="dropdown-menu" role="menu"
+                                                                        x-placement="bottom-start"
+                                                                        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                        <a class="dropdown-item text-1" href="">Crop/Rotate
+                                                                            Image</a>
+                                                                        <a class="modal-with-form dropdown-item text-1"
+                                                                            href="#editPhoto">Edit</a>
+                                                                        <a class="modal-with-form dropdown-item text-1"
+                                                                            href="#deleteModal">Delete</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="vehicle-photo-box">
+                                                        <img src="assets/img/truck2.jpg" height="180px" width="330px">
+                                                        <hr class="m-3">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">Name of the Image</div>
+                                                            <div class="col-lg-4 text-right">
+                                                                <div class="btn-group flex-wrap mx-2">
+                                                                    <button type="button"
+                                                                        class="btn btn-default btn-xs dropdown-toggle"
+                                                                        data-toggle="dropdown" aria-expanded="false"><span
+                                                                            class="caret"></span></button>
+                                                                    <div class="dropdown-menu" role="menu"
+                                                                        x-placement="bottom-start"
+                                                                        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                        <a class="dropdown-item text-1" href="">Crop/Rotate
+                                                                            Image</a>
+                                                                        <a class="dropdown-item text-1" href="">Edit</a>
+                                                                        <a class="modal-with-form dropdown-item text-1"
+                                                                            href="#deleteModal">Delete</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col-lg-12">
+                                        <div class="vehicle-common-box p-3">
+                                            <div class="row">
+                                                <div class="col-lg-6"><label
+                                                        class="control-label font-weight-bold text-3">Documents(s)</label>
+                                                </div>
+                                                <div class="col-lg-6 text-right"><input type="file" hidden
+                                                        id="hidden_issue_document_input"><button type="button"
+                                                        class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
+                                                        Documents</button></div>
+                                            </div>
+                                            <hr class="solid mt-3">
+                                            <div class="row">
+                                                <div class="col-lg-9">Name of the Document</div>
+                                                <div class="col-lg-3 text-right">
+                                                    <div class="btn-group flex-wrap mx-2">
+                                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
+                                                            data-toggle="dropdown" aria-expanded="false"><span
+                                                                class="caret"></span></button>
+                                                        <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                            <a class="modal-with-form dropdown-item text-1"
+                                                                href="#deleteModal">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- VENDOR LIST -->
+                                <div class="row pt-2">
+                                    <div class="col-lg-12">
+                                        <table class="table table-bordered table-responsive-lg table-striped mb-0"
+                                            id="simple-table">
+                                            <thead>
+                                                <tr>
+    
+                                                    <th width="60%">Vendor Name</th>
+                                                    <th width="40%">Part Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Vendor 1</td>
+                                                    <td> $4.90</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Vendor 2</td>
+                                                    <td> $5.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Vendor 3</td>
+                                                    <td> $4.70</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!--  close MODAL -->
+                <div id="issueCloseModal" class="modal-block modal-block-primary mfp-hide">
+                    <section class="card">
+                        <header class="card-header">
+                            <h2 class="card-title">Corfirm Action</h2>
+                        </header>
+                        <div class="card-body text-dark">
+                            <form>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label for="inputEmail4">Are you sure you want to close issue?</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <footer class="card-footer">
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <button class="btn btn-danger modal-confirm">OK</button>
+                                    <button class="btn btn-default modal-dismiss">Cancel</button>
+                                </div>
+                            </div>
+                        </footer>
+                    </section>
+                </div>
+                <!-- Delete MODAL -->
+                <div id="deleteModal" class="modal-block modal-block-primary mfp-hide">
+                    <section class="card">
+                        <header class="card-header">
+                            <h2 class="card-title">Corfirm Action</h2>
+                        </header>
+                        <div class="card-body text-dark">
+                            <form>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label for="inputEmail4">Are you sure?</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <footer class="card-footer">
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <button class="btn btn-danger modal-confirm">OK</button>
+                                    <button class="btn btn-default modal-dismiss">Cancel</button>
+                                </div>
+                            </div>
+                        </footer>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
+     
+    </div>
+  </section>
+  
+  <!--  Add Warehouse-->
+  <div id="addWarehouseModal" class="modal-block modal-block-primary mfp-hide">
+    <section class="card">
+       <header class="card-header">
+          <h2 class="card-title">Add Warehouse</h2>
+       </header>
+       <div class="card-body text-dark">
+          <form>
+             <div class="form-row">
+                <div class="form-group col-lg-12">
+                   <label class="control-label font-weight-bold">Warehouse Name</label>
+                   <input type="text" class="form-control">
+                </div>
+             </div>
+             <div class="form-row pt-3">
+                <div class="form-group col-lg-12">
+                   <label class="control-label text-4 font-weight-bold">Address</label>
+                   <div class="row">
+                      <div class="col-lg-6">
+                         <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">Select Country</label>
+                         <select data-plugin-selectTwo class="form-control populate">
+                            <optgroup label="Select Country">
+                               <option value="1">Country 1</option>
+                               <option value="2">Country 2</option>
+                               <option value="2">Country 3</option>
+                               <option value="2">Country 4</option>
+                            </optgroup>
+                         </select>
+                      </div>
+                      <div class="col-lg-6">
+                         <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">Select State</label>
+                         <select data-plugin-selectTwo class="form-control populate">
+                            <optgroup label="Select State">
+                               <option value="1">State 1</option>
+                               <option value="2">State 2</option>
+                               <option value="2">State 3</option>
+                               <option value="2">State 4</option>
+                            </optgroup>
+                         </select>
+                      </div>
+                   </div>
+                   <div class="row">
+                      <div class="col-lg-6">
+                         <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">Select City</label>
+                         <select data-plugin-selectTwo class="form-control populate">
+                            <optgroup label="Select City">
+                               <option value="1">City 1</option>
+                               <option value="2">City 2</option>
+                               <option value="2">City 3</option>
+                               <option value="2">City 4</option>
+                            </optgroup>
+                         </select>
+                      </div>
+                      <div class="col-lg-6">
+                         <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">ZIP Code</label>
+                         <input type="text" class="form-control">
+                      </div>
+                   </div>
+                   <div class="row">
+                     
+                      <div class="col-lg-12">
+                         <label class="control-label font-weight-bold text-lg-right pt-2" for="inputDefault">Street Address</label>
+                         <input type="text" class="form-control">
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </form>
+       </div>
+       <footer class="card-footer">
+          <div class="row">
+             <div class="col-md-12 text-right">
+                <button class="btn btn-success modal-confirm">Save</button>
+                <button class="btn btn-default modal-dismiss">Cancel</button>
+             </div>
+          </div>
+       </footer>
+    </section>
+  </div>
