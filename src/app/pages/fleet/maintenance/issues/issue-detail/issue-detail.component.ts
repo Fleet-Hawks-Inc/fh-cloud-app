@@ -13,7 +13,7 @@ export class IssueDetailComponent implements OnInit {
 
   public issueID;
   issueName = '';
-  vehicleID = '';
+  unitID = '';
   reportedDate: '';
   description = '';
   odometer = '';
@@ -34,6 +34,9 @@ export class IssueDetailComponent implements OnInit {
     this.issueID = this.route.snapshot.params['issueID'];
     this.fetchIssue();
   }
+  editIssue = () => {
+      this.router.navigateByUrl('/fleet/maintenance/issues/edit-issue/' + this.issueID);
+      }
   fetchIssue() {
     // this.spinner.show(); // loader init
     this.apiService
@@ -43,7 +46,7 @@ export class IssueDetailComponent implements OnInit {
       console.log('result', result);
       this.issueID = this.issueID;
       this.issueName = result.issueName;
-      this.vehicleID = result.vehicleID;
+      this.unitID = result.unitID;
       this.reportedDate = result.reportedDate;
       this.description = result.description;
       this.odometer = result.odometer;

@@ -1,0 +1,107 @@
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+
+    <!-- end: header -->
+
+
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body">
+            <header class="page-header">
+                <h2>{{title}}</h2>
+
+                <div class="right-wrapper text-right">
+                    <ol class="breadcrumbs">
+                        <li>
+                            <a routerLink="">
+                                <i class="fas fa-home"></i>
+                            </a>
+                        </li>
+
+                        <li><span>{{title}}</span></li>
+                    </ol>
+
+
+                </div>
+            </header>
+
+
+
+            <div class="row">
+                <div class="col">
+                    <section class="card">
+                        <header class="card-header">
+
+
+                            <h2 class="card-title">{{title}}</h2>
+                        </header>
+                        <div class="card-body">
+                            <form class="form-horizontal form-bordered" method="get">
+                                <div class="form-group row">
+
+                                    <div class="col-lg-6">
+                                        <label class="control-label text-lg-right pt-2" >Root CA</label>
+                                        <input type="text" class="form-control" name="rootCA" [(ngModel)]="rootCA" >
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label class="control-label text-lg-right pt-2" >Certificate</label>
+                                        <input type="text" class="form-control" name="certificate" [(ngModel)]="certificate" >
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label class="control-label text-lg-right pt-2" >Private Key</label>
+                                        <input type="text" class="form-control" name="privateKey" [(ngModel)]="privateKey" >
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label class="control-label text-lg-right pt-2" >Public Key</label>
+                                        <input type="text" class="form-control" name="publicKey" [(ngModel)]="publicKey" >
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label class="control-label text-lg-right pt-2" >Certificate Type</label>
+                                        <input type="text" class="form-control" name="certificateType" [(ngModel)]="certificateType" >
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label class="control-label text-lg-right pt-2" >Current Status</label>
+                                        <input type="text" class="form-control" name="currentStatus" [(ngModel)]="currentStatus" >
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <button class="btn btn-dark mt-4 modal-confirm" (click)="updateCertificate()">Submit</button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+
+                                        <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
+                                        <p class="text text-success" *ngIf="hasSuccess">{{Success}}</p>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+
+
+
+
+
+</section>

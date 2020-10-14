@@ -1,0 +1,337 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>Receive Payment</h2>
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs pr-3">
+            <li>
+              <a href="index.html">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+            <li><span>Receive Payment</span></li>
+          </ol>
+        </div>
+      </header>
+
+      <section class="card mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-2 mb-2"></div>
+
+            <div class="col-lg-1 mb-2">
+              <div class="radio-custom">
+                <input type="radio" id="Customer" name="Customer" checked="" />
+                <label for="Customer">Customer</label>
+              </div>
+            </div>
+            <div class="col-lg-1 mb-2">
+              <div class="radio-custom">
+                <input type="radio" id="Carrier" name="Carrier" />
+                <label for="Carrier">Carrier</label>
+              </div>
+            </div>
+
+            <div class="col-lg-1 mb-2">
+              <div class="radio-custom">
+                <input type="radio" id="Broker" name="Broker" />
+                <label for="Broker">Broker</label>
+              </div>
+            </div>
+
+            <div class="col-lg-7 mb-2">
+              <div class="radio-custom">
+                <input type="radio" id="fc" name="fc" />
+                <label for="fc">Factoring Company</label>
+              </div>
+            </div>
+
+            <div class="col-lg-2 mb-2 text-right">
+              <label
+                class="control-label font-weight-semibold labelmt text-3 text-dark"
+                for="inputDefault"
+                >Choose Customer:</label
+              >
+            </div>
+
+            <div class="col-lg-2 mb-2">
+              <input type="text" class="form-control" id="inputDefault" />
+            </div>
+
+            <div class="col-lg-2 mb-2">
+              <a href="#" class="mb-1 mt-1 mr-2 btn-sm btn btn-default"
+                >Look Up</a
+              >
+              <a href="#" class="mb-1 mt-1 mr-2 btn-sm btn btn-default"
+                >Clear</a
+              >
+            </div>
+
+            <div class="col-lg-4 text-right">
+              <label
+                class="control-label pull-right text-dark font-weight-bold text-4 pt-1"
+                >Date:</label
+              >
+            </div>
+
+            <div class="col-lg-2 mb-2">
+              <div class="input-group">
+                <span class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
+                  </span>
+                </span>
+                <input
+                  type="text"
+                  data-plugin-datepicker=""
+                  placeholder="Day/Month/Year"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-2 mb-2 text-right">
+              <label
+                class="control-label font-weight-semibold labelmt text-3 text-dark"
+                for="inputDefault"
+                >Customer:</label
+              >
+            </div>
+
+            <div class="col-lg-2 mb-2">
+              <p class="font-weight-bold mb-0">Iload</p>
+              <p>
+                110<br />
+                Regina, SK S4W 0T4<br />
+                Ph: (103) 069-1461
+              </p>
+            </div>
+
+            <div class="col-lg-7 text-right">
+              <p class="text-dark font-weight-bold text-3 mb-0">
+                Unpaid Invoice Amount:
+              </p>
+              <p class="text-dark font-weight-bold text-3 mb-0">
+                Unapplied Credit:
+              </p>
+              <p class="text-dark font-weight-bold text-3 mb-0">Balance:</p>
+            </div>
+
+            <div class="col-lg-1 mb-2">
+              <p class="text-dark text-right text-4 mb-0">$450.00</p>
+              <p class="text-dark text-right text-4 mb-0">$0.00</p>
+              <p class="text-dark text-right text-4 mb-0">$450.00</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-8 bordright">
+                  <h4 class="mb-0 mt-0 text-dark font-weight-semibold">
+                    Record Payment
+                  </h4>
+                  <h6 class="mb-0 mt-2 text-dark font-weight-semibold">
+                    <input type="checkbox" checked="" id="checkboxExample1" />
+                    Receive Full Payment
+                  </h6>
+                  <p class="mb-4 mt-2 text-dark">
+                    Invoice(s) for this Customer/Carrier/Broker
+                  </p>
+
+                  <table
+                    class="table table-bordered table-striped mb-0"
+                    id="datatable-default"
+                  >
+                    <thead>
+                      <tr class="bgcol2">
+                        <th>
+                          <input
+                            type="checkbox"
+                            checked=""
+                            id="checkboxExample1"
+                          />
+                        </th>
+                        <th class="text-2">Dispatch No</th>
+                        <th class="text-2">Invoice No</th>
+                        <th class="text-2">Invoice Due Date</th>
+                        <th class="text-2">Actual Amount</th>
+                        <th class="text-2">Open Balance</th>
+                        <th class="text-2">Payment Amount</th>
+                        <th class="text-2">Balnce Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <input
+                            type="checkbox"
+                            checked=""
+                            id="checkboxExample1"
+                          />
+                        </td>
+                        <td><a href="#">DIS-2250</a></td>
+                        <td><a href="#">Reg001</a></td>
+                        <td>5/25/2020</td>
+                        <td>$450.00</td>
+                        <td>$450.00</td>
+                        <td>-</td>
+                        <td>$0.00</td>
+                      </tr>
+
+                      <tr>
+                        <td
+                          class="text-right font-weight-bold"
+                          colspan="6"
+                          rowspan="1"
+                        >
+                          Total
+                        </td>
+                        <td class="font-weight-bold">$450.00</td>
+                        <td class="font-weight-bold">$0.00</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div class="row mt-3">
+                    <div class="col-lg-3 text-right">
+                      <label
+                        class="control-label pull-right text-dark font-weight-semibold text-3 pt-1"
+                        >Total Payment Received:</label
+                      >
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="input-group">
+                        <span class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i class="fas fa-dollar-sign"></i>
+                          </span>
+                        </span>
+                        <input
+                          type="text"
+                          value="450.00"
+                          class="form-control"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-lg-5 text-right">
+                      <label
+                        class="control-label pull-right text-dark font-weight-semibold text-3 pt-1"
+                        >Total Unapplied Credit:</label
+                      >
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="input-group">
+                        <span class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i class="fas fa-dollar-sign"></i>
+                          </span>
+                        </span>
+                        <input type="text" value="0" class="form-control" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-3 offset-1">
+                  <div class="row">
+                    <div class="col-lg-12 mb-2">
+                      <h4 class="mb-0 mt-0 text-dark font-weight-semibold">
+                        Payment Mode
+                      </h4>
+                    </div>
+
+                    <div class="col-lg-2 mb-2">
+                      <div class="radio-custom">
+                        <input
+                          type="radio"
+                          id="Checkrp"
+                          name="Checkrp"
+                          checked=""
+                        />
+                        <label for="Checkrp">Check</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 mb-2">
+                      <div class="radio-custom">
+                        <input type="radio" id="Cashrp" name="Cashrp" />
+                        <label for="Cashrp">Cash</label>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-2 mb-2">
+                      <div class="radio-custom">
+                        <input type="radio" id="EFT" name="EFT" />
+                        <label for="EFT">EFT</label>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4 mb-2">
+                      <div class="radio-custom">
+                        <input type="radio" id="ccrp" name="ccrp" />
+                        <label for="ccrp">Credit Card</label>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4 mb-2 text-right">
+                      <label
+                        class="control-label font-weight-semibold labelmt text-3 text-dark"
+                        for="inputDefault"
+                        >Check Number:</label
+                      >
+                    </div>
+
+                    <div class="col-lg-8 mb-2">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="inputDefault"
+                      />
+                    </div>
+
+                    <div class="col-lg-4 text-right">
+                      <label
+                        class="control-label pull-right text-dark font-weight-bold text-4 pt-1"
+                        >Memo:</label
+                      >
+                    </div>
+
+                    <div class="col-lg-8 mb-2">
+                      <textarea
+                        class="form-control"
+                        rows="3"
+                        id="textareaDefault"
+                        style="
+                          margin-top: 0px;
+                          margin-bottom: 0px;
+                          height: 74px;
+                        "
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

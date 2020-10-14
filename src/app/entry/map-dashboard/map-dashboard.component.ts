@@ -1,13 +1,9 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HereMapService } from '../../services/here-map.service';
+import { HereMapService } from '../../services';
 import { Subject, throwError } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
-// import {PreLoadOptions, PreLoadOptionsService} from '../../preload/PreLoadOptions';
-
-
-
 declare var $: any;
 declare var H: any;
 
@@ -341,8 +337,6 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   }
 
 
-  ngAfterViewInit(): void {
-   // this.preLoadOptionsService.startPreload('fleet');
-  }
+  ngAfterViewInit(): void {}
 
 }

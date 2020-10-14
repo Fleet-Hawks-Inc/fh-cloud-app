@@ -114,7 +114,7 @@
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Make</label>
-                                       <select data-plugin-selectTwo class="form-control populate" name="make" [(ngModel)]="make">
+                                       <select data-plugin-selectTwo class="form-control populate" name="manufacturerID" [(ngModel)]="manufacturerID">
                                           <optgroup label="">
                                              <option value="1">Tesla</option>
                                              <option value="2">BMW</option>
@@ -132,7 +132,7 @@
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Model</label>
-                                       <select data-plugin-selectTwo class="form-control populate" name="model" [(ngModel)]="model">
+                                       <select data-plugin-selectTwo class="form-control populate" name="modelID" [(ngModel)]="modelID">
                                           <optgroup label="">
                                              <option value="1">ST8189LD</option>
                                              <option value="2">ZZ0189LD</option>
@@ -241,7 +241,7 @@
                                  </div>
                               </div>
                               <div class="col-lg-5 offset-lg-1">
-                                 <div class="row pt-4">
+                                 <!-- <div class="row pt-4">
                                     <div class="col-lg-10">
                                        <div class="row">
                                           <div class="col-lg-3">
@@ -250,7 +250,7 @@
                                           <div class="col-lg-2 px-0">
                                              <div class="radio">
                                                 <label>
-                                                <input type="radio" name="primaryMeter" [(ngModel)]="primaryMeter" value="miles" id="primary-meter-miles" checked> Miles </label>
+                                                <input type="radio" name="settings.primaryMeter" [(ngModel)]="primaryMeter" value="miles" id="primary-meter-miles" checked> Miles </label>
                                              </div>
                                           </div>
                                           <div class="col-lg-3  pr-0">
@@ -261,7 +261,7 @@
                                           </div>
                                        </div>
                                     </div>
-                                 </div>
+                                 </div> -->
                                  <div class="row pt-2">
                                     <div class="col-lg-10">
                                        <div class="row">
@@ -380,6 +380,10 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">MSRP <span class="font-size-12"> (Manufacturer Suggested Retail Price)</span></label>
                                        <input type="text" class="form-control" name="msrp" [(ngModel)]="msrp"> 
+                                    </div>
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Add Document</label>
+                                       <input type="file" class="form-control p-0"> 
                                     </div>
                                  </div>
                               </div>
@@ -843,7 +847,7 @@
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Drive Type</label>
-                                       <input type="text" class="form-control" name="wheelsAndTyres.driverType" [(ngModel)]="wheelsAndTyres.driverType"> 
+                                       <input type="text" class="form-control" name="wheelsAndTyres.driveType" [(ngModel)]="wheelsAndTyres.driveType"> 
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Brake System</label>
@@ -1174,13 +1178,13 @@
                                     <div class="col-lg-10">
                                        <div class="radio">
                                           <label>
-                                          <input type="radio" name="settings.primaryUnit" value="miles" [(ngModel)]="settings.primaryUnit"  checked=""> Miles </label>
+                                          <input type="radio" name="settings.primaryMeter" value="miles" [(ngModel)]="settings.primaryMeter"  checked=""> Miles </label>
                                        </div>
                                     </div>
                                     <div class="col-lg-10">
                                        <div class="radio">
                                           <label>
-                                          <input type="radio" name="settings.primaryUnit" value="kilometers"  [(ngModel)]="settings.primaryUnit"> Kilometers </label>
+                                          <input type="radio" name="settings.primaryMeter" value="kilometers"  [(ngModel)]="settings.primaryMeter"> Kilometers </label>
                                        </div>
                                     </div>
                                  </div>
@@ -1190,19 +1194,19 @@
                                     <div class="col-lg-10">
                                        <div class="radio">
                                           <label>
-                                          <input type="radio"  name="settings.fuelUnit" name="settings.fuelUnit"  value="gallons(USA)" checked=""> Gallons (US) </label>
+                                          <input type="radio"  name="settings.fuelUnit" [(ngModel)]="settings.fuelUnit"  value="gallons(USA)" checked=""> Gallons (US) </label>
                                        </div>
                                     </div>
                                     <div class="col-lg-10">
                                        <div class="radio">
                                           <label>
-                                          <input type="radio" name="settings.fuelUnit" name="settings.fuelUnit"  value="gallons(CA)"> Gallons (CA) </label>
+                                          <input type="radio" name="settings.fuelUnit" [(ngModel)]="settings.fuelUnit"  value="gallons(CA)"> Gallons (CA) </label>
                                        </div>
                                     </div>
                                     <div class="col-lg-10">
                                        <div class="radio">
                                           <label>
-                                          <input type="radio" name="settings.fuelUnit" name="settings.fuelUnit"  value="liters"> Litres </label>
+                                          <input type="radio" name="settings.fuelUnit" [(ngModel)]="settings.fuelUnit"  value="liters"> Litres </label>
                                        </div>
                                     </div>
                                  </div>
@@ -1243,13 +1247,13 @@
                                     <div class="col-lg-10">
                                        <div class="radio">
                                           <label>
-                                          <input type="radio" name="settings.measurmentUnit" name="settings.measurmentUnit"  value="imperial" checked=""> Imperial (inches, pounds, gallons, miles) </label>
+                                          <input type="radio" name="settings.measurmentUnit" [(ngModel)]="settings.measurmentUnit"  value="imperial" checked=""> Imperial (inches, pounds, gallons, miles) </label>
                                        </div>
                                     </div>
                                     <div class="col-lg-10">
                                        <div class="radio">
                                           <label>
-                                          <input type="radio" name="settings.measurmentUnit" name="settings.measurmentUnit" value="metric"> Metric (centimeters, kilograms, liters, kilometers) </label>
+                                          <input type="radio" name="settings.measurmentUnit" [(ngModel)]="settings.measurmentUnit" value="metric"> Metric (centimeters, kilograms, liters, kilometers) </label>
                                        </div>
                                     </div>
                                  </div>

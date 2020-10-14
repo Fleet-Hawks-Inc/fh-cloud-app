@@ -1,0 +1,147 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header">
+        <h2>{{ title }}</h2>
+
+        <div class="right-wrapper text-right">
+          <ol class="breadcrumbs">
+            <li>
+              <a routerLink="">
+                <i class="fas fa-home"></i>
+              </a>
+            </li>
+
+            <li>
+              <span>{{ title }}</span>
+            </li>
+          </ol>
+        </div>
+      </header>
+
+      <div class="row">
+        <div class="col">
+          <section class="card">
+            <header class="card-header">
+              <h2 class="card-title">{{ title }}</h2>
+            </header>
+            <div class="card-body">
+              <form class="form-horizontal form-bordered" method="get">
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label class="control-label text-lg-right pt-2"
+                      >Title</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="titlee"
+                      [(ngModel)]="titlee"
+                    />
+                  </div>
+
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label text-lg-right pt-2"
+                      for="inputDefault"
+                      >Type</label
+                    >
+                    <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      [(ngModel)]="inspectionType"
+                      name="inspectionType"
+                    >
+                      <optgroup label="">
+                        <option>Vehicle</option>
+                        <option>Trailer</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label class="control-label text-lg-right pt-2"
+                      >Description</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="description"
+                      [(ngModel)]="description"
+                    />
+                  </div>
+                </div>
+                <div class="control-label text-lg-left pt-2">Parameters</div>
+                <div
+                  class="form-group row"
+                  *ngFor="let parameter of parameters; let i = index"
+                >
+                  <div class="col-lg-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="parameter.name"
+                      name="parameter{{ i }}"
+                    />
+                  </div>
+                  <div
+                    class="col-lg-1"
+                    style="display: inline-flex; align-items: baseline;"
+                  >
+                    <a
+                      *ngIf="i == parameters.length - 1"
+                      href="#"
+                      [routerLink]=""
+                      (click)="cloneInput()"
+                      class="btn btn-md btn-success mt-2"
+                    >
+                      <i class="fas fa-plus"></i>
+                    </a>
+
+                    <a
+                      *ngIf="i != 0 || parameters.length > 1"
+                      [routerLink]=""
+                      (click)="deleteInput(i)"
+                      class="btn btn-md btn-danger"
+                    >
+                      <i class="fas fa-minus"></i>
+                    </a>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <button
+                      class="btn btn-dark mt-4 modal-confirm"
+                      (click)="addInspectionForm()"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <p class="text text-danger" *ngIf="hasError">{{ Error }}</p>
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

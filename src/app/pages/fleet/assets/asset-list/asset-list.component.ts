@@ -215,6 +215,9 @@ export class AssetListComponent implements OnInit {
       next: (result: any) => {
         console.log(result)
         this.spinner.hide(); // loader hide
+
+       
+
         for (let i = 0; i < result.Items.length; i++) {
           if (result.Items[i].isActivate === 1) {
             alert(1);

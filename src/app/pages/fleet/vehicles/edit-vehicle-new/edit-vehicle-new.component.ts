@@ -28,8 +28,8 @@ export class EditVehicleNewComponent implements OnInit {
   vehicleType = '';
   VIN = '';
   year = '';
-  make = '';
-  model = '';
+  manufacturerID = '';
+  modelID = '';
   plateNumber = '';
   stateID = '';
   driverID = '';
@@ -176,12 +176,13 @@ export class EditVehicleNewComponent implements OnInit {
   states = [];
   groups = [];
 
-  response = '';
-  hasError = false;
-  hasSuccess = false;
-  Error = '';
-  Success  = '';
-
+  errors = {};
+  form;
+  response: any = '';
+  hasError: boolean = false;
+  hasSuccess: boolean = false;
+  Error: string = '';
+  Success: string = '';
 
   slides = [
     {img: 'assets/img/truck.jpg'},
@@ -223,8 +224,8 @@ export class EditVehicleNewComponent implements OnInit {
         this.vehicleType = result.vehicleType;
         this.VIN = result.VIN;
         this.year = result.year;
-        this.make = result.make;
-        this.model = result.model;
+        this.manufacturerID = result.manufacturerID;
+        this.modelID = result.modelID;
         this.plateNumber = result.model;
         this.stateID = result.stateID;
         this.driverID = result.driverID;
@@ -267,7 +268,7 @@ export class EditVehicleNewComponent implements OnInit {
           cargoVolume: result.specifications.cargoVolume,
           curbWeight: result.specifications.curbWeight,
           grossVehicleWeightRating: result.specifications.grossVehicleWeightRating,
-          iftaReporting: result.spe.iftaReporting,
+          iftaReporting: result.specifications.iftaReporting,
           towingCapacity: result.specifications.towingCapacity,
           maxPayload: result.specifications.maxPayload,
           EPACity: result.specifications.EPACity,
@@ -410,7 +411,7 @@ export class EditVehicleNewComponent implements OnInit {
   }
 
   getModels(){
-    this.apiService.getData(`vehicleModels/manufacturer/${this.make}`)
+    this.apiService.getData(`vehicleModels/manufacturer/${this.manufacturerID}`)
       .subscribe((result: any) => {
         this.models = result.Items;
       });
@@ -431,8 +432,8 @@ export class EditVehicleNewComponent implements OnInit {
       vehicleType: this.vehicleType,
       VIN: this.VIN,
       year: this.year,
-      make: this.make,
-      model: this.model,
+      manufacturerID: this.manufacturerID,
+      modelID: this.modelID,
       plateNumber: this.plateNumber,
       stateID: this.stateID,
       driverID: this.driverID,
@@ -484,7 +485,7 @@ export class EditVehicleNewComponent implements OnInit {
       },
       insurance: {
         dateOfIssue: this.insurance.dateOfIssue,
-        premiumAcount: this.insurance.premiumAmount,
+        premiumAmount: this.insurance.premiumAmount,
         premiumCurrency: this.insurance.premiumCurrency,
         vendorID: this.insurance.vendorID,
         dateOfExpiry: this.insurance.dateOfExpiry,
@@ -584,6 +585,10 @@ export class EditVehicleNewComponent implements OnInit {
 
       }
     });
+  }
+
+  throwErrors() {
+    this.form.showErrors(this.errors);
   }
 
   onChangeHardBreakingParameters(value: any){

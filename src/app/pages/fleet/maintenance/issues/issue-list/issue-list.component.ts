@@ -16,25 +16,57 @@ export class IssueListComponent implements OnInit {
   title = 'Issues List';
   issues: [];
   vehicles: [];
-  checked = false;
+  assets: [];
+  contacts: [];
+  checked: any = false;
   isChecked = false;
   headCheckbox = false;
   selectedIssueID: any;
   issueCheckCount = null;
   vehicleName: string;
+  contactName: string;
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) {}
 
 
   ngOnInit() {
     this.fetchIssues();
-    this.fetchVehicles();
+   // this.fetchContacts();
+    // this.fetchVehicles();
   }
-  fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-         this.vehicles = result.Items; });
+  // fetchVehicles() {
+  //   this.apiService.getData('vehicles').subscribe((result: any) => {
+  //        this.vehicles = result.Items; });
+  //   }
+  //  fetchContacts() {
+  //   this.apiService.getData('contacts').subscribe((result: any) => {
+  //        this.contacts = result.Items;
+  //        console.log('Contacts', this.contacts);
+  //       });
+  //   }
+  fetchVehicles(ID) {
+    this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
+      this.vehicles = result.Items;
+      console.log('VEHICLES', this.vehicles);
+     // this.vehicleName =  this.vehicles[0].vehicleIdentification;
+    });
+  }
+  fetchAssets(ID) {
+    this.apiService.getData('assets/' + ID).subscribe((result: any) => {
+      this.assets = result.Items;
+      console.log('ASSETS', this.assets);
+     // this.assetName =  this.assets[0].assetIdentification;
+    });
+  }
+    getUnitIdentification(ID){
+      // this.fetchVehicles(ID);
+      // this.fetchAssets(ID);
     }
-    fetchVehicleName(vID) {
-    // return this.vehicleName = this.vehicles.filter(vehicle => vehicle.vehicleID === vID);
+    getContactName(ID) {
+       this.apiService.getData('contacts/' + ID).subscribe((result: any) => {
+         this.contacts = result.Items;
+         console.log('Contact by ID', this.contacts);
+        // return this.contactName = this.contacts[0].contactName;
+       });
     }
   fetchIssues() {
     this.apiService.getData('issues').subscribe({
@@ -45,61 +77,23 @@ export class IssueListComponent implements OnInit {
       next: (result: any) => {
         console.log(result);
         this.issues = result.Items;
+      //  console.log('Array', this.issues);
       },
     });
   }
-  editIssue = () => {
-    if (this.issueCheckCount === 1) {
-      this.router.navigateByUrl('/fleet/issues/edit-issue/' + this.selectedIssueID);
-    } else {
-      this.toastr.error('Please select only one asset!');
+  deleteIssue(issueID) {
+    /******** Clear DataTable ************/
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
     }
-  }
-  deleteIssue = () => {
-    console.log('issues', this.issues);
-    // const selectedIssues = this.issues.filter(product => product.checked).map(p => p.issueID);
-    // if (selectedIssues && selectedIssues.length > 0) {
-    //   for (const i of selectedIssues) {
-    //     this.apiService.deleteData('issues/' + i).subscribe((result: any) => {
-    //       this.fetchIssues();
-    //       this.toastr.success('Issue Deleted Successfully!');
-    //     });
-    //   }
-    // }
-  }
-
-  uncheckCheckbox = (arr) => {
-    arr.forEach(item => {
-      item.checked = false;
-    });
-    this.headCheckbox = false;
-  }
-
-  // Count Checkboxes
-  checkboxCount = (arr) => {
-    this.issueCheckCount = 0;
-    arr.forEach(item => {
-      console.log('item', item);
-      console.log('array', arr);
-      if (item.checked === true) {
-        this.selectedIssueID = item.issueID;
-        this.issueCheckCount = this.issueCheckCount + 1;
-        console.log('check', arr.length, this.issueCheckCount);
-        if (arr.length === this.issueCheckCount) {
-          this.headCheckbox = true;
-        }
-      } else {
-        this.headCheckbox = false;
-      }
-    });
-  }
-  // checked-unchecked all checkboxes
-  checkuncheckall = (ev) => {
-    if (ev.target.checked === true) {
-      this.isChecked = true;
-    } else {
-      this.isChecked = false;
-    }
+    /******************************/
+    this.apiService
+      .deleteData('issues/' + issueID)
+      .subscribe((result: any) => {
+     //   this.spinner.show();
+        this.fetchIssues();
+        this.toastr.success('Issue Deleted Successfully!');
+      });
   }
   initDataTable() {
     timer(200).subscribe(() => {
@@ -107,3 +101,4 @@ export class IssueListComponent implements OnInit {
     });
   }
 }
+
