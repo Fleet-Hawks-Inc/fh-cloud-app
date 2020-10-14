@@ -27,6 +27,7 @@ export class VehicleRenewAddComponent implements OnInit {
   numberOfDays: number;
   time: number;
   timeType: string;
+  finalSubscribers = [];
   vehicles = [];
   users = [];
   groups = [];
@@ -77,10 +78,34 @@ export class VehicleRenewAddComponent implements OnInit {
       console.log('Groups Data', this.groups);
     });
   }
+  subscriberChange(event) {
+    console.log('EVENT Data', event);
+    this.finalSubscribers = [];
+    for (let i = 0; i < event.length; i++) {
+      if (event[i].userName !== undefined) {
+        // this.finalSubscribers.push(event[i].userName);
+        this.finalSubscribers.push({
+          subscriberType: 'user',
+          subscriberIdentification: event[i].userName
+        });
+
+      }
+      else {
+        // this.finalSubscribers.push(event[i].groupID);
+        this.finalSubscribers.push({
+          subscriberType: 'group',
+          subscriberIdentification: event[i].groupID
+        });
+      }
+    }
+    console.log('final array in for loop', this.finalSubscribers);
+
+  }
   addRenewal() {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
+    if(this.time > 0){
     switch (this.timeType) {
       case 'Day(s)': {
         this.numberOfDays = this.time * 1;
@@ -96,8 +121,7 @@ export class VehicleRenewAddComponent implements OnInit {
         break;
       }
    }
-    //console.log('number of Days', this.numberOfDays);
-      //  console.log('data', this.reminderData);
+   this.reminderData.subscribers = this.finalSubscribers;
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       console.log('data', this.reminderData);
     this.apiService.postData('reminders', this.reminderData).subscribe({
@@ -129,6 +153,10 @@ export class VehicleRenewAddComponent implements OnInit {
         this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list');
       },
     });
+  }
+  else {
+    this.toastr.warning('Time Must Be Positive Value');
+  }
   }
    /*
    * Fetch Reminder details before updating
@@ -164,6 +192,7 @@ updateRenewal() {
   this.errors = {};
   this.hasError = false;
   this.hasSuccess = false;
+  if(this.time > 0){
   switch (this.timeType) {
     case 'Day(s)': {
       this.numberOfDays = this.time * 1;
@@ -180,6 +209,7 @@ updateRenewal() {
     }
  }
  this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+ this.reminderData.subscribers = this.finalSubscribers;
   console.log('updated data', this.reminderData);
   this.apiService.putData('reminders', this.reminderData).subscribe({
     complete: () => {},
@@ -211,5 +241,9 @@ updateRenewal() {
       this.Success = '';
     },
   });
+}
+else {
+  this.toastr.warning('Time Must Be Positive Value');
+}
 }
 }

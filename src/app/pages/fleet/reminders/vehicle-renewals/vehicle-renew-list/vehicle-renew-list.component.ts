@@ -34,7 +34,7 @@ export class VehicleRenewListComponent implements OnInit {
       next: (result: any) => {
         this.remindersData = result.Items;
         console.log('Reminders Fetched Data', this.remindersData);
-        this.fetchVehicles(this.remindersData[0].reminderIdentification);
+      //  this.fetchVehicles(this.remindersData[0].reminderIdentification);
       },
     });
   }

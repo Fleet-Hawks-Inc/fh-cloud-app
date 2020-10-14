@@ -25,7 +25,7 @@ export class AddIssueComponent implements OnInit {
    * Issue Prop
    */
   issueName = '';
-  vehicleID = '';
+  unitID = '';
   reportedDate: NgbDateStruct;
   description = '';
   odometer = '';
@@ -33,7 +33,8 @@ export class AddIssueComponent implements OnInit {
   assignedTo = '';
   carrierID;
   vehicles = [];
-  fileToUpload = [];
+  assets = [];
+  contacts = [];
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedFiles = [];
@@ -61,6 +62,8 @@ export class AddIssueComponent implements OnInit {
 
   ngOnInit() {
     this.fetchVehicles();
+    this.fetchAssets();
+    this.fetchContacts();
     this.issueID = this.route.snapshot.params['issueID'];
     if (this.issueID) {
       this.title = 'Edit Asset';
@@ -76,19 +79,31 @@ export class AddIssueComponent implements OnInit {
     this.apiService.getData('vehicles').subscribe((result: any) => {
          this.vehicles = result.Items; });
     }
+    fetchAssets() {
+      this.apiService.getData('assets').subscribe((result: any) => {
+        this.assets = result.Items;
+        console.log('assets', this.assets);
+      });
+    }
+    fetchContacts() {
+      this.apiService.getData('contacts').subscribe((result: any) => {
+        this.contacts = result.Items;
+        console.log('CONTACTS', this.contacts);
+      });
+    }
     getToday(): string {
       return new Date().toISOString().split('T')[0];
     }
   // selectToday() {
   //   this.model = this.calendar.getToday();
   // }
-  addIssue(){
+  addIssue() {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
     const data = {
       issueName: this.issueName,
-      vehicleID: this.vehicleID,
+      unitID: this.unitID,
       reportedDate: this.reportedDate,
       description: this.description,
       odometer: this.odometer,
@@ -178,13 +193,14 @@ throwErrors() {
       console.log('result', result);
       this.issueID = this.issueID;
       this.issueName = result.issueName;
-      this.vehicleID = result.vehicleID;
+      this.unitID = result.unitID;
       this.reportedDate = result.reportedDate;
       this.description = result.description;
       this.odometer = result.odometer;
       this.reportedBy = result.reportedBy;
       this.assignedTo = result.assignedTo;
     });
+    this.spinner.hide();
 }
 
 /*
@@ -195,8 +211,9 @@ throwErrors() {
   this.hasError = false;
   this.hasSuccess = false;
   const data = {
+    issueID: this.issueID,
     issueName: this.issueName,
-    vehicleID: this.vehicleID,
+    unitID: this.unitID,
     reportedDate: this.reportedDate,
     description: this.description,
     odometer: this.odometer,
@@ -234,8 +251,7 @@ subscribe({
     this.response = res;
     this.uploadFiles(); // upload selected files to bucket
     this.toaster.success('Issue Updated Successfully');
-
-
+    this.router.navigateByUrl('/fleet/maintenance/issues/list');
   }
 });
 }

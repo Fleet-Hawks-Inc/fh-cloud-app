@@ -43,8 +43,12 @@
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups</label>
                                     <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="reminderData.subscribers" style="width: 100%;" (change)="subscriberChange($event)">         
-                                       <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}</ng-option>
-                                       <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}</ng-option>
+                                       <optgroup label="Select User">
+                                       <ng-option *ngFor="let user of users" [value]="user">{{user.userName}}</ng-option>
+                                       </optgroup>
+                                       <optgroup label="Select Group">
+                                       <ng-option *ngFor="let group of groups" [value]="group">{{group.groupName}}</ng-option>
+                                       <optgroup>
                                    </ng-select>
                                     <div class="checkbox-custom mt-2">
                                     <input [(ngModel)]="reminderData.sendEmail" name="reminderData.sendEmail" type="checkbox" [checked]="reminderData.sendEmail">
@@ -191,25 +195,26 @@
                                  <div class="col-lg-10">
                                     <div class="row">
                                        <div class="col-lg-6">
-                                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Time</label>
+                                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time</label>
                                           <div class="row">
                                              <div class="col-lg-6">
-                                                <input [(ngModel)]="reminderData.reminderTasks.repeatByTime" name="repeatByTime" type="number" class="form-control" >
+                                                <input  [(ngModel)]="time" name="time" type="number" min='0' class="form-control" >
                                              </div>
                                              <div class="col-lg-6 col-lg-pl-0">
-                                                <select [(ngModel)]="reminderData.reminderTasks.repeatByDurationType" name="reminderData.reminderTasks.repeatByDurationType" data-plugin-selectTwo class="form-control populate">
+                                                <select  [(ngModel)]="timeType" name="timeType" data-plugin-selectTwo class="form-control populate">
                                                    <optgroup label="">
                                                       <option value="Day(s)">Day(s)</option>
                                                       <option value="Week(s)">Week(s)</option>
                                                       <option value="Month(s)">Month(s)</option>
+                                                      <option value="Year(s)">Year(s)</option>
                                                    </optgroup>
                                                 </select>
                                              </div>
                                           </div>
                                        </div>
                                        <div class="col-lg-6">
-                                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer <span id="primary_meter">miles</span></label>
-                                          <input [(ngModel)]="reminderData.reminderTasks.repeatByOdometer" name="reminderData.reminderTasks.repeatByOdometer" type="text" class="form-control">
+                                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer Miles<span id="primary_meter">miles</span></label>
+                                          <input [(ngModel)]="reminderData.reminderTasks.odometer" name="reminderData.reminderTasks.odometer" type="text" class="form-control">
                                        </div>
                                     </div>
                                  </div>

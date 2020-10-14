@@ -152,9 +152,7 @@ export class AddFuelEntryComponent implements OnInit {
           this.reeferArray.push(this.assets[i]);
         }
       }
-      console.log('reefer', this.reeferArray);
     });
-    
   }
   fetchTrips() {
     this.apiService.getData('trips').subscribe((result: any) => {

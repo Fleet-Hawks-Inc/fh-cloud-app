@@ -41,9 +41,9 @@
                                 <table class="table table-bordered table-responsive-lg">
                                    <tbody>
                                       <tr>
-                                         <td width="40%" class="back-color-gray font-weight-bold">{{unitType}}</td>
-                                         <td  width="60%"><a href="#"  class="text-info" >{{vehicleName}}</a></td>
-                                         <!-- <td  width="60%"><a href="#"  class="text-info" *ngIf = "unit">{{assetName}}</a></td> -->
+                                         <td width="40%" class="back-color-gray font-weight-bold">{{unitType | titlecase}}</td>
+                                         <td  width="60%" *ngIf="unitType ==='vehicle'"><a href="#"  class="text-info"  >{{vehicleName}}</a></td>
+                                         <td  width="60%" *ngIf="unitType ==='reefer'"><a href="#"  class="text-info" >{{assetName}}</a></td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Trip Number</td>
@@ -55,7 +55,7 @@
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Odometer</td>
-                                         <td>{{odometer}} mi</td>
+                                         <td>{{additionalDetails.odometer}} mi</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Gallons (US)</td>
