@@ -80,7 +80,7 @@
                     <div class="card">
                         <div class="card-body">
                             <table class="table table-bordered table-responsive-lg table-striped mb-0"
-                                id="datatable-default">
+                                id="simple-table">
                                 <thead>
                                     <tr>
                                         <th>Contact</th>
@@ -93,13 +93,13 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of remindersData;">                                       
-                                        <td routerLink="/fleet/reminders/contact-renewals/detail/{{item.reminderID }}">{{item.reminderIdentification}}</td>
+                                        <td routerLink="/fleet/reminders/contact-renewals/detail/{{item.entryID }}">{{item.contactID}}</td>
                                         <td onclick="window.location='contact-renewals-details.php';"><span
-                                                class="text-info">{{item.reminderTasks.task}}</span></td>
+                                                class="text-info">{{item.renewalType}}</span></td>
                                         <td onclick="window.location='contact-renewals-details.php';"><span
                                                 class="text-danger font-weight-bold font-size-12">Overdue</span><br><span
-                                                class="font-size-12">{{item.reminderTasks.remindByDays}} Days</span></td>
-                                        <td onclick="window.location='contact-renewals-details.php';"><span class="font-size-12">{{item.reminderTasks.dueDate}}</span></td>
+                                                class="font-size-12">{{item.date}}</span></td>
+                                        <td onclick="window.location='contact-renewals-details.php';"><span class="font-size-12">Jun 13,2020</span></td>
                                         <td onclick="window.location='contact-renewals-details.php';"><span
                                                 class="text-success font-weight-bold font-size-12"> Active</span><br>1
                                             subscribers
@@ -110,8 +110,8 @@
                                                         class="fas fa-ellipsis-v"></i></button>
                                                 <div class="dropdown-menu" role="menu">
                                                     <a class="dropdown-item text-1" href="#">Send Notifications</a>
-                                                    <a routerLink="/fleet/reminders/contact-renewals/edit/{{item.reminderID }}" class="dropdown-item text-1" >Edit</a>
-                                                    <a href="javascript:;" class="dropdown-item text-1" (click)="deleteRenewal(item.reminderID)">Delete</a>
+                                                    <a routerLink="/fleet/reminders/contact-renewals/edit/{{item.entryID }}" class="dropdown-item text-1" >Edit</a>
+                                                    <a href="javascript:;" class="dropdown-item text-1" (click)="deleteRenewal(item.entryID)">Delete</a>
                                                 </div>
                                             </div>
                                         </td>

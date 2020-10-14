@@ -45,16 +45,18 @@
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Vehicle/Asset</label>
-                                            <select data-plugin-selectTwo class="form-control populate" name="unitID" [(ngModel)]="unitID">
-                                                <optgroup label="Select Vehicle">
-                                                <option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</option>
-                                                </optgroup>
-                                                <optgroup label="Select Asset">
-                                                <option *ngFor="let asset of assets" value="{{asset.assetID}}">{{asset.assetIdentification}}</option>
-                                                </optgroup>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Vehicle</label>
+                                            <select data-plugin-selectTwo class="form-control populate" name="vehicleID" [(ngModel)]="vehicleID">
+                                                <option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleName}}</option>
                                             </select>
-                                         
+                                            <!-- <select name="vehicleID" [(ngModel)]="vehicleID" data-plugin-selectTwo class="form-control populate">
+                                                <optgroup label="">
+                                                    <option value="User">User</option>
+                                                    <option value="Operator">Operator</option>
+                                                    <option value="Technician">Technician</option>
+                                                    <option value="Driver">Driver</option>
+                                                </optgroup>
+                                            </select> -->
                                         </div>
                                     </div>
                                     <div class="row pt-2">
@@ -81,7 +83,7 @@
                                     <div class="row">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer(miles)</label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer</label>
                                             <input [(ngModel)]="odometer" name="odometer" type="text" class="form-control">
                                         </div>
                                     </div>
@@ -91,9 +93,12 @@
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported
                                                 By</label>
                                             <select [(ngModel)]="reportedBy" name="reportedBy" data-plugin-selectTwo class="form-control populate">
-                                                <optgroup label="Select Contact">
-                                                    <option *ngFor="let contact of contacts" value="{{contact.contactID}}">{{contact.contactName}}</option>
-                                                    </optgroup>
+                                                <optgroup label="">
+                                                    <option value="User">User</option>
+                                                    <option value="Operator">Operator</option>
+                                                    <option value="Technician">Technician</option>
+                                                    <option value="Driver">Driver</option>
+                                                </optgroup>
                                             </select>
                                         </div>
                                     </div>
@@ -104,8 +109,10 @@
                                                 To</label>
                                             <select [(ngModel)]="assignedTo" name="assignedTo" data-plugin-selectTwo class="form-control populate">
                                                 <optgroup label="">
+                                                    <option value="User">User</option>
                                                     <option value="Operator">Operator</option>
                                                     <option value="Technician">Technician</option>
+                                                    <option value="Driver">Driver</option>
                                                 </optgroup>
                                             </select>
                                         </div>

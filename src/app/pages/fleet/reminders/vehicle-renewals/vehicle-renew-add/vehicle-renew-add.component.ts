@@ -17,17 +17,7 @@ declare var $: any;
 export class VehicleRenewAddComponent implements OnInit {
   reminderID;
   pageTitle;
-  reminderData = {
-    reminderType: 'vehicle',
-    reminderTasks : {
-      remindByDays : 0
-    },
-    subscribers: []
-  };
-  numberOfDays: number;
-  time: number;
-  timeType: string;
-  finalSubscribers = [];
+  reminderData = {};
   vehicles = [];
   users = [];
   groups = [];
@@ -78,53 +68,12 @@ export class VehicleRenewAddComponent implements OnInit {
       console.log('Groups Data', this.groups);
     });
   }
-  subscriberChange(event) {
-    console.log('EVENT Data', event);
-    this.finalSubscribers = [];
-    for (let i = 0; i < event.length; i++) {
-      if (event[i].userName !== undefined) {
-        // this.finalSubscribers.push(event[i].userName);
-        this.finalSubscribers.push({
-          subscriberType: 'user',
-          subscriberIdentification: event[i].userName
-        });
-
-      }
-      else {
-        // this.finalSubscribers.push(event[i].groupID);
-        this.finalSubscribers.push({
-          subscriberType: 'group',
-          subscriberIdentification: event[i].groupID
-        });
-      }
-    }
-    console.log('final array in for loop', this.finalSubscribers);
-
-  }
   addRenewal() {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    if(this.time > 0){
-    switch (this.timeType) {
-      case 'Day(s)': {
-        this.numberOfDays = this.time * 1;
-        console.log('days in switch', this.timeType);
-        break;
-      } 
-      case 'Month(s)': {
-        this.numberOfDays = this.time * 30;
-        break;
-      }
-      case 'Week(s)': {
-        this.numberOfDays = this.time * 7;
-        break;
-      }
-   }
-   this.reminderData.subscribers = this.finalSubscribers;
-      this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      console.log('data', this.reminderData);
-    this.apiService.postData('reminders', this.reminderData).subscribe({
+    console.log('data', this.reminderData);
+    this.apiService.postData('vehicleRenewal', this.reminderData).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -154,29 +103,23 @@ export class VehicleRenewAddComponent implements OnInit {
       },
     });
   }
-  else {
-    this.toastr.warning('Time Must Be Positive Value');
-  }
-  }
    /*
    * Fetch Reminder details before updating
   */
  fetchReminderByID() {
   this.apiService
-    .getData('reminders/' + this.reminderID)
+    .getData('vehicleRenewal/' + this.reminderID)
     .subscribe((result: any) => {
       result = result.Items[0];
       console.log('vehicle renewal fetched  data', result);
-          this.reminderData['reminderID'] = this.reminderID;
-          this.reminderData['reminderTasks']['dueDate']  = result.reminderTasks.dueDate;
-          this.reminderData['reminderTasks']['task']  = result.reminderTasks.task;
-          this.time  = result.reminderTasks.remindByDays;
-          this.timeType = 'Day(s)';
-          this.reminderData['sendEmail']  = result.sendEmail;
-          this.reminderData['subscribers'] =  result.subscribers;
-        //   this.reminderData['time']  = result.time;
-        //   this.reminderData['timeType']  = result.timeType;
-          this.reminderData['reminderIdentification']  = result.reminderIdentification;
+          this.reminderData['entryID'] = this.reminderID;
+          this.reminderData['date']  = result.date;
+          this.reminderData['renewalType']  = result.renewalType;
+          this.reminderData['sendNotification']  = result.sendNotification;
+        // this.reminderData['subscribedUsers'] ["User 3"]
+          this.reminderData['time']  = result.time;
+          this.reminderData['timeType']  = result.timeType;
+          this.reminderData['vehicleID']  = result.vehicleID;
     });
 
 }
@@ -192,26 +135,8 @@ updateRenewal() {
   this.errors = {};
   this.hasError = false;
   this.hasSuccess = false;
-  if(this.time > 0){
-  switch (this.timeType) {
-    case 'Day(s)': {
-      this.numberOfDays = this.time * 1;
-      console.log('days in switch', this.timeType);
-      break;
-    } 
-    case 'Month(s)': {
-      this.numberOfDays = this.time * 30;
-      break;
-    }
-    case 'Week(s)': {
-      this.numberOfDays = this.time * 7;
-      break;
-    }
- }
- this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
- this.reminderData.subscribers = this.finalSubscribers;
   console.log('updated data', this.reminderData);
-  this.apiService.putData('reminders', this.reminderData).subscribe({
+  this.apiService.putData('vehicleRenewal', this.reminderData).subscribe({
     complete: () => {},
     error: (err) => {
       from(err.error)
@@ -241,9 +166,5 @@ updateRenewal() {
       this.Success = '';
     },
   });
-}
-else {
-  this.toastr.warning('Time Must Be Positive Value');
-}
 }
 }

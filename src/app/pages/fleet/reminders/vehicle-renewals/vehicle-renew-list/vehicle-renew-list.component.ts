@@ -28,19 +28,19 @@ export class VehicleRenewListComponent implements OnInit {
     return arr.length;
   }
   fetchRenewals = () => {
-    this.apiService.getData('reminders').subscribe({
+    this.apiService.getData('vehicleRenewal').subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.remindersData = result.Items;
         console.log('Reminders Fetched Data', this.remindersData);
-      //  this.fetchVehicles(this.remindersData[0].reminderIdentification);
+        this.fetchVehicles(this.remindersData[0].vehicleID);
       },
     });
   }
  deleteRenewal(entryID) {
     this.apiService
-      .deleteData('reminders/' + entryID)
+      .deleteData('vehicleRenewal/' + entryID)
       .subscribe((result: any) => {
         this.fetchRenewals ();
         this.toastr.success('Vehicle Renewal Deleted Successfully!');

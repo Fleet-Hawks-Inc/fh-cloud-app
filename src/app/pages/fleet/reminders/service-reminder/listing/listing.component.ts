@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { timer } from 'rxjs';
-declare var $: any;
+
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
@@ -23,7 +22,7 @@ export class ListingComponent implements OnInit {
     this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
       this.vehicles = result.Items;
       console.log('VEHICLES', this.vehicles);
-     return this.vehicles[0].vehicleIdentification;
+      this.vehicleIdentification =  this.vehicles[0].vehicleIdentification;
      // console.log('vehicleId' , this.vehicleIdentification);
     });
   }
@@ -32,34 +31,24 @@ export class ListingComponent implements OnInit {
     return arr.length;
   }
   fetchReminders = () => {
-    this.apiService.getData('reminders').subscribe({
+    this.apiService.getData('serviceReminder').subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.remindersData = result.Items;
         console.log('Fetched data of service reminder', this.remindersData);
-
+        this.fetchVehicles(this.remindersData[0].vehicleID);
       },
     });
   }
 
 
  deleteReminder(entryID) {
-     /******** Clear DataTable ************/
-     if ($.fn.DataTable.isDataTable('#datatable-default')) {
-      $('#datatable-default').DataTable().clear().destroy();
-    }
-    /******************************/
     this.apiService
-      .deleteData('reminders/' + entryID)
+      .deleteData('serviceReminder/' + entryID)
       .subscribe((result: any) => {
         this.toastr.success('Service Reminder Deleted Successfully!');
         this.fetchReminders ();
       });
-  }
-  initDataTable() {
-    timer(200).subscribe(() => {
-      $('#datatable-default').DataTable();
-    });
   }
 }
