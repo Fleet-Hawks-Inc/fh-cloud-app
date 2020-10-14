@@ -1,4 +1,4 @@
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner>
+<!-- <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner> -->
 <section class="body">
 	<!-- start: header -->
 	<app-header></app-header>
@@ -537,8 +537,7 @@
 							</div>
 							<div class="form-group row">
 								<div class="col-lg-11 text-right"> 
-									<button type="button" class="btn btn-default"
-										onclick="goBack()">Cancel</button> 
+									<a routerLink="/fleet/assets/list" class="btn btn-default">Cancel</a> 
                   <!-- <a (click)="addAsset()" class="btn btn-success">Submit</a>  -->
                   <a href="javascript:;" *ngIf="!assetID" (click)="addAsset()" class="btn btn-success" id="nextBtn">Save</a> 
                   <a href="javascript:;" *ngIf="assetID" (click)="updateAsset()" class="btn btn-success">Update</a> 

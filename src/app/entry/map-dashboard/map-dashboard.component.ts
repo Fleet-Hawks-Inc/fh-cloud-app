@@ -62,7 +62,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     this.showDriverData();
 
     // Entire Fleet Tree initialization
-    $(function () {
+    $(() => {
       $('#treeCheckbox').jstree({
         'core' : {
           'themes' : {
