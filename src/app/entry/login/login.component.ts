@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {ApiService} from '../../services/api.service';
-import {AuthService} from '../../services/auth.service';
+import {ApiService} from '../../services';
+import {AuthService} from '../../services';
 import {Role, User} from '../../models/objects';
 import { Auth } from 'aws-amplify';
 
@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
       // });
       await Auth.signIn(this.userName, this.password);
       const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
-      //if (!isActivatedUser.carrierID) {
+      // if (!isActivatedUser.carrierID) {
       if (!isActivatedUser.carrierID) {
         this.hasError = true;
         this.Error = 'User has not active devices';
@@ -102,17 +102,20 @@ export class LoginComponent implements OnInit {
          * For the Role Management
          * @type {{id: string; username: string; firstName: string; lastName: string; role: Role}}
          */
-        const user : User =   { id: '1',
+        const user: User = {
+          id: '1',
           username: 'admin',
           firstName: 'Admin',
           lastName: 'User',
-          role: Role.FleetManager };
-        localStorage.setItem('user', JSON.stringify(user) );
+          role: Role.FleetManager
+        };
+        localStorage.setItem('user', JSON.stringify(user));
+
+
 
         /**
          * set local and redirect
          **/
-
         localStorage.setItem('LoggedIn', 'true');
         await this.router.navigate(['/Map-Dashboard']);
       }
@@ -123,7 +126,7 @@ export class LoginComponent implements OnInit {
       this.Error = err.message || 'Error during login';
     }
 
-  };
+  }
   submitConfirmationCode = async () => {
     if (this.signUpCode !== '') {
       await Auth.verifyCurrentUserAttributeSubmit('email', this.signUpCode);

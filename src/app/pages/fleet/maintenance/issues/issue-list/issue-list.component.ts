@@ -101,3 +101,4 @@ export class IssueListComponent implements OnInit {
     });
   }
 }
+
