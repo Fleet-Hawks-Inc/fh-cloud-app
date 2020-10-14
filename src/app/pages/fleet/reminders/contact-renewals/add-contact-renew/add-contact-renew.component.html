@@ -31,10 +31,12 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Contact</label>
-                                    <select [(ngModel)]="reminderData.reminderIdentification" name="reminderData.reminderIdentification" data-plugin-selectTwo class="form-control populate">
-                                       <optgroup label="Select Contact">
-                                          <option *ngFor="let contact of contacts" value="{{contact.contactID}}">{{contact.contactName}}</option>
-                                          </optgroup>
+                                    <select [(ngModel)]="reminderData.contactID" name="reminderData.contactID" data-plugin-selectTwo class="form-control populate">
+                                       <optgroup label="">
+                                          <option value="Person 1">Person 1</option>
+                                          <option value="Person 2">Person 2</option>
+                                          <option value="Person 3">Person 3</option>
+                                       </optgroup>
                                     </select>
                                  </div>
                               </div>
@@ -49,7 +51,7 @@
                                        <ng-option *ngFor="let group of groups" [value]="group">{{group.groupName}}</ng-option>
                                    </ng-select>
                                     <div class="checkbox-custom mt-2">
-                                    <input [(ngModel)]="reminderData.sendEmail" name="reminderData.sendEmail" type="checkbox" [checked]="reminderData.sendEmail">
+                                    <input [(ngModel)]="reminderData.sendNotification" name="reminderData.sendNotification" type="checkbox" [checked]="reminderData.sendNotification">
                                     <label class="control-label font-weight-bold">Send Email Notification</label>
                                  </div>
                                  </div>
@@ -60,7 +62,7 @@
                            <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type</label>
-                                    <select  [(ngModel)]="reminderData.reminderTasks.task" name="reminderData.reminderTasks.task" data-plugin-selectTwo class="form-control populate">
+                                    <select [(ngModel)]="reminderData.renewalType" name="reminderData.renewalType" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
                                           <option value="Licence">Licence</option>
                                           <option value="Certification">Certification</option>
@@ -74,21 +76,22 @@
                                     <input
                                     class="form-control"
                                     placeholder="dd-mm-yyyy"
-                                    name="reminderData.reminderTasks.dueDate" [(ngModel)]="reminderData.reminderTasks.dueDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
+                                    name="reminderData.date" [(ngModel)]="reminderData.date"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
                                   />
                                  </div>
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)</label>
                                     <div class="row">
                                           <div class="col-lg-4">
-                                             <input type="number" class="form-control"  [(ngModel)]="time" name="time">
+                                             <input type="number" class="form-control" [(ngModel)]="reminderData.time" name="reminderData.time">
                                           </div>
                                         <div class="col-lg-8"> 
-                                           <select  [(ngModel)]="timeType" name="timeType" data-plugin-selectTwo class="form-control populate">
+                                           <select [(ngModel)]="reminderData.timeType" name="reminderData.timeType" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
-                                          <option value="Day(s)">Day(s)</option>
-                                          <option value="Week(s)">Week(s)</option>
-                                          <option value="Month(s)">Month(s)</option>
+                                          <option value="Day (s)">Day (s)</option>
+                                          <option value="Week (s)">Week (s)</option>
+                                          <option value="Month (s)">Month (s)</option>
+                                          <option value="Year (s)">Year (s)</option>
                                        </optgroup>
                                     </select></div> 
                                     </div>

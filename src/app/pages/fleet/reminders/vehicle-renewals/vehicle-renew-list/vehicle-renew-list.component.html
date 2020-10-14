@@ -87,24 +87,22 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of remindersData;">
-                                        <td  routerLink="/fleet/reminders/vehicle-renewals/detail/{{item.entryID}}">{{item.reminderIdentification}}</td>
+                                        <td  routerLink="/fleet/reminders/vehicle-renewals/detail/{{item.entryID}}">{{ vehicleIdentification }}</td>
                                         <td onclick="window.location='vehicle-renewal-details.php';"><span
                                                 class="text-danger font-weight-bold font-size-12">Overdue</span><br><span
-                                                class="font-weight-bold" title="Task">{{item.reminderTasks.task}}</span></td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';">{{item.reminderTasks.dueDate}}</td>
+                                                class="font-weight-bold" title="Task">{{item.renewalType}}</span></td>
+                                        <td onclick="window.location='vehicle-renewal-details.php';">{{item.date}}</td>
                                         <td onclick="window.location='vehicle-renewal-details.php';"><span
-                                                class="text-success font-weight-bold font-size-12"> Active</span><br>
-                                                <!-- {{ getLengthOfArray(item.subscribers) }}  -->
-                                                {{ item.subscribers }} 
-                                            </td>
+                                                class="text-success font-weight-bold font-size-12"> Active</span><br>{{ getLengthOfArray(item.subscribedUsers) }} 
+                                            subscribers</td>
                                             <td>
                                                 <div class="btn-group flex-wrap">
                                                     <button type="button" class="btn p-0" data-toggle="dropdown"><i
                                                             class="fas fa-ellipsis-v"></i></button>
                                                     <div class="dropdown-menu" role="menu">
                                                         <a class="dropdown-item text-1" href="#">Send Notifications</a>
-                                                        <a routerLink="/fleet/reminders/vehicle-renewals/edit/{{item.reminderID }}" class="dropdown-item text-1" >Edit</a>
-                                                        <a href="javascript:;" class="dropdown-item text-1" (click)="deleteRenewal(item.reminderID)">Delete</a>
+                                                        <a routerLink="/fleet/reminders/vehicle-renewals/edit/{{item.entryID }}" class="dropdown-item text-1" >Edit</a>
+                                                        <a href="javascript:;" class="dropdown-item text-1" (click)="deleteRenewal(item.entryID)">Delete</a>
                                                     </div>
                                                 </div>
                                             </td>

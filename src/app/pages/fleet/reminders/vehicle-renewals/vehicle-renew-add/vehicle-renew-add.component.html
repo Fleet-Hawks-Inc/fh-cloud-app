@@ -31,7 +31,7 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle</label>
-                                    <select [(ngModel)]="reminderData.reminderIdentification" name="reminderData.reminderIdentification" data-plugin-selectTwo class="form-control populate">
+                                    <select [(ngModel)]="reminderData.vehicleID" name="reminderData.vehicleID" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
                                           <option *ngFor="let item of vehicles" value="{{item.vehicleID}}">{{item.vehicleIdentification}}</option>
                                        </optgroup>
@@ -46,12 +46,12 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups</label>
-                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="reminderData.subscribers" style="width: 100%;" (change)="subscriberChange($event)">         
+                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="reminderData.subscribers" style="width: 100%;" (change)="subscriberChange($event)">                                       
                                        <ng-option *ngFor="let user of users" [value]="user">{{user.userName}}</ng-option>
                                        <ng-option *ngFor="let group of groups" [value]="group">{{group.groupName}}</ng-option>
                                    </ng-select>
                                     <div class="checkbox-custom mt-2">
-                                    <input [(ngModel)]="reminderData.sendEmail" name="reminderData.sendEmail" type="checkbox" [checked]="reminderData.sendEmail">
+                                    <input [(ngModel)]="reminderData.sendNotification" name="reminderData.sendNotification" type="checkbox" [checked]="reminderData.sendNotification">
                                     <label class="control-label font-weight-bold">Send Email Notification</label>
                                  </div>
                                  </div>
@@ -66,7 +66,7 @@
                            <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type</label>
-                                    <select [(ngModel)]="reminderData.reminderTasks.task" name="reminderData.reminderTasks.task" data-plugin-selectTwo class="form-control populate">
+                                    <select [(ngModel)]="reminderData.renewalType" name="reminderData.renewalType" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
                                           <option value="Emission Test">Emission Test</option>
                                           <option value="Inspection">Inspection</option>
@@ -82,21 +82,21 @@
                                     <input
                                     class="form-control"
                                     placeholder="dd-mm-yyyy"
-                                    name="reminderData.reminderTasks.dueDate" [(ngModel)]="reminderData.reminderTasks.dueDate"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
+                                    name="reminderData.date" [(ngModel)]="reminderData.date"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
                                   />
                                  </div>
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)</label>
                                     <div class="row">
-                                        <div class="col-lg-4"><input [(ngModel)]="time" name="time" type="number" class="form-control"></div>
-                                        <div class="col-lg-8"> <select [(ngModel)]="timeType" name="timeType" data-plugin-selectTwo class="form-control populate">
+                                        <div class="col-lg-4"><input [(ngModel)]="reminderData.time" name="reminderData.time" type="number" class="form-control"></div>
+                                        <div class="col-lg-8"> <select [(ngModel)]="reminderData.timeType" name="reminderData.timeType" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
                                           <option value="Day(s)">Day(s)</option>
                                           <option value="Week(s)">Week(s)</option>
                                           <option value="Month(s)">Month(s)</option>
+                                          <option value="Year(s)">Yea (s)</option>
                                        </optgroup>
-                                    </select>
-                                 </div> 
+                                    </select></div> 
                                     </div>
                                    
                                  </div>
@@ -105,7 +105,7 @@
                         </div>
                         <div class="form-group row pt-2">
                            <div class="col-lg-11 text-right">
-                              <a href="javascript:;" (click)="cancel()" class="btn btn-default mr-1" >Cancel</a>
+                              <a href="javascript:;" (click)="cancel()" class="btn btn-default" >Cancel</a>
                               <a href="javascript:;" *ngIf="!reminderID" (click)="addRenewal()" class="btn btn-success" >Save</a> 
                               <a href="javascript:;" *ngIf="reminderID" (click)="updateRenewal()" class="btn btn-success">Update</a>
                            </div>

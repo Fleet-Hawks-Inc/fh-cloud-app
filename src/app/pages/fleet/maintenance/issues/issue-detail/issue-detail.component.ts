@@ -13,7 +13,7 @@ export class IssueDetailComponent implements OnInit {
 
   public issueID;
   issueName = '';
-  unitID = '';
+  vehicleID = '';
   reportedDate: '';
   description = '';
   odometer = '';
@@ -46,7 +46,7 @@ export class IssueDetailComponent implements OnInit {
       console.log('result', result);
       this.issueID = this.issueID;
       this.issueName = result.issueName;
-      this.unitID = result.unitID;
+      this.vehicleID = result.vehicleID;
       this.reportedDate = result.reportedDate;
       this.description = result.description;
       this.odometer = result.odometer;

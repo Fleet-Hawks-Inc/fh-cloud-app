@@ -23,7 +23,11 @@ export const environment = {
     secretAccessKey: 'ffdBZetEaP/2eAa/XMbAEVaWLbUBGK7OMx8tFffA',
     region: 'ap-south-1'
   },
+  HOSTNAME: 'myhome.anterbox.com',
+  PORT : 9001,
+  MQTTPATH : '/',
   mapConfig: {
-    apiKey: 'lIoqoqWBD3Op-8TVFDBPM9pj3kTQKIyCuH8Q_2RDR1c'  
+    apiKey: 'lIoqoqWBD3Op-8TVFDBPM9pj3kTQKIyCuH8Q_2RDR1c'
   },
+
 };
