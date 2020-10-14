@@ -164,7 +164,7 @@ export class AddAssetsComponent implements OnInit {
         this.response = res;
         this.uploadFiles(); // upload selected files to bucket
         this.toastr.success('Asset added successfully');
-        this.router.navigateByUrl('/fleet/assets/list');
+        this.router.navigateByUrl('/fleet/assets/Assets-List');
       },
     });
   }

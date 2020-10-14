@@ -138,10 +138,10 @@ const routes: Routes = [
   {
     path: 'assets',
     children: [
-      { path: 'add', component: AddAssetsComponent },
-      { path: 'list', component: AssetListComponent },
-      { path: 'detail/:assetID', component: AssetDetailComponent },
-      { path: 'edit/:assetID', component: AddAssetsComponent },
+      { path: 'Add-Assets', component: AddAssetsComponent },
+      { path: 'Assets-List', component: AssetListComponent },
+      { path: 'asset-detail/:assetID', component: AssetDetailComponent },
+      { path: 'Edit-Asset/:assetID', component: AddAssetsComponent },
     ],
   },
   {
