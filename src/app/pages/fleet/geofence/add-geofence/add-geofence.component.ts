@@ -155,12 +155,12 @@ export class AddGeofenceComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    this.spinner.show();
+    // this.spinner.show();
     console.log(this.geofenceData);
     this.apiService.postData('geofences', this.geofenceData).subscribe({
       complete: () => { },
       error: (err) => {
-        from(err.error)
+        from(err)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/'.*'/, 'This Field');
@@ -170,6 +170,7 @@ export class AddGeofenceComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.spinner.hide();
             },
             error: () => { },
             next: () => { },
@@ -180,7 +181,7 @@ export class AddGeofenceComponent implements OnInit {
         this.hasSuccess = true;
         this.toastr.success('Geofence Added successfully');
         this.spinner.hide();
-        this.router.navigateByUrl('/fleet/geofence/geofence-list');
+        this.router.navigateByUrl('/fleet/geofence/list');
       },
     });
   }

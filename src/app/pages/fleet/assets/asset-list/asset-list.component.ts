@@ -216,7 +216,7 @@ export class AssetListComponent implements OnInit {
         console.log(result)
         this.spinner.hide(); // loader hide
         for (let i = 0; i < result.Items.length; i++) {
-          if (result.Items[i].isActivate === 1) {
+          if (result.Items[i].isDeleted === 0) {
             this.allData.push(result.Items[i]);
             if (result.Items[i].assetDetails.assetType === 'Reefer') {
               this.refers.push(result.Items[i]);
@@ -252,27 +252,12 @@ export class AssetListComponent implements OnInit {
   deactivateAsset(value, assetID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData('assets/' + assetID)
+      .getData(`assets/isDeleted/${assetID}/${value}`)
       .subscribe((result: any) => {
-        result = result.Items[0];
-        result.isActivate = 0;
-        delete result['carrierID'];
         console.log('result', result);
-        this.apiService.putData('assets', result).subscribe({
-          next: (res) => {
-            this.response = res;
-            this.hasSuccess = true;
-            this.toastr.success('Asset Deleted successfully');
-            this.fetchAssets();
-            this.Success = '';
-          },
-        });
+        this.fetchAssets();
       });
     }
-    // return x; 
-    // $('#confirmModal').modal('show');
-    // console.log(value, assetID);
-    
   }
 
   deleteAsset() {

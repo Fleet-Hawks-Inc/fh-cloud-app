@@ -21,7 +21,7 @@ export class GeofenceListComponent implements OnInit {
   private geofenceSelectCount;
   visibleIndex = -1;
   title = 'Geofence List';
-  geofences;
+  geofences = [];
   dropdownList = [];
   selectedItems = [];
   dropdownSettings: IDropdownSettings;
@@ -110,16 +110,33 @@ export class GeofenceListComponent implements OnInit {
   fetchGeofences() {
     this.spinner.show();
     this.apiService.getData('geofences').subscribe({
-      complete: () => {
-        this.initDataTable();
-      },
+      complete: () => {},
       error: () => { },
       next: (result: any) => {
         console.log(result);
+        for (let i = 0; i < result.Items.length; i++) {
+          // console.log(result.Items[i].isDeleted);
+          if (result.Items[i].isDeleted === 0) {
+            console.log("if")
+            this.geofences.push(result.Items[i]);
+          } else {
+            console.log("else")
+          }
+        }
         this.spinner.hide();
-        this.geofences = result.Items;
       },
     });
+  }
+
+  deactivateAsset(value, geofenceID) {
+    if (confirm("Are you sure you want to delete?") === true) {
+      this.apiService
+      .getData(`geofences/isDeleted/${geofenceID}/${value}`)
+      .subscribe((result: any) => {
+        console.log('result', result);
+        this.fetchGeofences();
+      });
+    }
   }
 
   checkboxCount = () => {
