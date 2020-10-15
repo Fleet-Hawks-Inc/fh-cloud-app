@@ -153,7 +153,7 @@ export class AddGeofenceComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    // this.spinner.show();
+    this.spinner.show();
    // console.log(this.geofenceData);
     this.apiService.postData('geofences', this.geofenceData)
       .pipe(tap(v => {
@@ -172,6 +172,7 @@ export class AddGeofenceComponent implements OnInit {
           .subscribe({
             complete: () => {
                this.throwErrors();
+               this.spinner.hide();
             },
             error: () => { },
             next: () => { },
@@ -188,7 +189,6 @@ export class AddGeofenceComponent implements OnInit {
   }
 
   throwErrors() {
-    console.log('throwError called');
     this.form.showErrors(this.errors);
   }
 

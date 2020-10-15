@@ -229,7 +229,7 @@
                                           </button>
                                           <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                              <a class="dropdown-item" routerLink="/fleet/assets/edit/{{item.assetID}}">Edit</a>
-                                             <a class="dropdown-item" href="javascript:;" (click)="deactivateAsset(item.isActivate, item.assetID)">Delete</a>
+                                             <a class="dropdown-item" href="javascript:;" (click)="deactivateAsset(item.isDeleted, item.assetID)">Delete</a>
                                           </div>
                                         </div>
                                     </td>
