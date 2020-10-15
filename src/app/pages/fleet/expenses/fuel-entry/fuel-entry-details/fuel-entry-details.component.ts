@@ -202,6 +202,7 @@ additionalDetails = {
       this.fetchVehicles(this.vehicleID);
       this.fetchAssets(this.reeferID);
       this.checkUnitType(this.unitType);
+      this.fetchVendors(this.vendorID);
   }
   getImages = async () => {
     this.carrierID = await this.apiService.getCarrierID();

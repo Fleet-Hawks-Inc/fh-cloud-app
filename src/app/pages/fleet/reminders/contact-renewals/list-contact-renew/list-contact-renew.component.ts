@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+declare var $: any;
 
 @Component({
   selector: 'app-list-contact-renew',
@@ -17,7 +18,7 @@ export class ListContactRenewComponent implements OnInit {
     this.fetchRenewals();
   }
   fetchRenewals = () => {
-    this.apiService.getData('contactRenewal').subscribe({
+    this.apiService.getData('reminders').subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -27,8 +28,13 @@ export class ListContactRenewComponent implements OnInit {
     });
   }
   deleteRenewal(entryID) {
+     /******** Clear DataTable ************/
+     if ($.fn.DataTable.isDataTable('#datatable-default')) {
+      $('#datatable-default').DataTable().clear().destroy();
+    }
+    /******************************/
     this.apiService
-      .deleteData('contactRenewal/' + entryID)
+      .deleteData('reminders/' + entryID)
       .subscribe((result: any) => {
         this.fetchRenewals ();
         this.toastr.success('Contact Renewal Reminder Deleted Successfully!');

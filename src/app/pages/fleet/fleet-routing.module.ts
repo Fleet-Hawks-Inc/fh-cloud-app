@@ -14,7 +14,6 @@ import {
   AddFuelEntryComponent,
   FuelEntryListComponent,
   EditFuelEntryComponent,
-  FuelEntryDetailsComponent,
   AddTicketComponent,
   TicketsComponent,
   EditTicketComponent,
@@ -49,10 +48,7 @@ import {
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
-  EditAssetComponent,
-  AddInventoryComponent,
-  InventoryListComponent,
-  EditInventoryComponent
+  EditAssetComponent
 } from './index';
 
 
@@ -69,7 +65,6 @@ const COMPONENTS = [
   AddFuelEntryComponent,
   FuelEntryListComponent,
   EditFuelEntryComponent,
-  FuelEntryDetailsComponent,
   AddTicketComponent,
   TicketsComponent,
   EditTicketComponent,
@@ -104,10 +99,7 @@ const COMPONENTS = [
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
-  EditAssetComponent,
-  AddInventoryComponent,
-  InventoryListComponent,
-  EditInventoryComponent
+  EditAssetComponent
 ];
 
 const routes: Routes = [
@@ -138,10 +130,10 @@ const routes: Routes = [
   {
     path: 'assets',
     children: [
-      { path: 'Add-Assets', component: AddAssetsComponent },
-      { path: 'Assets-List', component: AssetListComponent },
-      { path: 'asset-detail/:assetID', component: AssetDetailComponent },
-      { path: 'Edit-Asset/:assetID', component: AddAssetsComponent },
+      { path: 'add', component: AddAssetsComponent },
+      { path: 'list', component: AssetListComponent },
+      { path: 'detail/:assetID', component: AssetDetailComponent },
+      { path: 'edit/:assetID', component: AddAssetsComponent },
     ],
   },
   {
@@ -160,12 +152,7 @@ const routes: Routes = [
           },
           {
             path: 'Edit-Fuel-Entry/:entryID',
-            component: AddFuelEntryComponent,
-          },
-          {
-            path: 'Fuel-Entry-Details/:entryID',
-            component: FuelEntryDetailsComponent,
-
+            component: EditFuelEntryComponent,
           },
         ],
       },
@@ -222,8 +209,7 @@ const routes: Routes = [
         children: [
           { path: 'list', component: VehicleRenewListComponent },
           { path: 'add', component: VehicleRenewAddComponent },
-          { path: 'edit/:reminderID', component: VehicleRenewAddComponent },
-          { path: 'detail/:reminderID', component: VehicleRenewDetailComponent },
+          { path: 'detail', component: VehicleRenewDetailComponent },
         ],
       },
       {
@@ -231,8 +217,7 @@ const routes: Routes = [
         children: [
           { path: 'list', component: ListContactRenewComponent },
           { path: 'add', component: AddContactRenewComponent },
-          { path: 'edit/:reminderID', component: AddContactRenewComponent },
-          { path: 'detail/:reminderID', component: ContactRenewDetailComponent },
+          { path: 'detail', component: ContactRenewDetailComponent },
         ],
       },
     ],
@@ -325,9 +310,9 @@ const routes: Routes = [
   {
     path: 'geofence',
     children: [
-      { path: 'add-geofence', component: AddGeofenceComponent },
-      { path: 'edit-geofence/:fenceID', component: AddGeofenceComponent },
-      { path: 'geofence-list', component: GeofenceListComponent },
+      { path: 'add', component: AddGeofenceComponent },
+      { path: 'edit/:fenceID', component: AddGeofenceComponent },
+      { path: 'list', component: GeofenceListComponent },
     ],
   },
   {
@@ -337,14 +322,6 @@ const routes: Routes = [
   {
     path: 'live-driver',
     component: DashboardDriverComponent,
-  },
-  {
-    path: 'inventory',
-    children: [
-      { path: 'Add-Inventory', component: AddInventoryComponent },
-      { path: 'Edit-Inventory/:itemID', component: EditInventoryComponent },
-      { path: 'Inventory-List', component: InventoryListComponent },
-    ],
   },
 ];
 

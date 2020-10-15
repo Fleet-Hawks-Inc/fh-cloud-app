@@ -107,6 +107,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.fetchVendors();
     this.fetchTrips();
     this.fetchCountries();
+    this.fetchAssets();
     this.entryID = this.route.snapshot.params['entryID'];
     if (this.entryID) {
       this.title = 'Edit Fuel Entry';
@@ -145,6 +146,12 @@ export class AddFuelEntryComponent implements OnInit {
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
+      console.log('asets', this.assets);
+      for (let i = 0; i < result.Items.length; i++) {
+        if (result.Items[i].assetDetails.assetType === 'Reefer') {
+          this.reeferArray.push(this.assets[i]);
+        }
+      }
     });
   }
   fetchTrips() {
@@ -219,6 +226,7 @@ export class AddFuelEntryComponent implements OnInit {
         },
     };
     console.log(data);
+    
     this.apiService.postData('fuelEntries', data).subscribe({
       complete: () => {},
       error: (err) => {

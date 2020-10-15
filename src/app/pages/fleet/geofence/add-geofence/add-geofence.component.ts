@@ -282,7 +282,7 @@ export class AddGeofenceComponent implements OnInit {
       this.response = res;
       this.hasSuccess = true;
       this.toastr.success('Geofence updated successfully');
-      this.router.navigateByUrl('/fleet/geofence/geofence-list');
+      this.router.navigateByUrl('/fleet/geofence/list');
       this.Success = '';
     },
   });
