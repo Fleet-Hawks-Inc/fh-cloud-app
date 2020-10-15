@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { from } from 'rxjs';
 import {  map } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { Location } from '@angular/common';
 declare var $: any;
 @Component({
   selector: 'app-add-issue',
@@ -53,6 +53,7 @@ export class AddIssueComponent implements OnInit {
               private route: ActivatedRoute,
               private awsUS: AwsUploadService, private toaster: ToastrService,
               private spinner: NgxSpinnerService,
+              private location: Location,
               private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
                 this.selectedFileNames = new Map<any, any>();
               }
@@ -66,14 +67,17 @@ export class AddIssueComponent implements OnInit {
     this.fetchContacts();
     this.issueID = this.route.snapshot.params['issueID'];
     if (this.issueID) {
-      this.title = 'Edit Asset';
+      this.title = 'Edit Issue';
       this.fetchIssueByID();
     } else {
-      this.title = 'Add Asset';
+      this.title = 'Add Issue';
     }
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
+  }
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
@@ -200,13 +204,13 @@ throwErrors() {
       this.reportedBy = result.reportedBy;
       this.assignedTo = result.assignedTo;
     });
-    this.spinner.hide();
+  this.spinner.hide();
 }
 
 /*
    * Update Issue
   */
- updateIssue(){
+ updateIssue() {
   this.errors = {};
   this.hasError = false;
   this.hasSuccess = false;

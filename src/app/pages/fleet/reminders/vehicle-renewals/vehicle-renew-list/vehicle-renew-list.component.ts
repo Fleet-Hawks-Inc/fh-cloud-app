@@ -11,6 +11,7 @@ import { group } from 'console';
 export class VehicleRenewListComponent implements OnInit {
   public remindersData = [];
   vehicles = [];
+  vehicleName: string;
   groups = [];
   group: string;
   subcribersArray = [];
@@ -20,24 +21,35 @@ export class VehicleRenewListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchRenewals();
+    this.fetchVehicles();
+    this.fetchGroups();
   }
-  // fetchGroups() {
-  //   this.apiService.getData('groups').subscribe((result: any) => {
-  //     this.groups = result.Items;
-  //     console.log('Groups Data', this.groups);
+  fetchGroups() {
+    this.apiService.getData('groups').subscribe((result: any) => {
+      this.groups = result.Items;
+      console.log('Groups Data', this.groups);
+    });
+  }
+  // fetchVehicles(ID) {
+  //   this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
+  //   this.vehicles = result.Items;
+  //   this.vehicleIdentification = this.vehicles[0].vehicleIdentification;
   //   });
   // }
-  fetchVehicles(ID) {
-    this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
-      this.vehicles = result.Items;
-      this.vehicleIdentification = this.vehicles[0].vehicleIdentification;
+  fetchVehicles() {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
+    this.vehicles = result.Items;
     });
   }
-  fetchGroupByID(ID) {
-    this.apiService.getData('groups/' + ID).subscribe((result: any) => {
-      this.groups = result.Items;
-      return this.groups[0].groupName;
-    });
+  getVehicleName(ID) {
+    let vehicle = this.vehicles.filter(v => v.vehicleID === ID);
+    let vehicleName = vehicle[0].vehicleIdentification;
+    return vehicleName;
+  }
+  fetchGroupName(ID) {
+    let gName = this.groups.filter( g => g.groupID === ID);
+    console.log('Gname', gName);
+    return gName[0].groupName;
   }
   getSubscribers(arr: any[]) {
     this.subcribersArray = [];
@@ -46,12 +58,12 @@ export class VehicleRenewListComponent implements OnInit {
         this.subcribersArray.push(arr[i].subscriberIdentification);
       }
       else {
-        // let group = this.fetchGroupByID(arr[i].subscriberIdentification);
-        //  console.log('Group Name in array', group);
-        this.subcribersArray.push(arr[i].subscriberIdentification);
+        // let group = this.fetchGroupName(arr[i].subscriberIdentification);
+      //   console.log('Group Name in array', group);
+       // this.subcribersArray.push(group);
       }
     }
-    console.log('subscribers Array', this.subcribersArray);
+    this.remindersData[0].subscribers = this.subcribersArray;
   }
   fetchRenewals = () => {
     this.apiService.getData('reminders').subscribe({
@@ -62,13 +74,12 @@ export class VehicleRenewListComponent implements OnInit {
         for (let i = 0; i < this.allRemindersData.length; i++) {
           if (this.allRemindersData[i].reminderType === 'vehicle') {
             this.remindersData.push(this.allRemindersData[i]);
-            console.log('vehicle renewal array', this.remindersData);
-            for (let j = 0; j < this.remindersData.length; j++) {
-              this.fetchVehicles(this.remindersData[j].reminderIdentification);
-              this.getSubscribers(this.remindersData[j].subscribers);
-            }
-          }
+                    }
         }
+        console.log('vehicle renewal array', this.remindersData);
+       for (let j = 0; j < this.remindersData.length; j++) {
+              this.getSubscribers(this.remindersData[j].subscribers);
+       }
       },
     });
   }
