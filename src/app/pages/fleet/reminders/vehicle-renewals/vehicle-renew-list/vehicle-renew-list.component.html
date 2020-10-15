@@ -78,23 +78,26 @@
                                 <thead>
                                     <tr>
                                         
-                                        <th width="45%">Vehicle</th>
+                                        <th width="30%">Vehicle</th>
                                         <th width="15%">Vehicle Renewal Type</th>
                                         <th width="15%">Due Date</th>
+                                        <th width="15%">Send Reminder</th>
                                         <th width="15%">Subscribers</th>
                                         <th width="5%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of remindersData;">
-                                        <td  routerLink="/fleet/reminders/vehicle-renewals/detail/{{item.entryID}}">{{ vehicleIdentification}}</td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';"><span
-                                                class="text-danger font-weight-bold font-size-12">Overdue</span><br><span
+                                        <td >{{  getVehicleName(item.reminderIdentification)}}</td>
+                                        <td>
+                                            <!-- <span class="text-danger font-weight-bold font-size-12">Overdue</span> -->
+                                            <span
                                                 class="font-weight-bold" title="Task">{{item.reminderTasks.task}}</span></td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';">{{item.reminderTasks.dueDate}}</td>
-                                        <td onclick="window.location='vehicle-renewal-details.php';"><span
-                                                class="text-success font-weight-bold font-size-12"> Active</span><br>
-                                                <span *ngFor="let value of item.subscribers;"></span>
+                                        <td>{{item.reminderTasks.dueDate}}</td>
+                                        <td>{{item.reminderTasks.remindByDays}} Days</td>
+                                        <td> {{item.subscribers}}
+                                             <!-- {{getSubscribers(item.subscribers)}} -->
+                                                <!-- <span *ngFor="let value of item.subscribers;"></span> -->Subscribers
                                             </td>
                                             <td>
                                                 <div class="btn-group flex-wrap">

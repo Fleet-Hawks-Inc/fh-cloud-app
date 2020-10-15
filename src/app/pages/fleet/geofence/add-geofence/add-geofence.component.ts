@@ -3,12 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../../services';
 import { LeafletMapService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { from } from 'rxjs';
-import { Subject, throwError } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { Subject, throwError, from } from 'rxjs';
+import {map, debounceTime, distinctUntilChanged, switchMap, catchError, tap} from 'rxjs/operators';
 import { HereMapService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
-
 declare var $: any;
 declare var L: any;
 @Component({
@@ -81,7 +79,7 @@ export class AddGeofenceComponent implements OnInit {
     this.map = this.LeafletMap.initGeoFenceMap();
     this.mapControls(this.map);
     this.searchLocation();
-    
+
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
@@ -155,12 +153,16 @@ export class AddGeofenceComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    // this.spinner.show();
-    console.log(this.geofenceData);
-    this.apiService.postData('geofences', this.geofenceData).subscribe({
+    this.spinner.show();
+   // console.log(this.geofenceData);
+    this.apiService.postData('geofences', this.geofenceData)
+      .pipe(tap(v => {
+        console.log(v)
+      }))
+      .subscribe({
       complete: () => { },
-      error: (err) => {
-        from(err)
+      error: (err: any) => {
+        from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/'.*'/, 'This Field');
@@ -169,8 +171,8 @@ export class AddGeofenceComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
-              this.spinner.hide();
+               this.throwErrors();
+               this.spinner.hide();
             },
             error: () => { },
             next: () => { },
@@ -181,7 +183,7 @@ export class AddGeofenceComponent implements OnInit {
         this.hasSuccess = true;
         this.toastr.success('Geofence Added successfully');
         this.spinner.hide();
-        this.router.navigateByUrl('/fleet/geofence/list');
+        this.router.navigateByUrl('/fleet/geofence/geofence-list');
       },
     });
   }

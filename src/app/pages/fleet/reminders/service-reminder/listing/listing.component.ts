@@ -19,12 +19,17 @@ export class ListingComponent implements OnInit {
 
   ngOnInit() {
     this.fetchReminders();
+    this.fetchVehicles();
   }
-  fetchVehicles(ID) {
-    this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
-      this.vehicles = result.Items;
-      this.vehicleIdentification = this.vehicles[0].vehicleIdentification;
+  fetchVehicles() {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
+    this.vehicles = result.Items;
     });
+  }
+  getVehicleName(ID) {
+    let vehicle = this.vehicles.filter(v => v.vehicleID === ID);
+    let vehicleName = (vehicle[0].vehicleIdentification);
+    return vehicleName;
   }
 
   getLengthOfArray(arr: any[]) {
@@ -39,13 +44,9 @@ export class ListingComponent implements OnInit {
         for (let i = 0; i < this.allRemindersData.length; i++) {
           if (this.allRemindersData[i].reminderType === 'service') {
             this.remindersData.push(this.allRemindersData[i]);
-            console.log('Service Reminder array', this.remindersData);
-            for (let j = 0; j < this.remindersData.length; j++) {
-              this.fetchVehicles(this.remindersData[j].reminderIdentification);
-             // this.getSubscribers(this.remindersData[j].subscribers);
-            }
-          }
+           }
         }
+        console.log('Service Reminder array', this.remindersData);
       },
     });
   }
