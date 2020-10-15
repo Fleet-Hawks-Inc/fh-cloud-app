@@ -134,7 +134,7 @@ export class GeofenceListComponent implements OnInit {
 
   editGeofence() {
     if (this.geofenceSelectCount === 1) {
-      this.router.navigateByUrl('/fleet/geofence/edit-geofence/' + this.selectID);
+      this.router.navigateByUrl('/fleet/geofence/edit/' + this.selectID);
     } else {
       this.toastr.error('Please select only one asset!');
     }

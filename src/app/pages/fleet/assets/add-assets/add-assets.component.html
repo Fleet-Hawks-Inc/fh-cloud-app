@@ -1,4 +1,4 @@
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner>
+<!-- <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner> -->
 <section class="body">
 	<!-- start: header -->
 	<app-header></app-header>
@@ -241,143 +241,40 @@
 
 									</div>
 									<div class="row mt-2">
-										<div class="col-lg-10">
+										<div class="col-lg-5">
+											<label
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
+                        Country</label>
+                        <select 
+                          [(ngModel)]="assetsData.assetDetails.licenceCountryID" 
+                          name="assetDetails.licenceCountryID"
+                          (change)="getStates()"
+                          class="form-control populate"
+                        >	
+                        <option *ngFor="let country of countries"
+                          value="{{country.countryID}}"
+                        >
+                        {{country.countryName}}
+                        </option>	
+                      </select>
+											
+                    </div>
+                    <div class="col-lg-5">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                         State/Province</label>
-                        <ng-select2 
-                          [(ngModel)]="assetsData.assetDetails.licenceStateID" name="assetDetails.licenceStateID"
-                          [data]="countries"
-                          [placeholder]="''"
-                          class="form-control ng-select populate"
+                        <select 
+                          [(ngModel)]="assetsData.assetDetails.licenceStateID" 
+                          name="assetDetails.licenceStateID"
+                          class="form-control populate"
                         >		
-                        <!-- <option value="Alabama">Alabama</option>
-													<option value="Arkansas">Arkansas</option>
-													<option value="Alaska">Alaska</option>
-                          <option value="Arizona">Arizona</option>
-                          <option value="Alberta">Alberta</option>
-                          <option value="British Columbia">British Columbia</option>
-                          <option value="California">California</option>
-                          <option value="Colorado">Colorado</option>
-                          <option value="Connecticut">Connecticut</option>
-                          <option value="Delaware">Delaware</option>
-                          <option value="Florida">Florida</option>
-                          <option value="Georgia">Georgia</option>
-                          <option value="Hawaii">Hawaii</option>
-                          <option value="Idaho">Idaho</option>
-                          <option value="Illinois">Illinois</option>
-                          <option value="Labrador">Labrador</option>
-                          <option value="Indiana">Indiana</option>
-                          <option value="Iowa">Iowa</option>
-                          <option value="Kansas">Kansas</option>
-                          <option value="Kentucky">Kentucky</option>
-                          <option value="Louisiana">Louisiana</option>
-                          <option value="Maine">Maine</option>
-                          <option value="Maryland">Maryland</option>
-                          <option value="Maryland">Massachusetts</option>
-                          <option value="Manitoba">Manitoba</option>
-                          <option value="Michigan">Michigan</option>
-                          <option value="Minnesota">Minnesota</option>
-                          <option value="Mississippi">Mississippi</option>
-                          <option value="Missouri">Missouri</option>
-                          <option value="Montana">Montana</option>
-                          <option value="Nebraska">Nebraska</option>
-                          <option value="Nevada">Nevada</option>
-                          <option value="New Hampshire">New Hampshire</option>
-                          <option value="New Jersey">New Jersey</option>
-                          <option value="Nova Scotia">	Nova Scotia</option>
-                          <option value="New Mexico">New Mexico</option>
-                          <option value="New York">New York</option>
-                          <option value="North Carolina">North Carolina</option>
-                          <option value="North Dakota">North Dakota</option>
-                          <option value="Newfoundland">Newfoundland</option>
-                          <option value="Ohio">Ohio</option>
-                          <option value="Oklahoma">Oklahoma</option>
-                          <option value="Ontario">Ontario</option>
-                          <option value="Oregon">Oregon</option>
-                          <option value="Pennsylvania">Pennsylvania</option>
-                          <option value="Prince Edward Is.">Prince Edward Is.</option>
-                          <option value="Rhode Island">Rhode Island</option>
-                          <option value="South Carolina">South Carolina</option>
-                          <option value="South Dakota">South Dakota</option>
-                          <option value="Saskatchewen">Saskatchewen</option>
-                          <option value="Tennessee">Tennessee</option>
-                          <option value="Texas">Texas</option>
-                          <option value="Utah">Utah</option>
-                          <option value="Vermont">Vermont</option>
-                          <option value="Virginia">Virginia</option>
-                          <option value="Washington">Washington</option>
-                          <option value="West Virginia">West Virginia</option>
-                          <option value="Wisconsin">Wisconsin</option>
-                          <option value="Wyoming">Wyoming</option>
-                          <option value="Quebec">Quebec</option>
-                          <option value="Yukon">Yukon</option> -->
-                      </ng-select2>
-											<!-- <select [(ngModel)]="assetsData.assetDetails.licenceStateID" name="assetDetails.licenceStateID" data-plugin-selectTwo class="form-control populate">
-												<optgroup label="">
-													<option value="Alabama">Alabama</option>
-													<option value="Arkansas">Arkansas</option>
-													<option value="Alaska">Alaska</option>
-                          <option value="Arizona">Arizona</option>
-                          <option value="Alberta">Alberta</option>
-                          <option value="British Columbia">British Columbia</option>
-                          <option value="California">California</option>
-                          <option value="Colorado">Colorado</option>
-                          <option value="Connecticut">Connecticut</option>
-                          <option value="Delaware">Delaware</option>
-                          <option value="Florida">Florida</option>
-                          <option value="Georgia">Georgia</option>
-                          <option value="Hawaii">Hawaii</option>
-                          <option value="Idaho">Idaho</option>
-                          <option value="Illinois">Illinois</option>
-                          <option value="Labrador">Labrador</option>
-                          <option value="Indiana">Indiana</option>
-                          <option value="Iowa">Iowa</option>
-                          <option value="Kansas">Kansas</option>
-                          <option value="Kentucky">Kentucky</option>
-                          <option value="Louisiana">Louisiana</option>
-                          <option value="Maine">Maine</option>
-                          <option value="Maryland">Maryland</option>
-                          <option value="Maryland">Massachusetts</option>
-                          <option value="Manitoba">Manitoba</option>
-                          <option value="Michigan">Michigan</option>
-                          <option value="Minnesota">Minnesota</option>
-                          <option value="Mississippi">Mississippi</option>
-                          <option value="Missouri">Missouri</option>
-                          <option value="Montana">Montana</option>
-                          <option value="Nebraska">Nebraska</option>
-                          <option value="Nevada">Nevada</option>
-                          <option value="New Hampshire">New Hampshire</option>
-                          <option value="New Jersey">New Jersey</option>
-                          <option value="Nova Scotia">	Nova Scotia</option>
-                          <option value="New Mexico">New Mexico</option>
-                          <option value="New York">New York</option>
-                          <option value="North Carolina">North Carolina</option>
-                          <option value="North Dakota">North Dakota</option>
-                          <option value="Newfoundland">Newfoundland</option>
-                          <option value="Ohio">Ohio</option>
-                          <option value="Oklahoma">Oklahoma</option>
-                          <option value="Ontario">Ontario</option>
-                          <option value="Oregon">Oregon</option>
-                          <option value="Pennsylvania">Pennsylvania</option>
-                          <option value="Prince Edward Is.">Prince Edward Is.</option>
-                          <option value="Rhode Island">Rhode Island</option>
-                          <option value="South Carolina">South Carolina</option>
-                          <option value="South Dakota">South Dakota</option>
-                          <option value="Saskatchewen">Saskatchewen</option>
-                          <option value="Tennessee">Tennessee</option>
-                          <option value="Texas">Texas</option>
-                          <option value="Utah">Utah</option>
-                          <option value="Vermont">Vermont</option>
-                          <option value="Virginia">Virginia</option>
-                          <option value="Washington">Washington</option>
-                          <option value="West Virginia">West Virginia</option>
-                          <option value="Wisconsin">Wisconsin</option>
-                          <option value="Wyoming">Wyoming</option>
-                          <option value="Quebec">Quebec</option>
-                          <option value="Yukon">Yukon</option>
-                        </optgroup>
-											</select> -->
+                        <option *ngFor="let state of states"
+                          value="{{state.stateID}}"
+                        >
+                        {{state.stateName}}
+                        </option>	
+                      </select>
+											
 										</div>
 									</div>
 									<div class="row mt-2">
@@ -410,7 +307,9 @@
 												Issue</label>
                       <input 
                         [(ngModel)]="assetsData.insuranceDetails.dateOfIssue" name="insuranceDetails.dateOfIssue" 
-                        type="date" 
+                        type="text" 
+                        placeholder="DD-MM-YYYY"
+                        (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
                         class="form-control"> 
                       </div>
 										<div class="col-lg-5">
@@ -435,7 +334,12 @@
 										<div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Date of
 												Expiry</label>
-											<input [(ngModel)]="assetsData.insuranceDetails.dateOfExpiry" name="insuranceDetails.dateOfExpiry" type="date" class="form-control">
+                      <input 
+                        [(ngModel)]="assetsData.insuranceDetails.dateOfExpiry" 
+                        name="insuranceDetails.dateOfExpiry" 
+                        placeholder="DD-MM-YYYY"
+                        (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker"
+                        type="text" class="form-control">
 										</div>
 										<div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Reminder
@@ -537,8 +441,7 @@
 							</div>
 							<div class="form-group row">
 								<div class="col-lg-11 text-right"> 
-									<button type="button" class="btn btn-default"
-										onclick="goBack()">Cancel</button> 
+									<a routerLink="/fleet/assets/list" class="btn btn-default">Cancel</a> 
                   <!-- <a (click)="addAsset()" class="btn btn-success">Submit</a>  -->
                   <a href="javascript:;" *ngIf="!assetID" (click)="addAsset()" class="btn btn-success" id="nextBtn">Save</a> 
                   <a href="javascript:;" *ngIf="assetID" (click)="updateAsset()" class="btn btn-success">Update</a> 

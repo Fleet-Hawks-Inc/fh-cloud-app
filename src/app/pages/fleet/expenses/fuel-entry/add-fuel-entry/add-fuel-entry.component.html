@@ -39,33 +39,14 @@
                                 <div class="col-lg-6">
 
                                   <div class="btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn btn-outline btn-fleet mr-2 active" style="width:110px;" (click) = "onChangeUnitType('vehicle')">
+                                    <label class="btn btn-outline btn-fleet mr-2" [class.active]="unitType === 'vehicle'" style="width:110px;" (click) = "onChangeUnitType('vehicle')">
                                       <input type="radio" name="unitType" [(ngModel)]="unitType"
                                          id="fuel_unit_vehicle"  checked hidden value="vehicle" > Vehicle </label>
-                                    <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" (click) = "onChangeUnitType('reefer')">
+                                    <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="unitType === 'reefer'" (click) = "onChangeUnitType('reefer')">
                                       <input type="radio" name="unitType" [(ngModel)]="unitType"
                                          id="fuel_unit_reefer"  hidden value="reefer" > Reefer </label>
                                   </div>
-                                </div>
-                                <!-- <div class="col-lg-3">
-                                   <div class="radio">
-                                      <label class="btn btn-md btn-default active csbtn">
-                                      <input type="radio" name="unitType" [(ngModel)]="unitType"
-                                         id="fuel_unit_vehicle"  checked hidden value="vehicle" (change) = "onChangeUnitType('vehicle')">
-                                      Vehicle
-                                      </label>
-                                   </div>
-                                </div>
-                                <div class="col-lg-4 text-right">
-                                   <div class="radio">
-                                      <label  class="btn btn-md btn-default csbtn">
-                                      <input type="radio" name="unitType" [(ngModel)]="unitType"
-                                         id="fuel_unit_reefer"  hidden value="reefer" (change) = "onChangeUnitType('reefer')">
-                                      Reefer
-                                      </label>
-                                   </div>
-                                </div> -->
-                               
+                                </div>                               
                              </div>
                           </div>
                        </div>
@@ -86,11 +67,7 @@
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reefer</label>
                              <select data-plugin-selectTwo class="form-control populate" name="reeferID" [(ngModel)]="reeferID">
                                 <optgroup label="Select Reefer">
-                                 <!-- <option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleName}}</option> -->
-                                   <option value="Trailer 1">Trailer 1</option>
-                                   <option value="Trailer 2">Trailer 2</option>
-                                   <option value="Trailer 3">Trailer 3</option>
-                                   <option value="Trailer 4">Trailer 4</option>
+                                 <option *ngFor="let reefer of reeferArray" value="{{reefer.assetID}}">{{reefer.assetIdentification}}</option>                               
                                 </optgroup>
                              </select>
                           </div>
@@ -371,7 +348,7 @@
                     <div class="col-lg-5 offset-lg-1">
                        <div class="row pt-2">
                           <div class="col-lg-10">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Odometer Reading at Time of Fuelling</label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Odometer Reading at Time of Fuelling(miles)</label>
                              <input class="form-control" type="text" name="additionalDetails.odometer" [(ngModel)] ="additionalDetails.odometer">
                           </div>
                        </div>

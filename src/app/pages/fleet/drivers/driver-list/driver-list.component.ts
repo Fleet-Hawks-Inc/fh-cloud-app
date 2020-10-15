@@ -19,6 +19,12 @@ export class DriverListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchDrivers();
+    $(document).ready(() => {
+      setTimeout(() => {
+        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      }, 2000);
+      
+    });
   }
 
   fetchDrivers() {

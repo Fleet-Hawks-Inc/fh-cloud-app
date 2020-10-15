@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 
 
@@ -41,51 +42,25 @@ export class AddAssetsComponent implements OnInit {
   imageError = '';
   fileName = '';
   carrierID: any;
-
-  countries = [
-    {
-      id: 'Alabama',
-      text: 'Alabama'
-    },
-    {
-      id: 'Arkansas',
-      text: 'Arkansas'
-    },
-    {
-      id: 'California',
-      text: 'California'
-    },
-    {
-      id: 'New Hampshire',
-      text: 'New Hampshire'
-    },
-    {
-      id: 'New Jersey',
-      text: 'New Jersey'
-    },
-    {
-      id: 'Washington',
-      text: 'Washington'
-    },
-    {
-      id: 'Quebec',
-      text: 'Quebec'
-    },
-    {
-      id: 'Saskatchewen',
-      text: 'Saskatchewen'
-    }
-  ];
+  private states;
+  private countries;
+  
 
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
-              private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) {
+              private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
+              private toastr: ToastrService, private spinner: NgxSpinnerService) {
       this.selectedFileNames = new Map<any, any>();
   }
 
+  get today() {
+    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+  }
   ngOnInit() {
 
     this.fetchManufactuer();
     this.fetchVendors();
+    this.fetchCountries(); // fetch countries
+
     this.assetID = this.route.snapshot.params['assetID'];
     if (this.assetID) {
       this.pageTitle = 'Edit Asset';
@@ -104,7 +79,6 @@ export class AddAssetsComponent implements OnInit {
   fetchManufactuer() {
     this.apiService.getData('manufacturers').subscribe((result: any) => {
       this.manufacturers = result.Items;
-      console.log(this.manufacturers)
     });
   }
   /*
@@ -164,7 +138,7 @@ export class AddAssetsComponent implements OnInit {
         this.response = res;
         this.uploadFiles(); // upload selected files to bucket
         this.toastr.success('Asset added successfully');
-        this.router.navigateByUrl('/fleet/assets/Assets-List');
+        this.router.navigateByUrl('/fleet/assets/list');
       },
     });
   }
@@ -200,6 +174,7 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData['assetDetails']['GAWR_Unit'] = result.assetDetails.GAWR_Unit;
         this.assetsData['assetDetails']['ownerShip'] = result.assetDetails.ownerShip;
         this.assetsData['assetDetails']['currentStatus'] = result.assetDetails.currentStatus;
+        this.assetsData['assetDetails']['licenceCountryID'] = result.assetDetails.licenceCountryID;
         this.assetsData['assetDetails']['licenceStateID'] = result.assetDetails.licenceStateID;
         this.assetsData['assetDetails']['licencePlateNumber'] = result.assetDetails.licencePlateNumber;
         this.assetsData['assetDetails']['remarks'] = result.assetDetails.remarks;
@@ -294,5 +269,24 @@ export class AddAssetsComponent implements OnInit {
     } else {
       this.assetsData.assetDetails['GVWR_Unit'] = value;
     }
+  }
+
+  fetchCountries() {
+    this.apiService.getData('countries')
+      .subscribe((result: any) => {
+        this.countries = result.Items;
+      });
+  }
+
+
+  getStates() {
+    this.spinner.show(); // loader init
+    const countryID = this.assetsData.assetDetails['licenceCountryID'];
+    this.apiService.getData('states/country/' + countryID)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+        this.spinner.hide(); // loader hide
+        console.log(this.states)
+      });
   }
 }

@@ -1286,7 +1286,7 @@ a:active {
 /* Sidebar Left */
 .sidebar-left {
 	background: #fff;
-	z-index: 1010;
+	z-index: 9;
 }
 
 .sidebar-left .sidebar-header {
