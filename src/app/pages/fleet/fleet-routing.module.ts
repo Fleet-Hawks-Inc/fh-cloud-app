@@ -199,8 +199,8 @@ const routes: Routes = [
         path: 'service-reminder',
         children: [
           { path: 'list', component: ListingComponent },
-          { path: 'add-reminder', component: AddReminderComponent },
-          { path: 'edit-reminder/:reminderID', component: AddReminderComponent },
+          { path: 'add', component: AddReminderComponent },
+          { path: 'edit/:reminderID', component: AddReminderComponent },
           { path: 'detail/:reminderID', component: ServiceRemindDetailComponent },
         ],
       },
@@ -210,6 +210,7 @@ const routes: Routes = [
           { path: 'list', component: VehicleRenewListComponent },
           { path: 'add', component: VehicleRenewAddComponent },
           { path: 'detail', component: VehicleRenewDetailComponent },
+          { path: 'edit/:reminderID', component: VehicleRenewAddComponent},
         ],
       },
       {
@@ -218,6 +219,7 @@ const routes: Routes = [
           { path: 'list', component: ListContactRenewComponent },
           { path: 'add', component: AddContactRenewComponent },
           { path: 'detail', component: ContactRenewDetailComponent },
+          { path: 'edit/:reminderID', component: AddContactRenewComponent },
         ],
       },
     ],

@@ -85,7 +85,7 @@
                                     <tr>
                                         <th>Contact</th>
                                         <th>Contact Renewal Type</th>
-                                        <th>Next Due </th>
+                                        <th>Send Reminder </th>
                                         <th>Licence Exp.</th>
                                         <th>Subscribers</th>
                                         <th>Action</th>
@@ -93,14 +93,12 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of remindersData;">                                       
-                                        <td routerLink="/fleet/reminders/contact-renewals/detail/{{item.reminderID }}">{{item.reminderIdentification}}</td>
-                                        <td onclick="window.location='contact-renewals-details.php';"><span
-                                                class="text-info">{{item.reminderTasks.task}}</span></td>
-                                        <td onclick="window.location='contact-renewals-details.php';"><span
-                                                class="text-danger font-weight-bold font-size-12">Overdue</span><br><span
-                                                class="font-size-12">{{item.reminderTasks.remindByDays}} Days</span></td>
-                                        <td onclick="window.location='contact-renewals-details.php';"><span class="font-size-12">{{item.reminderTasks.dueDate}}</span></td>
-                                        <td onclick="window.location='contact-renewals-details.php';"><span
+                                        <td >{{getContactName(item.reminderIdentification)}}</td>
+                                        <td >{{item.reminderTasks.task}}</td>
+                                        <td><span
+                                                class="font-size-12">{{item.reminderTasks.remindByDays}} Days Before</span></td>
+                                        <td ><span class="font-size-12">{{item.reminderTasks.dueDate}}</span></td>
+                                        <td><span
                                                 class="text-success font-weight-bold font-size-12"> Active</span><br>1
                                             subscribers
                                         </td>
