@@ -212,6 +212,11 @@ export class AddVehicleNewComponent implements OnInit {
     $('#hardBreakingParametersValue').html(6);
     $('#hardAccelrationParametersValue').html(6);
     $('#turningParametersValue').html(6);
+
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
+    });
+
   }
 
   fetchServicePrograms() {
@@ -409,25 +414,20 @@ export class AddVehicleNewComponent implements OnInit {
 
     this.apiService.postData('vehicles', data).subscribe({
       complete: () => {},
-      error: (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/'([^']+)'/)[1];
-              console.log(key);
               val.message = val.message.replace(/'.*'/, 'This Field');
-              this.errors[key] = val.message;
+              this.errors[val.context.key] = val.message;
             })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
-              this.Success = '';
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {

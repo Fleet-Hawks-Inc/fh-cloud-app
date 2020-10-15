@@ -3,12 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../../services';
 import { LeafletMapService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { from } from 'rxjs';
-import { Subject, throwError } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { Subject, throwError, from } from 'rxjs';
+import {map, debounceTime, distinctUntilChanged, switchMap, catchError, tap} from 'rxjs/operators';
 import { HereMapService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
-
 declare var $: any;
 declare var L: any;
 @Component({
@@ -81,7 +79,7 @@ export class AddGeofenceComponent implements OnInit {
     this.map = this.LeafletMap.initGeoFenceMap();
     this.mapControls(this.map);
     this.searchLocation();
-    
+
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
@@ -155,11 +153,15 @@ export class AddGeofenceComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    this.spinner.show();
-    console.log(this.geofenceData);
-    this.apiService.postData('geofences', this.geofenceData).subscribe({
+    // this.spinner.show();
+   // console.log(this.geofenceData);
+    this.apiService.postData('geofences', this.geofenceData)
+      .pipe(tap(v => {
+        console.log(v)
+      }))
+      .subscribe({
       complete: () => { },
-      error: (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -169,7 +171,7 @@ export class AddGeofenceComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+               this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -186,6 +188,7 @@ export class AddGeofenceComponent implements OnInit {
   }
 
   throwErrors() {
+    console.log('throwError called');
     this.form.showErrors(this.errors);
   }
 

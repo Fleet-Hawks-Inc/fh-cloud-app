@@ -109,7 +109,9 @@ export class AddDriverComponent implements OnInit {
         $('.nav-tabs li a.active').closest('li').prev('li').find('a').trigger('click');
       });
 
-      this.form = $('#form_').validate();
+      this.form = $('#form_').validate({
+        //ignore: ''
+      });
 
       $('#document-two').hide();
       $('#add-document').on('click', function(){
@@ -180,38 +182,25 @@ export class AddDriverComponent implements OnInit {
   addDriver() {
     this.register();
     this.errors = {};
-    console.log('this.driverData', this.driverData);
+    // console.log('this.driverData', this.driverData);
     this.apiService.postData('drivers', this.driverData).subscribe({
       complete: () => {},
-      error : (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/'([^']+)'/)[1];
-                // this.errors[key] = val.message;
-                // Or We Can Use This One To Extract Key
-                // const key = this.concatArray(path);
-                // this.errors[this.concatArray(path)] = val.message;
-                // if (key.length === 2) {
-                // this.errors[val.context.key] = val.message;
-                // } else {
-                // this.errors[key] = val.message;
-                // }
-                val.message = val.message.replace(/'.*'/, 'This Field');
-                this.errors[key] = val.message;
-              }),
+              val.message = val.message.replace(/'.*'/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
-              this.Success = '';
             },
             error: () => { },
-            next: () => { }
+            next: () => { },
           });
-        },
+      },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
@@ -223,6 +212,7 @@ export class AddDriverComponent implements OnInit {
 
 
   throwErrors() {
+    console.log('throw errors');
     this.form.showErrors(this.errors);
   }
 
