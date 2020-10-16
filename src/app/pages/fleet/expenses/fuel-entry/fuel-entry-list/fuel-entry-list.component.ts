@@ -37,7 +37,6 @@ export class FuelEntryListComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private route: Router,
-    private router: Router,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService) {
   }

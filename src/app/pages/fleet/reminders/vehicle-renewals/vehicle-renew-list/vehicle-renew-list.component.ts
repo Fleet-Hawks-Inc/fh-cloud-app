@@ -42,12 +42,12 @@ export class VehicleRenewListComponent implements OnInit {
     });
   }
   getVehicleName(ID) {
-    let vehicle = this.vehicles.filter(v => v.vehicleID === ID);
+    let vehicle = this.vehicles.filter((v: any) => v.vehicleID === ID);
     let vehicleName = vehicle[0].vehicleIdentification;
     return vehicleName;
   }
   fetchGroupName(ID) {
-    let gName = this.groups.filter( g => g.groupID === ID);
+    let gName = this.groups.filter( (g: any) => g.groupID === ID);
     console.log('Gname', gName);
     return gName[0].groupName;
   }

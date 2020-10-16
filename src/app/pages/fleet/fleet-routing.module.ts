@@ -11,6 +11,7 @@ import {
   AddFuelEntryComponent,
   FuelEntryListComponent,
   EditFuelEntryComponent,
+  FuelEntryDetailsComponent,
   AddTicketComponent,
   TicketsComponent,
   EditTicketComponent,
@@ -48,6 +49,7 @@ const COMPONENTS = [
   AddFuelEntryComponent,
   FuelEntryListComponent,
   EditFuelEntryComponent,
+  FuelEntryDetailsComponent,
   AddTicketComponent,
   TicketsComponent,
   EditTicketComponent,
@@ -107,16 +109,20 @@ const routes: Routes = [
         path: 'fuel',
         children: [
           {
-            path: 'Add-Fuel-Entry',
+            path: 'add',
             component: AddFuelEntryComponent,
           },
           {
-            path: 'Fuel-Entry-List',
+            path: 'list',
             component: FuelEntryListComponent,
           },
           {
-            path: 'Edit-Fuel-Entry/:entryID',
-            component: EditFuelEntryComponent,
+            path: 'edit/:entryID',
+            component: AddFuelEntryComponent,
+          },
+          {
+            path: 'detail/:entryID',
+            component: FuelEntryDetailsComponent,
           },
         ],
       },
@@ -141,15 +147,15 @@ const routes: Routes = [
         path: 'types',
         children: [
           {
-            path: 'Add-Expense-Type',
+            path: 'add',
             component: AddExpenseTypeComponent,
           },
           {
-            path: 'Expenses-Type-List',
+            path: 'list',
             component: ExpenseTypeListComponent,
           },
           {
-            path: 'Edit-Expense-Type/:expenseTypeID',
+            path: 'edit/:expenseTypeID',
             component: EditExpenseTypeComponent,
           },
         ],

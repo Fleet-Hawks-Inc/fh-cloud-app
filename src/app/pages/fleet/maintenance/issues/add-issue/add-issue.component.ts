@@ -26,6 +26,8 @@ export class AddIssueComponent implements OnInit {
    */
   issueName = '';
   unitID = '';
+  unitType = 'vehicle';
+  status = 'open';
   reportedDate: NgbDateStruct;
   description = '';
   odometer = '';
@@ -98,16 +100,18 @@ export class AddIssueComponent implements OnInit {
     getToday(): string {
       return new Date().toISOString().split('T')[0];
     }
-  // selectToday() {
-  //   this.model = this.calendar.getToday();
-  // }
+    onChangeUnitType(value: any) {
+      this.unitType = value;
+    }
   addIssue() {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
     const data = {
       issueName: this.issueName,
+      unitType: this.unitType,
       unitID: this.unitID,
+      status: this.status,
       reportedDate: this.reportedDate,
       description: this.description,
       odometer: this.odometer,
@@ -198,6 +202,8 @@ throwErrors() {
       this.issueID = this.issueID;
       this.issueName = result.issueName;
       this.unitID = result.unitID;
+      this.unitType = result.unitType;
+      this.status = result.status;
       this.reportedDate = result.reportedDate;
       this.description = result.description;
       this.odometer = result.odometer;
@@ -218,6 +224,8 @@ throwErrors() {
     issueID: this.issueID,
     issueName: this.issueName,
     unitID: this.unitID,
+    unitType: this.unitType,
+    status: this.status,
     reportedDate: this.reportedDate,
     description: this.description,
     odometer: this.odometer,

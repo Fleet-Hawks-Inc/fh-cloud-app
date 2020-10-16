@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
-import { Router, ActivatedRoute  } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { from} from 'rxjs';
-import {AwsUploadService} from '../../../../../services/aws-upload.service';
-import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { from } from 'rxjs';
+import { AwsUploadService } from '../../../../../services/aws-upload.service';
+import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { v4 as uuidv4 } from 'uuid';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { Location } from '@angular/common';
 
 declare var jquery: any;
 declare var $: any;
@@ -25,59 +25,56 @@ export class AddFuelEntryComponent implements OnInit {
   public entryID;
   /********** Form Fields ***********/
 
-     unitType =  'vehicle';
-     vehicleID = '';
-     vehicleFuelQty = 0;
-     vehicleFuelQtyUnit  = 'gallons';
-     vehicleFuelQtyAmt  = 0;
-     reeferID = '';
-     reeferFuelQty = 0;
-     reeferFuelQtyUnit  =  'gallons';
-     reeferFuelQtyAmt  = 0;
-     DEFFuelQty  = 0;
-     DEFFuelQtyUnit  =  'gallons';
-     DEFFuelQtyAmt  = 0;
-     discount  = 0;
-     totalAmount  = 0;
-     costPerGallon  = 0;
-     amountPaid  = 0;
-     date: NgbDateStruct;
-     fuelType = '';
-     selectedFiles: FileList;
-     selectedFileNames: Map<any, any>;
-     uploadedFiles = [];
-     costLabel  =  'Cost/gallon';
-     carrierID;
+  unitType = 'vehicle';
+  currency = 'USD';
+  vehicleID = '';
+  fuelQtyAmt = 0;
+  fuelQty = 0;
+  fuelQtyUnit = 'gallon';
+  reeferID = '';
+  DEFFuelQty = 0;
+  DEFFuelQtyUnit = 'gallon';
+  DEFFuelQtyAmt = 0;
+  discount = 0;
+  totalAmount = 0;
+  costPerUnit = 0;
+  amountPaid = 0;
+  date: NgbDateStruct;
+  fuelType = '';
+  selectedFiles: FileList;
+  selectedFileNames: Map<any, any>;
+  uploadedFiles = [];
+  costLabel = 'Cost/gallon';
+  carrierID;
 
   paidBy = '';
-  paymentMode  = '';
-  reference  = '';
+  paymentMode = '';
+  reference = '';
   reimburseToDriver = false;
-  deductFromPay  = false;
+  deductFromPay = false;
 
-  vendorID  = '';
-  countryID  = '';
-  stateID  = '';
-  cityID  = '';
+  vendorID = '';
+  countryID = '';
+  stateID = '';
+  cityID = '';
 
-   dispatchAssociate  = '';
-   tripID  = '';
+  dispatchAssociate = '';
+  tripID = '';
 
- additionalDetails = {
-  avgGVW  : '',
-  odometer  : '',
-  description  : '',
-  uploadedPhotos : [],
- }
- 
- countries = [];
- states = [];
- cities = [];
- vendors = [];
- vehicles = [];
- assets = [];
- reeferArray =[];
- trips = [];
+  additionalDetails = {
+    avgGVW: '',
+    odometer: '',
+    description: '',
+    uploadedPhotos: [],
+  };
+  countries = [];
+  states = [];
+  cities = [];
+  vendors = [];
+  vehicles = [];
+  assets = [];
+  reeferArray = [];
+  trips = [];
   /******************/
 
   errors = {};
@@ -91,16 +88,17 @@ export class AddFuelEntryComponent implements OnInit {
 
 
   constructor(private apiService: ApiService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private spinner: NgxSpinnerService,
-              private awsUS: AwsUploadService, private toaster: ToastrService,
-              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
-                this.selectedFileNames = new Map<any, any>();
-              }
-              get today() {
-                return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
-              }
+    private router: Router,
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
+    private location: Location,
+    private awsUS: AwsUploadService, private toaster: ToastrService,
+    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
+    this.selectedFileNames = new Map<any, any>();
+  }
+  get today() {
+    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+  }
 
   ngOnInit() {
     this.fetchVehicles();
@@ -119,7 +117,9 @@ export class AddFuelEntryComponent implements OnInit {
       this.form = $('#form_').validate();
     });
   }
-
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   fetchCountries() {
     this.apiService.getData('countries')
       .subscribe((result: any) => {
@@ -132,12 +132,12 @@ export class AddFuelEntryComponent implements OnInit {
         this.states = result.Items;
       });
   }
-   getCities() {
+  getCities() {
     this.apiService.getData('cities/state/' + this.stateID)
-    .subscribe((result: any) => {
-      this.cities = result.Items;
-    });
-   }
+      .subscribe((result: any) => {
+        this.cities = result.Items;
+      });
+  }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
@@ -185,50 +185,47 @@ export class AddFuelEntryComponent implements OnInit {
     //   this.imageError = 'Please Choose Image To Upload';
     //   return;
     // }
-  
+
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
     const data = {
-        unitType : this.unitType,
-        vehicleID: this.vehicleID,
-        vehicleFuelQty : this.vehicleFuelQty,
-        vehicleFuelQtyUnit : this.vehicleFuelQtyUnit,
-        vehicleFuelQtyAmt : this.vehicleFuelQtyAmt,
-        reeferID: this.reeferID,
-        reeferFuelQty : this.reeferFuelQty,
-        reeferFuelQtyUnit : this.reeferFuelQtyUnit,
-        reeferFuelQtyAmt : this.reeferFuelQtyAmt,
-        DEFFuelQty : this.DEFFuelQty,
-        DEFFuelQtyUnit : this.DEFFuelQtyUnit,
-        DEFFuelQtyAmt : this.DEFFuelQtyAmt,
-        discount : this.discount,
-        totalAmount : this.totalAmount,
-        costPerGallon : this.costPerGallon,
-        amountPaid : this.amountPaid,
-        date: this.date,
-        fuelType: this.fuelType,
-        paidBy: this.paidBy,
-        paymentMode: this.paymentMode,
-        reference : this.reference,
-        reimburseToDriver : this.reimburseToDriver,
-        deductFromPay : this.deductFromPay,
-        vendorID : this.vendorID,
-        countryID : this.countryID,
-        stateID : this.stateID,
-        cityID : this.cityID,
-        tripID : this.tripID,
-        additionalDetails: {
-          avgGVW : this.additionalDetails.avgGVW,
-          odometer : this.additionalDetails.odometer,
-          description : this.additionalDetails.description,
-          uploadedPhotos: this.additionalDetails.uploadedPhotos,
-        },
+      unitType: this.unitType,
+      vehicleID: this.vehicleID,
+      fuelQty: this.fuelQty,
+      fuelQtyUnit: this.fuelQtyUnit,
+      fuelQtyAmt: this.fuelQtyAmt,
+      reeferID: this.reeferID,
+      DEFFuelQty: this.DEFFuelQty,
+      DEFFuelQtyAmt: this.DEFFuelQtyAmt,
+      discount: this.discount,
+      totalAmount: this.totalAmount,
+      costPerUnit: this.costPerUnit,
+      amountPaid: this.amountPaid,
+      currency: this.currency,
+      date: this.date,
+      fuelType: this.fuelType,
+      paidBy: this.paidBy,
+      paymentMode: this.paymentMode,
+      reference: this.reference,
+      reimburseToDriver: this.reimburseToDriver,
+      deductFromPay: this.deductFromPay,
+      vendorID: this.vendorID,
+      countryID: this.countryID,
+      stateID: this.stateID,
+      cityID: this.cityID,
+      tripID: this.tripID,
+      additionalDetails: {
+        avgGVW: this.additionalDetails.avgGVW,
+        odometer: this.additionalDetails.odometer,
+        description: this.additionalDetails.description,
+        uploadedPhotos: this.additionalDetails.uploadedPhotos,
+      },
     };
-    console.log(data);
-    
+    console.log('filed data', data);
+
     this.apiService.postData('fuelEntries', data).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         from(err.error)
           .pipe(
@@ -254,7 +251,7 @@ export class AddFuelEntryComponent implements OnInit {
         this.response = res;
         this.uploadFiles(); // upload selected files to bucket
         this.toaster.success('Fuel Entry Added successfully');
-        this.router.navigateByUrl('/fleet/expenses/fuel/Fuel-Entry-List');
+        this.router.navigateByUrl('/fleet/expenses/fuel/list');
       },
     });
   }
@@ -262,9 +259,9 @@ export class AddFuelEntryComponent implements OnInit {
   throwErrors() {
     this.form.showErrors(this.errors);
   }
-   /*
-   * Selecting files before uploading
-   */
+  /*
+  * Selecting files before uploading
+  */
   selectDocuments(event, obj) {
     this.selectedFiles = event.target.files;
     console.log('selected files', this.selectedFiles[0].name);
@@ -287,164 +284,156 @@ export class AddFuelEntryComponent implements OnInit {
       this.awsUS.uploadFile(this.carrierID, fileName, fileData);
     });
   }
-  
-    /*
-   * Fetch Fuel Entry details before updating
-  */
- fetchFuelEntry() {
-  this.apiService
-    .getData('fuelEntries/' + this.entryID)
-    .subscribe((result: any) => {
-      result = result.Items[0];
-      this.entryID = this.entryID;
-      this.unitType = result.unitType;
-      this.vehicleID = result.vehicleID,
-      this.vehicleFuelQty = +result.vehicleFuelQty,
-      this.vehicleFuelQtyUnit = result.vehicleFuelQtyUnit,
-      this.vehicleFuelQtyAmt = +result.vehicleFuelQtyAmt,
-      this.reeferID = result.reeferID,
-      this.reeferFuelQty = result.reeferFuelQty,
-      this.reeferFuelQtyUnit = result.reeferFuelQtyUnit,
-      this.reeferFuelQtyAmt = result.reeferFuelQtyAmt,
-      this.DEFFuelQty = +result.DEFFuelQty,
-      this.DEFFuelQtyUnit = result.DEFFuelQtyUnit,
-      this.DEFFuelQtyAmt = +result.DEFFuelQtyAmt,
-      this.discount = +result.discount,
-      this.totalAmount = result.totalAmount,
-      this.costPerGallon = result.costPerGallon,
-      this.amountPaid = result.amountPaid,
-      this.date = result.date,
-      this.fuelType = result.fuelType,
-      this.costLabel = result.costLabel,
+
+  /*
+ * Fetch Fuel Entry details before updating
+*/
+  fetchFuelEntry() {
+    this.apiService
+      .getData('fuelEntries/' + this.entryID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+        console.log('Fetched Data', result);
+        this.entryID = this.entryID;
+        this.currency = result.currency,
+          this.unitType = result.unitType;
+        this.vehicleID = result.vehicleID,
+          this.reeferID = result.reeferID,
+          this.fuelQty = result.fuelQty,
+          this.fuelQtyUnit = result.fuelQtyUnit,
+          this.fuelQtyAmt = +result.fuelQtyAmt,
+          this.DEFFuelQty = +result.DEFFuelQty,
+          this.DEFFuelQtyUnit = result.fuelQtyUnit,
+          this.DEFFuelQtyAmt = +result.DEFFuelQtyAmt,
+          this.discount = +result.discount,
+          this.totalAmount = result.totalAmount,
+          this.costPerUnit = result.costPerUnit,
+          this.amountPaid = result.amountPaid,
+          this.date = result.date,
+          this.fuelType = result.fuelType,
+
+          this.paidBy = result.paidBy,
+          this.paymentMode = result.paymentMode,
+          this.reference = result.reference,
+          this.reimburseToDriver = result.reimburseToDriver,
+          this.deductFromPay = result.deductFromPay,
 
 
+          this.vendorID = result.vendorID,
+          this.countryID = result.countryID,
+          this.stateID = result.stateID,
+          this.cityID = result.cityID,
+          this.tripID = result.tripID,
 
-        this.paidBy = result.paidBy,
-        this.paymentMode = result.paymentMode,
-        this.reference = result.reference,
-        this.reimburseToDriver = result.reimburseToDriver,
-        this.deductFromPay = result.deductFromPay,
-
-
-        this.vendorID = result.vendorID,
-        this.countryID = result.countryID,
-        this.stateID = result.stateID,
-        this.cityID = result.cityID,
-        this.tripID = result.tripID,
-
-        this.additionalDetails = {
-          avgGVW : result.additionalDetails.avgGVW,
-          odometer : result.additionalDetails.odometer,
-          description : result.additionalDetails.description,
-          uploadedPhotos : result.additionalDetails.uploadedPhotos,
-        },
-      setTimeout(() => {
-        this.fillCountry();
-      }, 2000);
-
-    });
-}
-updateFuelEntry() {
-
-  // if (this.fileName === '') {
-  //   this.imageError = 'Please Choose Image To Upload';
-  //   return;
-  // }
-
-  this.errors = {};
-  this.hasError = false;
-  this.hasSuccess = false;
-  const data = {
-    entryID : this.entryID,
-    unitType : this.unitType,
-    vehicleID: this.vehicleID,
-    vehicleFuelQty : this.vehicleFuelQty,
-    vehicleFuelQtyUnit : this.vehicleFuelQtyUnit,
-    vehicleFuelQtyAmt : this.vehicleFuelQtyAmt,
-    reeferID: this.reeferID,
-    reeferFuelQty : this.reeferFuelQty,
-    reeferFuelQtyUnit : this.reeferFuelQtyUnit,
-    reeferFuelQtyAmt : this.reeferFuelQtyAmt,
-    DEFFuelQty : this.DEFFuelQty,
-    DEFFuelQtyUnit : this.DEFFuelQtyUnit,
-    DEFFuelQtyAmt : this.DEFFuelQtyAmt,
-    discount : this.discount,
-    totalAmount : this.totalAmount,
-    costPerGallon : this.costPerGallon,
-    amountPaid : this.amountPaid,
-    date: this.date,
-    fuelType: this.fuelType,
-    paidBy: this.paidBy,
-    paymentMode: this.paymentMode,
-    reference : this.reference,
-    reimburseToDriver : this.reimburseToDriver,
-    deductFromPay : this.deductFromPay,
-    vendorID : this.vendorID,
-    countryID : this.countryID,
-    stateID : this.stateID,
-    cityID : this.cityID,
-    tripID : this.tripID,
-    additionalDetails: {
-      avgGVW : this.additionalDetails.avgGVW,
-      odometer : this.additionalDetails.odometer,
-      description : this.additionalDetails.description,
-      uploadedPhotos: this.additionalDetails.uploadedPhotos,
-    },
-};
-  console.log(data);
-  this.apiService.putData('fuelEntries', data).subscribe({
-    complete: () => { },
-    error: (err) => {
-      from(err.error)
-        .pipe(
-          map((val: any) => {
-            const path = val.path;
-            // We Can Use This Method
-            const key = val.message.match(/'([^']+)'/)[1];
-            val.message = val.message.replace(/'.*'/, 'This Field');
-            this.errors[key] = val.message;
-          })
-        )
-        .subscribe({
-          complete: () => {
-            this.throwErrors();
+          this.additionalDetails = {
+            avgGVW: result.additionalDetails.avgGVW,
+            odometer: result.additionalDetails.odometer,
+            description: result.additionalDetails.description,
+            uploadedPhotos: result.additionalDetails.uploadedPhotos,
           },
-          error: () => { },
-          next: () => { },
-        });
-    },
-    next: (res) => {
-      this.response = res;
-      this.uploadFiles(); // upload selected files to bucket
-      this.toaster.success('Fuel Entry Updated successfully');
-      this.router.navigateByUrl('/fleet/expenses/fuel/Fuel-Entry-List');
-    },
-  });
-}
-  onChangeUnitType(value: any){
+          setTimeout(() => {
+            this.fillCountry();
+          }, 2000);
+      });
+   
+  }
+  updateFuelEntry() {
+
+    // if (this.fileName === '') {
+    //   this.imageError = 'Please Choose Image To Upload';
+    //   return;
+    // }
+
+    this.errors = {};
+    this.hasError = false;
+    this.hasSuccess = false;
+    const data = {
+      entryID: this.entryID,
+      unitType: this.unitType,
+      vehicleID: this.vehicleID,
+      fuelQty: this.fuelQty,
+      fuelQtyUnit: this.fuelQtyUnit,
+      fuelQtyAmt: this.fuelQtyAmt,
+      reeferID: this.reeferID,
+      DEFFuelQty: this.DEFFuelQty,
+      DEFFuelQtyAmt: this.DEFFuelQtyAmt,
+      discount: this.discount,
+      totalAmount: this.totalAmount,
+      costPerUnit: this.costPerUnit,
+      amountPaid: this.amountPaid,
+      currency: this.currency,
+      date: this.date,
+      fuelType: this.fuelType,
+      paidBy: this.paidBy,
+      paymentMode: this.paymentMode,
+      reference: this.reference,
+      reimburseToDriver: this.reimburseToDriver,
+      deductFromPay: this.deductFromPay,
+      vendorID: this.vendorID,
+      countryID: this.countryID,
+      stateID: this.stateID,
+      cityID: this.cityID,
+      tripID: this.tripID,
+      additionalDetails: {
+        avgGVW: this.additionalDetails.avgGVW,
+        odometer: this.additionalDetails.odometer,
+        description: this.additionalDetails.description,
+        uploadedPhotos: this.additionalDetails.uploadedPhotos,
+      },
+    };
+    console.log(data);
+    this.apiService.putData('fuelEntries', data).subscribe({
+      complete: () => { },
+      error: (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/'([^']+)'/)[1];
+              val.message = val.message.replace(/'.*'/, 'This Field');
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.uploadFiles(); // upload selected files to bucket
+        this.toaster.success('Fuel Entry Updated successfully');
+        this.router.navigateByUrl('/fleet/expenses/fuel/list');
+      },
+    });
+  }
+  onChangeUnitType(value: any) {
     this.unitType = value;
-    this.vehicleFuelQtyAmt = 0;
-    this.reeferFuelQtyAmt = 0;
-    this.vehicleFuelQty = 0;
-    this.reeferFuelQty = 0;
+    this.fuelQtyAmt = 0;
+    this.fuelQty = 0;
     this.calculate();
   }
   changeFuelUnit() {
-    if ((this.vehicleFuelQtyUnit === 'gallons') || (this.reeferFuelQtyUnit === 'gallons')) {
-         this.costLabel = 'Cost/gallon';
-         this.DEFFuelQtyUnit = 'gallons';
+    if (this.fuelQtyUnit === 'gallon') {
+      this.DEFFuelQtyUnit = 'gallon';
     }
-    if ((this.vehicleFuelQtyUnit === 'litres') || (this.reeferFuelQtyUnit === 'litres')) {
-      this.costLabel = 'Cost/litre';
-      this.DEFFuelQtyUnit = 'litres';
- }
+    else {
+      this.DEFFuelQtyUnit = 'litre';
+    }
   }
-  calculate(){
-    this.totalAmount = Number(this.vehicleFuelQtyAmt) + Number(this.DEFFuelQtyAmt) + Number(this.reeferFuelQtyAmt);
-    const units = Number(this.vehicleFuelQty) + Number(this.DEFFuelQty) + Number(this.reeferFuelQty);
-    // this.costPerGallon = Math.round(this.totalAmount/units);
+  changeCurrency(val) {
+    this.currency = val;
+  }
+  calculate() {
+    this.totalAmount = Number(this.fuelQtyAmt) + Number(this.DEFFuelQtyAmt);
+    const units = Number(this.fuelQty) + Number(this.DEFFuelQty);
     this.amountPaid = this.totalAmount - this.discount;
-    this.costPerGallon = Math.round(this.amountPaid / units);
+    let test = (this.amountPaid / units);
+    this.costPerUnit = +(test.toFixed(2));
   }
 
 
