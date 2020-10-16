@@ -29,26 +29,15 @@ import {
   ListContactRenewComponent,
   AddContactRenewComponent,
   ContactRenewDetailComponent,
-  AddItemComponent,
-  ItemsListComponent,
-  ItemDetailComponent,
-  EditItemComponent,
-  AddItemGroupComponent,
-  ItemGroupListComponent,
-  EditItemGroupComponent,
-  AddEntryComponent,
-  EntriesComponent,
-  EditEntryComponent,
-  AddStockAssignmentComponent,
-  StockAssignmentListComponent,
-  EditStockAssignmentComponent,
-  InventoryStockStatementComponent,
   AddGeofenceComponent,
   EditGeofenceComponent,
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
-  EditAssetComponent
+  EditAssetComponent,
+  AddInventoryComponent,
+  EditInventoryComponent,
+  InventoryListComponent
 } from './index';
 
 
@@ -80,26 +69,15 @@ const COMPONENTS = [
   ListContactRenewComponent,
   AddContactRenewComponent,
   ContactRenewDetailComponent,
-  AddItemComponent,
-  ItemsListComponent,
-  ItemDetailComponent,
-  EditItemComponent,
-  AddItemGroupComponent,
-  ItemGroupListComponent,
-  EditItemGroupComponent,
-  AddEntryComponent,
-  EntriesComponent,
-  EditEntryComponent,
-  AddStockAssignmentComponent,
-  StockAssignmentListComponent,
-  EditStockAssignmentComponent,
-  InventoryStockStatementComponent,
   AddGeofenceComponent,
   EditGeofenceComponent,
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
-  EditAssetComponent
+  EditAssetComponent,
+  AddInventoryComponent,
+  EditInventoryComponent,
+  InventoryListComponent
 ];
 
 const routes: Routes = [
@@ -229,87 +207,6 @@ const routes: Routes = [
     loadChildren: () => import('./maintenance/maintenance.module').then((m) => m.MaintenanceModule) ,
   },
   {
-    path: 'inventory',
-    children: [
-      {
-        path: 'item',
-        children: [
-          {
-            path: 'Add-Item',
-            component: AddItemComponent,
-          },
-          {
-            path: 'Item-List',
-            component: ItemsListComponent,
-          },
-          {
-            path: 'item-detail',
-            component: ItemDetailComponent,
-          },
-          {
-            path: 'Edit-Item/:itemID',
-            component: EditItemComponent,
-          },
-        ],
-      },
-      {
-        path: 'item-group',
-        children: [
-          {
-            path: 'Add-Item-Group',
-            component: AddItemGroupComponent,
-          },
-          {
-            path: 'Item-Group-List',
-            component: ItemGroupListComponent,
-          },
-          {
-            path: 'Edit-Item-Group/:groupID',
-            component: EditItemGroupComponent,
-          },
-        ],
-      },
-      {
-        path: 'stock-entry',
-        children: [
-          {
-            path: 'Add-Entry',
-            component: AddEntryComponent,
-          },
-          {
-            path: 'Entries-List',
-            component: EntriesComponent,
-          },
-          {
-            path: 'Edit-Entry/:entryID',
-            component: EditEntryComponent,
-          },
-        ],
-      },
-      {
-        path: 'stock-assignment',
-        children: [
-          {
-            path: 'Add-Stock-Assignment',
-            component: AddStockAssignmentComponent,
-          },
-          {
-            path: 'Stock-Assignment-List',
-            component: StockAssignmentListComponent,
-          },
-          {
-            path: 'Edit-Stock-Assignment/:assignmentID',
-            component: EditStockAssignmentComponent,
-          },
-        ],
-      },
-      {
-        path: 'Inventory-Stock-Statement',
-        component: InventoryStockStatementComponent,
-      },
-    ],
-  },
-  {
     path: 'geofence',
     children: [
       { path: 'add', component: AddGeofenceComponent },
@@ -324,6 +221,14 @@ const routes: Routes = [
   {
     path: 'live-driver',
     component: DashboardDriverComponent,
+  },
+  {
+    path: 'inventory',
+    children: [
+      { path: 'add', component: AddInventoryComponent },
+      { path: 'edit/:fenceID', component: EditInventoryComponent },
+      { path: 'list', component: InventoryListComponent },
+    ],
   },
 ];
 

@@ -32,21 +32,6 @@ export * from './expenses/types/add-expense-type/add-expense-type.component';
 export * from './expenses/types/edit-expense-type/edit-expense-type.component';
 export * from './expenses/types/expense-type-list/expense-type-list.component';
 
-export * from './inventory/items/add-item/add-item.component';
-export * from './inventory/items/edit-item/edit-item.component';
-export * from './inventory/items/items-list/items-list.component';
-export * from './inventory/item-group/add-item-group/add-item-group.component';
-export * from './inventory/item-group/edit-item-group/edit-item-group.component';
-export * from './inventory/item-group/item-group-list/item-group-list.component';
-export * from './inventory/stock-entry/add-entry/add-entry.component';
-export * from './inventory/stock-entry/edit-entry/edit-entry.component';
-export * from './inventory/stock-entry/entries/entries.component';
-export * from './inventory/stock-assignment/add-stock-assignment/add-stock-assignment.component';
-export * from './inventory/stock-assignment/edit-stock-assignment/edit-stock-assignment.component';
-export * from './inventory/stock-assignment/stock-assignment-list/stock-assignment-list.component';
-export * from './inventory/inventory-stock-statement/inventory-stock-statement.component';
-
-
 export * from './geofence/add-geofence/add-geofence.component';
 export * from './geofence/edit-geofence/edit-geofence.component';
 export * from './geofence/geofence-list/geofence-list.component';
@@ -68,10 +53,8 @@ export * from './reminders/service-reminder/service-remind-detail/service-remind
 export * from './reminders/contact-renewals/contact-renew-detail/contact-renew-detail.component';
 export * from './reminders/vehicle-renewals/vehicle-renew-detail/vehicle-renew-detail.component';
 
-export * from './inventory/items/item-detail/item-detail.component';
 
 export * from './inventory/add-inventory/add-inventory.component';
-
 export * from './inventory/inventory-list/inventory-list.component';
 export * from './inventory/edit-inventory/edit-inventory.component';
 

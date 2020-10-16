@@ -1,64 +1,50 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ApiService } from '../../../../../services/api.service';
+import { Router } from '@angular/router';
+import { ApiService } from '../../../../services/api.service';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
-  selector: 'app-edit-item-group',
-  templateUrl: './edit-item-group.component.html',
-  styleUrls: ['./edit-item-group.component.css'],
+  selector: 'app-add-item-group',
+  templateUrl: './add-item-group.component.html',
+  styleUrls: ['./add-item-group.component.css'],
 })
-export class EditItemGroupComponent implements OnInit {
-  title = 'Edit Item Group';
+export class AddItemGroupComponent implements OnInit {
+  title = 'Add Item Group';
   errors = {};
   form;
   concatArrayKeys = '';
   /********** Form Fields ***********/
-  groupID = '';
   groupName = '';
   description = '';
-  timeCreated = '';
+
   /******************/
+
 
   response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
   Error: string = '';
   Success: string = '';
-  constructor(private apiService: ApiService, private route: ActivatedRoute) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
-    this.groupID = this.route.snapshot.params['groupID'];
-
-    this.apiService
-      .getData('itemGroups/' + this.groupID)
-      .subscribe((result: any) => {
-        result = result.Items[0];
-
-        this.groupName = result.groupName;
-        this.description = result.description;
-        this.timeCreated = result.timeCreated;
-      });
-
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
   }
 
-  updateGroup() {
+  addGroup() {
     this.hasError = false;
     this.hasSuccess = false;
 
     const data = {
-      groupID: this.groupID,
       groupName: this.groupName,
       description: this.description,
-      timeCreated: this.timeCreated,
     };
 
-    this.apiService.putData('itemGroups', data).subscribe({
+    this.apiService.postData('itemGroups', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -83,10 +69,13 @@ export class EditItemGroupComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = 'Item Group updated successfully';
+        this.Success = 'Item Group added successfully';
+        this.groupName = '';
+        this.description = '';
       },
     });
   }
+
   throwErrors() {
     this.form.showErrors(this.errors);
   }

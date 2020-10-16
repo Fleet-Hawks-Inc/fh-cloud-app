@@ -1,50 +1,72 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
-import { ApiService } from '../../../../../services/api.service';
+import {  map } from 'rxjs/operators';
 import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
-  selector: 'app-add-item-group',
-  templateUrl: './add-item-group.component.html',
-  styleUrls: ['./add-item-group.component.css'],
+  selector: 'app-add-entry',
+  templateUrl: './add-entry.component.html',
+  styleUrls: ['./add-entry.component.css'],
 })
-export class AddItemGroupComponent implements OnInit {
-  title = 'Add Item Group';
-  errors = {};
-  form;
-  concatArrayKeys = '';
+export class AddEntryComponent implements OnInit {
+  title = 'Add Stock Entry';
+
   /********** Form Fields ***********/
-  groupName = '';
+
+  items = [];
+  vendors = [];
+  itemID = '';
+  totalQuantity = '';
+  vendorID = '';
   description = '';
-
   /******************/
-
-
+  form;
+  errors = {};
   response: any = '';
-  hasError: boolean = false;
-  hasSuccess: boolean = false;
+  hasError = false;
+  hasSuccess = false;
   Error: string = '';
   Success: string = '';
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
+    this.fetchItems();
+    this.fetchVendors();
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
   }
 
-  addGroup() {
+  fetchItems() {
+    this.apiService.getData('items').subscribe((result: any) => {
+      this.items = result.Items;
+    });
+  }
+
+  fetchVendors() {
+    this.apiService.getData('vendors').subscribe((result: any) => {
+      this.vendors = result.Items;
+    });
+  }
+
+
+
+  addStockEntry() {
+    this.errors = {};
+
     this.hasError = false;
     this.hasSuccess = false;
 
-    const data = {
-      groupName: this.groupName,
+    let data = {
+      itemID: this.itemID,
+      totalQuantity: this.totalQuantity,
+      vendorID: this.vendorID,
       description: this.description,
     };
 
-    this.apiService.postData('itemGroups', data).subscribe({
+    this.apiService.postData('stockEntries', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -69,8 +91,10 @@ export class AddItemGroupComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = 'Item Group added successfully';
-        this.groupName = '';
+        this.Success = 'Stock entry added successfully';
+        this.itemID = '';
+        this.totalQuantity = '';
+        this.vendorID = '';
         this.description = '';
       },
     });
@@ -78,17 +102,5 @@ export class AddItemGroupComponent implements OnInit {
 
   throwErrors() {
     this.form.showErrors(this.errors);
-  }
-
-  concatArray(path) {
-    this.concatArrayKeys = '';
-    for (const i in path) {
-      this.concatArrayKeys += path[i] + '.';
-    }
-    this.concatArrayKeys = this.concatArrayKeys.substring(
-      0,
-      this.concatArrayKeys.length - 1
-    );
-    return this.concatArrayKeys;
   }
 }
