@@ -62,6 +62,9 @@ import { NewAceManifestComponent } from './cross-border/ace-documents/new-ace-ma
 import { NewAciManifestComponent } from './cross-border/aci-documents/new-aci-manifest/new-aci-manifest.component';
 import { AciShipmentComponent } from './cross-border/aci-documents/aci-shipment/aci-shipment.component';
 import { AciCommodityComponent } from './cross-border/aci-documents/aci-commodity/aci-commodity.component';
+import { RouteListComponent } from './permanent-routing/route-list/route-list.component';
+import { AddRouteComponent } from './permanent-routing/add-route/add-route.component';
+import { EditRouteComponent } from './permanent-routing/edit-route/edit-route.component';
 
 
 
@@ -145,7 +148,10 @@ import { AciCommodityComponent } from './cross-border/aci-documents/aci-commodit
     AceManifestComponent,
     AceShipmentComponent,
     AceCommodityComponent,
-    NewAceManifestComponent
+    NewAceManifestComponent,
+    RouteListComponent,
+    AddRouteComponent,
+    EditRouteComponent
 
 
   ],

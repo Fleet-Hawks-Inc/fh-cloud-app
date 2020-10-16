@@ -25,6 +25,9 @@ import { RoutePlannerComponent } from './routing/route-planner/route-planner.com
 import { RoutePlaybackComponent } from './routing/route-playback/route-playback.component';
 import { AddLoadComponent } from './loads/add-load/add-load.component';
 import { AddDispatchComponent } from './dispatch/add-dispatch/add-dispatch.component';
+import { RouteListComponent } from './permanent-routing/route-list/route-list.component';
+import { AddRouteComponent } from './permanent-routing/add-route/add-route.component';
+import { EditRouteComponent } from './permanent-routing/edit-route/edit-route.component';
 
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
@@ -87,7 +90,15 @@ const routes: Routes = [
   {
     path: 'load-detail',
     component: LoadDetailComponent
-  }
+  },
+  {
+    path: 'routes',
+    children: [
+      { path: 'route-list', component: RouteListComponent},
+      { path: 'add-route', component: AddRouteComponent },
+      { path:'edit-route/:routeID', component:EditRouteComponent}
+    ]
+  },
 ];
 
 @NgModule({
