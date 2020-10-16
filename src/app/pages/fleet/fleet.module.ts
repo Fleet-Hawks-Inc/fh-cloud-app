@@ -53,9 +53,13 @@ import {
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
+
+  FuelEntryDetailsComponent,
+
   AddInventoryComponent,
   EditInventoryComponent,
   InventoryListComponent
+
 } from './index';
 
 const COMPONENTS = [
@@ -89,9 +93,13 @@ const COMPONENTS = [
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
+
+  FuelEntryDetailsComponent,
+
   AddInventoryComponent,
   EditInventoryComponent,
   InventoryListComponent
+
 ];
 
 

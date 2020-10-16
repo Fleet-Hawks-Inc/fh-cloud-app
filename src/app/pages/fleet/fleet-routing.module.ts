@@ -33,9 +33,13 @@ import {
   GraphComponent,
   DashboardDriverComponent,
   EditAssetComponent,
+
+  FuelEntryDetailsComponent,
+
   AddInventoryComponent,
   EditInventoryComponent,
   InventoryListComponent
+
 } from './index';
 
 
@@ -71,9 +75,13 @@ const COMPONENTS = [
   GraphComponent,
   DashboardDriverComponent,
   EditAssetComponent,
+
+  FuelEntryDetailsComponent,
+
   AddInventoryComponent,
   EditInventoryComponent,
   InventoryListComponent
+
 ];
 
 const routes: Routes = [
@@ -109,21 +117,23 @@ const routes: Routes = [
         path: 'fuel',
         children: [
           {
-            path: 'add',
+
+            path: 'Add',
             component: AddFuelEntryComponent,
           },
           {
-            path: 'list',
+            path: 'List',
             component: FuelEntryListComponent,
           },
           {
-            path: 'edit/:entryID',
+            path: 'Edit/:entryID',
             component: AddFuelEntryComponent,
           },
           {
-            path: 'detail/:entryID',
+            path: 'Details/:entryID',
             component: FuelEntryDetailsComponent,
           },
+          
         ],
       },
       {
