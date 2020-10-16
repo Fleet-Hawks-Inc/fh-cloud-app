@@ -41,7 +41,7 @@ export class ListContactRenewComponent implements OnInit {
     });
   }
   getContactName(ID) {
-    let contact = this.contacts.filter(c => c.contactID === ID);
+    let contact = this.contacts.filter((c: any) => c.contactID === ID);
     let contactName = (contact[0].contactName);
     return contactName;
   }

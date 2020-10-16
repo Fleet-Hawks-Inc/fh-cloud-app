@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../../../../../services';
-import {Router} from '@angular/router';
+import { ApiService } from '../../../../../services';
+import { Router } from '@angular/router';
 import { timer } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -18,66 +18,63 @@ export class IssueListComponent implements OnInit {
   vehicles: [];
   assets: [];
   contacts: [];
-  checked: any = false;
-  isChecked = false;
-  headCheckbox = false;
-  selectedIssueID: any;
-  issueCheckCount = null;
   vehicleName: string;
   contactName: string;
-  constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) {}
+  constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
 
   ngOnInit() {
     this.fetchIssues();
-   // this.fetchContacts();
-    // this.fetchVehicles();
+    this.fetchContacts();
+    this.fetchVehicles();
+    this.fetchAssets();
   }
-  // fetchVehicles() {
-  //   this.apiService.getData('vehicles').subscribe((result: any) => {
-  //        this.vehicles = result.Items; });
-  //   }
-  //  fetchContacts() {
-  //   this.apiService.getData('contacts').subscribe((result: any) => {
-  //        this.contacts = result.Items;
-  //        console.log('Contacts', this.contacts);
-  //       });
-  //   }
-  fetchVehicles(ID) {
-    this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
+
+  fetchVehicles() {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
-      console.log('VEHICLES', this.vehicles);
-     // this.vehicleName =  this.vehicles[0].vehicleIdentification;
     });
   }
-  fetchAssets(ID) {
-    this.apiService.getData('assets/' + ID).subscribe((result: any) => {
+  fetchContacts() {
+    this.apiService.getData('contacts').subscribe((result: any) => {
+      this.contacts = result.Items;
+      console.log('Contacts', this.contacts);
+    });
+  }
+  fetchAssets() {
+    this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
       console.log('ASSETS', this.assets);
-     // this.assetName =  this.assets[0].assetIdentification;
+      // this.assetName =  this.assets[0].assetIdentification;
     });
   }
-    getUnitIdentification(ID){
-      // this.fetchVehicles(ID);
-      // this.fetchAssets(ID);
+  getContactName(ID: any) {
+   // let contact = [];
+   let contact: any = this.contacts.filter((c: any) => c.contactID === ID);
+    return contact[0].contactName;
+  }
+  getUnitName(ID: any, type: any) {
+    if (type === 'vehicle') {
+      let vName = [];
+      vName = this.vehicles.filter((v: any) => v.vehicleID === ID);
+      return vName[0].vehicleIdentification;
     }
-    getContactName(ID) {
-       this.apiService.getData('contacts/' + ID).subscribe((result: any) => {
-         this.contacts = result.Items;
-         console.log('Contact by ID', this.contacts);
-        // return this.contactName = this.contacts[0].contactName;
-       });
+    else {
+      let aName = [];
+      aName = this.assets.filter((a: any) => a.assetID === ID);
+      return aName[0].assetIdentification;
     }
+  }
   fetchIssues() {
     this.apiService.getData('issues').subscribe({
       complete: () => {
         this.initDataTable();
       },
-      error: () => {},
+      error: () => { },
       next: (result: any) => {
         console.log(result);
         this.issues = result.Items;
-      //  console.log('Array', this.issues);
+        console.log('Array', this.issues);
       },
     });
   }
@@ -90,7 +87,7 @@ export class IssueListComponent implements OnInit {
     this.apiService
       .deleteData('issues/' + issueID)
       .subscribe((result: any) => {
-     //   this.spinner.show();
+        //   this.spinner.show();
         this.fetchIssues();
         this.toastr.success('Issue Deleted Successfully!');
       });

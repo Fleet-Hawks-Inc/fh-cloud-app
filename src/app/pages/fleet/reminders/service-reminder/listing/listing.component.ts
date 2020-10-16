@@ -27,7 +27,7 @@ export class ListingComponent implements OnInit {
     });
   }
   getVehicleName(ID) {
-    let vehicle = this.vehicles.filter(v => v.vehicleID === ID);
+    let vehicle:any = this.vehicles.filter(v => v.vehicleID === ID);
     let vehicleName = (vehicle[0].vehicleIdentification);
     return vehicleName;
   }
