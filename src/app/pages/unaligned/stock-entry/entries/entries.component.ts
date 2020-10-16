@@ -1,48 +1,47 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../../services/api.service';
+import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
 import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: 'app-item-group-list',
-  templateUrl: './item-group-list.component.html',
-  styleUrls: ['./item-group-list.component.css'],
+  selector: 'app-entries',
+  templateUrl: './entries.component.html',
+  styleUrls: ['./entries.component.css'],
 })
-export class ItemGroupListComponent implements OnInit {
-  title = 'Item Group List';
-  itemGroups = [];
+export class EntriesComponent implements OnInit {
+  title = 'Stock Entry List';
+  entries;
 
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
-    this.fetchItemGroups();
+    this.fetchEntries();
   }
 
-  fetchItemGroups() {
-    this.apiService.getData('itemGroups').subscribe({
+  fetchEntries() {
+    this.apiService.getData('stockEntries').subscribe({
       complete: () => {
         this.initDataTable();
       },
       error: () => {},
       next: (result: any) => {
         console.log(result);
-        this.itemGroups = result.Items;
+        this.entries = result.Items;
       },
     });
   }
 
-  deleteItemGroup(groupId) {
+  deleteEntry(documentId) {
     /******** Clear DataTable ************/
     if ($.fn.DataTable.isDataTable('#datatable-default')) {
       $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
-
     this.apiService
-      .deleteData('itemGroups/' + groupId)
+      .deleteData('StockEntries/' + documentId)
       .subscribe((result: any) => {
-        this.fetchItemGroups();
+        this.fetchEntries();
       });
   }
 

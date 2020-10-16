@@ -1,28 +1,27 @@
 import {  Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../../services/api.service';
-import {  ActivatedRoute } from '@angular/router';
-import {  map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../../services/api.service';
+import { map} from 'rxjs/operators';
 import { from } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: 'app-edit-stock-assignment',
-  templateUrl: './edit-stock-assignment.component.html',
-  styleUrls: ['./edit-stock-assignment.component.css'],
+  selector: 'app-add-stock-assignment',
+  templateUrl: './add-stock-assignment.component.html',
+  styleUrls: ['./add-stock-assignment.component.css'],
 })
-export class EditStockAssignmentComponent implements OnInit {
-  title = 'Edit Stock Assignment';
+export class AddStockAssignmentComponent implements OnInit {
+  title = 'Add Stock Assignment';
 
   errors = {};
   form;
 
   /********** Form Fields ***********/
-  assignmentID = '';
+
   vehicleID = '';
   itemID = '';
   quantity = '';
   totalQuantity: any = 0;
-  timeCreated = '';
   selectedItems = [];
 
   items = [];
@@ -38,26 +37,8 @@ export class EditStockAssignmentComponent implements OnInit {
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
-    this.assignmentID = this.route.snapshot.params['assignmentID'];
-
-    this.fetchStockAssignment();
     this.fetchVehicles();
     this.fetchItems();
-
-  }
-
-  fetchStockAssignment(){
-    this.apiService.getData('stockAssignments/' + this.assignmentID).subscribe((result: any) => {
-      result = result.Items[0];
-      this.assignmentID = result.assignmentID;
-      this.selectedItems = result.items;
-      this.vehicleID = result.vehicleID;
-      this.totalQuantity = result.totalQuantity;
-      this.timeCreated = result.timeCreated;
-
-      console.log(this.selectedItems);
-
-    });
   }
 
   fetchVehicles() {
@@ -83,7 +64,6 @@ export class EditStockAssignmentComponent implements OnInit {
       );
       return false;
     }
-
     if(this.itemID && this.quantity){
       this.selectedItems.push({
         itemID: this.itemID,
@@ -96,8 +76,7 @@ export class EditStockAssignmentComponent implements OnInit {
   }
 
   removeItem(index) {
-    console.log(this.selectedItems)
-    this.selectedItems.splice(0, index);
+    this.selectedItems.splice(index);
 
     //update total quantity
     this.totalQuantity -= this.selectedItems[index].quantity;
@@ -115,20 +94,18 @@ export class EditStockAssignmentComponent implements OnInit {
     });
   }
 
-  updateStockAssignment() {
+  addStockAssignment() {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
     const data = {
-      assignmentID: this.assignmentID,
       vehicleID: this.vehicleID,
       items: this.selectedItems,
       totalQuantity: this.totalQuantity,
-      timeCreated: this.timeCreated
     };
    // console.log(data);return ;
-    this.apiService.putData('stockAssignments', data).subscribe({
+    this.apiService.postData('stockAssignments', data).subscribe({
       complete: () => {},
       error: (err) => {
         from(err.error)
@@ -143,8 +120,14 @@ export class EditStockAssignmentComponent implements OnInit {
           });
       },
       next: (res) => {
+        this.vehicleID = '';
+        this.quantity = '';
         this.hasSuccess = true;
-        this.Success = 'Stock Assignment updated successfully';
+        this.Success = 'Stock Assignment Added successfully';
+
+        this.selectedItems = [];
+        this.totalQuantity = 0;
+        this.itemID = '';
       },
     });
   }

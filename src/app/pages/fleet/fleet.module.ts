@@ -50,25 +50,14 @@ import {
   ListContactRenewComponent,
   AddContactRenewComponent,
   ContactRenewDetailComponent,
-  AddItemComponent,
-  ItemsListComponent,
-  ItemDetailComponent,
-  EditItemComponent,
-  AddItemGroupComponent,
-  ItemGroupListComponent,
-  EditItemGroupComponent,
-  AddEntryComponent,
-  EntriesComponent,
-  EditEntryComponent,
-  AddStockAssignmentComponent,
-  StockAssignmentListComponent,
-  EditStockAssignmentComponent,
-  InventoryStockStatementComponent,
   AddGeofenceComponent,
   EditGeofenceComponent,
   GeofenceListComponent,
   GraphComponent,
-  DashboardDriverComponent
+  DashboardDriverComponent,
+  AddInventoryComponent,
+  EditInventoryComponent,
+  InventoryListComponent
 } from './index';
 
 const COMPONENTS = [
@@ -99,25 +88,14 @@ const COMPONENTS = [
   ListContactRenewComponent,
   AddContactRenewComponent,
   ContactRenewDetailComponent,
-  AddItemComponent,
-  ItemsListComponent,
-  ItemDetailComponent,
-  EditItemComponent,
-  AddItemGroupComponent,
-  ItemGroupListComponent,
-  EditItemGroupComponent,
-  AddEntryComponent,
-  EntriesComponent,
-  EditEntryComponent,
-  AddStockAssignmentComponent,
-  StockAssignmentListComponent,
-  EditStockAssignmentComponent,
-  InventoryStockStatementComponent,
   AddGeofenceComponent,
   EditGeofenceComponent,
   GeofenceListComponent,
   GraphComponent,
-  DashboardDriverComponent
+  DashboardDriverComponent,
+  AddInventoryComponent,
+  EditInventoryComponent,
+  InventoryListComponent
 ];
 
 
