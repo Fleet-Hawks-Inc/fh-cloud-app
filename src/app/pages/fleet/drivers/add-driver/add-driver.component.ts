@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {from} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {from, Subject, throwError} from 'rxjs';
 import {ApiService} from '../../../../services';
 import { Auth } from 'aws-amplify';
+import { HereMapService } from '../../../../services';
 import { v4 as uuidv4 } from 'uuid';
+import { AwsUploadService } from '../../../../services';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 
 @Component({
@@ -15,6 +20,7 @@ declare var $: any;
 export class AddDriverComponent implements OnInit {
   pageTitle: string;
   public driverID;
+  public driverProfileSrc: any = 'assets/img/driver/driver.png';
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   errors = {};
@@ -22,15 +28,26 @@ export class AddDriverComponent implements OnInit {
   concatArrayKeys = '';
   manualAddress: boolean;
   nextTab: any;
+  carrierID: any;
   driverData = {
     address: {},
-    documentDetails: {},
+    documentDetails: [{
+      documentType: '',
+      document: '',
+      issuingCountry: '',
+      issuingState: '',
+      issueDate: '',
+      expiryDate: '',
+      uploadedDocs: []
+    }],
     crossBorderDetails: {},
     paymentDetails: {},
     licenceDetails: {},
     hosDetails: {},
     emergencyDetails: {},
   };
+  public searchTerm = new Subject<string>();
+  public searchResults: any;
   /**
    * Form Props
    */
@@ -71,7 +88,11 @@ export class AddDriverComponent implements OnInit {
   driverLicenseCountry = '';
   groups = [];
   countries = [];
+  vehicles = [];
   states = [];
+  adrStates = [];
+  docStates = [];
+  cities = [];
   yards = [];
   cycles = [];
   response: any = '';
@@ -80,10 +101,22 @@ export class AddDriverComponent implements OnInit {
   Error: string = '';
   Success: string = '';
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router) {
-    this.selectedFileNames = new Map<any, any>();
+  constructor(private apiService: ApiService,
+              private toastr: ToastrService,
+              private awsUS: AwsUploadService,
+              private route: ActivatedRoute,
+              private spinner: NgxSpinnerService,
+              private HereMap: HereMapService,
+              private ngbCalendar: NgbCalendar,
+              private dateAdapter: NgbDateAdapter<string>,
+              private router: Router)
+    {
+      this.selectedFileNames = new Map<any, any>();
+    }
+  
+  get today() {
+    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
-
   ngOnInit() {
     this.driverID = this.route.snapshot.params['driverID'];
     console.log(this.driverID)
@@ -98,7 +131,9 @@ export class AddDriverComponent implements OnInit {
     this.fetchCountries(); // fetch countries
     this.fetchYards(); // fetch yards
     this.fetchCycles(); // fetch cycle
+    this.fetchVehicles();
     this.getToday();
+    this.searchLocation();
     $(document).ready(() => {
       $('.btnNext').click(() => {
         this.nextTab = $('.nav-tabs li a.active').closest('li').next('li');
@@ -109,15 +144,15 @@ export class AddDriverComponent implements OnInit {
         $('.nav-tabs li a.active').closest('li').prev('li').find('a').trigger('click');
       });
 
-      this.form = $('#form_').validate({
-        //ignore: ''
+      $(document).ready(() => {
+        this.form = $('#form_').validate();
       });
 
-      $('#document-two').hide();
-      $('#add-document').on('click', function(){
-        $(this).hide();
-        $('#document-two').show();
-      });
+      // $('#document-two').hide();
+      // $('#add-document').on('click', function(){
+      //   $(this).hide();
+      //   $('#document-two').show();
+      // });
     });
   }
 
@@ -143,6 +178,14 @@ export class AddDriverComponent implements OnInit {
       });
   }
 
+  fetchVehicles() {
+    this.apiService.getData('vehicles')
+      .subscribe((result: any) => {
+        this.vehicles = result.Items;
+        console.log('vehicles', this.vehicles)
+      });
+  }
+
   fetchYards() {
     this.apiService.getData('yards')
       .subscribe((result: any) => {
@@ -156,33 +199,75 @@ export class AddDriverComponent implements OnInit {
     this.apiService.getData('states/country/' + countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
-        //console.log('this.states', this.states)
+        this.adrStates = result.Items;
+        this.docStates = result.Items;
+        console.log('this.states', this.states)
+      });
+  }
+
+  getCities() {
+    const stateID = this.driverData.address['state'];
+    this.apiService.getData('cities/state/' + stateID)
+      .subscribe((result: any) => {
+        this.cities = result.Items;
+        console.log('this.cities', this.cities)
       });
   }
 
   getToday(): string {
     return new Date().toISOString().split('T')[0]
   }
-  /*
-   * Selecting files before uploading
-   */
-  selectDocuments(event) {
-    this.selectedFiles = event.target.files;
-    for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-      const randomFileGenerate = this.selectedFiles[i].name.split('.');
-      console.log(randomFileGenerate)
-      const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-      this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-      console.log('fileName', fileName)
+  
+  uploadDriverImg(event): void {
+    console.log(event);
+    if (event.target.files[0]) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = e => this.driverProfileSrc = reader.result;
+
+      reader.readAsDataURL(file);
+      const newFile = event.target.files[0].name.split('.');
+      const fileName = `${uuidv4(newFile[0])}.${newFile[1]}`;
+      this.selectedFileNames.set(fileName, newFile);
       this.driverData['driverImage'] = fileName;
-      console.log('fileName', this.driverData)
     }
   }
 
+  /*
+   * Uploading files which selected
+   */
+  uploadFiles = async () => {
+    this.carrierID = await this.apiService.getCarrierID();
+    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
+      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
+    });
+  }
+
+  public searchLocation() {
+    let target;
+    this.searchTerm.pipe(
+      map((e: any) => {
+        target = e;
+        return e.target.value;
+      }),
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(term => {
+        return this.HereMap.searchEntries(term);
+      }),
+      catchError((e) => {
+        return throwError(e);
+      }),
+    ).subscribe(res => {
+      this.searchResults = res;
+    });
+  }
+
   addDriver() {
+    this.spinner.show(); // loader init
     this.register();
     this.errors = {};
-    // console.log('this.driverData', this.driverData);
+    console.log('this.driverData', this.driverData);
     this.apiService.postData('drivers', this.driverData).subscribe({
       complete: () => {},
       error: (err: any) => {
@@ -195,6 +280,7 @@ export class AddDriverComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
+              this.spinner.hide(); // loader hide
               this.throwErrors();
             },
             error: () => { },
@@ -204,7 +290,9 @@ export class AddDriverComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.Success = 'Driver Added successfully';
+        this.uploadFiles(); // upload selected files to bucket
+        this.toastr.success('Driver added successfully');
+        this.router.navigateByUrl('/fleet/drivers/list');
 
       },
     });
@@ -212,10 +300,25 @@ export class AddDriverComponent implements OnInit {
 
 
   throwErrors() {
-    console.log('throw errors');
     this.form.showErrors(this.errors);
   }
 
+  addDocument() {
+    this.driverData.documentDetails.push({
+      documentType: '',
+      document: '',
+      issuingCountry: '',
+      issuingState: '',
+      issueDate: '',
+      expiryDate: '',
+      uploadedDocs: []
+    })
+    console.log(this.driverData)
+  }
+
+  deleteInput(i: number) {
+    this.driverData.documentDetails.splice(i, 1);
+  }
   /**
    * fetch driver data
    */
@@ -318,5 +421,6 @@ export class AddDriverComponent implements OnInit {
       // this.Error = err.message || 'Error during login';
     }
   };
+  
 
 }

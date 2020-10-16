@@ -462,7 +462,8 @@ html.fixed .content-body {
     display: none;
 }
 .dt-buttons {
-    float: right;
+    float: none !important;
+    display: inline-block;
     margin-bottom: 15px;
 }
 .dt-buttons .btn-secondary,

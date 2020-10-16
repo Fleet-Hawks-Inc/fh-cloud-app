@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+declare var $: any;
 
 @Component({
   selector: 'app-driver-list',
@@ -15,19 +17,24 @@ export class DriverListComponent implements OnInit {
   drivers = [];
   dtOptions: any = {};
 
-  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) {}
+  constructor(
+            private apiService: ApiService,
+            private router: Router,
+            private spinner: NgxSpinnerService,
+            private toastr: ToastrService) {}
 
   ngOnInit() {
     this.fetchDrivers();
+
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
-      }, 2000);
-      
+      }, 1800);
     });
   }
 
   fetchDrivers() {
+    this.spinner.show(); // loader init
     this.apiService.getData('drivers').subscribe({
       complete: () => {
         this.initDataTable();
@@ -37,6 +44,7 @@ export class DriverListComponent implements OnInit {
         console.log(result);
         this.drivers = result.Items;
         console.log('drivers',this.drivers)
+        this.spinner.hide(); // loader hide
       },
     });
   }
@@ -78,6 +86,17 @@ export class DriverListComponent implements OnInit {
 
         });
       }
+    }
+  }
+
+  deactivateAsset(value, driverID) {
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.apiService
+      .getData(`geofences/isDeleted/${driverID}/${value}`)
+      .subscribe((result: any) => {
+        console.log('result', result);
+        this.fetchDrivers();
+      });
     }
   }
 

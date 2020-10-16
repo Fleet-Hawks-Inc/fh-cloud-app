@@ -48,7 +48,8 @@ import {
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
-  EditAssetComponent
+  EditAssetComponent,
+  FuelEntryDetailsComponent
 } from './index';
 
 
@@ -99,7 +100,8 @@ const COMPONENTS = [
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
-  EditAssetComponent
+  EditAssetComponent,
+  FuelEntryDetailsComponent
 ];
 
 const routes: Routes = [
@@ -143,16 +145,20 @@ const routes: Routes = [
         path: 'fuel',
         children: [
           {
-            path: 'Add-Fuel-Entry',
+            path: 'Add',
             component: AddFuelEntryComponent,
           },
           {
-            path: 'Fuel-Entry-List',
+            path: 'List',
             component: FuelEntryListComponent,
           },
           {
-            path: 'Edit-Fuel-Entry/:entryID',
-            component: EditFuelEntryComponent,
+            path: 'Edit/:entryID',
+            component: AddFuelEntryComponent,
+          },
+          {
+            path: 'Details/:entryID',
+            component: FuelEntryDetailsComponent,
           },
         ],
       },
