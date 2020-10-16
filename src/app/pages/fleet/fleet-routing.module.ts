@@ -5,9 +5,6 @@ import {
   AddUserComponent,
   EditUserComponent,
   UserListComponent,
-  AddYardComponent,
-  EditYardComponent,
-  YardsComponent,
   AddAssetsComponent,
   AssetListComponent,
   AssetDetailComponent,
@@ -45,9 +42,6 @@ const COMPONENTS = [
   AddUserComponent,
   EditUserComponent,
   UserListComponent,
-  AddYardComponent,
-  EditYardComponent,
-  YardsComponent,
   AddAssetsComponent,
   AssetListComponent,
   AssetDetailComponent,
@@ -95,14 +89,6 @@ const routes: Routes = [
       { path: 'Add-User', component: AddUserComponent },
       { path: 'Edit-User/:userName', component: EditUserComponent },
       { path: 'User-List', component: UserListComponent },
-    ],
-  },
-  {
-    path: 'yards',
-    children: [
-      { path: 'Add-Yard', component: AddYardComponent },
-      { path: 'Edit-Yard/:yardID', component: EditYardComponent },
-      { path: 'Yard-List', component: YardsComponent },
     ],
   },
   {
@@ -226,7 +212,7 @@ const routes: Routes = [
     path: 'inventory',
     children: [
       { path: 'add', component: AddInventoryComponent },
-      { path: 'edit/:fenceID', component: EditInventoryComponent },
+      { path: 'edit/:itemID', component: EditInventoryComponent },
       { path: 'list', component: InventoryListComponent },
     ],
   },

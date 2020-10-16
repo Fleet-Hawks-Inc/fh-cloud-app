@@ -11,10 +11,6 @@ export * from './drivers/edit-driver/edit-driver.component';
 export * from './drivers/driver-list/driver-list.component';
 export * from './drivers/driver-detail/driver-detail.component';
 
-export * from './yards/yards/yards.component';
-export * from './yards/add-yard/add-yard.component';
-export * from './yards/edit-yard/edit-yard.component';
-
 export * from './assets/add-assets/add-assets.component';
 export * from './assets/asset-list/asset-list.component';
 export * from './assets/edit-asset/edit-asset.component';
@@ -38,8 +34,6 @@ export * from './geofence/geofence-list/geofence-list.component';
 
 export * from './graphs/graph/graph.component';
 
-export * from './vehicles/add-vehicle/add-vehicle.component';
-export * from './vehicles/edit-vehicle/edit-vehicle.component';
 export * from './dashboard-driver/dashboard-driver.component';
 
 // Reminders
