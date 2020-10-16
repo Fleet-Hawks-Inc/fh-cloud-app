@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {AwsUploadService} from '../../../../../services';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-fuel-entry-details',
   templateUrl: './fuel-entry-details.component.html',
@@ -15,23 +17,20 @@ export class FuelEntryDetailsComponent implements OnInit {
     /********** Form Fields ***********/
     unitType =  '';
     vehicleID = '';
-    vehicleFuelQty: number;
-    vehicleFuelQtyUnit  = 'gallons';
-    vehicleFuelQtyAmt  = 0;
+    fuelQtyAmt: number;
+    fuelQty: number;
+    fuelQtyUnit = 'gallon';
     reeferID = '';
-    reeferFuelQty = 0;
-    reeferFuelQtyUnit  =  'gallons';
-    reeferFuelQtyAmt: number;
     DEFFuelQty: number;
-    DEFFuelQtyUnit  =  'gallons';
     DEFFuelQtyAmt: number;
+    DEFFuelQtyUnit = 'gallon';
     discount: number;
     totalAmount: number;
-    costPerGallon: number;
+    costPerUnit: number;
     amountPaid: number;
+    currency: '';
     date: '';
     fuelType = '';
-    costLabel  =  'Cost/gallon';
     carrierID;
 
  paidBy = '';
@@ -76,7 +75,10 @@ additionalDetails = {
     Success = '';
     constructor(
                  private apiService: ApiService,
-                 private route: ActivatedRoute,private domSanitizer: DomSanitizer, private awsUS: AwsUploadService) {
+                 private route: ActivatedRoute,
+                 private router: Router,
+    private toastr: ToastrService,
+                 private domSanitizer: DomSanitizer, private awsUS: AwsUploadService) {
    }
 
   ngOnInit() {
@@ -140,13 +142,6 @@ additionalDetails = {
       this.trips = result.Items;
     });
   }
-  checkUnitType(unitType) {
-    if (unitType === 'vehicle'){
-      this.unit = true;
-    }
-    else 
-    {this.unit = false;}
-  }
 
   fetchVendors(ID) {
     this.apiService.getData('vendors/' + ID).subscribe((result: any) => {
@@ -159,35 +154,37 @@ additionalDetails = {
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.unitType = result.unitType;
-        this.vehicleID = result.vehicleID;
-        this.vehicleFuelQty = result.vehicleFuelQty;
-        this.vehicleFuelQtyUnit = result.vehicleFuelQtyUnit;
-        this.vehicleFuelQtyAmt = result.vehicleFuelQtyAmt;
-        this.reeferID = result.reeferID;
-        this.reeferFuelQty = result.reeferFuelQty;
-        this.reeferFuelQtyUnit = result.reeferFuelQtyUnit;
-        this.reeferFuelQtyAmt = result.reeferFuelQtyAmt;
-        this.DEFFuelQty = result.DEFFuelQty;
-        this.DEFFuelQtyUnit = result.DEFFuelQtyUnit;
-        this.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
-        this.discount = result.discount;
-        this.totalAmount = result.totalAmount;
-        this.costPerGallon = result.costPerGallon;
-        this.amountPaid = result.amountPaid;
-        this.date = result.date;
-        this.fuelType = result.fuelType;
-        this.costLabel = result.costLabel;
-        this.paidBy = result.paidBy;
-        this.paymentMode = result.paymentMode;
-        this.reference = result.reference;
-        this.reimburseToDriver = result.reimburseToDriver;
-        this.deductFromPay = result.deductFromPay;
-        this.vendorID = result.vendorID;
-        this.countryID = result.countryID;
-        this.stateID = result.stateID;
-        this.cityID = result.cityID;
-        this.tripID = result.tripID;
+
+        this.entryID = this.entryID;
+        this.currency = result.currency,
+          this.unitType = result.unitType;
+        this.vehicleID = result.vehicleID,
+          this.reeferID = result.reeferID,
+          this.fuelQty = result.fuelQty,
+          this.fuelQtyUnit = result.fuelQtyUnit,
+          this.fuelQtyAmt = +result.fuelQtyAmt,
+          this.DEFFuelQty = +result.DEFFuelQty,
+          this.DEFFuelQtyUnit = result.fuelQtyUnit,
+          this.DEFFuelQtyAmt = +result.DEFFuelQtyAmt,
+          this.discount = +result.discount,
+          this.totalAmount = result.totalAmount,
+          this.costPerUnit = result.costPerUnit,
+          this.amountPaid = result.amountPaid,
+          this.date = result.date,
+          this.fuelType = result.fuelType,
+
+          this.paidBy = result.paidBy,
+          this.paymentMode = result.paymentMode,
+          this.reference = result.reference,
+          this.reimburseToDriver = result.reimburseToDriver,
+          this.deductFromPay = result.deductFromPay,
+
+
+          this.vendorID = result.vendorID,
+          this.countryID = result.countryID,
+          this.stateID = result.stateID,
+          this.cityID = result.cityID,
+          this.tripID = result.tripID,
         this.additionalDetails = {
             avgGVW : result.additionalDetails.avgGVW,
             odometer : result.additionalDetails.odometer,
@@ -201,7 +198,6 @@ additionalDetails = {
       });
       this.fetchVehicles(this.vehicleID);
       this.fetchAssets(this.reeferID);
-      this.checkUnitType(this.unitType);
       this.fetchVendors(this.vendorID);
   }
   getImages = async () => {
@@ -214,5 +210,13 @@ additionalDetails = {
                                                            (this.carrierID, this.additionalDetails.uploadedPhotos[i]));
       this.fuelEntryImages.push(this.image);
     }
+  }
+  deleteFuelEntry(entryID) {
+    this.apiService
+      .deleteData('fuelEntries/' + entryID)
+      .subscribe((result: any) => {
+        this.toastr.success('Fuel Entry Deleted Successfully!');
+        this.router.navigateByUrl('/fleet/expenses/fuel/list');
+      });
   }
 }
