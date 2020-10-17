@@ -31,7 +31,7 @@
                               <div class="row">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Group of Vehicle</label>
-                                    <ng-select [(ngModel)]="serviceData.vehicleGroup" name="serviceData.vehicleGroup" style="width: 100%;" class="form-control populate">
+                                    <ng-select [(ngModel)]="serviceData.vehicleGroup" name="vehicleGroup" style="width: 100%;" class="form-control populate">
                                        <ng-option *ngFor="let group of groups;" value="{{group.groupID}}">{{group.groupName}}</ng-option>
                                     </ng-select>
                                  </div>
@@ -39,7 +39,7 @@
                               <div class="row">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Vehicle ID</label>
-                                    <ng-select (change)="getIssues($event)" [(ngModel)]="serviceData.vehicle" name="serviceData.vehicle" style="width: 100%;">
+                                    <ng-select (change)="getIssues($event)" [(ngModel)]="serviceData.vehicle" name="vehicle" style="width: 100%;">
                                         <ng-option *ngFor="let vehicle of vehicles;" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                     </ng-select>
                                  </div>
@@ -47,19 +47,20 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer</label>
-                                    <input [(ngModel)]="serviceData.odometer" name="serviceData.odometer" type="text" class="form-control">
+                                    <input [(ngModel)]="serviceData.odometer" name="odometer" type="text" class="form-control">
                                  </div>
                               </div>
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Completion Date</label>
-                                    <input type="date" [(ngModel)]="serviceData.completionDate" name="serviceData.completionDate" data-plugin-datepicker="" class="form-control" placeholder="mm/dd/yyyy">
+                                    <input type="text" placeholder="DD/MM/YYYY"
+                                    (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" [(ngModel)]="serviceData.completionDate" name="completionDate" class="form-control">
                                  </div>
                               </div>
                               <div class="row">
                                  <div class="col-lg-10" data-select2-id="118">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor ID</label>
-                                    <ng-select [(ngModel)]="serviceData.vendor" name="serviceData.vendor" style="width: 100%;">
+                                    <ng-select [(ngModel)]="serviceData.vendor" name="vendor" style="width: 100%;">
                                         <ng-option *ngFor="let vendor of vendors;" value="{{vendor.vendorID}}">{{vendor.vendorName}}</ng-option>
                                            
                                     </ng-select>
@@ -73,19 +74,19 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Reference</label>
-                                    <input [(ngModel)]="serviceData.reference" name="serviceData.reference" type="text" class="form-control">
+                                    <input [(ngModel)]="serviceData.reference" name="reference" type="text" class="form-control">
                                  </div>
                               </div>
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Location</label>
-                                    <input [(ngModel)]="serviceData.location" name="serviceData.location" type="text" class="form-control">
+                                    <input [(ngModel)]="serviceData.location" name="location" type="text" class="form-control">
                                  </div>
                               </div>
                               <div class="row">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description</label>
-                                    <textarea  [(ngModel)]="serviceData.description" name="serviceData.description" class="form-control" rows="3"></textarea>
+                                    <textarea  [(ngModel)]="serviceData.description" name="description" class="form-control" rows="3"></textarea>
                                  </div>
                               </div>
                            </div>

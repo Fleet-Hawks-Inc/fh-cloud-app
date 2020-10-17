@@ -221,7 +221,7 @@
             <div class="col">
                <section class="card">
                   <div class="card-body">
-                     <table datatable [dtOptions]="dtOptions" class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable">
+                     <table datatable [dtOptions]="dtOptions" class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="drivers.length > 0">
                         <thead>
                            <tr>
                               <!-- <th><input type="checkbox"></th> -->
@@ -253,10 +253,10 @@
                               <td>Live Status</td>
                               <td><span class="font-weight-bold">Phone:</span>{{driver.workPhone}} <br> <span class="font-weight-bold">E-mail:</span>{{driver.workEmail}}</td>
                               <td><span class="font-weight-bold">DL#:</span>{{driver.licenceDetails.CDL_Number}} <br><span class="font-weight-bold">DL State:</span> {{driver.licenceDetails.issuedState}}</td>
-                              <td><span class="font-weight-bold">Type#:</span>{{driver.documentDetails.documentType}} <br><span class="font-weight-bold">Issue State:</span>{{driver.licenceDetails.issuingState}}</td>
+                              <td><span class="font-weight-bold">Type#:</span>{{driver.documentDetails[0].documentType}} <br><span class="font-weight-bold">Issue State:</span>{{driver.documentDetails[0].issuingState}}</td>
                               
                               <td>{{driver.driverStatus}}</td>
-                              <td class="border-0 text-right">
+                              <td class="border-0">
                                  <div class="dropdown dropright">
                                     <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                        <i class="fas fa-ellipsis-v"></i>

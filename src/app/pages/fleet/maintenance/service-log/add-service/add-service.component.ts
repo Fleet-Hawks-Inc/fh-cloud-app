@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../../services';
 import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-add-service',
   templateUrl: './add-service.component.html',
@@ -17,6 +17,7 @@ export class AddServiceComponent implements OnInit {
   private groups;
   private vendors;
   private vehicles;
+  private reminders;
   private issues;
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
@@ -42,11 +43,17 @@ export class AddServiceComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private ngbCalendar: NgbCalendar,
+    private dateAdapter: NgbDateAdapter<string>,
   ) {
     this.selectedFileNames = new Map<any, any>();
    }
 
+   
+  get today() {
+    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+  }
   ngOnInit() {
     this.fetchGroups();
     this.fetchVehicles();
@@ -63,22 +70,18 @@ export class AddServiceComponent implements OnInit {
     console.log('this.serviceLogs', this.serviceData);
     this.apiService.postData('serviceLogs', this.serviceData).subscribe({
       complete: () => { },
-      error: (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/'([^']+)'/)[1];
-              console.log(key);
               val.message = val.message.replace(/'.*'/, 'This Field');
-              this.errors[key] = val.message;
+              this.errors[val.context.key] = val.message;
             })
           )
           .subscribe({
             complete: () => {
+              this.spinner.hide(); // loader hide
               this.throwErrors();
-              this.Success = '';
             },
             error: () => { },
             next: () => { },
@@ -101,8 +104,10 @@ export class AddServiceComponent implements OnInit {
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
       this.groups = result.Items;
+      console.log('groups', this.groups)
     });
   }
+
 
   /*
    * Get all vendors from api
@@ -127,9 +132,18 @@ export class AddServiceComponent implements OnInit {
   getIssues(id) {
     console.log('id', id);
     const vehicleID = id;
-    this.apiService.getData(`issues/${vehicleID}`).subscribe((result: any) => {
+    this.getReminders(vehicleID);
+    this.apiService.getData(`issues/vehicle/${vehicleID}`).subscribe((result: any) => {
       this.issues = result.Items;
       console.log('this.issues', this.issues);
+    });
+  }
+
+  getReminders(id) {
+    const vehicleID = id;
+    this.apiService.getData(`reminders/vehicle/${vehicleID}`).subscribe((result: any) => {
+      this.reminders = result.Items;
+      console.log('this.reminders', this.reminders);
     });
   }
   // /*
