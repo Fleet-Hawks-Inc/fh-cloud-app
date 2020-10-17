@@ -12,26 +12,49 @@ declare var $: any;
 export class ListingComponent implements OnInit {
   public remindersData = [];
   vehicles = [];
+  groups = [];
   allRemindersData = [];
   vehicleIdentification = '';
   subscribedUsersArray = [];
+  subcribersArray = [];
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.fetchReminders();
     this.fetchVehicles();
+    this. fetchGroups();
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
     this.vehicles = result.Items;
     });
   }
+  fetchGroups() {
+    this.apiService.getData('groups').subscribe((result: any) => {
+      this.groups = result.Items;
+      //   console.log('Groups Data', this.groups);
+    });
+  }
   getVehicleName(ID) {
-    let vehicle:any = this.vehicles.filter(v => v.vehicleID === ID);
+    let vehicle = [];
+    vehicle = this.vehicles.filter((v: any) => v.vehicleID === ID);
     let vehicleName = (vehicle[0].vehicleIdentification);
     return vehicleName;
   }
-
+  getSubscribers(arr: any[]) {
+    this.subcribersArray = [];
+    console.log('array', arr);
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].subscriberType === 'user') {
+        this.subcribersArray.push(arr[i].subscriberIdentification);
+      }
+      else {
+        let test = this.groups.filter((g: any) => g.groupID === arr[i].subscriberIdentification);
+        this.subcribersArray.push(test[0].groupName);
+      }
+    }
+    return this.subcribersArray;
+  }
   getLengthOfArray(arr: any[]) {
     return arr.length;
   }

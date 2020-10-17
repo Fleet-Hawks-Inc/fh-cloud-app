@@ -54,7 +54,7 @@ import {
   GraphComponent,
   DashboardDriverComponent,
 
-  FuelEntryDetailsComponent,
+
 
   AddInventoryComponent,
   EditInventoryComponent,
@@ -93,13 +93,9 @@ const COMPONENTS = [
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
-
-  FuelEntryDetailsComponent,
-
   AddInventoryComponent,
   EditInventoryComponent,
   InventoryListComponent
-
 ];
 
 

@@ -3,6 +3,8 @@ import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
+import {AwsUploadService} from '../../../../services';
+import { v4 as uuidv4 } from 'uuid';
 declare var $: any;
 
 @Component({
@@ -173,6 +175,11 @@ export class AddVehicleNewComponent implements OnInit {
   countries = [];
   states = [];
   groups = [];
+  selectedFiles: FileList;
+  selectedFileNames: Map<any, any>;
+  uploadedPhotos = [];
+    uploadedDocs = [];
+    carrierID;
 
   errors = {};
   form;
@@ -192,7 +199,9 @@ export class AddVehicleNewComponent implements OnInit {
     autoplaySpeed: 1500,
   };
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private router: Router) {
+    this.selectedFileNames = new Map<any, any>();
+  }
 
   ngOnInit() {
     this.fetchServicePrograms();
@@ -410,8 +419,9 @@ export class AddVehicleNewComponent implements OnInit {
         turningParams: this.settings.turningParams,
         measurmentUnit: this.settings.measurmentUnit,
       },
+      uploadedPhotos: this.uploadedPhotos,
+      uploadedDocs: this.uploadedDocs
     };
-
     this.apiService.postData('vehicles', data).subscribe({
       complete: () => {},
       error: (err: any) => {
@@ -433,6 +443,7 @@ export class AddVehicleNewComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+        // this.uploadFiles(); // upload selected files to bucket
         this.Success = 'Vehicle Added successfully';
       },
     });
@@ -441,7 +452,38 @@ export class AddVehicleNewComponent implements OnInit {
   throwErrors() {
     this.form.showErrors(this.errors);
   }
+ /*
+   * Selecting files before uploading
+   */
+  selectDocuments(event, obj) {
+    this.selectedFiles = event.target.files;
+    console.log('selected files', this.selectedFiles[0].name);
+    if (obj === 'uploadedDocs') {
+      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
+        const randomFileGenerate = this.selectedFiles[i].name.split('.');
+        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
+        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
+        this.uploadedDocs.push(fileName);
+      }
+    } else {
+      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
+        const randomFileGenerate = this.selectedFiles[i].name.split('.');
+        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
 
+        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
+        this.uploadedPhotos.push(fileName);
+      }
+    }
+  }
+  /*
+   * Uploading files which selected
+   */
+  uploadFiles = async () => {
+    this.carrierID = await this.apiService.getCarrierID();
+    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
+      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
+    });
+  }
   onChangePrimaryMeter(value: any) {
     this.settings.primaryMeter = value;
   }

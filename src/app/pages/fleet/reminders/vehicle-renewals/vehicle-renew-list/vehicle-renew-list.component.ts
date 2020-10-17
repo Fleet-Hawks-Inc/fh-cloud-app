@@ -27,7 +27,7 @@ export class VehicleRenewListComponent implements OnInit {
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
       this.groups = result.Items;
-      console.log('Groups Data', this.groups);
+      //   console.log('Groups Data', this.groups);
     });
   }
   // fetchVehicles(ID) {
@@ -38,18 +38,13 @@ export class VehicleRenewListComponent implements OnInit {
   // }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
-    this.vehicles = result.Items;
+      this.vehicles = result.Items;
     });
   }
-  getVehicleName(ID) {
+  getVehicleName(ID): string {
     let vehicle = this.vehicles.filter((v: any) => v.vehicleID === ID);
-    let vehicleName = vehicle[0].vehicleIdentification;
+    let vehicleName = (vehicle[0].vehicleIdentification);
     return vehicleName;
-  }
-  fetchGroupName(ID) {
-    let gName = this.groups.filter( (g: any) => g.groupID === ID);
-    console.log('Gname', gName);
-    return gName[0].groupName;
   }
   getSubscribers(arr: any[]) {
     this.subcribersArray = [];
@@ -58,12 +53,11 @@ export class VehicleRenewListComponent implements OnInit {
         this.subcribersArray.push(arr[i].subscriberIdentification);
       }
       else {
-        // let group = this.fetchGroupName(arr[i].subscriberIdentification);
-      //   console.log('Group Name in array', group);
-       // this.subcribersArray.push(group);
+        let test = this.groups.filter((g: any) => g.groupID === arr[i].subscriberIdentification);
+        this.subcribersArray.push(test[0].groupName);
       }
     }
-    this.remindersData[0].subscribers = this.subcribersArray;
+    return this.subcribersArray;
   }
   fetchRenewals = () => {
     this.apiService.getData('reminders').subscribe({
@@ -74,12 +68,9 @@ export class VehicleRenewListComponent implements OnInit {
         for (let i = 0; i < this.allRemindersData.length; i++) {
           if (this.allRemindersData[i].reminderType === 'vehicle') {
             this.remindersData.push(this.allRemindersData[i]);
-                    }
+          }
         }
         console.log('vehicle renewal array', this.remindersData);
-       for (let j = 0; j < this.remindersData.length; j++) {
-              this.getSubscribers(this.remindersData[j].subscribers);
-       }
       },
     });
   }

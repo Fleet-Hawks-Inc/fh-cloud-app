@@ -44,7 +44,6 @@ export class AddFuelEntryComponent implements OnInit {
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedFiles = [];
-  costLabel = 'Cost/gallon';
   carrierID;
 
   paidBy = '';
@@ -307,7 +306,7 @@ export class AddFuelEntryComponent implements OnInit {
           this.DEFFuelQtyAmt = +result.DEFFuelQtyAmt,
           this.discount = +result.discount,
           this.totalAmount = result.totalAmount,
-          this.costPerUnit = result.costPerUnit,
+          this.costPerUnit = +result.costPerUnit,
           this.amountPaid = result.amountPaid,
           this.date = result.date,
           this.fuelType = result.fuelType,

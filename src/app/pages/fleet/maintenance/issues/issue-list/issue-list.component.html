@@ -33,7 +33,7 @@
                         <a class="dropdown-item text-1" href="">Export</a>
                         </div>
                     </div>
-                    <a [routerLink]="['/fleet','maintenance', 'issues', 'add-issue']" class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add Issue</a>
+                    <a [routerLink]="['/fleet','maintenance', 'issues', 'add']" class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add Issue</a>
                 </div>
             </div>
             </header>
@@ -72,17 +72,17 @@
                             </thead>
                             <tbody>
                                <tr *ngFor = "let issue of issues">
-                                <td routerLink="/fleet/maintenance/issues/issue-detail/{{issue.issueID}}">{{ issue.unitType }}</td>
-                                  <td routerLink="/fleet/maintenance/issues/issue-detail/{{issue.issueID}}"><span class="font-weight-bold line-height-lg">{{ getUnitName(issue.unitID,issue.unitType) }}</span></td>
-                                  <td routerLink="/fleet/maintenance/issues/issue-detail/{{issue.issueID}}">{{ issue.issueName }}</td>
-                                  <td routerLink="/fleet/maintenance/issues/issue-detail/{{issue.issueID}}">{{ issue.reportedDate }}</td>
-                                  <td routerLink="/fleet/maintenance/issues/issue-detail/{{issue.issueID}}">{{ getContactName(issue.reportedBy) }}</td>
-                                  <td routerLink="/fleet/maintenance/issues/issue-detail/{{issue.issueID}}">{{ issue.assignedTo }}</td>
-                                  <td routerLink="/fleet/maintenance/issues/issue-detail/{{issue.issueID}}"><span class="badge badge-dark p-1">{{issue.status | uppercase}}</span></td>
+                                <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">{{ issue.unitType }}</td>
+                                  <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}"><span class="font-weight-bold line-height-lg">{{ getUnitName(issue.unitID,issue.unitType) }}</span></td>
+                                  <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">{{ issue.issueName }}</td>
+                                  <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">{{ issue.reportedDate }}</td>
+                                  <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">{{ getContactName(issue.reportedBy) }}</td>
+                                  <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">{{ issue.assignedTo }}</td>
+                                  <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}"><span class="badge badge-dark p-1">{{issue.status | uppercase}}</span></td>
                                   <td><div class="btn-group flex-wrap">
                                     <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                     <div class="dropdown-menu" role="menu">
-                                       <a routerLink="/fleet/maintenance/issues/edit-issue/{{issue.issueID }}" class="dropdown-item text-1" >Edit</a>
+                                       <a routerLink="/fleet/maintenance/issues/edit/{{issue.issueID }}" class="dropdown-item text-1" >Edit</a>
                                        <button type="button" class="dropdown-item text-1" (click)="deleteIssue(issue.issueID)">Delete</button>
                                     </div>
                                  </div></td>

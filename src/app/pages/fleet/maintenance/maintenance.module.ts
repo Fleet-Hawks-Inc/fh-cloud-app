@@ -118,9 +118,9 @@ const routes: Routes = [
     path: 'issues',
     children: [
       { path: 'list', component: IssueListComponent },
-      { path: 'add-issue', component: AddIssueComponent },
-      { path: 'issue-detail/:issueID', component: IssueDetailComponent },
-      { path: 'edit-issue/:issueID', component: AddIssueComponent },
+      { path: 'add', component: AddIssueComponent },
+      { path: 'detail/:issueID', component: IssueDetailComponent },
+      { path: 'edit/:issueID', component: AddIssueComponent },
     ],
   },
 

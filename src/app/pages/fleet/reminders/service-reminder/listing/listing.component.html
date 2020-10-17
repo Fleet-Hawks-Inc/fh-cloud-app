@@ -158,9 +158,8 @@
                     </select> -->
                 </div>
                 <div class="col-md-6  col-lg-6 text-right">
-                    <a routerLink="/fleet/reminders/service-reminder/add" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
-                        Service Reminder</a>
-                    <div class="btn-group flex-wrap">
+                   
+                    <div class="btn-group flex-wrap mr-1">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                             aria-expanded="false">Actions<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start"
@@ -171,6 +170,8 @@
                             <a class="dropdown-item text-1" href="">Export</a>
                         </div>
                     </div>
+                    <a routerLink="/fleet/reminders/service-reminder/add" class="btn btn-sm btn-success mr-1"><i class="fas fa-plus"></i> Add
+                        Service Reminder</a>
                 </div>
             </div>
         </header>
@@ -200,16 +201,13 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of remindersData;">
-                                    <td routerLink="/fleet/reminders/service-reminder/detail/{{item.entryID}}">{{ getVehicleName(item.reminderIdentification)}}</td>
-                                    <td routerLink="/fleet/reminders/service-reminder/detail/{{item.entryID}}"><span class="text-danger font-weight-bold font-size-12">Overdue</span><br>
+                                    <td>{{ getVehicleName(item.reminderIdentification)}}</td>
+                                    <td><span class="text-danger font-weight-bold font-size-12">Overdue</span><br>
                                         <span class="font-weight-bold" title="Service Task" >{{item.reminderTasks.task}}</span><br>
                                     </td> 
-                                    <td routerLink="/fleet/reminders/service-reminder/detail/{{item.entryID}}"><span>{{item.reminderTasks.remindByDays}} Days from now</span><br> {{item.reminderTasks.odometer}} miles from now</td>
-                                    <td routerLink="/fleet/reminders/service-reminder/detail/{{item.entryID}}">Jun 1,2020</td>                                  
-                                    <td routerLink="/fleet/reminders/service-reminder/detail/{{item.entryID}}">
-                                        <span class="text-success font-weight-bold font-size-12"> Active</span><br>    
-                                        {{item.subscribers}}                                
-                                        Subscriber(s)</td>
+                                    <td><span>{{item.reminderTasks.remindByDays}} Days from now</span><br> {{item.reminderTasks.odometer}} miles from now</td>
+                                    <td>Jun 1,2020</td>                                  
+                                    <td>{{getSubscribers(item.subscribers)}}</td>
                                     <td>
                                         <div class="btn-group flex-wrap">
                                             <button type="button" class="btn p-0" data-toggle="dropdown"><i
