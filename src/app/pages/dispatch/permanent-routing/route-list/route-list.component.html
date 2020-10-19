@@ -1,0 +1,95 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+  
+    <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->
+
+        <section role="main" class="content-body pr-0 pt-0 pl-0">
+            <header class="page-header">
+                <div class="row px-4" style="padding-top:10px;">
+                    <div class="col-md-2 col-lg-2">
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" placeholder="Search Route Name, Location, Stops">
+                        </div>
+                    </div>
+                    <div class="col-md-2  col-lg-2">
+                        
+                    </div>
+                    <div class="col-md-8  col-lg-8 text-right pr-5">   
+                            
+                        <div class="btn-group flex-wrap mr-2">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                <a class="dropdown-item text-1" href="">Edit</a>
+                                <a class="dropdown-item text-1" href="">Delete</a>
+                                <a class="dropdown-item text-1" href="">Import</a>
+                                <a class="dropdown-item text-1" href="">Export</a>
+                            </div>
+                        </div>
+                        <a routerLink="/dispatch/routes/add-route" class="btn btn-success btn-sm ml-2 modal-with-form" style="color:white;"><i class="fas fa-plus"></i> Add Route</a>
+
+                    </div>                           
+                </div>
+            </header>
+
+            <div class="row">
+                <div class="col-lg-12 pr-0">
+                    <section class="card">
+                        <div class="card-body">
+
+                            <table datatable [dtOptions]="dtOptions"  class="row-border hover table table-bordered table-striped mb-0 " *ngIf="routes.length > 0">
+                                    <thead>
+                                        <tr>
+                                            <!-- <th><input type="checkbox"></th> -->
+                                            <th>Route Name</th>
+                                            <th>Source</th>
+                                            <th>Destination</th>
+                                            <th>Distance</th>
+                                            <th>Recurring</th>
+                                            <th>Stops</th>
+                                            <th>Notes</th>
+                                            <th>Action</th>
+                                         </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let route of routes; let i= index">
+                                            <!-- <td class="w-50px sorting_1"><input type="checkbox"></td> -->
+                                            <td>{{ route.routeName }}</td>
+                                            <td>{{ route.sourceInformation.sourceAddress }}</td>                                                
+                                            <td>{{ route.destinationInformation.destinationAddress }}</td>
+                                            <td>{{ route.miles }} miles</td>
+                                            <td>{{ route.sourceInformation.recurring.recurringType }}</td>
+                                            <td>-</td>
+                                            <td>{{ route.notes }}</td>
+                                            <td>
+                                                <div class="dropdown dropright">
+                                                    <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                       <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                       <a class="dropdown-item" routerLink="/dispatch/routes/edit-route/{{ route.routeID }}">Edit</a>
+                                                       <a class="dropdown-item" href="javascript:;" (click)="deleteRoute(route.routeID)">Delete</a>
+                                                    </div>
+                                                  </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div *ngIf="!routes.length > 0" class="alert alert-info m-0 text-center" role="alert">
+                                    No records found
+                                    
+                                 </div>
+                            
+                        </div>
+                    </section>
+                </div>
+            </div>
+            
+        </section>
+
+    </div>
+</section>

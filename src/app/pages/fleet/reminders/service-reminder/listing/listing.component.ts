@@ -22,11 +22,19 @@ export class ListingComponent implements OnInit {
   ngOnInit() {
     this.fetchReminders();
     this.fetchVehicles();
+
     this.fetchGroups();
+
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
+    });
+  }
+  fetchGroups() {
+    this.apiService.getData('groups').subscribe((result: any) => {
+      this.groups = result.Items;
+      //   console.log('Groups Data', this.groups);
     });
   }
   fetchGroups() {

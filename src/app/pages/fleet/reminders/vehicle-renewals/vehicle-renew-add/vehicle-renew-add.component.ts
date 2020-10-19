@@ -77,8 +77,10 @@ export class VehicleRenewAddComponent implements OnInit {
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
       this.groups = result.Items;
+
     });
   }
+  
   fetchGroupName(ID) {
     this.apiService.getData('groups/' + ID).subscribe((result: any) => {
       let group = result.Items;
@@ -148,7 +150,11 @@ export class VehicleRenewAddComponent implements OnInit {
           break;
         }
       }
+
       this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
+
+      this.reminderData.subscribers = this.finalSubscribers;
+
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       console.log('data', this.reminderData);
       this.apiService.postData('reminders', this.reminderData).subscribe({
@@ -194,9 +200,11 @@ export class VehicleRenewAddComponent implements OnInit {
       .subscribe((result: any) => {
         result = result.Items[0];
         console.log('vehicle renewal fetched  data', result);
+
         for (let i = 0; i < result.subscribers.length; i++) {               
           this.test.push( result.subscribers[i].subscriberIdentification);
     }
+
         this.reminderData['reminderID'] = this.reminderID;
         this.reminderData['reminderTasks']['dueDate'] = result.reminderTasks.dueDate;
         this.reminderData['reminderTasks']['task'] = result.reminderTasks.task;
@@ -207,10 +215,35 @@ export class VehicleRenewAddComponent implements OnInit {
         //   this.reminderData['time']  = result.time;
         //   this.reminderData['timeType']  = result.timeType;
         this.reminderData['reminderIdentification'] = result.reminderIdentification;
+
         this.reminderData['subscribers'] = this.test;        
       });
 
   }
+
+        this.getSubscribers(result.subscribers);
+      });
+
+  }
+ getSubscribers(arr) {
+    console.log('hello', arr);
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].subscriberType === 'user') {
+        console.log('username', arr[i].subscriberIdentification);
+        let test =  this.users.filter(u => u.userName === arr[i].subscriberIdentification);
+        console.log('test user', test);
+        this.midArray.push(test);
+      }
+      else {
+        let test =  this.groups.filter(g => g.groupID === arr[i].subscriberIdentification);
+        console.log('test group', test);
+        this.midArray.push(test);
+      }
+    }
+    console.log('middle array', this.midArray);
+    this.reminderData.subscribers = this.midArray;
+  }
+
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
@@ -240,7 +273,11 @@ export class VehicleRenewAddComponent implements OnInit {
         }
       }
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+
       this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
+
+      this.reminderData.subscribers = this.finalSubscribers;
+
       console.log('updated data', this.reminderData);
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },
