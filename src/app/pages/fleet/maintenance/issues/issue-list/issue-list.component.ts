@@ -49,20 +49,23 @@ export class IssueListComponent implements OnInit {
     });
   }
   getContactName(ID: any) {
-   // let contact = [];
-   let contact: any = this.contacts.filter((c: any) => c.contactID === ID);
-    return contact[0].contactName;
+   let contact = [];
+   contact = this.contacts.filter((c: any) => c.contactID === ID);
+   let contactName = contact[0].contactName;
+   return contactName;
   }
   getUnitName(ID: any, type: any) {
     if (type === 'vehicle') {
-      let vName = [];
-      vName = this.vehicles.filter((v: any) => v.vehicleID === ID);
-      return vName[0].vehicleIdentification;
+      let vehicle = [];
+      vehicle = this.vehicles.filter((v: any) => v.vehicleID === ID);
+      let vehicleName =  vehicle[0].vehicleIdentification;
+      return vehicleName;
     }
     else {
-      let aName = [];
-      aName = this.assets.filter((a: any) => a.assetID === ID);
-      return aName[0].assetIdentification;
+      let asset = [];
+      asset = this.assets.filter((a: any) => a.assetID === ID);
+      let assetName = asset[0].assetIdentification;
+      return assetName;
     }
   }
   fetchIssues() {
@@ -72,9 +75,8 @@ export class IssueListComponent implements OnInit {
       },
       error: () => { },
       next: (result: any) => {
-        console.log(result);
         this.issues = result.Items;
-        console.log('Array', this.issues);
+      //  console.log('Array', this.issues);
       },
     });
   }

@@ -13,11 +13,20 @@ export class ListContactRenewComponent implements OnInit {
   public remindersData = [];
   public contacts = [];
   allRemindersData = [];
+  subcribersArray = [];
+  groups = [];
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.fetchRenewals();
     this.fetchContacts();
+    this.fetchGroups();
+  }
+  fetchGroups() {
+    this.apiService.getData('groups').subscribe((result: any) => {
+      this.groups = result.Items;
+      //   console.log('Groups Data', this.groups);
+    });
   }
   fetchContacts() {
     this.apiService.getData('contacts').subscribe((result: any) => {
@@ -40,10 +49,24 @@ export class ListContactRenewComponent implements OnInit {
       },
     });
   }
-  getContactName(ID) {
-    let contact = this.contacts.filter((c: any) => c.contactID === ID);
-    let contactName = (contact[0].contactName);
-    return contactName;
+  getSubscribers(arr: any[]) {
+    this.subcribersArray = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].subscriberType === 'user') {
+        this.subcribersArray.push(arr[i].subscriberIdentification);
+      }
+      else {
+        let test = this.groups.filter((g: any) => g.groupID === arr[i].subscriberIdentification);
+        this.subcribersArray.push(test[0].groupName);
+      }
+    }
+    return this.subcribersArray;
+  }
+  getContactName(ID): string {
+    let contact = [];
+    contact = this.contacts.filter((c: any) => c.contactID === ID);
+    let cName = (contact[0].contactName);
+    return cName;
   }
   deleteRenewal(entryID) {
     /******** Clear DataTable ************/

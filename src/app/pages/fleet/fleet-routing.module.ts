@@ -34,8 +34,6 @@ import {
   DashboardDriverComponent,
   EditAssetComponent,
 
-  FuelEntryDetailsComponent,
-
   AddInventoryComponent,
   EditInventoryComponent,
   InventoryListComponent
@@ -76,7 +74,6 @@ const COMPONENTS = [
   DashboardDriverComponent,
   EditAssetComponent,
 
-  FuelEntryDetailsComponent,
 
   AddInventoryComponent,
   EditInventoryComponent,
@@ -118,19 +115,19 @@ const routes: Routes = [
         children: [
           {
 
-            path: 'Add',
+            path: 'add',
             component: AddFuelEntryComponent,
           },
           {
-            path: 'List',
+            path: 'list',
             component: FuelEntryListComponent,
           },
           {
-            path: 'Edit/:entryID',
+            path: 'edit/:entryID',
             component: AddFuelEntryComponent,
           },
           {
-            path: 'Details/:entryID',
+            path: 'detail/:entryID',
             component: FuelEntryDetailsComponent,
           },
           

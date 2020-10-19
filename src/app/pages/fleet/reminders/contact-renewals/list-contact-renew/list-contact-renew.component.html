@@ -98,9 +98,7 @@
                                         <td><span
                                                 class="font-size-12">{{item.reminderTasks.remindByDays}} Days Before</span></td>
                                         <td ><span class="font-size-12">{{item.reminderTasks.dueDate}}</span></td>
-                                        <td><span
-                                                class="text-success font-weight-bold font-size-12"> Active</span><br>1
-                                            subscriber(s)
+                                        <td>{{getSubscribers(item.subscribers)}}
                                         </td>
                                         <td>
                                             <div class="btn-group flex-wrap">

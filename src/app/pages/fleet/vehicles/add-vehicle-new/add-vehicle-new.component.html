@@ -215,7 +215,8 @@
                                        </ngx-slick-carousel>
                                        <div class="mt-3">
                                           <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
-                                             <input type="file" multiple class="hidden_input1">
+                                             <input (change)="selectDocuments($event, 'uploadedPhotos')" class="hidden_input1" name="uploadedPhotos" type="file" multiple >
+                                             <!-- {{selectedFiles}} -->
                                           </div>
                                        </div>
                                     </div>
@@ -383,7 +384,7 @@
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Add Document</label>
-                                       <input type="file" class="form-control p-0"> 
+                                       <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple class="form-control p-0"> 
                                     </div>
                                  </div>
                               </div>

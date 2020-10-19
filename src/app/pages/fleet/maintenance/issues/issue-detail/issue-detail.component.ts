@@ -68,7 +68,6 @@ export class IssueDetailComponent implements OnInit {
     this.fetchContacts(this.reportedBy);
   }
   getUnitName() {
-    console.log('hello');
     if (this.unitType === 'vehicle') {
       this.fetchVehicles(this.unitID);
     }
@@ -77,7 +76,7 @@ export class IssueDetailComponent implements OnInit {
     }
   }
   editIssue = () => {
-      this.router.navigateByUrl('/fleet/maintenance/issues/edit-issue/' + this.issueID);
+      this.router.navigateByUrl('/fleet/maintenance/issues/edit/' + this.issueID);
       }
   fetchIssue() {
     // this.spinner.show(); // loader init
@@ -101,8 +100,6 @@ export class IssueDetailComponent implements OnInit {
       this.getUnitName();
       this.getContactName();
     });
-    
-  
   }
   getImages = async () => {
     this.carrierID = await this.apiService.getCarrierID();
