@@ -85,29 +85,49 @@ export class VehicleRenewAddComponent implements OnInit {
      // console.log('GroupName' , group);
     });
   }
-  subscriberChange(event) {
-    console.log('EVENT Data', event);
+   getSubscribersObject(arr: any[]) {
     this.finalSubscribers = [];
-    for (let i = 0; i < event.length; i++) {
-      if (event[i].userName !== undefined) {
-        // this.finalSubscribers.push(event[i].userName);
-        this.finalSubscribers.push({
-          subscriberType: 'user',
-          subscriberIdentification: event[i].userName
-        });
-
-      }
-      else {
-        // this.finalSubscribers.push(event[i].groupID);
+    for (let i = 0; i < arr.length; i++) {
+      let test: any = [];
+       test = this.groups.filter((g: any) => g.groupID === arr[i]);
+      if (test.length > 0) {
         this.finalSubscribers.push({
           subscriberType: 'group',
-          subscriberIdentification: event[i].groupID
+          subscriberIdentification: arr[i]
+        });
+      }
+      else{
+        this.finalSubscribers.push({
+          subscriberType: 'user',
+          subscriberIdentification: arr[i]
         });
       }
     }
-    console.log('final array in for loop', this.finalSubscribers);
-
+    return this.finalSubscribers;
   }
+  // subscriberChange(event) {
+  //   console.log('EVENT Data', event);
+  //   this.finalSubscribers = [];
+  //   for (let i = 0; i < event.length; i++) {
+  //     if (event[i].userName !== undefined) {
+  //       // this.finalSubscribers.push(event[i].userName);
+  //       this.finalSubscribers.push({
+  //         subscriberType: 'user',
+  //         subscriberIdentification: event[i].userName
+  //       });
+
+  //     }
+  //     else {
+  //       // this.finalSubscribers.push(event[i].groupID);
+  //       this.finalSubscribers.push({
+  //         subscriberType: 'group',
+  //         subscriberIdentification: event[i].groupID
+  //       });
+  //     }
+  //   }
+  //   console.log('final array in for loop', this.finalSubscribers);
+
+  // }
   addRenewal() {
     this.errors = {};
     this.hasError = false;
@@ -128,7 +148,7 @@ export class VehicleRenewAddComponent implements OnInit {
           break;
         }
       }
-      this.reminderData.subscribers = this.finalSubscribers;
+      this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       console.log('data', this.reminderData);
       this.apiService.postData('reminders', this.reminderData).subscribe({
@@ -174,6 +194,9 @@ export class VehicleRenewAddComponent implements OnInit {
       .subscribe((result: any) => {
         result = result.Items[0];
         console.log('vehicle renewal fetched  data', result);
+        for (let i = 0; i < result.subscribers.length; i++) {               
+          this.test.push( result.subscribers[i].subscriberIdentification);
+    }
         this.reminderData['reminderID'] = this.reminderID;
         this.reminderData['reminderTasks']['dueDate'] = result.reminderTasks.dueDate;
         this.reminderData['reminderTasks']['task'] = result.reminderTasks.task;
@@ -184,27 +207,9 @@ export class VehicleRenewAddComponent implements OnInit {
         //   this.reminderData['time']  = result.time;
         //   this.reminderData['timeType']  = result.timeType;
         this.reminderData['reminderIdentification'] = result.reminderIdentification;
-        this.getSubscribers(result.subscribers);
+        this.reminderData['subscribers'] = this.test;        
       });
 
-  }
- getSubscribers(arr) {
-    console.log('hello', arr);
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].subscriberType === 'user') {
-        console.log('username', arr[i].subscriberIdentification);
-        let test =  this.users.filter(u => u.userName === arr[i].subscriberIdentification);
-        console.log('test user', test);
-        this.midArray.push(test);
-      }
-      else {
-        let test =  this.groups.filter(g => g.groupID === arr[i].subscriberIdentification);
-        console.log('test group', test);
-        this.midArray.push(test);
-      }
-    }
-    console.log('middle array', this.midArray);
-    this.reminderData.subscribers = this.midArray;
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
@@ -235,7 +240,7 @@ export class VehicleRenewAddComponent implements OnInit {
         }
       }
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.finalSubscribers;
+      this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
       console.log('updated data', this.reminderData);
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },

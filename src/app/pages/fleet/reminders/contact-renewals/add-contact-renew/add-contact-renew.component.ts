@@ -27,6 +27,7 @@ export class AddContactRenewComponent implements OnInit {
   vehicles = [];
   contacts = [];
   users = [];
+  test = [];
   groups = [];
   finalSubscribers = [];
   form;
@@ -75,28 +76,25 @@ export class AddContactRenewComponent implements OnInit {
       console.log('Groups Data', this.groups);
     });
   }
-  subscriberChange(event) {
-    console.log('EVENT Data', event);
+  getSubscribers(arr: any[]) {
     this.finalSubscribers = [];
-    for (let i = 0; i < event.length; i++) {
-      if (event[i].userName !== undefined) {
-        // this.finalSubscribers.push(event[i].userName);
-        this.finalSubscribers.push({
-          subscriberType: 'user',
-          subscriberIdentification: event[i].userName
-        });
-
-      }
-      else {
-        // this.finalSubscribers.push(event[i].groupID);
+    for (let i = 0; i < arr.length; i++) {
+      let test: any = [];
+       test = this.groups.filter((g: any) => g.groupID === arr[i]);
+      if (test.length > 0) {
         this.finalSubscribers.push({
           subscriberType: 'group',
-          subscriberIdentification: event[i].groupID
+          subscriberIdentification: arr[i]
+        });
+      }
+      else{
+        this.finalSubscribers.push({
+          subscriberType: 'user',
+          subscriberIdentification: arr[i]
         });
       }
     }
-    console.log('final array in for loop', this.finalSubscribers);
-
+    return this.finalSubscribers;
   }
   addRenewal() {
     this.errors = {};
@@ -123,7 +121,7 @@ export class AddContactRenewComponent implements OnInit {
           }
       }
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.finalSubscribers;
+      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
       console.log('contact renewal data', this.reminderData);
       this.apiService.postData('reminders', this.reminderData).subscribe({
         complete: () => { },
@@ -171,13 +169,17 @@ export class AddContactRenewComponent implements OnInit {
       .subscribe((result: any) => {
         result = result.Items[0];
         console.log('Contact renewal FETCHED  data', result);
+        for (let i = 0; i < result.subscribers.length; i++) {
+               
+          this.test.push( result.subscribers[i].subscriberIdentification);
+    }
         this.reminderData['reminderID'] = this.reminderID;
         this.reminderData['reminderTasks']['dueDate']  = result.reminderTasks.dueDate;
         this.reminderData['reminderTasks']['task']  = result.reminderTasks.task;
         this.time  = result.reminderTasks.remindByDays;
         this.timeType = 'Day(s)';
         this.reminderData['sendEmail']  = result.sendEmail;
-        this.reminderData['subscribers'] =  result.subscribers;
+        this.reminderData['subscribers'] = this.test;
         this.reminderData['reminderIdentification']  = result.reminderIdentification;
       });
   }
@@ -207,7 +209,7 @@ export class AddContactRenewComponent implements OnInit {
           }
       }
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.finalSubscribers;
+      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
       console.log('updated data', this.reminderData);
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },

@@ -10,599 +10,483 @@
 
     <section role="main" class="content-body">
       <header class="page-header">
-        <h2>IFTA</h2>
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a href="index.html">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li><span>IFTA</span></li>
-          </ol>
-        </div>
+        <form class="form-horizontal" method="get">
+          <div class="row px-4" style="padding-top: 10px;" id="vehicle-summary-header" *ngIf = "activeTab === 'vehicle'">
+            <div class="col-lg-3 col-md-3">
+              <div class="input-daterange input-group" data-plugin-datepicker=""> <span class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
+                  </span> </span>
+                <input type="text" class="form-control" name="start"> <span
+                  class="input-group-text border-left-0 border-right-0 rounded-0">
+                  to
+                </span>
+                <input type="text" class="form-control" name="end"> </div>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <div class="input-group input-group-md mb-3">
+                <select class="form-control populate">
+                  <optgroup label="">
+                    <option value="1">Vehicle 1</option>
+                    <option value="2">Vehicle 2</option>
+                    <option value="2">Vehicle 3</option>
+                    <option value="2">Vehicle 4</option>
+                    <option value="2">Vehicle 5</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible"
+                data-select2-id="258" tabindex="-1" aria-hidden="true">
+                <optgroup label="">
+                  <option value="1" data-select2-id="260">Select Fuel Type</option>
+                  <option value="1">Gasoline</option>
+                  <option value="2">Propane</option>
+                  <option value="2">Diesel</option>
+                  <option value="2">Methanol</option>
+                  <option value="1">Liquid Natural Gas</option>
+                  <option value="2">Compressed Natural Gas</option>
+                  <option value="2">Ethanol</option>
+                  <option value="2">E-85</option>
+                  <option value="2">M-85</option>
+                  <option value="2">A55</option>
+                  <option value="2">Biodiesel</option>
+                  <option value="2">Other</option>
+                </optgroup>
+              </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr"
+                data-select2-id="259" style="width: auto;"><span class="selection"><span
+                    class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true"
+                    aria-expanded="false" tabindex="0" aria-labelledby="select2-311r-container"><span
+                      class="select2-selection__rendered" id="select2-311r-container" role="textbox"
+                      aria-readonly="true" title="Select Fuel Type">Select Fuel Type</span><span
+                      class="select2-selection__arrow" role="presentation"><b
+                        role="presentation"></b></span></span></span><span class="dropdown-wrapper"
+                  aria-hidden="true"></span></span>
+            </div>
+            <div class="col-lg-2">
+              <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible"
+                data-select2-id="261" tabindex="-1" aria-hidden="true">
+                <optgroup label="">
+                  <option value="1" data-select2-id="263">Select State/Province</option>
+                  <option value="1">Alberta</option>
+                  <option value="2">British Columbia</option>
+                  <option value="2">Ontario</option>
+                  <option value="2">California</option>
+                  <option value="2">New York</option>
+                </optgroup>
+              </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr"
+                data-select2-id="262" style="width: auto;"><span class="selection"><span
+                    class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true"
+                    aria-expanded="false" tabindex="0" aria-labelledby="select2-66tp-container"><span
+                      class="select2-selection__rendered" id="select2-66tp-container" role="textbox"
+                      aria-readonly="true" title="Select State/Province">Select State/Province</span><span
+                      class="select2-selection__arrow" role="presentation"><b
+                        role="presentation"></b></span></span></span><span class="dropdown-wrapper"
+                  aria-hidden="true"></span></span>
+            </div>
+            <div class="col-md-3  col-lg-3 text-right pr-5">
+              <button type="button"  data-toggle="modal" data-target="#addIftaAccount" class="btn btn-success btn-sm ml-2 modal-with-form" style="color:white;"><i
+                  class="fas fa-plus"></i> Add IFTA Account</button>
+              <a href="fuel-entry.php" class="btn btn-success btn-sm ml-2" style="color:white;"><i
+                  class="fas fa-plus"></i> Add Fuel Entry</a>
+            </div>
+          </div>
+          <div class="row px-4" style="padding-top: 10px;" id="jurisdiction-summary-header" *ngIf = "activeTab === 'jurisdiction'">
+            <div class="col-lg-3 col-md-3">
+              <div class="input-daterange input-group" data-plugin-datepicker=""> <span class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
+                  </span> </span>
+                <input type="text" class="form-control" name="start"> <span
+                  class="input-group-text border-left-0 border-right-0 rounded-0">
+                  to
+                </span>
+                <input type="text" class="form-control" name="end"> </div>
+            </div>
+            <div class="col-lg-2">
+              <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible"
+                data-select2-id="264" tabindex="-1" aria-hidden="true">
+                <optgroup label="">
+                  <option value="1" data-select2-id="266">Select Fuel Type</option>
+                  <option value="1">Gasoline</option>
+                  <option value="2">Propane</option>
+                  <option value="2">Diesel</option>
+                  <option value="2">Methanol</option>
+                  <option value="1">Liquid Natural Gas</option>
+                  <option value="2">Compressed Natural Gas</option>
+                  <option value="2">Ethanol</option>
+                  <option value="2">E-85</option>
+                  <option value="2">M-85</option>
+                  <option value="2">A55</option>
+                  <option value="2">Biodiesel</option>
+                  <option value="2">Other</option>
+                </optgroup>
+              </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr"
+                data-select2-id="265" style="width: 239.828px;"><span class="selection"><span
+                    class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true"
+                    aria-expanded="false" tabindex="0" aria-labelledby="select2-fy10-container"><span
+                      class="select2-selection__rendered" id="select2-fy10-container" role="textbox"
+                      aria-readonly="true" title="Select Fuel Type">Select Fuel Type</span><span
+                      class="select2-selection__arrow" role="presentation"><b
+                        role="presentation"></b></span></span></span><span class="dropdown-wrapper"
+                  aria-hidden="true"></span></span>
+            </div>
+            <div class="col-lg-2">
+              <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible"
+                data-select2-id="267" tabindex="-1" aria-hidden="true">
+                <optgroup label="">
+                  <option value="1" data-select2-id="269">Select State/Province</option>
+                  <option value="1">Alberta</option>
+                  <option value="2">British Columbia</option>
+                  <option value="2">Ontario</option>
+                  <option value="2">California</option>
+                  <option value="2">New York</option>
+                </optgroup>
+              </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr"
+                data-select2-id="268" style="width: 239.828px;"><span class="selection"><span
+                    class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true"
+                    aria-expanded="false" tabindex="0" aria-labelledby="select2-i5ic-container"><span
+                      class="select2-selection__rendered" id="select2-i5ic-container" role="textbox"
+                      aria-readonly="true" title="Select State/Province">Select State/Province</span><span
+                      class="select2-selection__arrow" role="presentation"><b
+                        role="presentation"></b></span></span></span><span class="dropdown-wrapper"
+                  aria-hidden="true"></span></span>
+            </div>
+            <div class="col-md-5  col-lg-5 text-right pr-5">
+              <button type="button"  data-toggle="modal" data-target="#addIftaAccount" class="btn btn-success btn-sm ml-2 modal-with-form" style="color:white;"><i
+                class="fas fa-plus"></i> Add IFTA Account</button>
+              <a href="ifta-calculation.php" class="btn btn-success btn-sm ml-2" style="color:white;"><i
+                  class="fas fa-plus"></i> Generate Quarterly IFTA Report</a>
+
+              <a href="fuel-entry.php" class="btn btn-success btn-sm ml-2" style="color:white;"><i
+                  class="fas fa-plus"></i> Add Fuel Entry</a>
+            </div>
+          </div>
+        </form>
       </header>
       <div class="row">
         <div class="col">
           <section class="card">
-            <header class="card-header">
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="ifta-tabs">
-                    <ul>
-                      <li id="summary-tab">Summary</li>
-                      <li id="trip-reports-tab">Trip Reports</li>
-                      <li id="fuel-purchases-tab">Fuel Purchases</li>
-                    </ul>
+            <div class="card-body">
+              <div class=" ">
+                <ul class="nav nav-tabs top-tabs pl-3" style="background-color:white;">
+                  <!-- <li class="nav-item active"> <a class="nav-link active" href="#iftaSummary" data-toggle="tab">IFTA Summary</a> </li> -->
+                  <li class="nav-item active"> <a class="nav-link active" href="#iftaJurisdiction" data-toggle="tab"
+                      id="jurisdiction-summary-tab" (click)="activeTab = 'jurisdiction'">Jurisdiction Summary</a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="#iftaVehicle" data-toggle="tab"
+                      id="vehicle-summary-tab"  (click)="activeTab = 'vehicle'">Vehicle Summary</a> </li>
+                </ul>
+                <div class="tab-content mt-3" style="box-shadow:none;border:none;">
+                  <div id="iftaJurisdiction" class="tab-pane active">
+                    <div class="row pr-2 text-center">
+                      <div class="col-lg-4 col-md-12 pr-1 mb-2">
+                        <div class="safetytile border">
+                          <div class="driverbar"> <span class="pull-right text-10 text-dark"><i
+                                class="fas fa-gas-pump"></i></span>
+                            <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Miles (All States)
+                            </h2>
+                          </div>
+                          <div class="">
+                            <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">12508.98</h1>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-md-12 pr-1 mb-2">
+                        <div class="safetytile border">
+                          <div class="driverbar"> <span class="pull-right text-10 text-dark"><i
+                                class="fas fa-prescription-bottle"></i></span>
+                            <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Gallons</h2>
+                          </div>
+                          <div class="">
+                            <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">1298</h1>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-md-12 pr-1 mb-2">
+                        <div class="safetytile border">
+                          <div class="driverbar"> <span class="pull-right text-10 text-dark"><i
+                                class="fas fa-gas-pump"></i></span>
+                            <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Overall Fuel Mileage(MPG)
+                            </h2>
+                          </div>
+                          <div class="">
+                            <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">19.54</h1>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div id="DataTables_Table_16_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <div class="dataTables_length" id="DataTables_Table_16_length"><label>Show <select
+                                    name="DataTables_Table_16_length" aria-controls="DataTables_Table_16"
+                                    class="custom-select custom-select-sm form-control form-control-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                  </select> entries</label></div>
+                            </div>
+                            <div class="col-lg-6"></div>
+                          </div>
+                          <div class="table-responsive">
+                            <table
+                              class="table table-responsive-lg mb-0 table-bordered table-striped simple-table dataTable no-footer"
+                              id="DataTables_Table_16" role="grid">
+                              <thead>
+                                <tr role="row">
+                                  <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1"
+                                    colspan="1" data-column-index="0" aria-sort="ascending"
+                                    aria-label="Jurisdiction: activate to sort column descending" style="width: 213px;">
+                                    Jurisdiction</th>
+                                  <th class="sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1"
+                                    colspan="1" data-column-index="1"
+                                    aria-label="Distance(miles): activate to sort column ascending"
+                                    style="width: 271px;">Distance(miles)</th>
+                                  <th class="sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1"
+                                    colspan="1" data-column-index="2"
+                                    aria-label="Distance(kms): activate to sort column ascending" style="width: 253px;">
+                                    Distance(kms)</th>
+                                  <th class="sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1"
+                                    colspan="1" data-column-index="3"
+                                    aria-label="Fuel(gal): activate to sort column ascending" style="width: 171px;">
+                                    Fuel(gal)</th>
+                                  <th class="sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1"
+                                    colspan="1" data-column-index="4"
+                                    aria-label="Fuel(litres): activate to sort column ascending" style="width: 203px;">
+                                    Fuel(litres)</th>
+                                  <th class="sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1"
+                                    colspan="1" data-column-index="5"
+                                    aria-label="Fuel Type: activate to sort column ascending" style="width: 186px;">Fuel
+                                    Type</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr role="row" class="odd">
+                                  <td class="sorting_1">Alberta</td>
+                                  <td>45 miles</td>
+                                  <td>72.08 kms</td>
+                                  <td>50 gal</td>
+                                  <td>189.27 lit</td>
+                                  <td>Diesel</td>
+                                </tr>
+                                <tr role="row" class="even">
+                                  <td class="sorting_1">Alberta</td>
+                                  <td>45 miles</td>
+                                  <td>72.08 kms</td>
+                                  <td>50 gal</td>
+                                  <td>189.27 lit</td>
+                                  <td>Propane</td>
+                                </tr>
+                                <tr role="row" class="odd">
+                                  <td class="sorting_1">Alberta</td>
+                                  <td>45 miles</td>
+                                  <td>72.08 kms</td>
+                                  <td>50 gal</td>
+                                  <td>189.27 lit</td>
+                                  <td>Diesel</td>
+                                </tr>
+                                <tr role="row" class="even">
+                                  <td class="sorting_1">California</td>
+                                  <td>458 miles</td>
+                                  <td>737.08 kms</td>
+                                  <td>50 gal</td>
+                                  <td>189.27 lit</td>
+                                  <td>Gasoline</td>
+                                </tr>
+                                <tr role="row" class="odd">
+                                  <td class="sorting_1">California</td>
+                                  <td>45 miles</td>
+                                  <td>72.08 kms</td>
+                                  <td>50 gal</td>
+                                  <td>189.27 lit</td>
+                                  <td>Gasoline</td>
+                                </tr>
+                                <tr role="row" class="even">
+                                  <td class="sorting_1">Nevada</td>
+                                  <td>45 miles</td>
+                                  <td>72.08 kms</td>
+                                  <td>50 gal</td>
+                                  <td>189.27 lit</td>
+                                  <td>Diesel</td>
+                                </tr>
+                                <tr role="row" class="odd">
+                                  <td class="sorting_1">New York</td>
+                                  <td>45 miles</td>
+                                  <td>72.08 kms</td>
+                                  <td>50 gal</td>
+                                  <td>189.27 lit</td>
+                                  <td>Diesel</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_16_paginate">
+                            <ul class="pagination">
+                              <li class="paginate_button page-item previous disabled" id="DataTables_Table_16_previous">
+                                <a href="#" aria-controls="DataTables_Table_16" data-dt-idx="0" tabindex="0"
+                                  class="page-link">Previous</a></li>
+                              <li class="paginate_button page-item active"><a href="#"
+                                  aria-controls="DataTables_Table_16" data-dt-idx="1" tabindex="0"
+                                  class="page-link">1</a></li>
+                              <li class="paginate_button page-item next disabled" id="DataTables_Table_16_next"><a
+                                  href="#" aria-controls="DataTables_Table_16" data-dt-idx="2" tabindex="0"
+                                  class="page-link">Next</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="col-lg-3 offset-lg-3">
-                  <div
-                    class="fuel-purchase-buttons"
-                    id="fuelBtn"
-                    style="display: none;"
-                  >
-                    <a
-                      href="add-fuel-purchase.html"
-                      class="btn btn-dark pull-right"
-                      >+ Add Fuel Purchase</a
-                    >
+                  <!-- Vehicle Summary -->
+                  <div id="iftaVehicle" class="tab-pane">
+                    <div>
+                      <div id="DataTables_Table_17_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="dataTables_length" id="DataTables_Table_17_length"><label>Show <select
+                                  name="DataTables_Table_17_length" aria-controls="DataTables_Table_17"
+                                  class="custom-select custom-select-sm form-control form-control-sm">
+                                  <option value="10">10</option>
+                                  <option value="25">25</option>
+                                  <option value="50">50</option>
+                                  <option value="100">100</option>
+                                </select> entries</label></div>
+                          </div>
+                          <div class="col-lg-6"></div>
+                        </div>
+                        <div class="table-responsive">
+                          <table
+                            class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer"
+                            id="DataTables_Table_17" role="grid">
+                            <thead>
+                              <tr role="row">
+                                <th width="5%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_17"
+                                  rowspan="1" colspan="1" data-column-index="0" aria-sort="ascending" aria-label="
+                               : activate to sort column descending" style="width: 0px;">
+                                  <input type="checkbox"> </th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_17" rowspan="1"
+                                  colspan="1" data-column-index="1"
+                                  aria-label="Vehicle/Reefer Number: activate to sort column ascending"
+                                  style="width: 0px;">Vehicle/Reefer Number</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_17" rowspan="1"
+                                  colspan="1" data-column-index="2" aria-label="Type: activate to sort column ascending"
+                                  style="width: 0px;">Type</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_17" rowspan="1"
+                                  colspan="1" data-column-index="3"
+                                  aria-label="Jurisdiction: activate to sort column ascending" style="width: 0px;">
+                                  Jurisdiction</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_17" rowspan="1"
+                                  colspan="1" data-column-index="4"
+                                  aria-label="Miles: activate to sort column ascending" style="width: 0px;">Miles</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_17" rowspan="1"
+                                  colspan="1" data-column-index="5"
+                                  aria-label="Fuel(gal): activate to sort column ascending" style="width: 0px;">
+                                  Fuel(gal)</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_17" rowspan="1"
+                                  colspan="1" data-column-index="6"
+                                  aria-label="Fuel Type: activate to sort column ascending" style="width: 0px;">Fuel
+                                  Type</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_17" rowspan="1"
+                                  colspan="1" data-column-index="7"
+                                  aria-label="Fuel Purchase Details: activate to sort column ascending"
+                                  style="width: 0px;">Fuel Purchase Details</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr role="row" class="odd">
+                                <td class="pl-3 sorting_1">
+                                  <input type="checkbox"> </td>
+                                <td>111</td>
+                                <td>Vehicle</td>
+                                <td>IN</td>
+                                <td>345 </td>
+                                <td>45</td>
+                                <td>Diesel</td>
+                                <!-- <td >12572</td>
+                               <td >13120</td> -->
+                                <td><a href="#viewLogModal" class="modal-with-form btn btn-dark btn-sm mt-0">View
+                                    Details</a> </td>
+                              </tr>
+                              <tr role="row" class="even">
+                                <td class="pl-3 sorting_1">
+                                  <input type="checkbox"> </td>
+                                <td>1145</td>
+                                <td>Reefer</td>
+                                <td>IN</td>
+                                <td>345 </td>
+                                <td>45</td>
+                                <td>Diesel</td>
+                                <!-- <td >12572</td>
+                               <td >13120</td> -->
+                                <td><a href="#viewLogModal" class="modal-with-form btn btn-dark btn-sm mt-0">View
+                                    Details</a> </td>
+                              </tr>
+                              <tr role="row" class="odd">
+                                <td class="pl-3 sorting_1">
+                                  <input type="checkbox"> </td>
+                                <td>3451</td>
+                                <td>Vehicle</td>
+                                <td>IN</td>
+                                <td>345 </td>
+                                <td>45</td>
+                                <td>Diesel</td>
+                                <!-- <td >12572</td>
+                               <td >13120</td> -->
+                                <td><a href="#viewLogModal" class="modal-with-form btn btn-dark btn-sm mt-0">View
+                                    Details</a> </td>
+                              </tr>
+                              <tr role="row" class="even">
+                                <td class="pl-3 sorting_1">
+                                  <input type="checkbox"> </td>
+                                <td>12334</td>
+                                <td>Reefer</td>
+                                <td>IN</td>
+                                <td>345 </td>
+                                <td>45</td>
+                                <td>Diesel</td>
+                                <!-- <td >12572</td>
+                               <td >13120</td> -->
+                                <td><a href="#viewLogModal" class="modal-with-form btn btn-dark btn-sm mt-0">View
+                                    Details</a> </td>
+                              </tr>
+                              <tr role="row" class="odd">
+                                <td class="pl-3 sorting_1">
+                                  <input type="checkbox"> </td>
+                                <td>97641</td>
+                                <td>Vehicle</td>
+                                <td>IN</td>
+                                <td>345 </td>
+                                <td>45</td>
+                                <td>Diesel</td>
+                                <!-- <td >12572</td>
+                               <td >13120</td> -->
+                                <td> <button type="button"  data-toggle="modal" data-target="#vehicleLogModal" class="btn btn-dark btn-sm mt-0 modal-with-form" style="color:white;"><i
+                                  class="fas fa-plus"></i> View Details</button> </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_17_paginate">
+                          <ul class="pagination">
+                            <li class="paginate_button page-item previous disabled" id="DataTables_Table_17_previous"><a
+                                href="#" aria-controls="DataTables_Table_17" data-dt-idx="0" tabindex="0"
+                                class="page-link">Previous</a></li>
+                            <li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_17"
+                                data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
+                            <li class="paginate_button page-item next disabled" id="DataTables_Table_17_next"><a
+                                href="#" aria-controls="DataTables_Table_17" data-dt-idx="2" tabindex="0"
+                                class="page-link">Next</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </header>
-            <div id="summary-div" class="card-body">
-              <form class="form-horizontal form-bordered" method="get">
-                <div class="form-group row margin-left-35">
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Date</label
-                    >
-                    <div
-                      class="input-daterange input-group"
-                      data-plugin-datepicker=""
-                    >
-                      <span class="input-group-prepend">
-                        <span class="input-group-text">
-                          <i class="fas fa-calendar-alt"></i>
-                        </span>
-                      </span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="start date"
-                        name="start"
-                      />
-                      <span
-                        class="input-group-text border-left-0 border-right-0 rounded-0"
-                      >
-                        to
-                      </span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="end date"
-                        name="end"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Jurisdiction</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">State 1</option>
-                        <option value="2">State 2</option>
-                        <option value="2">State 3</option>
-                        <option value="2">State 4</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Fuel Type</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">Gasoline</option>
-                        <option value="2">Gas</option>
-                        <option value="2">Diesel</option>
-                        <option value="2">Methane</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Vehicle Type</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">Type 1</option>
-                        <option value="2">Type 2</option>
-                        <option value="2">Type 3</option>
-                        <option value="2">Type 4</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <div class="col-lg-3 offset-lg-3 text-center">
-                    <label
-                      class="control-label text-lg-right text-6 pt-2"
-                      for="inputDefault"
-                      >Total Distance
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control text-center"
-                      value="34.45 miles"
-                      id="inputDefault"
-                      style="border: none;"
-                    />
-                  </div>
-                  <div class="col-lg-3 text-center">
-                    <label
-                      class="control-label text-lg-right text-6 pt-2"
-                      for="inputDefault"
-                      >Total Fuel</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control text-center"
-                      id="inputDefault"
-                      value="34 gal"
-                      style="border: none;"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <table
-                    class="table table-responsive-lg mb-0"
-                    id="datatable-default"
-                  >
-                    <thead>
-                      <tr>
-                        <th>Jurisdiction</th>
-                        <th>Distance</th>
-                        <th>Fuel</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Alberta</td>
-                        <td>40 miles</td>
-                        <td>3 gal</td>
-                      </tr>
-                      <tr>
-                        <td>California</td>
-                        <td>458 miles</td>
-                        <td>38 gal</td>
-                      </tr>
-                      <tr>
-                        <td>New York</td>
-                        <td>45 miles</td>
-                        <td>3 gal</td>
-                      </tr>
-                      <tr>
-                        <td>Alberta</td>
-                        <td>45 miles</td>
-                        <td>3 gal</td>
-                      </tr>
-                      <tr>
-                        <td>California</td>
-                        <td>45 miles</td>
-                        <td>3 gal</td>
-                      </tr>
-                      <tr>
-                        <td>Nevada</td>
-                        <td>45 miles</td>
-                        <td>3 gal</td>
-                      </tr>
-                      <tr>
-                        <td>Alberta</td>
-                        <td>45 miles</td>
-                        <td>3 gal</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </form>
-            </div>
-
-            <div id="trip-reports-div" class="card-body">
-              <form class="form-horizontal form-bordered" method="get">
-                <div class="form-group row margin-left-35">
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Date</label
-                    >
-                    <div
-                      class="input-daterange input-group"
-                      data-plugin-datepicker=""
-                    >
-                      <span class="input-group-prepend">
-                        <span class="input-group-text">
-                          <i class="fas fa-calendar-alt"></i>
-                        </span>
-                      </span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="start date"
-                        name="start"
-                      />
-                      <span
-                        class="input-group-text border-left-0 border-right-0 rounded-0"
-                      >
-                        to
-                      </span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="end date"
-                        name="end"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Jurisdiction</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">State 1</option>
-                        <option value="2">State 2</option>
-                        <option value="2">State 3</option>
-                        <option value="2">State 4</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Vehicle</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">Type 1</option>
-                        <option value="2">Type 2</option>
-                        <option value="2">Type 3</option>
-                        <option value="2">Type 4</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Fuel Type</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">Gasoline</option>
-                        <option value="2">Gas</option>
-                        <option value="2">Diesel</option>
-                        <option value="2">Methane</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Vehicle Type</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">All Vehicles</option>
-                        <option value="2">IFTA Vehicles</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <div class="col-lg-12 text-center">
-                    <label
-                      class="control-label text-lg-right text-6 pt-2"
-                      for="inputDefault"
-                      >Total Distance
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control text-center"
-                      value="34.45 miles"
-                      id="inputDefault"
-                      style="border: none;"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <table
-                    class="table table-responsive-lg mb-0"
-                    id="datatable-default"
-                  >
-                    <thead>
-                      <tr>
-                        <th width="10%">Date</th>
-                        <th width="15%">Jurisdiction</th>
-                        <th width="20%">Vehicle</th>
-                        <th width="15%">Distance</th>
-                        <th width="15%">Odo Start</th>
-                        <th width="15%">Odo End</th>
-                        <th width="10%">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>May23</td>
-                        <td>Alberta</td>
-                        <td>Vehicle1</td>
-                        <td>40 miles</td>
-                        <td>234</td>
-                        <td>589</td>
-                        <td><a href="#">View Location History</a></td>
-                      </tr>
-                      <tr>
-                        <td>May23</td>
-                        <td>Alberta</td>
-                        <td>Vehicle1</td>
-                        <td>40 miles</td>
-                        <td>234</td>
-                        <td>589</td>
-                        <td><a href="#">View Location History</a></td>
-                      </tr>
-                      <tr>
-                        <td>May23</td>
-                        <td>Alberta</td>
-                        <td>Vehicle1</td>
-                        <td>40 miles</td>
-                        <td>234</td>
-                        <td>589</td>
-                        <td><a href="#">View Location History</a></td>
-                      </tr>
-                      <tr>
-                        <td>May23</td>
-                        <td>Alberta</td>
-                        <td>Vehicle1</td>
-                        <td>40 miles</td>
-                        <td>234</td>
-                        <td>589</td>
-                        <td><a href="#">View Location History</a></td>
-                      </tr>
-                      <tr>
-                        <td>May23</td>
-                        <td>Alberta</td>
-                        <td>Vehicle1</td>
-                        <td>40 miles</td>
-                        <td>234</td>
-                        <td>589</td>
-                        <td><a href="#">View Location History</a></td>
-                      </tr>
-                      <tr>
-                        <td>May23</td>
-                        <td>Alberta</td>
-                        <td>Vehicle1</td>
-                        <td>40 miles</td>
-                        <td>234</td>
-                        <td>589</td>
-                        <td><a href="#">View Location History</a></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </form>
-            </div>
-
-            <div id="fuel-purchases-div" class="card-body">
-              <form class="form-horizontal form-bordered" method="get">
-                <div class="form-group row margin-left-35">
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Date</label
-                    >
-                    <div
-                      class="input-daterange input-group"
-                      data-plugin-datepicker=""
-                    >
-                      <span class="input-group-prepend">
-                        <span class="input-group-text">
-                          <i class="fas fa-calendar-alt"></i>
-                        </span>
-                      </span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="start date"
-                        name="start"
-                      />
-                      <span
-                        class="input-group-text border-left-0 border-right-0 rounded-0"
-                      >
-                        to
-                      </span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="end date"
-                        name="end"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Jurisdiction</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">State 1</option>
-                        <option value="2">State 2</option>
-                        <option value="2">State 3</option>
-                        <option value="2">State 4</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Vehicle</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">Type 1</option>
-                        <option value="2">Type 2</option>
-                        <option value="2">Type 3</option>
-                        <option value="2">Type 4</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Fuel Type</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">Gasoline</option>
-                        <option value="2">Gas</option>
-                        <option value="2">Diesel</option>
-                        <option value="2">Methane</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div class="col-lg-2">
-                    <label
-                      class="control-label text-lg-right pt-2"
-                      for="inputDefault"
-                      >Select Vehicle Type</label
-                    >
-                    <select data-plugin-selectTwo class="form-control populate">
-                      <optgroup label="">
-                        <option value="1">All Vehicles</option>
-                        <option value="2">IFTA Vehicles</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <div class="col-lg-12 text-center">
-                    <label
-                      class="control-label text-lg-right text-6 pt-2"
-                      for="inputDefault"
-                      >Total Fuel
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control text-center"
-                      value="34.45 gal"
-                      id="inputDefault"
-                      style="border: none;"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <table
-                    class="table table-responsive-lg mb-0"
-                    id="datatable-default"
-                  >
-                    <thead>
-                      <tr>
-                        <th width="10%">Date</th>
-                        <th width="15%">Jurisdiction</th>
-                        <th width="20%">Vehicle</th>
-                        <th width="15%">Fuel Type</th>
-                        <th width="15%">Volume</th>
-                        <th width="15%">Cost</th>
-                        <th width="10%">Vendor</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>May23</td>
-                        <td>Alberta</td>
-                        <td>Vehicle1</td>
-                        <td>Diesel</td>
-                        <td>23gal</td>
-                        <td>567USD</td>
-                        <td>Tony</td>
-                      </tr>
-                      <tr>
-                        <td>May23</td>
-                        <td>Alberta</td>
-                        <td>Vehicle1</td>
-                        <td>Diesel</td>
-                        <td>23gal</td>
-                        <td>567USD</td>
-                        <td>Tony</td>
-                      </tr>
-                      <tr>
-                        <td>May23</td>
-                        <td>Alberta</td>
-                        <td>Vehicle1</td>
-                        <td>Diesel</td>
-                        <td>23gal</td>
-                        <td>567USD</td>
-                        <td>Tony</td>
-                      </tr>
-                      <tr>
-                        <td>May23</td>
-                        <td>Alberta</td>
-                        <td>Vehicle1</td>
-                        <td>Diesel</td>
-                        <td>23gal</td>
-                        <td>567USD</td>
-                        <td>Tony</td>
-                      </tr>
-                      <tr>
-                        <td>May23</td>
-                        <td>Alberta</td>
-                        <td>Vehicle1</td>
-                        <td>Diesel</td>
-                        <td>23gal</td>
-                        <td>567USD</td>
-                        <td>Tony</td>
-                      </tr>
-                      <tr>
-                        <td>May23</td>
-                        <td>Alberta</td>
-                        <td>Vehicle1</td>
-                        <td>Diesel</td>
-                        <td>23gal</td>
-                        <td>567USD</td>
-                        <td>Tony</td>
-                      </tr>
-                      <tr>
-                        <td>May23</td>
-                        <td>Alberta</td>
-                        <td>Vehicle1</td>
-                        <td>Diesel</td>
-                        <td>23gal</td>
-                        <td>567USD</td>
-                        <td>Tony</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </form>
             </div>
           </section>
         </div>
@@ -610,3 +494,188 @@
     </section>
   </div>
 </section>
+<!-- IFTA ACCOUNT MODAL -->
+<div class="modal fade" id="addIftaAccount" tabindex="-1" role="dialog" aria-labelledby="addIftaAccountLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addIftaAccountLabel">Add IFTA Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form  method="get"  name="form" id="form_">
+      <div class="modal-body">
+        
+					<div class="form-group row text-dark">
+									<div class="col-lg-6">
+										<label class="control-label text-4 font-weight-bold text-lg-right pt-2"> IFTA Account Details </label>
+									</div>
+                                    <div class="col-lg-6">
+										<label class="control-label text-4 font-weight-bold text-lg-right pt-2"> IFTA Signing Authority </label>
+									</div>
+									<div class="col-lg-5 offset-lg-1">
+										<div class="row">
+											<div class="col-lg-10">
+												<label class="control-label font-weight-bold text-lg-right pt-2">Select Country</label>
+                        <select data-plugin-selectTwo class="form-control populate" name="baseCountry" [(ngModel)]="baseCountry" (change)="getStates()">
+                          <optgroup label="Select Country">
+                            <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
+                          </optgroup>
+                         </select> 
+											</div>
+                    </div>
+                    <div class="row mt-2">
+											<div class="col-lg-10">
+												<label class="control-label font-weight-bold text-lg-right pt-2">Select Base State/Province</label>
+                        <select data-plugin-selectTwo class="form-control populate" name="baseState"
+                        [(ngModel)]="baseState" >
+                         <optgroup label="">
+                           <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
+                          </optgroup>
+                        </select> 
+											</div>
+										</div>
+                                        <div class="row mt-2">
+											<div class="col-lg-5">
+												<label class="control-label font-weight-bold text-lg-right pt-2">Account Number</label>
+												<input type="text" class="form-control" [(ngModel)] = "accountNumber" name = "accountNumber">
+											</div>
+									
+											<div class="col-lg-5">
+												<label class="control-label font-weight-bold text-lg-right pt-2">EIN</label>
+												<input type="text" class="form-control">
+											</div>
+										</div>
+									</div>
+                                    <div class="col-lg-5 offset-lg-1">
+										<div class="row">
+											<div class="col-lg-10">
+												<label class="control-label font-weight-bold text-lg-right pt-2">Name</label>
+												<input type="text" class="form-control" name="signingAuthority.name" [(ngModel)]="signingAuthority.name">
+											</div>
+										</div>
+                                        <div class="row mt-2">
+											<div class="col-lg-10">
+												<label class="control-label font-weight-bold text-lg-right pt-2">Phone Number</label>
+												<input type="text" class="form-control"  name="signingAuthority.phone" [(ngModel)]="signingAuthority.phone">
+											</div>
+										</div>
+                                        <div class="row mt-2">
+											<div class="col-lg-10">
+												<label class="control-label font-weight-bold text-lg-right pt-2">Title</label>
+												<input type="text" class="form-control"  name="signingAuthority.title" [(ngModel)]="signingAuthority.title">
+											</div>
+										</div>
+									</div>
+					</div>
+				
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" (click)="addIftaAccount()">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<!-- VEHICLE DETAIL REPORT -->
+<div class="modal fade" id="vehicleLogModal" tabindex="-1" role="dialog" aria-labelledby="vehicleLogModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="vehicleLogModalLabel">Vehicle - Fuel Purchase Details , Jurisdiction - British Columbia</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-row">
+            <table class="table table-bordered  table-responsive-lg table-striped mb-0 simple-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Trip#</th>
+                  <th>Source</th>
+                  <th>Destination</th>
+                  <th>Jurisdiction</th>
+                  <th>Miles</th>
+                  <th>Fuel(gal)</th>
+                  <th>Price per gal</th>
+                  <th>Cost Paid</th>
+                  <th>Odomenter Reading</th>
+                  <!-- <th>Odomenter End</th> -->
+                  <th>Vendor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                 
+                  <td>02/02/2020</td>
+                  <td>TR-345</td>
+                  <td>100 st, King's Town, ALberta</td>
+                  <td>100 st, Queen's Town, Calgary</td>
+                  <td>BC</td>
+                  <td>345 </td>
+                  <td>45</td>
+                  <td>5 CAD</td>
+                  <td>2345 CAD</td>
+                  <td>12572</td>
+                  <!-- <td>13120</td> -->
+                  <td>Chaloes</td>
+                </tr>
+                <tr>
+                 
+                  <td>05/04/2020</td>
+                  <td>TR-125</td>
+                  <td>100 st, King's Town, ALberta</td>
+                  <td>100 st, Queen's Town, Calgary</td>
+                  <td>BC</td>
+                  <td>34 </td>
+                  <td>10</td>
+                  <td>5 CAD</td>
+                  <td>2345 CAD</td>
+                  <td>12572</td>
+                  <!-- <td>13120</td> -->
+                  <td>Vendor 1</td>
+                </tr>
+                <tr>
+                 
+                  <td>02/02/2020</td>
+                  <td>TR-345</td>
+                  <td>100 st, King's Town, ALberta</td>
+                  <td>100 st, Queen's Town, Calgary</td>
+                  <td>BC</td>
+                  <td>345 </td>
+                  <td>45</td>
+                  <td>5 CAD</td>
+                  <td>2345 CAD</td>
+                  <td>12572</td>
+                  <!-- <td>13120</td> -->
+                  <td>Beesta</td>
+                </tr>
+                <tr>
+                 
+                  <td>02/02/2020</td>
+                  <td>TR-345</td>
+                  <td>100 st, King's Town, ALberta</td>
+                  <td>100 st, Queen's Town, Calgary</td>
+                  <td>BC</td>
+                  <td>345 </td>
+                  <td>45</td>
+                  <td>5 CAD</td>
+                  <td>2345 CAD</td>
+                  <td>12572</td>
+                  <!-- <td>13120</td> -->
+                  <td>Chevron</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
