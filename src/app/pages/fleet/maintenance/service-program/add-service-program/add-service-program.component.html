@@ -263,7 +263,7 @@
                                  <div class="row pt-2">
                                     <div class="col-lg-10">
                                        <div class="row">
-                                          <div class="col-lg-6">
+                                          <div class="col-lg-5">
                                              <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat
                                                 By Time </label>
@@ -285,15 +285,15 @@
                                                 </div>
                                              </div>
                                           </div>
-                                          <div class="col-lg-4">
+                                          <div class="col-lg-5">
                                              <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat
                                                 By Odometer Miles</label>
                                              <input [(ngModel)]="task.repeatByOdometer"
                                              name="task.repeatByOdometer{{i}}" type="text" class="form-control">
                                           </div>
-                                          <div class="col-lg-2">
-                                             <button *ngIf="i != 0" class="btn btn-success" (click)="removeTasks(i)">Remove</button>
+                                          <div class="col-lg-2 pt-4">
+                                             <button *ngIf="i != 0" class="btn btn-success" (click)="removeTasks(i)"><i class="fas fa-minus"></i></button>
                                           </div>
                                        </div>
                                        

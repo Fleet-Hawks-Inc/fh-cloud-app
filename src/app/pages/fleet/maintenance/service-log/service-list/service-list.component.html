@@ -206,26 +206,36 @@
                                                  <table class="table table-responsive-lg table-bordered table-striped mb-0" id="simple-table">
                                                     <thead>
                                                        <tr>
-                                                          <th width="5%"><input type="checkbox"></th>
+                                                          <!-- <th width="5%"><input type="checkbox"></th> -->
                                                           <th width="20%">Vehicle</th>
                                                           <th  width="15%">Completion Date/Meter</th>                                  
                                                           <th width="50%">Details</th>
                                                           <th width="15%">Total</th>
-                                                          
+                                                          <th>Actions</th>
                                                        </tr>
                                                     </thead>
                                                     <tbody>
                                                        <tr>
-                                                         <td><input type="checkbox"></td>
-                                                          <td onclick="window.location='service-log-details.php';"><span class="font-weight-bold">Vehicle 1</span><br><span class="text-success">Active</span>
+                                                          <td><span class="font-weight-bold">Vehicle 1</span><br><span class="text-success">Active</span>
                                                            </td>
-                                                          <td onclick="window.location='service-log-details.php';">Jun 23, 2020 <br><span class="font-size-12">4,678 mi</span></td>
-                                                          <td onclick="window.location='service-log-details.php';"><span title="Service Task">A/C Condenser Replacement</span><br><a href="#" class="text-info font-size-12" title="Issue"> Brake Light</a>
+                                                          <td>Jun 23, 2020 <br><span class="font-size-12">4,678 mi</span></td>
+                                                          <td><span title="Service Task">A/C Condenser Replacement</span><br><a href="#" class="text-info font-size-12" title="Issue"> Brake Light</a>
                                                           <br><a href="#" class="text-info font-size-12" title="Vendor"> NAPA</a></td>
-                                                          <td onclick="window.location='service-log-details.php';">$ 466</td>                                   
+                                                          <td>$ 466</td>  
+                                                          <td>
+                                                            <div class="dropdown dropright">
+                                                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                   <i class="fas fa-ellipsis-v"></i>
+                                                                </button>
+                                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                   <a class="dropdown-item" routerLink="/fleet/maintenance/service-log/edit/">Edit</a>
+                                                                   <a class="dropdown-item" href="#">Activate</a>
+                                                                </div>
+                                                              </div>
+                                                          </td>                                 
                                                        </tr>
                                                        
-                                                       <tr>
+                                                       <!-- <tr>
                                                          <td><input type="checkbox"></td>
                                                           <td onclick="window.location='service-log-details.php';"><span class="font-weight-bold">Vehicle 2</span><br><span class="text-danger">Sold</span>
                                                            </td>
@@ -274,7 +284,7 @@
                                                           </td>
                                                           <td onclick="window.location='service-log-details.php';">$ 46</td>                                   
                                                        </tr>
-                                                    
+                                                     -->
                                                       
                                                     </tbody>
                                                  </table>

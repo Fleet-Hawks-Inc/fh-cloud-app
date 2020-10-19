@@ -43,7 +43,7 @@ export class DriverDetailComponent implements OnInit {
       .getData(`drivers/${this.driverID}`)
       .subscribe((result: any) => {
         if (result) {
-          this.driverData = result['Items'];
+          this.driverData = result['Items'][0];
           console.log('driverData', this.driverData)
           //this.getImages();
           this.spinner.hide(); // loader hide
