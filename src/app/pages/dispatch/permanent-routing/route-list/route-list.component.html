@@ -41,7 +41,7 @@
                     <section class="card">
                         <div class="card-body">
 
-                            <table datatable  class="row-border hover table table-bordered table-striped mb-0 " *ngIf="routes.length > 0">
+                            <table datatable [dtOptions]="dtOptions"  class="row-border hover table table-bordered table-striped mb-0 " *ngIf="routes.length > 0">
                                     <thead>
                                         <tr>
                                             <!-- <th><input type="checkbox"></th> -->
@@ -56,17 +56,26 @@
                                          </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let route of routes">
+                                        <tr *ngFor="let route of routes; let i= index">
                                             <!-- <td class="w-50px sorting_1"><input type="checkbox"></td> -->
                                             <td>{{ route.routeName }}</td>
                                             <td>{{ route.sourceInformation.sourceAddress }}</td>                                                
                                             <td>{{ route.destinationInformation.destinationAddress }}</td>
-                                            <td>-</td>
+                                            <td>{{ route.miles }} miles</td>
                                             <td>{{ route.sourceInformation.recurring.recurringType }}</td>
                                             <td>-</td>
-                                            <td>-</td>
-                                            <td><a href="javascript:;" routerLink="/dispatch/routes/edit-route/{{ route.routeID }}">Edit</a> </td>
-                                            <!-- <td><a href="javascript:;" routerLink="/dispatch/routes/edit-route/{{ route.routeID }}">Delete</a> </td> -->
+                                            <td>{{ route.notes }}</td>
+                                            <td>
+                                                <div class="dropdown dropright">
+                                                    <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                       <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                       <a class="dropdown-item" routerLink="/dispatch/routes/edit-route/{{ route.routeID }}">Edit</a>
+                                                       <a class="dropdown-item" href="javascript:;" (click)="deleteRoute(route.routeID)">Delete</a>
+                                                    </div>
+                                                  </div>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

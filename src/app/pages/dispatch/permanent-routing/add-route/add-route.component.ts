@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { HereMapService } from '../../../../services/here-map.service';
 declare var $: any;
 
 @Component({
@@ -20,7 +22,18 @@ export class AddRouteComponent implements OnInit {
   errors:{};
   routeData ={
     sourceInformation: {
-      recurring:{}
+      recurring:{
+        recurringRoute: '',
+        recurringType: '',
+        recurringDate: '',
+        sunday: false,
+        monday: false,
+        tuesday: false,
+        wednesday: false,
+        thursday: false,
+        friday: false,
+        saturday: false
+      }
     },
     destinationInformation: {
       stop:{}
@@ -45,7 +58,16 @@ export class AddRouteComponent implements OnInit {
     sourceZipCode:'',
     recurring: {
       recurringRoute: '',
-      recurringType: ''
+      recurringType: '',
+      recurringDate: '',
+      sunday: '',
+      monday: '',
+      tuesday: '',
+      wednesday: '',
+      thursday: '',
+      friday: '',
+      saturday: ''
+
     }
   };
   destinationInformation = {
@@ -78,6 +100,7 @@ export class AddRouteComponent implements OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
+  mapView: boolean = false ;
 
   locations = [
     {
@@ -99,7 +122,12 @@ export class AddRouteComponent implements OnInit {
   ];
 
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
-    private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) {}
+    private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar, 
+    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService) {}
+
+  get today() {
+    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+  }
 
   ngOnInit() {
 
@@ -109,6 +137,7 @@ export class AddRouteComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
+    // this.mapShow();
 
     $(document).ready(() => {
       this.form = $('#form_').validate();
@@ -117,18 +146,12 @@ export class AddRouteComponent implements OnInit {
     $('#recurringBtn').on('click', function(){
       if(this.checked == true){
         $("#recurringRadioDiv").css('display','block');
+        $("#recurringDate").css('display','block');
       } else{
         $("#recurringRadioDiv").css('display','none');
+        $("#recurringDate").css('display','none');
       }
     });
-
-    $('#routeCheckBtn').on('click', function() {
-      if(this.checked == true){
-        $('#routeMapDiv').css('display', 'flex');
-      } else{
-        $('#routeMapDiv').css('display', 'none');
-      }
-    })
 
     $("#addStop").on('click', function(){
       // alert('2');
@@ -140,6 +163,15 @@ export class AddRouteComponent implements OnInit {
       var countryId = curr.val();
       var countryType = curr.closest('select').attr('type');
       thiss.getStates(countryId, countryType);
+    })
+
+    $('#routeCheckBtn').on('click', function() {
+      if(this.checked == true){
+        $('#routeMapDiv').css('display', 'flex');
+        thiss.mapShow();
+      } else{
+        $('#routeMapDiv').css('display', 'none');
+      }
     })
 
     $('.stateSelect').on('change', function(){
@@ -185,11 +217,13 @@ export class AddRouteComponent implements OnInit {
     this.apiService.getData('drivers')
       .subscribe((result: any)=>{
         this.drivers = result.Items;
+        console.log('this.drivers');
         console.log(this.drivers);
       })
   }
 
   getStates(countryID, countryType) {
+    this.spinner.show();
     this.apiService.getData('states/country/' + countryID)
       .subscribe((result: any) => {
         if(countryType == 'source'){
@@ -197,12 +231,13 @@ export class AddRouteComponent implements OnInit {
         } else if(countryType == 'destination'){
           this.destinationStates = result.Items;
         }
-        
+        this.spinner.hide();
         // console.log('this.states', result.Items)
       });
   }
 
   getCities(stateID, stateType) {
+    this.spinner.show();
     this.apiService.getData('cities/state/' + stateID)
       .subscribe((result: any) => {
         if(stateType == 'source'){
@@ -210,13 +245,37 @@ export class AddRouteComponent implements OnInit {
         } else if(stateType == 'destination'){
           this.destinationCities = result.Items;
         }
+        this.spinner.hide();
         // console.log('this.states', result.Items)
       });
   }
 
-  addRoute(){
-    console.log(this.routeData);
+  mapShow() {
+    this.mapView = true;
+    setTimeout(() => {
+      this.hereMap.mapInit();
+    }, 100);
+  }
 
+
+  addRoute(){
+    console.log(this.routeData.sourceInformation.recurring);
+
+    if(this.routeData.sourceInformation.recurring.recurringType != ''){
+      if(this.routeData.sourceInformation.recurring.recurringType == 'weekly'){
+        if($('input.daysChecked:checked').length > 1){
+          this.toastr.error('Please select a single day for weekly recurring route');
+          return false;
+        }
+      } else if(this.routeData.sourceInformation.recurring.recurringType == 'biweekly'){
+        if($('input.daysChecked:checked').length > 2){
+          this.toastr.error('Please select only two days for biweekly recurring route');
+          return false;
+        }
+      }
+    }
+
+    this.spinner.show();
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
@@ -227,6 +286,7 @@ export class AddRouteComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
+              this.spinner.hide();
               const path = val.path;
               // We Can Use This Method
               const key = val.message.match(/'([^']+)'/)[1];
@@ -239,12 +299,14 @@ export class AddRouteComponent implements OnInit {
             complete: () => {
               this.throwErrors();
               this.Success = '';
+              this.spinner.hide();
             },
             error: () => { },
             next: () => { },
           });
       },
       next: (res) => {
+        this.spinner.hide();
         this.response = res;
         this.toastr.success('Route added successfully');
         this.router.navigateByUrl('/dispatch/routes/route-list');

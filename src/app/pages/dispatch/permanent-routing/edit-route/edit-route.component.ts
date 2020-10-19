@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { HereMapService } from '../../../../services/here-map.service';
 declare var $: any;
 
 @Component({
@@ -34,6 +36,7 @@ export class EditRouteComponent implements OnInit {
   notes     = '';
   VehicleID = '';
   AssetID   = '';
+  miles     = "";
   driverUserName = '';
   coDriverUserName = '';
   sourceInformation = {
@@ -45,7 +48,16 @@ export class EditRouteComponent implements OnInit {
     sourceZipCode:'',
     recurring: {
       recurringRoute: '',
-      recurringType: ''
+      recurringType: '',
+      recurringDate: '',
+      sunday: '',
+      monday: '',
+      tuesday: '',
+      wednesday: '',
+      thursday: '',
+      friday: '',
+      saturday: ''
+
     }
   };
   destinationInformation = {
@@ -76,6 +88,14 @@ export class EditRouteComponent implements OnInit {
   weekClass = '';
   biClass = '';
 
+  sundaySelect = '';
+  mondaySelect = '';
+  tuesdaySelect = '';
+  wednesdaySelect = '';
+  thursdaySelect = '';
+  fridaySelect = '';
+  saturdaySelect = '';
+
   response: any = '';
   hasError = false;
   hasSuccess = false;
@@ -103,7 +123,12 @@ export class EditRouteComponent implements OnInit {
 
 
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
-    private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) {}
+    private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar, 
+    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService) {}
+
+  get today() {
+    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+  }
 
   ngOnInit() {
     this.routeID    = this.route.snapshot.params['routeID'];
@@ -121,21 +146,22 @@ export class EditRouteComponent implements OnInit {
     $('#recurringBtn').on('click', function(){
       if(this.checked == true){
         $("#recurringRadioDiv").css('display','block');
+        $("#recurringDate").css('display','block');
       } else{
         $("#recurringRadioDiv").css('display','none');
+        $("#recurringDate").css('display','none');
       }
     });
 
-    $('#routeCheckBtn').on('click', function() {
-      if(this.checked == true){
-        $('#routeMapDiv').css('display', 'flex');
-      } else{
-        $('#routeMapDiv').css('display', 'none');
-      }
+    $("#addStop").on('click', function(){
+      // alert('2');
     })
 
-    $("#addStop").on('click', function(){
-      alert('2');
+    // $(".reccRoute").on('click', function(){
+    $(document).on('click','.reccRoute', function(){
+      // alert('redd');
+      $('.reccRoute').removeClass('selRecc');
+      $(this).addClass('selRecc');
     })
 
     var thiss = this;
@@ -146,6 +172,15 @@ export class EditRouteComponent implements OnInit {
       thiss.getStates(countryId, countryType);
     })
 
+    $('#routeCheckBtn').on('click', function() {
+      if(this.checked == true){
+        $('#routeMapDiv').css('display', 'flex');
+        thiss.mapShow();
+      } else{
+        $('#routeMapDiv').css('display', 'none');
+      }
+    })
+
     $('.stateSelect').on('change', function(){
       var curr = $(this);
       var stateId = curr.val();
@@ -153,11 +188,7 @@ export class EditRouteComponent implements OnInit {
       thiss.getCities(stateId, stateType);
     })
 
-    $(".reccRoute").on('click', function(){
-      // alert('redd');
-      $('.reccRoute').removeClass('selRecc');
-      $(this).addClass('selRecc');
-    })
+    
   }
 
   fetchCountries() {
@@ -194,6 +225,7 @@ export class EditRouteComponent implements OnInit {
   }
 
   getStates(countryID, countryType) {
+    this.spinner.show();
     this.apiService.getData('states/country/' + countryID)
       .subscribe((result: any) => {
         if(countryType == 'source'){
@@ -201,12 +233,13 @@ export class EditRouteComponent implements OnInit {
         } else if(countryType == 'destination'){
           this.destinationStates = result.Items;
         }
-        
+        this.spinner.hide();
         // console.log('this.states', result.Items)
       });
   }
 
   getCities(stateID, stateType) {
+    this.spinner.show();
     this.apiService.getData('cities/state/' + stateID)
       .subscribe((result: any) => {
         if(stateType == 'source'){
@@ -214,18 +247,20 @@ export class EditRouteComponent implements OnInit {
         } else if(stateType == 'destination'){
           this.destinationCities = result.Items;
         }
+        this.spinner.hide();
         // console.log('this.states', result.Items)
       });
   }
 
 
   fetchRoute(){
+    this.spinner.show();
     this.apiService.getData('routes/'+this.routeID).
       subscribe((result: any) => {
         result = result.Items[0];
 
         this.routeNo   = result.routeNo;
-        console.log(this.routeNo);
+        // console.log(result);
         this.routeName = result.routeName;
         this.notes     = result.notes;
         this.VehicleID = result.VehicleID;
@@ -241,7 +276,15 @@ export class EditRouteComponent implements OnInit {
           sourceZipCode:result.sourceInformation.sourceZipCode,
           recurring: {
             recurringRoute: result.sourceInformation.recurring.recurringRoute,
-            recurringType: result.sourceInformation.recurring.recurringType
+            recurringType: result.sourceInformation.recurring.recurringType,
+            recurringDate: result.sourceInformation.recurring.recurringDate,
+            sunday: result.sourceInformation.recurring.sunday,
+            monday: result.sourceInformation.recurring.monday,
+            tuesday: result.sourceInformation.recurring.tuesday,
+            wednesday: result.sourceInformation.recurring.wednesday,
+            thursday: result.sourceInformation.recurring.thursday,
+            friday: result.sourceInformation.recurring.friday,
+            saturday: result.sourceInformation.recurring.saturday
           }
         };
         this.destinationInformation = {
@@ -259,39 +302,62 @@ export class EditRouteComponent implements OnInit {
         };
         if(result.sourceInformation.recurring.recurringRoute == true){
           $("#recurringRadioDiv").css('display','block');
+          $("#recurringDate").css('display','block');
         }
         if(result.destinationInformation.stop.destinationStop == true){
           $('#routeMapDiv').css('display', 'flex');
+          this.mapShow()
         }
 
         if(result.sourceInformation.recurring.recurringType == 'daily'){
-           this.dailyClass = 'selRecc';
-           this.weekClass = '';
-           this.biClass = '';
+          this.dailyClass = 'selRecc';
+          this.weekClass = '';
+          this.biClass = '';
         } else if(result.sourceInformation.recurring.recurringType == 'weekly'){
-            this.dailyClass = '';
-           this.weekClass = 'selRecc';
-           this.biClass = '';
+          this.dailyClass = '';
+          this.weekClass = 'selRecc';
+          this.biClass = '';
         } else if(result.sourceInformation.recurring.recurringType == 'biweekly'){
           this.dailyClass = '';
           this.weekClass = '';
           this.biClass = 'selRecc';
         }
-        
         this.getStates(result.sourceInformation.sourceCountryID, 'source');
         this.getStates(result.destinationInformation.destinationCountryID, 'destination');
 
         this.getCities(result.sourceInformation.sourceStateID, 'source');
         this.getCities(result.destinationInformation.destinationStateID, 'destination');
+
+        // console.log('this.sourceInformation')
+        // console.log(this.sourceInformation)
+
+        this.spinner.hide();
       })
   }
 
   updateRoute() {
     this.hasError = false;
     this.hasSuccess = false;
+    // console.log('updatedd')
+    // console.log(this.sourceInformation);
 
+    if(this.sourceInformation.recurring.recurringType != ''){
+      if(this.sourceInformation.recurring.recurringType == 'weekly'){
+        if($('input.daysChecked:checked').length > 1){
+          this.toastr.error('Please select a single day for weekly recurring route');
+          return false;
+        }
+      } else if(this.sourceInformation.recurring.recurringType == 'biweekly'){
+        if($('input.daysChecked:checked').length > 2){
+          this.toastr.error('Please select only two days for biweekly recurring route');
+          return false;
+        }
+      }
+    }
+
+    this.spinner.show();
     const data = {
-      routeID: this.routeID,
+      routeID   : this.route.snapshot.params['routeID'],
       routeNo   : this.routeNo,
       routeName : this.routeName,
       notes     : this.notes,
@@ -308,7 +374,15 @@ export class EditRouteComponent implements OnInit {
         sourceZipCode:this.sourceInformation.sourceZipCode,
         recurring: {
           recurringRoute: this.sourceInformation.recurring.recurringRoute,
-          recurringType: this.sourceInformation.recurring.recurringType
+          recurringType: this.sourceInformation.recurring.recurringType,
+          recurringDate: this.sourceInformation.recurring.recurringDate,
+          sunday: this.sourceInformation.recurring.sunday,
+          monday: this.sourceInformation.recurring.monday,
+          tuesday: this.sourceInformation.recurring.tuesday,
+          wednesday: this.sourceInformation.recurring.wednesday,
+          thursday: this.sourceInformation.recurring.thursday,
+          friday: this.sourceInformation.recurring.friday,
+          saturday: this.sourceInformation.recurring.saturday
         }
       },
       destinationInformation : {
@@ -339,11 +413,13 @@ export class EditRouteComponent implements OnInit {
 
               val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
+              this.spinner.hide();
             })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.spinner.hide();
             },
             error: () => {},
             next: () => {},
@@ -352,6 +428,7 @@ export class EditRouteComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+        this.spinner.hide();
         this.toastr.success('Route updated successfully');
         // this.Success = 'Route updated successfully';
       },
@@ -361,4 +438,12 @@ export class EditRouteComponent implements OnInit {
   throwErrors() {
     this.form.showErrors(this.errors);
   }
+
+  mapShow() {
+    // this.mapView = true;
+    setTimeout(() => {
+      this.hereMap.mapInit();
+    }, 100);
+  }
+
 }
