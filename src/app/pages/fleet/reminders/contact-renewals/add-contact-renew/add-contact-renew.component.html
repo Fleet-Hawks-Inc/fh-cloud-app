@@ -44,9 +44,9 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups</label>
-                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="reminderData.subscribers" style="width: 100%;" (change)="subscriberChange($event)">                                       
-                                       <ng-option *ngFor="let user of users" [value]="user">{{user.userName}}</ng-option>
-                                       <ng-option *ngFor="let group of groups" [value]="group">{{group.groupName}}</ng-option>
+                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="reminderData.subscribers" style="width: 100%;" >                                       
+                                       <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}</ng-option>
+                                       <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}</ng-option>
                                    </ng-select>
                                     <div class="checkbox-custom mt-2">
                                     <input [(ngModel)]="reminderData.sendEmail" name="reminderData.sendEmail" type="checkbox" [checked]="reminderData.sendEmail">

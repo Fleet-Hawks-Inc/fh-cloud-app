@@ -22,7 +22,7 @@ export class AddReminderComponent implements OnInit {
     reminderTasks: {
       remindByDays: 0
     },
-    subscribers: []
+    subscribers: [],
   };
   numberOfDays: number;
   time: number;
@@ -38,6 +38,8 @@ export class AddReminderComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
+
+  test = [];
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
     private location: Location) { }
 
@@ -49,10 +51,10 @@ export class AddReminderComponent implements OnInit {
     if (this.reminderID) {
       this.pageTitle = 'Edit Service Reminder';
       this.fetchReminderByID();
-   
+
     } else {
       this.pageTitle = 'Add Service Reminder';
-     
+
     }
 
     $(document).ready(() => {
@@ -75,29 +77,7 @@ export class AddReminderComponent implements OnInit {
       // console.log('Groups Data', this.groups);
     });
   }
-  subscriberChange(event) {
-    console.log('EVENT Data', event);
-    this.finalSubscribers = [];
-    for (let i = 0; i < event.length; i++) {
-      if (event[i].userName !== undefined) {
-        // this.finalSubscribers.push(event[i].userName);
-        this.finalSubscribers.push({
-          subscriberType: 'user',
-          subscriberIdentification: event[i].userName
-        });
 
-      }
-      else {
-        // this.finalSubscribers.push(event[i].groupID);
-        this.finalSubscribers.push({
-          subscriberType: 'group',
-          subscriberIdentification: event[i].groupID
-        });
-      }
-    }
-    console.log('final array in for loop', this.finalSubscribers);
-
-  }
   /*
   * Fetch Reminder details before updating
  */
@@ -108,23 +88,9 @@ export class AddReminderComponent implements OnInit {
         result = result.Items[0];
         console.log('Fetched data', result);
         for (let i = 0; i < result.subscribers.length; i++) {
-          if (result.subscribers[i].subscriberType === 'user') {
-            let subscribedUser = result.subscribers[i].subscriberIdentification;
-            let isAvail = _.filter(this.users, { userName: subscribedUser });
-            console.log('isAval', isAvail);
-            if (isAvail.length > 0) {
-              this.reminderData.subscribers.push(isAvail[0]);
-            }
-          } else {
-            let subscribedGroup = result.subscribers[i].subscriberIdentification;
-            let isAvail = _.filter(this.groups, { groupID: subscribedGroup });
-            console.log('isAval group', isAvail);
-            if (isAvail.length > 0) {
-              this.reminderData.subscribers.push(isAvail[0]);
-            }
-          }
-          console.log('Check in fetched', this.reminderData.subscribers);
+          this.test.push(result.subscribers[i].subscriberIdentification);
         }
+        // console.log('Check in fetched', this.test);
         this.reminderData['reminderID'] = this.reminderID;
         this.reminderData['reminderType'] = result.reminderType;
         this.reminderData['reminderIdentification'] = result.reminderIdentification;
@@ -133,12 +99,32 @@ export class AddReminderComponent implements OnInit {
         this.time = result.reminderTasks.remindByDays;
         this.timeType = 'Day(s)';
         this.reminderData['sendEmail'] = result.sendEmail;
-        this.reminderData['subscribers'] = result.subscribers;
+        this.reminderData['subscribers'] = this.test;
       });
 
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
+  }
+  getSubscribers(arr: any[]) {
+    this.finalSubscribers = [];
+    for (let i = 0; i < arr.length; i++) {
+      let test: any = [];
+      test = this.groups.filter((g: any) => g.groupID === arr[i]);
+      if (test.length > 0) {
+        this.finalSubscribers.push({
+          subscriberType: 'group',
+          subscriberIdentification: arr[i]
+        });
+      }
+      else {
+        this.finalSubscribers.push({
+          subscriberType: 'user',
+          subscriberIdentification: arr[i]
+        });
+      }
+    }
+    return this.finalSubscribers;
   }
   addReminder() {
     this.errors = {};
@@ -168,10 +154,10 @@ export class AddReminderComponent implements OnInit {
             break;
           }
       }
+
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.finalSubscribers;
+      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
       console.log('Filled Reminder Data', this.reminderData);
-      // console.log('subscribers', this.finalSubscribers);
       this.apiService.postData('reminders', this.reminderData).subscribe({
         complete: () => { },
         error: (err) => {
@@ -242,7 +228,7 @@ export class AddReminderComponent implements OnInit {
       }
 
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.finalSubscribers;
+      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
       console.log('updated data', this.reminderData);
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },

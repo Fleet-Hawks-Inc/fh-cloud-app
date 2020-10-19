@@ -35,8 +35,8 @@ const routes: Routes = [
   {
     path: 'ifta',
     children: [
-      { path: 'Mileage', component: MileageComponent },
-      { path: 'Report', component: ReportComponent },
+      { path: 'mileage', component: MileageComponent },
+      { path: 'report', component: ReportComponent },
     ],
   },
 ];

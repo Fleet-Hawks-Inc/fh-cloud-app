@@ -22,11 +22,19 @@ export class ListingComponent implements OnInit {
   ngOnInit() {
     this.fetchReminders();
     this.fetchVehicles();
-    this. fetchGroups();
+
+    this.fetchGroups();
+
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
-    this.vehicles = result.Items;
+      this.vehicles = result.Items;
+    });
+  }
+  fetchGroups() {
+    this.apiService.getData('groups').subscribe((result: any) => {
+      this.groups = result.Items;
+      //   console.log('Groups Data', this.groups);
     });
   }
   fetchGroups() {
@@ -67,7 +75,7 @@ export class ListingComponent implements OnInit {
         for (let i = 0; i < this.allRemindersData.length; i++) {
           if (this.allRemindersData[i].reminderType === 'service') {
             this.remindersData.push(this.allRemindersData[i]);
-           }
+          }
         }
         console.log('Service Reminder array', this.remindersData);
       },
@@ -75,9 +83,9 @@ export class ListingComponent implements OnInit {
   }
 
 
- deleteReminder(entryID) {
-     /******** Clear DataTable ************/
-     if ($.fn.DataTable.isDataTable('#datatable-default')) {
+  deleteReminder(entryID) {
+    /******** Clear DataTable ************/
+    if ($.fn.DataTable.isDataTable('#datatable-default')) {
       $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
@@ -85,7 +93,7 @@ export class ListingComponent implements OnInit {
       .deleteData('reminders/' + entryID)
       .subscribe((result: any) => {
         this.toastr.success('Service Reminder Deleted Successfully!');
-        this.fetchReminders ();
+        this.fetchReminders();
       });
   }
   initDataTable() {

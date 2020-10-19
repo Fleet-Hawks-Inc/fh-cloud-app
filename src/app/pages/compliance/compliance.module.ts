@@ -15,12 +15,17 @@ import { MileageComponent } from './ifta/mileage/mileage.component';
 import { ReportComponent } from './ifta/report/report.component';
 import { UnidentifiedComponent } from './hos/unidentified/unidentified.component';
 import { InspectionSummaryComponent } from './dvir/inspection-summary/inspection-summary.component';
-
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgSelect2Module } from 'ng-select2';
 @NgModule({
   imports: [CommonModule,
     ComplianceRoutingModule,
     FormsModule,
     SharedModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    NgxSpinnerModule,
+    NgSelect2Module,
     NgbModule],
   declarations: [
     LogsComponent,
