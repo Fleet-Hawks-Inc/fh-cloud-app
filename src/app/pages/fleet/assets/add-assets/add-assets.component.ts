@@ -119,9 +119,9 @@ export class AddAssetsComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/'([^']+)'/)[1];
+              const key = val.message.match(/"([^']+)"/)[1];
               console.log(key);
-              val.message = val.message.replace(/'.*'/, 'This Field');
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[key] = val.message;
             })
           )
