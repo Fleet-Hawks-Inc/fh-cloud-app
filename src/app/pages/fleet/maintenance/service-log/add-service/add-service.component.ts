@@ -19,6 +19,9 @@ export class AddServiceComponent implements OnInit {
   private vehicles;
   private reminders;
   private issues;
+  private inventory = [];
+  private selectedTasks = [];
+  private allServices = [];
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   pageTitle: string;
@@ -58,6 +61,7 @@ export class AddServiceComponent implements OnInit {
     this.fetchGroups();
     this.fetchVehicles();
     this.fetchVendors();
+    this.fetchInventory();
   }
 
   /*
@@ -125,17 +129,24 @@ export class AddServiceComponent implements OnInit {
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
-      console.log('this.vehicles', this.vehicles);
     });
   }
 
+  fetchInventory() {
+    this.apiService.getData('items').subscribe((result: any) => {
+      result = result.Items;
+      for (const iterator of result) {
+        this.inventory.push(iterator.name);
+      }
+    });
+  }
+  
+
   getIssues(id) {
-    console.log('id', id);
     const vehicleID = id;
     this.getReminders(vehicleID);
     this.apiService.getData(`issues/vehicle/${vehicleID}`).subscribe((result: any) => {
       this.issues = result.Items;
-      console.log('this.issues', this.issues);
     });
   }
 
@@ -143,19 +154,9 @@ export class AddServiceComponent implements OnInit {
     const vehicleID = id;
     this.apiService.getData(`reminders/vehicle/${vehicleID}`).subscribe((result: any) => {
       this.reminders = result.Items;
-      console.log('this.reminders', this.reminders);
+      console.log("reminder", this.reminders);
     });
   }
-  // /*
-  //  * Get all issues from api
-  //  */
-  // fetchIssues() {
-  //   this.apiService.getData(`issues/${this.vehicleID}`).subscribe((result: any) => {
-  //     this.issues = result.Items;
-  //     console.log('this.issues', this.issues);
-  //   });
-  // }
-
 
   /*
    * Selecting files before uploading
@@ -188,6 +189,18 @@ export class AddServiceComponent implements OnInit {
     this.selectedFileNames.forEach((fileData: any, fileName: string) => {
       this.awsUS.uploadFile(this.carrierID, fileName, fileData);
     });
+  }
+
+  addTasks() {
+    this.allServices.push({
+      task: this.selectedTasks[this.selectedTasks.length - 1],
+      description: '',
+      labor: '',
+    })
+    console.log(this.allServices);
+  }
+  remove(i) {
+    this.allServices.splice(i, 1);
   }
 
 }
