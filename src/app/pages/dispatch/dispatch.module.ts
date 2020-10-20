@@ -54,7 +54,7 @@ import { DispatchPlannerComponent } from './dispatch/dispatch-planner/dispatch-p
 import { AceManifestComponent } from './cross-border/ace-manifest/ace-manifest.component';
 import { AciEmanifestComponent } from './cross-border/aci-emanifest/aci-emanifest.component';
 import { MyDocumentsComponent } from './documents/my-documents/my-documents.component';
-import { CompanyDocumentsComponent } from './documents/company-documents/company-documents.component';
+import { CompanyDocumentsComponent } from './new-documents/company-documents/company-documents.component';
 
 import { AceShipmentComponent } from './cross-border/ace-documents/ace-shipment/ace-shipment.component';
 import { AceCommodityComponent } from './cross-border/ace-documents/ace-commodity/ace-commodity.component';
@@ -70,6 +70,9 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 import { DataTablesModule } from 'angular-datatables'
 import {Injectable} from '@angular/core';
 import { ɵs } from '@ng-select/ng-select';
+import { NewDocumentsComponent } from './new-documents/new-documents.component';
+import { MyDocumentListComponent } from './new-documents/my-documents/my-document-list.component';
+
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -206,8 +209,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NewAceManifestComponent,
     RouteListComponent,
     AddRouteComponent,
-    EditRouteComponent
-
+    EditRouteComponent,
+    NewDocumentsComponent,
+    MyDocumentListComponent,
 
   ],
 
