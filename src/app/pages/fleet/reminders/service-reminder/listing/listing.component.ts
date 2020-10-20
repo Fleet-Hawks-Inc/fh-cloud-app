@@ -37,12 +37,7 @@ export class ListingComponent implements OnInit {
       //   console.log('Groups Data', this.groups);
     });
   }
-  fetchGroups() {
-    this.apiService.getData('groups').subscribe((result: any) => {
-      this.groups = result.Items;
-      //   console.log('Groups Data', this.groups);
-    });
-  }
+
   getVehicleName(ID) {
     let vehicle = [];
     vehicle = this.vehicles.filter((v: any) => v.vehicleID === ID);
