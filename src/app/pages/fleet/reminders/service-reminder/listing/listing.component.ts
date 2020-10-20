@@ -37,6 +37,7 @@ export class ListingComponent implements OnInit {
       //   console.log('Groups Data', this.groups);
     });
   }
+
   getVehicleName(ID) {
     let vehicle = [];
     vehicle = this.vehicles.filter((v: any) => v.vehicleID === ID);
