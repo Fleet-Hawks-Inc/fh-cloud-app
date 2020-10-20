@@ -22,7 +22,7 @@
                          <div class="documents-wrapper">
                              <ul class="mt-5">
                                <li class="d-inline-block mr-5">
-                                 <a href="my-documents.php">
+                                 <a [routerLink]="['/dispatch', 'documents', 'my-documents']">
                                    <div class="position-relative d-inline-block">
                                      <div class="folder-shape"></div>
                                      <div class="folder-text">
@@ -32,7 +32,7 @@
                                  </a>
                                </li>
                                <li class="d-inline-block">
-                                 <a href="load-documents.php">
+                                 <a [routerLink]="['/dispatch', 'documents', 'company-documents']">
                                    <div class="position-relative d-inline-block">
                                      <div class="folder-shape"></div>
                                      <div class="folder-text">
