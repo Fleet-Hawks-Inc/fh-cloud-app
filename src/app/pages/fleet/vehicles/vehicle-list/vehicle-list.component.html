@@ -130,7 +130,8 @@
                   </thead>
                   <tbody>
                     <tr
-                      *ngFor="let vehicle of vehicles; let i = index"                      
+                      routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}"
+                      *ngFor="let vehicle of vehicles; let i = index"
                     >
                       <td>{{ vehicle.vehicleIdentification }}</td>
                       <td>Vehicle Name 1</td>
@@ -138,7 +139,7 @@
                       <td>Ford</td>
                       <td>Fh-450</td>
                       <td>Ontario</td>
-                      <td><a href="#">111</a></td>
+                      <td>111</td>
                       <td>VH-1230</td>
                       <td>Diesel</td>
                       <td>Active</td>
@@ -152,8 +153,8 @@
                             id="dropdownMenuButton-{{ i }}"
                             data-toggle="dropdown"
                             aria-haspopup="true"
-							aria-expanded="false"
-							[routerLink]=""
+                            aria-expanded="false"
+                            [routerLink]=""
                           >
                             <i class="fas fa-ellipsis-v"></i>
                           </button>
