@@ -122,7 +122,7 @@ export class AddRouteComponent implements OnInit {
   ];
 
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
-    private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar, 
+    private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService) {}
 
   get today() {
@@ -259,7 +259,7 @@ export class AddRouteComponent implements OnInit {
 
 
   addRoute(){
-    console.log(this.routeData.sourceInformation.recurring);
+    console.log(this.routeData);
 
     if(this.routeData.sourceInformation.recurring.recurringType != ''){
       if(this.routeData.sourceInformation.recurring.recurringType == 'weekly'){
@@ -282,24 +282,22 @@ export class AddRouteComponent implements OnInit {
 
     this.apiService.postData('routes', this.routeData).subscribe({
       complete: () => { },
-      error: (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              this.spinner.hide();
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/'([^']+)'/)[1];
+              const key = val.message.match(/"([^']+)"/)[1];
               console.log(key);
-              val.message = val.message.replace(/'.*'/, 'This Field');
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[key] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
-              this.Success = '';
               this.spinner.hide();
+              this.throwErrors();
             },
             error: () => { },
             next: () => { },
