@@ -260,7 +260,7 @@
                   <!-- Vehicle Summary -->
                   <div id="iftaVehicle" class="tab-pane">
                     <div>
-                      <table class="table table-bordered  table-responsive-lg table-striped mb-0 simple-table">
+                      <table class="table table-bordered  table-responsive-lg table-striped mb-0" id="datatable-default">
                         <thead>
                           <tr>
                             <th>Vehicle/Reefer Number</th>
@@ -269,15 +269,15 @@
                             <th>Miles</th>
                             <th>Fuel(gal)</th>
                             <th>Fuel Type</th>
-
                             <th>Fuel Purchase Details</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
+                          <tr *ngFor = "let entry of fuelList">
 
-                            <td>111</td>
-                            <td>Vehicle</td>
+                            <td *ngIf = "entry.unitType === 'vehicle'">{{entry.vehicleID}}</td>
+                            <td *ngIf = "entry.unitType === 'reefer'">{{entry.reeferID}}</td>
+                            <td>{{entry.unitType}}</td>
                             <td>IN</td>
                             <td>345 </td>
                             <td>45</td>
@@ -285,7 +285,7 @@
                             <td><button type="button" data-toggle="modal" data-target="#vehicleLogModal"
                                 class="btn btn-dark btn-xs mt-0 modal-with-form text-light">View Details</button></td>
                           </tr>
-                          <tr>
+                          <!-- <tr>
 
                             <td>1145</td>
                             <td>Reefer</td>
@@ -336,7 +336,7 @@
                             <td><button type="button" data-toggle="modal" data-target="#vehicleLogModal"
                                 class="btn btn-dark btn-xs mt-0 modal-with-form text-light">View Details</button></td>
 
-                          </tr>
+                          </tr> -->
                         </tbody>
                       </table>
                     </div>
