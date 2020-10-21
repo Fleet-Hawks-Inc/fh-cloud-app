@@ -25,9 +25,15 @@ import { RoutePlannerComponent } from './routing/route-planner/route-planner.com
 import { RoutePlaybackComponent } from './routing/route-playback/route-playback.component';
 import { AddLoadComponent } from './loads/add-load/add-load.component';
 import { AddDispatchComponent } from './dispatch/add-dispatch/add-dispatch.component';
+
 import { RouteListComponent } from './permanent-routing/route-list/route-list.component';
 import { AddRouteComponent } from './permanent-routing/add-route/add-route.component';
 import { EditRouteComponent } from './permanent-routing/edit-route/edit-route.component';
+import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
+
+import { TripListComponent } from './trips/trip-list/trip-list.component';
+import { AddTripComponent } from './trips/add-trip/add-trip.component';
+import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
 
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
@@ -96,9 +102,19 @@ const routes: Routes = [
     children: [
       { path: 'route-list', component: RouteListComponent},
       { path: 'add-route', component: AddRouteComponent },
-      { path:'edit-route/:routeID', component:EditRouteComponent}
+      { path:'edit-route/:routeID', component:EditRouteComponent},
+      { path:'route-detail/:routeID', component:RouteDetailComponent},
     ]
   },
+  {
+    path: "trips",
+    children: [
+      { path: 'trip-list', component: TripListComponent},
+      { path: 'add-trip', component: AddTripComponent},
+      { path: 'trip-details', component: TripDetailComponent}
+
+    ]
+  }
 ];
 
 @NgModule({

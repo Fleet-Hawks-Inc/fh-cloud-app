@@ -70,6 +70,12 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 import { DataTablesModule } from 'angular-datatables'
 import {Injectable} from '@angular/core';
 import { ɵs } from '@ng-select/ng-select';
+import { TripListComponent } from './trips/trip-list/trip-list.component';
+import { AddTripComponent } from './trips/add-trip/add-trip.component';
+import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
+
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -130,7 +136,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    DataTablesModule
+    DataTablesModule,
+    DragDropModule,
+
   ],
 
   declarations: [
@@ -206,7 +214,12 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NewAceManifestComponent,
     RouteListComponent,
     AddRouteComponent,
-    EditRouteComponent
+    EditRouteComponent,
+    TripListComponent,
+    AddTripComponent,
+    TripDetailComponent,
+    RouteDetailComponent,
+
 
 
   ],

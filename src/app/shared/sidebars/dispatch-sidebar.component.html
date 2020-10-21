@@ -1,6 +1,6 @@
 <ul class="nav nav-main">
 
-    <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
+    <!-- <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
       <a class="nav-link" href="#">
         <i class="fas fa-truck" aria-hidden="true"></i>
         <span>Routing</span>
@@ -19,14 +19,23 @@
           </a>
         </li>
       </ul>
-    </li>
+    </li> -->
     <li routerLinkActive="nav-active">
       <a class="nav-link" [routerLink]="['/dispatch', 'routes', 'route-list']">
       <i class="fas fa-route" aria-hidden="true"></i>
       <span>Permanent Routing</span>
       </a>                        
     </li>
-    <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
+
+    <li routerLinkActive="nav-active">
+      <a class="nav-link" [routerLink]="['/dispatch', 'trips', 'trip-list']">
+      <i class="fas fa-road" aria-hidden="true"></i>
+      <span>Trips</span>
+      </a>                        
+    </li>
+
+    
+    <!-- <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
       <a class="nav-link" href="#">
         <i class="fas fa-truck-loading" aria-hidden="true"></i>
         <span>Loads</span>
@@ -107,7 +116,7 @@
           </a>
         </li>
       </ul>
-    </li>
+    </li> -->
     <!-- <li routerLinkActive="nav-active">
       <a class="nav-link" [routerLink]="['/dispatch', 'create-load']">
         <i class="fas fa-file-alt" aria-hidden="true"></i>
