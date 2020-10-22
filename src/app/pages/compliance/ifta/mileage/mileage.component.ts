@@ -46,18 +46,18 @@ export class MileageComponent implements OnInit {
       baseCountry: this.baseCountry,
       accountNumber:  this.accountNumber
     };
-  console.log('data', data);
-  console.log('Signing Authority', this.signingAuthority);
+    console.log('data', data);
+    console.log('Signing Authority', this.signingAuthority);
   }
   fuelEntries() {
-    this.apiService.getData('fuelEntries/groupByUnit').subscribe({
+    this.apiService.getData('fuelEntries/group/byunit').subscribe({
       complete: () => {
         this.initDataTable();
       },
       error: () => { },
       next: (result: any) => {
         console.log(result);
-        this.fuelList = result.Items;
+        this.fuelList = result;
         console.log('fuel data', this.fuelList);
       },
     });
