@@ -273,15 +273,14 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor = "let entry of fuelList">
-
+                          <tr *ngFor = "let entry of fuelList">                           
                             <td *ngIf = "entry.unitType === 'vehicle'">{{entry.vehicleID}}</td>
                             <td *ngIf = "entry.unitType === 'reefer'">{{entry.reeferID}}</td>
-                            <td>{{entry.unitType}}</td>
-                            <td>IN</td>
+                            <td>{{entry.unitType | titlecase}}</td>
+                            <td>{{entry.stateID}}</td>
                             <td>345 </td>
-                            <td>45</td>
-                            <td>Diesel</td>
+                            <td>{{entry.fuelGal}}</td>
+                            <td>{{entry.fuelType}}</td>
                             <td><button type="button" data-toggle="modal" data-target="#vehicleLogModal"
                                 class="btn btn-dark btn-xs mt-0 modal-with-form text-light">View Details</button></td>
                           </tr>
