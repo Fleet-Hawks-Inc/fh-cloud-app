@@ -20,6 +20,7 @@ export class AddTripComponent implements OnInit {
 
     // trips = [];
     carriers = [];
+    routes = [];
     constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
         private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) { }
 
@@ -85,6 +86,7 @@ export class AddTripComponent implements OnInit {
             carrier: 'XYZ ltd',
         }
     ];
+
     form;
 
     response: any = '';
@@ -97,6 +99,7 @@ export class AddTripComponent implements OnInit {
     ngOnInit() {
 
         this.fetchCarriers();
+        this.fetchRoutes();
 
         $(document).ready(() => { 
             $('.textRows').css('display','none');
@@ -166,6 +169,7 @@ export class AddTripComponent implements OnInit {
         if(addObj.type != '' && addObj.date != '' &&  addObj.name != '' && addObj.location != '' && addObj.miles != ''){
             $('.newRow').val('');
             this.trips.push(addObj);
+            
         } else{
             return false;
         }
@@ -211,5 +215,25 @@ export class AddTripComponent implements OnInit {
     closeEditRow(index){ 
         $(".labelRow"+index).css('display','');
         $(".editRow"+index).css('display','none');   
+    }
+
+    fetchRoutes(){
+        this.spinner.show();
+        this.apiService.getData('routes').subscribe({
+          complete: () =>{},
+          error: () => {},
+          next: (result:any) =>{
+            this.spinner.hide();
+            console.log(result);
+            for (let i = 0; i < result.Items.length; i++) {
+              if(result.Items[i].isDeleted == '0'){
+                this.routes.push(result.Items[i])
+              }
+              
+            }
+            // this.routes = result.Items;
+            console.log(this.routes);
+          }
+        })
     }
 }

@@ -49,7 +49,7 @@ export class RouteDetailComponent implements OnInit {
   fetchRoute(){
     this.spinner.show();
     this.apiService.getData('routes/'+this.routeID).
-      subscribe((result: any) => {
+      subscribe(async (result: any) => {
         result = result.Items[0];
 
         this.routeNo   = result.routeNo;
@@ -117,9 +117,11 @@ export class RouteDetailComponent implements OnInit {
           this.fetchCities(result.destinationInformation.destinationCityID, 'source');
         }
 
+        var ths = this;
+        setTimeout(function(){
+          ths.spinner.hide();
+        },800)
         
-
-        this.spinner.hide();
       })
   }
 

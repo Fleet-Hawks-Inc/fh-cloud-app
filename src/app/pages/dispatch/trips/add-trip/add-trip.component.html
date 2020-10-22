@@ -1,503 +1,488 @@
+<style>
+    .textRows {
+        display: none;
+    }
+</style>
+
 <section class="body">
     <!-- start: header -->
     <app-header></app-header>
     <!-- end: header -->
-  
+
     <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <app-sidebar></app-sidebar>
-      <!-- end: sidebar -->
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
 
         <section role="main" class="content-body pl-0 pt-0 pr-0">
             <header class="page-header">
-            <div class="row pr-5 " style="padding-top:10px;">
-                <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                    Create Trip
+                <div class="row pr-5 " style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                        Create Trip
+                    </div>
+                    <div class="col-md-8  col-lg-8 text-right pr-4">
+                        <a href="all-trips.php" class="btn btn-default"><i class="fas fa-list"></i> All Trips</a>
+                    </div>
                 </div>
-                <div class="col-md-8  col-lg-8 text-right pr-4">
-                    <a href="all-trips.php" class="btn btn-default"><i class="fas fa-list"></i> All Trips</a>
-                </div>
-            </div>
             </header>
             <div class="row">
-            <div class="col pr-0">
-                <section class="card">
-                    <div class="card-body">
-                        <form class="form-horizontal form-bordered" method="get">
-                        <div class="row">
-                            <div class="col-lg-6">
+                <div class="col pr-0">
+                    <section class="card">
+                        <div class="card-body">
+                            <form class="form-horizontal form-bordered" method="get" id="form_">
                                 <div class="row">
                                     <div class="col-lg-3 labelalign">
-                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark">Select
-                                        Order Number</label>
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark">Trip#</label>
                                     </div>
                                     <div class="col-lg-6">
-                                    <!-- <select data-plugin-selectTwo class="form-control populate">
-                                        <optgroup label="">
-                                            <option value="1">650 LTL</option>
-                                            <option value="2">386 FTL</option>
-                                            <option value="2">78789 LTL</option>
-                                            <option value="2">7400 FTL</option>
-                                            <option value="2">T660</option>
-                                        </optgroup>
-                                    </select> -->
-                                    <a href="#orderModal" class="modal-with-form "><input type="text" class="form-control"></a>
+                                       <a href="#orderModal" class="modal-with-form "><input type="text" class="form-control"></a>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
+                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-3 labelalign">
-                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark">Dispatcher</label>
-                                    </div>
                                     <div class="col-lg-6">
-                                    <p class="font-weight-semibold text-5  pt-1">Mike</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-3 labelalign">
-                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark">Select
-                                        Permanent Route</label>
-                                    </div>
-                                    <div class="col-lg-6">
-                                    <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="258" tabindex="-1" aria-hidden="true">
-                                        <optgroup label="">
-                                            <option value="1" data-select2-id="260">Wallmart - Warehouse House</option>
-                                            <option value="2">Wallmart - Warehouse House</option>
-                                            <option value="2">Wallmart - Warehouse House</option>
-                                            <option value="2">Wallmart - Warehouse House</option>
-                                            <option value="2">Wallmart - Warehouse House</option>
-                                        </optgroup>
-                                    </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="259" style="width: 231px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-kvgf-container"><span class="select2-selection__rendered" id="select2-kvgf-container" role="textbox" aria-readonly="true" title="Wallmart - Warehouse House">Wallmart - Warehouse House</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
-                                    
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-3 labelalign">
-                                    </div>
-                                    <div class="col-lg-6">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <!-- <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-3 labelalign">
-                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark">Select
-                                        Trip Type</label>
-                                    </div>
-                                    <div class="col-lg-9">
-                                    <div class="row pt-2">
-                                        <div class="col-lg-4 px-0 labelalign">
-                                            <div class="radio pr-4">
-                                                <label>
-                                                <input type="radio" name="tripType"
-                                                id="trip_type_regular" onclick="trip_type()" checked value="regular">
-                                                Regular
-                                                </label>
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select
+                                                    Order Number</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <a href="#orderModal" class="modal-with-form ">
+                                                    <input type="text"class="form-control"></a>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4  pr-0">
-                                            <div class="radio pl-4">
-                                                <label>
-                                                <input type="radio" name="tripType"
-                                                id="trip_type_outsourced" onclick="trip_type()" value="outsourced">
-                                                Outsourced
-                                                </label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-4 labelalign">
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Dispatcher</label>
                                             </div>
-                                        </div> 
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>   -->
-                                <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-3 labelalign">
-                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#</label>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                        <input type="text" class="form-control">
-                                    </div>                                
-                                </div>
-                                </div> 
-                                <div class="col-lg-3">
-                                <div class="row">
-                                    <div class="col-lg-6 labelalign">
-                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark">Reefer Temperature</label>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                    <div class="row">
-                                                                <div class="col-lg-6 pr-0">
-                                                                    <input type="number" class="form-control">
-                                                                </div>
-                                                                <div class="col-lg-6 pl-0">
-                                                                    <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="261" tabindex="-1" aria-hidden="true">
-                                                                        <optgroup label="">
-                                                                            <option value="1" data-select2-id="263">F</option>
-                                                                            <option value="2">C</option>
-                                                                        </optgroup>
-                                                                    </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="262" style="width: 50.25px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-zj86-container"><span class="select2-selection__rendered" id="select2-zj86-container" role="textbox" aria-readonly="true" title="F">F</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
-                                                                </div>
-                                                            </div>
-                                    </div>                                
-                                </div>
-                                </div>
-                        </div>
-                        <!-- <div class="row my-2" id="tripType_vehicleDiv">
-                            <div class="col-lg-6">
-                                <h4 class="mt-0 text-dark font-weight-bold text-4">Map Assets</h4>
-                                <div class="row mt-3">
-                                    <div class="col-lg-3 labelalign">
-                                    <label
-                                        class="control-label font-weight-semibold labelmt text-3 text-dark">Vehicle</label>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                    <select data-plugin-selectTwo class="form-control populate">
-                                        <optgroup label="">
-                                            <option value="1">Ford F-650</option>
-                                            <option value="2">Peterbilt 386</option>
-                                            <option value="2">G-3 Resources LLC Truck</option>
-                                            <option value="2">7400 SBA Dump Truck</option>
-                                            <option value="2">Kenworth T660</option>
-                                        </optgroup>
-                                    </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                    <a class="btn btn-success btn-sm modal-with-form" href="#addVehicleModal"><i class="fas fa-plus"></i></a>
+                                            <div class="col-lg-6">
+                                                <p class="font-weight-semibold text-5  pt-1">Mike</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row mt-3">
-                                    <div class="col-lg-3 labelalign">
-                                    <label
-                                        class="control-label font-weight-semibold labelmt text-3 text-dark">Trailer</label>
+                                <div class="row my-2">
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select
+                                                    Permanent Route</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <select class="form-control populate">
+                                                    <option>Select Route</option>
+                                                    <option *ngFor="let route of routes" value="{{ route.routeID }}">{{ route.routeName }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-6">
-                                    <select data-plugin-selectTwo class="form-control populate">
-                                        <optgroup label="">
-                                            <option value="2">Asset 1</option>
-                                            <option value="2">Asset 2</option>
-                                            <option value="2">Asset 3</option>
-                                            <option value="1">Asset 4</option>
-                                            <option value="2">Asset 5</option>
-                                            <option value="2">Asset 6</option>
-                                            <option value="2">Asset 7</option>
-                                            <option value="2">Asset 8</option>
-                                        </optgroup>
-                                    </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                    <a class="btn btn-success btn-sm modal-with-form" href="#addAssetModal"><i class="fas fa-plus"></i></a>
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                            </div>
+                                            <div class="col-lg-6">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row mt-3">
-                                    <div class="col-lg-3 labelalign">
-                                    <label class="control-label font-weight-semibold text-3 text-dark">Selected
-                                        Assets</label>
-                                    </div>
-                                    <div class="col-lg-6">
-                                    <button type="button" onClick="this.style.visibility= 'hidden';"
-                                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Asset 1 <i
-                                            class="fas fa-times"></i></button>
-                                    <button type="button" onClick="this.style.visibility= 'hidden';"
-                                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Asset No 2nd <i
-                                            class="fas fa-times"></i></button>
-                                    <button type="button" onClick="this.style.visibility= 'hidden';"
-                                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default">Asset Number 3 <i
-                                            class="fas fa-times"></i></button>
-                                    <button type="button" onClick="this.style.visibility= 'hidden';"
-                                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default">4th Asset <i
-                                            class="fas fa-times"></i></button>
-                                    <button type="button" onClick="this.style.visibility= 'hidden';"
-                                        class="mb-1 mt-1 mr-1 btn btn-xs btn-default">5 No Asset Detail <i
-                                            class="fas fa-times"></i></button>
-                                    </div>
-                                    <div class="col-lg-3">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="col-lg-12">
-                                    <h4 class="mt-0 text-dark font-weight-bold text-4">Assign Driver(s)</h4>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-3 labelalign">
-                                    <label
-                                        class="control-label font-weight-semibold labelmt text-3 text-dark">Driver</label>
-                                    </div>
-                                    <div class="col-lg-6">
-                                    <select data-plugin-selectTwo class="form-control populate">
-                                        <optgroup label="">
-                                            <option value="2">Brista</option>
-                                            <option value="2">Carry</option>
-                                            <option value="2">Laila</option>
-                                            <option value="2">Manjot</option>
-                                            <option value="2">Heera</option>
-                                            <option value="2">Sagar</option>
-                                            <option value="1">Kristof</option>
-                                            <option value="2">Harry</option>
-                                        </optgroup>
-                                    </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                    <a class="btn btn-success btn-sm modal-with-form" href="#addDriverModal"><i class="fas fa-plus"></i></a>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-lg-3 labelalign">
-                                    <label
-                                        class="control-label font-weight-semibold labelmt text-3 text-dark">Co-Driver</label>
-                                    </div>
-                                    <div class="col-lg-6">
-                                    <select data-plugin-selectTwo class="form-control populate">
-                                        <optgroup label="">
-                                            <option value="2">Brista</option>
-                                            <option value="2">Carry</option>
-                                            <option value="2">Laila</option>
-                                            <option value="2">Manjot</option>
-                                            <option value="2">Heera</option>
-                                            <option value="2">Sagar</option>
-                                            <option value="1">Kristof</option>
-                                            <option value="2">Harry</option>
-                                        </optgroup>
-                                    </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                    <a class="btn btn-success btn-sm modal-with-form" href="#addDriverModal"><i class="fas fa-plus"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row my-2"  id="tripType_carrierDiv" style="display:none;">
-                            <div class="col-lg-6">
-                                <div class="row mt-3">
-                                    <div class="col-lg-3 labelalign">
-                                    <label
-                                        class="control-label font-weight-semibold labelmt text-3 text-dark">Carrier</label>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                    <select data-plugin-selectTwo class="form-control populate">
-                                        <optgroup label="">
-                                            <option value="1">Ford F-650</option>
-                                            <option value="2">Peterbilt 386</option>
-                                            <option value="2">G-3 Resources LLC Truck</option>
-                                            <option value="2">7400 SBA Dump Truck</option>
-                                            <option value="2">Kenworth T660</option>
-                                        </optgroup>
-                                    </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                    <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
-                                    </div>
-                                </div>
-                            </div> 
-                            <div class="col-lg-3">
-                                <div class="row mt-3">
-                                    <div class="col-lg-4 labelalign">
-                                    <label
-                                        class="control-label font-weight-semibold labelmt text-3 text-dark">Carrier Payment</label>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                                <div class="row">
-                                                                <div class="col-lg-6 pr-0">
-                                                                    <input type="text" class="form-control">
-                                                                </div>
-                                                                <div class="col-lg-6 pl-0">
-                                                                    <select data-plugin-selectTwo class="form-control populate">
-                                                                        <optgroup label="">
-                                                                            <option value="1">USD</option>
-                                                                            <option value="2">CAD</option>
-                                                                        </optgroup>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                    </div>
-                                
-                                </div>
-                            </div>  
-                        </div> -->
-                        <div class="row my-2">
-                            <div class="col-lg-12">
-                            <h4 class="mt-0 text-dark font-weight-bold text-4">Plan Trip</h4>
-                            <table class="table table-sm table-bordered table-striped table-hover" id="locationTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Type</th>
-                                            <th>Date/Time</th>
-                                            <th>Name</th>
-                                            <th>Location</th>
-                                            <th>Miles</th>
-                                            <th>Truck</th>
-                                            <th>Trailer</th>
-                                            <th>Driver</th>
-                                            <th>Co-Driver</th>
-                                            <th>Carrier</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="ui-sortable example-list" cdkDropList (cdkDropListDropped)="drop($event)">
-                                        <tr class="ui-sortable-handle" cdkDrag *ngFor="let trip of trips; let i= index">
-                                            <td id="labelCell1{{i}}" class="labelRow{{i}}">{{ trip.type }}</td>
-                                            <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date }}</td>
-                                            <td id="labelCell3{{i}}" class="labelRow{{i}}"><a href="#addPickupLocationModal" class="modal-with-form">{{ trip.name }}</a></td>
-                                            <td id="labelCell4{{i}}" class="labelRow{{i}}">{{ trip.location }}</td>
-                                            <td id="labelCell5{{i}}" class="labelRow{{i}}">{{ trip.miles }}</td>
-                                            <td id="labelCell6{{i}}" class="labelRow{{i}}" data-toggle="modal" data-target="#mapAssetsModal">{{ trip.truck }}</td>
-                                            <td id="labelCell7{{i}}" class="labelRow{{i}}" data-toggle="modal" data-target="#mapAssetsModal">{{ trip.trailer }}</td>
-                                            <td id="labelCell8{{i}}" class="labelRow{{i}}" data-toggle="modal" data-target="#mapAssetsModal">{{ trip.driver }}</td>
-                                            <td id="labelCell9{{i}}" class="labelRow{{i}}" data-toggle="modal" data-target="#mapAssetsModal">{{ trip.coDriver }}</td>
-                                            <td id="labelCell10{{i}}" class="labelRow{{i}}">{{ trip.carrier }}</td>
-                                            <td class="labelRow{{i}}">
-                                                <i class="fas fa-edit mr-2" (click)="showEditRow(i)" ></i>
-                                                <i class="fas fa-trash-alt" (click) ="delRow(i)"></i>
-                                            </td>
+                                <div class="row my-2">
 
-                                            <!-- text fields -->
-                                            <td class="textRows editRow{{i}}">
-                                                <input type="text" class="form-control" id="editCell1{{i}}" value="{{ trip.type }}">
-                                            </td>
-                                            <td class="textRows editRow{{i}}">
-                                                <input type="date" class="form-control" id="editCell2{{i}}" value="{{ trip.date }}">
-                                            </td>
-                                            <td class="textRows editRow{{i}}">
-                                                <input type="text" class="form-control" id="editCell3{{i}}" value="{{ trip.name }}">
-                                            </td>
-                                            <td class="textRows editRow{{i}}" > 
-                                                <input type="text" class="form-control" id="editCell4{{i}}" data-toggle="modal" data-target="#locationModal" value="{{ trip.location }}">
-                                            </td>
-                                            <td class="textRows editRow{{i}}">
-                                                <input type="text" class="form-control" id="editCell5{{i}}" name="miles" value="{{ trip.miles }}">
-                                            </td>
-                                            <td class="textRows editRow{{i}}" >
-                                                <input type="text" class="form-control" id="editCell6{{i}}" data-toggle="modal" data-target="#mapAssetsModal" value="{{ trip.truck }}">
-                                            </td>
-                                            <td class="textRows editRow{{i}}"> 
-                                                <input type="text" class="form-control" id="editCell7{{i}}" data-toggle="modal" data-target="#mapAssetsModal" value="{{ trip.trailer }}">
-                                            </td>
-                                            <td class="textRows editRow{{i}}"> 
-                                                <input type="text" class="form-control" id="editCell8{{i}}" data-toggle="modal" data-target="#mapAssetsModal" value="{{ trip.driver }}">
-                                            </td>
-                                            <td class="textRows editRow{{i}}"> 
-                                                <input type="text" class="form-control" id="editCell9{{i}}" data-toggle="modal" data-target="#mapAssetsModal" value="{{ trip.coDriver }}">
-                                            </td>
-                                            <td class="textRows editRow{{i}}">
-                                                <select class="form-control" name="carrierID" id="editCell10{{i}}">
-                                                    <option value="">Select Carrier </option>
-                                                    <option *ngFor="let carrier of carriers" value="{{ carrier.carrierID }}">{{ carrier.businessDetail.carrierName }}</option>
-                                                </select>
-                                            </td>
-                                            <td class="textRows editRow{{i}}">
-                                                <i class="fas fa-check mr-2" (click)="editRow(i)"></i>
-                                                <i class="fas fa-times" (click)="closeEditRow(i)"></i>
-                                            </td>
-                                        </tr>
-                                        <tr class="ui-sortable-handle">
-                                            <td>
-                                                <input type="text" id="cell1" class="form-control newRow">
-                                            </td>
-                                            <td>
-                                                <input type="date" id="cell2" class="form-control newRow">
-                                            </td>
-                                            <td>
-                                                <input type="text" id="cell3" class="form-control newRow">
-                                            </td>
-                                            <td> 
-                                                <input type="text" id="cell4" class="form-control newRow" data-toggle="modal" data-target="#locationModal">
-                                            </td>
-                                            <td>
-                                                <input type="text" id="cell5" class="form-control newRow">
-                                            </td>
-                                            <td> 
-                                                <input type="text" id="cell6" class="form-control newRow" data-toggle="modal" data-target="#mapAssetsModal">
-                                            </td>
-                                            <td> 
-                                                <input type="text" id="cell7" class="form-control newRow" data-toggle="modal" data-target="#mapAssetsModal">
-                                            </td>
-                                            <td> 
-                                                <input type="text" id="cell8" class="form-control newRow" data-toggle="modal" data-target="#mapAssetsModal">
-                                            </td>
-                                            <td> 
-                                                <input type="text" id="cell9" class="form-control newRow" data-toggle="modal" data-target="#mapAssetsModal">
-                                            </td>
-                                            <td>
-                                                <select class="form-control newRow" name="carrierID" id="cell10">
-                                                    <option value="">Select Carrier </option>
-                                                    <option *ngFor="let carrier of carriers" value="{{ carrier.carrierID }}">{{ carrier.businessDetail.carrierName }}</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-success" (click)="addRow()">Add </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    </table>
-                                    <div class="row">
-                                    <div class="col-lg-12 text-right">
-                                    <button type="button" class="btn btn-sm btn-success">Plan Trip </button>
-                                    
-                                        <!-- <a href="#addPickupLocationModal" class="btn btn-success btn-xs modal-with-form">Add Pick Up Location</a>
-                                        <a href="#addDropLocationModal" class="btn btn-success btn-xs modal-with-form">Add Delivery Location</a> -->
-                                        <!-- <a href="#mapAssetsModal" class="btn btn-success btn-xs modal-with-form">Map Assets</a> -->
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#</label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
                                     </div>
-                                    </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9554789.297079882!2d-87.05246668116078!3d45.94972493605082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d7c63ba5%3A0x323555502ab4c477!2sToronto%2C%20ON%2C%20Canada!5e0!3m2!1sen!2sin!4v1581586600641!5m2!1sen!2sin" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen=""></iframe> -->
-                                <div id="map" class="mapclassmain" style="height: 600px;"><div style="position: relative; width: 100%; height: 100%; overflow: hidden; -webkit-tap-highlight-color: transparent;"><div style="z-index: 0; width: 100%; height: 100%; position: absolute; touch-action: none;"><div style="position: absolute; height: 100%; width: 100%; z-index: 0; background-color: transparent;"><canvas width="492" height="600" style="position: absolute; top: 0px; left: 0px; width: 492px; height: 600px; background-color: rgb(255, 255, 255);"></canvas><div style="position: absolute; width: 492px; height: 600px; z-index: 1;"></div><div style="position: absolute; width: 492px; height: 600px; z-index: 0;"></div></div></div><div class="H_imprint" style="position: absolute; bottom: 0px; right: 0px; left: 0px; z-index: 1; direction: ltr; pointer-events: none; user-select: none; font: 11px &quot;Lucida Grande&quot;, Arial, Helvetica, sans-serif;"><div class="H_logo" style="margin: 0px 0px 16px 16px; display: inline-block;"><svg height="40" viewBox="0 0 47 40" width="47" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="m45.2054149 8.82876345.6003191.40637037-.2240425.6914074-.4490426 1.38570368c-.1024468.3148889-.6998936 1.9596297-2.43 3.5918519l-.017234.0163704c-.188617.1887407-.3801064.3659259-.5467021.5084444l-.4605319.4285185-.486383.4516296-.1407447-.0702963c-.7257447.4583704-1.4926596.7886667-2.2796809.9831852l.5840426.5864445-.6769149.6817778-2.052766 2.0636296-.169468.1704444-.019149.0192593-2.3821276 2.3958518c-.4902128.8493334-1.1202128 1.6331852-1.8497873 2.3111112-.6031915.6047407-1.2504255 1.1054814-1.935 1.4954814l-.4777659.4805186-4.3247873 4.3506666-.0296808.0298519-.0315958.0269629-2.1532978 1.8171111-.2661702.2253334h-.3485107-3.8948936l-3.968617 3.9914815-1.3547873 1.3616296-.6769148.6808148-.6769149-.6808148-1.3538298-1.3616296-4.80925535-4.837926-3.2687234-3.2875555-1.63436171-1.6437778h2.3112766 4.62255319 2.67223407l-4.71063832-4.7368148-.6769149-.6808148.6769149-.6808148 4.93851062-4.9650371.6769149-.6798518.6769149.6808148 2.7296809 2.7454074c.9363829-.8820741 2.1485106-1.4685185 3.4037234-1.6562963.278617-1.4694815 1.0187234-2.834963 2.168617-3.9885926.5696808-.572 1.1843617-1.0438519 1.8335106-1.4107407l.2901064-.2917778 4.3094681-4.31985187c.5830851-1.0582963 1.4256383-1.78918519 2.0364893-2.12718519l.4471277-.24748148c.3829787-.7617037.9047872-1.47622222 1.5539362-2.12622222 1.510851-1.51666667 3.3165957-2.31881482 5.22-2.31881482.0871276 0 .1752127.00192593.2594681.00577778 1.9484042.06933334 3.8441489.97933334 5.4775532 2.62792593.1512765.15022222.3303191.34859259.5361702.5797037l.0526595.05874074c.1120213.12518519.2345745.26192593.370532.40733334l1.2657446 1.36066666.6328724.67985185-.6548936.65866667-.2508511.25325926zm-27.9288192 22.17414815h-9.57446804l4.78723404 4.8148148zm23.1864894-21.70422223c-.9220213 1.38666663-2.5180851 3.63037033-4.1984042 1.94133333l4.2510638-4.27651851c-.3810638-.41022222-.6711702-.754-.8923404-.97740741-2.2921277-2.31207407-4.8743617-2.34192593-6.8984043-.312-1.3528723 1.35681481-1.7071277 2.91007407-1.313617 4.38533332l-1.332766-1.52629628c-.385851.21474074-2.0182979 1.65918518-.7937234 3.84703708l-1.5252127-1.274963-2.0240426 2.0299259 2.7344681 2.7502222c-2.1121277-1.6861481-4.3889362-1.5205185-6.2157447.312-1.9560638 1.9615556-1.8181915 4.3381482-.3532979 6.293926l-.295851-.2946667c-1.9321277-1.9432593-4.0318085-1.2576296-5.0706383-.2128148-.8023405.8079259-1.2944681 1.9191852-1.0924468 2.6905185l-4.195532-4.2187407-2.22893613 2.2408148 8.25893613 8.3065185h4.4339362l-2.9767021-2.9938519c-.5893908-.6029568-.9604155-1.0987731-1.1531529-1.5232627-.3182349-.7008886-.1504161-1.2073234.3230465-1.680515.7334043-.7318519 1.583617-.2763704 3.0829787 1.2277777l2.9412766 2.9562963 2.2164894-2.2292592-2.7909575-2.8060741c2.0125532 1.5291852 4.4224468 1.612 6.5728724-.545037 1.3567021-1.2653334 1.7425532-2.4565185 1.7425532-2.4565185l-1.6755319-1.1314815c-.9229788 1.3866666-2.5152128 3.6361481-4.195532 1.9461481l4.2606383-4.2851852 2.655 2.6712593 2.3160639-2.3294074-3.3223405-3.3424445c-1.5520212-1.5609629-.6328723-3.0275555.0124469-3.5793333.3025531.6442222.7448936 1.2624445 1.3078723 1.8296296 2.1485106 2.1676297 4.9260638 2.6038519 7.3685106.1550371 1.3567022-1.2643704 1.7425532-2.4565185 1.7425532-2.4565185zm-3.6564894-1.35537321-2.0211702 2.03377777c-.9890425-1.18251851-.9392553-1.81422222-.3245744-2.43051851.7439361-.7462963 1.4993617-.43044445 2.3457446.39674074zm-12.4879787 12.56088884c-.9890425-1.1825185-.9411702-1.819037-.3284042-2.4353333.7448936-.7462963 1.5003191-.4304444 2.3467021.3967408z" fill="#0f1621" fill-opacity=".7" style="fill: rgb(255, 255, 255); fill-opacity: 0.6;"></path><path d="m17.2765957 31.0029116-4.787234 4.8148148-4.78723404-4.8148148zm23.1864894-21.70422223 1.6755319 1.13148153s-.385851 1.1921481-1.7425532 2.4565185c-2.4424468 2.4488148-5.22 2.0125926-7.3685106-.1550371-.5629787-.5671851-1.0053192-1.1854074-1.3078723-1.8296296-.6453192.5517778-1.5644681 2.0183704-.0124469 3.5793333l3.3223405 3.3424445-2.3160639 2.3294074-2.655-2.6712593-4.2606383 4.2851852c1.6803192 1.69 3.2725532-.5594815 4.195532-1.9461481l1.6755319 1.1314815s-.3858511 1.1911851-1.7425532 2.4565185c-2.1504256 2.157037-4.5603192 2.0742222-6.5728724.545037l2.7909575 2.8060741-2.2164894 2.2292592-2.9412766-2.9562963c-1.4993617-1.5041481-2.3495744-1.9596296-3.0829787-1.2277777-.4734626.4731916-.6412814.9796264-.3230465 1.680515.1927374.4244896.5637621.9203059 1.1531529 1.5232627l2.9767021 2.9938519h-4.4339362l-8.25893613-8.3065185 2.22893613-2.2408148 4.195532 4.2187407c-.2020213-.7713333.2901063-1.8825926 1.0924468-2.6905185 1.0388298-1.0448148 3.1385106-1.7304445 5.0706383.2128148l.295851.2946667c-1.4648936-1.9557778-1.6027659-4.3323704.3532979-6.293926 1.8268085-1.8325185 4.103617-1.9981481 6.2157447-.312l-2.7344681-2.7502222 2.0240426-2.0299259 1.5252127 1.274963c-1.2245745-2.1878519.4078724-3.63229634.7937234-3.84703708l1.332766 1.52629628c-.3935107-1.47525925-.0392553-3.02851851 1.313617-4.38533332 2.0240426-2.02992593 4.6062766-2.00007407 6.8984043.312.2211702.22340741.5112766.56718519.8923404.97740741l-4.2510638 4.27651851c1.6803191 1.689037 3.2763829-.5546667 4.1984042-1.94133333zm-16.1444681 11.20551563 2.0182979-2.0385925c-.846383-.8271852-1.6018085-1.1430371-2.3467021-.3967408-.612766.6162963-.6606383 1.2528148.3284042 2.4353333zm12.4879787-12.56088884c-.8463829-.82718519-1.6018085-1.14303704-2.3457446-.39674074-.6146809.61629629-.6644681 1.248.3245744 2.43051851z" fill="#fff" fill-opacity=".3" style="fill: rgb(15, 22, 33); fill-opacity: 0.3;"></path></g></svg></div><div class="H_copyright" style="right: 0px; bottom: 0px; position: absolute; background-color: rgba(255, 255, 255, 0.8); color: rgb(15, 22, 33); padding: 2px 16px;"><a target="_blank" href="https://legal.here.com/en/terms/serviceterms/us" style="color: inherit; margin: 0px 8px; text-decoration: none; pointer-events: all;">Terms of use</a><span style="margin: 0px 8px;">© 1987–2020 HERE</span></div></div><div class="H_ui"><div class="H_l_top H_l_left"><div class="H_l_anchor H_l_horizontal"></div><div class="H_l_anchor H_l_vertical"></div></div><div class="H_l_top H_l_right"><div class="H_l_anchor H_l_horizontal"></div><div class="H_l_anchor H_l_vertical"></div></div><div class="H_l_bottom H_l_left"><div class="H_l_anchor H_l_vertical"></div><div class="H_l_anchor H_l_horizontal"><div class="H_ctl H_el"><div class="H_btn H_el" title="Choose view"><svg xmlns="http://www.w3.org/2000/svg" class="H_icon" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M6.7,14.6 L4.5,16 L12,20.6 L19.5,16 L17.3,14.6 L19.1,13.5 L23,16 L12,23 L1,16 L4.9,13.5 L6.7,14.6 Z M12,2 L23,9 L12,16 L1,9 L12,2 Z"></path></svg></div><div class="H_overlay H_el"><div class="H_rdo H_el"><div class="H_rdo_title H_el">Choose view</div><div class="H_rdo_buttons H_el"><div class="H_btn H_el">Map view</div><div class="H_btn H_el">Satellite</div></div></div><div class="H_separator H_el"></div><div class="H_grp H_el"><div class="H_btn H_el H_active">Traffic conditions</div><div class="H_btn H_el H_active">Show traffic incidents</div></div></div></div><div class="H_ctl H_el H_zoom H_grp"><div class="H_btn H_el" title="Zoom out"><svg version="1.1" class="H_icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve"><path d="m5 10.6h14v2.8h-14z"></path></svg></div><div class="H_btn H_el" title="Zoom in"><svg version="1.1" class="H_icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve"><g><path d="m5 10.6h5.6v-5.6h2.8v5.6h5.6v2.8h-5.6v5.6h-2.8v-5.6h-5.6v-2.8z"></path></g></svg></div></div><div class="H_ctl H_el H_scalebar" title="Change to miles" style="direction: ltr;"><svg height="12" version="1.1" xmlns="http://www.w3.org/2000/svg" width="147"><polyline style="fill:none; stroke:white; stroke-width:4" points="2 2 2 10 145 10 145 2"></polyline><polyline style="fill:none; stroke:black; stroke-width:2" points="2 2 2 10 145 10 145 2"></polyline></svg><div style="padding: 0 0 0 10px">500 km</div></div></div></div><div class="H_l_bottom H_l_right"><div class="H_l_anchor H_l_vertical"></div><div class="H_l_anchor H_l_horizontal"></div></div><div class="H_l_anchor H_l_top H_l_center H_l_horizontal" style="margin-left: 0px;"></div><div class="H_l_anchor H_l_left H_l_middle H_l_vertical" style="margin-top: 0px;"></div><div class="H_l_anchor H_l_right H_l_middle H_l_vertical" style="margin-top: 0px;"></div><div class="H_l_anchor H_l_bottom H_l_center H_l_horizontal" style="margin-left: 0px;"></div></div></div></div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="col-lg-12">
-                                    <h3 class="mb-0 text-6 font-weight-bold text-dark">Trip Info</h3>
-                                    <div class="row">
-                                    <div class="col-lg-4 text-center">
-                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
-                                        <p class="mb-0 text-4 font-weight-semibold text-dark">Regina, SK</p>
-                                        <p class="mb-0 text-4 font-weight-semibold text-dark">SDG 320, Canada</p>
-                                        <p class="mb-0 text-4 font-weight-normal text-dark">20/15/2020 11:55 AM</p>
-                                    </div>
-                                    <div class="col-lg-4 text-center pt-3">
-                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
-                                        <p class="mb-0 text-4 font-weight-semibold text-dark">1060.00 Miles</p>
-                                    </div>
-                                    <div class="col-lg-4 text-center">
-                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination</p>
-                                        <p class="mb-0 text-4 font-weight-semibold text-dark">Surrey, BC</p>
-                                        <p class="mb-0 text-4 font-weight-semibold text-dark">VKM 1R1, Canada</p>
-                                        <p class="mb-0 text-4 font-weight-normal text-dark">21/15/2020 09:55 PM</p>
-                                    </div>
-                                    </div>
-                                    <div class="wizard-progress">
-                                    <div class="steps-progress">
-                                        <div class="progress-indicator" style="width: 0%;"></div>
-                                    </div>
-                                    <ul class="wizard-steps">
-                                        <li class="">
-                                            <a class="" href="" data-toggle="tab"><span></span>Pick Up 1<br>3/4/2020 03:10PM</a>
-                                        </li>
-                                        <li class="">
-                                            <a class="" href="" data-toggle="tab"><span></span>Pick Up 2<br>3/4/2020 03:10PM</a>
-                                        </li>
-                                        <li class="">
-                                            <a class="" href="" data-toggle="tab"><span></span>Pick Up 3<br>3/4/2020 03:10PM</a>
-                                        </li>
-                                        <li class="">
-                                            <a class="" href="" data-toggle="tab"><span></span>Stop 1<br>3/4/2020 03:10PM</a>
-                                        </li>
-                                        <li class="">
-                                            <a class="" href="" data-toggle="tab"><span></span>Destination<br>13/4/2020 03:10PM</a>
-                                        </li>
-                                    </ul>
+                                    <div class="col-lg-4">
+                                        <div class="row">
+                                            <div class="col-lg-6 labelalign">
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Reefer
+                                                    Temperature</label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="row">
+                                                    <div class="col-lg-6 pr-0">
+                                                        <input type="number" class="form-control">
+                                                    </div>
+                                                    <div class="col-lg-6 pl-0">
+                                                        <select class="form-control">
+                                                            <option value="1" data-select2-id="263">F</option>
+                                                            <option value="2">C</option>
+                                                        </select>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- <div class="col-lg-12">
+                                
+                                <div class="row my-2">
+                                    <div class="col-lg-12">
+                                        <h4 class="mt-0 text-dark font-weight-bold text-4">Plan Trip</h4>
+                                        <table class="table table-sm table-bordered table-striped table-hover"
+                                            id="locationTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Type</th>
+                                                    <th>Date/Time</th>
+                                                    <th>Name</th>
+                                                    <th>Location</th>
+                                                    <th>Miles</th>
+                                                    <th>Truck</th>
+                                                    <th>Trailer</th>
+                                                    <th>Driver</th>
+                                                    <th>Co-Driver</th>
+                                                    <th>Carrier</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="ui-sortable example-list" cdkDropList
+                                                (cdkDropListDropped)="drop($event)">
+                                                <tr class="ui-sortable-handle" cdkDrag
+                                                    *ngFor="let trip of trips; let i= index">
+                                                    <td id="labelCell1{{i}}" class="labelRow{{i}}">{{ trip.type }}</td>
+                                                    <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date }}</td>
+                                                    <td id="labelCell3{{i}}" class="labelRow{{i}}"><a
+                                                            href="#addPickupLocationModal"
+                                                            class="modal-with-form">{{ trip.name }}</a></td>
+                                                    <td id="labelCell4{{i}}" class="labelRow{{i}}">{{ trip.location }}
+                                                    </td>
+                                                    <td id="labelCell5{{i}}" class="labelRow{{i}}">{{ trip.miles }}</td>
+                                                    <td id="labelCell6{{i}}" class="labelRow{{i}}" data-toggle="modal"
+                                                        data-target="#mapAssetsModal">{{ trip.truck }}</td>
+                                                    <td id="labelCell7{{i}}" class="labelRow{{i}}" data-toggle="modal"
+                                                        data-target="#mapAssetsModal">{{ trip.trailer }}</td>
+                                                    <td id="labelCell8{{i}}" class="labelRow{{i}}" data-toggle="modal"
+                                                        data-target="#mapAssetsModal">{{ trip.driver }}</td>
+                                                    <td id="labelCell9{{i}}" class="labelRow{{i}}" data-toggle="modal"
+                                                        data-target="#mapAssetsModal">{{ trip.coDriver }}</td>
+                                                    <td id="labelCell10{{i}}" class="labelRow{{i}}">{{ trip.carrier }}
+                                                    </td>
+                                                    <td class="labelRow{{i}}">
+                                                        <i class="fas fa-edit mr-2" (click)="showEditRow(i)"></i>
+                                                        <i class="fas fa-trash-alt" (click)="delRow(i)"></i>
+                                                    </td>
+
+                                                    <!-- text fields -->
+                                                    <td class="textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell1{{i}}"
+                                                            value="{{ trip.type }}">
+                                                    </td>
+                                                    <td class="textRows editRow{{i}}">
+                                                        <input type="date" class="form-control" id="editCell2{{i}}"
+                                                            value="{{ trip.date }}">
+                                                    </td>
+                                                    <td class="textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell3{{i}}"
+                                                            value="{{ trip.name }}">
+                                                    </td>
+                                                    <td class="textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell4{{i}}"
+                                                            data-toggle="modal" data-target="#locationModal"
+                                                            value="{{ trip.location }}">
+                                                    </td>
+                                                    <td class="textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell5{{i}}"
+                                                            name="miles" value="{{ trip.miles }}">
+                                                    </td>
+                                                    <td class="textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell6{{i}}"
+                                                            data-toggle="modal" data-target="#mapAssetsModal"
+                                                            value="{{ trip.truck }}">
+                                                    </td>
+                                                    <td class="textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell7{{i}}"
+                                                            data-toggle="modal" data-target="#mapAssetsModal"
+                                                            value="{{ trip.trailer }}">
+                                                    </td>
+                                                    <td class="textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell8{{i}}"
+                                                            data-toggle="modal" data-target="#mapAssetsModal"
+                                                            value="{{ trip.driver }}">
+                                                    </td>
+                                                    <td class="textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell9{{i}}"
+                                                            data-toggle="modal" data-target="#mapAssetsModal"
+                                                            value="{{ trip.coDriver }}">
+                                                    </td>
+                                                    <td class="textRows editRow{{i}}">
+                                                        <select class="form-control" name="carrierID"
+                                                            id="editCell10{{i}}">
+                                                            <option value="">Select Carrier </option>
+                                                            <option *ngFor="let carrier of carriers"
+                                                                value="{{ carrier.carrierID }}">
+                                                                {{ carrier.businessDetail.carrierName }}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="textRows editRow{{i}}">
+                                                        <i class="fas fa-check mr-2" (click)="editRow(i)"></i>
+                                                        <i class="fas fa-times" (click)="closeEditRow(i)"></i>
+                                                    </td>
+                                                </tr>
+                                                <tr class="ui-sortable-handle">
+                                                    <td>
+                                                        <input type="text" id="cell1" class="form-control newRow">
+                                                    </td>
+                                                    <td>
+                                                        <input type="date" id="cell2" class="form-control newRow">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell3" class="form-control newRow">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell4" class="form-control newRow"
+                                                            data-toggle="modal" data-target="#locationModal">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell5" class="form-control newRow">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell6" class="form-control newRow"
+                                                            data-toggle="modal" data-target="#mapAssetsModal">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell7" class="form-control newRow"
+                                                            data-toggle="modal" data-target="#mapAssetsModal">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell8" class="form-control newRow"
+                                                            data-toggle="modal" data-target="#mapAssetsModal">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell9" class="form-control newRow"
+                                                            data-toggle="modal" data-target="#mapAssetsModal">
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control newRow" name="carrierID"
+                                                            id="cell10">
+                                                            <option value="">Select Carrier </option>
+                                                            <option *ngFor="let carrier of carriers"
+                                                                value="{{ carrier.carrierID }}">
+                                                                {{ carrier.businessDetail.carrierName }}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-sm btn-success"
+                                                            (click)="addRow()">Add </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="row">
+                                            <div class="col-lg-12 text-right">
+                                                <button type="button" class="btn btn-sm btn-success">Plan Trip </button>
+
+                                                <!-- <a href="#addPickupLocationModal" class="btn btn-success btn-xs modal-with-form">Add Pick Up Location</a>
+                                        <a href="#addDropLocationModal" class="btn btn-success btn-xs modal-with-form">Add Delivery Location</a> -->
+                                                <!-- <a href="#mapAssetsModal" class="btn btn-success btn-xs modal-with-form">Map Assets</a> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9554789.297079882!2d-87.05246668116078!3d45.94972493605082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d7c63ba5%3A0x323555502ab4c477!2sToronto%2C%20ON%2C%20Canada!5e0!3m2!1sen!2sin!4v1581586600641!5m2!1sen!2sin" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen=""></iframe> -->
+                                        <div id="map" class="mapclassmain" style="height: 600px;">
+                                            <div
+                                                style="position: relative; width: 100%; height: 100%; overflow: hidden; -webkit-tap-highlight-color: transparent;">
+                                                <div
+                                                    style="z-index: 0; width: 100%; height: 100%; position: absolute; touch-action: none;">
+                                                    <div
+                                                        style="position: absolute; height: 100%; width: 100%; z-index: 0; background-color: transparent;">
+                                                        <canvas width="492" height="600"
+                                                            style="position: absolute; top: 0px; left: 0px; width: 492px; height: 600px; background-color: rgb(255, 255, 255);"></canvas>
+                                                        <div
+                                                            style="position: absolute; width: 492px; height: 600px; z-index: 1;">
+                                                        </div>
+                                                        <div
+                                                            style="position: absolute; width: 492px; height: 600px; z-index: 0;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="H_imprint"
+                                                    style="position: absolute; bottom: 0px; right: 0px; left: 0px; z-index: 1; direction: ltr; pointer-events: none; user-select: none; font: 11px &quot;Lucida Grande&quot;, Arial, Helvetica, sans-serif;">
+                                                    <div class="H_logo"
+                                                        style="margin: 0px 0px 16px 16px; display: inline-block;"><svg
+                                                            height="40" viewBox="0 0 47 40" width="47"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <g fill="none" fill-rule="evenodd">
+                                                                <path
+                                                                    d="m45.2054149 8.82876345.6003191.40637037-.2240425.6914074-.4490426 1.38570368c-.1024468.3148889-.6998936 1.9596297-2.43 3.5918519l-.017234.0163704c-.188617.1887407-.3801064.3659259-.5467021.5084444l-.4605319.4285185-.486383.4516296-.1407447-.0702963c-.7257447.4583704-1.4926596.7886667-2.2796809.9831852l.5840426.5864445-.6769149.6817778-2.052766 2.0636296-.169468.1704444-.019149.0192593-2.3821276 2.3958518c-.4902128.8493334-1.1202128 1.6331852-1.8497873 2.3111112-.6031915.6047407-1.2504255 1.1054814-1.935 1.4954814l-.4777659.4805186-4.3247873 4.3506666-.0296808.0298519-.0315958.0269629-2.1532978 1.8171111-.2661702.2253334h-.3485107-3.8948936l-3.968617 3.9914815-1.3547873 1.3616296-.6769148.6808148-.6769149-.6808148-1.3538298-1.3616296-4.80925535-4.837926-3.2687234-3.2875555-1.63436171-1.6437778h2.3112766 4.62255319 2.67223407l-4.71063832-4.7368148-.6769149-.6808148.6769149-.6808148 4.93851062-4.9650371.6769149-.6798518.6769149.6808148 2.7296809 2.7454074c.9363829-.8820741 2.1485106-1.4685185 3.4037234-1.6562963.278617-1.4694815 1.0187234-2.834963 2.168617-3.9885926.5696808-.572 1.1843617-1.0438519 1.8335106-1.4107407l.2901064-.2917778 4.3094681-4.31985187c.5830851-1.0582963 1.4256383-1.78918519 2.0364893-2.12718519l.4471277-.24748148c.3829787-.7617037.9047872-1.47622222 1.5539362-2.12622222 1.510851-1.51666667 3.3165957-2.31881482 5.22-2.31881482.0871276 0 .1752127.00192593.2594681.00577778 1.9484042.06933334 3.8441489.97933334 5.4775532 2.62792593.1512765.15022222.3303191.34859259.5361702.5797037l.0526595.05874074c.1120213.12518519.2345745.26192593.370532.40733334l1.2657446 1.36066666.6328724.67985185-.6548936.65866667-.2508511.25325926zm-27.9288192 22.17414815h-9.57446804l4.78723404 4.8148148zm23.1864894-21.70422223c-.9220213 1.38666663-2.5180851 3.63037033-4.1984042 1.94133333l4.2510638-4.27651851c-.3810638-.41022222-.6711702-.754-.8923404-.97740741-2.2921277-2.31207407-4.8743617-2.34192593-6.8984043-.312-1.3528723 1.35681481-1.7071277 2.91007407-1.313617 4.38533332l-1.332766-1.52629628c-.385851.21474074-2.0182979 1.65918518-.7937234 3.84703708l-1.5252127-1.274963-2.0240426 2.0299259 2.7344681 2.7502222c-2.1121277-1.6861481-4.3889362-1.5205185-6.2157447.312-1.9560638 1.9615556-1.8181915 4.3381482-.3532979 6.293926l-.295851-.2946667c-1.9321277-1.9432593-4.0318085-1.2576296-5.0706383-.2128148-.8023405.8079259-1.2944681 1.9191852-1.0924468 2.6905185l-4.195532-4.2187407-2.22893613 2.2408148 8.25893613 8.3065185h4.4339362l-2.9767021-2.9938519c-.5893908-.6029568-.9604155-1.0987731-1.1531529-1.5232627-.3182349-.7008886-.1504161-1.2073234.3230465-1.680515.7334043-.7318519 1.583617-.2763704 3.0829787 1.2277777l2.9412766 2.9562963 2.2164894-2.2292592-2.7909575-2.8060741c2.0125532 1.5291852 4.4224468 1.612 6.5728724-.545037 1.3567021-1.2653334 1.7425532-2.4565185 1.7425532-2.4565185l-1.6755319-1.1314815c-.9229788 1.3866666-2.5152128 3.6361481-4.195532 1.9461481l4.2606383-4.2851852 2.655 2.6712593 2.3160639-2.3294074-3.3223405-3.3424445c-1.5520212-1.5609629-.6328723-3.0275555.0124469-3.5793333.3025531.6442222.7448936 1.2624445 1.3078723 1.8296296 2.1485106 2.1676297 4.9260638 2.6038519 7.3685106.1550371 1.3567022-1.2643704 1.7425532-2.4565185 1.7425532-2.4565185zm-3.6564894-1.35537321-2.0211702 2.03377777c-.9890425-1.18251851-.9392553-1.81422222-.3245744-2.43051851.7439361-.7462963 1.4993617-.43044445 2.3457446.39674074zm-12.4879787 12.56088884c-.9890425-1.1825185-.9411702-1.819037-.3284042-2.4353333.7448936-.7462963 1.5003191-.4304444 2.3467021.3967408z"
+                                                                    fill="#0f1621" fill-opacity=".7"
+                                                                    style="fill: rgb(255, 255, 255); fill-opacity: 0.6;">
+                                                                </path>
+                                                                <path
+                                                                    d="m17.2765957 31.0029116-4.787234 4.8148148-4.78723404-4.8148148zm23.1864894-21.70422223 1.6755319 1.13148153s-.385851 1.1921481-1.7425532 2.4565185c-2.4424468 2.4488148-5.22 2.0125926-7.3685106-.1550371-.5629787-.5671851-1.0053192-1.1854074-1.3078723-1.8296296-.6453192.5517778-1.5644681 2.0183704-.0124469 3.5793333l3.3223405 3.3424445-2.3160639 2.3294074-2.655-2.6712593-4.2606383 4.2851852c1.6803192 1.69 3.2725532-.5594815 4.195532-1.9461481l1.6755319 1.1314815s-.3858511 1.1911851-1.7425532 2.4565185c-2.1504256 2.157037-4.5603192 2.0742222-6.5728724.545037l2.7909575 2.8060741-2.2164894 2.2292592-2.9412766-2.9562963c-1.4993617-1.5041481-2.3495744-1.9596296-3.0829787-1.2277777-.4734626.4731916-.6412814.9796264-.3230465 1.680515.1927374.4244896.5637621.9203059 1.1531529 1.5232627l2.9767021 2.9938519h-4.4339362l-8.25893613-8.3065185 2.22893613-2.2408148 4.195532 4.2187407c-.2020213-.7713333.2901063-1.8825926 1.0924468-2.6905185 1.0388298-1.0448148 3.1385106-1.7304445 5.0706383.2128148l.295851.2946667c-1.4648936-1.9557778-1.6027659-4.3323704.3532979-6.293926 1.8268085-1.8325185 4.103617-1.9981481 6.2157447-.312l-2.7344681-2.7502222 2.0240426-2.0299259 1.5252127 1.274963c-1.2245745-2.1878519.4078724-3.63229634.7937234-3.84703708l1.332766 1.52629628c-.3935107-1.47525925-.0392553-3.02851851 1.313617-4.38533332 2.0240426-2.02992593 4.6062766-2.00007407 6.8984043.312.2211702.22340741.5112766.56718519.8923404.97740741l-4.2510638 4.27651851c1.6803191 1.689037 3.2763829-.5546667 4.1984042-1.94133333zm-16.1444681 11.20551563 2.0182979-2.0385925c-.846383-.8271852-1.6018085-1.1430371-2.3467021-.3967408-.612766.6162963-.6606383 1.2528148.3284042 2.4353333zm12.4879787-12.56088884c-.8463829-.82718519-1.6018085-1.14303704-2.3457446-.39674074-.6146809.61629629-.6644681 1.248.3245744 2.43051851z"
+                                                                    fill="#fff" fill-opacity=".3"
+                                                                    style="fill: rgb(15, 22, 33); fill-opacity: 0.3;">
+                                                                </path>
+                                                            </g>
+                                                        </svg></div>
+                                                    <div class="H_copyright"
+                                                        style="right: 0px; bottom: 0px; position: absolute; background-color: rgba(255, 255, 255, 0.8); color: rgb(15, 22, 33); padding: 2px 16px;">
+                                                        <a target="_blank"
+                                                            href="https://legal.here.com/en/terms/serviceterms/us"
+                                                            style="color: inherit; margin: 0px 8px; text-decoration: none; pointer-events: all;">Terms
+                                                            of use</a><span style="margin: 0px 8px;">© 1987–2020
+                                                            HERE</span></div>
+                                                </div>
+                                                <div class="H_ui">
+                                                    <div class="H_l_top H_l_left">
+                                                        <div class="H_l_anchor H_l_horizontal"></div>
+                                                        <div class="H_l_anchor H_l_vertical"></div>
+                                                    </div>
+                                                    <div class="H_l_top H_l_right">
+                                                        <div class="H_l_anchor H_l_horizontal"></div>
+                                                        <div class="H_l_anchor H_l_vertical"></div>
+                                                    </div>
+                                                    <div class="H_l_bottom H_l_left">
+                                                        <div class="H_l_anchor H_l_vertical"></div>
+                                                        <div class="H_l_anchor H_l_horizontal">
+                                                            <div class="H_ctl H_el">
+                                                                <div class="H_btn H_el" title="Choose view"><svg
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        class="H_icon" viewBox="0 0 24 24">
+                                                                        <path fill-rule="evenodd"
+                                                                            d="M6.7,14.6 L4.5,16 L12,20.6 L19.5,16 L17.3,14.6 L19.1,13.5 L23,16 L12,23 L1,16 L4.9,13.5 L6.7,14.6 Z M12,2 L23,9 L12,16 L1,9 L12,2 Z">
+                                                                        </path>
+                                                                    </svg></div>
+                                                                <div class="H_overlay H_el">
+                                                                    <div class="H_rdo H_el">
+                                                                        <div class="H_rdo_title H_el">Choose view</div>
+                                                                        <div class="H_rdo_buttons H_el">
+                                                                            <div class="H_btn H_el">Map view</div>
+                                                                            <div class="H_btn H_el">Satellite</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="H_separator H_el"></div>
+                                                                    <div class="H_grp H_el">
+                                                                        <div class="H_btn H_el H_active">Traffic
+                                                                            conditions</div>
+                                                                        <div class="H_btn H_el H_active">Show traffic
+                                                                            incidents</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="H_ctl H_el H_zoom H_grp">
+                                                                <div class="H_btn H_el" title="Zoom out"><svg
+                                                                        version="1.1" class="H_icon"
+                                                                        xmlns="http://www.w3.org/2000/svg" x="0px"
+                                                                        y="0px" viewBox="0 0 24 24"
+                                                                        enable-background="new 0 0 24 24"
+                                                                        xml:space="preserve">
+                                                                        <path d="m5 10.6h14v2.8h-14z"></path>
+                                                                    </svg></div>
+                                                                <div class="H_btn H_el" title="Zoom in"><svg
+                                                                        version="1.1" class="H_icon"
+                                                                        xmlns="http://www.w3.org/2000/svg" x="0px"
+                                                                        y="0px" viewBox="0 0 24 24"
+                                                                        enable-background="new 0 0 24 24"
+                                                                        xml:space="preserve">
+                                                                        <g>
+                                                                            <path
+                                                                                d="m5 10.6h5.6v-5.6h2.8v5.6h5.6v2.8h-5.6v5.6h-2.8v-5.6h-5.6v-2.8z">
+                                                                            </path>
+                                                                        </g>
+                                                                    </svg></div>
+                                                            </div>
+                                                            <div class="H_ctl H_el H_scalebar" title="Change to miles"
+                                                                style="direction: ltr;"><svg height="12" version="1.1"
+                                                                    xmlns="http://www.w3.org/2000/svg" width="147">
+                                                                    <polyline
+                                                                        style="fill:none; stroke:white; stroke-width:4"
+                                                                        points="2 2 2 10 145 10 145 2"></polyline>
+                                                                    <polyline
+                                                                        style="fill:none; stroke:black; stroke-width:2"
+                                                                        points="2 2 2 10 145 10 145 2"></polyline>
+                                                                </svg>
+                                                                <div style="padding: 0 0 0 10px">500 km</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="H_l_bottom H_l_right">
+                                                        <div class="H_l_anchor H_l_vertical"></div>
+                                                        <div class="H_l_anchor H_l_horizontal"></div>
+                                                    </div>
+                                                    <div class="H_l_anchor H_l_top H_l_center H_l_horizontal"
+                                                        style="margin-left: 0px;"></div>
+                                                    <div class="H_l_anchor H_l_left H_l_middle H_l_vertical"
+                                                        style="margin-top: 0px;"></div>
+                                                    <div class="H_l_anchor H_l_right H_l_middle H_l_vertical"
+                                                        style="margin-top: 0px;"></div>
+                                                    <div class="H_l_anchor H_l_bottom H_l_center H_l_horizontal"
+                                                        style="margin-left: 0px;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="col-lg-12">
+                                            <h3 class="mb-0 text-6 font-weight-bold text-dark">Trip Info</h3>
+                                            <div class="row">
+                                                <div class="col-lg-4 text-center">
+                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">Regina, SK</p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">SDG 320,
+                                                        Canada</p>
+                                                    <p class="mb-0 text-4 font-weight-normal text-dark">20/15/2020 11:55
+                                                        AM</p>
+                                                </div>
+                                                <div class="col-lg-4 text-center pt-3">
+                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">1060.00 Miles
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-4 text-center">
+                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
+                                                    </p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">Surrey, BC</p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">VKM 1R1,
+                                                        Canada</p>
+                                                    <p class="mb-0 text-4 font-weight-normal text-dark">21/15/2020 09:55
+                                                        PM</p>
+                                                </div>
+                                            </div>
+                                            <div class="wizard-progress">
+                                                <div class="steps-progress">
+                                                    <div class="progress-indicator" style="width: 0%;"></div>
+                                                </div>
+                                                <ul class="wizard-steps">
+                                                    <li class="">
+                                                        <a class="" href="" data-toggle="tab"><span></span>Pick Up
+                                                            1<br>3/4/2020 03:10PM</a>
+                                                    </li>
+                                                    <li class="">
+                                                        <a class="" href="" data-toggle="tab"><span></span>Pick Up
+                                                            2<br>3/4/2020 03:10PM</a>
+                                                    </li>
+                                                    <li class="">
+                                                        <a class="" href="" data-toggle="tab"><span></span>Pick Up
+                                                            3<br>3/4/2020 03:10PM</a>
+                                                    </li>
+                                                    <li class="">
+                                                        <a class="" href="" data-toggle="tab"><span></span>Stop
+                                                            1<br>3/4/2020 03:10PM</a>
+                                                    </li>
+                                                    <li class="">
+                                                        <a class="" href=""
+                                                            data-toggle="tab"><span></span>Destination<br>13/4/2020
+                                                            03:10PM</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-lg-12">
                                     <div class="row text-dark">
                                     <h4>Route Stops</h4>
                                     </div>
@@ -584,63 +569,75 @@
                                     </div>
                                     </div>
                                 </div> -->
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12 text-dark">
-                                <h3>Notificatons</h3>
-                            </div>
-                            <div class="col-lg-6">
+                                    </div>
+                                </div>
                                 <div class="row">
-                                    <div class="col-lg-3 labelalign">
-                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark">Planned
-                                        v/s Changed Route</label>
+                                    <div class="col-lg-12 text-dark">
+                                        <h3>Notificatons</h3>
                                     </div>
-                                    <div class="col-lg-6 col-md-12">
-                                    <div class="checkbox-custom checkbox-default">
-                                        <input type="checkbox" id="HazMat">
-                                        <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="HazMat">Notify Dispatcher about changed route?</label>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Planned
+                                                    v/s Changed Route</label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="checkbox-custom checkbox-default">
+                                                    <input type="checkbox" id="HazMat">
+                                                    <label
+                                                        class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                        for="HazMat">Notify Dispatcher about changed route?</label>
+                                                </div>
+                                                <div class="checkbox-custom checkbox-default">
+                                                    <input type="checkbox" id="HazMat">
+                                                    <label
+                                                        class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                        for="HazMat">Notify Dispatcher about pick up?</label>
+                                                </div>
+                                                <div class="checkbox-custom checkbox-default">
+                                                    <input type="checkbox" id="HazMat">
+                                                    <label
+                                                        class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                        for="HazMat">Notify Dispatcher about drop off?</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="checkbox-custom checkbox-default">
-                                        <input type="checkbox" id="HazMat">
-                                        <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="HazMat">Notify Dispatcher about pick up?</label>
-                                    </div>
-                                    <div class="checkbox-custom checkbox-default">
-                                        <input type="checkbox" id="HazMat">
-                                        <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="HazMat">Notify Dispatcher about drop off?</label>
-                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row ">
+                                            <div class="col-lg-3 labelalign">
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Trip
+                                                    Details</label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="checkbox-custom checkbox-default">
+                                                    <input type="checkbox" id="HazMat">
+                                                    <label
+                                                        class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                        for="HazMat">Send trip details to the driver</label>
+                                                </div>
+                                                <div class="checkbox-custom checkbox-default">
+                                                    <input type="checkbox" id="HazMat">
+                                                    <label
+                                                        class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                        for="HazMat">Send trip details to the dispatcher</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="row ">
-                                    <div class="col-lg-3 labelalign">
-                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark">Trip
-                                        Details</label>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                    <div class="checkbox-custom checkbox-default">
-                                        <input type="checkbox" id="HazMat">
-                                        <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="HazMat">Send trip details to the driver</label>
-                                    </div>
-                                    <div class="checkbox-custom checkbox-default">
-                                        <input type="checkbox" id="HazMat">
-                                        <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="HazMat">Send trip details to the dispatcher</label>
-                                    </div>
+                                <div class="row text-right">
+                                    <div class="col-lg-12">
+                                        <button class="mt-1 mr-2 btn btn-default" onclick="goBack()">Cancel</button>
+                                        <a href="all-trips.php" class="btn btn-success mt-1">Create Trip</a>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
-                        <div class="row text-right">
-                            <div class="col-lg-12">
-                                <button class="mt-1 mr-2 btn btn-default" onclick="goBack()">Cancel</button>
-                                <a href="all-trips.php" class="btn btn-success mt-1">Create Trip</a>
-                            </div>
-                        </div>
-                        </form>
-                    </div>
-                </section>
-            </div>
+                    </section>
+                </div>
             </div>
         </section>
     </div>
