@@ -1,14 +1,14 @@
-import {  Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services';
-import { Router, ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
-import { v4 as uuidv4 } from 'uuid';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { HereMapService } from '../../../../services/here-map.service';
+import {Component, OnInit} from '@angular/core';
+import {ApiService} from '../../../../services';
+import {Router, ActivatedRoute} from '@angular/router';
+import {map} from 'rxjs/operators';
+import {from} from 'rxjs';
+import {ToastrService} from 'ngx-toastr';
+import {AwsUploadService} from '../../../../services';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
+import {HereMapService} from '../../../../services';
+
 declare var $: any;
 
 @Component({
@@ -18,11 +18,11 @@ declare var $: any;
 })
 export class AddRouteComponent implements OnInit {
 
-  pageTitle:string;
-  errors:{};
-  routeData ={
+  pageTitle: string;
+  errors: {};
+  routeData = {
     sourceInformation: {
-      recurring:{
+      recurring: {
         recurringRoute: '',
         recurringType: '',
         recurringDate: '',
@@ -36,26 +36,26 @@ export class AddRouteComponent implements OnInit {
       }
     },
     destinationInformation: {
-      stop:{}
+      stop: {}
     },
   };
   form;
 
-  routeNo   = '';
+  routeNo = '';
   routeName = '';
-  notes     = '';
+  notes = '';
   VehicleID = '';
-  AssetID   = '';
-  miles     = "";
+  AssetID = '';
+  miles = '';
   driverUserName = '';
   coDriverUserName = '';
   sourceInformation = {
     sourceLocationID: '',
-    sourceAddress:'',
+    sourceAddress: '',
     sourceCountryID: '',
-    sourceStateID:'',
-    sourceCityID:'',
-    sourceZipCode:'',
+    sourceStateID: '',
+    sourceCityID: '',
+    sourceZipCode: '',
     recurring: {
       recurringRoute: '',
       recurringType: '',
@@ -74,10 +74,10 @@ export class AddRouteComponent implements OnInit {
     destinationLocationID: '',
     destinationAddress: '',
     destinationCountryID: '',
-    destinationStateID:'',
-    destinationCityID:'',
-    destinationZipCode:'',
-    stop:{
+    destinationStateID: '',
+    destinationCityID: '',
+    destinationZipCode: '',
+    stop: {
       destinationStop: '',
       stopLocation: '',
       stopNotes: ''
@@ -98,9 +98,9 @@ export class AddRouteComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = '';
-  Success: string = '';
-  mapView: boolean = false ;
+  Error = '';
+  Success = '';
+  mapView = false;
 
   locations = [
     {
@@ -122,8 +122,9 @@ export class AddRouteComponent implements OnInit {
   ];
 
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
-    private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar, 
-    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService) {}
+              private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar,
+              private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService) {
+  }
 
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
@@ -143,45 +144,45 @@ export class AddRouteComponent implements OnInit {
       this.form = $('#form_').validate();
     });
 
-    $('#recurringBtn').on('click', function(){
-      if(this.checked == true){
-        $("#recurringRadioDiv").css('display','block');
-        $("#recurringDate").css('display','block');
-      } else{
-        $("#recurringRadioDiv").css('display','none');
-        $("#recurringDate").css('display','none');
+    $('#recurringBtn').on('click', function () {
+      if (this.checked === true) {
+        $('#recurringRadioDiv').css('display', 'block');
+        $('#recurringDate').css('display', 'block');
+      } else {
+        $('#recurringRadioDiv').css('display', 'none');
+        $('#recurringDate').css('display', 'none');
       }
     });
 
-    $("#addStop").on('click', function(){
+    $('#addStop').on('click', function () {
       // alert('2');
     });
 
     var thiss = this;
-    $('.countrySelect').on('change', function(){
+    $('.countrySelect').on('change', function () {
       var curr = $(this);
       var countryId = curr.val();
       var countryType = curr.closest('select').attr('type');
       thiss.getStates(countryId, countryType);
     })
 
-    $('#routeCheckBtn').on('click', function() {
-      if(this.checked == true){
+    $('#routeCheckBtn').on('click', function () {
+      if (this.checked == true) {
         $('#routeMapDiv').css('display', 'flex');
         thiss.mapShow();
-      } else{
+      } else {
         $('#routeMapDiv').css('display', 'none');
       }
     })
 
-    $('.stateSelect').on('change', function(){
-      var curr = $(this);
-      var stateId = curr.val();
-      var stateType = curr.closest('select').attr('type');
+    $('.stateSelect').on('change', function () {
+      let curr = $(this);
+      let stateId = curr.val();
+      let stateType = curr.closest('select').attr('type');
       thiss.getCities(stateId, stateType);
     })
 
-    $(".reccRoute").on('click', function(){
+    $('.reccRoute').on('click', function () {
       // alert('redd');
       $('.reccRoute').removeClass('selRecc');
       $(this).addClass('selRecc');
@@ -196,26 +197,26 @@ export class AddRouteComponent implements OnInit {
       });
   }
 
-  fetchVehicles(){
+  fetchVehicles() {
     this.apiService.getData('vehicles')
-      .subscribe((result: any) =>{
+      .subscribe((result: any) => {
         this.vehicles = result.Items;
         // console.log('vehicles');
         // console.log(this.vehicles);
-    })
+      })
   }
 
-  fetchAssets(){
+  fetchAssets() {
     this.apiService.getData('assets')
-      .subscribe((result: any)=>{
+      .subscribe((result: any) => {
         this.assets = result.Items;
         console.log(this.assets);
       })
   }
 
-  fetchDrivers(){
+  fetchDrivers() {
     this.apiService.getData('drivers')
-      .subscribe((result: any)=>{
+      .subscribe((result: any) => {
         this.drivers = result.Items;
         console.log('this.drivers');
         console.log(this.drivers);
@@ -226,9 +227,9 @@ export class AddRouteComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('states/country/' + countryID)
       .subscribe((result: any) => {
-        if(countryType == 'source'){
+        if (countryType === 'source') {
           this.sourceStates = result.Items;
-        } else if(countryType == 'destination'){
+        } else if (countryType === 'destination') {
           this.destinationStates = result.Items;
         }
         this.spinner.hide();
@@ -240,9 +241,9 @@ export class AddRouteComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('cities/state/' + stateID)
       .subscribe((result: any) => {
-        if(stateType == 'source'){
+        if (stateType === 'source') {
           this.sourceCities = result.Items;
-        } else if(stateType == 'destination'){
+        } else if (stateType === 'destination') {
           this.destinationCities = result.Items;
         }
         this.spinner.hide();
@@ -258,17 +259,17 @@ export class AddRouteComponent implements OnInit {
   }
 
 
-  addRoute(){
-    console.log(this.routeData.sourceInformation.recurring);
+  addRoute() {
+    console.log(this.routeData);
 
-    if(this.routeData.sourceInformation.recurring.recurringType != ''){
-      if(this.routeData.sourceInformation.recurring.recurringType == 'weekly'){
-        if($('input.daysChecked:checked').length > 1){
+    if (this.routeData.sourceInformation.recurring.recurringType !== '') {
+      if (this.routeData.sourceInformation.recurring.recurringType === 'weekly') {
+        if ($('input.daysChecked:checked').length > 1) {
           this.toastr.error('Please select a single day for weekly recurring route');
           return false;
         }
-      } else if(this.routeData.sourceInformation.recurring.recurringType == 'biweekly'){
-        if($('input.daysChecked:checked').length > 2){
+      } else if (this.routeData.sourceInformation.recurring.recurringType === 'biweekly') {
+        if ($('input.daysChecked:checked').length > 2) {
           this.toastr.error('Please select only two days for biweekly recurring route');
           return false;
         }
@@ -281,28 +282,29 @@ export class AddRouteComponent implements OnInit {
     this.hasSuccess = false;
 
     this.apiService.postData('routes', this.routeData).subscribe({
-      complete: () => { },
-      error: (err) => {
+      complete: () => {
+      },
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              this.spinner.hide();
               const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/'([^']+)'/)[1];
+              const key = val.message.match(/"([^']+)"/)[1];
               console.log(key);
-              val.message = val.message.replace(/'.*'/, 'This Field');
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[key] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
-              this.Success = '';
               this.spinner.hide();
+              this.throwErrors();
             },
-            error: () => { },
-            next: () => { },
+            error: () => {
+            },
+            next: () => {
+            },
           });
       },
       next: (res) => {
