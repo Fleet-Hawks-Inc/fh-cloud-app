@@ -21,7 +21,7 @@ const routes: Routes = [
     children: [
       { path: 'logs', component: LogsComponent },
       { path: 'edit/:userName/:eventDate', component: EditComponent },
-      { path: 'detailed', component: DetailedComponent },
+      { path: 'detailed/:userName/:eventDate', component: DetailedComponent },
       { path: 'unidentified', component: UnidentifiedComponent },
       { path: 'summary', component: SummaryComponent },
       { path: 'daily-inspection', component: DailyInspectionComponent },

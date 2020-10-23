@@ -582,117 +582,38 @@
                           <li>M</li>
                         </ul>
                         <div class="gbox">
+                          
                           <svg style="height: 100%; width: 100%">
-                            <!-- OFf duty line -->
-                            <line
-                              x1="0"
-                              y1="40"
-                              x2="200"
-                              y2="40"
-                              style="stroke: rgb(0, 0, 0); stroke-width: 6"
-                            ></line>
-                            <!-- 1st divder starting from 37 -->
-                            <line
-                              x1="200"
-                              y1="103"
-                              x2="200"
-                              y2="37"
-                              style="stroke: rgb(0, 0, 0); stroke-width: 6"
-                            ></line>
-                            <!-- SB duty line -->
-                            <line
-                              x1="200"
-                              y1="100"
-                              x2="300"
-                              y2="100"
-                              style="stroke: rgb(0, 0, 0); stroke-width: 6"
-                            ></line>
-                            <!-- 2nd divder starting from 97 -->
-                            <line
-                              x1="300"
-                              y1="150"
-                              x2="300"
-                              y2="97"
-                              style="stroke: rgb(0, 0, 0); stroke-width: 6"
-                            ></line>
-                            <!-- Driving line -->
-                            <line
-                              x1="297"
-                              y1="150"
-                              x2="600"
-                              y2="150"
-                              style="stroke: rgb(0, 0, 0); stroke-width: 6"
-                            ></line>
-                            <!-- 3rd divder starting from 182 -->
-                            <line
-                              x1="600"
-                              y1="147"
-                              x2="600"
-                              y2="211"
-                              style="stroke: rgb(0, 0, 0); stroke-width: 6"
-                            ></line>
-                            <!-- ON duty line -->
-                            <line
-                              x1="600"
-                              y1="208"
-                              x2="800"
-                              y2="208"
-                              style="stroke: rgb(0, 0, 0); stroke-width: 6"
-                            ></line>
-                            <!-- 1st divder for go to off duty -->
-                            <line
-                              x1="800"
-                              y1="211"
-                              x2="800"
-                              y2="37"
-                              style="stroke: rgb(0, 0, 0); stroke-width: 6"
-                            ></line>
-                            <!-- OFf duty line -->
-                            <line
-                              x1="800"
-                              y1="40"
-                              x2="1050"
-                              y2="40"
-                              style="stroke: rgb(0, 0, 0); stroke-width: 6"
-                            ></line>
-                            <!-- 1st divder for go to off duty -->
-                            <line
-                              x1="1050"
-                              y1="213"
-                              x2="1050"
-                              y2="37"
-                              style="stroke: rgb(0, 0, 0); stroke-width: 6"
-                            ></line>
-                            <!-- ON duty line -->
-                            <line
-                              x1="1052"
-                              y1="210"
-                              x2="1298"
-                              y2="210"
-                              style="stroke: rgb(0, 0, 0); stroke-width: 6"
-                            ></line>
+                            <ng-container *ngFor="let duty of duties; let i = index">
+
+                              <!-- When index is 0  and there is last event-->
+                              <line *ngIf="i == 0 && lastEvent.HOSEventDescription != undefined" x1="0"  attr.y1="{{ types[duty.type] }}" attr.x2="{{ duty.time * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;"/>
+                              <line *ngIf="i == 0 && duties[i + 1] != undefined && lastEvent.HOSEventDescription != undefined" attr.x1="{{ duty.time * coordinates }}" attr.y1="{{ types[duties[i + 1].type] }}" attr.x2="{{ duty.time * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;"/>
+          
+                              <!-- When index is 0 and there is no last event-->
+                              <line *ngIf=" i == 0 && lastEvent.HOSEventDescription === undefined" attr.x1="{{ duty.time * coordinates }}" attr.y1="{{ types[duty.type] }}" attr.x2="{{ duty.nextStart * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;" />
+                              <line  *ngIf=" i == 0 &&  duties[i + 1] != undefined &&  lastEvent.HOSEventDescription === undefined"  attr.x1="{{ duty.nextStart * coordinates }}" attr.y1="{{ types[duties[i + 1].type] }}" attr.x2="{{ duty.nextStart * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;"/>         
+                                 
+                              <!-- When index is not 0 -->
+                              <line *ngIf="i != 0" attr.x1="{{ duties[i - 1].nextStart * coordinates }}" attr.y1="{{ types[duty.type] }}" attr.x2="{{ (duties[i - 1].nextStart + duty.time) * coordinates }}" attr.y2="{{ types[duty.type] }}" style="stroke: rgb(0, 0, 0); stroke-width: 2;" />
+                              <line *ngIf="i != 0 && duties[i + 1] != undefined" attr.x1="{{ (duties[i - 1].nextStart + duty.time) * coordinates}}" attr.y1="{{ types[duties[i + 1].type] }}" attr.x2="{{ (duties[i - 1].nextStart + duty.time) * coordinates}}" attr.y2="{{ types[duty.type] }}"  style="stroke: rgb(0, 0, 0); stroke-width: 2;" style="stroke: rgb(0, 0, 0); stroke-width: 2;" />
+                              
+                            </ng-container>
                           </svg>
                         </div>
                       </div>
                       <div class="grightbox text-left">
-                        <h5 class="font-weight-bold text-dark">4:20:10</h5>
-                        <h5
-                          class="font-weight-bold text-dark"
-                          style="padding-top: 40px"
-                        >
-                          2:00:00
+                        <h5 class="font-weight-bold text-dark">
+                          {{ accumulatedOFF * 1000 | date: "H:mm:ss":"UTC" }}
                         </h5>
-                        <h5
-                          class="font-weight-bold text-dark"
-                          style="padding-top: 40px"
-                        >
-                          4:10:00
+                        <h5 class="pt-5 font-weight-bold text-dark">
+                          {{ accumulatedSB * 1000 | date: "H:mm:ss":"UTC" }}
                         </h5>
-                        <h5
-                          class="font-weight-bold text-dark"
-                          style="padding-top: 34px"
-                        >
-                          9:05:00
+                        <h5 class="pt-5 font-weight-bold text-dark">
+                          {{ accumulatedD * 1000 | date: "H:mm:ss":"UTC" }}
+                        </h5>
+                        <h5 class="pt-5 font-weight-bold text-dark">
+                          {{ accumulatedON * 1000 | date: "H:mm:ss":"UTC" }}
                         </h5>
                       </div>
                       <div>
@@ -721,15 +642,14 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td><span class="onduty">ON</span>ON Duty</td>
-                          <td>12:00:00 AM</td>
+                        <tr *ngFor="let event of eventList; let i = index">
+                          <td><span class="onduty">ON</span>{{ event.type }} Duty</td>
+                          <td>{{ event.dateTime }}</td>
                           <td>7 mins 11 secs</td>
                           <td>12.8 km S of Portage, WI</td>
                           <td>5658 miles</td>
                           <td>
-                            This is real good business in the world evenin time
-                            of crisis.
+                            {{ event.eventComment }}
                           </td>
                           <td>
                             <a href="#editDetailedModal" class="modal-with-form"
