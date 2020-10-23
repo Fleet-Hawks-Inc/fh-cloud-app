@@ -25,8 +25,8 @@ export class LogsComponent implements OnInit {
               private parserFormatter: NgbDateParserFormatter,
               private datePipe: DatePipe) {
 
-    this.formattedToDate = this.datePipe.transform(new Date(),  'dd-MM-yyyy');
-    this.formattedFromDate = moment(this.datePipe.transform(new Date(), 'yyyy-MM-dd').toString()).subtract(2 , 'days').format('DD-MM-YYYY');
+ //   this.formattedToDate = this.datePipe.transform(new Date(),  'dd-MM-yyyy');
+   // this.formattedFromDate = moment(this.datePipe.transform(new Date(), 'yyyy-MM-dd').toString()).subtract(2 , 'days').format('DD-MM-YYYY');
 
     this.getInitialLogs();
 
@@ -60,7 +60,7 @@ export class LogsComponent implements OnInit {
 
   private getLogs() {
     this.apiService
-      .getData(`eventLogs/HOSSummary?userName=${this.userName}&fromDate=${this.formattedFromDate}&toDate=${this.formattedToDate}`)
+      .getData(`eventLogs/HOSLogs?userName=${this.userName}&fromDate=${this.formattedFromDate}&toDate=${this.formattedToDate}`)
       .subscribe((result: any) => {
       this.logs = result;
     });
