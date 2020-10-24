@@ -643,9 +643,16 @@
                       </thead>
                       <tbody>
                         <tr *ngFor="let event of eventList; let i = index">
-                          <td><span class="onduty">ON</span>{{ event.type }} Duty</td>
+                          <td>
+                            <span *ngIf="event.type == 'ON'" class="onduty">ON</span> 
+                            <span *ngIf="event.type == 'OFF'" class="offduty">OFF</span>
+                            <span *ngIf="event.type == 'YM'" class="ymduty">YM</span>
+                            <span *ngIf="event.type == 'SB'" class="sbduty">SB</span>
+                            <span *ngIf="event.type == 'PC'" class="pcduty">PC</span>
+                            <span *ngIf="event.type == 'D'" class="dutyonly">D</span>
+                            {{ event.type }} Duty</td>
                           <td>{{ event.dateTime }}</td>
-                          <td>7 mins 11 secs</td>
+                          <td>{{ event.toTime }} - {{ event.time }}</td>
                           <td>12.8 km S of Portage, WI</td>
                           <td>5658 miles</td>
                           <td>
@@ -657,70 +664,7 @@
                             >
                           </td>
                         </tr>
-                        <tr>
-                          <td><span class="offduty">OFF</span>OFF Duty</td>
-                          <td>12:00:00 AM</td>
-                          <td>7 mins 11 secs</td>
-                          <td>12.8 km S of Portage, WI</td>
-                          <td>5658 miles</td>
-                          <td>
-                            This is real good business in the world evenin time
-                            of crisis.
-                          </td>
-                          <td>
-                            <a href="#editDetailedModal" class="modal-with-form"
-                              ><i class="fas fa-pencil-alt"></i> Edit</a
-                            >
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><span class="onduty">ON</span>ON Duty</td>
-                          <td>12:00:00 AM</td>
-                          <td>7 mins 11 secs</td>
-                          <td>12.8 km S of Portage, WI</td>
-                          <td>5658 miles</td>
-                          <td>
-                            This is real good business in the world evenin time
-                            of crisis.
-                          </td>
-                          <td>
-                            <a href="#editDetailedModal" class="modal-with-form"
-                              ><i class="fas fa-pencil-alt"></i> Edit</a
-                            >
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><span class="ymduty">YM</span>Yard Move</td>
-                          <td>12:00:00 AM</td>
-                          <td>7 mins 11 secs</td>
-                          <td>12.8 km S of Portage, WI</td>
-                          <td>5658 miles</td>
-                          <td>
-                            This is real good business in the world evenin time
-                            of crisis.
-                          </td>
-                          <td>
-                            <a href="#editDetailedModal" class="modal-with-form"
-                              ><i class="fas fa-pencil-alt"></i> Edit</a
-                            >
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><span class="sbduty">SB</span>Sleeper</td>
-                          <td>12:00:00 AM</td>
-                          <td>7 mins 11 secs</td>
-                          <td>12.8 km S of Portage, WI</td>
-                          <td>5658 miles</td>
-                          <td>
-                            This is real good business in the world evenin time
-                            of crisis.
-                          </td>
-                          <td>
-                            <a href="#editDetailedModal" class="modal-with-form"
-                              ><i class="fas fa-pencil-alt"></i> Edit</a
-                            >
-                          </td>
-                        </tr>
+                     
                       </tbody>
                     </table>
                   </div>
