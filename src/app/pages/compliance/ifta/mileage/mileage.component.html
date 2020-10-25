@@ -165,7 +165,7 @@
                             <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Gallons</h2>
                           </div>
                           <div class="">
-                            <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">1298</h1>
+                            <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">{{totalGallons}}</h1>
                           </div>
                         </div>
                       </div>
@@ -196,61 +196,13 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>Alberta</td>
+                            <tr *ngFor = "let item of stateList"> 
+                              <td>{{item.stateID}}</td>
                               <td>45 miles</td>
                               <td>72.08 kms</td>
-                              <td>50 gal</td>
+                              <td>{{item.fuelGal}}</td>
                               <td>189.27 lit</td>
-                              <td>Diesel</td>
-                            </tr>
-                            <tr>
-                              <td>California</td>
-                              <td>458 miles</td>
-                              <td>737.08 kms</td>
-                              <td>50 gal</td>
-                              <td>189.27 lit</td>
-                              <td>Gasoline</td>
-                            </tr>
-                            <tr>
-                              <td>New York</td>
-                              <td>45 miles</td>
-                              <td>72.08 kms</td>
-                              <td>50 gal</td>
-                              <td>189.27 lit</td>
-                              <td>Diesel</td>
-                            </tr>
-                            <tr>
-                              <td>Alberta</td>
-                              <td>45 miles</td>
-                              <td>72.08 kms</td>
-                              <td>50 gal</td>
-                              <td>189.27 lit</td>
-                              <td>Propane</td>
-                            </tr>
-                            <tr>
-                              <td>California</td>
-                              <td>45 miles</td>
-                              <td>72.08 kms</td>
-                              <td>50 gal</td>
-                              <td>189.27 lit</td>
-                              <td>Gasoline</td>
-                            </tr>
-                            <tr>
-                              <td>Nevada</td>
-                              <td>45 miles</td>
-                              <td>72.08 kms</td>
-                              <td>50 gal</td>
-                              <td>189.27 lit</td>
-                              <td>Diesel</td>
-                            </tr>
-                            <tr>
-                              <td>Alberta</td>
-                              <td>45 miles</td>
-                              <td>72.08 kms</td>
-                              <td>50 gal</td>
-                              <td>189.27 lit</td>
-                              <td>Diesel</td>
+                              <td>{{item.fuelType}}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -281,61 +233,11 @@
                             <td>345 </td>
                             <td>{{entry.fuelGal}}</td>
                             <td>{{entry.fuelType}}</td>
-                            <td><button type="button" data-toggle="modal" data-target="#vehicleLogModal"
-                                class="btn btn-dark btn-xs mt-0 modal-with-form text-light">View Details</button></td>
+                            <td *ngIf = "entry.unitType === 'vehicle'"><button type="button" data-toggle="modal" data-target="#vehicleLogModal"
+                                class="btn btn-dark btn-xs mt-0 modal-with-form text-light" (click)='getFuelDetails(entry.vehicleID,entry.unitType,entry.stateID)'>View Details</button></td>
+                                <td *ngIf = "entry.unitType === 'reefer'"><button type="button" data-toggle="modal" data-target="#vehicleLogModal"
+                                  class="btn btn-dark btn-xs mt-0 modal-with-form text-light" (click)='getFuelDetails(entry.reeferID,entry.unitType,entry.stateID)'>View Details</button></td>
                           </tr>
-                          <!-- <tr>
-
-                            <td>1145</td>
-                            <td>Reefer</td>
-                            <td>IN</td>
-                            <td>345 </td>
-                            <td>45</td>
-                            <td>Diesel</td>
-
-                            <td><button type="button" data-toggle="modal" data-target="#vehicleLogModal"
-                                class="btn btn-dark btn-xs mt-0 modal-with-form text-light">View Details</button></td>
-
-                          </tr>
-                          <tr>
-
-                            <td>3451</td>
-                            <td>Vehicle</td>
-                            <td>IN</td>
-                            <td>345 </td>
-                            <td>45</td>
-                            <td>Diesel</td>
-
-                            <td><button type="button" data-toggle="modal" data-target="#vehicleLogModal"
-                                class="btn btn-dark btn-xs mt-0 modal-with-form text-light">View Details</button></td>
-
-                          </tr>
-                          <tr>
-
-                            <td>12334</td>
-                            <td>Reefer</td>
-                            <td>IN</td>
-                            <td>345 </td>
-                            <td>45</td>
-                            <td>Diesel</td>
-
-                            <td><button type="button" data-toggle="modal" data-target="#vehicleLogModal"
-                                class="btn btn-dark btn-xs mt-0 modal-with-form text-light">View Details</button></td>
-
-                          </tr>
-                          <tr>
-
-                            <td>97641</td>
-                            <td>Vehicle</td>
-                            <td>IN</td>
-                            <td>345 </td>
-                            <td>45</td>
-                            <td>Diesel</td>
-
-                            <td><button type="button" data-toggle="modal" data-target="#vehicleLogModal"
-                                class="btn btn-dark btn-xs mt-0 modal-with-form text-light">View Details</button></td>
-
-                          </tr> -->
                         </tbody>
                       </table>
                     </div>
@@ -443,8 +345,8 @@
 <!-- VEHICLE DETAIL REPORT -->
 <div class="modal fade" id="vehicleLogModal" tabindex="-1" role="dialog" aria-labelledby="vehicleLogModalLabel"
   aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
+  <div class="modal-dialog fuelDetailModal" role="document" >
+    <div class="modal-content fuelDetailModalWidth">
       <div class="modal-header">
         <h5 class="modal-title" id="vehicleLogModalLabel">Vehicle - Fuel Purchase Details , Jurisdiction - British
           Columbia</h5>
@@ -465,74 +367,30 @@
                   <th>Jurisdiction</th>
                   <th>Miles</th>
                   <th>Fuel(gal)</th>
-                  <th>Price per gal</th>
-                  <th>Cost Paid</th>
-                  <th>Odomenter Reading</th>
+                  <th>Cost/gal</th>
+                  <th>Amount(Paid)</th>
+                  <th>Odomenter</th>
                   <!-- <th>Odomenter End</th> -->
                   <th>Vendor</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngFor = "let item of unitList"> 
 
-                  <td>02/02/2020</td>
-                  <td>TR-345</td>
+                  <td>{{item.date}}</td>
+                  <td>{{item.tripID}}</td>
                   <td>100 st, King's Town, ALberta</td>
                   <td>100 st, Queen's Town, Calgary</td>
-                  <td>BC</td>
+                  <td>{{item.stateID}}</td>
                   <td>345 </td>
-                  <td>45</td>
-                  <td>5 CAD</td>
-                  <td>2345 CAD</td>
-                  <td>12572</td>
+                  <td>{{item.fuelQty}}</td>
+                  <td>{{item.costPerUnit}}</td>
+                  <td>{{item.amountPaid}}</td>
+                  <td>{{item.additionalDetails.odometer}}</td>
                   <!-- <td>13120</td> -->
-                  <td>Chaloes</td>
+                  <td>{{item.vendorID}}</td>
                 </tr>
-                <tr>
-
-                  <td>05/04/2020</td>
-                  <td>TR-125</td>
-                  <td>100 st, King's Town, ALberta</td>
-                  <td>100 st, Queen's Town, Calgary</td>
-                  <td>BC</td>
-                  <td>34 </td>
-                  <td>10</td>
-                  <td>5 CAD</td>
-                  <td>2345 CAD</td>
-                  <td>12572</td>
-                  <!-- <td>13120</td> -->
-                  <td>Vendor 1</td>
-                </tr>
-                <tr>
-
-                  <td>02/02/2020</td>
-                  <td>TR-345</td>
-                  <td>100 st, King's Town, ALberta</td>
-                  <td>100 st, Queen's Town, Calgary</td>
-                  <td>BC</td>
-                  <td>345 </td>
-                  <td>45</td>
-                  <td>5 CAD</td>
-                  <td>2345 CAD</td>
-                  <td>12572</td>
-                  <!-- <td>13120</td> -->
-                  <td>Beesta</td>
-                </tr>
-                <tr>
-
-                  <td>02/02/2020</td>
-                  <td>TR-345</td>
-                  <td>100 st, King's Town, ALberta</td>
-                  <td>100 st, Queen's Town, Calgary</td>
-                  <td>BC</td>
-                  <td>345 </td>
-                  <td>45</td>
-                  <td>5 CAD</td>
-                  <td>2345 CAD</td>
-                  <td>12572</td>
-                  <!-- <td>13120</td> -->
-                  <td>Chevron</td>
-                </tr>
+               
               </tbody>
             </table>
           </div>
