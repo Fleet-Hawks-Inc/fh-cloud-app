@@ -14,7 +14,7 @@
                             <span class="caret"></span>
                         </button>
                         <div class="dropdown-menu" role="menu"> 
-                            <a class="dropdown-item text-1 modal-with-form" href="#addCustomerModal">Customer</a> 
+                            <a class="dropdown-item text-1 modal-with-form" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" href="javascript:;">Customer</a> 
                             <a class="dropdown-item text-1 modal-with-form" href="#addDriverModal">Driver</a> 
                             <a class="dropdown-item text-1 modal-with-form" href="#addBrokerModal">Broker</a> 
                             <a class="dropdown-item text-1 modal-with-form" href="#addVendorModal">Vendor</a> 
@@ -1479,4 +1479,337 @@
         </div>
       </div>
     </div>
-  </div>
+</div>
+
+<!-- Add CUSTOMER Modal -->
+<div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1200px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Customer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="card-body p-0">
+                    <section class="card form-wizard" id="w1">
+                        <div class="card-body card-body-nopadding">
+                            <form class="form-horizontal"
+                                method="get"
+                                name="form"
+                                id="form_">
+                                <ul class="nav nav-tabs top-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Basic details</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Address</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Additional Contact</a>
+                                    </li>
+                                  </ul>
+                                  <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                        <div class="row pt-3">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Company
+                                                            Name
+                                                        </label>
+                                                        <input [(ngModel)]="customerData.companyName"
+                                                        name="companyName" type="text" class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">DBA
+                                                            Name
+                                                        </label>
+                                                        <input [(ngModel)]="customerData.dbaName"
+                                                        name="dbaName" type="text" class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                            First Name
+                                                        </label>
+                                                        <input [(ngModel)]="customerData.firstName"
+                                                        name="firstName" type="text" class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                            Last Name
+                                                        </label>
+                                                        <input [(ngModel)]="customerData.lastName"
+                                                        name="lastName" type="text" class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">EIN</label>
+                                                        <input [(ngModel)]="customerData.ein"
+                                                        name="ein" type="text" class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Account
+                                                            Number</label>
+                                                        <input [(ngModel)]="customerData.accountNumber"
+                                                        name="accountNumber" type="text" class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Work
+                                                            Phone</label>
+                                                        <input [(ngModel)]="customerData.workPhone"
+                                                        name="workPhone" type="text" class="form-control">
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Work
+                                                            Email</label>
+                                                        <input [(ngModel)]="customerData.workEmail"
+                                                        name="workEmail" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <div class="row  mb-5">
+                                                    <div class="col-lg-7 offset-lg-4 text-center mb-4"> 
+                                                        <img
+                                                        [src]="customerProfileSrc" height="150px" width="150px"><br>
+                                                        <div class="mt-3 btn btn-dark btn-sm">
+                                                            <input (change)="uploadDriverImg($event)" [(ngModel)]="customerData.customerProfile"
+                                                            name="customerProfile" type="file" class="hidden_input"> Add Picture 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right">MC</label>
+                                                        <input [(ngModel)]="customerData.mc"
+                                                        name="mc" type="text" class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right">DOT</label>
+                                                        <input [(ngModel)]="customerData.dot"
+                                                        name="dot" type="text" class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Fast</label>
+                                                        <input [(ngModel)]="customerData.fast"
+                                                        name="fast" type="text" class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Fast
+                                                            Expiry</label>
+                                                        <input [(ngModel)]="customerData.fastExpiry"
+                                                        name="fastExpiry" type="text" data-plugin-datepicker=""
+                                                            class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Trailer
+                                                            Preference</label>
+                                                        <select [(ngModel)]="customerData.trailerPreference"
+                                                        name="trailerPreference" class="form-control">
+                                                            <option>20 ft. sea container (closed top)</option>
+                                                            <option>20 ft. sea container (open top)</option>
+                                                            <option>40 ft. sea container (closed top)</option>
+                                                            <option>40 ft. sea container (open top)</option>
+                                                            <option>Auto carrier trailer</option>
+                                                            <option>Beverage rack trailer</option>
+                                                            <option>Chassis</option>
+                                                            <option>Container (closed top)</option>
+                                                            <option>Drop back trailer</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-12 d-flex justify-content-between mar-top-37">
+                                                        <div class="checkbox-custom pt-2">
+                                                            <input [(ngModel)]="customerData.csa"
+                                                            name="csa" type="checkbox" >
+                                                            <label for="csa">CSA</label>
+                                                        </div>
+                                                        <div class="checkbox-custom pt-2">
+                                                            <input [(ngModel)]="customerData.ctpat"
+                                                            name="ctpat" type="checkbox" >
+                                                            <label for="ctpat">CTPAT</label>
+                                                        </div>
+                                                        <div class="checkbox-custom pt-2">
+                                                            <input [(ngModel)]="customerData.pip"
+                                                            name="pip" type="checkbox">
+                                                            <label for="pip">PIP</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                        <div class="row pt-3">
+                                            <div class="col-lg-4 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            Type</label>
+                                                        <select [(ngModel)]="customerData.customerAddress.addressType"
+                                                        name="customerAddress.addressType" class="form-control populate">
+                                                            <optgroup label="Select Address">
+                                                                <option value="Billing Address">Billing Address</option>
+                                                                <option value="Shipping Address">Shipping Address</option>
+                                                                <option value="Office">Office</option>
+                                                                <option value="Other">Other</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Type
+                                                    Your Location</label>
+                                                <input type="text" class="form-control" placeholder="Type Address">
+                                                <div class="checkbox-custom pt-2">
+                                                    <input type="checkbox" name="terms">
+                                                    <label for="w1-terms">Type Manually</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1 mar-top-37 text-right">
+                                                <button class="btn btn-dark" type="submit"
+                                                    style="width: 100px;">Clear</button>
+                                            </div>
+                                            <div class="col-lg-4 offset-lg-1 pt-4">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    Country</label>
+                                                <select (change)= "getStates()" [(ngModel)]="customerData.customerAddress.countryID"
+                                                name="customerAddress.countryID" data-plugin-selectTwo class="form-control populate">
+                                                    <optgroup label="Select Country">
+                                                        <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        
+                                            <div class="col-lg-5 pt-4">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    State</label>
+                                                <select (change)= "getCities()"[(ngModel)]="customerData.customerAddress.stateID"
+                                                name="customerAddress.stateID" data-plugin-selectTwo class="form-control populate">
+                                                    <optgroup label="Select State">
+                                                        <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-4 offset-lg-1">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    City</label>
+                                                <select [(ngModel)]="customerData.customerAddress.cityID"
+                                                name="customerAddress.cityID" data-plugin-selectTwo class="form-control populate">
+                                                    <optgroup label="Select City">
+                                                        <option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                                    Code</label>
+                                                <input [(ngModel)]="customerData.customerAddress.addressZip"
+                                                name="customerAddress.addressZip" type="text" class="form-control"> 
+                                            </div>
+                                            <div class="col-lg-4 offset-lg-1">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                    1</label>
+                                                <input [(ngModel)]="customerData.customerAddress.address1"
+                                                name="customerAddress.address1" type="text" class="form-control"> 
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                    2</label>
+                                                <input [(ngModel)]="customerData.customerAddress.address2"
+                                                name="customerAddress.address2" type="text" class="form-control"> 
+                                            </div>  
+                                            <div class="col-lg-4 offset-lg-1 pt-3">
+                                                <div class="checkbox-custom">
+                                                    <input [(ngModel)]="customerData.customerAddress.saveAsLocation"
+                                                    name="saveAsLocation" type="checkbox" name="terms">
+                                                    <label for="w1-terms">Also Save as Location?</label>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                        <div class="row">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">First
+                                                            Name</label>
+                                                        <input [(ngModel)]="customerData.additionalContact.firstName"
+                                                        name="firstName" type="text" class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Last
+                                                            Name</label>
+                                                        <input [(ngModel)]="customerData.additionalContact.lastName"
+                                                        name="lastName" type="text" class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
+                                                        <input [(ngModel)]="customerData.additionalContact.phone"
+                                                        name="phone" type="text" class="form-control"> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                        <input [(ngModel)]="customerData.additionalContact.email"
+                                                        name="email" type="text" class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                        <input [(ngModel)]="customerData.additionalContact.designation"
+                                                        name="designation" type="text" class="form-control"> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
+                                                        <input [(ngModel)]="customerData.additionalContact.fax"
+                                                        name="fax" type="text" class="form-control"> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 text-right pb-4 pr-5">
+                                        <button type="button" class="btn btn-default">Cancel</button>
+                                        <a href="javascript:;" (click)="addCustomer()" class="btn btn-success">Submit</a>                            
+                                     </div>
+                                  </div>
+                                
+
+                            </form>
+                        </div>
+
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
