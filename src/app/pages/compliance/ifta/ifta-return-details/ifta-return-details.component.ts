@@ -26,7 +26,7 @@ export class IftaReturnDetailsComponent implements OnInit {
         this.stateList = result;
         console.log('State data', this.stateList);
         for(let i=0; i < this.stateList.length; i++){
-           this.totalGallons = this.totalGallons + this.stateList[i].fuelGal;
+           this.totalGallons = +(this.totalGallons + this.stateList[i].fuelGal);
          // console.log('fuel dal',this.stateList[i].fuelGal);
         }
       },

@@ -201,7 +201,7 @@
                               <td>45 miles</td>
                               <td>72.08 kms</td>
                               <td>{{item.fuelGal}}</td>
-                              <td>189.27 lit</td>
+                              <td>{{item.fuelLit}}</td>
                               <td>{{item.fuelType}}</td>
                             </tr>
                           </tbody>
@@ -348,8 +348,7 @@
   <div class="modal-dialog fuelDetailModal" role="document" >
     <div class="modal-content fuelDetailModalWidth">
       <div class="modal-header">
-        <h5 class="modal-title" id="vehicleLogModalLabel">Vehicle - Fuel Purchase Details , Jurisdiction - British
-          Columbia</h5>
+        <h5 class="modal-title" id="vehicleLogModalLabel">{{unitType}} - Fuel Purchase Details , Jurisdiction - {{modalStateName}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -383,9 +382,9 @@
                   <td>100 st, Queen's Town, Calgary</td>
                   <td>{{item.stateID}}</td>
                   <td>345 </td>
-                  <td>{{item.fuelQty}}</td>
-                  <td>{{item.costPerUnit}}</td>
-                  <td>{{item.amountPaid}}</td>
+                  <td>{{item.fuel.totalGallons}}</td>
+                  <td>{{item.fuel.costPerGallon}}</td>
+                  <td>{{item.amountPaid}}{{item.currency}}</td>
                   <td>{{item.additionalDetails.odometer}}</td>
                   <!-- <td>13120</td> -->
                   <td>{{item.vendorID}}</td>

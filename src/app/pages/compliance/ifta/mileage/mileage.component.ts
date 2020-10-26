@@ -15,6 +15,8 @@ export class MileageComponent implements OnInit {
   states = [];
   form;
   fuelList;
+  unitType = '';
+  modalStateName = '';
   baseState: string;
   baseCountry: string;
   accountNumber: string;
@@ -52,8 +54,8 @@ export class MileageComponent implements OnInit {
       baseCountry: this.baseCountry,
       accountNumber:  this.accountNumber
     };
-    console.log('data', data);
-    console.log('Signing Authority', this.signingAuthority);
+   // console.log('data', data);
+  //  console.log('Signing Authority', this.signingAuthority);
   }
   fuelEntries() {
     this.apiService.getData('fuelEntries/group/byunit').subscribe({
@@ -64,7 +66,7 @@ export class MileageComponent implements OnInit {
       next: (result: any) => {
         // console.log(result);
         this.fuelList = result;
-        console.log('fuel data', this.fuelList);
+     //   console.log('fuel data', this.fuelList);
       },
     });
   }
@@ -91,7 +93,6 @@ export class MileageComponent implements OnInit {
     });
   }
   getFuelDetails(ID, type, state){
-    console.log(' state', state);
     if(type === 'vehicle'){
       this. fetchFuelDetailVehicle(ID, state);
     }
@@ -102,23 +103,27 @@ export class MileageComponent implements OnInit {
   fetchFuelDetailVehicle(ID, state) {
     const vehicleID = ID;
     const stateID = state;
+    this.modalStateName = state;
+    this.unitType = 'Vehicle';
     this.apiService.getData('fuelEntries/vehicle/' + vehicleID)
       .subscribe((result: any) => {
         this.data = result.Items;
         console.log('Fetched Data', this.data);
         this.unitList = this.data.filter(v => v.stateID === stateID);
-        console.log('Vehicle list', this.unitList, 'state id', stateID);
+       // console.log('Vehicle list', this.unitList, 'state id', stateID);
       });
   }
   fetchFuelDetailReefer(ID, state) {
     const reeferID = ID;
     const stateID = state;
+    this.unitType = 'Reefer';
+    this.modalStateName = state;
     this.apiService.getData('fuelEntries/reefer/' + reeferID)
       .subscribe((result: any) => {
         this.data = result.Items;
         console.log('Fetched Data', this.data);
         this.unitList =  this.data.filter(r => r.stateID === stateID);
-        console.log('reefer list', this.unitList, 'state id', stateID);
+      //  console.log('reefer list', this.unitList, 'state id', stateID);
       });
   }
 }
