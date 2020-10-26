@@ -86,36 +86,41 @@
                      
                      <div class="card-body">
                          
-                         <table class="table table-responsive-md table-striped mb-0 dataTable no-footer simple-table w-100">
+                         <table datatable [dtOptions]="allOptions"  class="table table-bordered table-responsive-lg table-striped mb-0" *ngIf="documents?.length > 0">
                                      <thead>
                                          <tr>
-                                             <th width="6%">Document#</th>
-                                             <th width="5%">Trip ID</th>
-                                             <th width="8%">Type</th>
-                                             <th width="15%">Document Name</th>
-                                             <th width="15%">File Name</th>
+                                            <th width="10%">Document#</th>
+                                            <th width="10%">Trip ID</th>
+                                            <th width="10%">Type</th>
+                                            <th width="10%">Document Name</th>
+                                            <th>Uploaded By</th>
                                              <th width="15%">Uploaded On</th>
                                              <th width="22%">Description</th>
-                                             <th>Actions</th>
+                                             <th width="10%">Actions</th>
                                          </tr>
                                      </thead>
                                      <tbody>
                                          <tr *ngFor="let document of documents;let i = index;">
                                             <td>{{document.documentNumber}}</td>
-                                            <td>{{document.documentNumber}}</td>
-                                            <td class="p-0"><img src="assets/img/documents/pdf.png" class="document-type-image"></td>                                                <td>document1</td>
-                                            <td>document1.pdf</td>
+                                            <td>{{document.tripID}}</td>
+                                            <td>{{document.docType}}</td>
+                                            <td>{{document.documentName}}</td>
+                                            <td>{{currentUser}}</td>
                                             <td>{{document.timeCreated}}</td>
-                                            <td>{{document.documentNumber}}</td>
+                                            <td>{{document.description}}</td>
                                             <td>
                                                 <div class="dropdown dropright">
                                                    <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                       <i class="fas fa-ellipsis-v"></i>
                                                    </button>
-                                                   <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                      <a class="dropdown-item" data-toggle="modal" data-target="#addDocumentModal">Edit</a>
-                                                      <a class="dropdown-item" href="javascript:;" (click)="deactivateAsset(item.isDeleted, item.assetID)">Delete</a>
-                                                   </div>
+                                                   <div class="dropdown-menu"
+                                                        attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                        <a class="dropdown-item"
+                                                            (click)="editDocument(document.docID)">Edit</a>
+                                                        <a class="dropdown-item" href="javascript:;"
+                                                            (click)="deactivateAsset(document.isDeleted, document.docID)">Delete</a>
+                                                        <a class="dropdown-item" href="javascript:;">Download File</a>
+                                                    </div>
                                                  </div>
                                              </td>
                                          </tr>
@@ -268,7 +273,7 @@
     <div class="modal-dialog" style="max-width: 600px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addDocumentModalLabel">Sequence</h5>
+                <h5 class="modal-title" id="addDocumentModalLabel">{{modalTitle}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i>
                 </button>

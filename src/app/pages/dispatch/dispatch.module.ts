@@ -72,6 +72,10 @@ import {Injectable} from '@angular/core';
 import { ɵs } from '@ng-select/ng-select';
 import { NewDocumentsComponent } from './new-documents/new-documents.component';
 import { MyDocumentListComponent } from './new-documents/my-documents/my-document-list.component';
+import { OrdersListComponent } from './orders/orders-list/orders-list.component';
+import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
+import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
+
 
 
 /**
@@ -212,6 +216,10 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     EditRouteComponent,
     NewDocumentsComponent,
     MyDocumentListComponent,
+    OrdersListComponent,
+    AddOrdersComponent,
+    OrderDetailComponent,
+    
 
   ],
 

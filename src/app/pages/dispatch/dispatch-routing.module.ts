@@ -30,6 +30,9 @@ import { AddRouteComponent } from './permanent-routing/add-route/add-route.compo
 import { EditRouteComponent } from './permanent-routing/edit-route/edit-route.component';
 import { NewDocumentsComponent } from './new-documents/new-documents.component';
 import { MyDocumentListComponent } from './new-documents/my-documents/my-document-list.component';
+import { OrdersListComponent } from './orders/orders-list/orders-list.component';
+import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
+import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
 
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
@@ -83,6 +86,14 @@ const routes: Routes = [
       { path: '', component: NewDocumentsComponent},
       { path: 'my-documents', component: MyDocumentListComponent},
       { path: 'company-documents', component: CompanyDocumentsComponent }
+    ]
+  },
+  {
+    path: 'orders',
+    children: [
+      { path: '', component: OrdersListComponent},
+      { path: 'add', component: AddOrdersComponent},
+      { path: 'detail', component: OrderDetailComponent }
     ]
   },
   {
