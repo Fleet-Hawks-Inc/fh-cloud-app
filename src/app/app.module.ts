@@ -42,6 +42,7 @@ import { NgSelect2Module } from 'ng-select2';
 import {DataTablesModule} from 'angular-datatables';
 import {PreLoadStrategy} from './preload/PreLoadStrategy';
 import { SharedModalComponent } from './shared/shared-modal/shared-modal.component';
+import {DynamicModalDirective} from './directives/dynamic-modal.directive';
 
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -61,6 +62,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MapDashboardComponent,
     NavOpenedDirective,
     SharedModalComponent,
+    DynamicModalDirective,
   ],
   imports: [
     AmplifyAngularModule,

@@ -16,7 +16,7 @@ export class LeafletMapService {
 
     const here = {
       apiKey: environment.mapConfig.apiKey
-    }
+    };
     const style = 'normal.day';
 
     const hereTileUrl = `https://2.base.maps.ls.hereapi.com/maptile/2.1/trucktile/newest/${style}/{z}/{x}/{y}/512/png8?apiKey=${here.apiKey}&ppi=320&congestion=true`;
@@ -24,12 +24,12 @@ export class LeafletMapService {
     const map = L.map('map', {
       center: [51.058372, -114.032933],
       zoom: 18,
-      //layers: [L.tileLayer(hereTileUrl)]
+      // layers: [L.tileLayer(hereTileUrl)]
     });
     L.tileLayer.provider('HEREv3.satelliteDay', {
         apiKey: here.apiKey
     }).addTo(map);
-    //L.marker([37.773972, -122.431297]).addTo(map);
+    // L.marker([37.773972, -122.431297]).addTo(map);
 
     map.attributionControl.addAttribution('&copy; HERE 2020');
     // map.pm.addControls({
@@ -80,7 +80,7 @@ export class LeafletMapService {
     // });
 
     this.map = map;
-    return map
+    return map;
 
 
   }
