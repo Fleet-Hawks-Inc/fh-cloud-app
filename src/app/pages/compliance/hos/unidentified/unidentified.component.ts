@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../services/api.service';
+import * as moment from 'moment';
+declare var $: any;
 
 @Component({
   selector: 'app-unidentified',
@@ -7,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UnidentifiedComponent implements OnInit {
 
-  constructor() { }
+  logs = [];
+  fromDate = "";
+  toDate = "";
+  constructor(private apiService: ApiService) {
+ 
+  }
 
   ngOnInit() {
+    this.fetchUnIdentifiedLogs();
+  }
+  fetchUnIdentifiedLogs(){
+    this.apiService.getData(`eventLogs/HOSUnIdentified?fromDate=${this.fromDate}&toDate=${this.toDate}`).subscribe((result) => {
+      this.logs = result.Items;
+    })
   }
 
 }
