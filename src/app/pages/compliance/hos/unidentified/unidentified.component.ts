@@ -21,8 +21,8 @@ export class UnidentifiedComponent implements OnInit {
     this.fetchUnIdentifiedLogs();
   }
   fetchUnIdentifiedLogs(){
-    this.apiService.getData(`eventLogs/HOSUnIdentified`).subscribe((result) => {
-      this.logs = result;
+    this.apiService.getData(`eventLogs/HOSUnIdentified?fromDate=${this.fromDate}&toDate=${this.toDate}`).subscribe((result) => {
+      this.logs = result.Items;
     })
   }
 
