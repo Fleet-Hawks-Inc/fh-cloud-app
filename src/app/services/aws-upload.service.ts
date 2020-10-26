@@ -62,7 +62,7 @@ export class AwsUploadService {
       // this.filename = file;
      // return filename;
     });
-    //return this.filename;
+    // return this.filename;
 
     // for upload progress
     /* bucket.upload(params).on('httpUploadProgress', function (evt) {
@@ -91,7 +91,7 @@ export class AwsUploadService {
     const params = {
         Bucket: this.bucketName, // your bucket name,
         Key: `${carriedID}/${filename}` // path to the object you're looking for
-    }
+    };
     const data = await s3.getObject(params).promise();
     if (data) {
       // console.log('Successfully get files.', data);

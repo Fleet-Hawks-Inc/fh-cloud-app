@@ -131,7 +131,7 @@ export class HereMapService {
     this.platform = new H.service.Platform({
       'apikey': this.apiKey,
     });
-    if (query != '') {
+    if (query !== '') {
       const service = this.platform.getSearchService();
       const result = await service.geocode({ q: query });
       if (result && result.items.length > 0) {
