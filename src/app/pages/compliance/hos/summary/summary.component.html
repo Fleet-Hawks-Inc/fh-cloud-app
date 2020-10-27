@@ -648,132 +648,25 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
+                                    <tr *ngFor="let log of summary">
                                       <td
                                         onclick="window.location='driver-profile2.php';"
                                       >
-                                        David Thomas123
+                                        {{ log.userName }}
                                       </td>
                                       <td>100 street Ontario,Toronto</td>
-                                      <td>ELD</td>
+                                      <td>{{ log.HOSEventDescription }}</td>
                                       <td>Scania</td>
                                       <td>4566</td>
                                       <td>NY</td>
                                       <td>22232005</td>
                                       <td>
                                         <span class="badge badge-dark p-1"
-                                          >ON</span
+                                          >{{ log.HOSEventDescription }}</span
                                         >
                                       </td>
                                     </tr>
-                                    <tr>
-                                      <td
-                                        onclick="window.location='driver-profile2.php';"
-                                      >
-                                        David Thomas123
-                                      </td>
-                                      <td>100 street Ontario,Toronto</td>
-                                      <td>ELD</td>
-                                      <td>Scania</td>
-                                      <td>4566</td>
-                                      <td>NY</td>
-                                      <td>22232005</td>
-                                      <td>
-                                        <span class="badge badge-dark p-1"
-                                          >SB</span
-                                        >
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        onclick="window.location='driver-profile2.php';"
-                                      >
-                                        David Thomas123
-                                      </td>
-                                      <td>100 street Ontario,Toronto</td>
-                                      <td>ELD</td>
-                                      <td>Scania</td>
-                                      <td>4566</td>
-                                      <td>NY</td>
-                                      <td>22232005</td>
-                                      <td>
-                                        <span class="badge badge-dark p-1"
-                                          >SB</span
-                                        >
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        onclick="window.location='driver-profile2.php';"
-                                      >
-                                        David Thomas123
-                                      </td>
-                                      <td>100 street Ontario,Toronto</td>
-                                      <td>ELD</td>
-                                      <td>Scania</td>
-                                      <td>4566</td>
-                                      <td>NY</td>
-                                      <td>22232005</td>
-                                      <td>
-                                        <span class="badge badge-dark p-1"
-                                          >ON</span
-                                        >
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        onclick="window.location='driver-profile2.php';"
-                                      >
-                                        David Thomas123
-                                      </td>
-                                      <td>100 street Ontario,Toronto</td>
-                                      <td>ELD</td>
-                                      <td>Scania</td>
-                                      <td>4566</td>
-                                      <td>NY</td>
-                                      <td>22232005</td>
-                                      <td>
-                                        <span class="badge badge-dark p-1"
-                                          >OFF</span
-                                        >
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        onclick="window.location='driver-profile2.php';"
-                                      >
-                                        David Thomas123
-                                      </td>
-                                      <td>100 street Ontario,Toronto</td>
-                                      <td>ELD</td>
-                                      <td>Scania</td>
-                                      <td>4566</td>
-                                      <td>NY</td>
-                                      <td>22232005</td>
-                                      <td>
-                                        <span class="badge badge-dark p-1"
-                                          >ON</span
-                                        >
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        onclick="window.location='driver-profile2.php';"
-                                      >
-                                        David Thomas123
-                                      </td>
-                                      <td>100 street Ontario,Toronto</td>
-                                      <td>ELD</td>
-                                      <td>Scania</td>
-                                      <td>4566</td>
-                                      <td>NY</td>
-                                      <td>22232005</td>
-                                      <td>
-                                        <span class="badge badge-dark p-1"
-                                          >PC</span
-                                        >
-                                      </td>
-                                    </tr>
+                       
                                   </tbody>
                                 </table>
                               </div>
