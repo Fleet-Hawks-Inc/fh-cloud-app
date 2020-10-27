@@ -649,11 +649,7 @@
                                   </thead>
                                   <tbody>
                                     <tr *ngFor="let log of summary">
-                                      <td
-                                        onclick="window.location='driver-profile2.php';"
-                                      >
-                                        {{ log.userName }}
-                                      </td>
+                                      <td><a routerLink="">{{ log.userName }}</a></td>
                                       <td>100 street Ontario,Toronto</td>
                                       <td>{{ log.HOSEventDescription }}</td>
                                       <td>Scania</td>
@@ -666,7 +662,7 @@
                                         >
                                       </td>
                                     </tr>
-                       
+
                                   </tbody>
                                 </table>
                               </div>
