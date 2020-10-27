@@ -4,7 +4,6 @@ import { LogsComponent } from './hos/logs/logs.component';
 import { EditComponent } from './hos/edit/edit.component';
 import { DetailedComponent } from './hos/detailed/detailed.component';
 import { SummaryComponent } from './hos/summary/summary.component';
-import { DailyInspectionComponent } from './hos/daily-inspection/daily-inspection.component';
 import { InspectionDetailComponent } from './hos/inspection-detail/inspection-detail.component';
 import { DriverHosComponent } from './hos/driver-hos/driver-hos.component';
 import { MileageComponent } from './ifta/mileage/mileage.component';
@@ -21,7 +20,6 @@ const routes: Routes = [
       { path: 'detailed/:userName/:eventDate', component: DetailedComponent },
       { path: 'unidentified', component: UnidentifiedComponent },
       { path: 'summary', component: SummaryComponent },
-      { path: 'daily-inspection', component: DailyInspectionComponent },
       { path: 'inspection-detail', component: InspectionDetailComponent },
       { path: 'driver-hos', component: DriverHosComponent },
     ],
