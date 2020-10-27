@@ -1,5 +1,5 @@
 <section class="body">
-
+   
     <!-- start: header -->
     <app-header></app-header>
     <!-- end: header -->
@@ -20,6 +20,13 @@
          </header>
             <div class="card">
                 <div class="card-body">
+                  <agm-map [latitude]="lat" [longitude]="lng">
+                     <agm-direction 
+                       [origin]="origin" 
+                       [destination]="destination"
+                     >
+                     </agm-direction>
+                   </agm-map>
                   <form class="form-horizontal"
                   method="get"
                   name="form"
@@ -194,7 +201,11 @@
                             <div class="pl-0 pr-5">
                             <div class="toggle toggle-primary">
                                 <section *ngFor="let item of orderData.shipperInfo; let i = index;" class="toggle">
-                                    <label (click)="toggleAccordian(i)" class="text-dark text-5 font-weight-bold">Shipper {{i + 1}}</label>
+                                    <label (click)="toggleAccordian(i)" class="text-dark text-5 font-weight-bold">Shipper {{i + 1}} 
+                                       <span *ngIf="i != 0;" (click)="remove('shipper', i)" class="minus-sign btn btn-success btn-sm">
+                                          <i class="fas fa-minus fa-fw d-block m-0"></i>
+                                       </span> 
+                                    </label>
                                     <div class="" *ngIf="visibleIndex === i">
                                     <div class="row">
                                        <div class="col-lg-3 labelalign">
@@ -369,14 +380,14 @@
                                        <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
                                           <div class="radio-custom">
                                              <input [(ngModel)]="item.driverLoad"
-                                             name="item.driverLoad{{i}}" type="radio" id="loadyes" name="driverLoad" checked="">
+                                             name="item.driverLoad{{i}}" type="radio" value="yes" id="loadyes" checked="">
                                              <label for="radioExample1">Yes</label>
                                           </div>
                                        </div>
                                        <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
                                           <div class="radio-custom">
                                              <input [(ngModel)]="item.driverLoad"
-                                             name="item.driverLoad{{i}}" type="radio" id="loadno" name="driverLoad">
+                                             name="item.driverLoad{{i}}" type="radio" value="no" id="loadno">
                                              <label for="radioExample2">No</label>
                                           </div>
                                        </div>
@@ -403,7 +414,11 @@
                             <div class="pl-0 pr-5">
                             <div class="toggle toggle-primary" data-plugin-toggle>
                                 <section class="toggle" *ngFor="let item of orderData.receiverInfo; let i = index;">
-                                    <label (click)="toggleAccordian(i)" class="text-dark text-5 font-weight-bold">Receiver {{i + 1}}</label>
+                                    <label (click)="toggleAccordian(i)" class="text-dark text-5 font-weight-bold">Receiver {{i + 1}}
+                                       <span *ngIf="i != 0;" (click)="remove('receiver', i)" class="minus-sign btn btn-success btn-sm">
+                                          <i class="fas fa-minus fa-fw d-block m-0"></i>
+                                       </span>
+                                    </label>
                                     <div class="" *ngIf="visibleIndex === i">
                                     <div class="row">
                                        <div class="col-lg-3 labelalign">
@@ -447,7 +462,7 @@
                                        <div class="col-lg-3">
                                           <div class="input-group">
                                              <input [(ngModel)]="item.dropOffDate"
-                                             name="item.dropOffDate{{i}}" type="text" data-plugin-datepicker="" placeholder="day/month/year" class="form-control">
+                                             name="item.dropOffDate{{i}}" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" type="text" placeholder="day/month/year" class="form-control">
                                           </div>
                                        </div>
                                        <div class="col-lg-3">
@@ -564,14 +579,14 @@
                                        <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
                                           <div class="radio-custom">
                                              <input [(ngModel)]="item.driverUnload"
-                                             name="item.driverUnload{{i}}" type="radio" id="unloadyes" name="driverunload" checked="">
+                                             name="item.driverUnload{{i}}" type="radio" value="yes" id="unloadyes" checked="">
                                              <label for="radioExample1">Yes</label>
                                           </div>
                                        </div>
                                        <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
                                           <div class="radio-custom">
                                              <input [(ngModel)]="item.driverUnload"
-                                             name="item.driverUnload{{i}}" type="radio" id="unloadno" name="driverunload">
+                                             name="item.driverUnload{{i}}" type="radio" value="no" id="unloadno">
                                              <label for="radioExample2">No</label>
                                           </div>
                                        </div>
@@ -599,7 +614,8 @@
                             <div class="row mt-3">
                                <div class="col-lg-2">
                                   <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Pick Up Location</label>
-                                  <select data-plugin-selecttwo="" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
+                                  <select [(ngModel)]="orderData.freightDetails.pickupLocation"
+                                  name="pickupLocation" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
                                         <option value="2" data-select2-id="21">ABC Co,Calgary,T34T45</option>
                                         <option value="2">XYZ Co,Calgary,T356T5</option>
@@ -609,7 +625,8 @@
                                
                                <div class="col-lg-2">
                                   <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Delivery Location</label>
-                                  <select data-plugin-selecttwo="" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
+                                  <select [(ngModel)]="orderData.freightDetails.deliveryLocation"
+                                  name="deliveryLocation" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
                                         <option value="2" data-select2-id="21">ABC Co,Calgary,T34T45</option>
                                         <option value="2">XYZ Co,Calgary,T356T5</option>
@@ -619,17 +636,20 @@
 
                                <div class="col-lg-1">
                                   <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Commodity</label>
-                                  <input type="text" class="form-control">
+                                  <input [(ngModel)]="orderData.freightDetails.commodity"
+                                  name="commodity" type="text" class="form-control">
                                </div>
 
                                <div class="col-lg-1">
                                   <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Quantity</label>
-                                  <input type="text" class="form-control">
+                                  <input [(ngModel)]="orderData.freightDetails.quantity"
+                                  name="quantity" type="text" class="form-control">
                                </div>
                                
                                <div class="col-lg-1">
                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
-                                  <select data-plugin-selecttwo="" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
+                                  <select [(ngModel)]="orderData.freightDetails.quantityUnit"
+                                  name="quantityUnit" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
                                         <option value="2" data-select2-id="21">Bag</option>
                                         <option value="2">Bale</option>
@@ -646,12 +666,14 @@
                                
                                <div class="col-lg-1">
                                   <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Rate</label>
-                                  <input type="text" class="form-control">
+                                  <input [(ngModel)]="orderData.freightDetails.rate"
+                                  name="rate" type="text" class="form-control">
                                </div>
                                
                                <div class="col-lg-1">
                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
-                                  <select data-plugin-selecttwo="" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
+                                  <select [(ngModel)]="orderData.freightDetails.rateUnit"
+                                  name="rateUnit" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
                                         <option value="2" data-select2-id="21">Bag</option>
                                         <option value="2">Bale</option>
@@ -670,12 +692,14 @@
 
                                <div class="col-lg-1">
                                   <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Weight</label>
-                                  <input type="text" class="form-control">
+                                  <input [(ngModel)]="orderData.freightDetails.weight"
+                                  name="weight" type="text" class="form-control">
                                </div>
                                
                                <div class="col-lg-1">
                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
-                                  <select data-plugin-selecttwo="" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
+                                  <select [(ngModel)]="orderData.freightDetails.weightUnit"
+                                  name="weightUnit" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
                                         <option value="2" data-select2-id="21">ton(s)</option>
                                         <option value="2">Kilograms</option>
@@ -691,7 +715,8 @@
                                      <span class="input-group-prepend positionsta">
                                      <span class="input-group-text pt-0 pb-0">$</span>
                                      </span>
-                                     <input type="text" class="form-control">
+                                     <input [(ngModel)]="orderData.freightDetails.amount"
+                                     name="amount" type="text" class="form-control">
                                   </div>
                                </div>
                                
@@ -714,7 +739,8 @@
                                </div>
                                <div class="col-lg-6">
                                   <div class="checkbox-custom checkbox-default">
-                                     <input type="checkbox" id="droptrailer">
+                                     <input [(ngModel)]="orderData.additionalDetails.dropTrailer"
+                                     name="dropTrailer" type="checkbox" id="droptrailer">
                                      <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="droptrailer">Drop Trailer</label>
                                   </div>
                               
@@ -730,7 +756,8 @@
                                   <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Trailer Type</label>
                                </div>
                                <div class="col-lg-6">
-                                  <select data-plugin-selecttwo="" class="form-control populate" data-select2-id="49" tabindex="-1" aria-hidden="true">
+                                  <select [(ngModel)]="orderData.additionalDetails.trailerType"
+                                  name="trailerType" data-plugin-selecttwo="" class="form-control populate" data-select2-id="49" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
                                      <option value="2" data-select2-id="51">Refer</option>
                                      <option value="2">Dry Van</option>
@@ -785,7 +812,8 @@
                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark">Attachments</label>
                                     </div>
                                     <div class="col-lg-6 col-md-12">
-                                        <input type="file" class="form-control p-0"> </div>
+                                        <input [(ngModel)]="orderData.additionalDetails.attachments"
+                                        name="attachments" type="file" class="form-control p-0"> </div>
                                     <div class="col-lg-3"> </div>
                                 </div>
                          </div>
@@ -803,7 +831,8 @@
                                   <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Freight Fee</label>
                                </div>
                                <div class="col-lg-3 col-md-12">
-                                  <select data-plugin-selecttwo="" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
+                                  <select [(ngModel)]="orderData.charges.freightFee.type"
+                                  name="type" data-plugin-selecttwo="" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
                                         <option value="1" data-select2-id="54">Flat Fee</option>
                                         <option value="2">Per Mile</option>
@@ -823,11 +852,13 @@
                                      <span class="input-group-prepend positionsta">
                                      <span class="input-group-text pt-0 pb-0">$</span>
                                      </span>
-                                     <input type="text" class="form-control" placeholder="0.00">
+                                     <input [(ngModel)]="orderData.charges.freightFee.amount"
+                                     name="amount" type="text" class="form-control" placeholder="0.00">
                                   </div>
                                </div>
                                <div class="col-lg-2">
-                                  <select data-plugin-selecttwo="" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
+                                  <select [(ngModel)]="orderData.charges.freightFee.currency"
+                                  name="currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
                                         <option value="1">CAD</option>
                                         <option value="2">USD</option>
@@ -844,7 +875,8 @@
                                   <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Fuel Surcharge</label>
                                </div>
                                <div class="col-lg-3">
-                                  <select data-plugin-selecttwo="" class="form-control populate" data-select2-id="55" tabindex="-1" aria-hidden="true">
+                                  <select [(ngModel)]="orderData.charges.fuelSurcharge.type"
+                                  name="type" class="form-control populate" data-select2-id="55" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
                                         <option value="2" data-select2-id="57">Flat Fee</option>
                                         <option value="2">Percent</option>
@@ -857,11 +889,13 @@
                                      <span class="input-group-prepend positionsta">
                                      <span class="input-group-text pt-0 pb-0">$</span>
                                      </span>
-                                     <input type="text" class="form-control" placeholder="0.00">
+                                     <input [(ngModel)]="orderData.charges.fuelSurcharge.amount"
+                                     name="amount" type="text" class="form-control" placeholder="0.00">
                                   </div>
                                </div>
                                <div class="col-lg-2">
-                                  <select data-plugin-selecttwo="" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
+                                  <select [(ngModel)]="orderData.charges.fuelSurcharge.currency"
+                                  name="currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
                                         <option value="1">CAD</option>
                                         <option value="2">USD</option>
@@ -877,7 +911,8 @@
                                   <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Accessorial Fee</label>
                                </div>
                                <div class="col-lg-3">
-                                  <select data-plugin-selecttwo="" class="form-control populate" data-select2-id="58" tabindex="-1" aria-hidden="true">
+                                  <select [(ngModel)]="orderData.charges.accessorialFee.type"
+                                  name="type" class="form-control populate" data-select2-id="58" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
                                      <option value="2" data-select2-id="60">Stop Off</option>
                                      <option value="2">Lumper</option>
@@ -891,11 +926,13 @@
                                      <span class="input-group-prepend positionsta">
                                      <span class="input-group-text pt-0 pb-0">$</span>
                                      </span>
-                                     <input type="text" class="form-control" placeholder="0.00">
+                                     <input [(ngModel)]="orderData.charges.accessorialFee.amount"
+                                     name="amount" type="text" class="form-control" placeholder="0.00">
                                   </div>
                                </div>
                                <div class="col-lg-2">
-                                  <select data-plugin-selecttwo="" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
+                                  <select [(ngModel)]="orderData.charges.accessorialFee.currency"
+                                  name="currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
                                         <option value="1">CAD</option>
                                         <option value="2">USD</option>

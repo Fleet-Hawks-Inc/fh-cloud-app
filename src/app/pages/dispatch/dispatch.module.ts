@@ -76,7 +76,8 @@ import { OrdersListComponent } from './orders/orders-list/orders-list.component'
 import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
 
-
+import { AgmCoreModule } from '@agm/core';            // @agm/core
+import { AgmDirectionModule } from 'agm-direction';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -137,7 +138,12 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    DataTablesModule
+    DataTablesModule,
+    AgmCoreModule.forRoot({ // @agm/core
+      apiKey: 'AIzaSyDBkpMI6T1T-z_JRSd03vZ1Q-MSetM1UwI',
+      libraries: ['geometry']
+    }),
+    AgmDirectionModule,
   ],
 
   declarations: [

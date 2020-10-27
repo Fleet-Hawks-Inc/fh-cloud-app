@@ -54,6 +54,13 @@ export class AddOrdersComponent implements OnInit {
       maxTempratureUnit: '',
       driverUnload: '',
     }],
+    freightDetails: {},
+    additionalDetails: {},
+    charges: {
+      freightFee: {},
+      fuelSurcharge: {},
+      accessorialFee: {}
+    }
   };
   response: any = '';
   hasError: boolean = false;
@@ -140,13 +147,10 @@ export class AddOrdersComponent implements OnInit {
   }
 
   toggleAccordian(ind) {
-    console.log(ind);
     if (this.visibleIndex === ind) {
       this.visibleIndex = -1;
-      console.log('if', this.visibleIndex, ind);
     } else {
       this.visibleIndex = ind;
-      console.log('else', this.visibleIndex, ind);
     }
   }
   
@@ -182,5 +186,13 @@ export class AddOrdersComponent implements OnInit {
   }
   throwErrors() {
     this.form.showErrors(this.errors);
+  }
+
+  remove(data, i ){
+    if(data === 'shipper') {
+      this.orderData.shipperInfo.splice(i, 1);
+    } else {
+      this.orderData.receiverInfo.splice(i, 1);
+    }
   }
 }
