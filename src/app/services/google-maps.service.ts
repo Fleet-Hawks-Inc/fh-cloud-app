@@ -1,94 +1,51 @@
 import { Injectable } from '@angular/core';
-declare const google: any;
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class GoogleMapsService {
+  private readonly apiKey = environment.googleConfig.apiKey;
+  
+  constructor(private http: HttpClient) { }
 
-  constructor() { }
-
-  initMap() {
-    const bounds = new google.maps.LatLngBounds();
-    const markersArray = [];
-    const origin1 = { lat: 55.93, lng: -3.118 };
-    const destinationA = "Stockholm, Sweden";
-    const destinationIcon =
-      "https://chart.googleapis.com/chart?" +
-      "chst=d_map_pin_letter&chld=D|FF0000|000000";
-    const originIcon =
-      "https://chart.googleapis.com/chart?" +
-      "chst=d_map_pin_letter&chld=O|FFFF00|000000";
-    // const map = new google.maps.Map(document.getElementById("map"), {
-    //   center: { lat: 55.53, lng: 9.4 },
-    //   zoom: 10,
-    // });
-    const geocoder = new google.maps.Geocoder();
-    const service = new google.maps.DistanceMatrixService();
-    service.getDistanceMatrix(
-      {
-        origins: [origin1],
-        destinations: [destinationA],
-        travelMode: google.maps.TravelMode.DRIVING,
-        unitSystem: google.maps.UnitSystem.METRIC,
-        avoidHighways: false,
-        avoidTolls: false,
-      },
-      (response, status) => {
-        if (status !== "OK") {
-          alert("Error was: " + status);
-        } else {
-          const originList = response.originAddresses;
-          const destinationList = response.destinationAddresses;
-          const outputDiv = document.getElementById("output");
-          outputDiv.innerHTML = "";
-
-          // deleteMarkers(markersArray);
-
-          // const showGeocodedAddressOnMap = function (asDestination) {
-          //   const icon = asDestination ? destinationIcon : originIcon;
-
-          //   return function (results, status) {
-          //     if (status === "OK") {
-          //       map.fitBounds(bounds.extend(results[0].geometry.location));
-          //       markersArray.push(
-          //         new google.maps.Marker({
-          //           map,
-          //           position: results[0].geometry.location,
-          //           icon: icon,
-          //         })
-          //       );
-          //     } else {
-          //       alert("Geocode was not successful due to: " + status);
-          //     }
-          //   };
-          // };
-
-          // for (let i = 0; i < originList.length; i++) {
-          //   const results = response.rows[i].elements;
-          //   geocoder.geocode(
-          //     { address: originList[i] },
-          //     showGeocodedAddressOnMap(false)
-          //   );
-
-          //   for (let j = 0; j < results.length; j++) {
-          //     geocoder.geocode(
-          //       { address: destinationList[j] },
-          //       showGeocodedAddressOnMap(true)
-          //     );
-          //     outputDiv.innerHTML +=
-          //       originList[i] +
-          //       " to " +
-          //       destinationList[j] +
-          //       ": " +
-          //       results[j].distance.text +
-          //       " in " +
-          //       results[j].duration.text +
-          //       "<br>";
-          //   }
-          // }
-        }
-      }
+  googleDistance(origin, destination) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'http://localhost:3000',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+      'Authorization': 'Bearer eyJraWQiOiJ3SEx5UVBQd1NhdjlhRTlJWnlkaHVkc0ZwR0RHOTl3ZFRJWUxSMWNGTlUwPSIsImFsZyI6IlJTMjU2In0.eyJsYXN0TmFtZSI6IkJodWxsbGFyIiwic3ViIjoiODdmNzA5MTctZTUwYS00YzRhLWI1YjQtZTM2YTAzZTQyNDRmIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0yLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMl9lR0RnRktLTTciLCJwaG9uZV9udW1iZXJfdmVyaWZpZWQiOmZhbHNlLCJjb2duaXRvOnVzZXJuYW1lIjoicGFyYW0iLCJmaXJzdE5hbWUiOiJQYXJhbWJpciIsImF1ZCI6Ijc2bDg4ZzI4OXZjZ3JkOGpmNTRwYmVkZ3FxIiwiZXZlbnRfaWQiOiI5ZTdmMjRmYy1jMmMxLTQ0N2ItODUxYy00YjAxZWVjYTI2ZTciLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTYwMzA3OTQxNywicGhvbmVfbnVtYmVyIjoiKzkxOTg2MDc2NjY1OSIsInVzZXJUeXBlIjoiQ2xvdWQgQWRtaW4iLCJjYXJyaWVySUQiOiJkYmNmMzRiMC01YzQ1LTExZWEtODNhOS1kM2MzZDcwZWM5ZGEiLCJleHAiOjE2MDM4OTIwOTMsImlhdCI6MTYwMzg4ODQ5MywiZW1haWwiOiJwYXJhbUBmbGVldGhhd2tzLmNvbSJ9.YMrMFE005yGwHlX9yuI1iNrWCpVc97-a_con0V77pWVBctU6R0PjDagArXrXiHmSp34CBdpq1eM8sq4WoYg2xMn4NzO-E39T711M6i7jcQU9PXTgcM1aKkzIvEm-gT7mbRjDVdN4X35aT69iL0PyiKXlegV4Oz-3cIBVWQc8PjVfy004ZyayRKoF29zVTVcbNHvkzmMfRpcrskJdR_G4KKx8pQShN3EnEaGN0oH1jewvZcsDgNE17aBXgjVT4jEOCikH-qYEOfdUZ7fPeLEwlRyDjGwcxI0UGGcLC2LnuCUglv15dTwHec7h7qv2KJvw7JuIJxMnzSsaONP8XRJ0YA'}
     );
+
+    const URL = 'https://maps.googleapis.com/maps/api/distancematrix/json';
+    return this.http.post(URL + '?units=imperial&origins=' + origin + '&destinations=' + destination + '&key=' + this.apiKey, headers)
+    .subscribe(
+      res => {
+          console.log('res', res);
+      },
+      err => {
+          console.log(err.message);
+      }
+      );
+  }
+
+  pcMilesDistance(origin, destination){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+      'Authorization': '73DBE97231D737488E722DDFB8D1D0BB'}
+    );
+    const URL = "https://pcmiler.alk.com/apis/rest/v1.0/Service.svc/route/routeReports";
+    return this.http.post(URL + '?stops=' + origin + ';' + destination + '&reports=CalcMiles', headers)
+    .subscribe(
+      res => {
+          console.log('res', res);
+      },
+      err => {
+          console.log(err.message);
+      }
+      );
   }
 }
