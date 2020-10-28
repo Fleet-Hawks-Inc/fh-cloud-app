@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import {Tesseract} from 'tesseract.ts';
 @Component({
   selector: 'app-pdf-automation',
   templateUrl: './pdf-automation.component.html',
@@ -11,73 +11,71 @@ export class PdfAutomationComponent implements OnInit {
 
 
     $( document ).ready(() => {
+      const canvas = document.getElementById('src');
+      const savebtn = document.getElementById('fire');
+      const pdffile = document.getElementById('pdffile');
+      const el = document.getElementById('myFile');
+      let text;
 
-
-      var canvas = document.getElementById('src');
-      var savebtn = document.getElementById('fire');
-      var pdffile = document.getElementById('pdffile');
-      var el = document.getElementById('myFile');
-      var text;
-
-      var ctx = canvas.getContext('2d');
-      var rect = {};
-      var drag = false;
-      var imageObj = null;
-      var renderTask;
+      const ctx = canvas.getContext('2d');
+      const rect = {};
+      let drag = false;
+      const imageObj = null;
+      let renderTask;
 
 
 
 
-      el.onchange = function () {
-        // var url = document.getElementById("myFile").value;
-        var url = "demo1.pdf"
+      el.onchange = () => {
+        // var url = document.getElementById('myFile').value;
+        const url = 'demo1.pdf'
         // Loaded via <script> tag, create shortcut to access PDF.js exports.
-        var pdfjsLib = window['pdfjs-dist/build/pdf'];
+        const pdfjsLib = window['pdfjs-dist/build/pdf'];
 
         // The workerSrc property shall be specified.
         pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
 
-        var loadingTask = pdfjsLib.getDocument(url);
+        const loadingTask = pdfjsLib.getDocument(url);
         loadingTask.promise.then(function (pdf) {
           console.log('PDF loaded');
 
           // Fetch the first page
-          var pageNumber = 1;
+          const pageNumber = 1;
           pdf.getPage(pageNumber).then(function (page) {
             console.log('Page loaded');
 
-            var scale = 1.5;
-            var viewport = page.getViewport({ scale: scale });
+            const scale = 1.5;
+            const viewport = page.getViewport({ scale: scale });
 
             // Prepare canvas using PDF page dimensions
-            var canvas = document.getElementById('src');
-            var context = canvas.getContext('2d');
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
+            const canvasShadowed = document.getElementById('src');
+            const context = canvasShadowed.getContext('2d');
+            canvasShadowed.height = viewport.height;
+            canvasShadowed.width = viewport.width;
 
             // Render PDF page into canvas context
-            var renderContext = {
+            let renderContext = {
               canvasContext: context,
               viewport: viewport
             };
             renderTask = page.render(renderContext);
-            renderTask.promise.then(function () {
+            renderTask.promise.then(() => {
               console.log('Page rendered');
             });
           });
-        }, function (reason) {
+        },  (reason) => {
           // PDF loading error
           console.error(reason);
         });
       }
       // var ocrJson = {
       //     // todo: other parameters. b&w, resizing strategy etc
-      //     "version": "1.0.0",
-      //     "schema": "My OCR Meta JSON",
-      //     "rectangles": [
-      //         { "left": 70, "top": 95, "width": 130, "height": 15, "label": "PatientName" },
-      //         { "left": 70, "top": 110, "width": 230, "height": 15, "label": "Address" },
-      //         { "left": 140, "top": 135, "width": 150, "height": 15, "label": "DOS" },
+      //     'version': '1.0.0',
+      //     'schema': 'My OCR Meta JSON',
+      //     'rectangles': [
+      //         { 'left': 70, 'top': 95, 'width': 130, 'height': 15, 'label': 'PatientName' },
+      //         { 'left': 70, 'top': 110, 'width': 230, 'height': 15, 'label': 'Address' },
+      //         { 'left': 140, 'top': 135, 'width': 150, 'height': 15, 'label': 'DOS' },
       //     ],
       // };
 
@@ -89,16 +87,16 @@ export class PdfAutomationComponent implements OnInit {
       // todo, add parameters and change sourceImage to ImageData (getImageData from other canvas)
       function cropImage(sourceImage, rect) {
         // parameterize them
-        var left = rect.left;
-        var top = rect.top;
-        var width = rect.width;
-        var height = rect.height;
+        const left = rect.left;
+        const top = rect.top;
+        const width = rect.width;
+        const height = rect.height;
 
-        var cropCanvas = document.createElement('canvas');
+        const cropCanvas = document.createElement('canvas');
         cropCanvas.width = width;
         cropCanvas.height = height;
 
-        var context = cropCanvas.getContext('2d');
+        const context = cropCanvas.getContext('2d');
         context.drawImage(sourceImage, left, top, width, height, 0, 0, width, height);
         return cropCanvas;
       }
@@ -112,7 +110,7 @@ export class PdfAutomationComponent implements OnInit {
 
       }
       function onclick(e) {
-        console.log("works")
+        console.log('works')
       }
 
 
@@ -141,29 +139,30 @@ export class PdfAutomationComponent implements OnInit {
 
         ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
 
-        console.log("mouseup working")
+        console.log('mouseup working')
         console.log(rect.startX, rect.startY, rect.w, rect.h)
 
 
         var canvas = document.getElementById('src');
 
 
-        const worker = new Tesseract.TesseractWorker();
-        var srcContext = document.getElementById('src').getContext('2d');
+        //const worker = new Tesseract.TesseractWorker();
+        const worker = Tesseract;
+        const srcContext = document.getElementById('src').getContext('2d');
 
         // let img = await loadImage('1.jpg');
         // srcContext.drawImage(img, 0, 0);
 
 
 
-        var rct = { left: rect.startX, top: rect.startY, width: rect.w, height: rect.h };
-        console.log("rct" + rct);
-        var cropImgCanvas = cropImage(canvas, rct);//img
+        const rct = { left: rect.startX, top: rect.startY, width: rect.w, height: rect.h };
+        console.log('rct' + rct);
+        const cropImgCanvas = cropImage(canvas, rct);//img
 
         // just renderint to visualize - no need for actual crop
 
         srcContext.rect(rct.left, rct.top, rct.width, rct.height);
-        srcContext.strokeStyle = "#FF0000";
+        srcContext.strokeStyle = '#FF0000';
         srcContext.stroke();
 
         // todo: pass the rect info and promise them all?
@@ -172,24 +171,24 @@ export class PdfAutomationComponent implements OnInit {
             //console.log('progress:', progress);
           }).then(result => {
           // console.log('result:', result.text);
-          // document.getElementById("text").value = result.text;
+          // document.getElementById('text').value = result.text;
           // text = result.text
-          var sitePersonel = {};
-          var objects = []
+          const sitePersonel = {};
+          const objects = []
           sitePersonel.objects = objects;
           console.log(sitePersonel);
 
 
-          var xmin = rct.left;
-          var ymin = rct.top;
-          var xmax = rct.width;
-          var ymax = rct.height;
-          var object = {
-            "text": result.text,
-            "xmin": xmin,
-            "xmax": xmax,
-            "ymin": ymin,
-            "ymax": ymax
+          const xmin = rct.left;
+          const ymin = rct.top;
+          const xmax = rct.width;
+          const ymax = rct.height;
+          const object = {
+            'text': result.text,
+            'xmin': xmin,
+            'xmax': xmax,
+            'ymin': ymin,
+            'ymax': ymax
           }
           text = result.text;
           sitePersonel.objects.push(object);
@@ -197,20 +196,10 @@ export class PdfAutomationComponent implements OnInit {
 
 
           console.log(JSON.stringify(sitePersonel));
-          document.getElementById("input").value = text;
+          document.getElementById('input').value = text;
         });
-        document.getElementById("input").value = text;
+        document.getElementById('input').value = text;
         $('#exampleModal').modal('show')
-
-
-
-
-
-
-
-
-
-
 
       }
 
@@ -229,17 +218,17 @@ export class PdfAutomationComponent implements OnInit {
         canvas.addEventListener('mousedown', mouseDown, false);
         canvas.addEventListener('mouseup', mouseUp, false);
         canvas.addEventListener('mousemove', mouseMove, false);
-        $('#fire').on('click', function (e) {
+        $('#fire').on('click',  (e) => {
 
           // Append the text to <p>
 
-          console.log("H1")
-          const para = document.createElement("P");
-          const h = document.createElement("h3");
-          h.innerHTML = document.getElementById("select").value;
+          console.log('H1')
+          const para = document.createElement('P');
+          const h = document.createElement('h3');
+          h.innerHTML = document.getElementById('select').value;
           para.innerHTML = text;
-          document.getElementById("myDIV").appendChild(h);
-          document.getElementById("myDIV").appendChild(para);
+          document.getElementById('myDIV').appendChild(h);
+          document.getElementById('myDIV').appendChild(para);
         })
 
       }
