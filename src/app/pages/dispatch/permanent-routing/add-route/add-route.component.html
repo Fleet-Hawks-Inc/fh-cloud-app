@@ -91,6 +91,7 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Select Source</label>
                                                 <select class="form-control" [(ngModel)]="routeData.sourceInformation.sourceLocationID"
                                                 name="sourceLocationID">
+                                                <option value=''>Select Source Location</option>
                                                 <option *ngFor="let location of locations" value="{{ location.locationID }}">{{ location.locationName }}</option>
                                                 </select>
                                             </div>
@@ -133,8 +134,8 @@
                                             </div>
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Select Destination</label>
-                                                <select class="form-control" name="destinationLocationID"
-                                                [(ngModel)]="routeData.destinationInformation.destinationLocationID"> 
+                                                <select class="form-control" [(ngModel)]="routeData.destinationInformation.destinationLocationID" name="destinationLocationID"> 
+                                                <option value=''>Select Destination Location</option>
                                                 <option *ngFor="let location of locations" value="{{ location.locationID }}">{{ location.locationName }}</option>
                                                 </select>
                                             </div>
@@ -142,9 +143,7 @@
 
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold pt-2 text-lg-right">Address</label>
-                                                <input type="text" class="form-control" 
-                                                name="destinationAddress"
-                                                [(ngModel)]="routeData.destinationInformation.destinationAddress"> 
+                                                <input type="text" class="form-control" name="destinationAddress" [(ngModel)]="routeData.destinationInformation.destinationAddress"> 
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2"> Country</label>
@@ -175,14 +174,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <input type="text" hidden="" name="miles" [(ngModel)]="routeData.miles" value="1060"/>
                                 <div class="row text-dark mt-4">
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-10">
                                                 <div class="checkbox-custom checkbox-default">
                                                     <input type="checkbox" id="recurringBtn" 
-                                                    name="recurringRoute" 
+                                                    name="sourceInformation.recurring.recurringRoute" 
                                                     [(ngModel)]="routeData.sourceInformation.recurring.recurringRoute" value="yes">
                                                     <label class="control-label font-weight-bold" for="recurringBtn">Recurring Route?</label>
                                                 </div>

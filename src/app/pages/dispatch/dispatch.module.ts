@@ -76,6 +76,10 @@ import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
+import { QuoteListComponent } from './quotes/quote-list/quote-list.component';
+import { AddQuoteComponent } from './quotes/add-quote/add-quote.component';
+import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
+import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -219,6 +223,10 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AddTripComponent,
     TripDetailComponent,
     RouteDetailComponent,
+    QuoteListComponent,
+    AddQuoteComponent,
+    QuoteDetailComponent,
+    EditTripComponent,
 
 
 

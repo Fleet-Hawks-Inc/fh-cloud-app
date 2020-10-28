@@ -36,42 +36,7 @@ export class AddRouteComponent implements OnInit {
       }
     },
     destinationInformation: {
-      stop: {}
-    },
-  };
-  form;
-
-  routeNo = '';
-  routeName = '';
-  notes = '';
-  VehicleID = '';
-  AssetID = '';
-  miles = '';
-  driverUserName = '';
-  coDriverUserName = '';
-  sourceInformation = {
-    sourceLocationID: '',
-    sourceAddress: '',
-    sourceCountryID: '',
-    sourceStateID: '',
-    sourceCityID: '',
-    sourceZipCode: '',
-    recurring: {
-      recurringRoute: '',
-      recurringType: '',
-      recurringDate: '',
-      sunday: '',
-      monday: '',
-      tuesday: '',
-      wednesday: '',
-      thursday: '',
-      friday: '',
-      saturday: ''
-
-    }
-  };
-  destinationInformation = {
-    destinationLocationID: '',
+      destinationLocationID: '',
     destinationAddress: '',
     destinationCountryID: '',
     destinationStateID: '',
@@ -82,7 +47,52 @@ export class AddRouteComponent implements OnInit {
       stopLocation: '',
       stopNotes: ''
     }
+    },
   };
+  form;
+
+  // routeNo = '';
+  // routeName = '';
+  // notes = '';
+  // VehicleID = '';
+  // AssetID = '';
+  // miles = '';
+  // driverUserName = '';
+  // coDriverUserName = '';
+  // sourceInformation = {
+  //   sourceLocationID: '',
+  //   sourceAddress: '',
+  //   sourceCountryID: '',
+  //   sourceStateID: '',
+  //   sourceCityID: '',
+  //   sourceZipCode: '',
+  //   recurring: {
+  //     recurringRoute: '',
+  //     recurringType: '',
+  //     recurringDate: '',
+  //     sunday: '',
+  //     monday: '',
+  //     tuesday: '',
+  //     wednesday: '',
+  //     thursday: '',
+  //     friday: '',
+  //     saturday: ''
+
+  //   }
+  // };
+  // destinationInformation = {
+  //   destinationLocationID: '',
+  //   destinationAddress: '',
+  //   destinationCountryID: '',
+  //   destinationStateID: '',
+  //   destinationCityID: '',
+  //   destinationZipCode: '',
+  //   stop: {
+  //     destinationStop: '',
+  //     stopLocation: '',
+  //     stopNotes: ''
+  //   }
+  // };
 
   vehicles = [];
   assets = [];
@@ -317,6 +327,7 @@ export class AddRouteComponent implements OnInit {
   }
 
   throwErrors() {
+    console.log(this.errors);
     this.form.showErrors(this.errors);
   }
 

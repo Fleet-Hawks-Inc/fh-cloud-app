@@ -27,7 +27,7 @@
             <header class="page-header">
                 <div class="row pr-5 " style="padding-top:10px;">
                     <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                        Create Trip
+                        Edit Trip
                     </div>
                     <div class="col-md-8  col-lg-8 text-right pr-4">
                         <a href="javascript:;" routerLink="/dispatch/trips/trip-list" class="btn btn-default"><i
@@ -47,7 +47,7 @@
                                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark">Trip#</label>
                                             </div>
                                             <div class="col-lg-6">
-                                                <input type="text" class="form-control" name="tripNo" [(ngModel)]="tripData.tripNo">
+                                                <input type="text" class="form-control" name="tripNo" [(ngModel)]="tripData.tripNo" value="{{ tripData.tripNo }}">
                                             </div>
                                         </div>
                                     </div>
@@ -250,7 +250,7 @@
                                                             value="{{ trip.coDriverName }}">
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <select class="form-control" name="carrierID"
+                                                        <select class="form-control" name="carrierID1"
                                                             id="editCell11{{i}}">
                                                             <option value="">Select Carrier </option>
                                                             <option *ngFor="let carrier of carriers"
@@ -436,7 +436,7 @@
                                 <div class="row text-right">
                                     <div class="col-lg-12">
                                         <a class="mt-1 mr-2 btn btn-default" href="javascript:;" routerLink="/dispatch/trips/trip-list">Cancel</a>
-                                        <a href="javascript:;" (click)="createTrip()" class="btn btn-success mt-1">Create Trip</a>
+                                        <a href="javascript:;" (click)="updateTrip()" class="btn btn-success mt-1">Update Trip</a>
                                     </div>
                                 </div>
                             </form>
@@ -496,7 +496,7 @@
                                                     <tbody class="ui-sortable">
                                                         <tr class="ui-sortable-handle odd" role="row" *ngFor="let order of ftlOrders">
                                                             <td class="sorting_1">
-                                                                <input type="checkbox" value="{{ order.orderNumber }}" name="ftlOrderIds" (change)="selectOrderIDS('ftl')">
+                                                                <input type="checkbox" value="{{ order.orderNumber }}" name="ftlOrderIds" checked={{order.selected}} (change)="selectOrderIDS('ftl')">
                                                             </td>
                                                             <td class="loadid"><span class="FTLload">FTL</span><br>
                                                                 <a href="javascript:;">{{ order.orderNumber }}</a>
@@ -532,7 +532,7 @@
                                                     <tr class="ui-sortable-handle" *ngFor="let order of ltlOrders">
                                                         <td>
                                                             <!-- <input type="checkbox"> -->
-                                                            <input type="checkbox" value="{{ order.orderNumber }}" name="ltlOrderIds" (change)="selectOrderIDS('ltl')">
+                                                            <input type="checkbox" value="{{ order.orderNumber }}" checked={{order.selected}} name="ltlOrderIds" (change)="selectOrderIDS('ltl')">
                                                         </td>
                                                         <td class="loadid"><span class="LTLload">LTL</span><br> 
                                                             <a href="javascript:;">{{ order.orderNumber }}</a>

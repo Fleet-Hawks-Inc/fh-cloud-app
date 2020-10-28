@@ -1,0 +1,441 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+
+        <section role="main" class="content-body pt-0 pr-0 pl-0">
+            <header class="page-header">
+                <div class="row pr-5 " style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                        Order LTL- 006
+                    </div>
+                    <div class="col-md-8  col-lg-8 text-right pr-4">
+                        <a href="all-estimates.php" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
+                            Estimates</a>
+                        <div class="btn-group flex-wrap">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">Actions<span class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                <a class="dropdown-item text-1" href="#">Edit</a>
+                                <a class="dropdown-item text-1" href="#">Print</a>
+                                <a class="dropdown-item text-1" href="#">Email</a>
+                                <a class="dropdown-item text-1" href="#">Fax</a>
+                                <a class="dropdown-item text-1" href="">Cancel</a>
+                            </div>
+                        </div>
+                        <!-- <a href="#templateSelectionModal" class="modal-with-form btn btn-success btn-sm"><i class="fas fa-plus"></i>
+                        Create Invoice</a> -->
+
+                        <a href="add-estimate.php" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add
+                            Quote</a>
+                    </div>
+                </div>
+            </header>
+            <section class="card mb-4">
+                <div class="card-body">
+                    <div class="col-lg-12">
+                        <div class="">
+                            <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                                <li class="nav-item active">
+                                    <a class="nav-link ml-0 pl-2 pr-2 active" href="#summary" data-toggle="tab"><i
+                                            class="fas fa-truck-moving"></i> Estimate Summary</a>
+                                </li>
+
+
+                                <!-- <li class="nav-item">
+                              <a class="nav-link pl-2 pr-2" href="#bol" data-toggle="tab"><i
+                                    class="fas fa-dollar-sign"></i> Customs Broker</a>
+                           </li> -->
+
+                                <!-- <li class="nav-item">
+                              <a class="nav-link pl-2 pr-2" href="#doc" data-toggle="tab"><i
+                                    class="fas fa-dollar-sign"></i> Other Charges</a>
+                           </li> -->
+                                <!-- <li class="nav-item">
+                              <a class="nav-link pl-2 pr-2" href="#equipment" data-toggle="tab"><i
+                                    class="fas fa-truck-moving"></i> Equipment</a>
+                           </li> -->
+
+
+                            </ul>
+                            <div class="tab-content" style="box-shadow:none; border:none;">
+                                <div id="summary" class="tab-pane active">
+
+                                    <div class="row">
+                                        <!-- Order Summary-->
+                                        <div class="col-xl-12 col-12 mb-3 pl-0 pr-0">
+                                            <div class="col-xl-12 col-12 mb-3">
+                                                <div class="boxshadow1 maindisbox w100 pull-left">
+                                                    <div class="widgetload">
+
+                                                        <div class="row">
+                                                            <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                                                <div class="col-xl-12 col-12 mb-3">
+                                                                    <div class="boxshadow1 maindisbox w100 pull-left">
+                                                                        <div class="widgetload">
+                                                                            <div class="widgettbload">
+                                                                                <span
+                                                                                    class="pull-right text-3 mt-2 text-dark">
+                                                                                </span>
+                                                                                <h2
+                                                                                    class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                                                    <i class="fas fa-box"></i> LTL-006
+                                                                                </h2>
+                                                                            </div>
+
+                                                                            <div class="widgetlinfo">
+
+                                                                                <p
+                                                                                    class="mb-0 text-4 font-weight-semibold text-dark">
+                                                                                    James</p>
+                                                                                <p
+                                                                                    class="mb-0 mt-1 text-4 font-weight-semibold text-dark">
+                                                                                    james@live.com</p>
+                                                                                <p class="mb-0 mt-1 text-4 text-dark">
+                                                                                    (123) 456-7890</p>
+
+
+                                                                                <!-- <p class="mb-0 text-dark"><strong>Account#</strong> <span class="pull-right">787355464</span></p> -->
+                                                                                <p class="mb-0 text-dark">
+                                                                                    <strong>Reference</strong> <span
+                                                                                        class="pull-right">256</span>
+                                                                                </p>
+                                                                                <p class="mb-0 text-dark"><strong>Load
+                                                                                        Creation Date/Time</strong>
+                                                                                    <span class="pull-right">05/25/2020
+                                                                                        07:41 AM</span></p>
+                                                                                <p class="mb-0 text-dark">
+                                                                                    <strong>C-TPAT</strong> <span
+                                                                                        class="pull-right">89898ABC</span>
+                                                                                </p>
+                                                                                <p class="mb-0 text-dark"><strong>CSA
+                                                                                        ?</strong> <span
+                                                                                        class="pull-right">No</span></p>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                                                <div class="col-xl-12 col-12 mb-3">
+                                                                    <div class="boxshadow1 maindisbox w100 pull-left">
+                                                                        <div class="widgetload">
+                                                                            <div class="widgettbload">
+                                                                                <span
+                                                                                    class="pull-right text-3 mt-2 text-dark">
+
+                                                                                </span>
+                                                                                <h2
+                                                                                    class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                                                    <i
+                                                                                        class="fas fa-file-invoice-dollar"></i>
+                                                                                    Invoice</h2>
+                                                                            </div>
+
+                                                                            <div class="widgetlinfo">
+
+                                                                                <!--
+															 <p class="mb-0 text-dark"><strong>Dispatch</strong> <span class="pull-right">DIS-2250</span></p>
+															 <p class="mb-0 text-dark"><strong>Status</strong> <span class="pull-right">Assigned</span></p>
+															 -->
+                                                                                <p
+                                                                                    class="text-center pt-5 text-dark font-weight-semibold">
+                                                                                    No Settlement added for this
+                                                                                    dispatch</p>
+
+                                                                                <div class="disbtmpart w100">
+                                                                                    <div class="divcenter">
+                                                                                        <p class="mb-1"><a
+                                                                                                href="#templateSelectionModal"
+                                                                                                class="mb-1 mt-1 mr-1 modal-with-form btn btn-xs btn-dark">Create
+                                                                                                Invoice</a></p>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                                                <div class="col-xl-12 col-12 mb-3">
+                                                                    <div class="boxshadow1 maindisbox w100 pull-left">
+                                                                        <div class="widgetload">
+                                                                            <div class="widgettbload">
+                                                                                <span
+                                                                                    class="pull-right text-3 mt-2 text-dark">
+                                                                                </span>
+                                                                                <h2
+                                                                                    class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                                                    Shipper</h2>
+                                                                            </div>
+
+                                                                            <div class="widgetlinfo">
+                                                                                <div class="col-lg-2 pull-left">
+                                                                                    <img src="img/icon-load.png"
+                                                                                        class="img-fluid" alt="shipper">
+                                                                                </div>
+                                                                                <div class="col-lg-10 pull-left">
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>James</strong></p>
+                                                                                    <p class="mb-0 text-dark">1155 Mckay
+                                                                                        Street Regina, SK S4W 0T4</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Pickup
+                                                                                            Date/Time:</strong>
+                                                                                        06/02/2020 05:25 AM</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Contact Phone:</strong>
+                                                                                        (103) 069-1461</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Pick Up
+                                                                                            Instructions:</strong>
+                                                                                        Please phone</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>BOL:</strong> 1239202
+                                                                                    </p>
+                                                                                </div>
+
+
+
+                                                                            </div>
+                                                                            <div class="widgetlinfo">
+                                                                                <div class="col-lg-2 pull-left">
+                                                                                    <img src="img/icon-load.png"
+                                                                                        class="img-fluid" alt="shipper">
+                                                                                </div>
+                                                                                <div class="col-lg-10 pull-left">
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>James</strong></p>
+                                                                                    <p class="mb-0 text-dark">1155 Mckay
+                                                                                        Street Regina, SK S4W 0T4</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Pickup
+                                                                                            Date/Time:</strong>
+                                                                                        06/02/2020 05:25 AM</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Contact Phone:</strong>
+                                                                                        (103) 069-1461</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Pick Up
+                                                                                            Instructions:</strong>
+                                                                                        Please phone</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>BOL:</strong> 1239202
+                                                                                    </p>
+                                                                                </div>
+
+
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                                                <div class="col-xl-12 col-12 mb-3">
+                                                                    <div class="boxshadow1 maindisbox w100 pull-left">
+                                                                        <div class="widgetload">
+                                                                            <div class="widgettbload">
+                                                                                <span
+                                                                                    class="pull-right text-3 mt-2 text-dark">
+                                                                                </span>
+                                                                                <h2
+                                                                                    class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                                                    Consignee</h2>
+                                                                            </div>
+
+                                                                            <div class="widgetlinfo">
+                                                                                <div class="col-lg-2 pull-left">
+                                                                                    <img src="img/icon-unload.png"
+                                                                                        class="img-fluid" alt="shipper">
+                                                                                </div>
+                                                                                <div class="col-lg-10 pull-left">
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>ABC Logistics</strong>
+                                                                                    </p>
+                                                                                    <p class="mb-0 text-dark">2060 Flr
+                                                                                        Bed 2 322 Corydon, Winnipeg, YT
+                                                                                        R3P 0N3</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Delivery
+                                                                                            Date/Time:</strong>
+                                                                                        06/10/2020 08:20 PM</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Contact Phone:</strong>
+                                                                                        (103) 069-1461</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Delivery
+                                                                                            Instructions:</strong> Check
+                                                                                        with dispatch before you leave
+                                                                                    </p>
+
+                                                                                </div>
+
+
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                                                <div class="col-xl-12 col-12 mb-3">
+                                                                    <div class="boxshadow1 maindisbox w100 pull-left">
+                                                                        <div class="widgetload">
+                                                                            <div class="widgettbload">
+                                                                                <span
+                                                                                    class="pull-right text-3 mt-2 text-dark">
+                                                                                </span>
+                                                                                <h2
+                                                                                    class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                                                    Freight Details</h2>
+                                                                            </div>
+
+                                                                            <div class="widgetlinfo">
+                                                                                <div class="col-lg-2 pull-left">
+                                                                                    <img src="img/icon-freight.png"
+                                                                                        class="img-fluid" alt="shipper">
+                                                                                </div>
+                                                                                <div class="col-lg-10 pull-left">
+
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Commodity:</strong>
+                                                                                        Rubber Balls,Iron Rods</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Weight:</strong>
+                                                                                        25000.00 lbs</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Qty:</strong> - 3000
+                                                                                        piece</p>
+                                                                                    <p class="mb-0 text-dark"><strong>L
+                                                                                            x W x H:</strong> </p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Declared Value:</strong>
+                                                                                        $20,000.00</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Load Type:</strong> -
+                                                                                        LTL</p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        <strong>Trailer Type:</strong>
+                                                                                        VAN</p>
+                                                                                </div>
+
+
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                                                <div class="col-xl-12 col-12 mb-3">
+                                                                    <div class="boxshadow1 maindisbox w100 pull-left">
+                                                                        <div class="widgetload">
+                                                                            <div class="widgettbload">
+                                                                                <span
+                                                                                    class="pull-right text-3 mt-2 text-dark">
+                                                                                </span>
+                                                                                <h2
+                                                                                    class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                                                    Charges</h2>
+                                                                            </div>
+
+                                                                            <div class="widgetlinfo">
+                                                                                <div class="col-lg-2 pull-left">
+                                                                                    <img src="img/icon-cur.png"
+                                                                                        class="img-fluid" alt="shipper">
+                                                                                </div>
+                                                                                <div class="col-lg-10 pull-left">
+                                                                                    <p class="mb-0 text-dark">Freight
+                                                                                        Fee <span
+                                                                                            class="pull-right">$250.00</span>
+                                                                                    </p>
+                                                                                    <p class="mb-0 text-dark">Fuel
+                                                                                        Surcharge <span
+                                                                                            class="pull-right">$50.00</span>
+                                                                                    </p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        Accessorial Amount <span
+                                                                                            class="pull-right">$0.00</span>
+                                                                                    </p>
+                                                                                    <p class="mb-0 text-dark">
+                                                                                        Accessorial Deduction Amount
+                                                                                        <span
+                                                                                            class="pull-right">$0.00</span>
+                                                                                    </p>
+                                                                                    <p class="mb-0 text-dark">Discount
+                                                                                        Amount <span
+                                                                                            class="pull-right">$0.00</span>
+                                                                                    </p>
+                                                                                    <p class="mb-0 text-dark">Tax Amount
+                                                                                        <span
+                                                                                            class="pull-right">$50.00</span>
+                                                                                    </p>
+                                                                                    <p
+                                                                                        class="mb-0 text-dark bordtopdas">
+                                                                                        <strong>Total Charges</strong>
+                                                                                        <span
+                                                                                            class="pull-right">$250.00</span>
+                                                                                    </p>
+                                                                                    <p
+                                                                                        class="mb-0 text-dark bordtopdas">
+                                                                                        <strong>Advance
+                                                                                            Received</strong> <span
+                                                                                            class="pull-right">$60.00</span>
+                                                                                    </p>
+                                                                                    <p
+                                                                                        class="mb-0 text-dark bordtopdas">
+                                                                                        <strong>Balance</strong> <span
+                                                                                            class="pull-right">$240.00</span>
+                                                                                    </p>
+                                                                                </div>
+
+
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+</section>
