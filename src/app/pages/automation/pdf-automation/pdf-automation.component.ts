@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Tesseract} from 'tesseract.ts';
+declare var Tesseract: any;
+
 @Component({
   selector: 'app-pdf-automation',
   templateUrl: './pdf-automation.component.html',
@@ -147,8 +148,8 @@ export class PdfAutomationComponent implements OnInit {
         var canvas = document.getElementById('src');
 
 
-        //const worker = new Tesseract.TesseractWorker();
-        const worker = Tesseract;
+        const worker = Tesseract.TesseractWorker();
+       // const worker = Tesseract;
         const srcContext = document.getElementById('src').getContext('2d');
 
         // let img = await loadImage('1.jpg');
