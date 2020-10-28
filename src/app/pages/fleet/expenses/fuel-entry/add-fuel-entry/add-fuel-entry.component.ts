@@ -66,6 +66,12 @@ export class AddFuelEntryComponent implements OnInit {
     description: '',
     uploadedPhotos: [],
   };
+  fuel = {
+    totalLitres: 0,
+    totalGallons: 0,
+    costPerLitre: 0,
+    costPerGallon: 0
+  };
   countries = [];
   states = [];
   cities = [];
@@ -87,12 +93,12 @@ export class AddFuelEntryComponent implements OnInit {
 
 
   constructor(private apiService: ApiService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private spinner: NgxSpinnerService,
-    private location: Location,
-    private awsUS: AwsUploadService, private toaster: ToastrService,
-    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
+              private router: Router,
+              private route: ActivatedRoute,
+              private spinner: NgxSpinnerService,
+              private location: Location,
+              private awsUS: AwsUploadService, private toaster: ToastrService,
+              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
     this.selectedFileNames = new Map<any, any>();
   }
   get today() {
@@ -158,11 +164,38 @@ export class AddFuelEntryComponent implements OnInit {
       this.trips = result.Items;
     });
   }
-
   fetchVendors() {
     this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
     });
+  }
+  calculateGalLit(totalUnits, amountPaid) {
+    if (this.fuelQtyUnit === 'litre') {
+      console.log('hello litre');
+      console.log('amount paid', amountPaid);
+      console.log('total units', totalUnits);
+      this.fuel.totalGallons = +((totalUnits / 3.785).toFixed(2));
+      this.fuel.costPerGallon = +((amountPaid / this.fuel.totalGallons).toFixed(2));
+      this.fuel.totalLitres = totalUnits;
+      this.fuel.costPerLitre = +((amountPaid / totalUnits).toFixed(2));
+      console.log('total gallons', this.fuel.totalGallons);
+      console.log('total littres', this.fuel.totalLitres);
+      console.log('cost per gallon', this.fuel.costPerGallon);
+      console.log('cost per litre', this.fuel.costPerLitre);
+    }
+    if (this.fuelQtyUnit === 'gallon') {
+      console.log('hello gallon');
+      console.log('amount paid', amountPaid);
+      console.log('total units', totalUnits);
+      this.fuel.totalLitres = +((totalUnits * 3.785).toFixed(2));
+      this.fuel.costPerLitre = +((amountPaid / this.fuel.totalLitres).toFixed(2));
+      this.fuel.totalGallons = totalUnits;
+      this.fuel.costPerGallon = +((amountPaid / totalUnits).toFixed(2));
+      console.log('total littres', this.fuel.totalLitres);
+      console.log('cost per litre', this.fuel.costPerLitre);
+      console.log('total gallons', this.fuel.totalGallons);
+      console.log('cost per gallon', this.fuel.costPerGallon);
+    }
   }
   fillCountry() {
     this.apiService
@@ -220,9 +253,14 @@ export class AddFuelEntryComponent implements OnInit {
         description: this.additionalDetails.description,
         uploadedPhotos: this.additionalDetails.uploadedPhotos,
       },
+      fuel: {
+        totalLitres: this.fuel.totalLitres,
+        totalGallons: this.fuel.totalGallons,
+        costPerLitre: this.fuel.costPerLitre,
+        costPerGallon: this.fuel.costPerGallon
+      },
     };
     console.log('filed data', data);
-
     this.apiService.postData('fuelEntries', data).subscribe({
       complete: () => { },
       error: (err) => {
@@ -330,11 +368,16 @@ export class AddFuelEntryComponent implements OnInit {
             description: result.additionalDetails.description,
             uploadedPhotos: result.additionalDetails.uploadedPhotos,
           },
+          this.fuel = {
+            costPerGallon: result.fuel.costPerGallon,
+            costPerLitre: result.fuel.costPerLitre,
+            totalGallons: result.fuel.totalGallons,
+            totalLitres: result.fuel.totalLitres
+          },
           setTimeout(() => {
             this.fillCountry();
           }, 2000);
       });
-   
   }
   updateFuelEntry() {
 
@@ -378,6 +421,12 @@ export class AddFuelEntryComponent implements OnInit {
         odometer: this.additionalDetails.odometer,
         description: this.additionalDetails.description,
         uploadedPhotos: this.additionalDetails.uploadedPhotos,
+      },
+      fuel: {
+        totalLitres: this.fuel.totalLitres,
+        totalGallons: this.fuel.totalGallons,
+        costPerLitre: this.fuel.costPerLitre,
+        costPerGallon: this.fuel.costPerGallon
       },
     };
     console.log(data);
@@ -433,6 +482,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.amountPaid = this.totalAmount - this.discount;
     let test = (this.amountPaid / units);
     this.costPerUnit = +(test.toFixed(2));
+    this.calculateGalLit(units, this.amountPaid);
   }
 
 

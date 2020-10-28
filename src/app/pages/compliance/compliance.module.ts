@@ -17,6 +17,9 @@ import {InspectionDetailComponent} from './dvir/inspection-detail/inspection-det
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgSelect2Module } from 'ng-select2';
+import { GenerateQuarterlyReportComponent } from './ifta/generate-quarterly-report/generate-quarterly-report.component';
+import { IftaReportHistoryComponent } from './ifta/ifta-report-history/ifta-report-history.component';
+import { IftaReturnDetailsComponent } from './ifta/ifta-return-details/ifta-return-details.component';
 
 @NgModule({
   imports: [CommonModule,
@@ -37,7 +40,10 @@ import { NgSelect2Module } from 'ng-select2';
     MileageComponent,
     ReportComponent,
     UnidentifiedComponent,
-    InspectionSummaryComponent],
+    InspectionSummaryComponent,
+    GenerateQuarterlyReportComponent,
+    IftaReportHistoryComponent,
+    IftaReturnDetailsComponent],
 })
 export class ComplianceModule {
 }

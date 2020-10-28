@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { HereMapService } from '../../../../services/here-map.service';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { HereMapService } from '../../../../services';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 declare var $: any;
 
@@ -46,7 +44,7 @@ export class AssetListComponent implements OnInit {
   flatbedOptions: any = {};
   curtainOptions: any = {};
   closeResult = '';
-  
+
   response: any = '';
   hasError = false;
   hasSuccess = false;
@@ -71,7 +69,7 @@ export class AssetListComponent implements OnInit {
         setTimeout(() => {
           $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
         }, 2000);
-        
+
       });
   }
 
@@ -250,7 +248,7 @@ export class AssetListComponent implements OnInit {
   }
 
   deactivateAsset(value, assetID) {
-    if (confirm("Are you sure you want to delete?") === true) {
+    if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
       .getData(`assets/isDeleted/${assetID}/${value}`)
       .subscribe((result: any) => {
@@ -294,7 +292,7 @@ export class AssetListComponent implements OnInit {
     //   },
     // });
   }
-  
+
   editAsset = () => {
     if (this.assetCheckCount === 1) {
       this.router.navigateByUrl('/fleet/assets/edit/' + this.selectedAssetID);
@@ -346,13 +344,13 @@ export class AssetListComponent implements OnInit {
     } else {
       $('.page-buttons').find('.dt-buttons').hide();
     }
-    
+
     // arr.forEach(item => {
     //   item.checked = false;
     // });
     // this.headCheckbox = false;
   }
-  
+
 
   // Count Checkboxes
   // checkboxCount = (arr) => {

@@ -16,7 +16,7 @@ import { AciShipmentComponent } from './cross-border/aci-documents/aci-shipment/
 import { AciCommodityComponent } from './cross-border/aci-documents/aci-commodity/aci-commodity.component';
 
 import { MyDocumentsComponent } from './documents/my-documents/my-documents.component';
-import { CompanyDocumentsComponent } from './documents/company-documents/company-documents.component';
+import { CompanyDocumentsComponent } from './new-documents/company-documents/company-documents.component';
 
 import { AllDispatchComponent } from './dispatch/all-dispatch/all-dispatch.component';
 import { DispatchPlannerComponent } from './dispatch/dispatch-planner/dispatch-planner.component';
@@ -28,6 +28,11 @@ import { AddDispatchComponent } from './dispatch/add-dispatch/add-dispatch.compo
 import { RouteListComponent } from './permanent-routing/route-list/route-list.component';
 import { AddRouteComponent } from './permanent-routing/add-route/add-route.component';
 import { EditRouteComponent } from './permanent-routing/edit-route/edit-route.component';
+import { NewDocumentsComponent } from './new-documents/new-documents.component';
+import { MyDocumentListComponent } from './new-documents/my-documents/my-document-list.component';
+import { OrdersListComponent } from './orders/orders-list/orders-list.component';
+import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
+import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
 
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
@@ -78,8 +83,17 @@ const routes: Routes = [
   {
     path: 'documents',
     children: [
-      { path: 'My-Documents', component: MyDocumentsComponent},
-      { path: 'Company-Documents', component: CompanyDocumentsComponent }
+      { path: '', component: NewDocumentsComponent},
+      { path: 'my-documents', component: MyDocumentListComponent},
+      { path: 'company-documents', component: CompanyDocumentsComponent }
+    ]
+  },
+  {
+    path: 'orders',
+    children: [
+      { path: '', component: OrdersListComponent},
+      { path: 'add', component: AddOrdersComponent},
+      { path: 'detail', component: OrderDetailComponent }
     ]
   },
   {

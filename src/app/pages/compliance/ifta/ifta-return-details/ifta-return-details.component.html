@@ -1,0 +1,153 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body pl-0 pr-0 pt-0">
+            <header class="page-header">
+                <form class="form-horizontal" method="get">						
+                    <div class="row px-4" style="padding-top:10px;">							
+                        <!-- <div class="col-lg-3 col-md-3">
+                            <div class="input-daterange input-group" data-plugin-datepicker=""> <span class="input-group-prepend">
+                       <span class="input-group-text">
+                       <i class="fas fa-calendar-alt"></i>
+                       </span> </span>
+                                <input type="text" class="form-control" name="start"> <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                       to
+                       </span>
+                                <input type="text" class="form-control" name="end"> </div>
+                        </div>						 -->
+                        <div class="col-lg-2">
+                            <select data-plugin-selectTwo class="form-control populate">
+                                <optgroup label="">
+                                    <option value="1">Select Fuel Type</option>
+                                    <option value="1">Gasoline</option>
+                                    <option value="2">Propane</option>
+                                    <option value="2">Diesel</option>
+                                    <option value="2">Methanol</option>
+                                    <option value="1">Liquid Natural Gas</option>
+                                    <option value="2">Compressed Natural Gas</option>
+                                    <option value="2">Ethanol</option>
+                                    <option value="2">E-85</option>
+                                    <option value="2">M-85</option>
+                                    <option value="2">A55</option>
+                                    <option value="2">Biodiesel</option>
+                                    <option value="2">Other</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <select data-plugin-selectTwo class="form-control populate">
+                                <optgroup label="">
+                                    <option value="1">Select State/Province</option>
+                                    <option value="1">Alberta</option>
+                                    <option value="2">British Columbia</option>
+                                    <option value="2">Ontario</option>
+                                    <option value="2">California</option>
+                                    <option value="2">New York</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col-md-8  col-lg-8 text-right pr-5">
+                         <a href="#viewIFTApdfModal" class="btn btn-success btn-sm ml-2 modal-with-form" style="color:white;"><i class="fas fa-plus"></i> View IFTA Return </a>
+                         <a [routerLink] = "['/compliance','ifta','report']" class="btn btn-default btn-sm ml-2" ><i class="fas fa-list"></i> View Quaters Summary</a>
+
+                          </div>
+                    </div>
+                </form>
+            </header>
+            <div class="row">
+                <div class="col pr-0">
+                    <section class="card">
+                        <div class="card-body">
+                        <div  >
+                                         <div class="row pr-2 text-center">
+                                         <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                                                <div class="safetytile border">
+                                                    <div class="driverbar"> <span class="pull-right text-7 text-dark"><i class="fas fa-gas-pump"></i></span>
+                                                        <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Year - 2020</h2> </div>
+                                                    <div class="">
+                                                        <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">Quarter - 1</h1> </div>
+                                                </div>
+                                            </div>
+                                            
+                                         <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                                                <div class="safetytile border">
+                                                    <div class="driverbar"> <span class="pull-right text-7 text-dark"><i class="fas fa-gas-pump"></i></span>
+                                                        <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Base State/Province</h2> </div>
+                                                    <div class="">
+                                                        <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">Texas</h1> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                                                <div class="safetytile border">
+                                                    <div class="driverbar"> <span class="pull-right text-7 text-dark"><i class="fas fa-gas-pump"></i></span>
+                                                        <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Miles (All States)</h2> </div>
+                                                    <div class="">
+                                                        <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">5000</h1> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                                                <div class="safetytile border">
+                                                    <div class="driverbar"> <span class="pull-right text-7 text-dark"><i class="fas fa-prescription-bottle"></i></span>
+                                                        <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Gallons</h2> </div>
+                                                    <div class="">
+                                                        <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">{{totalGallons}}</h1> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                                                <div class="safetytile border">
+                                                    <div class="driverbar"> <span class="pull-right text-7 text-dark"><i class="fas fa-gas-pump"></i></span>
+                                                        <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">MPG</h2> </div>
+                                                    <div class="">
+                                                        <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">00.83</h1> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                                                <div class="safetytile border">
+                                                    <div class="driverbar"> <span class="pull-right text-7 text-dark"><i class="fas fa-money-bill"></i></span>
+                                                        <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Amount</h2> </div>
+                                                    <div class="">
+                                                        <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">8.67 USD</h1> </div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <table class="table table-responsive-lg mb-0 table-bordered table-striped simple-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Jurisdiction</th>
+                                                            <th>Distance(miles)</th>
+                                                            <th>Distance(kms)</th>
+                                                            <th>Fuel(gal)</th>
+                                                            <th>Fuel(litres)</th>
+                                                            <th>Fuel Type</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor = "let item of stateList"> 
+                                                            <td>{{item.stateID}}</td>
+                                                            <td>45 miles</td>
+                                                            <td>72.08 kms</td>
+                                                            <td>{{item.fuelGal}}</td>
+                                                            <td>{{item.fuelLit}}</td>
+                                                            <td>{{item.fuelType}}</td>
+                                                          </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>												
+                                        </div>
+                                    </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
