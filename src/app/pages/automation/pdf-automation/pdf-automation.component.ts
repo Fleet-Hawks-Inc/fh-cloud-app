@@ -7,10 +7,11 @@ import {Tesseract} from 'tesseract.ts';
 })
 export class PdfAutomationComponent implements OnInit {
 
+  pageTitle = 'Pdf Automation';
   constructor() {
 
 
-    $( document ).ready(() => {
+    $( () => {
       const canvas = document.getElementById('src');
       const savebtn = document.getElementById('fire');
       const pdffile = document.getElementById('pdffile');

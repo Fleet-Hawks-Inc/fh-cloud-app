@@ -1,1 +1,77 @@
-<p>pdf-automation works!</p>
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header">
+        <div class="row pr-5 " style="padding-top:10px;">
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}} </div>
+          <div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Pdf Automation</a> </div>
+        </div>
+      </header>
+      <div class="row">
+
+
+        <input type="file" id="myFile" size="50"/>
+        <canvas id="src" width="1000"  height="1000"></canvas>
+
+        <h1 id="a"></h1>
+
+        <!-- Button trigger modal -->
+
+        <div class="topcorner">
+
+          <div class="card" style="width: 18rem;" id="myDIV">
+
+            <a href="#" class="btn btn-primary">Submit</a>
+          </div>
+
+        </div>
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+
+                <select name="industry" class="form-control" id="select">
+                  <option value="orderNumber">orderNumber</option>
+                  <option value="orderDate">orderDate</option>
+                  <option value="carrierName">carrierName</option>
+                  <option value="carrierAddress">carrierAddress </option>
+                  <option value="Email" disabled selected>Email </option>
+                  <option value="Phone">Phone </option>
+                  <option value="totalAgreedAmount">totalAgreedAmount</option>
+                  <option value="shipperDetails">shipperDetails </option>
+                  <option value="consigneeDetails">consigneeDetails </option>
+                </select>
+
+              </div>
+              <input class="modal-body" id="input"/>
+
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="fire">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 id="text">
+
+        </h1>
+
+
+
+      </div>
+
+    </section>
+
+  </div>
+</section>
