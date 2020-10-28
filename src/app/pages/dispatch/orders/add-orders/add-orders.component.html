@@ -226,9 +226,9 @@
                                           <select [(ngModel)]="item.pickupLocation"
                                           name="item.pickupLocation{{i}}" class="form-control" data-select2-id="7" tabindex="-1" aria-hidden="true">
                                              <optgroup label="">
-                                                <option value="2" data-select2-id="9">Calgary, Alberta</option>
-                                                <option value="2">Delta, BC</option>
-                                                <option value="2">Winnipeg, Manitoba</option>
+                                                <option value="Calgary, Alberta" data-select2-id="9">Calgary, Alberta</option>
+                                                <option value="Delta, BC">Delta, BC</option>
+                                                <option value="Winnipeg, Manitoba">Winnipeg, Manitoba</option>
                                              </optgroup>
                                           </select>
                                           
@@ -439,9 +439,9 @@
                                           <select [(ngModel)]="item.dropOffLocation"
                                           name="item.dropOffLocation{{i}}" data-plugin-selecttwo="" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
                                              <optgroup label="">
-                                                <option value="2" data-select2-id="21">Calgary, Alberta</option>
-                                                <option value="2">Delta, BC</option>
-                                                <option value="2">Winnipeg, Manitoba</option>
+                                                <option value="Calgary, Alberta" data-select2-id="21">Calgary, Alberta</option>
+                                                <option value="Delta, BC">Delta, BC</option>
+                                                <option value="Winnipeg, Manitoba">Winnipeg, Manitoba</option>
                                              </optgroup>
                                           </select>
                                        </div>
@@ -1091,17 +1091,31 @@
 
                             
                             <div class="col-lg-12 mb-3">
-                              <div class="btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn btn-outline btn-fleet mr-2 mb-2" style="width:130px;">
-                                        <input id="googleMiles" name="calculateMiles" type="radio"> Google Miles</label>
-                                        <br>		
-                                    <label class="btn btn-outline btn-fleet mr-2 mb-2" style="width:130px;">
-                                        <input id="pcmiles" name="calculateMiles" type="radio"> PC Miles</label>
-                                        <br>
-                                    <label class="btn btn-outline btn-fleet mr-2 mb-2 active" style="width:130px;">
-                                        <input id="manualmiles" name="calculateMiles" type="radio"> Manual</label>
-                                        
-                                        </div>
+                              <!-- <div class="btn-group-toggle" data-toggle="buttons">
+                                 <label class="btn btn-outline btn-fleet mr-2 mb-2" style="width:130px;">
+                                    <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
+                                       value="google"> Google Miles</label>
+                                 <br>
+                                 <label class="btn btn-outline btn-fleet mr-2 mb-2" style="width:130px;">
+                                    <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
+                                       value="pcmiles"> PC Miles</label>
+                                 <br>
+                                 <label class="btn btn-outline btn-fleet mr-2 mb-2 active" style="width:130px;">
+                                    <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
+                                       value="manual"> Manual</label>
+                              </div> -->
+                              <label class="d-block">
+                                    <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
+                                    value="google"> Google Miles
+                              </label>
+                              <label class="d-block">
+                                    <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
+                                    value="pcmiles"> PC Miles
+                              </label>
+                              <label class="d-block">
+                                    <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
+                                    value="manual"> Manual
+                              </label>
                             </div>
                             
                             
