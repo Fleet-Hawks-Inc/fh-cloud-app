@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 declare var Tesseract: any;
 
 @Component({
@@ -9,18 +9,21 @@ declare var Tesseract: any;
 export class PdfAutomationComponent implements OnInit {
 
   pageTitle = 'Pdf Automation';
+  @ViewChild('canva', { static: true })
+  canva: ElementRef<HTMLCanvasElement>;
   constructor() {
 
 
-    $( () => {
-      const canvas = document.getElementById('src');
+    $(() => {
+     // const canvas = document.getElementById('src');
+      const canvas = this.canva.nativeElement;
       const savebtn = document.getElementById('fire');
       const pdffile = document.getElementById('pdffile');
       const el = document.getElementById('myFile');
       let text;
 
       const ctx = canvas.getContext('2d');
-      const rect = {};
+      const rect: any = {};
       let drag = false;
       const imageObj = null;
       let renderTask;
@@ -38,7 +41,7 @@ export class PdfAutomationComponent implements OnInit {
         pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
 
         const loadingTask = pdfjsLib.getDocument(url);
-        loadingTask.promise.then(function (pdf) {
+        loadingTask.promise.then((pdf) => {
           console.log('PDF loaded');
 
           // Fetch the first page
@@ -50,15 +53,18 @@ export class PdfAutomationComponent implements OnInit {
             const viewport = page.getViewport({ scale: scale });
 
             // Prepare canvas using PDF page dimensions
-            const canvasShadowed = document.getElementById('src');
+           // const canvasShadowed = document.getElementById('src');
+           // const canvasShadowed = this.canva.nativeElement;
+            const  canvasShadowed = canvas;
             const context = canvasShadowed.getContext('2d');
+
             canvasShadowed.height = viewport.height;
             canvasShadowed.width = viewport.width;
 
             // Render PDF page into canvas context
-            let renderContext = {
+            const renderContext = {
               canvasContext: context,
-              viewport: viewport
+              viewport
             };
             renderTask = page.render(renderContext);
             renderTask.promise.then(() => {
@@ -119,17 +125,10 @@ export class PdfAutomationComponent implements OnInit {
       function mouseMove(e) {
         if (drag) {
 
-
-
           rect.w = (e.pageX - this.offsetLeft) - rect.startX;
           rect.h = (e.pageY - this.offsetTop) - rect.startY;
-
           ctx.strokeStyle = 'red';
           // ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
-
-
-
-
         }
 
 
@@ -145,12 +144,14 @@ export class PdfAutomationComponent implements OnInit {
         console.log(rect.startX, rect.startY, rect.w, rect.h)
 
 
-        var canvas = document.getElementById('src');
+        //var canvas = document.getElementById('src');
+
 
 
         const worker = Tesseract.TesseractWorker();
        // const worker = Tesseract;
-        const srcContext = document.getElementById('src').getContext('2d');
+        // const srcContext = document.getElementById('src').getContext('2d');
+        const srcContext = canvas.getContext('2d');
 
         // let img = await loadImage('1.jpg');
         // srcContext.drawImage(img, 0, 0);
