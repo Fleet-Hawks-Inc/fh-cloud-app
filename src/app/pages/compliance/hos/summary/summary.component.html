@@ -650,16 +650,16 @@
                                   <tbody>
                                     <tr *ngFor="let log of summary">
                                       <td
-                                        onclick="window.location='driver-profile2.php';"
+                                        routerLink="/fleet/drivers/detail/{{ log.driverID }}"
                                       >
                                         {{ log.userName }}
                                       </td>
                                       <td>100 street Ontario,Toronto</td>
                                       <td>{{ log.HOSEventDescription }}</td>
-                                      <td>Scania</td>
+                                      <td>{{ log.vehicleName }}</td>
                                       <td>4566</td>
-                                      <td>NY</td>
-                                      <td>22232005</td>
+                                      <td>{{ log.dlState }}</td>
+                                      <td>{{ log.dlNumber }}</td>
                                       <td>
                                         <span class="badge badge-dark p-1"
                                           >{{ log.HOSEventDescription }}</span
