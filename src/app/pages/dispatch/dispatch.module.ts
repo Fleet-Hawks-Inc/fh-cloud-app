@@ -54,7 +54,7 @@ import { DispatchPlannerComponent } from './dispatch/dispatch-planner/dispatch-p
 import { AceManifestComponent } from './cross-border/ace-manifest/ace-manifest.component';
 import { AciEmanifestComponent } from './cross-border/aci-emanifest/aci-emanifest.component';
 import { MyDocumentsComponent } from './documents/my-documents/my-documents.component';
-import { CompanyDocumentsComponent } from './documents/company-documents/company-documents.component';
+import { CompanyDocumentsComponent } from './new-documents/company-documents/company-documents.component';
 
 import { AceShipmentComponent } from './cross-border/ace-documents/ace-shipment/ace-shipment.component';
 import { AceCommodityComponent } from './cross-border/ace-documents/ace-commodity/ace-commodity.component';
@@ -70,16 +70,23 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 import { DataTablesModule } from 'angular-datatables'
 import {Injectable} from '@angular/core';
 import { ɵs } from '@ng-select/ng-select';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+
+// ngselect2
+import { NgSelectModule } from '@ng-select/ng-select';
+
 import { TripListComponent } from './trips/trip-list/trip-list.component';
 import { AddTripComponent } from './trips/add-trip/add-trip.component';
 import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
 
-import {DragDropModule} from '@angular/cdk/drag-drop';
 import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
 import { QuoteListComponent } from './quotes/quote-list/quote-list.component';
 import { AddQuoteComponent } from './quotes/add-quote/add-quote.component';
 import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
 import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
+
+import { NewDocumentsComponent } from './new-documents/new-documents.component';
+import { MyDocumentListComponent } from './new-documents/my-documents/my-document-list.component';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -142,6 +149,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     DataTablesModule,
     DragDropModule,
+    NgSelectModule
 
   ],
 
@@ -227,8 +235,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AddQuoteComponent,
     QuoteDetailComponent,
     EditTripComponent,
-
-
+    NewDocumentsComponent,
+    MyDocumentListComponent,
 
   ],
 

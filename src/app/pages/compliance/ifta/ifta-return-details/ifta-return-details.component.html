@@ -1,0 +1,313 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body">
+            <header class="page-header">
+                <form class="form-horizontal" method="get">
+                    <div class="row px-4" style="padding-top:10px;">
+                        <!-- <div class="col-lg-3 col-md-3">
+                        <div class="input-daterange input-group" data-plugin-datepicker=""> <span class="input-group-prepend">
+                   <span class="input-group-text">
+                   <i class="fas fa-calendar-alt"></i>
+                   </span> </span>
+                            <input type="text" class="form-control" name="start"> <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                   to
+                   </span>
+                            <input type="text" class="form-control" name="end"> </div>
+                    </div>						 -->
+                        <div class="col-lg-2">
+                            <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible"
+                                data-select2-id="258" tabindex="-1" aria-hidden="true">
+                                <optgroup label="">
+                                    <option value="1" data-select2-id="260">Select Fuel Type</option>
+                                    <option value="1">Gasoline</option>
+                                    <option value="2">Propane</option>
+                                    <option value="2">Diesel</option>
+                                    <option value="2">Methanol</option>
+                                    <option value="1">Liquid Natural Gas</option>
+                                    <option value="2">Compressed Natural Gas</option>
+                                    <option value="2">Ethanol</option>
+                                    <option value="2">E-85</option>
+                                    <option value="2">M-85</option>
+                                    <option value="2">A55</option>
+                                    <option value="2">Biodiesel</option>
+                                    <option value="2">Other</option>
+                                </optgroup>
+                            </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr"
+                                data-select2-id="259" style="width: 239.828px;"><span class="selection"><span
+                                        class="select2-selection select2-selection--single" role="combobox"
+                                        aria-haspopup="true" aria-expanded="false" tabindex="0"
+                                        aria-labelledby="select2-be9t-container"><span
+                                            class="select2-selection__rendered" id="select2-be9t-container"
+                                            role="textbox" aria-readonly="true" title="Select Fuel Type">Select Fuel
+                                            Type</span><span class="select2-selection__arrow" role="presentation"><b
+                                                role="presentation"></b></span></span></span><span
+                                    class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                        <div class="col-lg-2">
+                            <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible"
+                                data-select2-id="261" tabindex="-1" aria-hidden="true">
+                                <optgroup label="">
+                                    <option value="1" data-select2-id="263">Select State/Province</option>
+                                    <option value="1">Alberta</option>
+                                    <option value="2">British Columbia</option>
+                                    <option value="2">Ontario</option>
+                                    <option value="2">California</option>
+                                    <option value="2">New York</option>
+                                </optgroup>
+                            </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr"
+                                data-select2-id="262" style="width: 239.828px;"><span class="selection"><span
+                                        class="select2-selection select2-selection--single" role="combobox"
+                                        aria-haspopup="true" aria-expanded="false" tabindex="0"
+                                        aria-labelledby="select2-2ysb-container"><span
+                                            class="select2-selection__rendered" id="select2-2ysb-container"
+                                            role="textbox" aria-readonly="true" title="Select State/Province">Select
+                                            State/Province</span><span class="select2-selection__arrow"
+                                            role="presentation"><b role="presentation"></b></span></span></span><span
+                                    class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                        <div class="col-md-8  col-lg-8 text-right pr-5">
+                            <a href="#viewIFTApdfModal" class="btn btn-success btn-sm ml-2 modal-with-form"
+                                style="color:white;"><i class="fas fa-plus"></i> View IFTA Return </a>
+                            <a [routerLink]="['/compliance', 'ifta', 'report']" class="btn btn-default btn-sm ml-2"><i class="fas fa-list"></i>
+                                View Quaters Summary</a>
+
+                        </div>
+                    </div>
+                </form>
+            </header>
+            <div class="row text-dark">
+                <div class="col">
+                    <section class="card">
+                        <div class="card-body">                         
+                                <div class="row pr-2 text-center">
+                                    <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                                        <div class="safetytile border">
+                                            <div class="driverbar"> <span class="pull-right text-7 text-dark"><i
+                                                        class="fas fa-gas-pump"></i></span>
+                                                <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Year -
+                                                    2020</h2>
+                                            </div>
+                                            <div class="">
+                                                <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">
+                                                    Quarter - 1</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                                        <div class="safetytile border">
+                                            <div class="driverbar"> <span class="pull-right text-7 text-dark"><i
+                                                        class="fas fa-gas-pump"></i></span>
+                                                <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Base
+                                                    State/Province</h2>
+                                            </div>
+                                            <div class="">
+                                                <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">Texas
+                                                </h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                                        <div class="safetytile border">
+                                            <div class="driverbar"> <span class="pull-right text-7 text-dark"><i
+                                                        class="fas fa-gas-pump"></i></span>
+                                                <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total
+                                                    Miles (All States)</h2>
+                                            </div>
+                                            <div class="">
+                                                <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">5000
+                                                </h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                                        <div class="safetytile border">
+                                            <div class="driverbar"> <span class="pull-right text-7 text-dark"><i
+                                                        class="fas fa-prescription-bottle"></i></span>
+                                                <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total
+                                                    Gallons</h2>
+                                            </div>
+                                            <div class="">
+                                                <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">6000
+                                                </h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                                        <div class="safetytile border">
+                                            <div class="driverbar"> <span class="pull-right text-7 text-dark"><i
+                                                        class="fas fa-gas-pump"></i></span>
+                                                <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">MPG
+                                                </h2>
+                                            </div>
+                                            <div class="">
+                                                <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">00.83
+                                                </h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                                        <div class="safetytile border">
+                                            <div class="driverbar"> <span class="pull-right text-7 text-dark"><i
+                                                        class="fas fa-money-bill"></i></span>
+                                                <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Amount
+                                                </h2>
+                                            </div>
+                                            <div class="">
+                                                <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">8.67
+                                                    USD</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div id="DataTables_Table_16_wrapper"
+                                            class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="dataTables_length" id="DataTables_Table_16_length">
+                                                        <label>Show <select name="DataTables_Table_16_length"
+                                                                aria-controls="DataTables_Table_16"
+                                                                class="custom-select custom-select-sm form-control form-control-sm">
+                                                                <option value="10">10</option>
+                                                                <option value="25">25</option>
+                                                                <option value="50">50</option>
+                                                                <option value="100">100</option>
+                                                            </select> entries</label></div>
+                                                </div>
+                                                <div class="col-lg-6"></div>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table
+                                                    class="table table-responsive-lg mb-0 table-bordered table-striped simple-table dataTable no-footer"
+                                                    id="DataTables_Table_16" role="grid">
+                                                    <thead>
+                                                        <tr role="row">
+                                                            <th class="sorting_asc" tabindex="0"
+                                                                aria-controls="DataTables_Table_16" rowspan="1"
+                                                                colspan="1" data-column-index="0" aria-sort="ascending"
+                                                                aria-label="Jurisdiction: activate to sort column descending"
+                                                                style="width: 218px;">Jurisdiction</th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="DataTables_Table_16" rowspan="1"
+                                                                colspan="1" data-column-index="1"
+                                                                aria-label="Distance(miles): activate to sort column ascending"
+                                                                style="width: 277px;">Distance(miles)</th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="DataTables_Table_16" rowspan="1"
+                                                                colspan="1" data-column-index="2"
+                                                                aria-label="Distance(kms): activate to sort column ascending"
+                                                                style="width: 259px;">Distance(kms)</th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="DataTables_Table_16" rowspan="1"
+                                                                colspan="1" data-column-index="3"
+                                                                aria-label="Fuel(gal): activate to sort column ascending"
+                                                                style="width: 176px;">Fuel(gal)</th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="DataTables_Table_16" rowspan="1"
+                                                                colspan="1" data-column-index="4"
+                                                                aria-label="Fuel(litres): activate to sort column ascending"
+                                                                style="width: 207px;">Fuel(litres)</th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="DataTables_Table_16" rowspan="1"
+                                                                colspan="1" data-column-index="5"
+                                                                aria-label="Fuel Type: activate to sort column ascending"
+                                                                style="width: 190px;">Fuel Type</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr role="row" class="odd">
+                                                            <td class="sorting_1">Alberta</td>
+                                                            <td>45 miles</td>
+                                                            <td>72.08 kms</td>
+                                                            <td>50 gal</td>
+                                                            <td>189.27 lit</td>
+                                                            <td>Diesel</td>
+                                                        </tr>
+                                                        <tr role="row" class="even">
+                                                            <td class="sorting_1">Alberta</td>
+                                                            <td>45 miles</td>
+                                                            <td>72.08 kms</td>
+                                                            <td>50 gal</td>
+                                                            <td>189.27 lit</td>
+                                                            <td>Propane</td>
+                                                        </tr>
+                                                        <tr role="row" class="odd">
+                                                            <td class="sorting_1">Alberta</td>
+                                                            <td>45 miles</td>
+                                                            <td>72.08 kms</td>
+                                                            <td>50 gal</td>
+                                                            <td>189.27 lit</td>
+                                                            <td>Diesel</td>
+                                                        </tr>
+                                                        <tr role="row" class="even">
+                                                            <td class="sorting_1">California</td>
+                                                            <td>458 miles</td>
+                                                            <td>737.08 kms</td>
+                                                            <td>50 gal</td>
+                                                            <td>189.27 lit</td>
+                                                            <td>Gasoline</td>
+                                                        </tr>
+                                                        <tr role="row" class="odd">
+                                                            <td class="sorting_1">California</td>
+                                                            <td>45 miles</td>
+                                                            <td>72.08 kms</td>
+                                                            <td>50 gal</td>
+                                                            <td>189.27 lit</td>
+                                                            <td>Gasoline</td>
+                                                        </tr>
+                                                        <tr role="row" class="even">
+                                                            <td class="sorting_1">Nevada</td>
+                                                            <td>45 miles</td>
+                                                            <td>72.08 kms</td>
+                                                            <td>50 gal</td>
+                                                            <td>189.27 lit</td>
+                                                            <td>Diesel</td>
+                                                        </tr>
+                                                        <tr role="row" class="odd">
+                                                            <td class="sorting_1">New York</td>
+                                                            <td>45 miles</td>
+                                                            <td>72.08 kms</td>
+                                                            <td>50 gal</td>
+                                                            <td>189.27 lit</td>
+                                                            <td>Diesel</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="dataTables_paginate paging_simple_numbers"
+                                                id="DataTables_Table_16_paginate">
+                                                <ul class="pagination">
+                                                    <li class="paginate_button page-item previous disabled"
+                                                        id="DataTables_Table_16_previous"><a href="#"
+                                                            aria-controls="DataTables_Table_16" data-dt-idx="0"
+                                                            tabindex="0" class="page-link">Previous</a></li>
+                                                    <li class="paginate_button page-item active"><a href="#"
+                                                            aria-controls="DataTables_Table_16" data-dt-idx="1"
+                                                            tabindex="0" class="page-link">1</a></li>
+                                                    <li class="paginate_button page-item next disabled"
+                                                        id="DataTables_Table_16_next"><a href="#"
+                                                            aria-controls="DataTables_Table_16" data-dt-idx="2"
+                                                            tabindex="0" class="page-link">Next</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                           
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>

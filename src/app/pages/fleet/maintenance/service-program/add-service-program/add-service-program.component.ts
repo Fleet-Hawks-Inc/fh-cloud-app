@@ -18,9 +18,13 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   pageTitle: string;
   private vehicles;
   private programID;
-  meterText = 'Miles';
   serviceData = {
-    serviceScheduleDetails: {}
+    serviceScheduleDetails: [{
+      serviceTask: '',
+      repeatByTime: '',
+      repeatByTimeUnit: '',
+      repeatByOdometer: '',
+    }]
   };
 
   errors = {};
@@ -59,15 +63,25 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       this.pageTitle = 'New Service Program';
     }
     this.fetchVehicles();
-  }
-
-
-  ngAfterViewInit() {
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
   }
 
+
+  ngAfterViewInit() {
+   
+  }
+
+  addDocument() {
+    this.serviceData.serviceScheduleDetails.push({
+      serviceTask: '',
+      repeatByTime: '',
+      repeatByTimeUnit: '',
+      repeatByOdometer: '',
+    })
+    console.log(this.serviceData)
+  }
   addServiceProgram() {
     console.log('service program', this.serviceData);
     this.errors = {};
@@ -82,28 +96,19 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
               map((val: any) => {
                 const path = val.path;
                 // We Can Use This Method
-                const key = val.message.match(/'([^']+)'/)[1];
-                // console.log(key);
-                // this.errors[key] = val.message;
-                // Or We Can Use This One To Extract Key
-                // const key = this.concatArray(path);
-                // this.errors[this.concatArray(path)] = val.message;
-                // if (key.length === 2) {
-                // this.errors[val.context.key] = val.message;
-                // } else {
-                // this.errors[key] = val.message;
-                // }
-                val.message = val.message.replace(/'.*'/, 'This Field');
+                const key = val.message.match(/"([^']+)"/)[1];
+                console.log(key);
+                val.message = val.message.replace(/".*"/, 'This Field');
                 this.errors[key] = val.message;
-                // console.log(this.errors);
               })
             )
             .subscribe({
               complete: () => {
                 this.throwErrors();
+                this.Success = '';
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
@@ -136,33 +141,71 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   }
 
   fetchServiceByID() {
-    this.spinner.show(); // loader init
+    // this.spinner.show(); // loader init
     this.apiService
       .getData('servicePrograms/' + this.programID)
       .subscribe((result: any) => {
         result = result.Items[0];
         console.log('result', result);
+        this.serviceData['programID'] = this.programID;
         this.serviceData['programName'] = result.programName;
         this.serviceData['description'] = result.description;
-        this.serviceData.serviceScheduleDetails['repeatByTime'] = result.repeatByTime;
-        this.serviceData.serviceScheduleDetails['repeatByTimeUnit'] = result.repeatByTimeUnit;
-        this.serviceData.serviceScheduleDetails['repeatByOdometer'] = result.repeatByOdometer;
-        
-        this.serviceData.serviceScheduleDetails['serviceTasks'] = result.serviceTasks[0];
+        this.serviceData['vehicles'] = result.vehicles;
+        let newTasks = [];
+        for (var i = 0; i < result.serviceScheduleDetails.length; i++) {
+          newTasks.push({
+            serviceTask: result.serviceScheduleDetails[i].serviceTask,
+            repeatByTime: result.serviceScheduleDetails[i].repeatByTime,
+            repeatByTimeUnit: result.serviceScheduleDetails[i].repeatByTimeUnit,
+            repeatByOdometer: result.serviceScheduleDetails[i].repeatByOdometer,
+          });
+        }
+        this.serviceData.serviceScheduleDetails = newTasks;
         this.spinner.hide(); // hide loader
       });
   }
-  // addTasks() {
-  //   $('.add-more').on('click', () => {
-  //     let abc = $('.services-task__wrap').next('.row').clone();
-  //     $('.services-task__wrap').append(abc);
-  //   });
-  // }
 
-  // removeTasks(i) {
-  //   console.log(this.serviceData.serviceScheduleDetails.length);
-  //   this.serviceData.serviceScheduleDetails.splice(i, 1);
-  // }
+  /*
+   * Update Service Program
+  */
+ updateServiceProgram() {
+  this.hasError = false;
+  this.hasSuccess = false;
+  console.log('service program', this.serviceData);
+  this.apiService.putData('servicePrograms', this.serviceData).subscribe({
+    complete: () => { },
+    error: (err) => {
+      from(err.error)
+        .pipe(
+          map((val: any) => {
+            const path = val.path;
+            // We Can Use This Method
+            const key = val.message.match(/'([^']+)'/)[1];
+            console.log(key);
+            val.message = val.message.replace(/'.*'/, 'This Field');
+            this.errors[key] = val.message;
+          })
+        )
+        .subscribe({
+          complete: () => {
+            this.throwErrors();
+          },
+          error: () => { },
+          next: () => { },
+        });
+    },
+    next: (res) => {
+      this.response = res;
+      this.hasSuccess = true;
+      this.toastr.success('Service Updated Successfully');
+      this.router.navigateByUrl('/fleet/maintenance/service-program/service-program-list');
+    },
+  });
+}
+  
+  removeTasks(i) {
+    this.serviceData.serviceScheduleDetails.splice(i, 1);
+  }
 
 
 }

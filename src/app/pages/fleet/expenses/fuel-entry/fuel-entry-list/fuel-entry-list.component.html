@@ -67,7 +67,7 @@
 						 <a class="dropdown-item text-1" href="">Export</a>
 					  </div>
 				   </div>
-				   <a routerLink="/fleet/expenses/fuel/Add-Fuel-Entry" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Fuel Entry</a>
+				   <a routerLink="/fleet/expenses/fuel/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Fuel Entry</a>
 				</div>
 			 </div>
 		  </form>
@@ -132,7 +132,7 @@
 					<tr *ngFor="let fuelEntry of fuelList">
 						<!-- <td><input type="checkbox" [checked]="isChecked" [(ngModel)]="fuelEntry.checked"  (ngModelChange)="checkboxCount(fuelList)" value="{{ fuelEntry.entryID }}"></td> -->
 					 
-					    <td routerLink="/fleet/expenses/fuel/Fuel-Entry-Details/{{ fuelEntry.entryID }}">{{ fuelEntry.date }}</td>
+					    <td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.date }}</td>
 						<td>Time</td>
 						<td >Card Number</td>
 						<td>Driver ID</td>
@@ -140,8 +140,8 @@
 						<td>Unit#</td>
 						<td>Sub-Fleet</td>
 						<td>Hub Miles</td>
-						<td routerLink="/fleet/expenses/fuel/Fuel-Entry-Details/{{ fuelEntry.entryID }}">{{ fuelEntry.additionalDetails.odometer }}</td>
-						<td routerLink="/fleet/expenses/fuel/Fuel-Entry-Details/{{ fuelEntry.entryID }}">{{ fuelEntry.tripID}}</td>
+						<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.additionalDetails.odometer }}</td>
+						<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.tripID}}</td>
 						<td>Invoice</td>
 						<td>T/S Code</td>
 						<td>In Dir</td>
@@ -159,7 +159,7 @@
 						<td>Add_CUR</td>
 						<td>Cash Adv</td>
 						<td>Tax</td>
-						<td routerLink="/fleet/expenses/fuel/Fuel-Entry-Details/{{ fuelEntry.entryID }}">{{ fuelEntry.amountPaid}}</td>
+						<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.amountPaid}}</td>
 						<td>RFuel_UOM</td>
 						<td>RFuel_CUR</td>
 						<td>Oil_CUR</td>
@@ -174,7 +174,7 @@
 					  <td><div class="btn-group flex-wrap">
 						<button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
 						<div class="dropdown-menu" role="menu">
-						   <a routerLink="/fleet/expenses/fuel/Edit-Fuel-Entry/{{fuelEntry.entryID }}" class="dropdown-item text-1" >Edit</a>
+						   <a routerLink="/fleet/expenses/fuel/edit/{{fuelEntry.entryID }}" class="dropdown-item text-1" >Edit</a>
 						   <button type="button" class="dropdown-item text-1" (click)="deleteFuelEntry(fuelEntry.entryID)">Delete</button>
 						</div>
 					 </div></td>	

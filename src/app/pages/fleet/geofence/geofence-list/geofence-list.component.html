@@ -119,7 +119,7 @@
                   <div *ngIf="!geofences.length > 0" class="alert alert-info m-0 text-center" role="alert"> No records found </div>
                 </ngb-accordion> -->
                 <div *ngFor="let geofence of geofences;let i = index" class="" (click)="toggleAccordian(i, geofence.geofence.cords)">
-                  <table class="table m-0 text-left">
+                  <table class="table m-0 text-left" style="cursor: pointer;">
                      <tbody>
                         <tr>
                            <td style="width: 20%;" class="border-0 text-left">{{geofence.geofenceName}}</td>

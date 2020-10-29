@@ -12,6 +12,7 @@ export class ServiceProgramDetailComponent implements OnInit {
   private programs;
   private vehicles;
   private programID;
+  private tasks;
   constructor(
       private spinner: NgxSpinnerService,
       private apiService: ApiService,
@@ -26,14 +27,13 @@ export class ServiceProgramDetailComponent implements OnInit {
   fetchProgramByID() {
     this.spinner.show(); // loader init
     this.apiService.getData(`servicePrograms/${this.programID}`).subscribe({
-      complete: () => {
-        
-      },
+      complete: () => {},
       error: () => {},
       next: (result: any) => {
         console.log(result);
         this.programs = result.Items;
         this.vehicles = this.programs[0]['vehicles'];
+        this.tasks = this.programs[0]['serviceScheduleDetails'];
         console.log('progran', this.programs)
         this.spinner.hide(); // loader hide
       },

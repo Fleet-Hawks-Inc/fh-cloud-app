@@ -1,0 +1,140 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body">
+            <header class="page-header">
+                <div class="row  pl-3 pr-5" style="padding-top:10px;">
+                   <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                      View &amp; Return IFTA form - 4th Qtr(Oct-Dec 2020) 
+                   </div>
+                   <div class="col-md-8  col-lg-8 text-right">
+                   </div>
+                </div>
+             </header>
+            <div class="row text-dark">
+                <div class="col">
+                    <section class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label class="text-4 font-weight-bold">Current Report</label>
+                                </div>
+                                <div class="col-lg-10 offset-lg-1 vehicle-common-box p-4 text-center">
+                                    <!-- <p>Here is the your IFTA retrun for your base jurisdiction,based on miles and fuel data entered. Please click the button below to View, Download or Email the completed IFTA return. The document contains instruction and the address where you will need to send your return in order to complete your IFTA filling.</p> -->
+                                    <button class="btn btn-success mr-1"><i class="fas fa-download"></i> Download
+                                        Quarterly Return pdf</button><button class="btn btn-success ml-1"><i
+                                            class="fas fa-download"></i> Download Excel Sheet</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label class="text-4 font-weight-bold">IFTA History</label>
+                                    <!-- <p>Here are the version of IFTA return you have printed ealier with the latest at the top.</p> -->
+                                </div>
+                                <div class="col-lg-12">
+                                    <div id="DataTables_Table_16_wrapper"
+                                        class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="dataTables_length" id="DataTables_Table_16_length">
+                                                    <label>Show <select name="DataTables_Table_16_length"
+                                                            aria-controls="DataTables_Table_16"
+                                                            class="custom-select custom-select-sm form-control form-control-sm">
+                                                            <option value="10">10</option>
+                                                            <option value="25">25</option>
+                                                            <option value="50">50</option>
+                                                            <option value="100">100</option>
+                                                        </select> entries</label></div>
+                                            </div>
+                                            <div class="col-lg-6"></div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table
+                                                class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer"
+                                                id="DataTables_Table_16" role="grid">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <th width="33.3%" class="sorting_asc" tabindex="0"
+                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
+                                                            data-column-index="0" aria-sort="ascending"
+                                                            aria-label="IFTA Return : activate to sort column descending"
+                                                            style="width: 482px;">IFTA Return </th>
+                                                        <th width="33.3%" class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
+                                                            data-column-index="1"
+                                                            aria-label="When Generated: activate to sort column ascending"
+                                                            style="width: 482px;">When Generated</th>
+                                                        <th width="33.3%" class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
+                                                            data-column-index="2"
+                                                            aria-label="Download: activate to sort column ascending"
+                                                            style="width: 483px;">Download</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr role="row" class="odd">
+                                                        <td class="sorting_1">IFTA Return - 2018(1-Quarter) </td>
+                                                        <td>4/23/2018 / 11:03 AM </td>
+                                                        <td><i class="far fa-file-pdf"
+                                                                style="font-size:20px;"></i>&nbsp;<i
+                                                                class="far fa-file-excel" style="font-size:20px;"></i>
+                                                        </td>
+                                                    </tr>
+                                                    <tr role="row" class="even">
+                                                        <td class="sorting_1">IFTA Return - 2019(1-Quarter) </td>
+                                                        <td>4/23/2019 / 11:03 AM </td>
+                                                        <td><i class="far fa-file-pdf"
+                                                                style="font-size:20px;"></i>&nbsp;<i
+                                                                class="far fa-file-excel" style="font-size:20px;"></i>
+                                                        </td>
+                                                    </tr>
+                                                    <tr role="row" class="odd">
+                                                        <td class="sorting_1">IFTA Return - 2020(1-Quarter) </td>
+                                                        <td>4/23/2020 / 11:03 AM </td>
+                                                        <td><i class="far fa-file-pdf"
+                                                                style="font-size:20px;"></i>&nbsp;<i
+                                                                class="far fa-file-excel" style="font-size:20px;"></i>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="dataTables_paginate paging_simple_numbers"
+                                            id="DataTables_Table_16_paginate">
+                                            <ul class="pagination">
+                                                <li class="paginate_button page-item previous disabled"
+                                                    id="DataTables_Table_16_previous"><a href="#"
+                                                        aria-controls="DataTables_Table_16" data-dt-idx="0" tabindex="0"
+                                                        class="page-link">Previous</a></li>
+                                                <li class="paginate_button page-item active"><a href="#"
+                                                        aria-controls="DataTables_Table_16" data-dt-idx="1" tabindex="0"
+                                                        class="page-link">1</a></li>
+                                                <li class="paginate_button page-item next disabled"
+                                                    id="DataTables_Table_16_next"><a href="#"
+                                                        aria-controls="DataTables_Table_16" data-dt-idx="2" tabindex="0"
+                                                        class="page-link">Next</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+<div class="row">
+    <div class="col-lg-12">
+        <button type="button" class="btn btn-default"  (click)="cancel()" >Back</button> 
+    </div>
+</div>
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>

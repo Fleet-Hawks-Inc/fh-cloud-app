@@ -53,7 +53,7 @@
                         <a class="dropdown-item text-1" href="">Export</a>
                      </div>
                   </div>
-                  <a routerLink="/fleet/drivers/Add-Driver" class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i> Add Driver</a>
+                  <a routerLink="/fleet/drivers/add" class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i> Add Driver</a>
                </div>
             </div>
          </form>
@@ -221,10 +221,10 @@
             <div class="col">
                <section class="card">
                   <div class="card-body">
-                     <table datatable [dtOptions]="dtOptions" class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="drivers.length > 0" >
+                     <table datatable [dtOptions]="dtOptions" class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="drivers.length > 0">
                         <thead>
                            <tr>
-                              <th><input type="checkbox"></th>
+                              <!-- <th><input type="checkbox"></th> -->
                               
                               <th>Name</th>
                               <th>Duty Status</th>
@@ -236,13 +236,14 @@
                               <th>DL</th>
                               <th>Document</th>
                               <th>Status</th>
+                              <th>Actions</th>
                            </tr>
                         </thead>
                         <tbody>
-                           <tr *ngFor="let driver of drivers;">
-                              <td><input [checked]="isChecked" [(ngModel)]="driver.checked" (ngModelChange)="checkboxCount()" value="{{driver.assetIdentification}}" type="checkbox"></td>
+                           <tr *ngFor="let driver of drivers;let i = index;">
+                              <!-- <td><input [checked]="isChecked" [(ngModel)]="driver.checked" (ngModelChange)="checkboxCount()" value="{{driver.assetIdentification}}" type="checkbox"></td> -->
                               
-                              <td routerLink="/fleet/drivers/driver-detail/{{driver.driverID}}">
+                              <td routerLink="/fleet/drivers/detail/{{driver.driverID}}">
                                  <span class="font-weight-bold line-height-lg">{{driver.firstName}} {{driver.lastName}}</span>
                               </td>
                               <td>Live Status</td>
@@ -252,13 +253,24 @@
                               <td>Live Status</td>
                               <td><span class="font-weight-bold">Phone:</span>{{driver.workPhone}} <br> <span class="font-weight-bold">E-mail:</span>{{driver.workEmail}}</td>
                               <td><span class="font-weight-bold">DL#:</span>{{driver.licenceDetails.CDL_Number}} <br><span class="font-weight-bold">DL State:</span> {{driver.licenceDetails.issuedState}}</td>
-                              <td><span class="font-weight-bold">Type#:</span>{{driver.documentDetails.documentType}} <br><span class="font-weight-bold">Issue State:</span>{{driver.licenceDetails.issuingState}}</td>
+                              <td><span class="font-weight-bold">Type#:</span>{{driver.documentDetails[0].documentType}} <br><span class="font-weight-bold">Issue State:</span>{{driver.documentDetails[0].issuingState}}</td>
                               
                               <td>{{driver.driverStatus}}</td>
+                              <td class="border-0">
+                                 <div class="dropdown dropright">
+                                    <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                       <a class="dropdown-item" routerLink="/fleet/drivers/edit/{{driver.driverID}}">Edit</a>
+                                       <a href="javascript:;" class="dropdown-item" (click)="deactivateAsset(driver.isDeleted, driver.driverID)">Delete</a>
+                                    </div>
+                                  </div>
+                              </td>
                            </tr>
-                           
                         </tbody>
                      </table>
+                     
                   </div>
                </section>
             </div>

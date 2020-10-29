@@ -14,7 +14,7 @@
   </li>
   <li routerLinkActive="">
     <a class="nav-link"
-          [routerLink]="['/fleet', 'drivers', 'Drivers-List']"
+          [routerLink]="['/fleet', 'drivers', 'list']"
         >
         <i class="fas fa-users-cog fa-fw" aria-hidden="true"></i>
       <span>Drivers</span>
@@ -61,7 +61,7 @@
   </li> -->
   <!--[expandedNav]="'vehicles'"-->
   <li routerLinkActive="">
-    <a class="nav-link" [routerLink]="['/fleet', 'vehicles', 'Vehicle-List']">
+    <a class="nav-link" [routerLink]="['/fleet', 'vehicles', 'list']">
       <i class="fas fa-truck fa-fw" aria-hidden="true"></i>
       <span>Vehicles</span>
     </a>
@@ -105,24 +105,10 @@
     </ul> -->
   </li>
   <li class=""  routerLinkActive="">
-    <a class="nav-link" [routerLink]="['/fleet', 'expenses', 'fuel', 'Fuel-Entry-List']">
+    <a class="nav-link" [routerLink]="['/fleet', 'expenses', 'fuel', 'list']">
       <i class="fas fa-gas-pump fa-fw" aria-hidden="true"></i>
       <span>Fuel</span>
     </a>
-    <!-- <ul class="nav nav-children">
-      <li routerLinkActive="nav-active">
-        <a class="nav-link" [routerLink]="['/fleet', 'geofence', 'Add-Geofence']"
-        >
-          Add
-        </a>
-      </li>
-      <li routerLinkActive="nav-active">
-        <a class="nav-link" [routerLink]="['/fleet', 'geofence', 'Geofence-List']"
-        >
-          List
-        </a>
-      </li>
-    </ul> -->
   </li>
   <li routerLinkActive="">
     <a class="nav-link" [routerLink]="['/fleet', 'reminders', 'service-reminder', 'list']">
@@ -336,7 +322,7 @@
   </li>
   
   <li class="" routerLinkActive="">
-    <a class="nav-link" [routerLink]="['/fleet', 'inventory', 'item', 'Item-List']">
+    <a class="nav-link" [routerLink]="['/fleet', 'inventory', 'list']">
       <i class="fas fa-file-invoice fa-fw" aria-hidden="true"></i>
       <span>Inventory</span>
     </a>

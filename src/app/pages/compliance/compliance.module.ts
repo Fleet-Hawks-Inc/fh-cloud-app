@@ -15,12 +15,20 @@ import { MileageComponent } from './ifta/mileage/mileage.component';
 import { ReportComponent } from './ifta/report/report.component';
 import { UnidentifiedComponent } from './hos/unidentified/unidentified.component';
 import { InspectionSummaryComponent } from './dvir/inspection-summary/inspection-summary.component';
-
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgSelect2Module } from 'ng-select2';
+import { GenerateQuarterlyReportComponent } from './ifta/generate-quarterly-report/generate-quarterly-report.component';
+import { IftaReportHistoryComponent } from './ifta/ifta-report-history/ifta-report-history.component';
+import { IftaReturnDetailsComponent } from './ifta/ifta-return-details/ifta-return-details.component';
 @NgModule({
   imports: [CommonModule,
     ComplianceRoutingModule,
     FormsModule,
     SharedModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    NgxSpinnerModule,
+    NgSelect2Module,
     NgbModule],
   declarations: [
     LogsComponent,
@@ -33,7 +41,10 @@ import { InspectionSummaryComponent } from './dvir/inspection-summary/inspection
     MileageComponent,
     ReportComponent,
     UnidentifiedComponent,
-    InspectionSummaryComponent],
+    InspectionSummaryComponent,
+    GenerateQuarterlyReportComponent,
+    IftaReportHistoryComponent,
+    IftaReturnDetailsComponent],
 })
 export class ComplianceModule {
 }

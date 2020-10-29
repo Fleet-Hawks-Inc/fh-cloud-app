@@ -9,17 +9,20 @@ import {AddVehicleNewComponent} from './add-vehicle-new/add-vehicle-new.componen
 import {EditVehicleNewComponent} from './edit-vehicle-new/edit-vehicle-new.component';
 import {VehicleListComponent} from './vehicle-list/vehicle-list.component';
 import {SlickCarouselModule} from 'ngx-slick-carousel';
+import { VehicleDetailComponent } from './vehicle-detail/vehicle-detail.component';
 
 const routes: Routes = [
-  { path: 'Add-Vehicle-New', component: AddVehicleNewComponent },
-  { path: 'Edit-Vehicle-New/:vehicleID', component: EditVehicleNewComponent },
-  { path: 'Vehicle-List', component: VehicleListComponent },
+  { path: 'add', component: AddVehicleNewComponent },
+  { path: 'edit/:vehicleID', component: EditVehicleNewComponent },
+  { path: 'list', component: VehicleListComponent },
+  { path: 'detail/:vehicleID', component: VehicleDetailComponent },
 ];
 @NgModule({
   declarations: [
     AddVehicleNewComponent,
     EditVehicleNewComponent,
     VehicleListComponent,
+    VehicleDetailComponent,
   ],
   imports: [
     CommonModule,

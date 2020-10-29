@@ -28,6 +28,7 @@ export class AddTripComponent implements OnInit {
     vehicles = [];
     assets = [];
     drivers = [];
+    codrivers = [];
     tripData = {
         reeferTemperature: '',
         reeferTemperatureUnit: '',
@@ -191,44 +192,49 @@ export class AddTripComponent implements OnInit {
             this.form = $('#form_').validate();
         });
 
-        $(document).on('change', '#informationAsset', function () {
-            let selected = $("#informationAsset option:selected");
-            if(selected.val() !== ''){
-                let objj = {
-                    id: selected.val(),
-                    name: selected.text()
-                }
-                console.log('objj');
-                console.log(objj);
-                current.selectedAssets.push(objj);
-                selected.hide();
-                $('#informationAsset').val('');
-                current.saveSelectedAssets();
-            }
-        })
+        // $(document).on('change', '#informationAsset', function () {
+        //     let selected = $("#informationAsset option:selected");
+        //     if(selected.val() !== ''){
+        //         let objj = {
+        //             id: selected.val(),
+        //             name: selected.text()
+        //         }
+        //         console.log('objj');
+        //         console.log(objj);
+        //         current.selectedAssets.push(objj);
+        //         selected.hide();
+        //         $('#informationAsset').val('');
+        //         current.saveSelectedAssets();
+        //     }
+        // })
 
-        $(document).on('change', '#driverSelect', function () {
-            let selected = $("#driverSelect option:selected");
-            $('#coDriverSelect').children('option').show();
-            $('#coDriverSelect').children('option[value^=' + selected.val() + ']').hide();
-            current.tempTextFieldValues.driverName = selected.text();
-            current.tempTextFieldValues.driverUsername = selected.val();
-        })
+        // $(document).on('change', '#driverSelect', function () {
+        //     let selected = $("#driverSelect option:selected");
+        //     $('#coDriverSelect').children('option').show();
+        //     $('#coDriverSelect').children('option[value^=' + selected.val() + ']').hide();
+        //     current.tempTextFieldValues.driverName = selected.text();
+        //     current.tempTextFieldValues.driverUsername = selected.val();
+        // })
 
-        $(document).on('change', '#coDriverSelect', function () {
-            let selected = $("#coDriverSelect option:selected");
-            $('#driverSelect').children('option').show();
-            $('#driverSelect').children('option[value^=' + selected.val() + ']').hide();
-            current.tempTextFieldValues.coDriverName = selected.text();
-            current.tempTextFieldValues.coDriverUsername = selected.val();
-        })
+        // $(document).on('change', '#coDriverSelect', function () {
+        //     let selected = $("#coDriverSelect option:selected");
+        //     $('#driverSelect').children('option').show();
+        //     $('#driverSelect').children('option[value^=' + selected.val() + ']').hide();
+        //     current.tempTextFieldValues.coDriverName = selected.text();
+        //     current.tempTextFieldValues.coDriverUsername = selected.val();
+        // })
 
-        $(document).on('change', '#vehicleSelect', function () {
-            let selected = $("#vehicleSelect option:selected");
-            current.tempTextFieldValues.vehicleName = selected.text();
-            current.tempTextFieldValues.vehicleID = selected.val();
-        })
+        // $(document).on('change', '#vehicleSelect', function () {
+        //     alert('inn')
+        //     console.log('inn')
+        //     let selected = $("#vehicleSelect option:selected");
+        //     current.tempTextFieldValues.vehicleName = selected.text();
+        //     current.tempTextFieldValues.vehicleID = selected.val();
+        // })
 
+        // $("#vehicleSelect").on('change', function() {
+        //     alert('change');
+        // })
         $('#locationCountry').on('change', function () {
             var curr = $(this);
             var countryId = curr.val();
@@ -240,6 +246,12 @@ export class AddTripComponent implements OnInit {
             let stateId = curr.val();
             current.getCities(stateId);
         })
+
+        $('tr[id^="select_td"] td').on('click', function () {
+            // $(this).siblings().removeClass('td_border');
+            // $(this).addClass('td_border');
+             $(this).toggleClass('td_border').toggleClass('');
+        });
     }
 
     fetchCarriers() {
@@ -549,7 +561,28 @@ export class AddTripComponent implements OnInit {
     fetchDrivers() {
         this.apiService.getData('drivers')
             .subscribe((result: any) => {
+                result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
                 this.drivers = result.Items;
+                console.log('this.drivers');
+                console.log(this.drivers);
+            })
+    }
+
+    fetchCoDriver(driverID) {
+        this.apiService.getData('drivers')
+            .subscribe((result: any) => {
+                this.spinner.show();
+                let newDrivers = [];
+                let allDrivers = result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
+                for (let i = 0; i < allDrivers.length; i++) {
+                    const element = allDrivers[i];
+                    if(element.driverID !== driverID){
+                        newDrivers.push(element);
+                    }
+                }
+                // let newDrivers = [...this.codrivers, this.codrivers]
+                this.codrivers = newDrivers;
+                this.spinner.hide();
             })
     }
 
@@ -646,6 +679,26 @@ export class AddTripComponent implements OnInit {
             });
     }
 
+    vehicleChange($event){
+        this.tempTextFieldValues.vehicleName = $event.vehicleIdentification;
+        this.tempTextFieldValues.vehicleID = $event.vehicleID;
+    }
+
+    driverChange($event,type){
+        if(type === 'driver'){
+            // alert('here')
+            this.spinner.show();
+            this.fetchCoDriver($event.driverID);
+            this.tempTextFieldValues.driverName = $event.fullName;
+            this.tempTextFieldValues.driverUsername = $event.userName;
+            this.spinner.hide();
+
+        } else if(type === 'codriver'){
+            this.tempTextFieldValues.coDriverName = $event.fullName;
+            this.tempTextFieldValues.coDriverUsername = $event.userName;
+        }
+    }
+
     saveLocation() {
         this.tempLocation.countryID = $("#locationCountry option:selected").val();
         this.tempLocation.countryName = $("#locationCountry option:selected").text();
@@ -699,6 +752,7 @@ export class AddTripComponent implements OnInit {
     }
 
     createTrip() {
+        this.spinner.show();
         console.log('start tripData');
         console.log(this.tripData);
         if (this.tripData.reeferTemperature != '') {
@@ -767,7 +821,7 @@ export class AddTripComponent implements OnInit {
         }
         console.log('end data');
         console.log(this.tripData);
-        this.spinner.show();
+        
         this.errors = {};
         this.hasError = false;
         this.hasSuccess = false;

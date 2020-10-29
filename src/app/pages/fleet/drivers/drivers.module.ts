@@ -10,12 +10,13 @@ import {DriverListComponent} from './driver-list/driver-list.component';
 import {DriverDetailComponent} from './driver-detail/driver-detail.component';
 import {SharedModule} from '../../../shared/shared.module';
 import { DataTablesModule } from 'angular-datatables';
+import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
-  { path: 'Add-Driver', component: AddDriverComponent },
-  { path: 'Edit-Driver/:userName', component: EditDriverComponent },
-  { path: 'Drivers-List', component: DriverListComponent },
-  { path: 'driver-detail', component: DriverDetailComponent}
+  { path: 'add', component: AddDriverComponent },
+  { path: 'edit/:driverID', component: AddDriverComponent },
+  { path: 'list', component: DriverListComponent },
+  { path: 'detail/:driverID', component: DriverDetailComponent}
 ];
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ const routes: Routes = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    DataTablesModule
+    DataTablesModule,
+    NgbModule,
   ],
 
 })

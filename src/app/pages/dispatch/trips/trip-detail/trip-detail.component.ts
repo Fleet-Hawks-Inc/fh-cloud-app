@@ -21,17 +21,17 @@ export class TripDetailComponent implements OnInit {
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
     private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) { }
 
-    
-    tripID = '';
-    allAssetName = '';
-    errors: {};
-    trips = [];
+  tripData = {};
+  tripID = '';
+  allAssetName = '';
+  errors: {};
+  trips = [];
   ngOnInit() {
     this.fetchTripDetail();
     this.mapShow();
   }
 
-  mapShow() {   
+  mapShow() {
     this.hereMap.mapInit();
   }
 
@@ -40,7 +40,7 @@ export class TripDetailComponent implements OnInit {
     this.apiService.getData('trips/' + this.tripID).
       subscribe((result: any) => {
         result = result.Items[0];
-        
+        this.tripData = result;
         let tripPlanning = result.tripPlanning;
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
@@ -195,8 +195,8 @@ export class TripDetailComponent implements OnInit {
       })
   }
 
-  
-   
+
+
   // initSpeedChart(){
   //  var graph2 = new Chart('speedChart', {
   //     type: 'line',
@@ -223,7 +223,7 @@ export class TripDetailComponent implements OnInit {
   //              22, 35, 47, 50, 60, 76, 80, 12, 43, 32, 54, 44, 22,
   //              22, 35, 47, 50, 60, 76, 80, 12, 43, 32, 54, 44, 22,
   //              22, 35, 47, 50, 60, 76, 80, 12, 43, 32, 54, 44, 22,
-   
+
   //           ],
   //        }]
   //     },
@@ -252,10 +252,10 @@ export class TripDetailComponent implements OnInit {
   //                 display: true,
   //                 labelString: ''
   //              },
-               
+
   //           }]
   //        }
-         
+
   //     }
   //  });
 

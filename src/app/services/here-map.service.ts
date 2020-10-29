@@ -140,7 +140,8 @@ export class HereMapService {
           {
             at: `${result.items[0].position.lat},${result.items[0].position.lng}`,
             limit: 5,
-            q: query
+            q: query,
+            lang: 'en',
           }
         );
         return response.items;

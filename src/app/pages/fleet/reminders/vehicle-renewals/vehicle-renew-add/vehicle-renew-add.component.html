@@ -31,7 +31,7 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle</label>
-                                    <select [(ngModel)]="reminderData.reminderIdentification" name="reminderData.reminderIdentification" data-plugin-selectTwo class="form-control populate">
+                                    <select [(ngModel)]="reminderData.reminderIdentification" name="reminderIdentification" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
                                           <option *ngFor="let item of vehicles" value="{{item.vehicleID}}">{{item.vehicleIdentification}}</option>
                                        </optgroup>
@@ -46,12 +46,18 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups</label>
-                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="reminderData.subscribers" style="width: 100%;" (change)="subscriberChange($event)">         
+
+                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers" style="width: 100%;">         
+                                       <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}</ng-option>
+                                       <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}</ng-option>
+
+<!--                                     <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers" style="width: 100%;" (change)="subscriberChange($event)">         
                                        <ng-option *ngFor="let user of users" [value]="user">{{user.userName}}</ng-option>
-                                       <ng-option *ngFor="let group of groups" [value]="group">{{group.groupName}}</ng-option>
+                                       <ng-option *ngFor="let group of groups" [value]="group">{{group.groupName}}</ng-option> -->
+
                                    </ng-select>
                                     <div class="checkbox-custom mt-2">
-                                    <input [(ngModel)]="reminderData.sendEmail" name="reminderData.sendEmail" type="checkbox" [checked]="reminderData.sendEmail">
+                                    <input [(ngModel)]="reminderData.sendEmail" name="sendEmail" type="checkbox" [checked]="reminderData.sendEmail">
                                     <label class="control-label font-weight-bold">Send Email Notification</label>
                                  </div>
                                  </div>
@@ -66,7 +72,7 @@
                            <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type</label>
-                                    <select [(ngModel)]="reminderData.reminderTasks.task" name="reminderData.reminderTasks.task" data-plugin-selectTwo class="form-control populate">
+                                    <select [(ngModel)]="reminderData.reminderTasks.task" name="reminderTasks.task" data-plugin-selectTwo class="form-control populate">
                                        <optgroup label="">
                                           <option value="Emission Test">Emission Test</option>
                                           <option value="Inspection">Inspection</option>
@@ -82,7 +88,7 @@
                                     <input
                                     class="form-control"
                                     placeholder="dd-mm-yyyy"
-                                    name="reminderData.reminderTasks.dueDate" [(ngModel)]="reminderData.reminderTasks.dueDate"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
+                                    name="reminderTasks.dueDate" [(ngModel)]="reminderData.reminderTasks.dueDate"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
                                   />
                                  </div>
                                  <div class="col-lg-5">

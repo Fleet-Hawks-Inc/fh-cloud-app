@@ -8,8 +8,13 @@
         height: 300px;
         width: 100%;
     }
+
     .txttt td {
         width: 10%;
+    }
+
+    #assetModal .modal-dialog{
+        max-width: 1200px;
     }
 </style>
 
@@ -44,10 +49,12 @@
                                     <div class="col-lg-6 my-2">
                                         <div class="row">
                                             <div class="col-lg-3 labelalign">
-                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Trip#</label>
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Trip#</label>
                                             </div>
                                             <div class="col-lg-6">
-                                                <input type="text" class="form-control" name="tripNo" [(ngModel)]="tripData.tripNo">
+                                                <input type="text" class="form-control" name="tripNo"
+                                                    [(ngModel)]="tripData.tripNo">
                                             </div>
                                         </div>
                                     </div>
@@ -56,7 +63,8 @@
                                     <div class="col-lg-6">
                                         <div class="row">
                                             <div class="col-lg-3 labelalign">
-                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">
                                                     Select Order Number
                                                 </label>
                                             </div>
@@ -86,7 +94,8 @@
                                                     Permanent Route</label>
                                             </div>
                                             <div class="col-lg-6">
-                                                <select class="form-control populate" name="routeID" [(ngModel)]="tripData.routeID">
+                                                <select class="form-control populate" name="routeID"
+                                                    [(ngModel)]="tripData.routeID">
                                                     <option>Select Route</option>
                                                     <option *ngFor="let route of routes" value="{{ route.routeID }}">
                                                         {{ route.routeName }}</option>
@@ -112,7 +121,8 @@
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#</label>
                                             </div>
                                             <div class="col-lg-6 col-md-12">
-                                                <input type="text" class="form-control" name="bol" [(ngModel)]="tripData.bol">
+                                                <input type="text" class="form-control" name="bol"
+                                                    [(ngModel)]="tripData.bol">
                                             </div>
                                         </div>
                                     </div>
@@ -126,10 +136,13 @@
                                             <div class="col-lg-6 col-md-12">
                                                 <div class="row">
                                                     <div class="col-lg-6 pr-0">
-                                                        <input type="number" class="form-control" name="reeferTemperature" [(ngModel)]="tripData.reeferTemperature"> 
+                                                        <input type="number" class="form-control"
+                                                            name="reeferTemperature"
+                                                            [(ngModel)]="tripData.reeferTemperature">
                                                     </div>
                                                     <div class="col-lg-6 pl-0">
-                                                        <select class="form-control" name="reeferTemperatureUnit" [(ngModel)]="tripData.reeferTemperatureUnit">
+                                                        <select class="form-control" name="reeferTemperatureUnit"
+                                                            [(ngModel)]="tripData.reeferTemperatureUnit">
                                                             <option value="F">F</option>
                                                             <option value="C">C</option>
                                                         </select>
@@ -170,7 +183,8 @@
                                                     <td id="labelCell3{{i}}" class="labelRow{{i}}"><a
                                                             href="#addPickupLocationModal"
                                                             class="modal-with-form">{{ trip.name }}</a></td>
-                                                    <td id="labelCell4{{i}}" class="labelRow{{i}}">{{ trip.locationName }}
+                                                    <td id="labelCell4{{i}}" class="labelRow{{i}}">
+                                                        {{ trip.locationName }}
                                                     </td>
                                                     <td id="labelCell5{{i}}" class="labelRow{{i}}">
                                                         <span class="badge badge-dark p-1 text-uppercase" title=""
@@ -192,11 +206,14 @@
                                                         data-target="#mapAssetsModal">{{ trip.driverName }}</td>
                                                     <td id="labelCell10{{i}}" class="labelRow{{i}}" data-toggle="modal"
                                                         data-target="#mapAssetsModal">{{ trip.coDriverName }}</td>
-                                                    <td id="labelCell11{{i}}" class="labelRow{{i}}">{{ trip.carrierName }}
+                                                    <td id="labelCell11{{i}}" class="labelRow{{i}}">
+                                                        {{ trip.carrierName }}
                                                     </td>
                                                     <td class="labelRow{{i}}">
-                                                        <i class="fas fa-edit mr-2" title="Edit Row" (click)="showEditRow(i)"></i>
-                                                        <i class="fas fa-trash-alt" title="Delete Row" (click)="delRow(i)"></i>
+                                                        <i class="fas fa-edit mr-2" title="Edit Row"
+                                                            (click)="showEditRow(i)"></i>
+                                                        <i class="fas fa-trash-alt" title="Delete Row"
+                                                            (click)="delRow(i)"></i>
                                                     </td>
 
                                                     <!-- text fields -->
@@ -205,7 +222,8 @@
                                                             value="{{ trip.type }}"> -->
                                                         <select class="form-control" id="editCell1{{i}}" name="">
                                                             <option value="">Select Type</option>
-                                                            <option *ngFor="let type of typeOptions" value="{{ type }}">{{ type }}</option>
+                                                            <option *ngFor="let type of typeOptions" value="{{ type }}">
+                                                                {{ type }}</option>
                                                         </select>
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
@@ -217,7 +235,8 @@
                                                             value="{{ trip.name }}">
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="text" class="form-control" id="editCell4{{i}}" (click)="showlocationModal('edit',i)"
+                                                        <input type="text" class="form-control" id="editCell4{{i}}"
+                                                            (click)="showlocationModal('edit',i)"
                                                             value="{{ trip.locationName }}">
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
@@ -231,7 +250,8 @@
                                                             name="miles" value="{{ trip.miles }}">
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="text" class="form-control" id="editCell7{{i}}" (click)="showAssetModal('edit',i)"
+                                                        <input type="text" class="form-control" id="editCell7{{i}}"
+                                                            (click)="showAssetModal('edit',i)"
                                                             value="{{ trip.vehicleName }}">
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
@@ -266,49 +286,66 @@
                                                 <tr class="ui-sortable-handle">
                                                     <td>
                                                         <!-- <input type="text" id="cell1" class="form-control newRow"> -->
-                                                        <select class="form-control newRow" (change)="getNewRowValues($event,'tripType')" id="cell1">
+                                                        <select class="form-control newRow"
+                                                            (change)="getNewRowValues($event,'tripType')" id="cell1">
                                                             <option value="">Select Type</option>
-                                                            <option *ngFor="let type of typeOptions" value="{{ type }}">{{ type }}</option>
+                                                            <option *ngFor="let type of typeOptions" value="{{ type }}">
+                                                                {{ type }}</option>
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="date" id="cell2" class="form-control newRow" (change)="getNewRowValues($event,'date')">
+                                                        <input type="date" id="cell2" class="form-control newRow"
+                                                            (change)="getNewRowValues($event,'date')">
                                                     </td>
                                                     <td>
-                                                        <input type="text" id="cell3" class="form-control newRow" (change)="getNewRowValues($event,'name')" autocomplete="off">
+                                                        <input type="text" id="cell3" class="form-control newRow"
+                                                            (change)="getNewRowValues($event,'name')"
+                                                            autocomplete="off">
                                                     </td>
                                                     <td>
-                                                        <input type="text" id="cell4" class="form-control newRow" data-toggle="modal" (click)="showlocationModal('add','')" autocomplete="off" value="{{ textFieldValues.locationName }}">
+                                                        <input type="text" id="cell4" class="form-control newRow"
+                                                            data-toggle="modal" (click)="showlocationModal('add','')"
+                                                            autocomplete="off"
+                                                            value="{{ textFieldValues.locationName }}">
                                                     </td>
                                                     <td>
-                                                        <select class="form-control newRow" (change)="getNewRowValues($event,'mileType')" id="cell5">
+                                                        <select class="form-control newRow"
+                                                            (change)="getNewRowValues($event,'mileType')" id="cell5">
                                                             <option value="">Select Mile Type</option>
                                                             <option value="empty">EMPTY</option>
                                                             <option value="loaded">LOADED</option>
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="text" id="cell6" class="form-control newRow" (change)="getNewRowValues($event,'miles')" autocomplete="off">
+                                                        <input type="text" id="cell6" class="form-control newRow"
+                                                            (change)="getNewRowValues($event,'miles')"
+                                                            autocomplete="off">
                                                     </td>
                                                     <td>
                                                         <input type="text" id="cell7" class="form-control newRow"
-                                                            (click)="showAssetModal('add','')" value="{{ textFieldValues.vehicleName }}" autocomplete="off">
+                                                            (click)="showAssetModal('add','')"
+                                                            value="{{ textFieldValues.vehicleName }}"
+                                                            autocomplete="off">
                                                     </td>
                                                     <td>
                                                         <input type="text" id="cell8" class="form-control newRow"
-                                                            (click)="showAssetModal('add','')" value="{{ textFieldValues.trailerName}}" autocomplete="off">
+                                                            (click)="showAssetModal('add','')"
+                                                            value="{{ textFieldValues.trailerName}}" autocomplete="off">
                                                     </td>
                                                     <td>
                                                         <input type="text" id="cell9" class="form-control newRow"
-                                                            (click)="showAssetModal('add','')" value="{{ textFieldValues.driverName }}" autocomplete="off">
+                                                            (click)="showAssetModal('add','')"
+                                                            value="{{ textFieldValues.driverName }}" autocomplete="off">
                                                     </td>
                                                     <td>
                                                         <input type="text" id="cell10" class="form-control newRow"
-                                                            (click)="showAssetModal('add','')" value="{{ textFieldValues.coDriverName }}" autocomplete="off">
+                                                            (click)="showAssetModal('add','')"
+                                                            value="{{ textFieldValues.coDriverName }}"
+                                                            autocomplete="off">
                                                     </td>
                                                     <td>
-                                                        <select class="form-control newRow" name="carrierID"
-                                                            id="cell11" (change)="getNewRowValues($event,'carrier')">
+                                                        <select class="form-control newRow" name="carrierID" id="cell11"
+                                                            (change)="getNewRowValues($event,'carrier')">
                                                             <option value="">Select Carrier </option>
                                                             <option *ngFor="let carrier of carriers"
                                                                 value="{{ carrier.carrierID }}">
@@ -384,24 +421,28 @@
                                     <div class="col-lg-6">
                                         <div class="row">
                                             <div class="col-lg-3 labelalign">
-                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">
                                                     Planned v/s Changed Route</label>
                                             </div>
                                             <div class="col-lg-6 col-md-12">
                                                 <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat" name="changeRoute" [(ngModel)]="tripData.notifications.changeRoute">
+                                                    <input type="checkbox" id="HazMat" name="changeRoute"
+                                                        [(ngModel)]="tripData.notifications.changeRoute">
                                                     <label
                                                         class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                         for="HazMat">Notify Dispatcher about changed route?</label>
                                                 </div>
                                                 <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat" name="pickUp" [(ngModel)]="tripData.notifications.pickUp">
+                                                    <input type="checkbox" id="HazMat" name="pickUp"
+                                                        [(ngModel)]="tripData.notifications.pickUp">
                                                     <label
                                                         class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                         for="HazMat">Notify Dispatcher about pick up?</label>
                                                 </div>
                                                 <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat" name="dropOff" [(ngModel)]="tripData.notifications.dropOff">
+                                                    <input type="checkbox" id="HazMat" name="dropOff"
+                                                        [(ngModel)]="tripData.notifications.dropOff">
                                                     <label
                                                         class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                         for="HazMat">Notify Dispatcher about drop off?</label>
@@ -418,13 +459,15 @@
                                             </div>
                                             <div class="col-lg-6 col-md-12">
                                                 <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat" name="tripToDriver" [(ngModel)]="tripData.notifications.tripToDriver">
+                                                    <input type="checkbox" id="HazMat" name="tripToDriver"
+                                                        [(ngModel)]="tripData.notifications.tripToDriver">
                                                     <label
                                                         class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                         for="HazMat">Send trip details to the driver</label>
                                                 </div>
                                                 <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat" name="tripToDispatcher" [(ngModel)]="tripData.notifications.tripToDispatcher">
+                                                    <input type="checkbox" id="HazMat" name="tripToDispatcher"
+                                                        [(ngModel)]="tripData.notifications.tripToDispatcher">
                                                     <label
                                                         class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                         for="HazMat">Send trip details to the dispatcher</label>
@@ -435,8 +478,10 @@
                                 </div>
                                 <div class="row text-right">
                                     <div class="col-lg-12">
-                                        <a class="mt-1 mr-2 btn btn-default" href="javascript:;" routerLink="/dispatch/trips/trip-list">Cancel</a>
-                                        <a href="javascript:;" (click)="createTrip()" class="btn btn-success mt-1">Create Trip</a>
+                                        <a class="mt-1 mr-2 btn btn-default" href="javascript:;"
+                                            routerLink="/dispatch/trips/trip-list">Cancel</a>
+                                        <a href="javascript:;" (click)="createTrip()"
+                                            class="btn btn-success mt-1">Create Trip</a>
                                     </div>
                                 </div>
                             </form>
@@ -449,8 +494,7 @@
 </section>
 
 <!-- order modal start -->
-<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModal"
-    aria-hidden="true">
+<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -481,10 +525,12 @@
                                         <div class="tab-pane show active" id="loadFTL" role="tabpanel"
                                             aria-labelledby="loadFTL-tab">
                                             <div class="table-responsive">
-                                                <table datatable [dtOptions]="ftlOptions"  class="table table-bordered table-striped mb-0 dataTable no-footer">
+                                                <table datatable [dtOptions]="ftlOptions"
+                                                    class="table table-bordered table-striped mb-0 dataTable no-footer">
                                                     <thead>
                                                         <tr class="" role="row">
-                                                            <th><input type="checkbox" name="checkUncheckftl" (change)="checkUncheckAll('ftl')"></th>
+                                                            <th><input type="checkbox" name="checkUncheckftl"
+                                                                    (change)="checkUncheckAll('ftl')"></th>
                                                             <th class="text-2">Order#</th>
                                                             <th class="text-2">Customer</th>
                                                             <th class="text-2">P/L</th>
@@ -494,9 +540,11 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody class="ui-sortable">
-                                                        <tr class="ui-sortable-handle odd" role="row" *ngFor="let order of ftlOrders">
+                                                        <tr class="ui-sortable-handle odd" role="row"
+                                                            *ngFor="let order of ftlOrders">
                                                             <td class="sorting_1">
-                                                                <input type="checkbox" value="{{ order.orderNumber }}" name="ftlOrderIds" (change)="selectOrderIDS('ftl')">
+                                                                <input type="checkbox" value="{{ order.orderNumber }}"
+                                                                    name="ftlOrderIds" (change)="selectOrderIDS('ftl')">
                                                             </td>
                                                             <td class="loadid"><span class="FTLload">FTL</span><br>
                                                                 <a href="javascript:;">{{ order.orderNumber }}</a>
@@ -516,10 +564,12 @@
                                         <div class="tab-pane fade" id="loadLTL" role="tabpanel"
                                             aria-labelledby="loadLTL-tab">
                                             <!-- <table class="table table-bordered table-striped mb-0" id="datatable-default"> -->
-                                                <table datatable [dtOptions]="ltlOptions"  class="table table-bordered table-striped mb-0 dataTable no-footer">
+                                            <table datatable [dtOptions]="ltlOptions"
+                                                class="table table-bordered table-striped mb-0 dataTable no-footer">
                                                 <thead>
                                                     <tr class="">
-                                                        <th><input type="checkbox" name="checkUncheckltl" (change)="checkUncheckAll('ltl')"></th>
+                                                        <th><input type="checkbox" name="checkUncheckltl"
+                                                                (change)="checkUncheckAll('ltl')"></th>
                                                         <th class="text-2">Order#</th>
                                                         <th class="text-2">Customer</th>
                                                         <th class="text-2">P/L</th>
@@ -532,9 +582,10 @@
                                                     <tr class="ui-sortable-handle" *ngFor="let order of ltlOrders">
                                                         <td>
                                                             <!-- <input type="checkbox"> -->
-                                                            <input type="checkbox" value="{{ order.orderNumber }}" name="ltlOrderIds" (change)="selectOrderIDS('ltl')">
+                                                            <input type="checkbox" value="{{ order.orderNumber }}"
+                                                                name="ltlOrderIds" (change)="selectOrderIDS('ltl')">
                                                         </td>
-                                                        <td class="loadid"><span class="LTLload">LTL</span><br> 
+                                                        <td class="loadid"><span class="LTLload">LTL</span><br>
                                                             <a href="javascript:;">{{ order.orderNumber }}</a>
                                                         </td>
                                                         <td>{{ order.customer }}</td>
@@ -556,7 +607,8 @@
                 </div>
                 <div class="modal-footer">
                     <div class="col-md-12 text-right">
-                        <a class="btn btn-success modal-confirm mr-3" href="javascript:;" (click)="saveSelectOrderIDS()">Select</a>
+                        <a class="btn btn-success modal-confirm mr-3" href="javascript:;"
+                            (click)="saveSelectOrderIDS()">Select</a>
                         <button class="btn btn-default modal-dismiss">Cancel</button>
                     </div>
                 </div>
@@ -567,9 +619,8 @@
 <!-- order modal end -->
 
 <!-- asset modal -->
-<div class="modal fade" id="assetModal" role="dialog" tabindex="-1" >
+<!-- <div class="modal fade" id="assetModal" role="dialog" tabindex="-1" >
     <div class="modal-dialog" role="document" style="max-width: 500px;">
-        <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Add Information</h4>
@@ -667,11 +718,241 @@
         </div>
 
     </div>
-</div>
+</div> -->
 <!-- asset modal end -->
 
+<!-- new asset modal -->
+<div id="assetModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Assign</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body text-dark table-scroll-y table-scrollplan" data-select2-id="279">
+                    <table class="table table-bordered table-responsive-lg table-striped mb-0" data-select2-id="278">
+                        <thead>
+                            <tr>
+                                <th width="25%">Vehicle</th>
+                                <th width="25%">Trailer</th>
+                                <th width="25%">Driver</th>
+                                <th>Co-Driver</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <ng-select [items]="vehicles" bindLabel="vehicleIdentification"
+                                    bindValue="vehicleID" name="assetDataVehicleID" [(ngModel)]="assetDataVehicleID" id="vehicleSelect" (change)="vehicleChange($event)">
+                                    </ng-select>
+                                </td>
+                                <td>
+                                    <ng-select name="informationAsset" [(ngModel)]="informationAsset" id="informationAsset" [items]="assets" 
+                                    bindLabel="assetIdentification" bindValue="assetID">
+                                    </ng-select>
+                                </td>
+                                <td>
+                                    <ng-select name="assetDataDriverUsername" [(ngModel)]="assetDataDriverUsername" 
+                                    id="driverSelect" [items]="drivers" bindLabel="fullName" bindValue="userName" (change)="driverChange($event,'driver')">
+                                    </ng-select>
+                                </td>
+                                <td>
+                                    <ng-select name="assetDataCoDriverUsername" [(ngModel)]="assetDataCoDriverUsername" 
+                                    id="coDriverSelect" [items]="codrivers" bindLabel="fullName" bindValue="userName" (change)="driverChange($event,'codriver')">
+                                    </ng-select>
+                                </td>
+                            </tr>
+                            <tr id="select_td_1">
+                                <td>
+                                    <table style="border-collapse: collapse;">
+                                        <!-- <thead>head</thead> -->
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="">
+                                                        <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                                                data-toggle="tooltip" data-placement="bottom" title=""
+                                                                data-original-title="Vehicle"></i> Prius</p>
+                                                        <span class="driverstatus"><i class="fas fa-map-marker-alt"
+                                                                data-toggle="tooltip" data-placement="bottom" title=""
+                                                                data-original-title="Loation"></i> Kingston, Toronto, ON K7L 5K4</span>
+                                                        <span class="driverstatus">Current Status: <span
+                                                                class="badge badge-pills badge-dark p-1" data-toggle="tooltip"
+                                                                data-placement="bottom" title="" data-original-title="Current Status">ON
+                                                                ROAD<span></span>
+                                                            </span></span>
+                
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="">
+                                            
+                                                        <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                                                data-toggle="tooltip" data-placement="bottom" title=""
+                                                                data-original-title="Vehicle"></i> Big Truck</p>
+                                                        <span class="driverstatus"><i class="fas fa-map-marker-alt"
+                                                                data-toggle="tooltip" data-placement="bottom" title=""
+                                                                data-original-title="Loation"></i> Crt Brampton ON L6Z 3G4</span>
+                                                        <span class="driverstatus">Current Status: <span
+                                                                class="badge badge-info p-1">Stop</span></span>
+                                            
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="">
+                                            
+                                                        <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                                                data-toggle="tooltip" data-placement="bottom" title=""
+                                                                data-original-title="Vehicle"></i> Small Truck</p>
+                                                        <span class="driverstatus"><i class="fas fa-map-marker-alt"
+                                                                data-toggle="tooltip" data-placement="bottom" title=""
+                                                                data-original-title="Loation"></i> McCallum Ave Regina SK S4S 0S4</span>
+                                                        <span class="driverstatus">Current Status: <span
+                                                                class="badge badge-pills badge-dark p-1" data-toggle="tooltip"
+                                                                data-placement="bottom" title=""
+                                                                data-original-title="Current Status">YARD<span></span>
+                                                            </span></span>
+                                            
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>34523 <span class="badge badge-Idel p-1">Idel</span></td>
+                                            </tr>
+                                        </tbody>
+                                        
+                                    </table>
+                                </td>
+
+                                <td>
+                                    <table>
+                                        <!-- <thead>head</thead> -->
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="">
+                                                
+                                                        <p class="mb-1 text-4 font-weight-semibold text-dark"> Asset Tracker</p>
+                                                        <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston,
+                                                            Toronto, ON K7L 5K4</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="">
+                                            
+                                                        <p class="mb-1 text-4 font-weight-semibold text-dark"> Asset Tracker <span
+                                                                class="badge badge-info p-1">Moving</span></p>
+                                                        <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston,
+                                                            Toronto, ON K7L 5K4</span>
+                                            
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                        
+                                    </table>
+                                </td>
+                                <td>
+                                    <table>
+                                        <!-- <thead>head</thead> -->
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="">
+                                                        <p class="mb-1 text-4 font-weight-semibold text-dark"><span
+                                                                class="offduty pull-right">OFF</span> Roshan Prince</p>
+                                                        <span class="driverstatus"> Crescent Road Vancouver, BC V6T 1Z2</span>
+                                                        <span class="driverstatus"><i class="fas fa-clock"></i> <span
+                                                                class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30 mins</span>
+                                                        <span class="driverstatus"><i class="fa fa-clock"></i> <span
+                                                                class="font-weight-bold">HOS:</span> 7 hrs 30 mins</span>
+                                                        <span class="driverstatus"><i class="fas fa-user"></i> <span
+                                                                class="font-weight-bold">On Duty Hours:</span> 2 hr 30 mins</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="">
+                                            
+                                                        <p class="mb-1 text-4 font-weight-semibold text-dark"><span
+                                                                class="dutyonly pull-right">D</span> Bachitar</p>
+                                                        <span class="driverstatus"> Crt Brampton ON L6Z 3G4</span>
+                                                        <span class="driverstatus"><i class="fas fa-clock"></i> <span
+                                                                class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30 mins</span>
+                                                        <span class="driverstatus"><i class="fa fa-clock"></i> <span
+                                                                class="font-weight-bold">HOS:</span> 7 hrs 30 mins</span>
+                                                        <span class="driverstatus"><i class="fas fa-user"></i> <span
+                                                                class="font-weight-bold">On Duty Hours:</span> 2 hr 30 mins</span>
+                                            
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        
+                                    </table>
+                                </td>
+                                <td>
+                                    <table>
+                                        <!-- <thead></thead> -->
+                                        <tbody>
+                                            <tr>
+                                                <td>Jacky <span class="offduty pull-right">OFF</span>
+                                                    <span class="driverstatus"><i class="fas fa-clock"></i> <span
+                                                            class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30 mins</span>
+                                                    <span class="driverstatus"><i class="fa fa-clock"></i> <span
+                                                            class="font-weight-bold">HOS:</span> 7 hrs 30 mins</span>
+                                                    <span class="driverstatus"><i class="fas fa-user"></i> <span
+                                                            class="font-weight-bold">On Duty Hours:</span> 2 hr 30 mins</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mohan <span class="onduty pull-right">ON</span>
+                                                    <span class="driverstatus"><i class="fas fa-clock"></i> <span
+                                                            class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30 mins</span>
+                                                    <span class="driverstatus"><i class="fa fa-clock"></i> <span
+                                                            class="font-weight-bold">HOS:</span> 7 hrs 30 mins</span>
+                                                    <span class="driverstatus"><i class="fas fa-user"></i> <span
+                                                            class="font-weight-bold">On Duty Hours:</span> 2 hr 30 mins</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        
+                                    </table>
+                                </td>
+                               
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer card-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <a href="http://3.6.238.81/pankaj_fleetdash/add-estimate.php" class="btn btn-success">Save</a>
+                        <button class="btn btn-default modal-dismiss">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- new asset modal end -->
+
 <!-- location modal start -->
-<div class="modal fade" id="locationModal" role="dialog" tabindex="-1" >
+<div class="modal fade" id="locationModal" role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document" style="max-width: 500px;">
         <!-- Modal content-->
         <div class="modal-content">
@@ -688,20 +969,27 @@
                                     <label class="control-label font-weight-bold text-lg-right pt-2">
                                         Select Country
                                     </label>
-                                    <select class="form-control" id="locationCountry" name="selectedLocationCountryId" [(ngModel)]="selectedLocationCountryId">
-                                        <option *ngFor="let country of countries" value="{{ country.countryID }}">{{ country.countryName }}</option>
+                                    <select class="form-control" id="locationCountry" name="selectedLocationCountryId"
+                                        [(ngModel)]="selectedLocationCountryId">
+                                        <option *ngFor="let country of countries" value="{{ country.countryID }}">
+                                            {{ country.countryName }}</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-12">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Select State</label>
-                                    <select class="form-control" id="locationState" name="selectedLocationStateId" [(ngModel)]="selectedLocationStateId">
-                                        <option *ngFor="let state of states" value="{{ state.stateID }}" >{{ state.stateName }}</option>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                        State</label>
+                                    <select class="form-control" id="locationState" name="selectedLocationStateId"
+                                        [(ngModel)]="selectedLocationStateId">
+                                        <option *ngFor="let state of states" value="{{ state.stateID }}">
+                                            {{ state.stateName }}</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select City</label>
-                                    <select class="form-control" id="locationCity" name="selectedLocationCityId" [(ngModel)]="selectedLocationCityId">
-                                        <option *ngFor="let city of cities" value="{{ city.cityID }}">{{ city.cityName }}</option>
+                                    <select class="form-control" id="locationCity" name="selectedLocationCityId"
+                                        [(ngModel)]="selectedLocationCityId">
+                                        <option *ngFor="let city of cities" value="{{ city.cityID }}">
+                                            {{ city.cityName }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -710,15 +998,18 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address 1</label>
-                                    <input type="text" class="form-control" id="locationAddress1" name="selectedLocationAddress1" [(ngModel)]="selectedLocationAddress1">
+                                    <input type="text" class="form-control" id="locationAddress1"
+                                        name="selectedLocationAddress1" [(ngModel)]="selectedLocationAddress1">
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address 2</label>
-                                    <input type="text" class="form-control" id="locationAddress2" name="selectedLocationAddress2" [(ngModel)]="selectedLocationAddress2">
+                                    <input type="text" class="form-control" id="locationAddress2"
+                                        name="selectedLocationAddress2" [(ngModel)]="selectedLocationAddress2">
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Zip Code</label>
-                                    <input type="text" class="form-control" id="locationZipcode" name="selectedLocationAddress3" [(ngModel)]="selectedLocationAddress3">
+                                    <input type="text" class="form-control" id="locationZipcode"
+                                        name="selectedLocationAddress3" [(ngModel)]="selectedLocationAddress3">
                                 </div>
                             </div>
                         </div>

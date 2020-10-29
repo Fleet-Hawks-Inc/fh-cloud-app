@@ -1,378 +1,606 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-  
-    <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <app-sidebar></app-sidebar>
-      <!-- end: sidebar -->
-  
-      <section role="main" class="content-body pl-0 pt-0 pr-0">
-        <header class="page-header">
-           <form class="form-horizontal" method="get">
-              <div class="row pr-5" style="padding-top:10px;">
-                 <div class="col-md-3 col-lg-3">
-                    <div class="input-group input-group-sm mb-3">
-                       <input type="text" class="form-control" placeholder="Search by Name">
+  <!-- start: header -->
+  <app-header></app-header>
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header pr-5">
+        <h2>Inventory Overview</h2>
+        <div class="right-wrapper text-right mt-2 pr-2">
+          <a
+            [routerLink]=""
+            (click)="openTransferModal()"
+            class="modal-with-form btn btn-success btn-sm"
+            ><i class="fas fa-exchange-alt"></i> Transfer</a
+          >
+          <a
+            routerLink="/fleet/inventory/add"
+            class="btn btn-success btn-sm"
+            style="color: white"
+            ><i class="fas fa-plus"></i> Add Inventory</a
+          >
+        </div>
+      </header>
+
+      <div class="routing-overview__wrapper m-3">
+        <div class="row text-dark">
+          <div class="col-lg-8">
+            <div class="row text-dark">
+              <div class="col-4 pr-2">
+                <div class="bg-white py-5 p-3 text-center">
+                  <h3 class="m-0 f-17">Low Stock Items</h3>
+                  <h3 class="mt-2 mb-0">6</h3>
+                </div>
+              </div>
+              <div class="col-4 px-2">
+                <div class="bg-white py-5 p-3 text-center">
+                  <h3 class="m-0 f-17">All Item Groups</h3>
+                  <h3 class="mt-2 mb-0">17</h3>
+                </div>
+              </div>
+              <div class="col-4 px-2">
+                <div class="bg-white py-5 p-3 text-center">
+                  <h3 class="m-0 f-17">All Items</h3>
+                  <h3 class="mt-2 mb-0">100</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="row">
+              <div class="col-12">
+                <div
+                  class="bg-white p-1 px-2 d-flex justify-content-between align-items-center text-dark"
+                >
+                  <div>
+                    <h4 class="m-0">Quantity In Hand</h4>
+                  </div>
+                  <div class="p-3" style="color: #979797">
+                    <h3 class="mt-1 mb-0 font-weight-bold">25</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 mt-3">
+                <div
+                  class="bg-white p-1 px-2 d-flex justify-content-between align-items-center text-dark"
+                >
+                  <div>
+                    <h4 class="m-0">Quantity To be Received</h4>
+                  </div>
+                  <div class="p-3" style="color: #979797">
+                    <h3 class="mt-1 mb-0 font-weight-bold">105</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-lg-4">
+            <div class="row">
+              <div class="col-lg-12">
+                <h4 class="font-weight-bold bg-white text-dark m-0 p-1">
+                  Purchase Order
+                </h4>
+              </div>
+              <div class="col-lg-12">
+                <div
+                  class="bg-white py-4 p-2 text-center"
+                  style="
+                    border-bottom: 0.3px solid lightgrey;
+                    border-top: 0.3px solid lightgrey;
+                  "
+                >
+                  <h3 class="m-0 f-17">Quantity Ordered</h3>
+                  <h3 class="mt-2 mb-0">6</h3>
+                </div>
+              </div>
+
+              <div class="col-lg-12">
+                <div class="bg-white py-4 p-2 text-center">
+                  <h3 class="m-0 f-17">Total Cost</h3>
+                  <h3 class="mt-2 mb-0">6</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 bg-white">
+            <h4 class="font-weight-bold text-dark">Top 5 Vendors</h4>
+            <table
+              class="table table-responsive-md table-striped table-sm mb-0 table-bordered"
+            >
+              <thead>
+                <tr>
+                  <th>Sr.</th>
+                  <th>Vendor</th>
+                  <th>Location</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Mark</td>
+                  <td>Cambridge</td>
+                  <td>CAD 3567</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Mark</td>
+                  <td>Cambridge</td>
+                  <td>CAD 3567</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Mark</td>
+                  <td>Cambridge</td>
+                  <td>CAD 3567</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Mark</td>
+                  <td>Cambridge</td>
+                  <td>CAD 3567</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Mark</td>
+                  <td>Cambridge</td>
+                  <td>CAD 3567</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-lg-12">
+            <section class="card">
+              <div class="card-body">
+                <div class="m-2">
+                  <ul
+                    class="nav nav-tabs top-tabs"
+                    id="top-tabs"
+                    role="tablist"
+                  >
+                    <li class="nav-item">
+                      <a
+                        class="nav-link active"
+                        id="all-tab"
+                        data-toggle="tab"
+                        href="#einv"
+                        role="tab"
+                        aria-controls="allassets"
+                        aria-selected="true"
+                        >Existing Inventory</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="reefer-tab"
+                        data-toggle="tab"
+                        href="#rinv"
+                        role="tab"
+                        aria-controls="reefer"
+                        aria-selected="false"
+                        >Required Inventory</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <div class="tab-content p-0" id="myTabContent">
+                  <div
+                    class="tab-pane show active"
+                    id="einv"
+                    role="tabpanel"
+                    aria-labelledby="all-tab"
+                  >
+                    <table
+                      class="table table-bordered table-responsive-lg table-striped mb-0"
+                      id="simple-table"
+                    >
+                      <thead>
+                        <tr>
+                          <th width="5%"><input type="checkbox" /></th>
+                          <th width="5%">Part#</th>
+                          <th width="20%">Name</th>
+                          <th width="10%">Category</th>
+                          <th width="20%">Vendor</th>
+                          <th width="5%">Quantity</th>
+                          <th width="10%">On Hand</th>
+                          <th width="10%">Unit Cost</th>
+                          <th width="15%">Warehouse Details</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td onclick="window.location='inventory-details.php'">
+                            01
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            10-30wt Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warren CAT
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            18
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            234
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            $ 2.34
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warehouse 1
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td onclick="window.location='inventory-details.php'">
+                            01
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            10-30wt Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warren CAT
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            9
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            234
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            $ 2.34
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warehouse 2
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td onclick="window.location='inventory-details.php'">
+                            01
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            10-30wt Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warren CAT
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            4
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            234
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            $ 2.34
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warehouse 3
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td onclick="window.location='inventory-details.php'">
+                            01
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            10-30wt Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warren CAT
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            2
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            234
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            $ 2.34
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warehouse 4
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td onclick="window.location='inventory-details.php'">
+                            01
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            10-30wt Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warren CAT
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            15
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            234
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            $ 2.34
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warehouse 5
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div
+                    class="tab-pane fade"
+                    id="rinv"
+                    role="tabpanel"
+                    aria-labelledby="reefer-tab"
+                  >
+                    <table
+                      class="table table-bordered table-responsive-lg table-striped mb-0"
+                      id="simple-table1"
+                    >
+                      <thead>
+                        <tr>
+                          <th width="5%"><input type="checkbox" /></th>
+                          <th width="5%">Part#</th>
+                          <th width="20%">Name</th>
+                          <th width="10%">Category</th>
+                          <th width="20%">Vendor</th>
+                          <th width="5%">Quantity</th>
+                          <th width="10%">On Hand</th>
+                          <th width="10%">Unit Cost</th>
+                          <th width="15%">Warehouse Details</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td onclick="window.location='inventory-details.php'">
+                            01
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            10-30wt Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warren CAT
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            15
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            234
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            $ 2.34
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warehouse Location 1
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td onclick="window.location='inventory-details.php'">
+                            01
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            10-30wt Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warren CAT
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            3
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            234
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            $ 2.34
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warehouse Detail 1
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td onclick="window.location='inventory-details.php'">
+                            01
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            10-30wt Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warren CAT
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            4
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            234
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            $ 2.34
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warehouse Location 2
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td onclick="window.location='inventory-details.php'">
+                            01
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            10-30wt Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warren CAT
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            11
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            234
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            $ 2.34
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warehouse Location 3
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" /></td>
+                          <td onclick="window.location='inventory-details.php'">
+                            01
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            10-30wt Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Oil
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warren CAT
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            6
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            234
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            $ 2.34
+                          </td>
+                          <td onclick="window.location='inventory-details.php'">
+                            Warehouse Location 4
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!--Transfer Modal-->
+<div id="transferModal" class="modal-block modal-block-primary mfp-hide">
+  <section class="card">
+        <header class="card-header">
+           <h2 class="card-title">Transfer Inventory</h2>
+        </header>
+        <div class="card-body text-dark">
+           <form>
+              <div class="form-row">
+                 <div class="form-group col-lg-12">
+                    
+                  <div class="row">
+                          <div class="col-lg-6">
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part Number</label>
+                             <input type="text" class="form-control">
+                          </div>
+                          <div class="col-lg-6">
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part Details</label>
+                             <input type="text" class="form-control">
+                          </div>
                     </div>
-                 </div>
-                 <div class="col-lg-2 col-md-2">
-                    <button class="btn btn-sm btn-success" type="submit">Search</button>
-                 </div>
-                 <div class="col-md-7  col-lg-7 text-right pr-4">
-                 <a href="#transferModal" class="modal-with-form btn btn-success btn-sm"><i class="fas fa-exchange-alt"></i> Transfer</a>                
-  
-                    <div class="btn-group flex-wrap">
-                       <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
-                       <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                          <a class="dropdown-item text-1" href="">Edit</a>
-                          <a class="dropdown-item text-1" href="">Delete</a>
+
+                    <div class="row">
+                          <div class="col-lg-6">
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
+                             <input type="text" class="form-control">
+                          </div>
+                          <div class="col-lg-6">
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Date/Time</label>
+                             <input type="text" data-plugin-datepicker="" class="form-control">
+                          </div>
+                    </div>
+
+
+                    <div class="row">
+                       <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-lg-right pt-2" >From Warehouse</label>
+                          <select data-plugin-selectTwo class="form-control populate">
+                             <optgroup label="Select Country">
+                                <option value="1">Calgary</option>
+                                <option value="2">Toronto</option>
+                                <option value="2">New York</option>
+                                <option value="2">Brampton</option>
+                             </optgroup>
+                          </select>
+                       </div>
+
+                       <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-lg-right pt-2" >To Warehouse</label>
+                          <select data-plugin-selectTwo class="form-control populate">
+                             <optgroup label="Select Country">
+                                <option value="1">Calgary</option>
+                                <option value="2">Toronto</option>
+                                <option value="2">New York</option>
+                                <option value="2">Brampton</option>
+                             </optgroup>
+                          </select>
                        </div>
                     </div>
-                    <a routerLink="/fleet/inventory/Add-Inventory" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Inventory</a>                
-  
+
+                   
                  </div>
               </div>
            </form>
-        </header>
-        <div id="list_view">
-           <div class="row bg-white">
-              <div class="col-8">
-                 <div class="p-2">
-                    <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                       <li class="nav-item">
-                          <a class="nav-link active" id="all-tab" data-toggle="tab" href="#einv" role="tab" aria-controls="allassets" aria-selected="true">Existing Inventory</a>
-                       </li>
-                       <li class="nav-item">
-                          <a class="nav-link" id="reefer-tab" data-toggle="tab" href="#rinv" role="tab" aria-controls="reefer" aria-selected="false">Required Inventory</a>
-                       </li>
-                       
-                       
-                    </ul>
-                 </div>
+        </div>
+        <footer class="card-footer">
+           <div class="row">
+              <div class="col-md-12 text-right">
+                 <button class="btn btn-success modal-confirm">Transfer</button>
+                 <button class="btn btn-default modal-dismiss">Cancel</button>
               </div>
            </div>
-            <div class="row">
-               <div class="col pr-0">
-                  <section class="card">
-                     <div class="card-body">
-                        <div class="tab-content p-0" id="myTabContent">
-                           <div class="tab-pane show active" id="einv" role="tabpanel" aria-labelledby="all-tab">
-                            
-                              <table class="table table-bordered table-responsive-lg table-striped mb-0" id="simple-table">
-                                 <thead>
-                                    <tr>
-                                       <th  width="5%"><input type="checkbox"></th>
-                                       <th  width="5%">Part #</th>
-                                       <th  width="20%">Name</th>
-                                       <th  width="10%">Category</th>
-                                       <th  width="20%">Vendor</th>
-                                       <th  width="5%">Quantity</th>
-                                       <th  width="10%">On Hand</th>
-                                       <th  width="10%">Unit Cost</th>
-                                       <th  width="15%">Warehouse Details</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                    <tr>
-                                       <td><input type="checkbox"></td>
-                                       <td onclick="window.location='inventory-details.php'">01</td>
-                                       <td onclick="window.location='inventory-details.php'">10-30wt Oil</td>
-                                       <td onclick="window.location='inventory-details.php'">Oil</td>
-                                       <td onclick="window.location='inventory-details.php'">Warren CAT</td>
-                                       <td onclick="window.location='inventory-details.php'">18</td>
-                                       <td onclick="window.location='inventory-details.php'">234 </td>
-                                       <td onclick="window.location='inventory-details.php'">$ 2.34 </td>
-                                       <td onclick="window.location='inventory-details.php'">Warehouse 1</td>
-                                    </tr>
-                                    <tr>
-                                       <td><input type="checkbox"></td>
-                                       <td onclick="window.location='inventory-details.php'">01</td>
-                                       <td onclick="window.location='inventory-details.php'">10-30wt Oil</td>
-                                       <td onclick="window.location='inventory-details.php'">Oil</td>
-                                       <td onclick="window.location='inventory-details.php'">Warren CAT</td>
-                                       <td onclick="window.location='inventory-details.php'">9</td>
-                                       <td onclick="window.location='inventory-details.php'">234 </td>
-                                       <td onclick="window.location='inventory-details.php'">$ 2.34 </td>
-                                       <td onclick="window.location='inventory-details.php'">Warehouse 2</td>
-                                    </tr>
-                                    <tr>
-                                       <td><input type="checkbox"></td>
-                                       <td onclick="window.location='inventory-details.php'">01</td>
-                                       <td onclick="window.location='inventory-details.php'">10-30wt Oil</td>
-                                       <td onclick="window.location='inventory-details.php'">Oil</td>
-                                       <td onclick="window.location='inventory-details.php'">Warren CAT</td>
-                                       <td onclick="window.location='inventory-details.php'">4</td>
-                                       <td onclick="window.location='inventory-details.php'">234 </td>
-                                       <td onclick="window.location='inventory-details.php'">$ 2.34 </td>
-                                       <td onclick="window.location='inventory-details.php'">Warehouse 3</td>
-                                    </tr>
-                                    <tr>
-                                       <td><input type="checkbox"></td>
-                                       <td onclick="window.location='inventory-details.php'">01</td>
-                                       <td onclick="window.location='inventory-details.php'">10-30wt Oil</td>
-                                       <td onclick="window.location='inventory-details.php'">Oil</td>
-                                       <td onclick="window.location='inventory-details.php'">Warren CAT</td>
-                                       <td onclick="window.location='inventory-details.php'">2</td>
-                                       <td onclick="window.location='inventory-details.php'">234 </td>
-                                       <td onclick="window.location='inventory-details.php'">$ 2.34 </td>
-                                       <td onclick="window.location='inventory-details.php'">Warehouse 4</td>
-                                    </tr>
-                                    <tr>
-                                       <td><input type="checkbox"></td>
-                                       <td onclick="window.location='inventory-details.php'">01</td>
-                                       <td onclick="window.location='inventory-details.php'">10-30wt Oil</td>
-                                       <td onclick="window.location='inventory-details.php'">Oil</td>
-                                       <td onclick="window.location='inventory-details.php'">Warren CAT</td>
-                                       <td onclick="window.location='inventory-details.php'">15</td>
-                                       <td onclick="window.location='inventory-details.php'">234 </td>
-                                       <td onclick="window.location='inventory-details.php'">$ 2.34 </td>
-                                       <td onclick="window.location='inventory-details.php'">Warehouse 5</td>
-                                    </tr>
-                                 
-                                 </tbody>
-                            </table>
-  
-                           </div>
-                       
-                           <div class="tab-pane fade" id="rinv" role="tabpanel" aria-labelledby="reefer-tab">
-                           <table class="table table-bordered table-responsive-lg table-striped mb-0" id="simple-table1">
-                           <thead>
-                              <tr>
-                                 <th  width="5%"><input type="checkbox"></th>
-                                 <th  width="5%">Part #</th>
-                                 <th  width="20%">Name</th>
-                                 <th  width="10%">Category</th>
-                                 <th  width="20%">Vendor</th>
-                                 <th  width="5%">Quantity</th>
-                                 <th  width="10%">On Hand</th>
-                                 <th  width="10%">Unit Cost</th>
-                                 <th  width="15%">Warehouse Details</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                              <tr>
-                                 <td><input type="checkbox"></td>
-                                 <td onclick="window.location='inventory-details.php'">01</td>
-                                 <td onclick="window.location='inventory-details.php'">10-30wt Oil</td>
-                                 <td onclick="window.location='inventory-details.php'">Oil</td>
-                                 <td onclick="window.location='inventory-details.php'">Warren CAT</td>
-                                 <td onclick="window.location='inventory-details.php'">15</td>
-                                 <td onclick="window.location='inventory-details.php'">234 </td>
-                                 <td onclick="window.location='inventory-details.php'">$ 2.34 </td>
-                                 <td onclick="window.location='inventory-details.php'">Warehouse Location 1</td>
-                              </tr>
-                              <tr>
-                                 <td><input type="checkbox"></td>
-                                 <td onclick="window.location='inventory-details.php'">01</td>
-                                 <td onclick="window.location='inventory-details.php'">10-30wt Oil</td>
-                                 <td onclick="window.location='inventory-details.php'">Oil</td>
-                                 <td onclick="window.location='inventory-details.php'">Warren CAT</td>
-                                 <td onclick="window.location='inventory-details.php'">3</td>
-                                 <td onclick="window.location='inventory-details.php'">234 </td>
-                                 <td onclick="window.location='inventory-details.php'">$ 2.34 </td>
-                                 <td onclick="window.location='inventory-details.php'">Warehouse Detail 1</td>
-                              </tr>
-                              <tr>
-                                 <td><input type="checkbox"></td>
-                                 <td onclick="window.location='inventory-details.php'">01</td>
-                                 <td onclick="window.location='inventory-details.php'">10-30wt Oil</td>
-                                 <td onclick="window.location='inventory-details.php'">Oil</td>
-                                 <td onclick="window.location='inventory-details.php'">Warren CAT</td>
-                                 <td onclick="window.location='inventory-details.php'">4</td>
-                                 <td onclick="window.location='inventory-details.php'">234 </td>
-                                 <td onclick="window.location='inventory-details.php'">$ 2.34 </td>
-                                 <td onclick="window.location='inventory-details.php'">Warehouse Location 2</td>
-                              </tr>
-                              <tr>
-                                 <td><input type="checkbox"></td>
-                                 <td onclick="window.location='inventory-details.php'">01</td>
-                                 <td onclick="window.location='inventory-details.php'">10-30wt Oil</td>
-                                 <td onclick="window.location='inventory-details.php'">Oil</td>
-                                 <td onclick="window.location='inventory-details.php'">Warren CAT</td>
-                                 <td onclick="window.location='inventory-details.php'">11</td>
-                                 <td onclick="window.location='inventory-details.php'">234 </td>
-                                 <td onclick="window.location='inventory-details.php'">$ 2.34 </td>
-                                 <td onclick="window.location='inventory-details.php'">Warehouse Location 3</td>
-                              </tr>
-                              <tr>
-                                 <td><input type="checkbox"></td>
-                                 <td onclick="window.location='inventory-details.php'">01</td>
-                                 <td onclick="window.location='inventory-details.php'">10-30wt Oil</td>
-                                 <td onclick="window.location='inventory-details.php'">Oil</td>
-                                 <td onclick="window.location='inventory-details.php'">Warren CAT</td>
-                                 <td onclick="window.location='inventory-details.php'">6</td>
-                                 <td onclick="window.location='inventory-details.php'">234 </td>
-                                 <td onclick="window.location='inventory-details.php'">$ 2.34 </td>
-                                 <td onclick="window.location='inventory-details.php'">Warehouse Location 4</td>
-                              </tr>
-  
-                            
-                             
-                           </tbody>
-                        </table>
-                                
-                           </div>
-  
-                     
-                        </div>
-                     </div>
-                  </section>
-               </div>
-            </div>
-         </div>
-        <!-- <div class="row text-dark">
-           <div class="col-12 pr-0">
-              <section class="card">
-                 <div class="card-body mb-0">
-                 <h2 class="mt-0 font-weight-bold text-dark text-4">Existing Inventory</h2>
-  
-                    <div id="simple-table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="simple-table_length"><label>Show <select name="simple-table_length" aria-controls="simple-table" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 dataTable no-footer" id="simple-table" role="grid">
-                       <thead>
-                          <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 31.6667px;"><input type="checkbox"></th><th width="5%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Part #: activate to sort column ascending" style="width: 33px;">Part #</th><th width="20%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" style="width: 249px;">Name</th><th width="10%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 106.333px;">Category</th><th width="20%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Vendor: activate to sort column ascending" style="width: 250.333px;">Vendor</th><th width="5%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Quantity: activate to sort column ascending" style="width: 58.3333px;">Quantity</th><th width="10%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="On Hand: activate to sort column ascending" style="width: 106.333px;">On Hand</th><th width="10%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Unit Cost: activate to sort column ascending" style="width: 106.333px;">Unit Cost</th><th width="15%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1" colspan="1" aria-label="Warehouse Details: activate to sort column ascending" style="width: 178.333px;">Warehouse Details</th></tr>
-                       </thead>
-                       <tbody>
-                          
-                          
-                          
-                          
-                          
-                         
-                       <tr role="row"  routerLink="/fleet/inventory/item/item-detail" class="odd">
-                             <td class="sorting_1"><input type="checkbox"></td>
-                             <td>01</td>
-                             <td>10-30wt Oil</td>
-                             <td>Oil</td>
-                             <td>Warren CAT</td>
-                             <td>18</td>
-                             <td>234 </td>
-                             <td>$ 2.34 </td>
-                             <td>Warehouse 1</td>
-                          </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="even">
-                             <td class="sorting_1"><input type="checkbox"></td>
-                             <td>01</td>
-                             <td>10-30wt Oil</td>
-                             <td>Oil</td>
-                             <td>Warren CAT</td>
-                             <td>9</td>
-                             <td>234 </td>
-                             <td>$ 2.34 </td>
-                             <td>Warehouse 2</td>
-                          </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="odd">
-                             <td class="sorting_1"><input type="checkbox"></td>
-                             <td>01</td>
-                             <td>10-30wt Oil</td>
-                             <td>Oil</td>
-                             <td>Warren CAT</td>
-                             <td>4</td>
-                             <td>234 </td>
-                             <td>$ 2.34 </td>
-                             <td>Warehouse 3</td>
-                          </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="even">
-                             <td class="sorting_1"><input type="checkbox"></td>
-                             <td>01</td>
-                             <td>10-30wt Oil</td>
-                             <td>Oil</td>
-                             <td>Warren CAT</td>
-                             <td>2</td>
-                             <td>234 </td>
-                             <td>$ 2.34 </td>
-                             <td>Warehouse 4</td>
-                          </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="odd">
-                             <td class="sorting_1"><input type="checkbox"></td>
-                             <td>01</td>
-                             <td>10-30wt Oil</td>
-                             <td>Oil</td>
-                             <td>Warren CAT</td>
-                             <td>15</td>
-                             <td>234 </td>
-                             <td>$ 2.34 </td>
-                             <td>Warehouse 5</td>
-                          </tr></tbody>
-                    </table></div><div class="dataTables_paginate paging_simple_numbers" id="simple-table_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="simple-table_previous"><a href="#" aria-controls="simple-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="simple-table" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="simple-table_next"><a href="#" aria-controls="simple-table" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
-                 </div>
-              </section>
-           </div>
-  
-           <div class="col-12 pr-0">
-              <section class="card">
-                 <div class="card-body mt-0">
-                 <h2 class="mt-0 font-weight-bold text-dark text-4">Required Inventory</h2>
-  
-                    <div id="simple-table1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="simple-table1_length"><label>Show <select name="simple-table1_length" aria-controls="simple-table1" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 dataTable no-footer" id="simple-table1" role="grid">
-                       <thead>
-                          <tr role="row"><th width="5%" class="sorting_asc" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 31.6667px;"><input type="checkbox"></th><th width="5%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Part #: activate to sort column ascending" style="width: 33px;">Part #</th><th width="20%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" style="width: 249px;">Name</th><th width="10%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 106.333px;">Category</th><th width="20%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Vendor: activate to sort column ascending" style="width: 250.333px;">Vendor</th><th width="5%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Quantity: activate to sort column ascending" style="width: 58.3333px;">Quantity</th><th width="10%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="On Hand: activate to sort column ascending" style="width: 106.333px;">On Hand</th><th width="10%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Unit Cost: activate to sort column ascending" style="width: 106.333px;">Unit Cost</th><th width="15%" class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" aria-label="Warehouse Details: activate to sort column ascending" style="width: 178.333px;">Warehouse Details</th></tr>
-                       </thead>
-                       <tbody>
-                          
-                          
-                          
-                          
-                          
-  
-                        
-                         
-                       <tr role="row" routerLink="/fleet/inventory/item/item-detail" class="odd">
-                             <td class="sorting_1"><input type="checkbox"></td>
-                             <td>01</td>
-                             <td>10-30wt Oil</td>
-                             <td>Oil</td>
-                             <td>Warren CAT</td>
-                             <td>15</td>
-                             <td>234 </td>
-                             <td>$ 2.34 </td>
-                             <td>Warehouse Location 1</td>
-                          </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="even">
-                             <td class="sorting_1"><input type="checkbox"></td>
-                             <td>01</td>
-                             <td>10-30wt Oil</td>
-                             <td>Oil</td>
-                             <td>Warren CAT</td>
-                             <td>3</td>
-                             <td>234 </td>
-                             <td>$ 2.34 </td>
-                             <td>Warehouse Detail 1</td>
-                          </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="odd">
-                             <td class="sorting_1"><input type="checkbox"></td>
-                             <td>01</td>
-                             <td>10-30wt Oil</td>
-                             <td>Oil</td>
-                             <td>Warren CAT</td>
-                             <td>4</td>
-                             <td>234 </td>
-                             <td>$ 2.34 </td>
-                             <td>Warehouse Location 2</td>
-                          </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="even">
-                             <td class="sorting_1"><input type="checkbox"></td>
-                             <td>01</td>
-                             <td>10-30wt Oil</td>
-                             <td>Oil</td>
-                             <td>Warren CAT</td>
-                             <td>11</td>
-                             <td>234 </td>
-                             <td>$ 2.34 </td>
-                             <td>Warehouse Location 3</td>
-                          </tr><tr role="row" routerLink="/fleet/inventory/item/item-detail" class="odd">
-                             <td class="sorting_1"><input type="checkbox"></td>
-                             <td>01</td>
-                             <td>10-30wt Oil</td>
-                             <td>Oil</td>
-                             <td>Warren CAT</td>
-                             <td>6</td>
-                             <td>234 </td>
-                             <td>$ 2.34 </td>
-                             <td>Warehouse Location 4</td>
-                          </tr></tbody>
-                    </table></div><div class="dataTables_paginate paging_simple_numbers" id="simple-table1_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="simple-table1_previous"><a href="#" aria-controls="simple-table1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="simple-table1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="simple-table1_next"><a href="#" aria-controls="simple-table1" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
-                 </div>
-              </section>
-           </div>
-  
-        </div> -->
-  
-  
+        </footer>
      </section>
-    </div>
-  </section>
-  
+  </div>

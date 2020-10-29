@@ -39,7 +39,7 @@ export class GeofenceListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchGeofences();
-
+    
     this.dropdownList = [
       { item_id: 1, item_text: 'Mumbai' },
       { item_id: 2, item_text: 'Bangaluru' },
@@ -117,10 +117,7 @@ export class GeofenceListComponent implements OnInit {
         for (let i = 0; i < result.Items.length; i++) {
           // console.log(result.Items[i].isDeleted);
           if (result.Items[i].isDeleted === 0) {
-            console.log("if")
             this.geofences.push(result.Items[i]);
-          } else {
-            console.log("else")
           }
         }
         this.spinner.hide();
