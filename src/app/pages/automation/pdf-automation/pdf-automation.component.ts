@@ -1,5 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 declare var Tesseract: any;
+declare var $: any;
 
 @Component({
   selector: 'app-pdf-automation',
@@ -11,6 +12,7 @@ export class PdfAutomationComponent implements OnInit {
   pageTitle = 'Pdf Automation';
   @ViewChild('canva', { static: true })
   canva: ElementRef<HTMLCanvasElement>;
+  private selectOpt;
   constructor() {
 
 
@@ -176,7 +178,7 @@ export class PdfAutomationComponent implements OnInit {
           // console.log('result:', result.text);
           // document.getElementById('text').value = result.text;
           // text = result.text
-          const sitePersonel = {};
+          const sitePersonel: any = {};
           const objects = []
           sitePersonel.objects = objects;
           console.log(sitePersonel);
@@ -228,7 +230,8 @@ export class PdfAutomationComponent implements OnInit {
           console.log('H1')
           const para = document.createElement('P');
           const h = document.createElement('h3');
-          h.innerHTML = document.getElementById('select').value;
+         // h.innerHTML = document.getElementById('select').value;
+          h.innerHTML = this.selectOpt;
           para.innerHTML = text;
           document.getElementById('myDIV').appendChild(h);
           document.getElementById('myDIV').appendChild(para);
