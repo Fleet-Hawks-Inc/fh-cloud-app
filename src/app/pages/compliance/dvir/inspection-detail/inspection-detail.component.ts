@@ -10,6 +10,10 @@ declare var $: any;
 })
 export class InspectionDetailComponent implements OnInit {
   inspectionID = '';
+  tripType = '';
+
+
+  carrierName: '';
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit() {
@@ -23,7 +27,16 @@ export class InspectionDetailComponent implements OnInit {
       .getData(`dailyInspections/${this.inspectionID}`)
       .subscribe((result) => {
         result = result.Items[0];
+        this.tripType = result.tripType;
+        this.fetchCarrier(result.carrierID);
         console.log(result);
       });
+  }
+
+  fetchCarrier(carrierID){
+    this.apiService.getData(`carriers/${carrierID}`).subscribe((result) => {
+      result = result.Items[0];
+      this.carrierName = result.businessDetail.carrierName;
+    });
   }
 }

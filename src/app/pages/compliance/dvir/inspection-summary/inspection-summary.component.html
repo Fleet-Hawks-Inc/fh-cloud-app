@@ -120,7 +120,7 @@
                     }}"
                     *ngFor="let inspection of dailyInspections"
                   >
-                    <td>{{ inspection.timeCreated }}</td>
+                    <td>{{ inspection.timeCreated | date:'medium' }}</td>
                     <td>driveruser1</td>
                     <td>{{ inspection.inspectionType }}</td>
                     <td>{{ inspection.parameters.length }}</td>
