@@ -58,7 +58,7 @@
                                     <tbody>
                                         <tr *ngFor="let route of routes; let i= index">
                                             <!-- <td class="w-50px sorting_1"><input type="checkbox"></td> -->
-                                            <td>{{ route.routeName }}</td>
+                                            <td routerLink="/dispatch/routes/route-detail/{{ route.routeID }}">{{ route.routeName }}</td>
                                             <td>{{ route.sourceInformation.sourceAddress }}</td>                                                
                                             <td>{{ route.destinationInformation.destinationAddress }}</td>
                                             <td>{{ route.miles }} miles</td>
@@ -80,9 +80,8 @@
                                     </tbody>
                                 </table>
                                 <div *ngIf="!routes.length > 0" class="alert alert-info m-0 text-center" role="alert">
-                                    No records found
-                                    
-                                 </div>
+                                    No records found                                    
+                                </div>
                             
                         </div>
                     </section>
