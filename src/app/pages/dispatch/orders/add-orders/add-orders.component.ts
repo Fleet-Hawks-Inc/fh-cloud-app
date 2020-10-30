@@ -7,6 +7,7 @@ import {AwsUploadService} from '../../../../services/aws-upload.service';
 import { v4 as uuidv4 } from 'uuid';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { GoogleMapsService } from '../../../../services/google-maps.service';
 declare var $: any;
 
 @Component({
@@ -15,6 +16,7 @@ declare var $: any;
   styleUrls: ['./add-orders.component.css']
 })
 export class AddOrdersComponent implements OnInit {
+  apiSelect = '';
   customers;
   form;
   visibleIndex = -1;
@@ -74,7 +76,8 @@ export class AddOrdersComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private awsUS: AwsUploadService,
     private ngbCalendar: NgbCalendar,
-    private dateAdapter: NgbDateAdapter<string>
+    private dateAdapter: NgbDateAdapter<string>,
+    private google: GoogleMapsService
   ) { }
 
   get today() {
@@ -96,6 +99,15 @@ export class AddOrdersComponent implements OnInit {
       console.log('customers', this.customers);
     });
   }
+  onItemChange(value) {
+    if (value === 'google') {
+      const origin = this.orderData.shipperInfo[0].pickupLocation;
+      const destination = this.orderData.receiverInfo[0].dropOffLocation;
+      this.google.googleDistance(origin, destination);
+    } else {
+      this.google.pcMilesDistance('-75.173297,39.942892', '-74.83153,39.61703');
+    }
+ }
 
   selectedCustomer(customerID) {
     console.log('customer', customerID);
@@ -155,6 +167,7 @@ export class AddOrdersComponent implements OnInit {
   }
   
 
+  
   addOrder() {
     console.log("order", this.orderData);
     this.apiService.postData('orders', this.orderData).

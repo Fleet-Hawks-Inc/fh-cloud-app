@@ -60,6 +60,16 @@ export class DetailedComponent implements OnInit {
     toTimeStamp;
 
 
+    /**
+     * Driver props
+     */
+    driverName = '';
+
+    /**
+     * Carrier Props
+     */
+    carrierName = '';
+    carrierAddress = '';
 
   constructor(private route: ActivatedRoute,
               private apiService: ApiService) {}
@@ -68,7 +78,25 @@ export class DetailedComponent implements OnInit {
     this.userName = this.route.snapshot.params['userName'];
     this.eventDate = this.route.snapshot.params['eventDate'];
 
+    this.fetchDriver();
     this.lastDayEvent();
+  }
+
+  fetchDriver(){
+    this.apiService.getData(`drivers/userName/${this.userName}`).subscribe((result) => {
+      result = result.Items[0];
+      this.driverName = result.firstName + ' ' + result.lastName;
+
+      this.fetchCarrier(result.carrierID);
+    });
+  }
+
+  fetchCarrier(carrierID){
+    this.apiService.getData(`carriers/${carrierID}`).subscribe((result) => {
+      result = result.Items[0];
+      this.carrierName = result.businessDetail.carrierName;
+      this.carrierAddress = result.addressDetail.address1;
+    });
   }
 
   lastDayEvent() {
