@@ -34,6 +34,12 @@ import { OrdersListComponent } from './orders/orders-list/orders-list.component'
 import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
 
+import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
+import { TripListComponent } from './trips/trip-list/trip-list.component';
+import { AddTripComponent } from './trips/add-trip/add-trip.component';
+import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
+import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
+
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
 
@@ -110,7 +116,18 @@ const routes: Routes = [
     children: [
       { path: 'route-list', component: RouteListComponent},
       { path: 'add-route', component: AddRouteComponent },
-      { path:'edit-route/:routeID', component:EditRouteComponent}
+      { path:'edit-route/:routeID', component:EditRouteComponent},
+      { path:'route-detail/:routeID', component:RouteDetailComponent},
+    ]
+  },
+  {
+    path: "trips",
+    children: [
+      { path: 'trip-list', component: TripListComponent},
+      { path: 'add-trip', component: AddTripComponent},
+      { path: 'trip-details/:tripID', component: TripDetailComponent},
+      { path: 'edit-trip/:tripID', component: EditTripComponent},
+
     ]
   },
 ];

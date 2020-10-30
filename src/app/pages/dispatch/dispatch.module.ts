@@ -77,6 +77,14 @@ import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
 
 
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
+import { TripListComponent } from './trips/trip-list/trip-list.component';
+import { AddTripComponent } from './trips/add-trip/add-trip.component';
+import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
+import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
+
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -137,7 +145,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    DataTablesModule
+    DataTablesModule,
+    DragDropModule,
+    NgSelectModule
   ],
 
   declarations: [
@@ -220,6 +230,12 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AddOrdersComponent,
     OrderDetailComponent,
     
+
+    RouteDetailComponent,
+    TripListComponent,
+    AddTripComponent,
+    TripDetailComponent,
+    EditTripComponent,
 
   ],
 
