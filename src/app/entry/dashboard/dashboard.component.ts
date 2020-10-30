@@ -3,11 +3,11 @@ import {Router} from "@angular/router";
  // import * as AwsIot from 'aws-iot-device-sdk';
 // declare var fs: any;
 // import { mqtt, io, iot } from 'aws-crt';
-//import * as awsIot from 'aws-iot-device-sdk-v2';
+// import * as awsIot from 'aws-iot-device-sdk-v2';
 // import { TextDecoder } from 'util';
-//window.AwsIot = AwsIot; // make it global
+// window.AwsIot = AwsIot; // make it global
 
-//declare var AwsIot: any;
+// declare var AwsIot: any;
  // declare var AWS: any;
 // (window as any).global = window;
 // declare var window : any;

@@ -653,9 +653,7 @@
                                   </thead>
                                   <tbody>
                                     <tr *ngFor="let log of summary">
-                                      <td
-                                        routerLink="/fleet/drivers/detail/{{ log.driverID }}"
-                                      >
+ <td routerLink="/fleet/drivers/detail/{{ log.driverID }}">
                                         {{ log.userName }}
                                       </td>
                                       <td>100 street Ontario,Toronto</td>
@@ -670,7 +668,7 @@
                                         >
                                       </td>
                                     </tr>
-                       
+
                                   </tbody>
                                 </table>
                               </div>
