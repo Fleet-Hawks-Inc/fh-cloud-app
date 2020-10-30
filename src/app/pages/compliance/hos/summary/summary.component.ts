@@ -8,16 +8,28 @@ import { ApiService } from '../../../../services/api.service';
 })
 export class SummaryComponent implements OnInit {
   summary = [];
+  uncertified = [];
   userName = '';
+
 
   duty = 'all';
   SB = [];
   ON = [];
   OFF = [];
+  D = [];
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.fetchSummary();
+    this.fetchUncertified();
+  }
+
+  fetchUncertified(){
+    this.apiService.getData(`eventLogs/HOSUncertified`).subscribe((result) => {
+      this.uncertified = result;
+
+      console.log(this.uncertified);
+    });
   }
 
   fetchSummary() {
@@ -36,6 +48,11 @@ export class SummaryComponent implements OnInit {
         this.OFF = this.summary.filter((el) => {
           return el.HOSEventDescription == 'OFF';
         });
+
+        this.D = this.summary.filter((el) => {
+          return el.HOSEventDescription == 'D';
+        });
+
       });
   }
 
