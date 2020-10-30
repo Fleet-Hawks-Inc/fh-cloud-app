@@ -9,6 +9,7 @@ declare var $: any;
 })
 export class PdfAutomationComponent implements OnInit {
 
+  public modalBody = '';
   pageTitle = 'Pdf Automation';
   @ViewChild('canva', { static: true })
   canva: ElementRef<HTMLCanvasElement>;
@@ -201,9 +202,11 @@ export class PdfAutomationComponent implements OnInit {
 
 
           console.log(JSON.stringify(sitePersonel));
-          document.getElementById('input').value = text;
+          // document.getElementById('input').value = text;
+          this.modalBody = text;
         });
-        document.getElementById('input').value = text;
+        this.modalBody = text;
+        // document.getElementById('input').value = text;
         $('#exampleModal').modal('show')
 
       }
