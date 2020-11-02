@@ -35,17 +35,42 @@
                   Search by Status <span class="caret"></span>
                 </button>
                 <div class="dropdown-menu" role="menu">
-                  <a class="dropdown-item text-1" href="#">All</a>
-                  <a class="dropdown-item text-1" href="#">Active</a>
-                  <a class="dropdown-item text-1" href="#">Inactive</a>
-                  <a class="dropdown-item text-1" href="#">Sold</a>
-                  <a class="dropdown-item text-1" href="#">Out of Service</a>
+                  <a
+                    class="dropdown-item text-1"
+                    [routerLink]=""
+                    (click)="updateQuery('')"
+                    >All</a
+                  >
+                  <a
+                    class="dropdown-item text-1"
+                    [routerLink]=""
+                    (click)="updateQuery('active')"
+                    >Active</a
+                  >
+                  <a
+                    class="dropdown-item text-1"
+                    [routerLink]=""
+                    (click)="updateQuery('inActive')"
+                    >Inactive</a
+                  >
+                  <a
+                    class="dropdown-item text-1"
+                    [routerLink]=""
+                    (click)="updateQuery('sold')"
+                    >Sold</a
+                  >
+                  <a
+                    class="dropdown-item text-1"
+                    [routerLink]=""
+                    (click)="updateQuery('outOfService')"
+                    >Out of Service</a
+                  >
                 </div>
               </div>
             </div>
 
             <div class="col-md-1 col-lg-1">
-              <button type="submit" class="btn btn-sm btn-success">
+              <button (click)="fetchVehicles()" class="btn btn-sm btn-success">
                 Search
               </button>
             </div>
@@ -130,7 +155,9 @@
                   </thead>
                   <tbody>
                     <tr
-                      routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}"
+                      routerLink="/fleet/vehicles/detail/{{
+                        vehicle.vehicleID
+                      }}"
                       *ngFor="let vehicle of vehicles; let i = index"
                     >
                       <td>{{ vehicle.vehicleIdentification }}</td>
