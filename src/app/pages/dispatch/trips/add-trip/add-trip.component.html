@@ -9,10 +9,6 @@
         width: 100%;
     }
 
-    .txttt td {
-        width: 10%;
-    }
-
     #assetModal .modal-dialog{
         max-width: 1200px;
     }
@@ -24,6 +20,12 @@
     }
     .td_border{
         border: 2px solid black !important;
+    }
+
+    #locationTable{
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
     }
 </style>
 
@@ -170,7 +172,12 @@
                                             <thead>
                                                 <tr>
                                                     <th>Type</th>
-                                                    <th>Date/Time</th>
+                                                    <th>Date</th>
+                                                    <th>Time</th>
+                                                    <th>Pickup Time</th>
+                                                    <th>Drop Time</th>
+                                                    <th>Actual Pickup Time</th>
+                                                    <th>Actual Drop Time</th>
                                                     <th>Name</th>
                                                     <th>Location</th>
                                                     <th>Loaded/ Empty</th>
@@ -189,9 +196,15 @@
                                                     *ngFor="let trip of trips; let i= index">
                                                     <td id="labelCell1{{i}}" class="labelRow{{i}}">{{ trip.type }}</td>
                                                     <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date }}</td>
-                                                    <td id="labelCell3{{i}}" class="labelRow{{i}}"><a
-                                                            href="#addPickupLocationModal"
-                                                            class="modal-with-form">{{ trip.name }}</a></td>
+
+                                                    <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td>
+                                                    <td id="labelCell13{{i}}" class="labelRow{{i}}">{{ trip.pickupTime }}</td>
+                                                    <td id="labelCell14{{i}}" class="labelRow{{i}}">{{ trip.dropTime }}</td>
+                                                    <td id="labelCell15{{i}}" class="labelRow{{i}}">{{ trip.actualPickupTime }}</td>
+                                                    <td id="labelCell16{{i}}" class="labelRow{{i}}">{{ trip.actualDropTime }}</td>
+
+                                                    <td id="labelCell3{{i}}" class="labelRow{{i}}">
+                                                        <a class="modal-with-form">{{ trip.name }}</a></td>
                                                     <td id="labelCell4{{i}}" class="labelRow{{i}}">
                                                         {{ trip.locationName }}
                                                     </td>
@@ -207,14 +220,10 @@
 
                                                         </span> -->
                                                     </td>
-                                                    <td id="labelCell7{{i}}" class="labelRow{{i}}" data-toggle="modal"
-                                                        data-target="#mapAssetsModal">{{ trip.vehicleName }}</td>
-                                                    <td id="labelCell8{{i}}" class="labelRow{{i}}" data-toggle="modal"
-                                                        data-target="#mapAssetsModal">{{ trip.trailerName }}</td>
-                                                    <td id="labelCell9{{i}}" class="labelRow{{i}}" data-toggle="modal"
-                                                        data-target="#mapAssetsModal">{{ trip.driverName }}</td>
-                                                    <td id="labelCell10{{i}}" class="labelRow{{i}}" data-toggle="modal"
-                                                        data-target="#mapAssetsModal">{{ trip.coDriverName }}</td>
+                                                    <td id="labelCell7{{i}}" class="labelRow{{i}}">{{ trip.vehicleName }}</td>
+                                                    <td id="labelCell8{{i}}" class="labelRow{{i}}">{{ trip.trailerName }}</td>
+                                                    <td id="labelCell9{{i}}" class="labelRow{{i}}">{{ trip.driverName }}</td>
+                                                    <td id="labelCell10{{i}}" class="labelRow{{i}}">{{ trip.coDriverName }}</td>
                                                     <td id="labelCell11{{i}}" class="labelRow{{i}}">
                                                         {{ trip.carrierName }}
                                                     </td>
@@ -239,6 +248,34 @@
                                                         <input type="date" class="form-control" id="editCell2{{i}}"
                                                             value="{{ trip.date }}">
                                                     </td>
+
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell12{{i}}" [ngxTimepicker]="editCell12_i" 
+                                                        [format]="24" readonly value="{{ trip.time }}">
+                                                        <ngx-material-timepicker #editCell12_i></ngx-material-timepicker>
+                                                    </td>
+
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell13{{i}}" [ngxTimepicker]="editCell13_i" 
+                                                        [format]="24" readonly value="{{ trip.pickupTime }}">
+                                                        <ngx-material-timepicker #editCell13_i></ngx-material-timepicker>
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell14{{i}}" [ngxTimepicker]="editCell14_i" 
+                                                        [format]="24" readonly value="{{ trip.dropTime }}">
+                                                        <ngx-material-timepicker #editCell14_i></ngx-material-timepicker>
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell15{{i}}" [ngxTimepicker]="editCell15_i" 
+                                                        [format]="24" readonly value="{{ trip.actualPickupTime }}">
+                                                        <ngx-material-timepicker #editCell15_i></ngx-material-timepicker>
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell16{{i}}" [ngxTimepicker]="editCell16_i" 
+                                                        [format]="24" readonly value="{{ trip.actualDropTime }}">
+                                                        <ngx-material-timepicker #editCell16_i></ngx-material-timepicker>
+                                                    </td>
+
                                                     <td class="rowStatus textRows editRow{{i}}">
                                                         <input type="text" class="form-control" id="editCell3{{i}}"
                                                             value="{{ trip.name }}">
@@ -305,6 +342,26 @@
                                                     <td>
                                                         <input type="date" id="cell2" class="form-control newRow"
                                                             (change)="getNewRowValues($event,'date')">
+                                                    </td> 
+                                                    <td>
+                                                        <input type="text" class="form-control newRow" id="cell12" [ngxTimepicker]="cell12" [format]="24"  readonly>
+                                                        <ngx-material-timepicker #cell12></ngx-material-timepicker>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control newRow" id="cell13" [ngxTimepicker]="cell13" [format]="24"  readonly>
+                                                        <ngx-material-timepicker #cell13></ngx-material-timepicker>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control newRow" id="cell14" [ngxTimepicker]="cell14" [format]="24"  readonly>
+                                                        <ngx-material-timepicker #cell14></ngx-material-timepicker>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control newRow" id="cell15" [ngxTimepicker]="cell15" [format]="24"  readonly>
+                                                        <ngx-material-timepicker #cell15></ngx-material-timepicker>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control newRow" id="cell16" [ngxTimepicker]="cell16" [format]="24"  readonly>
+                                                        <ngx-material-timepicker #cell16></ngx-material-timepicker>
                                                     </td>
                                                     <td>
                                                         <input type="text" id="cell3" class="form-control newRow"
@@ -314,7 +371,7 @@
                                                     <td>
                                                         <input type="text" id="cell4" class="form-control newRow"
                                                             data-toggle="modal" (click)="showlocationModal('add','')"
-                                                            autocomplete="off"
+                                                            autocomplete="off" readonly
                                                             value="{{ textFieldValues.locationName }}">
                                                     </td>
                                                     <td>
@@ -334,23 +391,23 @@
                                                         <input type="text" id="cell7" class="form-control newRow"
                                                             (click)="showAssetModal('add','')"
                                                             value="{{ textFieldValues.vehicleName }}"
-                                                            autocomplete="off">
+                                                            autocomplete="off" readonly>
                                                     </td>
                                                     <td>
                                                         <input type="text" id="cell8" class="form-control newRow"
                                                             (click)="showAssetModal('add','')"
-                                                            value="{{ textFieldValues.trailerName}}" autocomplete="off">
+                                                            value="{{ textFieldValues.trailerName}}" autocomplete="off" readonly>
                                                     </td>
                                                     <td>
                                                         <input type="text" id="cell9" class="form-control newRow"
                                                             (click)="showAssetModal('add','')"
-                                                            value="{{ textFieldValues.driverName }}" autocomplete="off">
+                                                            value="{{ textFieldValues.driverName }}" autocomplete="off" readonly>
                                                     </td>
                                                     <td>
                                                         <input type="text" id="cell10" class="form-control newRow"
                                                             (click)="showAssetModal('add','')"
                                                             value="{{ textFieldValues.coDriverName }}"
-                                                            autocomplete="off">
+                                                            autocomplete="off" readonly>
                                                     </td>
                                                     <td>
                                                         <select class="form-control newRow" name="carrierID" id="cell11"
@@ -368,11 +425,11 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-lg-12 text-right">
                                                 <button type="button" class="btn btn-sm btn-success">Plan Trip </button>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="row">
@@ -385,28 +442,38 @@
                                         <div class="col-lg-12">
                                             <h3 class="mb-0 text-6 font-weight-bold text-dark">Trip Info</h3>
                                             <div class="row">
-                                                <div class="col-lg-4 text-center">
+                                                <div class="col-lg-4 text-center" *ngIf="trips.length > 0; else sourceElseBlock">
                                                     <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
-                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">Regina, SK</p>
-                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">SDG 320,
-                                                        Canada</p>
-                                                    <p class="mb-0 text-4 font-weight-normal text-dark">20/15/2020 11:55
-                                                        AM</p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">{{ trips[0].locationName }}</p>
+                                                    <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[0].date }} {{ trips[0].time }}</p>
                                                 </div>
+
+                                                <ng-template #sourceElseBlock>
+                                                    <div class="col-lg-4 text-center">
+                                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
+                                                        <p class="mb-0 text-4 font-weight-semibold text-dark"> - </p>
+                                                    </div>
+                                                </ng-template>
+
                                                 <div class="col-lg-4 text-center pt-3">
                                                     <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
                                                     <p class="mb-0 text-4 font-weight-semibold text-dark">1060.00 Miles
                                                     </p>
                                                 </div>
-                                                <div class="col-lg-4 text-center">
+                                                <div class="col-lg-4 text-center" *ngIf="trips.length > 1; else destinationElseBlock">
                                                     <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
                                                     </p>
-                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">Surrey, BC</p>
-                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">VKM 1R1,
-                                                        Canada</p>
-                                                    <p class="mb-0 text-4 font-weight-normal text-dark">21/15/2020 09:55
-                                                        PM</p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">{{ trips[trips.length-1].locationName }}</p>
+                                                    <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[trips.length-1].date }} {{ trips[trips.length-1].time }}</p>
                                                 </div>
+
+                                                <ng-template #destinationElseBlock>
+                                                    <div class="col-lg-4 text-center">
+                                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
+                                                        </p>
+                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">-</p>
+                                                    </div>
+                                                </ng-template>
                                             </div>
                                             <div class="wizard-progress">
                                                 <div class="steps-progress">
@@ -820,7 +887,7 @@
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of drivers">
-                                                <td class="driverClass" id="drivr_{{ driver.driverID }}" (click)="driverChange(driver,'driver','click')">
+                                                <td class="driverClass" id="drivr_{{ driver.userName }}" (click)="driverChange(driver,'driver','click')">
                                                     <div class="">
                                                         <p class="mb-1 text-4 font-weight-semibold text-dark"><span
                                                                 class="offduty pull-right">OFF</span> {{ driver.fullName }}</p>
@@ -842,7 +909,7 @@
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of codrivers">
-                                                <td class="codriverClass" id="codrivr_{{ driver.driverID }}" (click)="driverChange(driver,'codriver','click')">
+                                                <td class="codriverClass" id="codrivr_{{ driver.userName }}" (click)="driverChange(driver,'codriver','click')">
                                                      {{ driver.fullName }} <span class="offduty pull-right">OFF</span>
                                                     <span class="driverstatus"><i class="fas fa-clock"></i> <span
                                                             class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30 mins</span>

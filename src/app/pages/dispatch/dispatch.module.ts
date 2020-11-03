@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { DispatchRoutingModule } from './dispatch-routing.module';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 import { AddShipperComponent } from './shipper/add-shipper/add-shipper.component';
 import { ShipperListComponent } from './shipper/shipper-list/shipper-list.component';
@@ -80,6 +82,8 @@ import { TripListComponent } from './trips/trip-list/trip-list.component';
 import { AddTripComponent } from './trips/add-trip/add-trip.component';
 import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
 import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
+import { CalendarViewComponent } from './planner/calendar-view/calendar-view.component';
+import { MapViewComponent } from './planner/map-view/map-view.component';
 
 
 /**
@@ -132,7 +136,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   }
 }
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -143,7 +146,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     DataTablesModule,
     DragDropModule,
-    NgSelectModule
+    NgSelectModule,
+    NgxMaterialTimepickerModule,
+    FullCalendarModule 
   ],
 
   declarations: [
@@ -228,12 +233,14 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AddTripComponent,
     TripDetailComponent,
     EditTripComponent,
+    CalendarViewComponent,
+    MapViewComponent,
 
   ],
 
   providers: [NgSelectConfig, ɵs,
     {provide: NgbDateAdapter, useClass: CustomAdapter},
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},
   ],
 
 })
