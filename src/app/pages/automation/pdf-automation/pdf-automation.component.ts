@@ -36,14 +36,14 @@ export class PdfAutomationComponent implements OnInit {
 
       el.onchange = () => {
         // var url = document.getElementById('myFile').value;
-        const url = 'demo1.pdf'
+        const a = '/assets/demo1.pdf'
         // Loaded via <script> tag, create shortcut to access PDF.js exports.
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
 
         // The workerSrc property shall be specified.
         pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
 
-        const loadingTask = pdfjsLib.getDocument(url);
+        const loadingTask = pdfjsLib.getDocument(a);
         loadingTask.promise.then((pdf) => {
           console.log('PDF loaded');
 
