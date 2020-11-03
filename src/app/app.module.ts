@@ -21,6 +21,7 @@ import { MapDashboardComponent } from './entry/map-dashboard/map-dashboard.compo
 import { DashboardComponent } from './entry/dashboard/dashboard.component';
 import { LeftBarComponent } from './entry/left-bar/left-bar.component';
 
+import { PdfAutomationComponent } from './pages/automation/pdf-automation/pdf-automation.component';
 import { NavOpenedDirective } from './directives/nav-opened.directive';
 import { SharedModule } from './shared/shared.module';
 import { ChartsModule } from 'ng2-charts';
@@ -45,6 +46,7 @@ import { SharedModalComponent } from './shared/shared-modal/shared-modal.compone
 import {DynamicModalDirective} from './directives/dynamic-modal.directive';
 
 
+
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -62,7 +64,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MapDashboardComponent,
     NavOpenedDirective,
     SharedModalComponent,
-    DynamicModalDirective,
+    PdfAutomationComponent,
+    DynamicModalDirective
   ],
   imports: [
     AmplifyAngularModule,
