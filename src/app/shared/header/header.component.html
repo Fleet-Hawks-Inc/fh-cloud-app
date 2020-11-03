@@ -46,8 +46,8 @@
                             <a class="nav-link" [routerLink]="" (click)="onNavSelected('accounts')">
                                 Accounts
                             </a>
-                        </li>   
-                        
+                        </li>
+
                         <li class="" [class.active]="navSelected === 'manage'">
                             <a class="nav-link" [routerLink]="" (click)="onNavSelected('manage')">
                                 Manage
@@ -99,7 +99,7 @@
                        <a role="menuitem" tabindex="-1" href="#"><i class="fas fa-user text-dark"></i> Account Setting</a>
                     </li>
                     <li>
-                       <a role="menuitem" tabindex="-1" href="#"><i class="fas fa-power-off text-dark"></i> Logout</a>
+                       <a role="menuitem" tabindex="-1" routerLink="" (click)="Logout()"><i class="fas fa-power-off text-dark"></i> Logout</a>
                     </li>
                  </ul>
             </div>

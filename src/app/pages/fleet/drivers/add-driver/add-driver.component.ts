@@ -9,7 +9,7 @@ import { AwsUploadService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
-import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 
 @Component({
@@ -109,11 +109,10 @@ export class AddDriverComponent implements OnInit {
               private HereMap: HereMapService,
               private ngbCalendar: NgbCalendar,
               private dateAdapter: NgbDateAdapter<string>,
-              private router: Router)
-    {
+              private router: Router) {
       this.selectedFileNames = new Map<any, any>();
     }
-  
+
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -144,15 +143,16 @@ export class AddDriverComponent implements OnInit {
         $('.nav-tabs li a.active').closest('li').prev('li').find('a').trigger('click');
       });
 
-      $(document).ready(() => {
-        this.form = $('#form_').validate();
-      });
+
 
       // $('#document-two').hide();
       // $('#add-document').on('click', function(){
       //   $(this).hide();
       //   $('#document-two').show();
       // });
+    });
+    $(document).ready(() => {
+      this.form = $('#driverForm').validate();
     });
   }
 
@@ -217,7 +217,7 @@ export class AddDriverComponent implements OnInit {
   getToday(): string {
     return new Date().toISOString().split('T')[0]
   }
-  
+
   uploadDriverImg(event): void {
     console.log(event);
     if (event.target.files[0]) {
@@ -264,28 +264,24 @@ export class AddDriverComponent implements OnInit {
   }
 
   addDriver() {
-    this.spinner.show(); // loader init
+    //this.spinner.show(); // loader init
     this.register();
     this.errors = {};
     console.log('this.driverData', this.driverData);
     this.apiService.postData('drivers', this.driverData).subscribe({
       complete: () => {},
-      error: (err: any) => {
+      error : (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/'.*'/, 'This Field');
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
-            })
+            }),
           )
-          .subscribe({
-            complete: () => {
-              this.spinner.hide(); // loader hide
-              this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
+          .subscribe((val) => {
+            this.throwErrors();
           });
+
       },
       next: (res) => {
         this.response = res;
@@ -420,7 +416,5 @@ export class AddDriverComponent implements OnInit {
       // this.hasError = true;
       // this.Error = err.message || 'Error during login';
     }
-  };
-  
-
+  }
 }
