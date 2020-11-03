@@ -118,7 +118,6 @@ export class HereMapService {
     const URL = 'https://autocomplete.geocoder.ls.hereapi.com/6.2/suggest.json';
     return this.http.get(URL + '?apiKey=' + this.apiKey + '&query=' + query  )
       .pipe(map(response => {
-        console.log("response['suggestions']", response['suggestions']);
         return this.searchResults = response['suggestions'];
       })
       );
@@ -135,10 +134,9 @@ export class HereMapService {
       const service = this.platform.getSearchService();
       const result = await service.geocode({ q: query });
       if (result && result.items.length > 0) {
-        console.log(result);
         const response = await service.autosuggest(
           {
-            at: `${result.items[0].position.lat},${result.items[0].position.lng}`,
+            at: `51.271096,-114.275941`,
             limit: 5,
             q: query,
             lang: 'en',
