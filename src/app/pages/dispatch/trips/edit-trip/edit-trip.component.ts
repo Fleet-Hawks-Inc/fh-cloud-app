@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
-// import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 declare var $: any;
@@ -29,13 +28,15 @@ export class EditTripComponent implements OnInit {
   vehicles = [];
   assets = [];
   drivers = [];
+  codrivers = [];
   tripData = {
     tripID: '',
     reeferTemperature: '',
     reeferTemperatureUnit: '',
     orderId: {},
     tripPlanning: [],
-    notifications: {}
+    notifications: {},
+    tripStatus: ''
   };
   ltlOrders = [
     {
@@ -135,6 +136,11 @@ export class EditTripComponent implements OnInit {
     type: '',
     date: '',
     name: '',
+    time: '',
+    pickupTime: '',
+    dropTime: '',
+    actualPickupTime: '',
+    actualDropTime: '',
     location: {},
     mileType: '',
     miles: '',
@@ -150,7 +156,7 @@ export class EditTripComponent implements OnInit {
     trailerName: ''
   };
   tempTextFieldValues: any = {
-    trailer: {}
+    trailer: []
   };
   countries = [];
   states = [];
@@ -194,6 +200,11 @@ export class EditTripComponent implements OnInit {
   allAssetName = '';
   OrderIdsSelected = [];
 
+  assetDataVehicleID = '';
+  assetDataDriverUsername = '';
+  assetDataCoDriverUsername = '';
+  informationAsset = [];
+
   ngOnInit() {
 
     this.tripID = this.route.snapshot.params['tripID'];
@@ -210,44 +221,6 @@ export class EditTripComponent implements OnInit {
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
-
-    $(document).on('change', '#informationAsset', function () {
-      let selected = $("#informationAsset option:selected");
-      if (selected.val() !== '') {
-        let objj = {
-          id: selected.val(),
-          name: selected.text()
-        }
-        console.log('objj');
-        console.log(objj);
-        current.selectedAssets.push(objj);
-        selected.hide();
-        $('#informationAsset').val('');
-        current.saveSelectedAssets();
-      }
-    })
-
-    $(document).on('change', '#driverSelect', function () {
-      let selected = $("#driverSelect option:selected");
-      $('#coDriverSelect').children('option').show();
-      $('#coDriverSelect').children('option[value^=' + selected.val() + ']').hide();
-      current.tempTextFieldValues.driverName = selected.text();
-      current.tempTextFieldValues.driverUsername = selected.val();
-    })
-
-    $(document).on('change', '#coDriverSelect', function () {
-      let selected = $("#coDriverSelect option:selected");
-      $('#driverSelect').children('option').show();
-      $('#driverSelect').children('option[value^=' + selected.val() + ']').hide();
-      current.tempTextFieldValues.coDriverName = selected.text();
-      current.tempTextFieldValues.coDriverUsername = selected.val();
-    })
-
-    $(document).on('change', '#vehicleSelect', function () {
-      let selected = $("#vehicleSelect option:selected");
-      current.tempTextFieldValues.vehicleName = selected.text();
-      current.tempTextFieldValues.vehicleID = selected.val();
-    })
 
     $('#locationCountry').on('change', function () {
       var curr = $(this);
@@ -300,16 +273,19 @@ export class EditTripComponent implements OnInit {
       && this.textFieldValues.mileType != '' && this.textFieldValues.miles != '' && this.textFieldValues.vehicleName != ''
       && this.textFieldValues.driverName != '' && this.textFieldValues.carrierName != '' && this.textFieldValues.trailerName != ''
       && this.textFieldValues.locationName != '') {
+
+      this.textFieldValues.time = $("#cell12").val();
+      this.textFieldValues.pickupTime = $("#cell13").val();
+      this.textFieldValues.dropTime = $("#cell14").val();
+      this.textFieldValues.actualPickupTime = $("#cell15").val();
+      this.textFieldValues.actualDropTime = $("#cell16").val();
+
       this.trips.push(this.textFieldValues);
       this.textFieldValues = {};
       $('.newRow').val('');
 
-      $("#driverSelect").val('');
-      $("#coDriverSelect").val('');
-      $("#vehicleSelect").val('');
-      $('#driverSelect').children('option').show();
-      $('#coDriverSelect').children('option').show();
-      $('#informationAsset').children('option').show();
+      // empty the values of asset modal and temp_text_fields after adding
+      this.emptyAssetModalFields();
 
       // location modal
       $("#locationAddress1").val('');
@@ -319,9 +295,6 @@ export class EditTripComponent implements OnInit {
       this.states = [];
       this.cities = [];
       this.selectedAssets = [];
-
-      // console.log('this.trips');
-      // console.log(this.trips);
     } else {
       this.toastr.error('Please fill all the fields to add trip');
       return false;
@@ -330,6 +303,27 @@ export class EditTripComponent implements OnInit {
 
   delRow(index) {
     this.trips.splice(index, 1);
+  }
+
+  emptyAssetModalFields() {
+    // empty the values of asset modal and temp_text_fields after adding
+    this.tempTextFieldValues.vehicleName = '';
+    this.tempTextFieldValues.vehicleID = '';
+    this.tempTextFieldValues.trailer = [];
+    this.tempTextFieldValues.driverName = '';
+    this.tempTextFieldValues.driverUsername = '';
+    this.tempTextFieldValues.coDriverName = '';
+    this.tempTextFieldValues.coDriverUsername = '';
+    this.tempTextFieldValues.trailerName = '';
+
+    this.assetDataVehicleID = '';
+    this.informationAsset = [];
+    this.assetDataDriverUsername = '';
+    this.assetDataCoDriverUsername = '';
+    $(".vehicleClass").removeClass('td_border');
+    $(".assetClass").removeClass('td_border');
+    $(".driverClass").removeClass('td_border');
+    $(".codriverClass").removeClass('td_border');
   }
 
   showEditRow(index) {
@@ -351,6 +345,11 @@ export class EditTripComponent implements OnInit {
     this.trips[index].miles = $('#editCell6' + index).val();
     this.trips[index].carrierID = $('#editCell11' + index + ' option:selected').val();
     this.trips[index].carrierName = $('#editCell11' + index + ' option:selected').text();
+    this.trips[index].time = $('#editCell12' + index).val();
+    this.trips[index].pickupTime = $('#editCell13' + index).val();
+    this.trips[index].dropTime = $('#editCell14' + index).val();
+    this.trips[index].actualPickupTime = $('#editCell15' + index).val();
+    this.trips[index].actualDropTime = $('#editCell16' + index).val();
 
     $("#labelCell1" + index).val(this.trips[index].type);
     $("#labelCell2" + index).val(this.trips[index].date);
@@ -363,6 +362,12 @@ export class EditTripComponent implements OnInit {
     $("#labelCell9" + index).val(this.trips[index].driverName);
     $("#labelCell10" + index).val(this.trips[index].coDriverName);
     $("#labelCell11" + index).val(this.trips[index].carrierName);
+    $("#labelCell12" + index).val(this.trips[index].time);
+    $("#labelCell13" + index).val(this.trips[index].pickupTime);
+    $("#labelCell14" + index).val(this.trips[index].dropTime);
+    $("#labelCell15" + index).val(this.trips[index].actualPickupTime);
+    $("#labelCell16" + index).val(this.trips[index].actualDropTime);
+
 
     $(".labelRow" + index).css('display', '');
     // $(".editRow"+index).css('display','none');
@@ -403,13 +408,6 @@ export class EditTripComponent implements OnInit {
   }
 
   showAssetModal(type, index) {
-    $("#driverSelect").val('');
-    $("#coDriverSelect").val('');
-    $("#vehicleSelect").val('');
-    $('#driverSelect').children('option').show();
-    $('#coDriverSelect').children('option').show();
-    $('#informationAsset').children('option').show();
-    this.selectedAssets = [];
 
     if (type === 'add') {
       this.tempTextFieldValues.type = 'add';
@@ -420,20 +418,76 @@ export class EditTripComponent implements OnInit {
       this.tempTextFieldValues.index = index;
 
       let editRowValues = this.trips[index];
-      $("#vehicleSelect").val(editRowValues.vehicleID);
-      // $("#informationAsset").val();
+      console.log('editRowValues');
+      console.log(editRowValues)
+
+      this.assetDataVehicleID = editRowValues.vehicleID;
+      this.informationAsset = [];
+      this.assetDataDriverUsername = editRowValues.driverUsername;
+      this.assetDataCoDriverUsername = editRowValues.coDriverUsername;
+
+      // set temp fields value
+      this.tempTextFieldValues.vehicleName = editRowValues.vehicleName;
+      this.tempTextFieldValues.vehicleID = editRowValues.vehicleID;
+      // this.tempTextFieldValues.trailer = [];
+      this.tempTextFieldValues.driverName = editRowValues.driverName;
+      this.tempTextFieldValues.driverUsername = editRowValues.driverUsername;
+      this.tempTextFieldValues.coDriverName = editRowValues.coDriverName;
+      this.tempTextFieldValues.coDriverUsername = editRowValues.coDriverUsername;
+      this.tempTextFieldValues.trailerName = editRowValues.trailerName;
+
+      $("#veh_" + editRowValues.vehicleID).addClass('td_border');
+      $("#drivr_" + editRowValues.driverUsername).addClass('td_border');
+      $("#codrivr_" + editRowValues.coDriverUsername).addClass('td_border');
+
       // set selected asset values
       for (let i = 0; i < editRowValues.trailer.length; i++) {
         const element = editRowValues.trailer[i];
-        $('#informationAsset').children("option[value^=" + element.id + "]").hide();
-      }
-      this.selectedAssets = editRowValues.trailer;
+        this.informationAsset.push(element.id);
 
-      $("#driverSelect").val(editRowValues.driverUsername);
-      $("#coDriverSelect").val(editRowValues.coDriverUsername);
+        let objj = {
+          id: element.id,
+          name: element.name
+        }
+        this.tempTextFieldValues.trailer.push(objj);
+        $("#asset_" + element.id).addClass('td_border');
+      }
       $('#assetModal').modal('show');
     }
   }
+
+  // showAssetModal(type, index) {
+  //   $("#driverSelect").val('');
+  //   $("#coDriverSelect").val('');
+  //   $("#vehicleSelect").val('');
+  //   $('#driverSelect').children('option').show();
+  //   $('#coDriverSelect').children('option').show();
+  //   $('#informationAsset').children('option').show();
+  //   this.selectedAssets = [];
+
+  //   if (type === 'add') {
+  //     this.tempTextFieldValues.type = 'add';
+  //     this.tempTextFieldValues.index = '';
+  //     $('#assetModal').modal('show');
+  //   } else {
+  //     this.tempTextFieldValues.type = 'edit';
+  //     this.tempTextFieldValues.index = index;
+
+  //     let editRowValues = this.trips[index];
+  //     $("#vehicleSelect").val(editRowValues.vehicleID);
+  //     // $("#informationAsset").val();
+  //     // set selected asset values
+  //     for (let i = 0; i < editRowValues.trailer.length; i++) {
+  //       const element = editRowValues.trailer[i];
+  //       $('#informationAsset').children("option[value^=" + element.id + "]").hide();
+  //     }
+  //     this.selectedAssets = editRowValues.trailer;
+
+  //     $("#driverSelect").val(editRowValues.driverUsername);
+  //     $("#coDriverSelect").val(editRowValues.coDriverUsername);
+  //     $('#assetModal').modal('show');
+  //   }
+  // }
 
   showlocationModal(type, index: any) {
     if (type === 'add') {
@@ -441,29 +495,22 @@ export class EditTripComponent implements OnInit {
       this.tempLocation.index = '';
       $("#locationModal").modal('show');
     } else {
-      // alert('loc '+index);
       this.spinner.show();
       this.tempLocation.type = 'edit';
       this.tempLocation.index = index;
       let editRowValues = this.trips[index];
-      console.log('edit loc val');
-      console.log(editRowValues);
 
       this.getStates(editRowValues.location.countryID);
       this.getCities(editRowValues.location.stateID);
 
       // set values in modal
       $("#locationCountry").val(editRowValues.location.countryID);
-      // this.selectedLocationCountryId = editRowValues.location.countryID;
       this.selectedLocationStateId = editRowValues.location.stateID;
       this.selectedLocationCityId = editRowValues.location.cityID;
 
       $("#locationAddress1").val(editRowValues.location.address1);
       $("#locationAddress2").val(editRowValues.location.address2);
       $("#locationZipcode").val(editRowValues.location.zipcode);
-      // this.selectedLocationAddress1 = editRowValues.location.address1;
-      // this.selectedLocationAddress2 = editRowValues.location.address2;
-      // this.selectedLocationAddress3 = editRowValues.location.zipcode;
       $("#locationModal").modal('show');
       this.spinner.hide();
     }
@@ -569,26 +616,31 @@ export class EditTripComponent implements OnInit {
   fetchDrivers() {
     this.apiService.getData('drivers')
       .subscribe((result: any) => {
+        result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
         this.drivers = result.Items;
+        console.log('this.drivers');
+        console.log(this.drivers);
+        this.codrivers = result.Items;
+        // this.drivers = result.Items;
       })
   }
 
-  removeSelectedAsset(index, assetID) {
-    this.selectedAssets.splice(index, 1);
-    $('#informationAsset').children("option[value^=" + assetID + "]").show();
-    this.saveSelectedAssets();
-  }
-
-  saveSelectedAssets() {
-    this.tempTextFieldValues.trailer = [];
-    for (let i = 0; i < this.selectedAssets.length; i++) {
-      const element = this.selectedAssets[i];
-      this.tempTextFieldValues.trailer.push(element);
-    }
-    let trailerNames = this.tempTextFieldValues.trailer.map(function (v) { return v.name; });
-    trailerNames = trailerNames.join();
-    this.tempTextFieldValues.trailerName = trailerNames;
-    // console.log(this.tempTextFieldValues);
+  fetchCoDriver(driverID) {
+    this.apiService.getData('drivers')
+      .subscribe((result: any) => {
+        // this.spinner.show();
+        this.assetDataCoDriverUsername = ''; //reset the codriver selected
+        let newDrivers = [];
+        let allDrivers = result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
+        for (let i = 0; i < allDrivers.length; i++) {
+          const element = allDrivers[i];
+          if (element.driverID !== driverID) {
+            newDrivers.push(element);
+          }
+        }
+        this.codrivers = newDrivers;
+        // this.spinner.hide();
+      })
   }
 
   saveAssetModalData() {
@@ -666,6 +718,107 @@ export class EditTripComponent implements OnInit {
       });
   }
 
+  vehicleChange($event, type) {
+    if ($event === undefined) {
+      $(".vehicleClass").removeClass('td_border');
+      this.tempTextFieldValues.vehicleName = '';
+      this.tempTextFieldValues.vehicleID = '';
+      this.assetDataVehicleID = '';
+    } else {
+      if (type === 'click') {
+        this.assetDataVehicleID = $event.vehicleID;
+      }
+      this.tempTextFieldValues.vehicleName = $event.vehicleIdentification;
+      this.tempTextFieldValues.vehicleID = $event.vehicleID;
+      $(".vehicleClass").removeClass('td_border');
+      $("#veh_" + $event.vehicleID).addClass('td_border');
+    }
+  }
+
+  async driverChange($event, type, eventType) {
+    if ($event === undefined) {
+      if (type === 'driver') {
+        $(".driverClass").removeClass('td_border');
+        this.tempTextFieldValues.driverName = '';
+        this.tempTextFieldValues.driverUsername = '';
+        this.assetDataDriverUsername = '';
+      } else {
+        $(".codriverClass").removeClass('td_border');
+        this.tempTextFieldValues.coDriverName = '';
+        this.tempTextFieldValues.coDriverUsername = '';
+        this.assetDataCoDriverUsername = '';
+      }
+    } else {
+      if (type === 'driver') {
+        // alert('here')
+        await this.spinner.show();
+        this.assetDataCoDriverUsername = ''; //reset the codriver selected
+        await this.fetchCoDriver($event.driverID);
+        this.tempTextFieldValues.driverName = $event.fullName;
+        this.tempTextFieldValues.driverUsername = $event.userName;
+        this.assetDataCoDriverUsername = '';
+        if (eventType === 'click') {
+          this.assetDataDriverUsername = $event.userName;
+        }
+        $(".driverClass").removeClass('td_border');
+        $("#drivr_" + $event.userName).addClass('td_border');
+
+        await this.spinner.hide();
+
+      } else if (type === 'codriver') {
+        this.tempTextFieldValues.coDriverName = $event.fullName;
+        this.tempTextFieldValues.coDriverUsername = $event.userName;
+        if (eventType === 'click') {
+          this.assetDataCoDriverUsername = $event.userName;
+        }
+        $(".codriverClass").removeClass('td_border');
+        $("#codrivr_" + $event.userName).addClass('td_border');
+      }
+    }
+  }
+
+  assetsChange($event, type) {
+    if ($event === undefined) {
+      $(".assetClass").removeClass('td_border');
+    } else {
+      if (type === 'change') {
+        console.log('asset change $event');
+        this.tempTextFieldValues.trailer = [];
+        console.log(this.informationAsset);
+
+        $(".assetClass").removeClass('td_border');
+        let arayy = [];
+        for (let i = 0; i < $event.length; i++) {
+          const element = $event[i];
+
+          $("#asset_" + element.assetID).addClass('td_border');
+          arayy.push(element.assetID);
+          let objj = {
+            id: element.assetID,
+            name: element.assetIdentification
+          }
+          this.tempTextFieldValues.trailer.push(objj);
+        }
+      } else {
+        let arayy = [];
+        $("#asset_" + $event.assetID).addClass('td_border');
+        let objj = {
+          id: $event.assetID,
+          name: $event.assetIdentification
+        }
+        this.tempTextFieldValues.trailer.push(objj);
+        for (let i = 0; i < this.tempTextFieldValues.trailer.length; i++) {
+          const element = this.tempTextFieldValues.trailer[i];
+          arayy.push(element.id);
+        }
+        this.informationAsset = arayy;
+      }
+      let trailerNames = this.tempTextFieldValues.trailer.map(function (v) { return v.name; });
+      trailerNames = trailerNames.join();
+      this.tempTextFieldValues.trailerName = trailerNames;
+    }
+  }
+
   saveLocation() {
     this.tempLocation.countryID = $("#locationCountry option:selected").val();
     this.tempLocation.countryName = $("#locationCountry option:selected").text();
@@ -741,11 +894,24 @@ export class EditTripComponent implements OnInit {
       return false;
     }
 
+    if (planData.length < 2) {
+        this.toastr.error('Please add atleast two trip plans');
+        return false;
+    }
+
+    if (planData.length >= 2) {
+      let addedPlan = planData.map(function(v){ return v.type; });
+
+      if(addedPlan.includes('Pickup') !== true || addedPlan.includes('Delivery') !== true){
+          this.toastr.error('Pickup and delivery points are required');
+          return false;
+      } 
+    }
     for (let i = 0; i < planData.length; i++) {
 
       let obj = {
         type: '',
-        dateTime: '',
+        date: '',
         name: '',
         location: {},
         mileType: '',
@@ -754,12 +920,17 @@ export class EditTripComponent implements OnInit {
         assetID: [],
         driverUsername: '',
         codriverUsername: '',
-        carrierID: ''
+        carrierID: '',
+        time: '',
+        pickupTime: '',
+        dropTime: '',
+        actualPickupTime: '',
+        actualDropTime: ''
       };
       const element = planData[i];
 
       obj.type = element.type;
-      obj.dateTime = element.date;
+      obj.date = element.date;
       obj.name = element.name;
       obj.location = {
         countryID: element.location.countryID,
@@ -772,6 +943,12 @@ export class EditTripComponent implements OnInit {
         obj.mileType = element.mileType;
       obj.miles = element.miles;
       obj.vehicleID = element.vehicleID;
+
+      obj.time = element.time;
+      obj.pickupTime = element.pickupTime;
+      obj.dropTime = element.dropTime;
+      obj.actualPickupTime = element.actualPickupTime;
+      obj.actualDropTime = element.actualDropTime;
 
       for (let j = 0; j < element.trailer.length; j++) {
         const element1 = element.trailer[j];
@@ -844,9 +1021,6 @@ export class EditTripComponent implements OnInit {
         this.tripData.reeferTemperatureUnit = tempUnit;
 
         let tripPlanning = this.tripData.tripPlanning;
-        // console.log('tripPlanning');
-        // console.log(tripPlanning)
-
         if (result.orderId.length > 0) {
           // show order ids in trip plan dropdown
           for (let m = 0; m < result.orderId.length; m++) {
@@ -858,15 +1032,19 @@ export class EditTripComponent implements OnInit {
         // checkbox checked of ftl orders
         for (let m = 0; m < this.ftlOrders.length; m++) {
           const element = this.ftlOrders[m];
-          if(result.orderId.indexOf(element.orderId) !==1){
+          if (result.orderId.indexOf(element.orderNumber) !== -1) {
             this.ftlOrders[m].selected = true;
+          } else{
+            this.ftlOrders[m].selected = false;
           }
         }
 
         for (let m = 0; m < this.ltlOrders.length; m++) {
           const element = this.ltlOrders[m];
-          if(result.orderId.indexOf(element.orderId) !==1){
+          if (result.orderId.indexOf(element.orderNumber) !== -1) {
             this.ltlOrders[m].selected = true;
+          } else{
+            this.ltlOrders[m].selected = false;
           }
         }
 
@@ -881,6 +1059,11 @@ export class EditTripComponent implements OnInit {
             coDriverName: "",
             coDriverUsername: element.codriverUsername,
             date: element.date,
+            time: element.time,
+            pickupTime: element.pickupTime,
+            dropTime: element.dropTime,
+            actualPickupTime: element.actualPickupTime,
+            actualDropTime: element.actualDropTime,
             driverName: "",
             driverUsername: element.driverUsername,
             location: {

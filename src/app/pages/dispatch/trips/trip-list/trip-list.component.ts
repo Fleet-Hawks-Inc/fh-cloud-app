@@ -191,8 +191,11 @@ export class TripListComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
 
-    this.tripData.tripID = tripId;
-    this.tripData.tripStatus = this.tripStatus;
+    if(this.tripStatus === '') {
+      this.toastr.error('Please select trip status');
+      this.spinner.hide();
+      return false;
+    }
 
     this.apiService.getData('trips/update-status/'+this.tripID+'/'+this.tripStatus).subscribe({
       complete: () => {

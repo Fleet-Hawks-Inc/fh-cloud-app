@@ -40,6 +40,9 @@ import { AddTripComponent } from './trips/add-trip/add-trip.component';
 import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
 import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
 
+import { CalendarViewComponent } from './planner/calendar-view/calendar-view.component';
+import { MapViewComponent } from './planner/map-view/map-view.component';
+
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
 
@@ -128,6 +131,13 @@ const routes: Routes = [
       { path: 'trip-details/:tripID', component: TripDetailComponent},
       { path: 'edit-trip/:tripID', component: EditTripComponent},
 
+    ]
+  },
+  {
+    path: "planner",
+    children: [
+      { path: 'calendar-view', component: CalendarViewComponent},
+      { path: 'map-view', component: MapViewComponent},
     ]
   },
 ];
