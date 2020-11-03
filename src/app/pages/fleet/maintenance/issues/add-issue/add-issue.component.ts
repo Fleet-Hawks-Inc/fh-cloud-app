@@ -20,7 +20,7 @@ export class AddIssueComponent implements OnInit {
   imageError = '';
   fileName = '';
   public issueID;
-  form;
+  myform;
   /**
    * Issue Prop
    */
@@ -75,7 +75,7 @@ export class AddIssueComponent implements OnInit {
       this.title = 'Add Issue';
     }
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      this.myform = $('#issueForm').validate();
     });
   }
   cancel() {
@@ -124,27 +124,19 @@ export class AddIssueComponent implements OnInit {
     this.apiService.postData('issues/', data).
   subscribe({
     complete : () => {},
-    error: (err) => {
+      error : (err: any) => {
       from(err.error)
-        .pipe(
-          map((val: any) => {
-            const path = val.path;
-            // We Can Use This Method
-            const key = val.message.match(/"([^']+)"/)[1];
-            console.log(key);
-            val.message = val.message.replace(/".*"/, 'This Field');
-            this.errors[key] = val.message;
-          })
-        )
-        .subscribe({
-          complete: () => {
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            }),
+          )
+          .subscribe((val) => {
             this.throwErrors();
-            this.Success = '';
-          },
-          error: () => { },
-          next: () => { },
-        });
-    },
+          });
+
+      },
     next: (res) => {
       this.response = res;
       this.uploadFiles(); // upload selected files to bucket
@@ -154,7 +146,9 @@ export class AddIssueComponent implements OnInit {
   });
 }
 throwErrors() {
-  this.form.showErrors(this.errors);
+   // console.log(this.myform);
+    console.log(this.errors);
+    this.myform.showErrors(this.errors);
 }
  /*
    * Selecting files before uploading
@@ -238,27 +232,19 @@ throwErrors() {
   this.apiService.putData('issues/', data).
 subscribe({
   complete : () => {},
-  error: (err) => {
-    from(err.error)
-      .pipe(
-        map((val: any) => {
-          const path = val.path;
-          // We Can Use This Method
-          const key = val.message.match(/"([^']+)"/)[1];
-          console.log(key);
-          val.message = val.message.replace(/".*"/, 'This Field');
-          this.errors[key] = val.message;
-        })
-      )
-      .subscribe({
-        complete: () => {
+    error : (err: any) => {
+      from(err.error)
+        .pipe(
+          map((val: any) => {
+            val.message = val.message.replace(/".*"/, 'This Field');
+            this.errors[val.context.key] = val.message;
+          }),
+        )
+        .subscribe((val) => {
           this.throwErrors();
-          this.Success = '';
-        },
-        error: () => { },
-        next: () => { },
-      });
-  },
+        });
+
+    },
   next: (res) => {
     this.response = res;
     this.uploadFiles(); // upload selected files to bucket
