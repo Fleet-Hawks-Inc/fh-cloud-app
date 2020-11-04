@@ -34,7 +34,7 @@ export class AddTripComponent implements OnInit {
         orderId: {},
         tripPlanning: [],
         notifications: {},
-        tripStatus: ''
+        tripStatus: 'pending'
     };
     ltlOrders = [
         {
@@ -248,8 +248,8 @@ export class AddTripComponent implements OnInit {
     }
 
     addRow() {
-        if (this.textFieldValues.type != '' && this.textFieldValues.date != '' && this.textFieldValues.name != ''
-            && this.textFieldValues.mileType != '' && this.textFieldValues.miles != '' && this.textFieldValues.locationName != '') {
+        if (this.textFieldValues.type !== '' && this.textFieldValues.date !== '' && this.textFieldValues.name !== ''
+            && this.textFieldValues.mileType !== '' && this.textFieldValues.miles !== '' && this.textFieldValues.locationName !== '') {
 
             this.textFieldValues.time = $("#cell12").val();
             this.textFieldValues.pickupTime = $("#cell13").val();
@@ -258,9 +258,34 @@ export class AddTripComponent implements OnInit {
             this.textFieldValues.actualDropTime = $("#cell16").val();
 
             this.trips.push(this.textFieldValues);
-            console.log('this.trips');
-            console.log(this.trips)
-            this.textFieldValues = {};
+            // console.log('this.trips');
+            // console.log(this.trips)
+            // this.textFieldValues = {};
+
+            this.textFieldValues = {
+                type: '',
+                date: '',
+                time: '',
+                pickupTime: '',
+                dropTime: '',
+                actualPickupTime: '',
+                actualDropTime: '',
+                name: '',
+                location: {},
+                mileType: '',
+                miles: '',
+                vehicleName: '',
+                vehicleID: '',
+                driverName: '',
+                driverUsername: '',
+                coDriverName: '',
+                coDriverUsername: '',
+                carrierName: '',
+                carrierID: '',
+                trailer: {},
+                trailerName: ''
+            };
+
             $('.newRow').val('');
 
             // empty the values of asset modal and temp_text_fields after adding
@@ -282,6 +307,17 @@ export class AddTripComponent implements OnInit {
 
     delRow(index) {
         this.trips.splice(index, 1);
+        if(this.trips.length > 0){
+            let dataCheck = this.trips.map(function(v){ return v.vehicleID; });
+
+            if(dataCheck.length > 0){
+                this.tripData.tripStatus = 'planned';
+            } else{
+                this.tripData.tripStatus = 'pending';
+            }
+        } else {
+            this.tripData.tripStatus = 'pending';
+        }
     }
 
     emptyAssetModalFields(){
@@ -591,6 +627,13 @@ export class AddTripComponent implements OnInit {
     }
 
     saveAssetModalData() {
+        if(this.tempTextFieldValues.coDriverUsername === '' || this.tempTextFieldValues.driverUsername === '' || 
+        this.tempTextFieldValues.vehicleID === '' || this.tempTextFieldValues.trailer.length === 0) {
+
+            this.toastr.error('Please select all the assignment values');
+            return false;
+        }
+
         if (this.tempTextFieldValues.type === 'add') {
             this.textFieldValues.vehicleName = this.tempTextFieldValues.vehicleName;
             this.textFieldValues.vehicleID = this.tempTextFieldValues.vehicleID;
@@ -600,6 +643,8 @@ export class AddTripComponent implements OnInit {
             this.textFieldValues.coDriverName = this.tempTextFieldValues.coDriverName;
             this.textFieldValues.coDriverUsername = this.tempTextFieldValues.coDriverUsername;
             this.textFieldValues.trailerName = this.tempTextFieldValues.trailerName;
+
+            this.tripData.tripStatus = 'planned';
             $('#assetModal').modal('hide');
         } else if (this.tempTextFieldValues.type === 'edit') {
             let index = this.tempTextFieldValues.index;
@@ -612,6 +657,7 @@ export class AddTripComponent implements OnInit {
             this.trips[index].coDriverName = this.tempTextFieldValues.coDriverName;
             this.trips[index].coDriverUsername = this.tempTextFieldValues.coDriverUsername;
             this.trips[index].trailerName = this.tempTextFieldValues.trailerName;
+            this.tripData.tripStatus = 'planned';
 
             this.emptyAssetModalFields();
             $('#assetModal').modal('hide');
@@ -779,6 +825,13 @@ export class AddTripComponent implements OnInit {
         this.tempLocation.address2 = $("#locationAddress2").val();
         this.tempLocation.zipcode = $("#locationZipcode").val();
 
+        if(this.tempLocation.countryID === '' || this.tempLocation.stateID === '' || this.tempLocation.cityID === '' 
+            || this.tempLocation.address1 === '' || this.tempLocation.zipcode === ''){
+
+            this.toastr.error('All fields are required to add location');
+            return false;
+        }
+
         let locationName = this.tempLocation.address1 + ', ';
         if (this.tempLocation.address2 != '' && this.tempLocation.address2 != undefined) {
             locationName += this.tempLocation.address2 + ', ';
@@ -821,8 +874,8 @@ export class AddTripComponent implements OnInit {
     }
 
     createTrip() {
-        // console.log('start tripData');
-        // console.log(this.tripData);
+        console.log('start tripData');
+        console.log(this.tripData);
         if (this.tripData.reeferTemperature != '') {
             this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
         } else {
@@ -873,12 +926,6 @@ export class AddTripComponent implements OnInit {
                     actualDropTime: ''
                 };
                 const element = planData[i];
-
-                // if(element.vehicleID !== undefined || element.driverUsername !== undefined || element.coDriverUsername != undefined){
-                //     if(element.vehicleID !== '' || element.driverUsername !== '' || element.coDriverUsername != ''){
-                //         this.tripData.tripStatus = 'planned';
-                //     }
-                // }
 
                 obj.type = element.type;
                 obj.date = element.date;

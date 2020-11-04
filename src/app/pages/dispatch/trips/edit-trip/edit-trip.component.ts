@@ -36,7 +36,6 @@ export class EditTripComponent implements OnInit {
     orderId: {},
     tripPlanning: [],
     notifications: {},
-    tripStatus: ''
   };
   ltlOrders = [
     {
@@ -269,10 +268,8 @@ export class EditTripComponent implements OnInit {
   }
 
   addRow() {
-    if (this.textFieldValues.type != '' && this.textFieldValues.date != '' && this.textFieldValues.name != ''
-      && this.textFieldValues.mileType != '' && this.textFieldValues.miles != '' && this.textFieldValues.vehicleName != ''
-      && this.textFieldValues.driverName != '' && this.textFieldValues.carrierName != '' && this.textFieldValues.trailerName != ''
-      && this.textFieldValues.locationName != '') {
+    if (this.textFieldValues.type !== '' && this.textFieldValues.date !== '' && this.textFieldValues.name !== ''
+            && this.textFieldValues.mileType !== '' && this.textFieldValues.miles !== '' && this.textFieldValues.locationName !== '') {
 
       this.textFieldValues.time = $("#cell12").val();
       this.textFieldValues.pickupTime = $("#cell13").val();
@@ -281,7 +278,31 @@ export class EditTripComponent implements OnInit {
       this.textFieldValues.actualDropTime = $("#cell16").val();
 
       this.trips.push(this.textFieldValues);
-      this.textFieldValues = {};
+      // this.textFieldValues = {};
+
+      this.textFieldValues = {
+          type: '',
+          date: '',
+          time: '',
+          pickupTime: '',
+          dropTime: '',
+          actualPickupTime: '',
+          actualDropTime: '',
+          name: '',
+          location: {},
+          mileType: '',
+          miles: '',
+          vehicleName: '',
+          vehicleID: '',
+          driverName: '',
+          driverUsername: '',
+          coDriverName: '',
+          coDriverUsername: '',
+          carrierName: '',
+          carrierID: '',
+          trailer: {},
+          trailerName: ''
+      };
       $('.newRow').val('');
 
       // empty the values of asset modal and temp_text_fields after adding
@@ -644,6 +665,12 @@ export class EditTripComponent implements OnInit {
   }
 
   saveAssetModalData() {
+    if(this.tempTextFieldValues.coDriverUsername === '' || this.tempTextFieldValues.driverUsername === '' || 
+      this.tempTextFieldValues.vehicleID === '' || this.tempTextFieldValues.trailer.length === 0) {
+
+          this.toastr.error('Please select all the assignment values');
+          return false;
+      }
     if (this.tempTextFieldValues.type === 'add') {
       this.textFieldValues.vehicleName = this.tempTextFieldValues.vehicleName;
       this.textFieldValues.vehicleID = this.tempTextFieldValues.vehicleID;
