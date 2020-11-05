@@ -65,7 +65,8 @@
               "src/assets/js/examples/examples.dashboard.js",
               "node_modules/chart.js/dist/Chart.bundle.min.js",
               "node_modules/slick-carousel/slick/slick.min.js",
-              "src/assets/js/jquery.validate.min.js"
+              "src/assets/js/jquery.validate.min.js",
+              "node_modules/select2/dist/js/select2.min.js"
             ]
           },
           "configurations": {
