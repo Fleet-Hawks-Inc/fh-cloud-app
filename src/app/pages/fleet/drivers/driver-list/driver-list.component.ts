@@ -43,7 +43,7 @@ export class DriverListComponent implements OnInit {
       next: (result: any) => {
         console.log(result);
         this.drivers = result.Items;
-        console.log('drivers',this.drivers)
+        console.log('drivers', this.drivers);
         this.spinner.hide(); // loader hide
       },
     });

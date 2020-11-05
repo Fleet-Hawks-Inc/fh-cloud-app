@@ -66,18 +66,18 @@ import { RouteListComponent } from './permanent-routing/route-list/route-list.co
 import { AddRouteComponent } from './permanent-routing/add-route/add-route.component';
 import { EditRouteComponent } from './permanent-routing/edit-route/edit-route.component';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { NgSelectConfig } from '@ng-select/ng-select';
+import { ɵs } from '@ng-select/ng-select';
 import { DataTablesModule } from 'angular-datatables'
 import {Injectable} from '@angular/core';
-import { ɵs } from '@ng-select/ng-select';
 import { NewDocumentsComponent } from './new-documents/new-documents.component';
 import { MyDocumentListComponent } from './new-documents/my-documents/my-document-list.component';
 import { OrdersListComponent } from './orders/orders-list/orders-list.component';
 import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
-
-
-
+import { EManifestsComponent } from './cross-border/e-manifests/e-manifests.component';
+import { HttpClientModule } from '@angular/common/http';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -88,7 +88,7 @@ export class CustomAdapter extends NgbDateAdapter<string> {
 
   fromModel(value: string | null): NgbDateStruct | null {
     if (value) {
-      let date = value.split(this.DELIMITER);
+      const date = value.split(this.DELIMITER);
       return {
         day : parseInt(date[0], 10),
         month : parseInt(date[1], 10),
@@ -99,7 +99,7 @@ export class CustomAdapter extends NgbDateAdapter<string> {
   }
 
   toModel(date: NgbDateStruct | null): string | null {
-    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : null;
+    return date ? date.year + this.DELIMITER + date.month + this.DELIMITER + date.day : null;
   }
 }
 
@@ -113,7 +113,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
   parse(value: string): NgbDateStruct | null {
     if (value) {
-      let date = value.split(this.DELIMITER);
+      const date = value.split(this.DELIMITER);
       return {
         day : parseInt(date[0], 10),
         month : parseInt(date[1], 10),
@@ -137,7 +137,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    DataTablesModule
+    DataTablesModule,
+    NgSelectModule,
+    HttpClientModule
   ],
 
   declarations: [
@@ -197,7 +199,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AddDispatchComponent,
 
 
-
+    EManifestsComponent,
     AciEmanifestComponent,
     NewAciManifestComponent,
     AciShipmentComponent,
@@ -219,8 +221,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     OrdersListComponent,
     AddOrdersComponent,
     OrderDetailComponent,
-    
-
   ],
 
   providers: [NgSelectConfig, ɵs,

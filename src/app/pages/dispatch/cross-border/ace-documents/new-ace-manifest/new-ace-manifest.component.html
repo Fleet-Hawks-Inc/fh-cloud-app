@@ -11,160 +11,976 @@
         <app-sidebar></app-sidebar>
         <!-- end: sidebar -->
         <section role="main" class="content-body">
-            <header class="page-header">
-               <h2>ACE Manifest</h2>
-               <div class="right-wrapper text-right">
-                  <ol class="breadcrumbs pr-3">
-                     <li>
-                        <a href="index.html">
-                        <i class="fas fa-home"></i>
-                        </a>
-                     </li>
-                     <li><span>ACE eManifest</span></li>
-                  </ol>
-               </div>
-            </header>
-            <div class="row">
-               <div class="col">
-                  <section class="card">
-                     <header class="card-header">
-                        <h2 class="card-title">ACE eManifest</h2>
-                     </header>
-                     <div class="card-body">
-                        <form class="form-horizontal form-bordered" method="get">
-                           <div class="form-group row">
-                             <div class="col-lg-12">
-                                 <label class="control-label text-lg-right text-dark text-4 text-underline pt-2">eManifest Details</label>
-                              </div>
-                               <div class="col-lg-5 offset-lg-1">
-                                 <div class="form-group row">
-                                     <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2" for="inputDefault">Trip Number</label>
-                                         <div class="row">
-                                             <div class="col-lg-3">
-                                                 <select data-plugin-selectTwo class="form-control populate">
-                                                     <optgroup label="Select Business Type">
-                                                        <option value="1">111</option>
-                                                        <option value="2">112</option>
-                                                        <option value="2">333</option>
-                                                        <option value="2">456</option>
-                                                     </optgroup>
-                                                  </select>
-                                             </div>
-                                             <div class="col-lg-9">
-                                                 <input type="text" class="form-control" id="inputDefault">
-                                             </div>
-                                         </div>                                            
-                                     </div>
-                                     <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2" for="inputDefault">US Port of Arrival</label>
-                                         <input type="text" class="form-control" id="inputDefault">
-                                      </div>
-                                      <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2" for="inputDefault">Estimated Arrival Date</label>
-                                         <input type="text" data-plugin-datepicker="" class="form-control" placeholder="Select Date">
-                                      </div>
-                                      <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2" for="inputDefault">Estimated Arrival Time</label>
-                                         <select data-plugin-selectTwo class="form-control populate">
-                                             <optgroup label="Select Business Type">
-                                                <option value="1">1:00 AM</option>
-                                                <option value="2">2:00 AM</option>
-                                                <option value="2">3:00 AM</option>
-                                                <option value="2"></option>
-                                             </optgroup>
-                                          </select>
-                                      </div>
-                                      <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2" for="inputDefault">Assign Truck</label>
-                                         <select data-plugin-selectTwo class="form-control populate">
-                                             <optgroup label="Select Business Type">
-                                                <option value="1">1:00 AM</option>
-                                                <option value="2">2:00 AM</option>
-                                                <option value="2">3:00 AM</option>
-                                                <option value="2"></option>
-                                             </optgroup>
-                                          </select>
-                                      </div>
-                                      <div class="col-lg-2  mar-top-37">
-                                         <a href="add-vehicle.html" class="btn btn-dark">Add</a>
-                                      </div>
-                                      <div class="col-lg-5">
-                                       <label class="control-label text-lg-right pt-2" onclick="show_truck_seal_input()">Add Seal</label>
-                                       <input type="text" class="form-control" id="truck_seal_input" style="display: none;">
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <label class="control-label text-lg-right pt-2" onclick="show_truck_IIT_input()">Add IIT or Exemption</label>
-                                       <input type="text" class="form-control" id="truck_IIT_input" style="display: none;">
-                                    </div>
-                                      <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2" for="inputDefault">Assign Trailer</label>
-                                         <select data-plugin-selectTwo class="form-control populate">
-                                             <optgroup label="Select Business Type">
-                                                <option value="1">1:00 AM</option>
-                                                <option value="2">2:00 AM</option>
-                                                <option value="2">3:00 AM</option>
-                                                <option value="2"></option>
-                                             </optgroup>
-                                          </select>
-                                          
-                                      </div>
-                                      <div class="col-lg-2 mar-top-37">
-                                         <a href="add-trailer.html" class="btn btn-dark">Add</a>
-                                      </div>
-                                      <div class="col-lg-5">
-                                       <label class="control-label text-lg-right pt-2" onclick="show_trailer_seal_input()">Add Seal</label>
-                                       <input type="text" class="form-control" id="trailer_seal_input" style="display: none;">
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <label class="control-label text-lg-right pt-2" onclick="show_trailer_IIT_input()">Add IIT or Exemption</label>
-                                       <input type="text" class="form-control" id="trailer_IIT_input" style="display: none;">
-                                    </div>
-                                      <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2"  for="inputDefault">Assign Driver</label>
-                                         <select data-plugin-selectTwo class="form-control populate">
-                                             <optgroup label="Select Business Type">
-                                                <option value="1">1:00 AM</option>
-                                                <option value="2">2:00 AM</option>
-                                                <option value="2">3:00 AM</option>
-                                                <option value="2"></option>
-                                             </optgroup>
-                                          </select>
-                                      </div>
-                                      <div class="col-lg-2  mar-top-37">
-                                         <a href="add-new-driver.html" class="btn btn-dark">Add</a>
-                                      </div>
-                                      <div class="col-lg-5">
-                                       <label class="control-label text-lg-right pt-2" onclick="show_team_driver_input()">Add Team Driver</label>
-                                       <input type="text" class="form-control" id="team_driver_input" style="display: none;">
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <label class="control-label text-lg-right pt-2" onclick="show_passenger_input()">Add Passenger</label>
-                                       <input type="text" class="form-control" id="passenger_input" style="display: none;">
-                                    </div>
-                                 </div>
-                               </div>
-                               <div class="col-lg-5 offset-lg-1">
-                                 <div class="form-group row">
-
-                                 </div>
-                               </div>
-                           </div>                         
-
-
-
-                           <div class="form-group row">
-                              <div class="col-lg-11">
-                                 <!-- <a href="" class="btn btn-dark mt-4 pull-right m-4">Save</a> -->
-                                 <a  routerLink="/dispatch/cross-border/ACE-shipment" class="btn btn-dark mt-4 pull-right m-4">Save & Start New ACE Shipment</a>
-                              </div>
+         <header class="page-header pr-5">
+         <div class="row " style="padding-top:10px;">
+           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Create ACE Manifest </div>
+           <div class="col-md-8  col-lg-8 text-right pr-4"> <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default btn-sm"><i class="fas fa-list"></i> ACE Manifests</a> </div>
+         </div>
+         </header>
+         <div class="row text-dark">
+             <div class="col">
+                <section class="card">
+                   <div class="card-body">
+                      <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
+                         <div class="form-group row">
+                           <div class="col-lg-12">
+                             <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Start new ACE eManifest</label>
                            </div>
-                        </form>
-                     </div>
-                  </section>
-               </div>
-            </div>
-         </section>
+                           <div class="col-lg-5 offset-lg-1">
+                               <div class="form-group row">
+                               <div class="col-lg-3 pr-0">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Trip Number</label>
+                                       <ng-select>
+                                      
+                                           <ng-option>SAVL</ng-option>
+                                           <ng-option>SXTF</ng-option>
+                                           <ng-option>THXL</ng-option>
+                                           <ng-option>MLCM</ng-option>
+                                           <ng-option>BYTM</ng-option>
+                                           <ng-option>SWRR</ng-option>
+                                           <ng-option>CAYR</ng-option>
+                                           <ng-option>HYLD</ng-option>
+                                           <ng-option>OHNI</ng-option>
+                                           <ng-option>GKLG</ng-option>
+                                           <ng-option>BSOK</ng-option>
+                                           <ng-option>NJTP</ng-option>
+                                           <ng-option>NEET</ng-option>
+                                           <ng-option>BSKL</ng-option>
+                                           <ng-option>EFRL</ng-option>
+                                           <ng-option>ZZZZ</ng-option>
+                                           <ng-option>SBEF</ng-option>
+                                           <ng-option>JBXA</ng-option>
+                                           <ng-option>SRCH</ng-option>
+                                           <ng-option>JYED</ng-option>
+                                           <ng-option>CACH</ng-option>
+                                           <ng-option>SXCD</ng-option>
+                                           <ng-option>19EF</ng-option>
+                                           <ng-option>AFHT</ng-option>
+                                       
+                                       </ng-select>
+                                    </div>
+                                   <div class="col-lg-7 pl-0">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
+                                       <ng-select >                                      
+                                          <ng-option *ngFor = "let trip of trips" [value]="trip.tripNo">{{trip.tripNo}}</ng-option>                                      
+                                      </ng-select>                                           
+                                   </div>
+                                   <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">US Port of Arrival</label>
+                                       <ng-select >                                      
+                                          <ng-option *ngFor = "let port of USports" [value]="port.code">Code: {{port.code}}, Location: {{port.portOfEntry}}</ng-option>                                      
+                                      </ng-select> 
+                                       <!-- <select data-plugin-selectTwo class="form-control populate"  style="padding:1px;" >
+                                         <optgroup label="">
+                                         <option value=""><span>Code:</span>3004 &nbsp;Location: Blaine,WA &nbsp; Opposite Port: 0813:Pacific Highway,BC</option>
+                                           <option value=""><span>Code:</span>3019 &nbsp;Location: Oroville,WA &nbsp; Opposite Port: 0819:Osoyoos,BC</option>
+                                           <option value=""><span>Code:</span>3009 &nbsp;Location: Sumas,WA &nbsp; Opposite Port: 0817:Abbotsford-Huntingdon,BC</option>
+
+                                           <option value=""><span>Code:</span>3012 &nbsp;Location: Danville,WA &nbsp; Opposite Port: 0834:Carson,BC</option>
+                                           <option value=""><span>Code:</span>3016 &nbsp;Location: Laurier,WA &nbsp; Opposite Port: 0816:Cascade,BC</option>
+                                           <option value=""><span>Code:</span>3020 &nbsp;Location: Frontier,WA &nbsp; Opposite Port: 0832:Paterson,BC</option>
+                                           <option value=""><span>Code:</span>3023 &nbsp;Location: Lynden,WA &nbsp; Opposite Port: 0841:Aldergrove,BC</option>
+                                           <option value=""><span>Code:</span>3103 &nbsp;Location: Skagway,AK &nbsp; Opposite Port: 0893:Fraser,YT</option>
+                                           <option value=""><span>Code:</span>3104 &nbsp;Location: Alcan,AK &nbsp; Opposite Port: 0892:Beaver Creek,YT</option>
+                                           <option value=""><span>Code:</span>3106 &nbsp;Location: Dalton Cache,AK &nbsp; Opposite Port: 0891:Pleasant Camp,YT</option>
+
+                                           <option value=""><span>Code:</span>3301 &nbsp;Location: Raymond, MT &nbsp; Opposite Port: 0607:Regway, SK</option>
+
+                                           <option value=""><span>Code:</span>3302 &nbsp;Location: EastPort,ID &nbsp; Opposite Port: 0818:Kingsgate, BC</option>
+                                           <option value=""><span>Code:</span>3306 &nbsp;Location: Turner, MT &nbsp; Opposite Port: 0619:Climax, SK</option>
+                                           <option value=""><span>Code:</span>3309 &nbsp;Location: Scobey, MT &nbsp; Opposite Port: 0615:Coronach, SK</option>
+
+                                           <option value=""><span>Code:</span>3308 &nbsp;Location: Porthill, ID &nbsp; Opposite Port: 0822:Rykerts, BC</option>
+                                           <option value=""><span>Code:</span>3310 &nbsp;Location: Sweetgrasss, MT &nbsp; Opposite Port: 0705:Coutts, AB</option>
+                                           <option value=""><span>Code:</span>3319 &nbsp;Location: Morgan, MT &nbsp; Opposite Port: 0620:Monchy, SK</option>
+
+                                           <option value=""><span>Code:</span>3322 &nbsp;Location: Del Bonita,MT &nbsp; Opposite Port: 0708:Del Bonita, AB</option>
+                                           <option value=""><span>Code:</span>3325 &nbsp;Location: Willow Creek, MT &nbsp; Opposite Port: 0621:Willow Creek, SK</option>
+
+                                           <option value=""><span>Code:</span>3316 &nbsp;Location: Piegan, MT &nbsp; Opposite Port: 0707:Carway, AB</option>
+                                           <option value=""><span>Code:</span>3317 &nbsp;Location: Opheim, MT &nbsp; Opposite Port: 0618:West Popular River, SK</option>
+
+                                           <option value=""><span>Code:</span>3318 &nbsp;Location: Roosville,MT &nbsp; Opposite Port: 0824:Roosville, BC</option>
+                                           <option value=""><span>Code:</span>3321 &nbsp;Location: Whitlash, MT &nbsp; Opposite Port: 0706:Aden, AB</option>
+                                           <option value=""><span>Code:</span>3323 &nbsp;Location: Wild Horse, MT &nbsp; Opposite Port: 0711:Wild Horse, AB</option>
+
+                                           <option value=""><span>Code:</span>3422 &nbsp;Location: Dunseith, ND &nbsp; Opposite Port: 0507:Boissevain, MB</option>
+                                           <option value=""><span>Code:</span>3401 &nbsp;Location: Pembina, ND &nbsp; Opposite Port: 0502:Emerson, MB</option>
+                                           <option value=""><span>Code:</span>3403 &nbsp;Location: Portal, ND &nbsp; Opposite Port: 0602:North Portal, SK</option>
+                                           <option value=""><span>Code:</span>3404 &nbsp;Location: Neche, ND &nbsp; Opposite Port: 0503:Gretna, MB</option>
+                                           <option value=""><span>Code:</span>3405 &nbsp;Location: St.John, ND &nbsp; Opposite Port: 0522:Lena, MB</option>
+
+                                           <option value=""><span>Code:</span>3406 &nbsp;Location: Northgate, ND &nbsp; Opposite Port: 0613:Northgate, SK</option>
+                                           <option value=""><span>Code:</span>3407 &nbsp;Location: Walhalla, ND &nbsp; Opposite Port: 0518:Winkler, MB</option>
+                                           <option value=""><span>Code:</span>3409 &nbsp;Location: Sarles, ND &nbsp; Opposite Port: 0520:Crystal City, MB</option>
+
+                                           <option value=""><span>Code:</span>3410 &nbsp;Location: Ambrose, ND &nbsp; Opposite Port: 0617:Torquay, SK</option>
+                                           <option value=""><span>Code:</span>3413 &nbsp;Location: Antler, ND &nbsp; Opposite Port: 0523:Lyleton, MB</option>
+
+                                           <option value=""><span>Code:</span>3414 &nbsp;Location: Sherwood, ND &nbsp; Opposite Port: 0612:Carievale, SK</option>
+                                           <option value=""><span>Code:</span>3415 &nbsp;Location: Hansboro, ND &nbsp; Opposite Port: 0521:Cartwright, MB</option>
+                                           <option value=""><span>Code:</span>3416 &nbsp;Location: Maida, ND &nbsp; Opposite Port: 0519:Windygates, MB</option>
+
+                                           <option value=""><span>Code:</span>3417 &nbsp;Location: Fortuna, ND &nbsp; Opposite Port: 0616:Oungre, SK</option>
+                                         <option value=""><span>Code:</span>1401 &nbsp;Location: Norfolk, VA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1402 &nbsp;Location: Newport News, VA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1404 &nbsp;Location: Richmond-Petersburg, VA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1406 &nbsp;Location: Cape Charles, VA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1409 &nbsp;Location: Charleston, WV &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1410 &nbsp;Location: Front Royal, VA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1412 &nbsp;Location: New River Valley Airport, VA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1481 &nbsp;Location: New River Valley Airport &nbsp; Opposite Port:</option>
+
+
+                                         <option value=""><span>Code:</span>1501 &nbsp;Location: Wilmington, NC &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1502 &nbsp;Location: Winston-Salem, NC &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1503 &nbsp;Location: Winston-Salem, NC &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1511 &nbsp;Location: Morehead City, NC &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1512 &nbsp;Location: Charlotte, NC &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>1601 &nbsp;Location: Charleston, SC &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1602 &nbsp;Location: Georgetown, SC &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1603 &nbsp;Location: Greenville-Spartanburg, SC &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1604 &nbsp;Location: Columbia, SC &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1681 &nbsp;Location: Myrtle Beach International Airport, SC &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>1701 &nbsp;Location: Brunswick, GA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1703 &nbsp;Location: Savannah, GA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1704 &nbsp;Location: Atlanta, GA &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>1801 &nbsp;Location: Tampa, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1803 &nbsp;Location: Jacksonville, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1805 &nbsp;Location: Fernandina Beach, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1806 &nbsp;Location: Carrabelle, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1807 &nbsp;Location: Boca Grande, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1808 &nbsp;Location: Orlando, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1809 &nbsp;Location: Sanford, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1814 &nbsp;Location: St. Petersburg, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1816 &nbsp;Location: Cape Canaveral, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1817 &nbsp;Location: Apalachicola, FL &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>1818 &nbsp;Location: Panama City &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1819 &nbsp;Location: Pensacola, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1820 &nbsp;Location: Port St. Joe, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1821 &nbsp;Location: Port Manatee, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1822 &nbsp;Location: Fort Myers, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1880 &nbsp;Location: Naples, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1881 &nbsp;Location: Lakeland Linder Airport, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1883 &nbsp;Location: Sarasota, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1884 &nbsp;Location: Daytona Beach, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1885 &nbsp;Location: Melbourne, FL &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>1887 &nbsp;Location: Leesburg International Airport (UFA), FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1888 &nbsp;Location: Orlando Executive Airport (UFA), FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1889 &nbsp;Location: St. Augustine, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1901 &nbsp;Location: Mobile, AL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1902 &nbsp;Location: Gulfport, MS &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1903 &nbsp;Location: Pascagoula, MS &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1904 &nbsp;Location: Birmingham, AL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>1910 &nbsp;Location: Huntsville, AL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2001 &nbsp;Location: Morgan City, LA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2002 &nbsp;Location: New Orleans, LA &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>2003 &nbsp;Location: Little Rock, AR &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2004 &nbsp;Location: Baton Rouge, LA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2006 &nbsp;Location: Memphis, TN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2007 &nbsp;Location: Nashville, TN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2008 &nbsp;Location: Chattanooga, TN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2010 &nbsp;Location: Gramercy, LA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2011 &nbsp;Location: Greenville, MS &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2015 &nbsp;Location: Vicksburg, MS &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2016 &nbsp;Location: Knoxville, TN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2017 &nbsp;Location: Lake Charles, LA &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>2018 &nbsp;Location: Shreveport, LA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2020 &nbsp;Location: Lake Charles, LA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2027 &nbsp;Location: Tri-City User Fee Airport, Blountville, TN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2081 &nbsp;Location: Jackson Airport, Jackson, MS &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2082 &nbsp;Location: Tri-City Airport, TN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2084 &nbsp;Location: Rogers Municipal Airport/Carter, Rogers, AR &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2095 &nbsp;Location: Federal Express Courier, Memphis, TN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2101 &nbsp;Location: Port Arthur, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2102 &nbsp;Location: Sabine, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2104 &nbsp;Location: Beaumont, TX &nbsp; Opposite Port:</option>
+
+
+                                         <option value=""><span>Code:</span>2301 &nbsp;Location: Brownsville/Los Indios, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2302 &nbsp;Location: Del Rio, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2303 &nbsp;Location: Eagle Pass, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2304 &nbsp;Location: Laredo, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2305 &nbsp;Location: Hidalgo/Pharr, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2307 &nbsp;Location: Rio Grande City/Los Ebanos, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2309 &nbsp;Location: Progreso, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2310 &nbsp;Location: Roma/ Falcon Dam, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2383 &nbsp;Location: Harlingen Valley International Airport, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2401 &nbsp;Location: Ysleta, TX &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>2402 &nbsp;Location: El Paso, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2403 &nbsp;Location: Presidio, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2404 &nbsp;Location: Fabens, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2406 &nbsp;Location: Columbus, NM &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2407 &nbsp;Location: Albuquerque, NM &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2408 &nbsp;Location: Albuquerque, NM &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2482 &nbsp;Location: Roswell Industrial Airport, Roswell, NM &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2501 &nbsp;Location: San Diego, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2502 &nbsp;Location: Winterhaven, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2503 &nbsp;Location: Calexico West, CA &nbsp; Opposite Port:</option>
+
+
+                                         <option value=""><span>Code:</span>2504 &nbsp;Location: San Ysidro, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2505 &nbsp;Location: Tecate, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2506 &nbsp;Location: Otay Mesa, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2507 &nbsp;Location: Calexico East, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2581 &nbsp;Location: Palomar Airport, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2601 &nbsp;Location: Douglas, AZ &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2602 &nbsp;Location: Lukeville, AZ &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2603 &nbsp;Location: Naco, AZ &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2604 &nbsp;Location: Nogales, AZ &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2605 &nbsp;Location: Phoenix, AZ &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>2606 &nbsp;Location: Sasabe, AZ &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2608 &nbsp;Location: San Luis, AZ &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2609 &nbsp;Location: Tucson, AZ &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2681 &nbsp;Location: Scottsdale, AZ &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2682 &nbsp;Location: Mesa, AZ &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2704 &nbsp;Location: Los Angeles, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2707 &nbsp;Location: Port San Luis, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2709 &nbsp;Location: Long Beach, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2713 &nbsp;Location: Port Hueneme, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2720 &nbsp;Location: Los Angeles, CA &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>2721 &nbsp;Location: Ontario, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2722 &nbsp;Location: Las Vegas, NV &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2774 &nbsp;Location: Virgin Atlantic Cargo, Los Angeles, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2775 &nbsp;Location: TNT Express Worldwide, Los Angeles, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2776 &nbsp;Location: IBC PACIFIC, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2781 &nbsp;Location: Palm Springs, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2782 &nbsp;Location: San Bernardino International Airport, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2783 &nbsp;Location: Victorville, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2786 &nbsp;Location: MEADOWS FIELD AIRPORT, BAKERSFIELD, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2791 &nbsp;Location: DHL-HUB LOS ANGELES, CA &nbsp; Opposite Port:</option>
+
+
+                                         <option value=""><span>Code:</span>2795 &nbsp;Location: UPS, ONTARIO, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2801 &nbsp;Location: San Francisco, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2802 &nbsp;Location: Eureka, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2803 &nbsp;Location: Fresno, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2805 &nbsp;Location: Monterey, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2809 &nbsp;Location: San Francisco, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2810 &nbsp;Location: Stockton, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2811 &nbsp;Location: Oakland, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2812 &nbsp;Location: Richmond, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2815 &nbsp;Location: Crockett, CA &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>2816 &nbsp;Location: Sacramento, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2820 &nbsp;Location: MARTINEZ, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2821 &nbsp;Location: REDWOOD CITY, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2827 &nbsp;Location: SELBY, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2828 &nbsp;Location: SAN JUAQUIN RIVER, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2829 &nbsp;Location: SAN PABLO BAY, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2830 &nbsp;Location: CARQUINEZ STRAIT, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2833 &nbsp;Location: Reno, NV &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2834 &nbsp;Location: San Jose, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2835 &nbsp;Location: SACRAMENTO INTL AIRPORT, CA &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>2895 &nbsp;Location: FEDERAL EXPRESS, OAKLAND, CA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2901 &nbsp;Location: Astoria, OR &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2902 &nbsp;Location: Newport, OR &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2903 &nbsp;Location: Coos Bay, OR &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2904 &nbsp;Location: Portland, OR &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2905 &nbsp;Location: Longview, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2907 &nbsp;Location: Boise, ID &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2908 &nbsp;Location: Vancouver, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2909 &nbsp;Location: KALAMA, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>2910 &nbsp;Location: Portland International Airport, Portland, WA &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>2921 &nbsp;Location: Natrona County Airport &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3001 &nbsp;Location: Seattle, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3002 &nbsp;Location: Tacoma, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3003 &nbsp;Location: Aberdeen, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3005 &nbsp;Location: Bellingham, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3006 &nbsp;Location: Everett, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3007 &nbsp;Location: Port Angeles, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3008 &nbsp;Location: Port Townsend, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3010 &nbsp;Location: Anacortes, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3011 &nbsp;Location: Nighthawk, WA &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>3013 &nbsp;Location: FERRY, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3014 &nbsp;Location: Friday Harbor, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3015 &nbsp;Location: BOUNDARY, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3017 &nbsp;Location: Point Roberts, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3022 &nbsp;Location: Spokane, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3025 &nbsp;Location: Metaline Falls, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3026 &nbsp;Location: OLYMPIA, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3029 &nbsp;Location: Tacoma International Airport, Seattle, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3071 &nbsp;Location: UPS, SEATTLE, WA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3082 &nbsp;Location: Grant County Airport, Moses Lake, WA &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>3101 &nbsp;Location: Juneau, AK &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3102 &nbsp;Location: Ketchikan, AK &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3105 &nbsp;Location: Wrangell, AK &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3107 &nbsp;Location: Valdez, AK &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3111 &nbsp;Location: Fairbanks, AK &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3115 &nbsp;Location: Sitka, AK &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3126 &nbsp;Location: Anchorage, AK &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3127 &nbsp;Location: Kodiak, AK &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3195 &nbsp;Location: FEDERAL EXPRESS, ANCHORAGE, AK &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3196 &nbsp;Location: UPS Courier, Anchorage, AK &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>3201 &nbsp;Location: Honolulu, HI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3202 &nbsp;Location: Hilo, HI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3203 &nbsp;Location: Kahului, HI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3204 &nbsp;Location: Nawiliwili-Port Allen &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3205 &nbsp;Location: Honolulu International Airport, HI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3206 &nbsp;Location: KAILUA-KONA, HI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3303 &nbsp;Location: Salt Lake City, UT &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3304 &nbsp;Location: Great Falls, MT &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3305 &nbsp;Location: Butte Airport, MT &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3307 &nbsp;Location: Denver, CO &nbsp; Opposite Port:</option>
+
+
+                                         <option value=""><span>Code:</span>3324 &nbsp;Location: Kalispell, MT &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3383 &nbsp;Location: Broomfield, CO &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3384 &nbsp;Location: Englewood, CO &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3385 &nbsp;Location: Gypsum, CO &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3386 &nbsp;Location: Bozeman Yellowstone User Fee Airport, MT &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3402 &nbsp;Location: Noyes, MN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3408 &nbsp;Location: Hannah, ND &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3411 &nbsp;Location: Fargo-Hector International Airport, ND &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3427 &nbsp;Location: Grand Forks, ND &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3428 &nbsp;Location: Winnipeg International Airport &nbsp; Opposite Port:</option>
+
+
+                                         <option value=""><span>Code:</span>3433 &nbsp;Location: Williston-Sloulin Field International Airport, ND &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3434 &nbsp;Location: Minot International Airport, ND &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3450 &nbsp;Location: Border Patrol Sector, Grand Forks, ND &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3501 &nbsp;Location: Minneapolis, MN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3502 &nbsp;Location: Sioux Falls, SD &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3510 &nbsp;Location: Duluth, MN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3512 &nbsp;Location: Omaha, NE &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3513 &nbsp;Location: Des Moines, IA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3581 &nbsp;Location: Rochester, MN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3602 &nbsp;Location: Ashland, WI &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>3701 &nbsp;Location: Milwaukee, WI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3702 &nbsp;Location: Marinette, WI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3703 &nbsp;Location: Green Bay, WI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3706 &nbsp;Location: Manitowoc, WI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3707 &nbsp;Location: Sheboygan, WI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3708 &nbsp;Location: Racine, WI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3781 &nbsp;Location: Appleton International Airport, WI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3804 &nbsp;Location: Saginaw/Bay City/Flint, MI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3805 &nbsp;Location: Battle Creek, MI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3806 &nbsp;Location: Grand Rapids, MI &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>3807 &nbsp;Location: Detroit Metro Airport &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3808 &nbsp;Location: Escanaba, MI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3815 &nbsp;Location: Muskegon, MI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3819 &nbsp;Location: Detour City, MI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3881 &nbsp;Location: Oakland-Pontiac Airport Waterford, MI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3882 &nbsp;Location: Willow Run Airport Ypsilanti, MI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3883 &nbsp;Location: Capital Region International Airport Lansing, MI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3901 &nbsp;Location: Chicago, IL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3902 &nbsp;Location: Peoria, IL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3908 &nbsp;Location: Davenport, IA &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>3909 &nbsp;Location: Rockford, IL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3910 &nbsp;Location: Midway International Airport, Chicago, IL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3971 &nbsp;Location: TNT EXPRESS CONSIGNMENT, CHICAGO, IL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3981 &nbsp;Location: Waukegan, IL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3983 &nbsp;Location: Wheeling Airport &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3984 &nbsp;Location: West Chicago Airport &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3985 &nbsp;Location: Decatur Airport &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>3991 &nbsp;Location: Nippon Courier Hub, Chicago, IL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4101 &nbsp;Location: Clevland, OH &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4102 &nbsp;Location: Cincinnati, OH &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>4103 &nbsp;Location: Columbus, OH &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4104 &nbsp;Location: Dayton, OH &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4105 &nbsp;Location: Toledo-Sandusky, OH &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4106 &nbsp;Location: Erie, PA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4110 &nbsp;Location: Indianapolis, IN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4115 &nbsp;Location: Louisville, KY &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4116 &nbsp;Location: Evansville, IN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4122 &nbsp;Location: Ashtabula, OH &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4170 &nbsp;Location: Burlington Air Express, Toledo, OH &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4181 &nbsp;Location: Wilmington, OH &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>4182 &nbsp;Location: Rickenbacker Airport, Columbus, OH &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4183 &nbsp;Location: Fort Wayne, IN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4184 &nbsp;Location: Lexington, KY &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4185 &nbsp;Location: Hulman Regional Airport, Terre Haute, IN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4195 &nbsp;Location: Emery Courier, Vandalia, OH &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4196 &nbsp;Location: UPS Courier, Louisville, KY &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4197 &nbsp;Location: DHL Courier, Cincinnati, OH &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4198 &nbsp;Location: Federal Express Hub, Indianapolis, IN &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4501 &nbsp;Location: Kansas City &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4503 &nbsp;Location: St. Louis, MO &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>4504 &nbsp;Location: Wichita, KS &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4505 &nbsp;Location: Springfield, MO &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4506 &nbsp;Location: Spirit of St.Louis Aiport &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4581 &nbsp;Location: Mascoutah Airport &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4601 &nbsp;Location: Newark, NJ &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4602 &nbsp;Location: Perth Amboy, NJ &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4681 &nbsp;Location: Morristown Airport, NJ &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4701 &nbsp;Location: John F Kennedy International Airport, NY &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4771 &nbsp;Location: NYACC, Jamaica, NY &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4772 &nbsp;Location:  DHL Airways, Jamaica, NY &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>4773 &nbsp;Location:  Emery Worldwide, Jamaica, NY &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4774 &nbsp;Location:  Air France, Jamaica, NY &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4778 &nbsp;Location:  TNT Skypak, Jamaica, NY &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4901 &nbsp;Location:  Aguadilla, PR &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4904 &nbsp;Location:  Fajardo, PR &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4906 &nbsp;Location:  Humacao, PR &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4907 &nbsp;Location:  Mayaguez, PR &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4908 &nbsp;Location:  Ponce, PR &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4909 &nbsp;Location:  San Juan, PR &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>4913 &nbsp;Location:  Luis Munoz Marin International Airport &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>5101 &nbsp;Location:  Port Charlotte, VI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5102 &nbsp;Location:  Cruz Bay, VI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5104 &nbsp;Location:  Saint Croix, VI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5201 &nbsp;Location:  Miami Seaport, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5202 &nbsp;Location:  Key West, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5203 &nbsp;Location:  Fort Lauderdale, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5204 &nbsp;Location:  West Palm Beach &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5205 &nbsp;Location:  Fort Pierce, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5206 &nbsp;Location:  Miami International Airport, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5210 &nbsp;Location:  Fort Lauderdale International Airport, FL &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>5270 &nbsp;Location:  International Courier Association, Miami, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5295 &nbsp;Location:  UPS Miami International Airport, Miami, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5296 &nbsp;Location:  DHL WORLDWIDE EXPRESS, MIAMI, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5297 &nbsp;Location:  Fedex Courier Hub, Miami, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5298 &nbsp;Location:  IBC Courier Hub, Miami, FL &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5301 &nbsp;Location:  Houston, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5306 &nbsp;Location:  Texas City, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5309 &nbsp;Location:  Houston Intercontinental Airport, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5310 &nbsp;Location:  Galveston, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5311 &nbsp;Location:  Freeport, TX &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>5312 &nbsp;Location:  Corpus Christi, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5313 &nbsp;Location:  Port Lavaca/Point Comfort, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5381 &nbsp;Location:  Sugar Land, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5382 &nbsp;Location:  Conroe, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5401 &nbsp;Location:  Sterling, VA &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5402 &nbsp;Location:  Alexandria, VI &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5501 &nbsp;Location:  Dallas/Fort Worth, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5502 &nbsp;Location:  Amarillo, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5503 &nbsp;Location:  Lubbock, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5504 &nbsp;Location:  Oklahoma City, OK &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>5505 &nbsp;Location:  Tulsa, OK &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5506 &nbsp;Location:  Austin, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5507 &nbsp;Location:  San Antonio, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5582 &nbsp;Location:  Midland, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5583 &nbsp;Location:  Alliance Airport, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5584 &nbsp;Location:  Addison Airport, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>5585 &nbsp;Location:  Mckinney, TX &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>7404 &nbsp;Location:  CBP St. Croix Preclearance, St. Croix, Virgin Islands &nbsp; Opposite Port:</option>
+
+                                         <option value=""><span>Code:</span>7421 &nbsp;Location:  CBP Bermuda Preclearance, Washington, DC &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>7422 &nbsp;Location:  CBP Freeport Preclearance, Washington, DC &nbsp; Opposite Port:</option>
+                                         <option value=""><span>Code:</span>9900 &nbsp;Location:  Customs HQ &nbsp; Opposite Port:</option>
+
+                                          
+
+                                           <option value=""><span>Code:</span>3419 &nbsp;Location: Westhope, ND &nbsp; Opposite Port: 0524:Coulter, MB</option>
+                                           <option value=""><span>Code:</span>3420 &nbsp;Location: Noonan, ND &nbsp; Opposite Port: 0610:Estevan Highway, SK</option>
+                                           <option value=""><span>Code:</span>3421 &nbsp;Location: Carbury, ND &nbsp; Opposite Port: 0508:Goodlands, MB</option>
+                                           <option value=""><span>Code:</span>3423 &nbsp;Location: Warroad, MN &nbsp; Opposite Port: 0505:Sprague, MB</option>
+
+                                           <option value=""><span>Code:</span>3424 &nbsp;Location: Baudette, MN &nbsp; Opposite Port: 0488:Rainy River, ON</option>
+                                           <option value=""><span>Code:</span>3425 &nbsp;Location: Pinecreek, MN &nbsp; Opposite Port: 0517:Piney, MB</option>
+                                           <option value=""><span>Code:</span>3426 &nbsp;Location: Roseau, MN &nbsp; Opposite Port: 0506:South Junction, MB</option>
+                                           <option value=""><span>Code:</span>3430 &nbsp;Location: Lancaster, MN &nbsp; Opposite Port: 0516:Tolstoi, MB</option>
+
+                                           <option value=""><span>Code:</span>3613 &nbsp;Location: Grand Portage, MN &nbsp; Opposite Port: 0475:Pigeon River, ON</option>
+                                           <option value=""><span>Code:</span>3604 &nbsp;Location: International Falls, MN &nbsp; Opposite Port: 0478:Fort Frances Bridge, ON</option>
+                                           <option value=""><span>Code:</span>3801 &nbsp;Location: Detroit, MI &nbsp; Opposite Port: 0453:Windsor-Ambassador Bridge, ON</option>
+
+                                           <option value=""><span>Code:</span>3802 &nbsp;Location: Port Huron, MI &nbsp; Opposite Port: 0440:Sarnia, ON</option>
+                                           <option value=""><span>Code:</span>3803 &nbsp;Location: Sault Sainte Marie, MI &nbsp; Opposite Port: 0441:Sault Sainte Marie, ON</option>
+                                           <option value=""><span>Code:</span>0706 &nbsp;Location: Cape Vincent, NY &nbsp; Opposite Port: </option>
+
+                                           <option value=""><span>Code:</span>0708 &nbsp;Location: Alexandria Bay, NY &nbsp; Opposite Port: 0456:Lansdowne-Thousand Islands Bridge, ON</option>
+                                           <option value=""><span>Code:</span>0901 &nbsp;Location: Buffalo, NY &nbsp; Opposite Port: 0410: Fort Erie, ON</option>
+                                           <option value=""><span>Code:</span>0903 &nbsp;Location: Rochester, NY &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0904 &nbsp;Location: Oswego, NY &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0905 &nbsp;Location: Sodus Point, NY &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0906 &nbsp;Location: Syracuse, NY &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0907 &nbsp;Location: Utica, NY &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0981 &nbsp;Location: Binghamton, NY &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0982 &nbsp;Location: Rome, NY &nbsp; Opposite Port: </option>
+
+
+
+
+
+                                           <option value=""><span>Code:</span>0606 &nbsp;Location: Plymouth, MA &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0501 &nbsp;Location: Newport, RI &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0502 &nbsp;Location: Providence, RI &nbsp; Opposite Port: </option>
+
+                                           <option value=""><span>Code:</span>0712 &nbsp;Location: Champlain, NY  &nbsp; Opposite Port: 0351:Lacolle-St.Bernard De Lacolle, QC</option>
+                                           <option value=""><span>Code:</span>0715 &nbsp;Location: Trout River, NY &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0401 &nbsp;Location: Boston, MA &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0402 &nbsp;Location: Springfield, MA &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0403 &nbsp;Location: Worcester, MA &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0404 &nbsp;Location: Gloucester, MA &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0405 &nbsp;Location: New Bedford, MA &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0406 &nbsp;Location: Plymouth, MA &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0407 &nbsp;Location: Fall River, MA &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0408 &nbsp;Location: Salem, MA &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0410 &nbsp;Location: Bridgeport, CT &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0411 &nbsp;Location: Hartford, CT &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0412 &nbsp;Location: New Haven, CT &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0413 &nbsp;Location: New London, CT &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0416 &nbsp;Location: Lawrence, MA &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0417 &nbsp;Location: Logan Airport &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0481 &nbsp;Location: Hanscom User Fee Airport,Bedford, MA &nbsp; Opposite Port: </option>
+
+
+
+
+                                           <option value=""><span>Code:</span>0704 &nbsp;Location: Massena, NY &nbsp; Opposite Port: 0409:Cornwall, ON</option>
+                                           <option value=""><span>Code:</span>0701 &nbsp;Location: Ogdensburg, NY &nbsp; Opposite Port: 0439:Prescott, ON</option>
+                                           <option value=""><span>Code:</span>0209 &nbsp;Location: Derby Line, VT &nbsp; Opposite Port: 0314:Stanstead 55, QC</option>
+                                           <option value=""><span>Code:</span>0201 &nbsp;Location: St.Albans, VT &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0203 &nbsp;Location: Richford, VT &nbsp; Opposite Port: 0318:Abercorn, QC</option>
+                                           <option value=""><span>Code:</span>0206 &nbsp;Location: Beechar Falls, VT &nbsp; Opposite Port: 0362:East Hereford, QC</option>
+                                           <option value=""><span>Code:</span>0207 &nbsp;Location: Burlington International Airport &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0211 &nbsp;Location: Norton, VT &nbsp; Opposite Port: 0354:Stanhope, QC</option>
+                                           <option value=""><span>Code:</span>0212 &nbsp;Location: Highgate Springs, VT &nbsp; Opposite Port: 0328:St Armand/Philipsburg, QC</option>
+                                           <option value=""><span>Code:</span>0214 &nbsp;Location: Swanton, VT &nbsp; Opposite Port: </option>
+
+                                           <option value=""><span>Code:</span>0106 &nbsp;Location: Houlton, ME &nbsp; Opposite Port: 0212:Woodstock, NB</option>
+                                           <option value=""><span>Code:</span>0107 &nbsp;Location: Fort Fairfield, ME &nbsp; Opposite Port: 0214:Andover, NB</option>
+                                           <option value=""><span>Code:</span>0108 &nbsp;Location: Van Buren, ME &nbsp; Opposite Port: 0218:St. Leonard, NB</option>
+                                           <option value=""><span>Code:</span>0109 &nbsp;Location: Madawaska, ME &nbsp; Opposite Port: 0213:Edmunston, NB</option>
+
+                                           <option value=""><span>Code:</span>0104 &nbsp;Location: Jackman, ME &nbsp; Opposite Port: 0329:Armstrong, QC</option>
+                                           <option value=""><span>Code:</span>0101 &nbsp;Location: Portland, ME &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>0102 &nbsp;Location: Bangor, ME &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0103 &nbsp;Location: Eastport, ME &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0105 &nbsp;Location: Vanceboro, ME &nbsp; Opposite Port:0205, St. Croix, NB</option>
+                                           <option value=""><span>Code:</span>0110 &nbsp;Location: Fort Kent, ME &nbsp; Opposite Port:0216, Clair, NB</option>
+                                           <option value=""><span>Code:</span>0111 &nbsp;Location: Bath, ME &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0112 &nbsp;Location: Bar Harbor, ME &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0115 &nbsp;Location: Calais, ME &nbsp; Opposite Port:0211, St.Stephen Ferry Point Bridge, NB</option>
+                                           <option value=""><span>Code:</span>0118 &nbsp;Location: Limestone, ME &nbsp; Opposite Port:0219, Gillespie Portage, NB</option>
+                                           <option value=""><span>Code:</span>0121 &nbsp;Location: Rockland, ME &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0122 &nbsp;Location: Jonesport, ME &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0127 &nbsp;Location: Bridgewater, ME &nbsp; Opposite Port:0215:Centreville, NB</option>
+                                           <option value=""><span>Code:</span>0131 &nbsp;Location: Portsmouth, NH&nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0132 &nbsp;Location: Belfast, ME &nbsp; Opposite Port:</option>
+                                           <option value=""><span>Code:</span>0182 &nbsp;Location: Manchester, NH &nbsp; Opposite Port:</option>
+
+                                           <option value=""><span>Code:</span>1001 &nbsp;Location: New York, NY &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1002 &nbsp;Location: Albany, NY &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1101 &nbsp;Location: Philadelphia, PA &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1102 &nbsp;Location: Chester, PA &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1103 &nbsp;Location: Wilmington, DE &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1104 &nbsp;Location: Pittsburgh, PA &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1106 &nbsp;Location: Wilkes-Barre Scranton, PA &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1107 &nbsp;Location: Camden, NJ &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1108 &nbsp;Location: Philadelphia International Airport &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1109 &nbsp;Location: Harrisburg, PA &nbsp; Opposite Port: </option>
+
+                                           <option value=""><span>Code:</span>1119 &nbsp;Location: Allentown, PA &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1182 &nbsp;Location: Atlantic City User Fee Airport, NJ &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1183 &nbsp;Location: Trenton/Mercer Country User Fee Airport, NJ &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1195 &nbsp;Location: UPS Courier Hub Facility, PA &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1303 &nbsp;Location: Baltimore, MD &nbsp; Opposite Port: </option>
+                                           <option value=""><span>Code:</span>1305 &nbsp;Location: Balitmore-Washington International Airport, MD &nbsp; Opposite Port: </option>
+                                           
+
+
+
+
+
+                                         </optgroup>
+                                       </select> -->
+                                    </div>
+                                   
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival Date</label>
+                                       <input
+                                       class="form-control"
+                                       placeholder="dd-mm-yyyy"
+                                       name="date" [(ngModel)]="date"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
+                                     />
+                                    </div>
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival Time</label>
+                                       <!-- <ngb-timepicker [(ngModel)]="time"></ngb-timepicker> -->
+
+                                    </div>
+                               </div>
+                             </div>
+                             <div class="col-lg-5">
+                               <div class="form-group row">
+
+                                  <div class="col-lg-10">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2">Assign Vehicle</label>
+                                     <ng-select >                                      
+                                       <ng-option *ngFor = "let vehicle of vehicles" [value]="vehicle.vehicleID">{{vehicle.vehicleIdentification}}</ng-option>                                      
+                                   </ng-select>
+                                  </div>
+                                  <div class="col-lg-2  mar-top-37">
+                                     <a href="#addVehicleModal" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                  </div>
+                                  <div class="col-lg-5">
+                                   <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_truck_seal_input()">Add Seal</label>
+                                   <input type="text" class="form-control" id="truck_seal_input" style="display: none;">
+                                </div>
+                                <div class="col-lg-5 text-right">
+                                   <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_truck_IIT_input()">Add IIT</label>
+                                   <select class="form-control" id="truck_IIT_input" style="display: none;">
+                                     <option value="1">Select IIT Status</option>
+                                     <option value="1">Trip contains IIT's covered under 10.41(a) with carriers bond</option>
+                                     <option value="1">Trip contains IIT's covered under 10.41(a) with importers bond</option>
+                                   </select>
+                                </div>
+                                  <div class="col-lg-10">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2">Assign Trailer</label>
+                                     <ng-select >                                      
+                                       <ng-option *ngFor = "let asset of assets" [value]="asset.assetID">{{asset.assetIdentification}}</ng-option>                                      
+                                   </ng-select>
+                                      
+                                  </div>
+                                  <div class="col-lg-2 mar-top-37">
+                                     <a href="#addAssetModal" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                  </div>
+                                  <div class="col-lg-5">
+                                   <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_trailer_seal_input()">Add Seal</label>
+                                   <input type="text" class="form-control" id="trailer_seal_input" style="display: none;">
+                                </div>
+                                <div class="col-lg-5 text-right">
+                                   <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_trailer_IIT_input()">Add IIT</label>
+                                    <select class="form-control" id="trailer_IIT_input" style="display: none;">
+                                     <option value="1">Select IIT Status</option>
+                                     <option value="1">Trip contains IIT's covered under 10.41(a) with carriers bond</option>
+                                     <option value="1">Trip contains IIT's covered under 10.41(a) with importers bond</option>
+                                   </select>
+                                </div>
+                                  <div class="col-lg-10">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Assign Driver</label>
+                                     <ng-select >                                      
+                                       <ng-option *ngFor = "let driver of drivers" [value]="driver.driverID">{{driver.driverName}}</ng-option>                                      
+                                   </ng-select>
+                                  </div>
+                                  <div class="col-lg-2  mar-top-37">
+                                     <a href="#addDriverModal" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                  </div>
+                                  <div class="col-lg-5">
+                                   <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_team_driver_input()">Add Team Driver</label>
+                                      <div id="team_driver_input" style="display: none;">
+                                           <div class="row">
+                                              <div class="col-lg-9 pr-0">
+                                                    <select data-plugin-selectTwo class="form-control populate">
+                                                       <optgroup label="Select Team Driver">
+                                                          <option value="1">Anchal</option>
+                                                          <option value="2">Harmeet</option>
+                                                          <option value="2">Harman</option>
+                                                          <option value="2">Jaskarn </option>
+                                                          <option value="2">Heena</option>
+                                                       </optgroup>
+                                                    </select>
+                                              </div>
+                                              <div class="col-lg-3">
+                                                 <a href="#addDriver" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                              </div>
+                                           </div>
+                                     </div>
+                                </div>
+                                <div class="col-lg-5 text-right">
+                                   <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_passenger_input()">Add Passenger</label>
+                                      <div id="passenger_input" style="display: none;">
+                                           <div class="row">
+                                              <div class="col-lg-9 pr-0">
+                                                    <select data-plugin-selectTwo class="form-control populate">
+                                                       <optgroup label="Select Passenger">
+                                                          <option value="1">Anchal</option>
+                                                          <option value="2">Harmeet</option>
+                                                          <option value="2">Harman</option>
+                                                          <option value="2">Jaskarn </option>
+                                                          <option value="2">Heena</option>
+                                                       </optgroup>
+                                                    </select>
+                                              </div>
+                                              <div class="col-lg-3">
+                                                 <a href="#addPassenger" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                              </div>
+                                           </div>
+                                     </div>
+                                </div>
+                               </div>
+                             </div>
+                            </div>                         
+
+                          <div class="form-group row">
+                           <div class="col-lg-12">
+                               <label class="control-label font-weight-bold text-lg-right text-dark text-4  pt-2">ACE Shipment Details</label>
+                            </div>
+                             <div class="col-lg-5 offset-lg-1">
+                               <div class="form-group row">
+                                   <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Shipment Type</label>
+                                       <select data-plugin-selectTwo class="form-control populate">
+                                           <optgroup label="Select Shipment Type">
+                                              <option value="1">PAPS</option>
+                                              <option value="2">QP In-Bond</option>
+                                              <option value="2">ACE In-Bond</option>
+                                              <option value="2">Section 321 </option>
+                                              <option value="2">Instruments of International Traffic (IIT) </option>
+                                              <option value="2">ATA Carnet</option>
+                                              <option value="2">BRASS </option>
+                                              <option value="2">Personal Shipment </option>
+                                              <option value="2">Free of Duty</option>
+                                              <option value="2">Returned American Products </option>
+                                              <option value="2">Goods Astray  </option>
+                                              <option value="2">U.S. Department of Defense Shipment  </option>
+                                              <option value="2">International Mail  </option>
+                                              <option value="2">Value Included </option>
+                                              <option value="2">Intangibles  </option>
+                                              <option value="2">CBP Form 3461  </option>
+                                           </optgroup>
+                                        </select>
+                                    </div>
+                                   <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Shipment Control Number</label>
+                                       <input type="text" class="form-control">                                            
+                                   </div>
+                                   <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Province of Loading</label>
+                                       <input type="text" class="form-control">
+                                    </div>
+                                    <!-- <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Attached to Trip Number</label>
+                                       <div class="row">
+                                           <div class="col-lg-3">
+                                               <select data-plugin-selectTwo class="form-control populate">
+                                                   <optgroup label="">
+                                                      <option value="1">111</option>
+                                                      <option value="2">112</option>
+                                                      <option value="2">333</option>
+                                                      <option value="2">456</option>
+                                                   </optgroup>
+                                                </select>
+                                           </div>
+                                           <div class="col-lg-9">
+                                               <input type="text" class="form-control">
+                                           </div>
+                                       </div>                                            
+                                   </div> -->
+                                  
+                               </div>
+                             </div>
+                             <div class="col-lg-5">
+                               <div class="form-group row">
+                                  <div class="col-lg-10">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2">Assign Shipper</label>
+                                     <select data-plugin-selectTwo class="form-control populate">
+                                         <optgroup label="Select Shipper">
+                                             <option value="Art Place">Art Place</option>
+                                             <option value="Canadian Lava Co.">Canadian Lava Co.</option>
+                                             <option value="Howard Electric INC.">Howard Electric INC.</option>
+                                             <option value="Searcy Trucking Ltd">Searcy Trucking Ltd</option>
+                                             <option value="Titan Transline">Titan Transline</option>
+                                             <option value="JADE TRANSPORT LTD">JADE TRANSPORT LTD</option>
+                                             <option value="Precision">Precision</option>
+                                             <option value="TEAMS Transport">TEAMS Transport</option>
+                                         </optgroup>
+                                      </select>
+                                  </div>
+                                  <div class="col-lg-2  mar-top-37">
+                                     <a href="#addShipperModal" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                  </div>
+                                  <div class="col-lg-10">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2">Assign Consignee</label>
+                                     <select data-plugin-selectTwo class="form-control populate">
+                                         <optgroup label="Select Consignee">
+                                             <option value="8889 Heather Street Meaford, ON N4L 5M1">8889 Heather Street Meaford, ON N4L 5M1</option>
+                                             <option value="78 Ridge Drive Porters Lake, NS B3E 1R8">78 Ridge Drive Porters Lake, NS B3E 1R8</option>
+                                             <option value="5 Military Dr. Rivière-du-Loup, QC G5R 1T1">5 Military Dr. Rivière-du-Loup, QC G5R 1T1</option>
+                                             <option value="279 Eagle Dr. Prince Rupert, BC V8J 4J1">279 Eagle Dr. Prince Rupert, BC V8J 4J1</option>
+                                             <option value="461 Bedford St. St. Mary's, ON N4X 5N0">461 Bedford St. St. Mary's, ON N4X 5N0 </option>
+                                             <option value="84 Wellington Dr. Dufferin County, ON L0N 9G9">84 Wellington Dr. Dufferin County, ON L0N 9G9</option>
+                                         </optgroup>
+                                      </select>
+                                     <div class="dropdown-table w-100 dropdown-menu">
+                                         <a class="dropdown-item" href="#">8889 Heather Street Meaford, ON N4L 5M1</a>
+                                         <a class="dropdown-item" href="#">78 Ridge Drive Porters Lake, NS B3E 1R8</a>
+                                         <a class="dropdown-item" href="#">5 Military Dr. Rivière-du-Loup, QC G5R 1T1</a>
+                                         <a class="dropdown-item" href="#">5 Military Dr. Rivière-du-Loup, QC G5R 1T1</a>
+                                         <a class="dropdown-item" href="#">5 Military Dr. Rivière-du-Loup, QC G5R 1T1</a>
+                                         <a class="dropdown-item" href="#">5 Military Dr. Rivière-du-Loup, QC G5R 1T1</a>
+                                     </div>
+                                      
+                                  </div>
+                                  <div class="col-lg-2 mar-top-37">
+                                     <a href="#addConsigneeModal" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                  </div>
+                                  <div class="col-lg-10">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Assign Broker</label>
+                                     <select data-plugin-selectTwo class="form-control populate">
+                                         <optgroup label="Select Broker">
+                                             <option value="FreightFinder">FreightFinder</option>
+                                             <option value="Landstar">Landstar</option>
+                                             <option value="JB Hunt">JB Hunt</option>
+                                             <option value="Forest Commodities Boards">Forest Commodities Boards</option>
+                                             <option value="Online Freight Services">Online Freight Services</option>
+                                             <option value="uShip">uShip</option>
+                                             <option value="DirectFreight">DirectFreight</option>
+                                         </optgroup>
+                                      </select>
+                                  </div>
+                                  <div class="col-lg-2  mar-top-37">
+                                     <a href="#addBrokerModal" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                  </div>
+                               </div>
+                             </div>
+
+                           </div>   
+                           <div class="row mb-2">
+                           <div class="col-lg-6">
+                               <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">General Commodity Details</label>
+                            </div>
+                            <div class="col-lg-6">
+                               <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Hazardous Material Details</label>
+                            </div>
+                           </div>
+                            <div class="form-group row">
+                               <div class="col-lg-5 offset-lg-1">
+                               <div class="row">
+                                  <div class="col-lg-5">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Container Number</label>
+                                     <input type="text" class="form-control">
+                                  </div>
+                                  <div class="col-lg-5">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Loaded On</label>
+                                     <select data-plugin-selectTwo class="form-control populate">
+                                        <optgroup label="">
+                                           <option value="1">Trailer 111</option>
+                                           <option value="2">Trailer 112</option>
+                                           <option value="2">Trailer 113</option>
+                                           <option value="2">Trailer 114</option>
+                                           <option value="2">Trailer 115</option>
+                                        </optgroup>
+                                     </select>
+                                  </div>
+                               </div>
+                               <div class="row">
+                                  <div class="col-lg-5">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Seal</label>
+                                     <input type="text" class="form-control">
+                                  </div>
+                                  <div class="col-lg-5">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Exemption</label>
+                                     <select class="form-control">
+                                        <option value="1">Select Cargo Exemption</option>
+                                        <option value="1">Courier Low Value Shipment(LVS)</option>
+                                        <option value="1">Instrument of International Trade (IIT)</option>
+                                        <option value="1">Postal</option>
+                                        <option value="1">Flying Trucks</option>
+                                        <option value="1">Emergency Repairs</option>
+                                     </select>
+                                  </div>
+                               </div>
+                               <div class="row">
+                                  <div class="col-lg-10">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Commodity</label>
+                                     <input type="text" class="form-control">
+                                  </div>
+                                  <div class="col-lg-5">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Quantity</label>
+                                     <div class="row">
+                                        <div class="col-lg-5 pr-0">
+                                           <input type="text" class="form-control">                                                    
+                                        </div>
+                                        <div class="col-lg-7 pl-0">
+                                           <select data-plugin-selectTwo class="form-control populate">
+                                              <optgroup label="">
+                                                 <option value="1">Bag</option>
+                                                 <option value="2">Can</option>
+                                                 <option value="2">Case</option>
+                                                 <option value="2">Carton</option>
+                                                 <option value="2">Carboy</option>
+                                                 <option value="2">Carcass</option>
+                                              </optgroup>
+                                           </select>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <div class="col-lg-5">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Weight</label>
+                                     <div class="row">
+                                        <div class="col-lg-5 pr-0">
+                                           <input type="text" class="form-control">                                                    
+                                        </div>
+                                        <div class="col-lg-7 pl-0">
+                                           <select data-plugin-selectTwo class="form-control populate">
+                                              <optgroup label="">
+                                                 <option value="1">Pounds</option>
+                                                 <option value="2">Kilograms</option>
+                                              </optgroup>
+                                           </select>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <div class="col-lg-10">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Marks & Numbers</label>
+                                     <div class="row">
+                                        <div class="col-lg-3"><input type="text" class="form-control"></div>
+                                        <div class="col-lg-3"><input type="text" class="form-control"></div>
+                                        <div class="col-lg-3"><input type="text" class="form-control"></div>
+                                        <div class="col-lg-3"><input type="text" class="form-control"></div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                            <div class="col-lg-5">
+                               <div class="form-group row">
+                                  <div class="col-lg-10">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Hazmat Code</label>
+                                     <input type="text" class="form-control">
+                                  </div>
+                                  <div class="col-lg-10">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Emergency Contact Name</label>
+                                     <input type="text" class="form-control">
+                                  </div>
+                                  <div class="col-lg-10">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Contact Number</label>
+                                     <input type="text" class="form-control">
+                                  </div>
+                                  <div class="col-lg-10">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Contact Email</label>
+                                     <input type="text" class="form-control">
+                                  </div>
+                                  <div class="col-lg-10">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Comments</label>
+                                     <textarea class="form-control" rows="3"></textarea>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+
+
+                         <div class="form-group row">
+                            <div class="col-lg-11 text-right">
+                               <button type="button" onclick="goBack()" class="btn btn-default m-1">Cancel</button>
+                               <button type="button" (click)="showDate() " class="btn btn-success m-1">Submit</button>
+                              
+                            </div>
+                         </div>
+                      </form>
+                   </div>
+                </section>
+             </div>
+          </div>
+       </section>
     </div>
 
 

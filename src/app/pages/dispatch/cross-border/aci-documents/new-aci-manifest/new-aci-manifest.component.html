@@ -11,163 +11,615 @@
         <app-sidebar></app-sidebar>
         <!-- end: sidebar -->
         <section role="main" class="content-body">
-            <header class="page-header">
-               <h2>ACI Manifest</h2>
-               <div class="right-wrapper text-right">
-                  <ol class="breadcrumbs pr-3">
-                     <li>
-                        <a href="index.html">
-                        <i class="fas fa-home"></i>
-                        </a>
-                     </li>
-                     <li><span>ACI eManifest</span></li>
-                  </ol>
-               </div>
-            </header>
-            <div class="row">
-               <div class="col">
-                  <section class="card">
-                     <header class="card-header">
-                        <h2 class="card-title">ACI eManifest</h2>
-                     </header>
-                     <div class="card-body">
-                        <form class="form-horizontal form-bordered" method="get">
-                           <div class="form-group row">
-                             <div class="col-lg-12">
-                                 <label class="control-label text-lg-right text-dark text-4 text-underline pt-2">eManifest Details</label>
-                              </div>
-                               <div class="col-lg-5 offset-lg-1">
-                                 <div class="form-group row">
-                                     <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2" for="inputDefault">Trip Number</label>
-                                         <div class="row">
-                                             <div class="col-lg-3">
-                                                 <select data-plugin-selectTwo class="form-control populate">
-                                                     <optgroup label="Select Business Type">
-                                                        <option value="1">111</option>
-                                                        <option value="2">112</option>
-                                                        <option value="2">333</option>
-                                                        <option value="2">456</option>
-                                                     </optgroup>
-                                                  </select>
-                                             </div>
-                                             <div class="col-lg-9">
-                                                 <input type="text" class="form-control" id="inputDefault">
-                                             </div>
-                                         </div>                                            
-                                     </div>
-                                     <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2" for="inputDefault">First Canadian Port of Entry</label>
-                                         <input type="text" class="form-control" id="inputDefault">
-                                      </div>
-                                      <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2" for="inputDefault">Sublocation/ Warehouse</label>
-                                         <input type="text" class="form-control" id="inputDefault">
-                                      </div>
-                                      <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2" for="inputDefault">Estimated Arrival Date</label>
-                                         <input type="text" data-plugin-datepicker="" class="form-control" placeholder="Select Date">
-                                      </div>
-                                      <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2" for="inputDefault">Estimated Arrival Time</label>
-                                         <select data-plugin-selectTwo class="form-control populate">
-                                             <optgroup label="Select Business Type">
-                                                <option value="1">1:00 AM</option>
-                                                <option value="2">2:00 AM</option>
-                                                <option value="2">3:00 AM</option>
-                                                <option value="2"></option>
-                                             </optgroup>
-                                          </select>
-                                      </div>
-                                      <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2" for="inputDefault">Assign Truck</label>
-                                         <select data-plugin-selectTwo class="form-control populate">
-                                             <optgroup label="Select Business Type">
-                                                <option value="1">1:00 AM</option>
-                                                <option value="2">2:00 AM</option>
-                                                <option value="2">3:00 AM</option>
-                                                <option value="2"></option>
-                                             </optgroup>
-                                          </select>
-                                      </div>
-                                      <div class="col-lg-2  mar-top-37">
-                                         <a href="add-vehicle.html" class="btn btn-dark">Add</a>
-                                      </div>
-                                      <div class="col-lg-5">
-                                         <label class="control-label text-lg-right pt-2" onclick="show_truck_seal_input()">Add Seal</label>
-                                         <input type="text" class="form-control" id="truck_seal_input" style="display: none;">
-                                      </div>
-                                      <div class="col-lg-5">
-                                         <label class="control-label text-lg-right pt-2" onclick="show_truck_IIT_input()">Add IIT or Exemption</label>
-                                         <input type="text" class="form-control" id="truck_IIT_input" style="display: none;">
-                                      </div>
-                                      <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2" for="inputDefault">Assign Trailer</label>
-                                         <select data-plugin-selectTwo class="form-control populate">
-                                             <optgroup label="Select Business Type">
-                                                <option value="1">1:00 AM</option>
-                                                <option value="2">2:00 AM</option>
-                                                <option value="2">3:00 AM</option>
-                                                <option value="2"></option>
-                                             </optgroup>
-                                          </select>
-                                          
-                                      </div>
-                                      <div class="col-lg-2 mar-top-37">
-                                         <a href="add-trailer.html" class="btn btn-dark">Add</a>
-                                      </div>
-                                      <div class="col-lg-5">
-                                         <label class="control-label text-lg-right pt-2" onclick="show_trailer_seal_input()">Add Seal</label>
-                                         <input type="text" class="form-control" id="trailer_seal_input" style="display: none;">
-                                      </div>
-                                      <div class="col-lg-5">
-                                         <label class="control-label text-lg-right pt-2" onclick="show_trailer_IIT_input()">Add IIT or Exemption</label>
-                                         <input type="text" class="form-control" id="trailer_IIT_input" style="display: none;">
-                                      </div>
-                                      <div class="col-lg-10">
-                                         <label class="control-label text-lg-right pt-2"  for="inputDefault">Assign Driver</label>
-                                         <select data-plugin-selectTwo class="form-control populate">
-                                             <optgroup label="Select Business Type">
-                                                <option value="1">1:00 AM</option>
-                                                <option value="2">2:00 AM</option>
-                                                <option value="2">3:00 AM</option>
-                                                <option value="2"></option>
-                                             </optgroup>
-                                          </select>
-                                      </div>
-                                      <div class="col-lg-2  mar-top-37">
-                                         <a href="add-new-driver.html" class="btn btn-dark">Add</a>
-                                      </div>
-                                      <div class="col-lg-5">
-                                       <label class="control-label text-lg-right pt-2" onclick="show_team_driver_input()">Add Team Driver</label>
-                                       <input type="text" class="form-control" id="team_driver_input" style="display: none;">
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <label class="control-label text-lg-right pt-2" onclick="show_passenger_input()">Add Passenger</label>
-                                       <input type="text" class="form-control" id="passenger_input" style="display: none;">
-                                    </div>
+         <header class="page-header pr-5">
+            <div class="row " style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Create ACI Manifest </div>
+               <div class="col-md-8  col-lg-8 text-right pr-4"> <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default btn-sm"><i class="fas fa-list"></i> ACI Manifests</a> </div>
+            </div>
+         </header>
+         <div class="row text-dark">
+            <div class="col">
+               <section class="card">
+                  <div class="card-body">
+                     <form class="form-horizontal form-bordered" method="get">
+                        <div class="form-group row">
+                           <div class="col-lg-12">
+                              <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Start new ACI eManifest</label>
+                           </div>
+                           <div class="col-lg-5 offset-lg-1">
+                              <div class="form-group row">
+                                 
+                              <div class="col-lg-3">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >CCC</label>
+                                    <select class="form-control">
+                                       <optgroup label="Select CCC">
+                                          <option>22M2</option>
+                                          <option>7RZ1</option>
+                                          <option>15JH</option>
+                                          <option>7VMM</option>
+                                          <option>7XJM</option>
+                                          <option>7MGM</option>
+                                          <option>1CBE</option>
+                                          <option>72QJ</option>
+                                          <option>23VW</option>
+                                          <option>20U4</option>
+                                          <option>1BS8</option>
+                                          <option>73C4</option>
+                                          <option>HCGH</option>
+                                          <option>74QC</option>
+                                          <option>203R</option>
+                                          <option>702E</option>
+                                          <option>113X</option>
+                                          <option>15G2</option>
+                                          <option>21G2</option>
+                                          <option>71KD</option>
+                                          <option>7Z30</option>
+                                          <option>15A8</option>
+                                          <option>2604</option>
+                                          <option>757T</option>
+                                       </optgroup>
+                                    </select>
                                  </div>
-                               </div>
-                               <div class="col-lg-5 offset-lg-1">
-                                 <div class="form-group row">
+                                 <div class="col-lg-7">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Trip Number</label>
+                                    <input type="text" class="form-control">                                           
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Canadian Port of Entry</label>
+                                    <select class="form-control populate" data-plugin-selectTwo>
+                                       <optgroup label="Select Port" style="padding:1px;">
+                                       <option value=""><span>Code:</span>0025 &nbsp;Location: Yarmouth, NS &nbsp; Opposite Port: </option>
+
+                                       <option value=""><span>Code:</span>0817 &nbsp;Location: Abbotsford-Huntingdon, BC &nbsp; Opposite Port: 3009:Sumas, WA</option>
+                                       <option value=""><span>Code:</span>0834 &nbsp;Location: Carson, BC &nbsp; Opposite Port: 3012:Danville, WA</option>
+
+                                       <option value=""><span>Code:</span>0841 &nbsp;Location: Aldergrove, BC &nbsp; Opposite Port: 3023:Lynden, WA</option>
+                                       <option value=""><span>Code:</span>0816 &nbsp;Location: Cascade, BC &nbsp; Opposite Port: 3016:Laurier, WA</option>
+                                       <option value=""><span>Code:</span>0893 &nbsp;Location: Fraser, YT &nbsp; Opposite Port: 3103:Skagway, AK</option>
+
+                                       <option value=""><span>Code:</span>0818 &nbsp;Location: Kingsgate, BC  &nbsp; Opposite Port: 3302:Eastport, ID</option>
+                                       <option value=""><span>Code:</span>0819 &nbsp;Location: Osoyoos, BC &nbsp; Opposite Port: 3019:Oroville Area Port, WA</option>
+                                       <option value=""><span>Code:</span>0813 &nbsp;Location: Pacific Highway, BC &nbsp; Opposite Port: 3004:Blaine, WA</option>
+                                       <option value=""><span>Code:</span>0891 &nbsp;Location: Pleasant Camp, YT &nbsp; Opposite Port: 3106:Dalton Cache, AK</option>
+                                       <option value=""><span>Code:</span>0815 &nbsp;Location: Boundary Bay, BC &nbsp; Opposite Port: </option>
+
+                                       <option value=""><span>Code:</span>0892 &nbsp;Location: Beaver Creek, YT &nbsp; Opposite Port: 3104:Alcan, AK</option>
+
+                                       <option value=""><span>Code:</span>0822 &nbsp;Location: Rykerts,BC &nbsp; Opposite Port: 3308:Porthill, ID</option>
+                                       <option value=""><span>Code:</span>0824 &nbsp;Location: Roosville,BC &nbsp; Opposite Port: 3318:Roosville, MT</option>
+
+                                       <option value=""><span>Code:</span>0832 &nbsp;Location: Paterson, BC &nbsp; Opposite Port: 3020:Frontier, WA</option>
+
+                                       <option value=""><span>Code:</span>0833 &nbsp;Location: Waneta, BC &nbsp; Opposite Port: </option>
+                                       <option value=""><span>Code:</span>0836 &nbsp;Location: Chopaka, BC &nbsp; Opposite Port: </option>
+
+                                       <option value=""><span>Code:</span>0706 &nbsp;Location: Aden, AB &nbsp; Opposite Port: 3321:Whitlash, MT</option>
+                                       <option value=""><span>Code:</span>0707 &nbsp;Location: Carway, AB &nbsp; Opposite Port: 3316:Piegan, MT</option>
+                                       <option value=""><span>Code:</span>0705 &nbsp;Location: Coutts, AB &nbsp; Opposite Port: 3310:Sweetgrass, MT</option>
+                                       <option value=""><span>Code:</span>0708 &nbsp;Location: Del Bonita, AB &nbsp; Opposite Port: 3322:Del Bonita, MT</option>
+                                       <option value=""><span>Code:</span>0709 &nbsp;Location: Chief Mountain, AB &nbsp; Opposite Port: </option>
+
+                                       <option value=""><span>Code:</span>0602 &nbsp;Location: North Portal, SK &nbsp; Opposite Port: 3403:Portal, ND</option>
+                                       <option value=""><span>Code:</span>0607 &nbsp;Location: Regway, SK &nbsp; Opposite Port: 3301:Raymond, MT</option>
+                                       <option value=""><span>Code:</span>0610 &nbsp;Location: Estevan Highway, SK &nbsp; Opposite Port: 3420:Noonan, ND</option>
+                                       <option value=""><span>Code:</span>0612 &nbsp;Location: Carievale, SK &nbsp; Opposite Port: 3414:Sherwood, ND</option>
+                                       <option value=""><span>Code:</span>0613 &nbsp;Location: Northgate, SK &nbsp; Opposite Port: 3406:Northgate, ND</option>
+                                       <option value=""><span>Code:</span>0614 &nbsp;Location: Big Beaver, SK &nbsp; Opposite Port: 3312:Whitetail, MT</option>
+                                    
+                                       <option value=""><span>Code:</span>0615 &nbsp;Location: Coronach, SK &nbsp; Opposite Port: 3309:Scobey, MT</option>
+                                       <option value=""><span>Code:</span>0616 &nbsp;Location: Oungre, SK &nbsp; Opposite Port: 3417:Fortuna, ND</option>
+
+                                       <option value=""><span>Code:</span>0617 &nbsp;Location: Torquay, SK &nbsp; Opposite Port: 3410:Ambrose, ND</option>
+
+                                       <option value=""><span>Code:</span>0618 &nbsp;Location: West Popular River, SK &nbsp; Opposite Port: 3317:Opheim, MT</option>
+
+                                       <option value=""><span>Code:</span>0619 &nbsp;Location: Climax, SK &nbsp; Opposite Port: 3306:Turner, MT</option>
+                                       <option value=""><span>Code:</span>0620 &nbsp;Location: Monchy, SK &nbsp; Opposite Port: 3319:Morgan, MT</option>
+                                       <option value=""><span>Code:</span>0621 &nbsp;Location: Willow Creek, SK &nbsp; Opposite Port: 3325:Willow Creek, MT</option>
+
+
+                                       <option value=""><span>Code:</span>0507 &nbsp;Location: Boissevain, MB &nbsp; Opposite Port: 3422:Dunseith, ND</option>
+                                       <option value=""><span>Code:</span>0509 &nbsp;Location: Snowflake, MB &nbsp; Opposite Port: 3408:Hannah, ND</option>
+
+
+                                       <option value=""><span>Code:</span>0502 &nbsp;Location: Emerson, MB &nbsp; Opposite Port: 3401:Pembina, ND</option>
+                                       <option value=""><span>Code:</span>0503 &nbsp;Location: Gretna, MB &nbsp; Opposite Port: 3404:Neche, ND</option>
+                                       <option value=""><span>Code:</span>0505 &nbsp;Location: Sprague, MB &nbsp; Opposite Port: 3423:Warroad, MN</option>
+                                       <option value=""><span>Code:</span>0506 &nbsp;Location: South Junction, MB &nbsp; Opposite Port: 3426:Roseau, MN</option>
+
+                                       <option value=""><span>Code:</span>0508 &nbsp;Location: Goodlands, MB &nbsp; Opposite Port: 3421:Carbury, ND</option>
+                                       <option value=""><span>Code:</span>0516 &nbsp;Location: Tolstoi, MB &nbsp; Opposite Port: 3430:Lancaster, MN</option>
+
+                                       <option value=""><span>Code:</span>0517 &nbsp;Location: Piney, MB &nbsp; Opposite Port: 3425:Pinecreek, MN</option>
+
+                                       <option value=""><span>Code:</span>0518 &nbsp;Location: Winkler, MB &nbsp; Opposite Port: 3407:Walhalla, ND</option>
+                                       <option value=""><span>Code:</span>0519 &nbsp;Location: Windygates, MB &nbsp; Opposite Port: 3416:Maida, ND</option>
+
+                                       <option value=""><span>Code:</span>0520 &nbsp;Location: Crystal City, MB &nbsp; Opposite Port: 3409:Sarles, ND</option>
+
+                                       <option value=""><span>Code:</span>0521 &nbsp;Location: Cartwright, MB &nbsp; Opposite Port: 3415:Hansboro, ND</option>
+                                       <option value=""><span>Code:</span>0522 &nbsp;Location: Lena, MB &nbsp; Opposite Port: 3405:St.John, ND</option>
+                                       <option value=""><span>Code:</span>0523 &nbsp;Location: Lyleton, MB &nbsp; Opposite Port: 3413:Antler, ND</option>
+
+
+                                       <option value=""><span>Code:</span>0524 &nbsp;Location: Coulter, MB &nbsp; Opposite Port: 3419:Westhope, ND</option>
+
+
+
+                                       <option value=""><span>Code:</span>0409 &nbsp;Location: Cornwall, ON &nbsp; Opposite Port: 0704:Massena, NY</option>
+
+                                       <option value=""><span>Code:</span>0410 &nbsp;Location: Fort Erie ON &nbsp; Opposite Port: 0901:Buffalo, NY</option>
+                                       <option value=""><span>Code:</span>0420 &nbsp;Location: Kingston ON &nbsp; Opposite Port:</option>
+
+                                       <option value=""><span>Code:</span>0478 &nbsp;Location: Fort Frances Bridge, ON &nbsp; Opposite Port: 3604:International Falls, MN</option>
+                                       <option value=""><span>Code:</span>0456 &nbsp;Location: Lansdowne-Thousand Islands Bridge, ON &nbsp; Opposite Port: 0708:Alexandria Bay, NY</option>
+                                       <option value=""><span>Code:</span>0475 &nbsp;Location: Pigeon River, ON &nbsp; Opposite Port: 3613:Grand Portage, MN</option>
+                                       <option value=""><span>Code:</span>0439 &nbsp;Location: Prescott, ON &nbsp; Opposite Port: 0701:Ogdensburg, NY</option>
+                                       <option value=""><span>Code:</span>0488 &nbsp;Location: Rainy River, ON &nbsp; Opposite Port: 3424:Baudette, MN</option>
+
+                                       <option value=""><span>Code:</span>0427 &nbsp;Location: Niagara Falls-Queenston Lewiston Bridge, ON &nbsp; Opposite Port: 0901:Buffalo, NY</option>
+                                       <option value=""><span>Code:</span>0440 &nbsp;Location: Sarnia, ON &nbsp; Opposite Port: 3802:Port Huron, MI</option>
+                                       <option value=""><span>Code:</span>0441 &nbsp;Location: Sault Ste Marie, ON &nbsp; Opposite Port: 3803:Sault Ste Marie, MI</option>
+                                       <option value=""><span>Code:</span>0453 &nbsp;Location: Windsor - Ambassador Bridge, ON &nbsp; Opposite Port: 3801:Detroit, MI</option>
+                                       <option value=""><span>Code:</span>0452 &nbsp;Location: Windsor Tunnel, ON &nbsp; Opposite Port: 3801:Detroit, MI</option>
+
+                                       <option value=""><span>Code:</span>0318 &nbsp;Location: Abercorn, QC &nbsp; Opposite Port: 0203:Richford, VT</option>
+                                       <option value=""><span>Code:</span>0329 &nbsp;Location: Armstrong, QC &nbsp; Opposite Port: 0104:Jackman, ME</option>
+                                       <option value=""><span>Code:</span>0337 &nbsp;Location: Clarenceville, QC &nbsp; Opposite Port: </option>
+                                       <option value=""><span>Code:</span>0311 &nbsp;Location: Covey Hill, QC &nbsp; Opposite Port: </option>
+                                       <option value=""><span>Code:</span>0330 &nbsp;Location: Dundee, QC &nbsp; Opposite Port: 0704:Massena, NY</option>
+
+                                       <option value=""><span>Code:</span>0331 &nbsp;Location: Pohenegamook, QC &nbsp; Opposite Port:</option>
+                                       <option value=""><span>Code:</span>0335 &nbsp;Location: St Pamphile, QC &nbsp; Opposite Port:</option>
+                                       <option value=""><span>Code:</span>0336 &nbsp;Location: St-just De Bretenieres, QC &nbsp; Opposite Port:</option>
+                                       <option value=""><span>Code:</span>0339 &nbsp;Location: Ste Aurelie, QC &nbsp; Opposite Port: 0104:Jackman, ME</option>
+                                       <option value=""><span>Code:</span>0370 &nbsp;Location: Glen Sutton, QC &nbsp; Opposite Port: 0203,Richford, VT</option>
+                                       <option value=""><span>Code:</span>0376 &nbsp;Location: Stanstead Beebe, QC &nbsp; Opposite Port:</option>
+                                       <option value=""><span>Code:</span>0217 &nbsp;Location: Grand Falls, NB &nbsp; Opposite Port:</option>
+                                       <option value=""><span>Code:</span>0302 &nbsp;Location: Herdman, QC &nbsp; Opposite Port:</option>
+                                       <option value=""><span>Code:</span>0835 &nbsp;Location: Midway, BC &nbsp; Opposite Port:</option>
+                                       <option value=""><span>Code:</span>0828 &nbsp;Location: Nelway, BC &nbsp; Opposite Port:</option>
+                                       <option value=""><span>Code:</span>0811 &nbsp;Location: Victoria, BC &nbsp; Opposite Port:3007:Port Angeles, WA</option>
+
+
+
+                                       <option value=""><span>Code:</span>0362 &nbsp;Location: East Hereford, QC &nbsp; Opposite Port: 0206:Beecher Falls, VT</option>
+                                       <option value=""><span>Code:</span>0369 &nbsp;Location: East Pinnacle, QC &nbsp; Opposite Port: </option>
+                                       <option value=""><span>Code:</span>0332 &nbsp;Location: Frelighsburg, QC &nbsp; Opposite Port: </option>
+                                       <option value=""><span>Code:</span>0333 &nbsp;Location: Hemmingford, QC &nbsp; Opposite Port: </option>
+                                       <option value=""><span>Code:</span>0366 &nbsp;Location: Hereford Road, QC &nbsp; Opposite Port: </option>
+                                       <option value=""><span>Code:</span>0375 &nbsp;Location: Stanstead Rte 143, QC &nbsp; Opposite Port: 0209:Derby Line, VT</option>
+
+
+                                       <option value=""><span>Code:</span>0334 &nbsp;Location: Highwater, QC &nbsp; Opposite Port: </option>
+                                       <option value=""><span>Code:</span>0324 &nbsp;Location: Route 221,Lacolle, QC &nbsp; Opposite Port: </option>
+                                       <option value=""><span>Code:</span>0341 &nbsp;Location: Route 223,Lacolle, QC &nbsp; Opposite Port: </option>
+                                       <option value=""><span>Code:</span>0365 &nbsp;Location: Chartierville, QC &nbsp; Opposite Port:0206:Beechar Falls, VT </option>
+
+                                       <option value=""><span>Code:</span>0367 &nbsp;Location: Morses Line, QC &nbsp; Opposite Port: </option>
+                                       <option value=""><span>Code:</span>0368 &nbsp;Location: Noyan, QC &nbsp; Opposite Port: </option>
+
+
+                                       <option value=""><span>Code:</span>0328 &nbsp;Location: St Armand / Philipsburg, QC &nbsp; Opposite Port: 0212:Highgate Springs, VT</option>
+                                       <option value=""><span>Code:</span>0351 &nbsp;Location: Lacolle-St Bernard de Lacolle, QC &nbsp; Opposite Port: 0712:Champlain, NY</option>
+                                       <option value=""><span>Code:</span>0354 &nbsp;Location: Stanhope, QC &nbsp; Opposite Port: 0211:Norton, VT</option>
+                                       <option value=""><span>Code:</span>0314 &nbsp;Location: Stanstead 55, QC &nbsp; Opposite Port: 0209:Derby Line, VT</option>
+                                       <option value=""><span>Code:</span>0307 &nbsp;Location: Trout River, QC &nbsp; Opposite Port: </option>
+                                       <option value=""><span>Code:</span>0308 &nbsp;Location: Woburn, QC &nbsp; Opposite Port: 0104:Jackman, ME</option>
+
+                                       <option value=""><span>Code:</span>0231 &nbsp;Location: St. Stephen 3rd Bridge, NB &nbsp; Opposite Port: 0115:Calais, ME</option>
+                                       <option value=""><span>Code:</span>0212 &nbsp;Location: Woodstock, NB &nbsp; Opposite Port: 0106:Houlton, ME</option>
+                                       <option value=""><span>Code:</span>0213 &nbsp;Location: Edmunston, NB &nbsp; Opposite Port: 0109:Madawaska, ME</option>
+                                       <option value=""><span>Code:</span>0214 &nbsp;Location: Andover, NB &nbsp; Opposite Port: 0107:Fort Fairfield, ME</option>
+                                       <option value=""><span>Code:</span>0215 &nbsp;Location: Centreville, NB &nbsp; Opposite Port: 0127:Bridgewater, ME</option>
+                                       <option value=""><span>Code:</span>0216 &nbsp;Location: Clair, NB &nbsp; Opposite Port: 0110:Fort Kent, ME</option>
+
+                                       <option value=""><span>Code:</span>0205 &nbsp;Location: St.Croix, NB &nbsp; Opposite Port: 0105:Vanceboro, ME</option>
+                                       <option value=""><span>Code:</span>0218 &nbsp;Location: St.Leonard, NB &nbsp; Opposite Port: 0108:Van Buren, ME</option>
+
+                                       <option value=""><span>Code:</span>0219 &nbsp;Location: Gillespie Portage, NB &nbsp; Opposite Port: 0118:Limestone, ME</option>
+                                       <option value=""><span>Code:</span>0225 &nbsp;Location: Campobello, NB &nbsp; Opposite Port: </option>
+                                       <option value=""><span>Code:</span>0711 &nbsp;Location: Wild Horse, AB &nbsp; Opposite Port: 3323:Wild Horse, MT</option>
+
+
+
+                                    </optgroup>
+
+                                    </select>
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Sub Location/Warehouse</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Estimated Arrival Date</label>
+                                    <input type="text" data-plugin-datepicker="" class="form-control" placeholder="Select Date">
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Estimated Arrival Time</label>
+                                    <input type="text" data-plugin-timepicker="" class="form-control">
 
                                  </div>
-                               </div>
-                           </div>                      
-
-
-
-                           <div class="form-group row">
-                              <div class="col-lg-11">
-                                 <a routerLink="/dispatch/cross-border/ACI-shipment" class="btn btn-dark mt-4 pull-right m-4">Save & Add New ACI Shipment</a>
                               </div>
                            </div>
-                        </form>
-                     </div>
-                  </section>
-               </div>
+                           <div class="col-lg-5">
+                              <div class="form-group row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Assign Truck</label>
+                                    <select data-plugin-selectTwo class="form-control populate">
+                                       <optgroup label="Select Truck Number">
+                                          <option value="0125">0125</option>
+                                          <option value="0664">0664</option>
+                                          <option value="2541">2541</option>
+                                          <option value="5911">5911</option>
+                                          <option value="1299">1299</option>
+                                          <option value="5911">5911</option>
+                                          <option value="4785">4785</option>
+                                          <option value="3256">3256</option>
+                                       </optgroup>
+                                    </select>
+                                 </div>
+                                 <div class="col-lg-2  mar-top-37">
+                                    <a href="#addVehicleModal" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                 </div>
+                                 <div class="col-lg-5">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_truck_seal_input()">Add Seal</label>
+                                    <input type="text" class="form-control" id="truck_seal_input" style="display: none;">
+                                 </div>
+                                 <div class="col-lg-5 text-right">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_truck_IIT_input()">Add IIT or Exemption</label>
+                                    <select class="form-control" id="truck_IIT_input" style="display: none;">
+                                       <option value="1">Select Cargo Exemption</option>
+                                       <option value="1">Courier Low Value Shipment(LVS)</option>
+                                       <option value="1">Instrument of International Trade (IIT)</option>
+                                       <option value="1">Postal</option>
+                                       <option value="1">Flying Trucks</option>
+                                       <option value="1">Emergency Repairs</option>
+                                    </select>
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Assign Trailer</label>
+                                    <select data-plugin-selectTwo class="form-control populate">
+                                       <optgroup label="Select Trailer Number">
+                                          <option value="1263">1263</option>
+                                          <option value="13">13</option>
+                                          <option value="45">45</option>
+                                          <option value="4852">4852</option>
+                                          <option value="4783">4783</option>
+                                          <option value="1256">1256</option>
+                                          <option value="6521">6521</option>
+                                          <option value="1452">1452</option>
+                                       </optgroup>
+                                    </select>
+                                 </div>
+                                 <div class="col-lg-2 mar-top-37">
+                                    <a href="#addAssetModal" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                 </div>
+                                 <div class="col-lg-5">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_trailer_seal_input()">Add Seal</label>
+                                    <input type="text" class="form-control" id="trailer_seal_input" style="display: none;">
+                                 </div>
+                                 <div class="col-lg-5 text-right">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_trailer_IIT_input()">Add IIT or Exemption</label>
+                                    <select class="form-control" id="trailer_IIT_input" style="display: none;">
+                                       <option value="1">Select Cargo Exemption</option>
+                                       <option value="1">Courier Low Value Shipment(LVS)</option>
+                                       <option value="1">Instrument of International Trade (IIT)</option>
+                                       <option value="1">Postal</option>
+                                       <option value="1">Flying Trucks</option>
+                                       <option value="1">Emergency Repairs</option>
+                                    </select>
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2"  >Assign Driver</label>
+                                    <select data-plugin-selectTwo class="form-control populate">
+                                       <optgroup label="Select Driver">
+                                          <option value="John Smith">John Smith</option>
+                                          <option value="Mike William">Mike William</option>
+                                          <option value="Andy Anderson">Andy Anderson</option>
+                                          <option value="John Doe">John Doe</option>
+                                          <option value="Jolly Singh">Jolly Singh</option>
+                                          <option value="Ronnie">Ronnie</option>
+                                          <option value="Tony White">Tony White</option>
+                                          <option value="Dwanye Johnson">Dwanye Johnson</option>
+                                       </optgroup>
+                                    </select>
+                                 </div>
+                                 <div class="col-lg-2  mar-top-37">
+                                    <a href="#addDriverModal" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                 </div>
+                                 <div class="col-lg-5">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_team_driver_input()">Add Team Driver</label>
+                                    <div id="team_driver_input" style="display: none;">
+                                       <div class="row">
+                                          <div class="col-lg-9 pr-0">
+                                             <select data-plugin-selectTwo class="form-control populate">
+                                                <optgroup label="Select Team Driver">
+                                                   <option value="1">Anchal</option>
+                                                   <option value="2">Harmeet</option>
+                                                   <option value="2">Harman</option>
+                                                   <option value="2">Jaskarn </option>
+                                                   <option value="2">Heena</option>
+                                                </optgroup>
+                                             </select>
+                                          </div>
+                                          <div class="col-lg-3">
+                                             <a href="#addDriver" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-5 text-right">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_passenger_input()">Add Passenger</label>
+                                    <div id="passenger_input" style="display: none;">
+                                       <div class="row">
+                                          <div class="col-lg-9 pr-0">
+                                             <select data-plugin-selectTwo class="form-control populate">
+                                                <optgroup label="Select Passenger">
+                                                   <option value="1">Anchal</option>
+                                                   <option value="2">Harmeet</option>
+                                                   <option value="2">Harman</option>
+                                                   <option value="2">Jaskarn </option>
+                                                   <option value="2">Heena</option>
+                                                </optgroup>
+                                             </select>
+                                          </div>
+                                          <div class="col-lg-3">
+                                             <a href="#addPassenger" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group row">
+                           <div class="col-lg-12">
+                              <label class="control-label font-weight-bold text-lg-right text-dark text-4  pt-2">ACI Shipment Details</label>
+                           </div>
+                           <div class="col-lg-5 offset-lg-1">
+                              <div class="form-group row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Loaded On</label>
+                                    <select data-plugin-selectTwo class="form-control populate">
+                                       <optgroup label="">
+                                          <option value="1">Trailer34</option>
+                                          <option value="2">Trailer67</option>
+                                          <option value="2">Trailer78</option>
+                                          <option value="2"></option>
+                                       </optgroup>
+                                    </select>
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Shipment Type</label>
+                                    <select data-plugin-selectTwo class="form-control populate">
+                                       <optgroup label="">
+                                          <option value="1">PARS</option>
+                                          <option value="2">In-Bond </option>
+                                          <option value="2">CSA </option>
+                                          <option value="2">ATA Carnet  </option>
+                                          <option value="2">E29B </option>
+                                          <option value="2">Goods Astray </option>
+                                          <option value="2">Paper RMD  </option>
+                                          <option value="2">Paper B3  </option>
+                                          <option value="2">Personal Goods  </option>
+                                          <option value="2">Orders In Council </option>
+                                          <option value="2">Master Provisional </option>
+                                          <option value="2">Automotive Line Release </option>
+                                          <option value="2">Value Included </option>
+                                          <option value="2">Military Goods </option>
+                                          <option value="2">A49 Automotive Release</option>
+                                       </optgroup>
+                                    </select>
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Cargo Control Number</label>
+                                    <input type="text" class="form-control">                                           
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >First Canadian Port of Entry</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Release Office</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Sub Location</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-lg-5">
+                              <div class="form-group row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Estimated Arrival Date</label>
+                                    <input type="text" data-plugin-datepicker="" class="form-control" placeholder="Select Date">
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Estimated Arrival Time</label>
+                                    <input type="text" data-plugin-timepicker="" class="form-control" placeholder="Select Date">
+
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Assign Shipper</label>
+                                    <select class="form-control populate">
+                                       <optgroup label="Select Shipper">
+                                          <option value="Art Place">Art Place</option>
+                                          <option value="Canadian Lava Co.">Canadian Lava Co.</option>
+                                          <option value="Howard Electric INC.">Howard Electric INC.</option>
+                                          <option value="Searcy Trucking Ltd">Searcy Trucking Ltd</option>
+                                          <option value="Titan Transline">Titan Transline</option>
+                                          <option value="JADE TRANSPORT LTD">JADE TRANSPORT LTD</option>
+                                          <option value="Precision">Precision</option>
+                                          <option value="TEAMS Transport">TEAMS Transport</option>
+                                       </optgroup>
+                                    </select>
+                                 </div>
+                                 <div class="col-lg-2  mar-top-37">
+                                    <a href="#addShipperModal" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Assign Consignee</label>
+                                    <select class="form-control populate">
+                                       <optgroup label="Select Consignee">
+                                          <option value="8889 Heather Street Meaford, ON N4L 5M1">8889 Heather Street Meaford, ON N4L 5M1</option>
+                                          <option value="78 Ridge Drive Porters Lake, NS B3E 1R8">78 Ridge Drive Porters Lake, NS B3E 1R8</option>
+                                          <option value="5 Military Dr. Rivière-du-Loup, QC G5R 1T1">5 Military Dr. Rivière-du-Loup, QC G5R 1T1</option>
+                                          <option value="279 Eagle Dr. Prince Rupert, BC V8J 4J1">279 Eagle Dr. Prince Rupert, BC V8J 4J1</option>
+                                          <option value="461 Bedford St. St. Mary's, ON N4X 5N0">461 Bedford St. St. Mary's, ON N4X 5N0 </option>
+                                          <option value="84 Wellington Dr. Dufferin County, ON L0N 9G9">84 Wellington Dr. Dufferin County, ON L0N 9G9</option>
+                                       </optgroup>
+                                    </select>
+                                 </div>
+                                 <div class="col-lg-2 mar-top-37">
+                                    <a href="#addConsigneeModal" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >City of Loading</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >City of Acceptance</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row mb-2">
+                           <div class="col-lg-6">
+                              <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">General Commodity Details</label>
+                           </div>
+                           <div class="col-lg-6">
+                              <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Hazardous Material Details</label>
+                           </div>
+                        </div>
+                        <div class="form-group row">
+                           <div class="col-lg-5 offset-lg-1">
+                              <div class="row">
+                                 <div class="col-lg-5">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Container Number</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                                 <div class="col-lg-5">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Loaded On</label>
+                                    <select data-plugin-selectTwo class="form-control populate">
+                                       <optgroup label="">
+                                          <option value="1">Trailer 111</option>
+                                          <option value="2">Trailer 112</option>
+                                          <option value="2">Trailer 113</option>
+                                          <option value="2">Trailer 114</option>
+                                          <option value="2">Trailer 115</option>
+                                       </optgroup>
+                                    </select>
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col-lg-5">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Seal</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                                 <div class="col-lg-5">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Exemption</label>
+                                    <select class="form-control">
+                                       <option value="1">Select Cargo Exemption</option>
+                                       <option value="1">Courier Low Value Shipment(LVS)</option>
+                                       <option value="1">Instrument of International Trade (IIT)</option>
+                                       <option value="1">Postal</option>
+                                       <option value="1">Flying Trucks</option>
+                                       <option value="1">Emergency Repairs</option>
+                                    </select>
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Commodity</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                                 <div class="col-lg-5">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Quantity</label>
+                                    <div class="row">
+                                       <div class="col-lg-5 pr-0">
+                                          <input type="text" class="form-control">                                                    
+                                       </div>
+                                       <div class="col-lg-7 pl-0">
+                                          <select data-plugin-selectTwo class="form-control populate">
+                                             <optgroup label="">
+                                                <option value="1">Bag</option>
+                                                <option value="2">Can</option>
+                                                <option value="2">Case</option>
+                                                <option value="2">Carton</option>
+                                                <option value="2">Carboy</option>
+                                                <option value="2">Carcass</option>
+                                             </optgroup>
+                                          </select>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-5">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Weight</label>
+                                    <div class="row">
+                                       <div class="col-lg-5 pr-0">
+                                          <input type="text" class="form-control">                                                    
+                                       </div>
+                                       <div class="col-lg-7 pl-0">
+                                          <select data-plugin-selectTwo class="form-control populate">
+                                             <optgroup label="">
+                                                <option value="1">Pounds</option>
+                                                <option value="2">Kilograms</option>
+                                             </optgroup>
+                                          </select>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Marks & Numbers</label>
+                                    <div class="row">
+                                       <div class="col-lg-3"><input type="text" class="form-control"></div>
+                                       <div class="col-lg-3"><input type="text" class="form-control"></div>
+                                       <div class="col-lg-3"><input type="text" class="form-control"></div>
+                                       <div class="col-lg-3"><input type="text" class="form-control"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-lg-5">
+                              <div class="form-group row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Hazmat Code</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Emergency Contact Name</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Contact Number</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Contact Email</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Comments</label>
+                                    <textarea class="form-control" rows="3"></textarea>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group row">
+                           <div class="col-lg-10 text-right">
+                           <button type="button" onclick="goBack()" class="btn btn-default m-1">Cancel</button>
+                                 <a href="emanifests.php" class="btn btn-success m-1">Submit</a>
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+               </section>
             </div>
-         </section>
+         </div>
+      </section>
     </div>
 
 

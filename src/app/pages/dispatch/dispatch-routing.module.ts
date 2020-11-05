@@ -33,6 +33,7 @@ import { MyDocumentListComponent } from './new-documents/my-documents/my-documen
 import { OrdersListComponent } from './orders/orders-list/orders-list.component';
 import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
+import { EManifestsComponent } from './cross-border/e-manifests/e-manifests.component';
 
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
@@ -65,15 +66,16 @@ const routes: Routes = [
   {
     path: 'cross-border',
     children: [
-      {path: 'ACE-eManifest',component: AceManifestComponent},
-      {path: 'ACE-new-eManifest',component: NewAceManifestComponent},
-      {path: 'ACE-shipment',component: AceShipmentComponent},
-      {path: 'ACE-commodity',component: AceCommodityComponent},
+      {path: 'eManifests', component: EManifestsComponent},
+      {path: 'ACE-eManifest', component: AceManifestComponent},
+      {path: 'ACE-new-eManifest', component: NewAceManifestComponent},
+      {path: 'ACE-shipment', component: AceShipmentComponent},
+      {path: 'ACE-commodity', component: AceCommodityComponent},
 
-      {path: 'ACI-eManifest',component: AciEmanifestComponent},
-      {path: 'ACI-new-eManifest',component: NewAciManifestComponent},
-      {path: 'ACI-shipment',component: AciShipmentComponent},
-      {path: 'ACI-commodity',component: AciCommodityComponent}
+      {path: 'ACI-eManifest', component: AciEmanifestComponent},
+      {path: 'ACI-new-eManifest', component: NewAciManifestComponent},
+      {path: 'ACI-shipment', component: AciShipmentComponent},
+      {path: 'ACI-commodity', component: AciCommodityComponent}
     ]
   },
   {
