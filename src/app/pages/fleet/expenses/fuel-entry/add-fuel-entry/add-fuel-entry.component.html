@@ -55,7 +55,7 @@
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vehicle</label>
                              <select data-plugin-selectTwo class="form-control populate" name="vehicleID" [(ngModel)]="vehicleID">
                                 <optgroup label="Select Vehicle">
-                                   <option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</option>
+                                   <option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleIdentification}}">{{vehicle.vehicleIdentification}}</option>
                                    
                                 </optgroup>
                              </select>
@@ -67,7 +67,7 @@
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reefer</label>
                              <select data-plugin-selectTwo class="form-control populate" name="reeferID" [(ngModel)]="reeferID">
                                 <optgroup label="Select Reefer">
-                                 <option *ngFor="let reefer of reeferArray" value="{{reefer.assetID}}">{{reefer.assetIdentification}}</option>                               
+                                 <option *ngFor="let reefer of reeferArray" value="{{reefer.assetIdentification}}">{{reefer.assetIdentification}}</option>                               
                                 </optgroup>
                              </select>
                           </div>

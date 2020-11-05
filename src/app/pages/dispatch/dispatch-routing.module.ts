@@ -37,6 +37,15 @@ import { QuotesListComponent } from './quotes/quotes-list/quotes-list.component'
 import { AddQuotesComponent } from './quotes/add-quotes/add-quotes.component';
 import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
 
+import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
+import { TripListComponent } from './trips/trip-list/trip-list.component';
+import { AddTripComponent } from './trips/add-trip/add-trip.component';
+import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
+import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
+
+import { CalendarViewComponent } from './planner/calendar-view/calendar-view.component';
+import { MapViewComponent } from './planner/map-view/map-view.component';
+
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
 
@@ -122,7 +131,25 @@ const routes: Routes = [
     children: [
       { path: 'route-list', component: RouteListComponent},
       { path: 'add-route', component: AddRouteComponent },
-      { path:'edit-route/:routeID', component:EditRouteComponent}
+      { path:'edit-route/:routeID', component:EditRouteComponent},
+      { path:'route-detail/:routeID', component:RouteDetailComponent},
+    ]
+  },
+  {
+    path: "trips",
+    children: [
+      { path: 'trip-list', component: TripListComponent},
+      { path: 'add-trip', component: AddTripComponent},
+      { path: 'trip-details/:tripID', component: TripDetailComponent},
+      { path: 'edit-trip/:tripID', component: EditTripComponent},
+
+    ]
+  },
+  {
+    path: "planner",
+    children: [
+      { path: 'calendar-view', component: CalendarViewComponent},
+      { path: 'map-view', component: MapViewComponent},
     ]
   },
 ];

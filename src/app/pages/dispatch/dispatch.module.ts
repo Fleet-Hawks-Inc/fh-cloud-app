@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { DispatchRoutingModule } from './dispatch-routing.module';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 import { AddShipperComponent } from './shipper/add-shipper/add-shipper.component';
 import { ShipperListComponent } from './shipper/shipper-list/shipper-list.component';
@@ -80,6 +82,16 @@ import { QuotesListComponent } from './quotes/quotes-list/quotes-list.component'
 import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
 
 
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
+import { TripListComponent } from './trips/trip-list/trip-list.component';
+import { AddTripComponent } from './trips/add-trip/add-trip.component';
+import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
+import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
+import { CalendarViewComponent } from './planner/calendar-view/calendar-view.component';
+import { MapViewComponent } from './planner/map-view/map-view.component';
+
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -146,7 +158,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   }
 }
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -155,7 +166,11 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    DataTablesModule
+    DataTablesModule,
+    DragDropModule,
+    NgSelectModule,
+    NgxMaterialTimepickerModule,
+    FullCalendarModule 
   ],
 
   declarations: [
@@ -242,11 +257,19 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     QuoteDetailComponent,
     
 
+    RouteDetailComponent,
+    TripListComponent,
+    AddTripComponent,
+    TripDetailComponent,
+    EditTripComponent,
+    CalendarViewComponent,
+    MapViewComponent,
+
   ],
 
   providers: [NgSelectConfig, ɵs,
     {provide: NgbDateAdapter, useClass: CustomAdapter},
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},
   ],
 
 })

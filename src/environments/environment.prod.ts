@@ -29,4 +29,7 @@ export const environment = {
   mapConfig: {
     apiKey: 'lIoqoqWBD3Op-8TVFDBPM9pj3kTQKIyCuH8Q_2RDR1c'
   },
+  googleConfig: {
+    apiKey: 'AIzaSyDBkpMI6T1T-z_JRSd03vZ1Q-MSetM1UwI'
+  }
 };

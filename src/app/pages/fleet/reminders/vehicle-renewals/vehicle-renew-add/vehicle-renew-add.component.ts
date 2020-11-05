@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../../../../../services/api.service';
-import {from} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {ToastrService} from 'ngx-toastr';
-import {Router, ActivatedRoute} from '@angular/router';
-import {NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
-import {Location} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../../services';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { Router, ActivatedRoute } from '@angular/router';
+import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Location } from '@angular/common';
 
 declare var $: any;
 
@@ -40,15 +40,11 @@ export class VehicleRenewAddComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
-
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
-              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private location: Location) {
-  }
-
+              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private location: Location) { }
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
-
   ngOnInit() {
     this.reminderID = this.route.snapshot.params['reminderID'];
     if (this.reminderID) {
@@ -68,25 +64,21 @@ export class VehicleRenewAddComponent implements OnInit {
       this.form = $('#form_').validate();
     });
   }
-
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
     });
   }
-
   fetchUsers() {
     this.apiService.getData('users').subscribe((result: any) => {
       this.users = result.Items;
     });
   }
-
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
-
   getSubscribersObject(arr: any[]) {
     this.finalSubscribers = [];
     for (let i = 0; i < arr.length; i++) {
@@ -97,7 +89,8 @@ export class VehicleRenewAddComponent implements OnInit {
           subscriberType: 'group',
           subscriberIdentification: arr[i]
         });
-      } else {
+      }
+      else {
         this.finalSubscribers.push({
           subscriberType: 'user',
           subscriberIdentification: arr[i]
@@ -106,7 +99,6 @@ export class VehicleRenewAddComponent implements OnInit {
     }
     return this.finalSubscribers;
   }
-
   addRenewal() {
     this.errors = {};
     this.hasError = false;
@@ -131,8 +123,7 @@ export class VehicleRenewAddComponent implements OnInit {
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       console.log('data', this.reminderData);
       this.apiService.postData('reminders', this.reminderData).subscribe({
-        complete: () => {
-        },
+        complete: () => { },
         error: (err) => {
           from(err.error)
             .pipe(
@@ -150,10 +141,8 @@ export class VehicleRenewAddComponent implements OnInit {
                 this.throwErrors();
                 this.Success = '';
               },
-              error: () => {
-              },
-              next: () => {
-              },
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
@@ -162,11 +151,11 @@ export class VehicleRenewAddComponent implements OnInit {
           this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list');
         },
       });
-    } else {
+    }
+    else {
       this.toastr.warning('Time Must Be Positive Value');
     }
   }
-
   /*
   * Fetch Reminder details before updating
  */
@@ -190,11 +179,9 @@ export class VehicleRenewAddComponent implements OnInit {
       });
 
   }
-
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-
   throwErrors() {
     this.form.showErrors(this.errors);
   }
@@ -224,8 +211,7 @@ export class VehicleRenewAddComponent implements OnInit {
       this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
       console.log('updated data', this.reminderData);
       this.apiService.putData('reminders', this.reminderData).subscribe({
-        complete: () => {
-        },
+        complete: () => { },
         error: (err) => {
           from(err.error)
             .pipe(
@@ -243,10 +229,8 @@ export class VehicleRenewAddComponent implements OnInit {
                 this.throwErrors();
                 this.Success = '';
               },
-              error: () => {
-              },
-              next: () => {
-              },
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
@@ -256,7 +240,8 @@ export class VehicleRenewAddComponent implements OnInit {
           this.Success = '';
         },
       });
-    } else {
+    }
+    else {
       this.toastr.warning('Time Must Be Positive Value');
     }
   }
