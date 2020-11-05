@@ -147,7 +147,7 @@ export class AddIssueComponent implements OnInit {
 }
 throwErrors() {
    // console.log(this.myform);
-    console.log(this.errors);
+   // console.log(this.errors);
     this.myform.showErrors(this.errors);
 }
  /*

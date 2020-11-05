@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
+import {concatMap, map, mergeAll, toArray} from 'rxjs/operators';
+import {from, of} from 'rxjs';
 import {AwsUploadService} from '../../../../services';
 import { v4 as uuidv4 } from 'uuid';
 declare var $: any;
@@ -182,7 +182,7 @@ export class AddVehicleNewComponent implements OnInit {
     carrierID;
 
   errors = {};
-  form;
+  vehicleForm;
   response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -201,6 +201,9 @@ export class AddVehicleNewComponent implements OnInit {
 
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private router: Router) {
     this.selectedFileNames = new Map<any, any>();
+    $(document).ready(() => {
+      this.vehicleForm = $('#vehicleForm').validate();
+    });
   }
 
   ngOnInit() {
@@ -222,9 +225,7 @@ export class AddVehicleNewComponent implements OnInit {
     $('#hardAccelrationParametersValue').html(6);
     $('#turningParametersValue').html(6);
 
-    $(document).ready(() => {
-      this.form = $('#form_').validate();
-    });
+
 
   }
 
@@ -279,6 +280,7 @@ export class AddVehicleNewComponent implements OnInit {
   addVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
+    this.hideErrors();
     const data = {
       vehicleIdentification: this.vehicleIdentification,
       vehicleType: this.vehicleType,
@@ -428,7 +430,7 @@ export class AddVehicleNewComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/'.*'/, 'This Field');
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -450,8 +452,27 @@ export class AddVehicleNewComponent implements OnInit {
   }
 
   throwErrors() {
-    this.form.showErrors(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error')
+      });
+    // this.vehicleForm.showErrors(this.errors);
   }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
+  }
+
+
  /*
    * Selecting files before uploading
    */

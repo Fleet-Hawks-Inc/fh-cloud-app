@@ -10,7 +10,7 @@ import {DriverListComponent} from './driver-list/driver-list.component';
 import {DriverDetailComponent} from './driver-detail/driver-detail.component';
 import {SharedModule} from '../../../shared/shared.module';
 import { DataTablesModule } from 'angular-datatables';
-import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   { path: 'add', component: AddDriverComponent },
