@@ -13,7 +13,7 @@
         <section role="main" class="content-body p-0">
          <header class="page-header">
             <div class="row pr-5 " style="padding-top:10px;">
-               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Add Order </div>
+               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}} </div>
                <div class="col-md-8  col-lg-8 text-right pr-4">
                   <!-- <a class="btn btn-success btn-sm modal-with-form" href="#bolTemplateModal">Create BOL</a>  --><a href="all-orders.php" class="btn btn-default"><i class="fas fa-list"></i> All Orders</a> </div>
             </div>
@@ -414,8 +414,8 @@
                                           <select [(ngModel)]="shipperCurrent.minTempratureUnit"
                                           name="minTempratureUnit" data-plugin-selecttwo="" class="form-control populate" data-select2-id="10" tabindex="-1" aria-hidden="true">
                                              <optgroup label="">
-                                                <option value="2" data-select2-id="12">°C</option>
-                                                <option value="2">°F</option>
+                                                <option value="°C" data-select2-id="12">°C</option>
+                                                <option value="°F">°F</option>
                                              </optgroup>
                                           </select>
                                        </div>
@@ -438,8 +438,8 @@
                                           <select [(ngModel)]="shipperCurrent.maxTempratureUnit"
                                           name="maxTempratureUnit" data-plugin-selecttwo="" class="form-control populate" data-select2-id="13" tabindex="-1" aria-hidden="true">
                                              <optgroup label="">
-                                                <option value="2" data-select2-id="15">°C</option>
-                                                <option value="2">°F</option>
+                                                <option value="°C" data-select2-id="15">°C</option>
+                                                <option value="°F">°F</option>
                                              </optgroup>
                                             </select>
                                        </div>
@@ -523,8 +523,8 @@
                                           <input [(ngModel)]="receiverCurrent.dropOffLocation"
                                           name="dropOffLocation" #dropOffLocation="ngModel" required dropOffLocation (keyup)="searchTerm.next($event);" class="form-control" tabindex="-1" aria-hidden="true">
                                           
-                                          <ul class="p-0 m-0 text-left map-search__results bg-white" *ngIf="searchResults">
-                                             <li *ngFor="let item of searchResults;">
+                                          <ul class="p-0 m-0 text-left map-search__results bg-white" *ngIf="searchResults1">
+                                             <li *ngFor="let item of searchResults1;">
                                                 <a href="javascript:;" (click)="assignLocation('receiver', item.address.label)" title="{{item.address.label}}">{{item.address.label}}</a>
                                              </li>
                                           </ul>
@@ -636,8 +636,8 @@
                                           <select [(ngModel)]="receiverCurrent.minTempratureUnit"
                                           name="minTempratureUnit" data-plugin-selecttwo="" class="form-control populate" data-select2-id="22" tabindex="-1" aria-hidden="true">
                                              <optgroup label="">
-                                                <option value="2" data-select2-id="24">°C</option>
-                                                <option value="2">°F</option>
+                                                <option value="°C" data-select2-id="24">°C</option>
+                                                <option value="°F">°F</option>
                                              </optgroup>
                                           </select>
                                           </div>
@@ -657,8 +657,8 @@
                                           <select [(ngModel)]="receiverCurrent.maxTempratureUnit"
                                           name="maxTempratureUnit" data-plugin-selecttwo="" class="form-control populate" data-select2-id="25" tabindex="-1" aria-hidden="true">
                                              <optgroup label="">
-                                                <option value="2" data-select2-id="27">°C</option>
-                                                <option value="2">°F</option>
+                                                <option value="°C" data-select2-id="24">°C</option>
+                                                <option value="°F">°F</option>
                                              </optgroup>
                                           </select>
                                          </div>
@@ -743,15 +743,15 @@
                                   <select [(ngModel)]="orderData.freightDetails.quantityUnit"
                                   name="quantityUnit" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
-                                        <option value="2" data-select2-id="21">Bag</option>
-                                        <option value="2">Bale</option>
-                                        <option value="2">Barrel</option>
-                                        <option value="2">Basket</option>
-                                        <option value="2">Bin</option>
-                                        <option value="2">Box</option>
-                                        <option value="2">Bucket</option>
-                                        <option value="2">Can</option>
-                                        <option value="2">Crate</option>
+                                        <option value="Bag" data-select2-id="21">Bag</option>
+                                        <option value="Bale">Bale</option>
+                                        <option value="Barrel">Barrel</option>
+                                        <option value="Basket">Basket</option>
+                                        <option value="Bin">Bin</option>
+                                        <option value="Box">Box</option>
+                                        <option value="Bucket">Bucket</option>
+                                        <option value="Can">Can</option>
+                                        <option value="Crate">Crate</option>
                                      </optgroup>
                                   </select>
                                </div>
@@ -767,15 +767,15 @@
                                   <select [(ngModel)]="orderData.freightDetails.rateUnit"
                                   name="rateUnit" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
-                                        <option value="2" data-select2-id="21">Bag</option>
-                                        <option value="2">Bale</option>
-                                        <option value="2">Barrel</option>
-                                        <option value="2">Basket</option>
-                                        <option value="2">Bin</option>
-                                        <option value="2">Box</option>
-                                        <option value="2">Bucket</option>
-                                        <option value="2">Can</option>
-                                        <option value="2">Crate</option>
+                                       <option value="Bag" data-select2-id="21">Bag</option>
+                                       <option value="Bale">Bale</option>
+                                       <option value="Barrel">Barrel</option>
+                                       <option value="Basket">Basket</option>
+                                       <option value="Bin">Bin</option>
+                                       <option value="Box">Box</option>
+                                       <option value="Bucket">Bucket</option>
+                                       <option value="Can">Can</option>
+                                       <option value="Crate">Crate</option>
                                      </optgroup>
                                   </select>
                                </div>
@@ -793,9 +793,9 @@
                                   <select [(ngModel)]="orderData.freightDetails.weightUnit"
                                   name="weightUnit" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
-                                        <option value="2" data-select2-id="21">ton(s)</option>
-                                        <option value="2">Kilograms</option>
-                                        <option value="2">lbs</option>
+                                        <option value="ton(s)" data-select2-id="21">ton(s)</option>
+                                        <option value="Kilograms">Kilograms</option>
+                                        <option value="lbs">lbs</option>
                                      </optgroup>
                                   </select>
                                </div>
@@ -851,10 +851,9 @@
                                   <select [disabled]="orderData.additionalDetails.dropTrailer" [(ngModel)]="orderData.additionalDetails.trailerType"
                                   name="trailerType" class="form-control populate" data-select2-id="49" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
-                                        <option value="" *ngIf="orderData.additionalDetails.dropTrailer"></option>
-                                     <option value="2" data-select2-id="51">Refer</option>
-                                     <option value="2">Dry Van</option>
-                                     <option value="2">Flat Bed</option>
+                                     <option value="Refer" data-select2-id="51">Refer</option>
+                                     <option value="Dry Van">Dry Van</option>
+                                     <option value="Flat Bed">Flat Bed</option>
                                      </optgroup>
                                      </select>
                                </div>
@@ -1055,10 +1054,10 @@
                                   <select [(ngModel)]="orderData.charges.accessorialDeduction.type"
                                   name="type" class="form-control populate" data-select2-id="61" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
-                                     <option value="2" data-select2-id="63">Stop Off</option>
-                                     <option value="2">Lumper</option>
-                                     <option value="2">Detention</option>
-                                     <option value="2">Tarp</option>
+                                     <option value="Stop Off" data-select2-id="63">Stop Off</option>
+                                     <option value="Lumper">Lumper</option>
+                                     <option value="Detention">Detention</option>
+                                     <option value="Tarp">Tarp</option>
                                      </optgroup>
                                      </select>
                                </div>
@@ -1075,8 +1074,8 @@
                                   <select [(ngModel)]="orderData.charges.accessorialDeduction.unit"
                                   name="unit" data-plugin-selecttwo="" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
                                      <optgroup label="">
-                                        <option value="1">CAD</option>
-                                        <option value="2">USD</option>
+                                        <option value="CAD">CAD</option>
+                                        <option value="USD">USD</option>
                                      </optgroup>
                                   </select>
                                </div>
@@ -1102,9 +1101,9 @@
                                                 <select (change)="taxCalculate($event.target.value)" [(ngModel)]="orderData.taxesInfo.unit"
                                                 name="unit" class="form-control populate">
                                                     <optgroup label="">
-                                                        <option value="2">%</option>
-                                                        <option value="2">CAD</option>
-                                                        <option value="2">USD</option>
+                                                      <option selected value="percentage">%</option>
+                                                      <option value="CAD">CAD</option>
+                                                      <option value="USD">USD</option>
                                                     </optgroup>
                                                 </select>
                                             </div>
@@ -1120,9 +1119,9 @@
                                             <div class="col-lg-2 pl-0">
                                                 <select data-plugin-selectTwo class="form-control populate">
                                                     <optgroup label="">
-                                                        <option value="2">%</option>
-                                                        <option value="2">CAD</option>
-                                                        <option value="2">USD</option>
+                                                      <option selected value="percentage">%</option>
+                                                      <option value="CAD">CAD</option>
+                                                      <option value="USD">USD</option>
                                                     </optgroup>
                                                 </select>
                                             </div>
@@ -1138,9 +1137,9 @@
                                             <div class="col-lg-2 pl-0">
                                                 <select data-plugin-selectTwo class="form-control populate">
                                                     <optgroup label="">
-                                                        <option value="2">%</option>
-                                                        <option value="2">CAD</option>
-                                                        <option value="2">USD</option>
+                                                      <option selected value="percentage">%</option>
+                                                        <option value="CAD">CAD</option>
+                                                        <option value="USD">USD</option>
                                                     </optgroup>
                                                 </select>
                                             </div>

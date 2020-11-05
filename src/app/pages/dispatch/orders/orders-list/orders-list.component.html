@@ -133,24 +133,35 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let order of orders;">
-                                        <td>{{order}}</td>
-                                        <td>LTL</td>
+                                    <tr *ngFor="let order of orders;let i = index;">
+                                        <td routerLink="/dispatch/orders/detail/{{order.orderID}}">3455</td>
+                                        <td>{{order.orderMode}}</td>
                 
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
+                                        <td>Date: {{order.shipperInfo[i].locationDateTime}}<br>
+                                            Location: {{order.shipperInfo[i].pickupLocation}}</td>
+                                        <td>Date: {{order.receiverInfo[i].locationDateTime}}<br>
+                                            Location: {{order.receiverInfo[i].dropOffLocation}}</td>
+                                        <td>Name: {{order.freightDetails.commodity}}<br>
+                                            Qty: {{order.freightDetails.quantity}} {{order.freightDetails.quantityUnit}} <br>
+                                            Rate: {{order.freightDetails.rate}} {{order.freightDetails.rateUnit}}</td>
+                                        <td>T Amt: CAD {{order.freightDetails.amount}}<br>
                                             Received: CAD 1200.00<br>
                                             Balance: CAD 300.00</td>
                                         <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
                                         <td>
-
-                                        </td>
+                                            <div class="dropdown dropright">
+                                               <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                  <i class="fas fa-ellipsis-v"></i>
+                                               </button>
+                                               <div class="dropdown-menu"
+                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                    <a class="dropdown-item"
+                                                    routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="deactivateAsset(order.orderID)">Delete</a>
+                                                </div>
+                                             </div>
+                                         </td>
                                     </tr>
                 
                                     

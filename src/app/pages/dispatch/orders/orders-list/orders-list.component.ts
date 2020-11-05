@@ -8,7 +8,7 @@ import {ApiService} from '../../../../services/api.service';
 })
 export class OrdersListComponent implements OnInit {
   orders;
-  constructor(private apiService: ApiService,) { }
+  constructor(private apiService: ApiService) { }
 
   ngOnInit() {
     this.fetchOrders();
@@ -16,11 +16,12 @@ export class OrdersListComponent implements OnInit {
 
   fetchOrders = () => {
     // this.spinner.show(); // loader init
-    this.apiService.getData('documents').subscribe({
+    this.apiService.getData('orders').subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        this.orders = result;
+        this.orders = result.Items;
+        console.log("orders", this.orders);
         }
       });
   };

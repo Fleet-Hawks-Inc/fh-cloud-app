@@ -88,7 +88,7 @@
                                   <div class="col-xl-4 col-12 mb-3 pl-0 pr-0">
                                      <div class="col-xl-12 col-12 mb-3">
                                         <div class="boxshadow1 maindisbox w100 pull-left">
-                                         <div class="widgetload">
+                                         <div class="widgetload"  *ngFor="let item of orderData">
                                              <div class="widgettbload">
                                               <span class="pull-right text-3 mt-2 text-dark">
                                               </span>
@@ -97,16 +97,16 @@
                      
                                              <div class="widgetlinfo">
                      
-                                              <p class="mb-0 text-4 font-weight-semibold text-dark">James</p>
-                                              <p class="mb-0 mt-1 text-4 font-weight-semibold text-dark">james@live.com</p>
-                                              <p class="mb-0 mt-1 text-4 text-dark">(123) 456-7890</p>
+                                              <p class="mb-0 text-4 font-weight-semibold text-dark">{{item.customerID}}</p>
+                                              <p class="mb-0 mt-1 text-4 font-weight-semibold text-dark">{{item.email}}</p>
+                                              <p class="mb-0 mt-1 text-4 text-dark">{{item.phone}}</p>
  
  
                                               <!-- <p class="mb-0 text-dark"><strong>Account#</strong> <span class="pull-right">787355464</span></p> -->
-                                              <p class="mb-0 text-dark"><strong>Reference</strong> <span class="pull-right">256</span></p>
-                                              <p class="mb-0 text-dark"><strong>Load Creation Date/Time</strong> <span class="pull-right">05/25/2020 07:41 AM</span></p>
-                                              <p class="mb-0 text-dark"><strong>C-TPAT</strong> <span class="pull-right">89898ABC</span></p>
-                                              <p class="mb-0 text-dark"><strong>CSA ?</strong> <span class="pull-right">No</span></p>
+                                              <p class="mb-0 text-dark"><strong>Reference</strong> <span class="pull-right">{{item.reference}}</span></p>
+                                              <p class="mb-0 text-dark"><strong>Load Creation Date/Time</strong> <span class="pull-right">{{item.creationDate}} {{item.creationTime.hour}}:{{item.creationTime.minute}}:{{item.creationTime.second}} </span></p>
+                                              <p class="mb-0 text-dark"><strong>C-TPAT</strong> <span class="pull-right">{{item.ctpat}}</span></p>
+                                              <p class="mb-0 text-dark"><strong>CSA ?</strong> <span class="pull-right">{{item.csa}}</span></p>
  
                                              </div>
                                          </div>
@@ -164,7 +164,7 @@
  
                                               <div class="disbtmpart w100">
                                                  <div class="divcenter">
-                                                    <p class="mb-1"><a href="#templateSelectionModal" class="mb-1 mt-1 mr-1 modal-with-form btn btn-xs btn-dark">Create Invoice</a></p>
+                                                    <p class="mb-1"><a data-toggle="modal" data-target="#templateSelectionModal" href="javascript:;" class="mb-1 mt-1 mr-1 modal-with-form btn btn-xs btn-dark">Create Invoice</a></p>
                                                  </div>
                                               </div>
  
@@ -185,33 +185,17 @@
                                                 <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Shipper</h2>
                                              </div>
                      
-                                             <div class="widgetlinfo">
+                                             <div class="widgetlinfo" *ngFor="let item of shipperData">
                                               <div class="col-lg-2 pull-left">
-                                                 <img src="img/icon-load.png" class="img-fluid" alt="shipper">
+                                                 <img src="assets/img/icon-load.png" class="img-fluid" alt="shipper">
                                               </div>
                                               <div class="col-lg-10 pull-left">
-                                                 <p class="mb-0 text-dark"><strong>James</strong></p>
-                                              <p class="mb-0 text-dark">1155 Mckay Street Regina, SK S4W 0T4</p>
-                                              <p class="mb-0 text-dark"><strong>Pickup Date/Time:</strong>  06/02/2020  05:25 AM</p>
-                                              <p class="mb-0 text-dark"><strong>Contact Phone:</strong>   (103) 069-1461</p>
-                                              <p class="mb-0 text-dark"><strong>Pick Up Instructions:</strong> Please phone</p>
-                                              <p class="mb-0 text-dark"><strong>BOL:</strong> 1239202</p>
-                                              </div>
- 
-                                             
- 
-                                             </div>
-                                             <div class="widgetlinfo">
-                                              <div class="col-lg-2 pull-left">
-                                                 <img src="img/icon-load.png" class="img-fluid" alt="shipper">
-                                              </div>
-                                              <div class="col-lg-10 pull-left">
-                                                 <p class="mb-0 text-dark"><strong>James</strong></p>
-                                              <p class="mb-0 text-dark">1155 Mckay Street Regina, SK S4W 0T4</p>
-                                              <p class="mb-0 text-dark"><strong>Pickup Date/Time:</strong>  06/02/2020  05:25 AM</p>
-                                              <p class="mb-0 text-dark"><strong>Contact Phone:</strong>   (103) 069-1461</p>
-                                              <p class="mb-0 text-dark"><strong>Pick Up Instructions:</strong> Please phone</p>
-                                              <p class="mb-0 text-dark"><strong>BOL:</strong> 1239202</p>
+                                                 <p class="mb-0 text-dark"><strong>{{item.shipperName}}</strong></p>
+                                              <p class="mb-0 text-dark">{{item.pickupLocation}}</p>
+                                              <p class="mb-0 text-dark"><strong>Pickup Date/Time:</strong>  {{item.locationDateTime}}</p>
+                                              <p class="mb-0 text-dark"><strong>Contact Phone:</strong>   {{item.phone}}</p>
+                                              <p class="mb-0 text-dark"><strong>Pick Up Instructions:</strong> {{item.pickupInstruction}}</p>
+                                              <p class="mb-0 text-dark"><strong>BOL:</strong> {{item.BOL}}</p>
                                               </div>
  
                                              
@@ -233,16 +217,16 @@
                                                 <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Consignee</h2>
                                              </div>
                      
-                                             <div class="widgetlinfo">
+                                             <div class="widgetlinfo"  *ngFor="let item of consineeData">
                                               <div class="col-lg-2 pull-left">
-                                                 <img src="img/icon-unload.png" class="img-fluid" alt="shipper">
+                                                 <img src="assets/img/icon-unload.png" class="img-fluid" alt="shipper">
                                               </div>
                                               <div class="col-lg-10 pull-left">
-                                                 <p class="mb-0 text-dark"><strong>ABC Logistics</strong></p>
-                                              <p class="mb-0 text-dark">2060 Flr Bed 2 322 Corydon, Winnipeg, YT R3P 0N3</p>
-                                              <p class="mb-0 text-dark"><strong>Delivery Date/Time:</strong>   06/10/2020 08:20 PM</p>
-                                              <p class="mb-0 text-dark"><strong>Contact Phone:</strong>   (103) 069-1461</p>
-                                              <p class="mb-0 text-dark"><strong>Delivery Instructions:</strong>  Check with dispatch before you leave</p>
+                                                 <p class="mb-0 text-dark"><strong>{{item.receiverName}}</strong></p>
+                                              <p class="mb-0 text-dark">{{item.dropOffLocation}}</p>
+                                              <p class="mb-0 text-dark"><strong>Delivery Date/Time:</strong>   {{item.locationDateTime}}</p>
+                                              <p class="mb-0 text-dark"><strong>Contact Phone:</strong>   {{item.phone}}</p>
+                                              <p class="mb-0 text-dark"><strong>Delivery Instructions:</strong> {{item.dropOffInstruction}}</p>
                                               
                                               </div>
  
@@ -266,7 +250,7 @@
                      
                                              <div class="widgetlinfo">
                                               <div class="col-lg-2 pull-left">
-                                                 <img src="img/icon-freight.png" class="img-fluid" alt="shipper">
+                                                 <img src="assets/img/icon-freight.png" class="img-fluid" alt="shipper">
                                               </div>
                                               <div class="col-lg-10 pull-left">
                                               
@@ -300,7 +284,7 @@
                      
                                              <div class="widgetlinfo">
                                               <div class="col-lg-2 pull-left">
-                                                 <img src="img/icon-cur.png" class="img-fluid" alt="shipper">
+                                                 <img src="assets/img/icon-cur.png" class="img-fluid" alt="shipper">
                                               </div>
                                               <div class="col-lg-10 pull-left">
                                                  <p class="mb-0 text-dark">Freight Fee <span class="pull-right">$250.00</span></p>
@@ -502,35 +486,20 @@
                                                        </tr>
                                                     </thead>
                                                     <tbody>
-                                                       <tr>
-                                                          <td>James</td>
-                                                          <td>1155 Mckay Street Regina, SK S4W 0T4</td>
-                                                          <td>(001)-345-4567</td>
-                                                          <td>shipper@testmail.com</td>
+                                                       <tr *ngFor="let item of shipperData">
+                                                          <td>{{item.shipperName}}</td>
+                                                          <td>{{item.pickupLocation}}</td>
+                                                          <td>{{item.phone}}</td>
+                                                          <td>john@gmail.com</td>
                                                           <td>11554</td>
-                                                          <td>06/02/2020 05:25 AM</td>
-                                                          <td></td>
-                                                          <td>23 °C to 25 °C</td>
-                                                          <td>Mr. Singh</td>
-                                                          <td>306-657-6457</td>
-                                                          <td></td>
-                                                          <td>YES</td>
-                                                          <td></td>
-                                                       </tr>
-                                                       <tr>
-                                                          <td>James</td>
-                                                          <td>1155 Mckay Street Regina, SK S4W 0T4</td>
-                                                          <td>(001)-345-4567</td>
-                                                          <td>shipper@testmail.com</td>
-                                                          <td>11554</td>
-                                                          <td>06/02/2020 05:25 AM</td>
-                                                          <td></td>
-                                                          <td>23 °C to 25 °C</td>
-                                                          <td>Mr. Singh</td>
-                                                          <td>306-657-6457</td>
-                                                          <td></td>
-                                                          <td>YES</td>
-                                                          <td></td>
+                                                          <td>{{item.locationDateTime}}</td>
+                                                          <td>{{item.pickupInstruction</td>
+                                                          <td>{{item.minTemprature}} {{item.minTempratureUnit}} to {{item.maxTemprature}} {{item.maxTempratureUnit}}</td>
+                                                          <td>{{item.contactPerson}}</td>
+                                                          <td>{{item.phone}}</td>
+                                                          <td>{{item.reference}}</td>
+                                                          <td>{{item.driverLoad}}</td>
+                                                          <td>{{item.notes}}</td>
                                                        </tr>
                                                     </tbody>
                                                  </table>
@@ -595,21 +564,22 @@
                                                        </tr>
                                                     </thead>
                                                     <tbody>
-                                                       <tr>
-                                                          <td>James</td>
-                                                          <td>1155 Mckay Street Regina, SK S4W 0T4</td>
-                                                          <td>(001)-345-4567</td>
-                                                          <td>shipper@testmail.com</td>
-                                                          <td>11554</td>
-                                                          <td>06/02/2020 05:25 AM</td>
-                                                          <td></td>
-                                                          <td>23 °C to 25 °C</td>
-                                                          <td>Mr. Singh</td>
-                                                          <td>306-657-6457</td>
-                                                          <td></td>
-                                                          <td>YES</td>
-                                                          <td></td>
-                                                       </tr>
+                                                      <tr *ngFor="let item of consineeData">
+                                                         <td>{{item.receiverName}}</td>
+                                                         <td>{{item.dropOffLocation}}</td>
+                                                         <td>{{item.phone}}</td>
+                                                         <td>john@gmail.com</td>
+                                                         <td>11554</td>
+                                                         <td>{{item.locationDateTime}}</td>
+                                                         <td>{{item.dropOffInstruction</td>
+                                                         <td>{{item.minTemprature}} {{item.minTempratureUnit}} to {{item.maxTemprature}} {{item.maxTempratureUnit}}</td>
+                                                         <td>{{item.contactPerson}}</td>
+                                                         <td>{{item.phone}}</td>
+                                                         <td>{{item.reference}}</td>
+                                                         <td>{{item.driverUnload}}</td>
+                                                         <td>{{item.notes}}</td>
+                                                      </tr>
+                                                       
                                                     </tbody>
                                                  </table>
                                               </div>
@@ -854,15 +824,15 @@
  
                                               <div class="widgetlinfo">
                                                  <ul class="d-flex p-0 m-0 order-attachment__preview">
-                                                    <li><img src="img/doc.jpg" class="img-fluid" height="150"></li>
-                                                    <li><img src="img/doc.jpg" class="img-fluid" height="150"></li>
+                                                    <li><img src="assets/img/doc.jpg" class="img-fluid" height="150"></li>
+                                                    <li><img src="assets/img/doc.jpg" class="img-fluid" height="150"></li>
                                                  </ul>
                                                  <!-- <table class="table table-bordered table-responsive-lg">
                                                     <tbody>
                                                        <tr>
-                                                          <td width="33%"><img src="img/doc.jpg" height="250" width="100%"></td>
-                                                          <td width="33%"><img src="img/cpp.jpg" height="250" width="100%"></td>
-                                                          <td width="33%"><img src="img/doc.jpg" height="250" width="100%"></td>                                                        
+                                                          <td width="33%"><img src="assets/img/doc.jpg" height="250" width="100%"></td>
+                                                          <td width="33%"><img src="assets/img/cpp.jpg" height="250" width="100%"></td>
+                                                          <td width="33%"><img src="assets/img/doc.jpg" height="250" width="100%"></td>                                                        
                                                        </tr>
                                                      
                                                     </tbody>
@@ -882,3 +852,281 @@
         </section>
     </div>
 </section>
+<!-- Modal -->
+<div class="modal fade" id="templateSelectionModal" tabindex="-1" role="dialog" aria-labelledby="templateSelectionModalLabel" aria-hidden="true">
+   <div class="modal-dialog" style="max-width: 1200px;" role="document">
+       <div class="modal-content">
+           <div class="modal-header">
+               <h5 class="modal-title" id="templateSelectionModalLabel">Select Invoice Template </h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i>
+               </button>
+           </div>
+           <div class="modal-body">
+            <div class="invoice-templates__listing">
+               <ul class="m-0 p-0 d-flex flex-wrap">
+                  <li class="position-relative" 
+                     *ngFor="let item of templateList;let i = index"
+                     [ngClass]="{'active': selectedItem === i}"
+                     (click)='selectedItem = i;'
+                     >
+                     <img src="{{item}}" class="img-fluid">
+                     <div class="invoice-actions">
+                        <div>
+                           <a href="javascript:;" class="btn btn-success ">Use template</a>
+                        </div>
+                     </div>
+                     <div class="selected-template">
+                        <i class="fa fa-check-circle fa-fw" style="color: #000;"></i>
+                     </div>
+                  </li>
+               </ul>
+            </div>
+           </div>
+           <div class="modal-footer">
+               <a (click)="previewModal()" href="javascript:;" class="btn btn-success">Preview</a>
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+<div class="modal fade" id="previewInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="previewInvoiceModalLabel" aria-hidden="true">
+   <div class="modal-dialog" style="max-width: 1200px;" role="document">
+       <div class="modal-content">
+           <div class="modal-body">
+            <div class="print-invoice__wrapper">
+               <div class="container-fluid invoice-wrapper" id="print_wrap">
+                    <!-- Header -->
+                    <header>
+                    <div class="row align-items-center">
+                      <div class="col-sm-7 text-center text-sm-left mb-3 mb-sm-0">
+                        <img id="logo" src="assets/img/logo.png" title="FleetHawks" alt="FleetHawks">
+                      </div>
+                      <div class="col-sm-5 text-center text-sm-right">
+                        <h4 class="text-7 mb-0">Invoice</h4>
+                      </div>
+                    </div>
+                    <hr>
+                    </header>
+                    
+                    <!-- Main Content -->
+                    <main>
+                    <div class="row align-items-center">
+                      <div class="col-sm-6"><strong>Invoice No:</strong> <span>16835</span> <br><strong>Invoice Date:</strong> <span>05/12/2020</span></div>
+                      <div class="col-sm-6 text-sm-right"> <strong>Order:</strong> <span> 52415 </span> </div>
+                       
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6"> <strong>Carrier:</strong>
+                            <address>
+                            iLoad Trucking Ltd<br>
+                            245-7337 120th Street,<br>
+                            Canada 67R67 <br>
+                            (403) 635-6352 <br>
+                            <b>Contact Person:</b> Baljit Singh
+                            </address>
+                         </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-6 text-sm-right order-sm-1"> 
+                         <div *ngFor="let item of consineeData;">
+                           <strong>Consignee:</strong>
+                           <address>
+                          {{item.receiverName}}<br>
+                           {{item.dropOffLocation}}<br>
+                           {{item.phone}} <br>
+                           <b>Contact Person:</b> {{item.contactPerson}}
+                           </address>
+                           <strong>Expected Date:</strong><span> {{item.locationDateTime}}</span>
+                         </div>
+                        
+                      </div>
+                      <div class="col-sm-6  order-sm-0"> 
+                        <div *ngFor="let item of shipperData;">
+                           <strong>Shipper:</strong>
+                           <address>
+                              {{item.shipperName}}<br><br>
+                           {{item.pickupLocation}}<br>
+                           {{item.phone}} <br>
+                        <b>Contact:</b> {{item.contactPerson}}
+                           </address>
+                           <strong>Expected Date:</strong><span> {{item.locationDateTime}}</span>
+                        </div>
+                      </div>
+                    </div> 
+                    <!-- <hr class="mb-2"> -->
+                    <!-- <div class="row pb-2">
+                      <div class="col-4"><strong>Driver:</strong> <span>John Smith</span></div>
+                      <div class="col-4 text-center"> <strong>Truck:</strong> <span>54152</span></div>
+                      <div class="col-4 text-right"> <strong>Trailer:</strong> <span>#525114</span></div>
+                    </div> -->
+                    <div class="card mt-2">
+                      <div class="card-header px-2 py-0" style="background: #333;"> 
+                        <table class="table mb-0">
+                          <thead>
+                            <tr style="color: #fff;">
+                              <td style="width: 65%;" class="border-0"><strong>commodity </strong></td>
+                           <td style="width: 80px;" class=" text-center border-0"><strong>Weight</strong></td>
+                           <td style="width: 75px;" class=" text-center border-0"><strong>QTY</strong></td>
+                              <td style="width: 90px;" class="text-right border-0"><strong>Amount</strong></td>
+                            </tr>
+                          </thead>
+                        </table>
+                      </div>
+                      <div class="card-body py-0 px-2">
+                        
+                        <div class="table-responsive">
+                          <table class="table m-0">
+                            <tbody>
+                              <tr>
+                                <td style="width: 65%;" class="border-0">ABC commodity </td>
+                                <!-- <td class="col-4 text-1 border-0"></td> -->
+                                <td style="width: 80px;" class=" text-center border-0">100 KG</td>
+                             <td style="width: 75px;" class=" text-center border-0">10</td>
+                             <td style="width: 90px;" class="text-right border-0"><small>CAD </small>500.00</td>
+                              </tr>
+                              
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="card mt-3">
+                      <div class="card-header px-2 py-0" style="background: #333;">
+                        <table class="table mb-0">
+                          <thead>
+                            <tr style="color: #fff;">
+                              <td style="width: 200px;" class="border-0"><strong>Fee Method</strong></td>
+                              <td style="width: 100px;" class="text-center border-0"><strong>Value</strong></td>
+                              <td style="width: 100px;" class="text-center border-0"><strong>Rate</strong></td>
+                              <td style="width: 100px;" class="text-center border-0"><strong>Amount</strong></td>
+                              <td style="width: 100px;" class="text-center border-0"><strong>Tax</strong></td>
+                              <td style="width: 100px;" class="text-right border-0"><strong>Total</strong></td>
+                            </tr>
+                          </thead>
+                        </table>
+                      </div>
+                      <div class="card-body py-0 px-2">
+                        
+                        <div class="table-responsive">
+                          <table class="table m-0">
+                            <tbody>
+                              <tr>
+                                <td style="width: 200px;"><strong>Freight Fees <small>(Per Mile)</small></strong></td>
+                                  <td style="width: 100px;" class=" text-center">1200 Miles</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>2.00</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>2,400 </td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>400 <small>(13.0%)</small></td>
+                                  <td style="width: 100px;" class=" text-right"><small>CAD </small>2,800</td>
+                              </tr>
+                              <tr>
+                                <td style="width: 200px;"><strong>Fuel Surcharge <small><br>(Per Mile)</small></strong></td>
+                                  <td style="width: 100px;" class=" text-center">1200 Miles</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>1.00</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>1,200</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>250 <small>(12.0%)</small></td>
+                                  <td style="width: 100px;" class=" text-right"><small>CAD </small>1,650</td>
+                              </tr>
+                              <tr>
+                                <td style="width: 200px;"><strong>Tarp <small>(Other Charges)</small></strong></td>
+                                  <td style="width: 100px;" class=" text-center">-</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>30</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>30</td>
+                                  <td style="width: 100px;" class=" text-center">-</td>
+                                  <td style="width: 100px;" class=" text-right"><small>CAD </small>30</td>
+                              </tr>
+                              <tr>
+                                <td colspan="4" class="bg-light-2 text-right"><strong>Total:</strong></td>
+                                <td class="bg-light-2 text-center"><strong><small>CAD </small>650</strong></td>
+                                <td class="bg-light-2 text-right"><strong><small>CAD </small>4,480</strong></td>
+                              </tr>
+                              <tr>
+                                <td colspan="5" class="bg-light-2 text-right"><strong>Discount:</strong></td>
+                                <td class="bg-light-2 text-right"><strong><small>CAD </small>80</strong></td>
+                              </tr>
+                              <tr>
+                                <td colspan="5" class="bg-light-2 text-right"><strong>Payable Amount:</strong></td>
+                                <td class="bg-light-2 text-right"><strong><small>CAD </small>4,400</strong>  </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                     <div class="card-body py-0 px-2 mt-5">
+                         <div class="table-responsive">
+                             <table class="table m-0">
+                                 <thead>
+                                     <tr><td class="border-0 p-0"><h4 class="m-0 text-uppercase"><b>Instructions</b></h4></td></tr>
+                                 </thead>
+                                 <tbody>
+                                     <tr>
+                                         <td class="p-0 border-0">1. PLEASE ENSURE DRIVER IDENTIFIES HIMSELF AS P/U ON BEHALF OF TOTAL LOGISTICS</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0">2. DRIVER MUST BE ABLE AND WILLING TO PROVIDE EITHER COMPANY PHOTO ID or ANOTHER PIECE OF SUITABLE PICTURE IDENTIFICATION UPON SHIPPER/RECEIVER REQUEST</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0">3. ALL DRIVERS ARE REQUIRED TO HAVE SAFETY SHOES AND VEST</td>
+                                     </tr>
+
+                                     <tr>
+                                         <td class="p-0 border-0 mt-2 text-uppercase"><b>NOTE: Please note that all Food Products are subject to FDA review and therefore all drivers must report to the FDA office at the time of crossing</b></td>
+                                     </tr>
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
+
+                     <div class="card-body py-0 px-2 mt-5">
+                         <div class="table-responsive">
+                             <table class="table m-0">
+                                 <thead>
+                                     <tr><td class="border-0 p-0"><h4 class="m-0 text-uppercase"><b>Terms &amp; Conditions</b></h4></td></tr>
+                                 </thead>
+                                 <tbody>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> INVOICE WITH ALL PAPERWORK HAS TO BE SENT TO APinvoice@totallogistics.com</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> TIME IN &amp; OUT REQUIRED FOR PICK-UP AND DELIVERY</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> Third party billing by Total Logistics Control</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> All trailers must arrive at receiver’s sealed - FTL’s Sealed and LTL‘s sealed or Padlocked</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> Fuel surcharge included in all rates</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> All trailers must be 53' in length with barn doors, FOOD GRADE, odour-free, dry and clean</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> Do not mix with hazmat or toxic materials</td>
+                                     </tr>
+
+
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
+                    </div>
+                    </main>
+                   
+                  </div>
+            </div>
+           </div>
+           <div class="modal-footer">
+            <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <a href="javascript:;" (click)="generatePDF()" class="btn btn-success">Print</a>
+           </div>
+       </div>
+   </div>
+</div>
+

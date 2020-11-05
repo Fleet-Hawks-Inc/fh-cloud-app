@@ -95,8 +95,9 @@ const routes: Routes = [
     path: 'orders',
     children: [
       { path: '', component: OrdersListComponent},
+      { path: 'edit/:orderID', component: AddOrdersComponent},
       { path: 'add', component: AddOrdersComponent},
-      { path: 'detail', component: OrderDetailComponent }
+      { path: 'detail/:orderID', component: OrderDetailComponent }
     ]
   },
   {
@@ -104,7 +105,7 @@ const routes: Routes = [
     children: [
       { path: '', component: QuotesListComponent},
       { path: 'add', component: AddQuotesComponent},
-      { path: 'detail', component: QuoteDetailComponent }
+      { path: 'detail/:quoteID', component: QuoteDetailComponent }
     ]
   },
   {

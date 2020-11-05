@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { from, Subject, throwError } from 'rxjs';
 import {AwsUploadService} from '../../../../services/aws-upload.service';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,9 +20,12 @@ declare var H: any;
   styleUrls: ['./add-orders.component.css']
 })
 export class AddOrdersComponent implements OnInit {
+  public getOrderID;
+  pageTitle = 'Add Order';
   private readonly search: any;
   public searchTerm = new Subject<string>();
   public searchResults: any;
+  public searchResults1: any;
   public readonly apiKey = environment.mapConfig.apiKey;
   time: NgbTimeStruct = {hour: 13, minute: 30, second: 30};
   seconds = false;
@@ -121,6 +124,7 @@ export class AddOrdersComponent implements OnInit {
     private dateAdapter: NgbDateAdapter<string>,
     private google: GoogleMapsService,
     private HereMap: HereMapService,
+    private route: ActivatedRoute,
     private config: NgbDatepickerConfig
   ) { 
     const current = new Date();
@@ -138,6 +142,14 @@ export class AddOrdersComponent implements OnInit {
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
+
+    this.getOrderID = this.route.snapshot.params['orderID'];
+    if (this.getOrderID) {
+      this.pageTitle = 'Edit Order';
+      this.fetchOrderByID();
+    } else {
+      this.pageTitle = 'Add Order';
+    }
   }
   userLocation(label) {
     console.log(label);
@@ -160,6 +172,7 @@ export class AddOrdersComponent implements OnInit {
       }),
     ).subscribe(res => {
       this.searchResults = res;
+      this.searchResults1 = res;
     });
   }
 
@@ -216,7 +229,7 @@ export class AddOrdersComponent implements OnInit {
     });
     let currentReceiver: any = {
       receiverName: this.receiverCurrent.receiverName,
-      dropOffLocation: this.receiverLocation,
+      dropOffLocation: this.receiverCurrent.dropOffLocation,
       locationDateTime: this.receiverCurrent.dropOffDate + ' ' +
                         this.receiverCurrent.dropOffTime['hour'] + ':' +
                         this.receiverCurrent.dropOffTime['minute'] + ':' +
@@ -268,7 +281,7 @@ export class AddOrdersComponent implements OnInit {
 
   emptyReceiver() {
     this.receiverCurrent.receiverName = '';
-    this.receiverLocation = '';
+    this.receiverCurrent.dropOffLocation = '';
     this.receiverCurrent.dropOffDate = '';
     this.receiverCurrent.dropOffInstruction = '';
     this.receiverCurrent.contactPerson = '';
@@ -437,7 +450,7 @@ export class AddOrdersComponent implements OnInit {
   taxCalculate(value) {
     console.log(value);
   }
-  amountCalculate(value) {
+  amountCalculate() {
     if(this.orderData.charges.freightFee['amount'] !== '' && this.orderData.charges.freightFee['amount'] !== undefined){
       this.freightFee = `${this.orderData.charges.freightFee['amount']}`;
     } else {
@@ -501,6 +514,8 @@ export class AddOrdersComponent implements OnInit {
       this.shipperCurrent.pickupLocation = label;
     } else {
       this.receiverCurrent.dropOffLocation = label;
+      console.log(this.receiverCurrent.dropOffLocation);
+      console.log("orders", this.orderData);
     }
     this.searchResults = false;
   }
@@ -525,4 +540,53 @@ export class AddOrdersComponent implements OnInit {
       this.visibleIndex = i;
     }
   }
+
+
+
+
+  /***************
+   * For Edit Orders
+  */
+ fetchOrderByID(){
+  this.apiService
+  .getData('orders/' + this.getOrderID)
+  .subscribe((result: any) => {
+    result = result.Items[0];
+    console.log(result);
+    this.orderData['customerID'] = result.customerID;
+    this.orderData['additionalContact'] = result.additionalContact;
+    this.orderData['creationDate'] = result.creationDate;
+    this.orderData['csa'] = result.csa;
+    this.orderData['ctpat'] = result.ctpat;
+    this.orderData['customerPO'] = result.customerPO;
+    this.orderData['email'] = result.email;
+    this.orderData['orderMode'] = result.orderMode;
+    this.orderData['orderNumber'] = result.orderNumber;
+    this.orderData['phone'] = result.phone;
+    this.orderData['reference'] = result.reference;
+    this.orderData['remarks'] = result.remarks;
+    this.orderData['totalMiles'] = result.totalMiles;
+    this.orderData['tripType'] = result.tripType;
+
+    this.orderData.additionalDetails['dropTrailer'] = result.additionalDetails.dropTrailer;
+    this.loadTypeData = result.additionalDetails.loadType;
+    
+    this.orderData.charges.accessorialDeduction['amount'] = result.charges.accessorialDeduction.amount;
+    this.orderData.charges.accessorialDeduction['type'] = result.charges.accessorialDeduction.type;
+    this.orderData.charges.accessorialDeduction['unit'] = result.charges.accessorialDeduction.unit;
+    this.orderData.charges.accessorialFee['amount'] = result.charges.accessorialFee.amount;
+    this.orderData.charges.accessorialFee['currency'] = result.charges.accessorialFee.currency;
+    this.orderData.charges.accessorialFee['type'] = result.charges.accessorialFee.type;
+    this.orderData.charges.freightFee['amount'] = result.charges.freightFee.amount;
+    this.orderData.charges.freightFee['currency'] = result.charges.freightFee.currency;
+    this.orderData.charges.freightFee['type'] = result.charges.freightFee.type;
+    this.orderData.charges.fuelSurcharge['amount'] = result.charges.fuelSurcharge.amount;
+    this.orderData.charges.fuelSurcharge['currency'] = result.charges.fuelSurcharge.currency;
+    this.orderData.charges.fuelSurcharge['type'] = result.charges.fuelSurcharge.type;
+
+    this.amountCalculate();
+    this.discountCalculate();
+    
+  });
+ }
 }
