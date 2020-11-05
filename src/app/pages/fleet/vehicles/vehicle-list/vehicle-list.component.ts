@@ -11,15 +11,30 @@ declare var $: any;
 export class VehicleListComponent implements OnInit {
   title = 'Vehicle List';
   vehicles;
-  query = '';
+
+  suggestedVehicles = [];
+  vehicleID = '';
+  currentStatus = '';
+  vehicleIdentification = '';
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.fetchVehicles();
   }
 
+  getSuggestions(value) {
+    this.apiService
+      .getData(`vehicles/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedVehicles = result.Items;
+        if(this.suggestedVehicles.length == 0){
+          this.vehicleID = '';
+        }
+      });
+  }
+
   fetchVehicles() {
-    this.apiService.getData(`vehicles?query=${this.query}`).subscribe({
+    this.apiService.getData(`vehicles?vehicleID=${this.vehicleID}&status=${this.currentStatus}`).subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -31,8 +46,15 @@ export class VehicleListComponent implements OnInit {
     });
   }
 
+  setVehicle(vehicleID, vehicleIdentification) {
+    this.vehicleIdentification = vehicleIdentification;
+    this.vehicleID = vehicleID;
+
+    this.suggestedVehicles = [];
+  }
+
   updateQuery(value) {
-    this.query = value;
+    this.currentStatus = value;
   }
 
   deleteVehicle(vehicleId) {

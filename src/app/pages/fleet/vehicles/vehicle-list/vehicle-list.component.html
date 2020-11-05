@@ -14,16 +14,11 @@
           <div class="row px-2" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2">
               <div class="input-group input-group-md mb-3">
-                <select data-plugin-selectTwo class="form-control populate">
-                  <optgroup label="">
-                    <option value="1">Vehicle 1</option>
-                    <option value="2">Vehicle 2</option>
-                    <option value="2">Vehicle 3</option>
-                    <option value="2">Vehicle 4</option>
-                    <option value="2">Vehicle 5</option>
-                  </optgroup>
-                </select>
+                <input type="text" autocomplete="off" name="vehicleIdentification" [(ngModel)]="vehicleIdentification" class="form-control" (input)="getSuggestions($event.target.value)">
               </div>
+              <div *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer;" (click)="setVehicle(suggestedVehicle.vehicleID, suggestedVehicle.vehicleIdentification)">
+                {{ suggestedVehicle.vehicleIdentification }}
+             </div>
             </div>
             <div class="col-md-2 col-lg-2">
               <div class="btn-group flex-wrap" style="width: 240px">
@@ -160,8 +155,8 @@
                       }}"
                       *ngFor="let vehicle of vehicles; let i = index"
                     >
+                      <td>{{ vehicle.VIN }}</td>
                       <td>{{ vehicle.vehicleIdentification }}</td>
-                      <td>Vehicle Name 1</td>
                       <td>Box Truck</td>
                       <td>Ford</td>
                       <td>Fh-450</td>
