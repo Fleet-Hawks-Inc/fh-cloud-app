@@ -69,7 +69,7 @@ import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { ɵs } from '@ng-select/ng-select';
-import { DataTablesModule } from 'angular-datatables'
+import { DataTablesModule } from 'angular-datatables';
 import {Injectable} from '@angular/core';
 import { NewDocumentsComponent } from './new-documents/new-documents.component';
 import { MyDocumentListComponent } from './new-documents/my-documents/my-document-list.component';
@@ -78,6 +78,7 @@ import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
 import { EManifestsComponent } from './cross-border/e-manifests/e-manifests.component';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxTagsInputModule } from 'ngx-tags-input';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -99,7 +100,7 @@ export class CustomAdapter extends NgbDateAdapter<string> {
   }
 
   toModel(date: NgbDateStruct | null): string | null {
-    return date ? date.year + this.DELIMITER + date.month + this.DELIMITER + date.day : null;
+    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : null;
   }
 }
 
@@ -139,7 +140,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     DataTablesModule,
     NgSelectModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxTagsInputModule
   ],
 
   declarations: [

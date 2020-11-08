@@ -43,8 +43,8 @@ import {DataTablesModule} from 'angular-datatables';
 import {PreLoadStrategy} from './preload/PreLoadStrategy';
 import { SharedModalComponent } from './shared/shared-modal/shared-modal.component';
 import {DynamicModalDirective} from './directives/dynamic-modal.directive';
-
-
+import { NgxTagsInputModule } from 'ngx-tags-input';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -78,6 +78,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MatProgressBarModule,
     ChartsModule,
     SharedModule,
+    TooltipModule.forRoot(),
     ToastrModule.forRoot(), // ToastrModule added
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     NgMultiSelectDropDownModule.forRoot(),
@@ -85,6 +86,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NgxSpinnerModule,
     NgSelect2Module,
     DataTablesModule,
+    NgxTagsInputModule
   ],
   providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy],
   bootstrap: [AppComponent],

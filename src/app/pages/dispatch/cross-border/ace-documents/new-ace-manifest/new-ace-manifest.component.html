@@ -30,44 +30,28 @@
                                <div class="form-group row">
                                <div class="col-lg-3 pr-0">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Trip Number</label>
-                                       <ng-select>
+                                       <ng-select (change)="tripNumberFn()"  name="SCAC" [(ngModel)]="SCAC">
                                       
-                                           <ng-option>SAVL</ng-option>
-                                           <ng-option>SXTF</ng-option>
-                                           <ng-option>THXL</ng-option>
-                                           <ng-option>MLCM</ng-option>
-                                           <ng-option>BYTM</ng-option>
-                                           <ng-option>SWRR</ng-option>
-                                           <ng-option>CAYR</ng-option>
-                                           <ng-option>HYLD</ng-option>
-                                           <ng-option>OHNI</ng-option>
-                                           <ng-option>GKLG</ng-option>
-                                           <ng-option>BSOK</ng-option>
-                                           <ng-option>NJTP</ng-option>
-                                           <ng-option>NEET</ng-option>
-                                           <ng-option>BSKL</ng-option>
-                                           <ng-option>EFRL</ng-option>
-                                           <ng-option>ZZZZ</ng-option>
-                                           <ng-option>SBEF</ng-option>
-                                           <ng-option>JBXA</ng-option>
-                                           <ng-option>SRCH</ng-option>
-                                           <ng-option>JYED</ng-option>
-                                           <ng-option>CACH</ng-option>
-                                           <ng-option>SXCD</ng-option>
-                                           <ng-option>19EF</ng-option>
-                                           <ng-option>AFHT</ng-option>
+                                           <ng-option value="SAVL">SAVL</ng-option>
+                                           <ng-option value="SXTF">SXTF</ng-option>
+                                           <ng-option value="THXL">THXL</ng-option>
+                                           <ng-option value="MLCM">MLCM</ng-option>
+                                           <ng-option value="BYTM">BYTM</ng-option>
+                                           <ng-option value="SWRR">SWRR</ng-option>
+                                           <ng-option value="CAYR">CAYR</ng-option>
+                                           <ng-option value="HYLD">HYLD</ng-option>
                                        
                                        </ng-select>
                                     </div>
                                    <div class="col-lg-7 pl-0">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
-                                       <ng-select >                                      
+                                       <ng-select (change)="tripNumberFn()"  name="tripNo" [(ngModel)]="tripNo">                                      
                                           <ng-option *ngFor = "let trip of trips" [value]="trip.tripNo">{{trip.tripNo}}</ng-option>                                      
                                       </ng-select>                                           
                                    </div>
                                    <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">US Port of Arrival</label>
-                                       <ng-select >                                      
+                                       <ng-select  name="Usport" [(ngModel)]="USport">                                      
                                           <ng-option *ngFor = "let port of USports" [value]="port.code">Code: {{port.code}}, Location: {{port.portOfEntry}}</ng-option>                                      
                                       </ng-select> 
                                        <!-- <select data-plugin-selectTwo class="form-control populate"  style="padding:1px;" >
@@ -614,7 +598,7 @@
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival Time</label>
-                                       <!-- <ngb-timepicker [(ngModel)]="time"></ngb-timepicker> -->
+                                       <ngb-timepicker name="time" [(ngModel)]="time"></ngb-timepicker>
 
                                     </div>
                                </div>
@@ -624,7 +608,7 @@
 
                                   <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Assign Vehicle</label>
-                                     <ng-select >                                      
+                                     <ng-select name="vehicleID" [(ngModel)]="vehicleID" (change)="fetchVehicleData($event)">                                      
                                        <ng-option *ngFor = "let vehicle of vehicles" [value]="vehicle.vehicleID">{{vehicle.vehicleIdentification}}</ng-option>                                      
                                    </ng-select>
                                   </div>
@@ -633,7 +617,8 @@
                                   </div>
                                   <div class="col-lg-5">
                                    <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_truck_seal_input()">Add Seal</label>
-                                   <input type="text" class="form-control" id="truck_seal_input" style="display: none;">
+                                   <ngx-tags-input class="form-control input-lg" (onTagsChanged)="onTagsChanged($event)" [removeLastOnBackspace]="true" [maxTags]="4" [(ngModel)]="tags" name="tags"></ngx-tags-input>
+
                                 </div>
                                 <div class="col-lg-5 text-right">
                                    <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_truck_IIT_input()">Add IIT</label>
@@ -645,7 +630,7 @@
                                 </div>
                                   <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Assign Trailer</label>
-                                     <ng-select >                                      
+                                     <ng-select [multiple]="true" >                                      
                                        <ng-option *ngFor = "let asset of assets" [value]="asset.assetID">{{asset.assetIdentification}}</ng-option>                                      
                                    </ng-select>
                                       
@@ -655,7 +640,9 @@
                                   </div>
                                   <div class="col-lg-5">
                                    <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_trailer_seal_input()">Add Seal</label>
-                                   <input type="text" class="form-control" id="trailer_seal_input" style="display: none;">
+                                   <!-- <input type="text" class="form-control" id="trailer_seal_input" style="display: none;"> -->
+                                   <ngx-tags-input class="form-control input-lg" (onTagsChanged)="onTagsChangedAsset($event)" [removeLastOnBackspace]="true" [maxTags]="4" [(ngModel)]="assetTags" name="assetTags"></ngx-tags-input>
+
                                 </div>
                                 <div class="col-lg-5 text-right">
                                    <label class="control-label font-weight-bold text-lg-right pt-2" onclick="show_trailer_IIT_input()">Add IIT</label>
