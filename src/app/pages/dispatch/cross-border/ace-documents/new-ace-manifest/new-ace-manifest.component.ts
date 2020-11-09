@@ -3,6 +3,7 @@ import { ApiService } from '../../../../../services';
 import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbTimeStruct, NgbTimeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+declare var $: any;
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -110,10 +111,13 @@ export class NewAceManifestComponent implements OnInit {
   tags = [];
   ETA: string;
   date: NgbDateStruct;
-  stateData: string;
   // time: NgbTimeStruct;
+  assetArray = [];
   assetSeals = [];
   assetTags = [];
+  assetId = [];
+  driverId = [];
+  driverArray = [];
   time: '13:30:00';
   errors = {};
   form;
@@ -124,9 +128,32 @@ export class NewAceManifestComponent implements OnInit {
   Success = '';
   USports: any = [];
   USport: string;
+  shipmentTypeList: any = [];
+  shipmentType: string;
   tripNumber: string;
   SCAC: string;
   tripNo: string;
+  SCACShipment: string;
+  shipmentInput: string;
+  shipmentControlNumber: string;
+  provinceOfLoading: string;
+  states: any = [];
+  countries: any  = [];
+  packagingUnitsList: any = [];
+  commodities = 
+    {
+      loadedOn: {
+        type: '',
+        number: ''
+      },
+      description: '',
+      quantity: '',
+      packagingUnit: '',
+      weight: '',
+      weightUnit: ''
+    }
+  ;
+  loadedType = 'TRAILER';
   constructor(private httpClient: HttpClient,
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
@@ -140,9 +167,22 @@ export class NewAceManifestComponent implements OnInit {
     this.fetchAssets();
     this.fetchTrips();
     this.fetchDrivers();
+    this.fetchCountries();
+    this.getStates();
     this.httpClient.get('assets/USports.json').subscribe(data => {
       console.log('Data', data);
       this.USports = data;
+    });
+    this.httpClient.get('assets/ACEShipmentType.json').subscribe(data => {
+      console.log('Shipment Data', data);
+      this.shipmentTypeList = data;
+    });
+    this.httpClient.get('assets/packagingUnit.json').subscribe(data => {
+      console.log('Packaging Data', data);
+      this.packagingUnitsList = data;
+    });
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
     });
   }
   get today() {
@@ -174,11 +214,16 @@ export class NewAceManifestComponent implements OnInit {
   tripNumberFn() {
     this.tripNumber = this.SCAC + this.tripNo;
   }
+  shipmentNumberFn() {
+    this.shipmentControlNumber = this.SCACShipment + this.shipmentInput;
+  }
   fetchStateCode(ID) {
+    let test: any = [];
     console.log('State Id', ID);
     this.apiService.getData('states/' + ID).subscribe((result: any) => {
-      this.stateData = result.Items;
-      console.log('state', this.stateData);
+      test = result.Items[0];
+      console.log('state code in fn', test.stateCode);
+      return test.stateCode;
     });
   }
   fetchVehicleData(ID) {
@@ -192,18 +237,48 @@ export class NewAceManifestComponent implements OnInit {
       this.fetchStateCode(this.vehicleData[0].stateID);
     });
   }
-  onTagsChanged(e){
-  if (e.change === 'add') {
-    this.vehicleSeals.push(e.tag.displayValue);
+  matchLoadedOnFn() {
+    if(this.commodities.loadedOn.number === 'TRUCK')
+      this.commodities.loadedOn.number = this.vehicleData[0].vehicleID;
   }
-  else {
-    for (let i = this.vehicleSeals.length; i--;) {
-      if (this.vehicleSeals[i] === e.tag.displayValue) {
-        this.vehicleSeals.splice(i, 1);
-      }
+  fetchCountries() {
+    this.apiService.getData('countries')
+      .subscribe((result: any) => {
+        this.countries = result.Items;
+      });
+  }
+   getStates() {
+    // console.log('hello states');
+    // console.log(this.countries);
+    // let countryID = [];
+    // countryID =  this.countries.filter(c => c.countryName === 'Canada');
+    const countryID = '8e8a0700-8979-11ea-94e8-ddabdd2e57f0';
+    this.apiService.getData('states/country/' + countryID)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+        console.log('this.states', this.states);
+      });
+  }
+  loadedOnFn(e) {
+    if (e === 'TRUCK') {
+      this.loadedType = 'TRUCK';
+    }
+    else {
+      this.loadedType = 'TRAILER';
     }
   }
-  console.log('vehicle seals', this.vehicleSeals);
+  onTagsChanged(e) {
+    if (e.change === 'add') {
+      this.vehicleSeals.push(e.tag.displayValue);
+    }
+    else {
+      for (let i = this.vehicleSeals.length; i--;) {
+        if (this.vehicleSeals[i] === e.tag.displayValue) {
+          this.vehicleSeals.splice(i, 1);
+        }
+      }
+    }
+    console.log('vehicle seals', this.vehicleSeals);
   }
   onTagsChangedAsset(e) {
     if (e.change === 'add') {
@@ -217,7 +292,59 @@ export class NewAceManifestComponent implements OnInit {
       }
     }
     console.log('asset seals', this.assetSeals);
+  }
+  getAssetNumber(e){
+    let test = [];
+    test = this.assets.filter(a => a.assetID === e);
+    
+    console.log('asset number', test[0].assetIdentification);
+  }
+  async getAssetData(e) {
+    let testArray = [];
+    this.assetArray = [];
+    for (let i = 0; i < e.length; i++) {
+      testArray = this.assets.filter(a => a.assetID === e[i]);
+      console.log('asset in fn', testArray);
+      const data = {
+        number: testArray[0].assetIdentification,
+        type: testArray[0].assetDetails.assetType,
+        licensePlate: {
+          number: testArray[0].assetDetails.licencePlateNumber,
+          stateProvince: this.fetchStateCode(testArray[0].assetDetails.licenceStateID)
+        }
+      };
+      this.assetArray.push(data);
     }
+  }
+  async getDriverData(e) {
+    let testArray = [];
+    this.driverArray = [];
+    for (let i = 0; i < e.length; i++) {
+      let docsArray = [];
+      testArray = this.drivers.filter(d => d.driverID === e[i]);
+      console.log('driver data', testArray);
+      for (let j = 0; j < testArray[0].documentDetails.length; j++) {
+        const test1 = testArray[0].documentDetails;
+        const docData = {
+          number: test1[j].document,
+          type: test1[j].documentType,
+          stateProvince: test1[j].issuingState
+        };
+        docsArray.push(docData);
+      }
+      const data = {
+        driverNumber: testArray[0].employeeId !== ' ' ? testArray[0].employeeId : testArray[0].companyId,
+        firstName: testArray[0].firstName,
+        lastName: testArray[0].lastName,
+        gender: testArray[0].gender,
+        dateOfBirth: testArray[0].licenceDetails.DOB,
+        citizenshipCountry: testArray[0].citizenship,
+        fastCardNumber: testArray[0].crossBorderDetails.fast_ID,
+        travelDocuments: docsArray
+      };
+      this.driverArray.push(data);
+    }
+  }
   showDate() {
     // console.log('Date', this.date);
     // console.log('Time', this.time);
@@ -225,6 +352,7 @@ export class NewAceManifestComponent implements OnInit {
     // await this.fetchVehicleData(this.vehicleID);
     this.ETA = this.date + ' ' + this.time;
     console.log('ETA', this.ETA);
+    console.log('asset array', this.assetArray);
     const data = {
       data: 'ACE_TRIP',
       sendId: '001',
@@ -241,7 +369,64 @@ export class NewAceManifestComponent implements OnInit {
           number: this.LicencePlatenumber,
           stateProvince: this.vehicleLicenceProvince
         }
-      }
+      },
+      trailers: this.assetArray,
+      drivers: this.driverArray,
+      shipments: [
+        {
+          data: 'ACE_SHIPMENT',
+          sendId: '001',
+          companyKey: 'c-9000-2bcd8ae5954e0c48',
+          operation: 'CREATE',
+          type: this.shipmentType,
+          shipmentControlNumber: this.shipmentControlNumber,
+          provinceOfLoading: this.provinceOfLoading,
+          shipper: {
+            name: 'Art place',
+            address: {
+              addressLine: '1234 Vancity',
+              city: 'Vancouver',
+              stateProvince: 'BC',
+              postalCode: 'V6H 3J9'
+            }
+          },
+          consignee: {
+            name: 'Elk Corp of Texas',
+            address: {
+              addressLine: '401 Weavertown Rd',
+              city: 'Myerstown',
+              stateProvince: 'PA',
+              postalCode: '17067'
+            }
+          },
+          
+          // commodities: [
+          //   {
+          //     loadedOn: {
+          //       type: 'TRAILER',
+          //       number: '0456'
+          //     },
+          //     description: 'Books',
+          //     quantity: 35,
+          //     packagingUnit: 'BOX',
+          //     weight: 1500,
+          //     weightUnit: 'L'
+          //   }
+          // ]
+          commodities:
+          {
+            loadedOn: {
+              type: this.commodities.loadedOn.type,
+              number: this.commodities.loadedOn.type === 'TRUCK' ? this.vehicleNumber : 'hello'
+            },
+            description: this.commodities.description,
+            quantity: this.commodities.quantity,
+            packagingUnit: this.commodities.packagingUnit,
+            weight: this.commodities.weight,
+            weightUnit: this.commodities.weightUnit
+          },
+        }
+      ],
     };
     console.log('Data', data);
   }
