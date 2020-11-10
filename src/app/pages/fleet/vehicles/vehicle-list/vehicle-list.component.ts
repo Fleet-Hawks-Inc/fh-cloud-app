@@ -53,10 +53,6 @@ export class VehicleListComponent implements OnInit {
     this.suggestedVehicles = [];
   }
 
-  updateQuery(value) {
-    this.currentStatus = value;
-  }
-
   deleteVehicle(vehicleId) {
     /******** Clear DataTable ************/
     if ($.fn.DataTable.isDataTable('#datatable-default')) {
