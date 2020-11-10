@@ -76,6 +76,9 @@ export class IssueListComponent implements OnInit {
         }
       });
       console.log(this.suggestedUnits);
+      if(this.suggestedUnits.length == 0){
+        this.unitID = '';
+      }
   }
 
   fetchVehicles() {

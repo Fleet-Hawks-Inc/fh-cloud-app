@@ -15,11 +15,11 @@
                     <div class="row pr-5" style="padding-top:10px;">
                         <div class="col-md-4 col-lg-4">
                             <div class="input-group input-group-sm mb-3">
-                                <input type="text" class="form-control" placeholder="Search">
+                                <input type="text" name="programeName" [(ngModel)]="programeName" class="form-control" placeholder="Search">
                             </div>
                         </div>
                         <div class="col-md-1  col-lg-1">
-                            <button type="submit" class="btn btn-sm btn-success">Search</button>
+                            <button type="submit" (click)="fetchPrograms()" class="btn btn-sm btn-success">Search</button>
                         </div>
                         <div class="col-md-7  col-lg-7 text-right pr-4">
             

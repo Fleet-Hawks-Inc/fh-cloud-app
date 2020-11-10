@@ -102,10 +102,6 @@ export class AssetListComponent implements OnInit {
     this.suggestedAssets = [];
   }
 
-  updateStatus(value) {
-    this.currentStatus = value;
-  }
-
   someClickHandler(info: any): void {
     this.message = info.id + ' - ' + info.firstName;
   }

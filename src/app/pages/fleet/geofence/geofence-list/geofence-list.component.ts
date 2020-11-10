@@ -126,13 +126,7 @@ export class GeofenceListComponent implements OnInit {
       complete: () => {},
       error: () => { },
       next: (result: any) => {
-        console.log(result);
-        for (let i = 0; i < result.Items.length; i++) {
-          // console.log(result.Items[i].isDeleted);
-          if (result.Items[i].isDeleted === 0) {
-            this.geofences.push(result.Items[i]);
-          }
-        }
+        this.geofences = result.Items;
         this.spinner.hide();
       },
     });

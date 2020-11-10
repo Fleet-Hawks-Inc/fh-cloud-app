@@ -14,6 +14,8 @@ export class ServiceProgramListComponent implements OnInit {
   title = 'Service Program List';
   programs;
 
+  programeName = '';
+
   constructor(
       private apiService: ApiService,
       private router: Router,
@@ -26,7 +28,7 @@ export class ServiceProgramListComponent implements OnInit {
 
   fetchPrograms() {
     this.spinner.show(); // loader init
-    this.apiService.getData('servicePrograms').subscribe({
+    this.apiService.getData(`servicePrograms?programeName=${this.programeName}`).subscribe({
       complete: () => {
         this.initDataTable();
       },
