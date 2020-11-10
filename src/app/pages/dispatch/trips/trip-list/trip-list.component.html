@@ -1,3 +1,10 @@
+<style>
+    table{
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+</style>
 <section class="body">
     <!-- start: header -->
     <app-header></app-header>
@@ -114,7 +121,7 @@
                     </div>
                     <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
                         <div class="tab-pane show active" id="allTrips" role="tabpanel" aria-labelledby="allTrips-tab">
-                            <table datatable [dtOptions]="dtOptions"
+                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
                                 class="row-border hover table table-bordered table-striped mb-0"
                                 *ngIf="trips.length > 0" id="allTripsDT">
                                 <thead>
@@ -123,10 +130,12 @@
 
                                         <th>Trip</th>
                                         <th>Type</th>
-                                        <th>Date</th>
                                         <th>Order No.</th>
-                                        <th>Pick-up</th>
-                                        <th>Delivery</th>
+                                        <th>Date</th>
+                                        <th>Pick-up Location</th>
+                                        <th>Drop Location</th>
+                                        <th>Pick-up Time</th>
+                                        <th>Drop Time</th>
                                         <th>Driver</th>
                                         <th>Vehicle</th>
                                         <th>Assets</th>
@@ -144,12 +153,16 @@
                                         <td>-</td>
                                         <td>-</td>
                                         <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
+                                        <td>{{ trip.pickupLocation }}, {{ trip.pickupCity }}, {{ trip.pickupState }}, {{ trip.pickupCountry }}</td>
+                                        <td>
+                                            {{ trip.dropTime }}, {{ trip.dropCity }}, {{ trip.dropState }}, {{ trip.dropCountry }}
+                                        </td>
+                                        <td>{{ trip.pickupTime }}</td>
+                                        <td>{{ trip.dropTime }}</td>
+                                        <td>{{ trip.driverName }}</td>
+                                        <td>{{ trip.vehicleName }}</td>
+                                        <td>{{ trip.assetName }}</td>
+                                        <td>{{ trip.carrierName }}</td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
                                             <div class="dropdown dropright">
@@ -175,7 +188,6 @@
                             <div *ngIf="!trips.length > 0" class="alert alert-info m-0 text-center" role="alert">
                                 No records found
                             </div>
-
                         </div>
                         <!-- planned -->
                         <div class="tab-pane fade" id="planned" role="tabpanel" aria-labelledby="planned-tab">
