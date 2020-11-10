@@ -135,8 +135,13 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Type</th>
-                                                        <th>Arrival Date/Time</th>
-                                                        <th>Departure Date/Time</th>
+                                                        <th>Date</th>
+                                                        <th>Time</th>
+                                                        <th>Pickup Time</th>
+                                                        <th>Drop Time</th>
+                                                        <th>Actual Pickup Time</th>
+                                                        <th>Actual Drop Time</th>
+                                                        <!-- <th>Departure Date/Time</th> -->
                                                         <th>Name</th>
                                                         <th>Location</th>
                                                         <th>Miles</th>
@@ -151,7 +156,12 @@
                                                     <tr *ngFor="let trip of trips">
                                                         <td>{{ trip.type }}</td>
                                                         <td>{{ trip.date }}</td>
-                                                        <td>6/6/2020 10:00 AM</td>
+                                                        <td>{{ trip.time }}</td>
+                                                        <td>{{ trip.pickupTime }}</td>
+                                                        <td>{{ trip.dropTime }}</td>
+                                                        <td>{{ trip.actualPickupTime }}</td>
+                                                        <td>{{ trip.actualDropTime }}</td>
+                                                        <!-- <td>6/6/2020 10:00 AM</td> -->
                                                         <td>{{ trip.name }}</td>
                                                         <td>{{ trip.locationName }}</td>
                                                         <td>{{ trip.miles }}</td>
