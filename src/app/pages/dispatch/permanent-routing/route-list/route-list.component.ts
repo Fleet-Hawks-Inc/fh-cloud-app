@@ -25,7 +25,7 @@ export class RouteListComponent implements OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
-  totalRecords = 0;
+  totalRecords = 10;
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -85,6 +85,7 @@ export class RouteListComponent implements OnInit {
       pageLength: 3,
       serverSide: true,
       processing: true,
+      dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('routes/fetch-records?lastEvaluatedKey='+this.lastEvaluated.key+'&lastEvaluatedValue='+this.lastEvaluated.value, dataTablesParameters).subscribe(resp => {
           console.log('resp');
