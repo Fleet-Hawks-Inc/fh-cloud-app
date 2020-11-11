@@ -3,6 +3,12 @@ import { ApiService } from '../../../../../services';
 import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbTimeStruct, NgbTimeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { from, Subject, throwError } from 'rxjs';
+import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 declare var $: any;
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -87,21 +93,29 @@ export class NgbTimeStringAdapter extends NgbTimeAdapter<string> {
   ]
 })
 export class NewAceManifestComponent implements OnInit {
+  public entryID;
+  title = 'Add ACE e-Manifest';
   vehicleID: string;
   vehicleData = [];
   vehicles = [];
   assets = [];
   trips = [];
   drivers = [];
-  //   truck: {
-  //     number: '2013',
-  //     type: 'TR',
-  //     vinNumber: 'AG12XXXXXXXXXF',
-  //     licensePlate: {
-  //        number: 'TEMP5',
-  //         stateProvince: 'ON'
-  //     }
-  // };
+  data: string;
+  sendId: string;
+  companyKey: string;
+  operation: string;
+  usPortOfArrival: string;
+  estimatedArrivalDateTime: string;
+  truck: {
+    number: '',
+    type: '',
+    vinNumber: '',
+    licensePlate: {
+      number: '',
+      stateProvince: ''
+    }
+  };
   vehicleNumber: string;
   vehicleType: string;
   vinNumber: string;
@@ -118,6 +132,36 @@ export class NewAceManifestComponent implements OnInit {
   assetId = [];
   driverId = [];
   driverArray = [];
+  // shipments: [
+  //   {
+  //     data: 'ACE_SHIPMENT',
+  //     sendId: '001',
+  //     companyKey: 'c-9000-2bcd8ae5954e0c48',
+  //     operation: 'CREATE',
+  //     type: this.shipmentType,
+  //     shipmentControlNumber: this.shipmentControlNumber,
+  //     provinceOfLoading: this.provinceOfLoading,
+  //     shipper: {
+  //       name: 'Art place',
+  //       address: {
+  //         addressLine: '1234 Vancity',
+  //         city: 'Vancouver',
+  //         stateProvince: 'BC',
+  //         postalCode: 'V6H 3J9'
+  //       }
+  //     },
+  //     consignee: {
+  //       name: 'Elk Corp of Texas',
+  //       address: {
+  //         addressLine: '401 Weavertown Rd',
+  //         city: 'Myerstown',
+  //         stateProvince: 'PA',
+  //         postalCode: '17067'
+  //       }
+  //     },
+  //     commodities: this.commodities,
+  //   }
+  // ]
   // passengers = [
   //   {
   //   firstName: '',
@@ -152,7 +196,6 @@ export class NewAceManifestComponent implements OnInit {
   Error = '';
   Success = '';
   USports: any = [];
-  USport: string;
   documentTypeList: any = [];
   shipmentTypeList: any = [];
   shipmentType: string;
@@ -170,15 +213,15 @@ export class NewAceManifestComponent implements OnInit {
     firstName: '',
     lastName: '',
     gender: '',
-    dob: '',
-    countryOfCitizenship: '',
-    fastNumber: '',
-    // document: [{
-    //   documentType: '',
-    //   documentNumber: '',
-    //   issuingCountry: '',
-    //   issuingState: ''
-    // }]
+    dateOfBirth: '',
+    citizenshipCountry: '',
+    fastCardNumber: '',
+    travelDocuments: [{
+      type: '',
+      number: '',
+      country: '',
+      stateProvince: ''
+    }]
   }];
   passengerDocStates = [];
   commodities =
@@ -193,7 +236,8 @@ export class NewAceManifestComponent implements OnInit {
       weight: '',
       weightUnit: '',
       marksAndNumbers: [],
-      c4ReleaseNumber: '',
+      c4LineReleaseNumber: '',
+      harmonizedCode: '',
       value: '',
       countryOfOrigin: '',
       hazmatDetails: {
@@ -209,14 +253,21 @@ export class NewAceManifestComponent implements OnInit {
   marks4: string;
   marksArray = [];
   loadedType = 'TRAILER';
-  constructor(private httpClient: HttpClient,
-              private apiService: ApiService, private ngbCalendar: NgbCalendar,
-              config: NgbTimepickerConfig, private dateAdapter: NgbDateAdapter<string>) {
-              config.seconds = true;
-              config.spinners = true;
+  constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private toastr: ToastrService,
+    private apiService: ApiService, private ngbCalendar: NgbCalendar, private location: Location,
+    config: NgbTimepickerConfig, private dateAdapter: NgbDateAdapter<string>) {
+    config.seconds = true;
+    config.spinners = true;
   }
 
   ngOnInit() {
+    this.entryID = this.route.snapshot.params['entryID'];
+    if (this.entryID) {
+      this.title = 'Edit ACE e-Manifest';
+      this.fetchACEEntry();
+    } else {
+      this.title = 'Add ACE e-Manifest';
+    }
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchTrips();
@@ -224,19 +275,19 @@ export class NewAceManifestComponent implements OnInit {
     this.fetchCountries();
     this.getStates();
     this.httpClient.get('assets/USports.json').subscribe(data => {
-      console.log('Data', data);
+     // console.log('Data', data);
       this.USports = data;
     });
     this.httpClient.get('assets/ACEShipmentType.json').subscribe(data => {
-      console.log('Shipment Data', data);
+     // console.log('Shipment Data', data);
       this.shipmentTypeList = data;
     });
     this.httpClient.get('assets/packagingUnit.json').subscribe(data => {
-      console.log('Packaging Data', data);
+     // console.log('Packaging Data', data);
       this.packagingUnitsList = data;
     });
     this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
-      console.log('Document  Data', data);
+     // console.log('Document  Data', data);
       this.documentTypeList = data;
     });
     $(document).ready(() => {
@@ -246,18 +297,23 @@ export class NewAceManifestComponent implements OnInit {
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
-  getMarksArray(e){
-  //   this.commodities['marksAndNumbers'].forEach(element => {
-  //    console.log('element', element);
-  //  });
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
+  getMarksArray(e) {
+    //   this.commodities['marksAndNumbers'].forEach(element => {
+    //    console.log('element', element);
+    //  });
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
+     // console.log('vehicles in init', this.vehicles);
     });
   }
-  getStatesDoc() {
-    const countryID = this.passengers['document']['issuingCountry'];
+  getStatesDoc(i, j) {
+    const countryID = this.passengers[i].travelDocuments[j].country;
+    console.log('country Id', countryID);
     this.apiService.getData('states/country/' + countryID)
       .subscribe((result: any) => {
         this.passengerDocStates = result.Items;
@@ -266,33 +322,32 @@ export class NewAceManifestComponent implements OnInit {
   }
   addMorePassenger() {
     this.passengers.push({
-        firstName: '',
-        lastName: '',
-        gender: '',
-        dob: '',
-        countryOfCitizenship: '',
-        fastNumber: '',
-        // document: [{
-        //   documentType: '',
-        //   documentNumber: '',
-        //   issuingCountry: '',
-        //   issuingState: ''
-        // }]
+      firstName: '',
+      lastName: '',
+      gender: '',
+      dateOfBirth: '',
+      citizenshipCountry: '',
+      fastCardNumber: '',
+      travelDocuments: [{
+        type: '',
+        number: '',
+        country: '',
+        stateProvince: ''
+      }]
     });
   }
-  addDocument() {
-    this.passengers['document'].push({
-      documentType: '',
-      documentNumber: '',
-      issuingCountry: '',
-      issuingState: ''
+  addDocument(i) {
+    this.passengers[i].travelDocuments.push({
+      type: '',
+      number: '',
+      country: '',
+      stateProvince: ''
     });
-    console.log(this.passengers['document']);
   }
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
-      //  console.log('assets', this.assets);
+        console.log('assets', this.assets);
     });
   }
   fetchTrips() {
@@ -337,7 +392,7 @@ export class NewAceManifestComponent implements OnInit {
   //   if(this.commodities.loadedOn.number === 'TRUCK')
   //     this.commodities.loadedOn.number = this.vehicleData[0].vehicleID;
   // }
-  addPassenger(){
+  addPassenger() {
     console.log('add passenger', this.passengers);
   }
   fetchCountries() {
@@ -358,7 +413,8 @@ export class NewAceManifestComponent implements OnInit {
       weight: '',
       weightUnit: '',
       marksAndNumbers: [],
-      c4ReleaseNumber: '',
+      c4LineReleaseNumber: '',
+      harmonizedCode: '',
       value: '',
       countryOfOrigin: '',
       hazmatDetails: {
@@ -463,7 +519,8 @@ export class NewAceManifestComponent implements OnInit {
         const docData = {
           number: test1[j].document,
           type: test1[j].documentType,
-          stateProvince: test1[j].issuingState
+          stateProvince: test1[j].issuingState,
+          country: test1[j].issuingCountry
         };
         docsArray.push(docData);
       }
@@ -480,21 +537,17 @@ export class NewAceManifestComponent implements OnInit {
       this.driverArray.push(data);
     }
   }
-  showDate() {
-    // console.log('Date', this.date);
-    // console.log('Time', this.time);
-    // console.log('VID', this.vehicleID);
-    // await this.fetchVehicleData(this.vehicleID);
+  addACEManifest() {
     this.ETA = this.date + ' ' + this.time;
     console.log('ETA', this.ETA);
     console.log('asset array', this.assetArray);
     const data = {
-      data: 'ACE_TRIP',
+      data : 'ACE_TRIP',
       sendId: '001',
       companyKey: 'c-9000-2bcd8ae5954e0c48',
       operation: 'CREATE',
       tripNumber: this.tripNumber,
-      usPortOfArrival: this.USport,
+      usPortOfArrival: this.usPortOfArrival,
       estimatedArrivalDateTime: this.ETA,
       truck: {
         number: this.vehicleNumber,
@@ -507,6 +560,7 @@ export class NewAceManifestComponent implements OnInit {
       },
       trailers: this.assetArray,
       drivers: this.driverArray,
+      passengers: this.passengers,
       shipments: [
         {
           data: 'ACE_SHIPMENT',
@@ -535,44 +589,185 @@ export class NewAceManifestComponent implements OnInit {
             }
           },
           commodities: this.commodities,
-          // commodities: [
-          //   {
-          //     loadedOn: {
-          //       type: 'TRAILER',
-          //       number: '0456'
-          //     },
-          //     description: 'Books',
-          //     quantity: 35,
-          //     packagingUnit: 'BOX',
-          //     weight: 1500,
-          //     weightUnit: 'L'
-          //   }
-          // ]
-          // commodities:
-          // [{
-          //   loadedOn: {
-          //     type: this.commodities.loadedOn.type,
-          //     number: this.commodities.loadedOn.type === 'TRUCK' ? this.vehicleNumber : 'hello'
-          //   },
-          //   description: this.commodities.description,
-          //   quantity: this.commodities.quantity,
-          //   packagingUnit: this.commodities.packagingUnit,
-          //   weight: this.commodities.weight,
-          //   weightUnit: this.commodities.weightUnit,
-          //   marksAndNumbers: this.marksArray,
-          //   c4ReleaseNumber: this.commodities.c4ReleaseNumber,
-          //   value: this.commodities.value,
-          //   countryOfOrigin: this.commodities.countryOfOrigin,
-          //   hazmatDetails: {
-          //     unCode: this.commodities.hazmatDetails.unCode,
-          //     emergencyContactName: this.commodities.hazmatDetails.emergencyContactName,
-          //     contactPhone: this.commodities.hazmatDetails.contactPhone,
-          //     contactEmail: this.commodities.hazmatDetails.contactEmail
-          //     }
-          // }],
         }
       ],
+      autoSend: false
     };
     console.log('Data', data);
+    this.apiService.postData('ACEeManifest', data).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/'.*'/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              // this.spinner.hide(); // loader hide
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.toastr.success('Manifest added successfully');
+        this.router.navigateByUrl('/dispatch/cross-border/eManifests');
+
+      },
+    });
+  }
+  throwErrors() {
+    this.form.showErrors(this.errors);
+  }
+  getVehicleId(VIN) {
+    let test = [];
+    test = this.vehicles.filter( v => v.VIN === VIN);
+    this.vehicleID = test[0].vehicleID;
+  }
+  getDriverIdArray(drivers: any) {
+  let test1 = [];
+  for(let i=0; i< drivers.length; i++){
+    console.log('fast', drivers[i].fastCardNumber);
+    let test = this.drivers.filter(d => d.crossBorderDetails.fast_ID === drivers[i].fastCardNumber);
+    test1.push(test[0].driverID);
+  }
+  this.driverId = test1;
+  }
+  getAssetIdArray(assets: any) {
+    console.log('assets', assets);
+    let test1 = [];
+    for(let i=0; i< assets.length; i++){
+      console.log('Asset plate', assets[i].licensePlate.number);
+      let test = this.assets.filter(a => a.assetDetails.licencePlateNumber === assets[i].licensePlate.number);
+      test1.push(test[0].assetID);
+    }
+    this.assetId = test1;
+    }
+    getShipmentData(shipments){
+           console.log('shipments', shipments);
+           let comTest = [];
+           for(let i=0; i< shipments.length; i++){
+                console.log('commodities array', shipments[i].commodities);
+                 for(let j=0; j< shipments[i].commodities.length; j++){
+                   comTest.push(shipments[i].commodities[j]);
+                 }
+           }
+           this.commodities = comTest;
+           console.log(this.commodities);
+    }
+  fetchACEEntry() {
+    this.apiService
+      .getData('ACEeManifest/' + this.entryID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+        console.log('Fetched Data', result);
+        this.entryID = this.entryID;
+        this.data = result.data,
+        this.sendId = result.sendId,
+        this.companyKey = result.companyKey,
+        this.operation = result.operation,
+        this.tripNumber = result.tripNumber,
+        this.usPortOfArrival = result.usPortOfArrival,
+       // this.estimatedArrivalDateTime = result.estimatedArrivalDateTime,;
+       setTimeout(() => {
+        this.getVehicleId(result.truck.vinNumber);
+        this.getDriverIdArray(result.drivers);
+        this.getAssetIdArray(result.trailers);
+        this.getShipmentData(result.shipments);
+      }, 2000);
+
+      });
+  }
+  updateACEManifest() {
+    this.ETA = this.date + ' ' + this.time;
+    console.log('ETA', this.ETA);
+    console.log('asset array', this.assetArray);
+    const data = {
+      entryID: this.entryID,
+      data : 'ACE_TRIP',
+      sendId: '001',
+      companyKey: 'c-9000-2bcd8ae5954e0c48',
+      operation: 'UPDATE',
+      tripNumber: this.tripNumber,
+      usPortOfArrival: this.usPortOfArrival,
+      estimatedArrivalDateTime: this.ETA,
+      truck: {
+        number: this.vehicleNumber,
+        type: this.vehicleType,
+        vinNumber: this.vinNumber,
+        licensePlate: {
+          number: this.LicencePlatenumber,
+          stateProvince: this.vehicleLicenceProvince
+        }
+      },
+      trailers: this.assetArray,
+      drivers: this.driverArray,
+      passengers: this.passengers,
+      shipments: [
+        {
+          data: 'ACE_SHIPMENT',
+          sendId: '001',
+          companyKey: 'c-9000-2bcd8ae5954e0c48',
+          operation: 'CREATE',
+          type: this.shipmentType,
+          shipmentControlNumber: this.shipmentControlNumber,
+          provinceOfLoading: this.provinceOfLoading,
+          shipper: {
+            name: 'Art place',
+            address: {
+              addressLine: '1234 Vancity',
+              city: 'Vancouver',
+              stateProvince: 'BC',
+              postalCode: 'V6H 3J9'
+            }
+          },
+          consignee: {
+            name: 'Elk Corp of Texas',
+            address: {
+              addressLine: '401 Weavertown Rd',
+              city: 'Myerstown',
+              stateProvince: 'PA',
+              postalCode: '17067'
+            }
+          },
+          commodities: this.commodities,
+        }
+      ],
+      autoSend: false
+    };
+    console.log('Data', data);
+    this.apiService.putData('ACEeManifest', data).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/'.*'/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              // this.spinner.hide(); // loader hide
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.toastr.success('Manifest Updated successfully');
+        this.router.navigateByUrl('/dispatch/cross-border/eManifests');
+
+      },
+    });
   }
 }

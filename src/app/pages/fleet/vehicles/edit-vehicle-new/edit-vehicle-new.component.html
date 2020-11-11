@@ -216,6 +216,18 @@
                               [(ngModel)]="VIN"
                             />
                           </div>
+                          <div class="col-lg-10">
+                            <label
+                              class="control-label font-weight-bold text-lg-right pt-2"
+                              >DOT#</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="DOT"
+                              [(ngModel)]="DOT"
+                            />
+                          </div>
                           <div class="col-lg-5">
                             <label
                               class="control-label font-weight-bold text-lg-right pt-2"
@@ -1412,7 +1424,12 @@
                         </div>
                       </div>
                       <div class="col-lg-5 offset-lg-1">
-                        <div class="row"></div>
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Insurance Policy#</label>
+                            <input type="text" class="form-control" name="insurance.policyNumber" [(ngModel)]="insurance.policyNumber"> 
+                         </div>
+                        </div>
                       </div>
                     </div>
                   </div>

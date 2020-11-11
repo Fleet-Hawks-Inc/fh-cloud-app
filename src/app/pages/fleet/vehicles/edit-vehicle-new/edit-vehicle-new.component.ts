@@ -27,6 +27,7 @@ export class EditVehicleNewComponent implements OnInit {
   vehicleIdentification = '';
   vehicleType = '';
   VIN = '';
+  DOT = '';
   year = '';
   manufacturerID = '';
   modelID = '';
@@ -85,7 +86,8 @@ export class EditVehicleNewComponent implements OnInit {
     premiumCurrency: '',
     vendorID: '',
     dateOfExpiry: '',
-    remiderEvery: ''
+    remiderEvery: '',
+    policyNumber: '',
   };
   fluid = {
     fuelType: '',
@@ -223,6 +225,7 @@ export class EditVehicleNewComponent implements OnInit {
         this.vehicleIdentification = result.vehicleIdentification;
         this.vehicleType = result.vehicleType;
         this.VIN = result.VIN;
+        this.DOT = result.DOT;
         this.year = result.year;
         this.manufacturerID = result.manufacturerID;
         this.modelID = result.modelID;
@@ -281,7 +284,8 @@ export class EditVehicleNewComponent implements OnInit {
           premiumCurrency: result.insurance.premiumCurrency,
           vendorID: result.insurance.vendorID,
           dateOfExpiry: result.insurance.dateOfExpiry,
-          remiderEvery: result.insurance.remiderEvery
+          remiderEvery: result.insurance.remiderEvery,
+          policyNumber: result.insurance.policyNumber
         };
         this.fluid = {
           fuelType: result.fluid.fuelType,
@@ -431,6 +435,7 @@ export class EditVehicleNewComponent implements OnInit {
       vehicleIdentification: this.vehicleIdentification,
       vehicleType: this.vehicleType,
       VIN: this.VIN,
+      DOT: this.DOT,
       year: this.year,
       manufacturerID: this.manufacturerID,
       modelID: this.modelID,
@@ -489,7 +494,8 @@ export class EditVehicleNewComponent implements OnInit {
         premiumCurrency: this.insurance.premiumCurrency,
         vendorID: this.insurance.vendorID,
         dateOfExpiry: this.insurance.dateOfExpiry,
-        remiderEvery: this.insurance.remiderEvery
+        remiderEvery: this.insurance.remiderEvery,
+        policyNumber: this.insurance.policyNumber
       },
       fluid: {
         fuelType: this.fluid.fuelType,

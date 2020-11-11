@@ -79,6 +79,7 @@ import { OrderDetailComponent } from './orders/order-detail/order-detail.compone
 import { EManifestsComponent } from './cross-border/e-manifests/e-manifests.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxTagsInputModule } from 'ngx-tags-input';
+import { AceDetailsComponent } from './cross-border/ace-documents/ace-details/ace-details.component';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -223,6 +224,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     OrdersListComponent,
     AddOrdersComponent,
     OrderDetailComponent,
+    AceDetailsComponent,
   ],
 
   providers: [NgSelectConfig, ɵs,

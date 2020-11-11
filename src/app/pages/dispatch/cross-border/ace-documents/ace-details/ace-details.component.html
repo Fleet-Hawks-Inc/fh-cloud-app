@@ -1,0 +1,384 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+  
+    <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->
+    <section role="main" class="content-body">
+        <header class="page-header pr-5">
+        <h2>ACE Details</h2>
+        <div class="right-wrapper text-right pt-2 pr-2">
+            <a href="javascript:;" class="btn btn-success btn-sm " style="color:white;"> Send to CBP</a>
+            <a href="javascript:;" class="btn btn-success btn-sm " style="color:white;"> Status</a>
+            <a href="javascript:;" class="btn btn-success btn-sm " style="color:white;"> Track</a>
+            <div class="btn-group btn-group1 flex-wrap">
+                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                    <a class="dropdown-item text-1" href="">Edit</a>
+                    <a class="dropdown-item text-1" href="">Print</a>
+                    <a class="dropdown-item text-1" href="">Email</a>
+                    <a class="dropdown-item text-1" href="">Import</a>
+                    <a class="dropdown-item text-1" href="">Export</a>
+                </div>
+            </div>
+        </div>
+        </header>
+        <div class="ace-main__wrapper p-4 bg-white">
+            <div class="row">
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2">
+                            <h4 class="m-0">Trip Number<b> {{tripNumber}}</b></h4>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table table-bordered m-0">
+                                <tbody>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Port of Entry:</th>
+                                        <td>{{usPortOfArrival}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%"class="back-color-gray">Estimated Arrival Date:</th>
+                                        <td>{{estimatedArrivalDateTime}}</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Current Status:</th>
+                                        <td>Draft</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Created:</th>
+                                        <td>June 2, 2020 By Demo User</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Last Edited:</th>
+                                        <td>June 3, 2020 By Demo User</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header back-color-gray d-flex justify-content-between align-items-center border p-2">
+                            <h4 class="m-0 ">Truck on<b> {{truck.number}}</b></h4>
+                            <div class=" pull-right">
+                                <button class="btn btn-success btn-sm"> Set Cargo Exemption</button>
+                            </div>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table table-bordered m-0">
+                                <tbody>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Truck Number:</th>
+                                        <td>#12019</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Licence Plate:</th>
+                                        <td>Demo45</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Licence State/Province:</th>
+                                        <td>Alberta</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Load Status:</th>
+                                        <td> Loaded</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Seal Numbers:</th>
+                                        <td>#7870777R</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
+                            <h4 class="m-0 ">ACE eManifest History</h4>
+                            <div class=" pull-right">
+                                <a href="ace-manifest-history.php" class="btn btn-success btn-sm">View All History</a>
+                            </div>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table  table-responsive-md table-bordered table-striped mb-0" id="">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>History/Status Messages</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1.</td>
+                                        <td>1/05/2020</td>
+                                        <td>10:30 PM</td>
+                                        <td>Trip <b>#7465765</b> by <b>John Smith</b></td>
+                                    </tr>
+                                    <tr>
+                                    <td>2.</td>
+                                    <td>1/06/2020</td>
+                                    <td>02:40 PM</td>
+                                    <td>Trip <b>#7465765</b> by <b>Mike William</b></td>
+                                </tr>
+
+                                </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
+                            <h4 class="m-0 ">Trailers on <b> #1234984545</b></h4>
+                            <div class=" pull-right">
+                                <button class="btn btn-success btn-sm"> Set Cargo Exemption</button>
+                                <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Trailer</button>
+                            </div>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table  table-responsive-md table-bordered table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Trailer Number</th>
+                                        <th>Licence Plate</th>
+                                        <th>Licence State/Province</th>
+                                        <th>Trailer Type</th>
+                                        <th>Seal Numbers</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1.</td>
+                                        <td>12019</td>
+                                        <td>Demo45</td>
+                                        <td>Alberta</td>
+                                        <td>Loaded</td>
+                                        <td>#445ADFE</td>
+                                        <td class="actions">
+                                            <a href=""><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                            <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
+                                            <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Change</a> -->
+                                            <!--  <a href="" class="delete-row"><i class="fas fa-pencil-alt black_color"></i> Add Seal</a> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
+                            <h4 class="m-0 ">Driver, Passengers and Team Drivers</h4>
+                            <div class=" pull-right">
+                                <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Sub Driver</button>
+                                <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Passenger</button>
+                            </div>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table  table-responsive-md table-bordered table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Name</th>
+                                        <th>Driver Number</th>
+                                        <th>Travel Documents</th>
+                                        <th>Type</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor = "let driver of driverArray">
+                                        <td>1.</td>
+                                        <td>{{driver.firstName}}{{driver.lastName}}</td>
+                                        <td>{{driver.driverNumber}}</td>
+                                        <td><span *ngFor= "let document of driver.travelDocuments">{{document.number}}</span></td>
+                                        <td>Driver</td>
+                                        <td class="actions">
+                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor = "let passenger of passengers">
+                                        <td>1.</td>
+                                        <td>{{passenger.firstName}}{{passenger.lastName}}</td>
+                                        <td>56</td>
+                                        <td><span *ngFor= "let document of passenger.travelDocuments">{{document.number}}</span></td>
+                                        <td>Passenger</td>
+                                        <td class="actions">
+                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
+                            <h4 class="m-0 ">ACE Shipments <b> #1234984545</b></h4>
+                            <div class=" pull-right">
+                                <button class="btn btn-success btn-sm"> Set Shipment Status</button>
+                                <!-- <button class="btn btn-success btn-sm"> Send to CBP</button> -->
+                                <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Create New Shipment</button>
+                            </div>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table  table-responsive-md table-bordered table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Cargo Control Number</th>
+                                        <th>Status</th>
+                                        <th>Type</th>
+                                        <th>Shipper</th>
+                                        <th>Consignee</th>
+                                        <th>Quantity</th>
+                                        <th>Last Edited</th>
+                                        <th>Loaded On</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1.</td>
+                                        <td>765876575</td>
+                                        <td></td>
+                                        <td>PARS</td>
+                                        <td>
+                                            32Street, Alberta,Canada
+                                        </td>
+                                        <td>
+                                            78Ave 180 street, Surrey,Canada
+                                        </td>
+                                        <td>44</td>
+                                        <td>Demo User</td>
+                                        <td>Trailer234</td>
+                                        <td class="actions">
+                                            <a href=""><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                            <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
+                                            <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Edit</a> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
+                            <h4 class="m-0 ">Containers on ACE eManifest <b> #1234984545</b></h4>
+                            <div class=" pull-right">
+                                <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Container</button>
+                            </div>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table  table-responsive-md table-bordered table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Container</th>
+                                        <th>Loaded On</th>
+                                        <th>Seal Numbers</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1.</td>
+                                        <td>765876575</td>
+                                        <td>Trailer234</td>
+                                        <td>Trailer234</td>
+                                        
+                                        <td class="actions">
+                                            <a href=""><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                            <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Remove</a>
+                                            <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Edit</a> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
+                            <h4 class="m-0 ">Comments about ACE eManifest <b> #1234984545</b></h4>
+                            <div class=" pull-right">
+                                <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Comment</button>
+                            </div>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table  table-responsive-md table-bordered table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Comments</th>
+                                        <th>Poster</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1.</td>
+                                        <td>This shipment is meant for the person who ios really sweet.</td>
+                                        <td>Demo User</td>
+                                        <td>Jun 2,2020</td>
+                                        
+                                        <td class="actions">
+                                            <a href=""><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                            <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Remove</a>
+                                            <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Edit</a> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+</section>

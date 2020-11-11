@@ -166,7 +166,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
-    NgSelect2Module
+    NgSelect2Module,
   ],
   exports: [...COMPONENTS],
   declarations: [

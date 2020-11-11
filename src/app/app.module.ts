@@ -63,6 +63,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NavOpenedDirective,
     SharedModalComponent,
     DynamicModalDirective,
+  
   ],
   imports: [
     AmplifyAngularModule,
