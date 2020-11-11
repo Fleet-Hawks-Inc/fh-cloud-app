@@ -215,9 +215,8 @@ export class AddDriverComponent implements OnInit {
   }
 
   getToday(): string {
-    return new Date().toISOString().split('T')[0]
+    return new Date().toISOString().split('T')[0];
   }
-  
   uploadDriverImg(event): void {
     console.log(event);
     if (event.target.files[0]) {

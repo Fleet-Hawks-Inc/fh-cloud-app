@@ -118,6 +118,31 @@ export class NewAceManifestComponent implements OnInit {
   assetId = [];
   driverId = [];
   driverArray = [];
+  // passengers = [
+  //   {
+  //   firstName: '',
+  //   middleName: '',
+  //   lastName: '',
+  //   gender: '',
+  //   dateOfBirth: '',
+  //   citizenshipCountry: '',
+  //   fastCardNumber: '',
+  //   travelDocuments: [
+  //   {
+  //   number: '',
+  //   type: '',
+  //   stateProvince: '',
+  //   country: ''
+  //   },
+  //   {
+  //   number: '',
+  //   type: '',
+  //   stateProvince: '',
+  //   country: ''
+  //   }
+  //   ]
+  //   }
+  //  ];
   time: '13:30:00';
   errors = {};
   form;
@@ -128,6 +153,7 @@ export class NewAceManifestComponent implements OnInit {
   Success = '';
   USports: any = [];
   USport: string;
+  documentTypeList: any = [];
   shipmentTypeList: any = [];
   shipmentType: string;
   tripNumber: string;
@@ -138,10 +164,25 @@ export class NewAceManifestComponent implements OnInit {
   shipmentControlNumber: string;
   provinceOfLoading: string;
   states: any = [];
-  countries: any  = [];
+  countries: any = [];
   packagingUnitsList: any = [];
-  commodities = 
-    {
+  passengers = [{
+    firstName: '',
+    lastName: '',
+    gender: '',
+    dob: '',
+    countryOfCitizenship: '',
+    fastNumber: '',
+    // document: [{
+    //   documentType: '',
+    //   documentNumber: '',
+    //   issuingCountry: '',
+    //   issuingState: ''
+    // }]
+  }];
+  passengerDocStates = [];
+  commodities =
+    [{
       loadedOn: {
         type: '',
         number: ''
@@ -150,16 +191,29 @@ export class NewAceManifestComponent implements OnInit {
       quantity: '',
       packagingUnit: '',
       weight: '',
-      weightUnit: ''
-    }
-  ;
+      weightUnit: '',
+      marksAndNumbers: [],
+      c4ReleaseNumber: '',
+      value: '',
+      countryOfOrigin: '',
+      hazmatDetails: {
+        unCode: '',
+        emergencyContactName: '',
+        contactPhone: '',
+        contactEmail: ''
+      }
+    }];
+  marks1: string;
+  marks2: string;
+  marks3: string;
+  marks4: string;
+  marksArray = [];
   loadedType = 'TRAILER';
   constructor(private httpClient: HttpClient,
-    private apiService: ApiService,
-    private ngbCalendar: NgbCalendar,
-    config: NgbTimepickerConfig, private dateAdapter: NgbDateAdapter<string>) {
-    config.seconds = true;
-    config.spinners = true;
+              private apiService: ApiService, private ngbCalendar: NgbCalendar,
+              config: NgbTimepickerConfig, private dateAdapter: NgbDateAdapter<string>) {
+              config.seconds = true;
+              config.spinners = true;
   }
 
   ngOnInit() {
@@ -181,6 +235,10 @@ export class NewAceManifestComponent implements OnInit {
       console.log('Packaging Data', data);
       this.packagingUnitsList = data;
     });
+    this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
+      console.log('Document  Data', data);
+      this.documentTypeList = data;
+    });
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
@@ -188,10 +246,48 @@ export class NewAceManifestComponent implements OnInit {
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
+  getMarksArray(e){
+  //   this.commodities['marksAndNumbers'].forEach(element => {
+  //    console.log('element', element);
+  //  });
+  }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
     });
+  }
+  getStatesDoc() {
+    const countryID = this.passengers['document']['issuingCountry'];
+    this.apiService.getData('states/country/' + countryID)
+      .subscribe((result: any) => {
+        this.passengerDocStates = result.Items;
+        console.log('this.states', this.passengerDocStates);
+      });
+  }
+  addMorePassenger() {
+    this.passengers.push({
+        firstName: '',
+        lastName: '',
+        gender: '',
+        dob: '',
+        countryOfCitizenship: '',
+        fastNumber: '',
+        // document: [{
+        //   documentType: '',
+        //   documentNumber: '',
+        //   issuingCountry: '',
+        //   issuingState: ''
+        // }]
+    });
+  }
+  addDocument() {
+    this.passengers['document'].push({
+      documentType: '',
+      documentNumber: '',
+      issuingCountry: '',
+      issuingState: ''
+    });
+    console.log(this.passengers['document']);
   }
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
@@ -237,9 +333,12 @@ export class NewAceManifestComponent implements OnInit {
       this.fetchStateCode(this.vehicleData[0].stateID);
     });
   }
-  matchLoadedOnFn() {
-    if(this.commodities.loadedOn.number === 'TRUCK')
-      this.commodities.loadedOn.number = this.vehicleData[0].vehicleID;
+  // matchLoadedOnFn() {
+  //   if(this.commodities.loadedOn.number === 'TRUCK')
+  //     this.commodities.loadedOn.number = this.vehicleData[0].vehicleID;
+  // }
+  addPassenger(){
+    console.log('add passenger', this.passengers);
   }
   fetchCountries() {
     this.apiService.getData('countries')
@@ -247,7 +346,31 @@ export class NewAceManifestComponent implements OnInit {
         this.countries = result.Items;
       });
   }
-   getStates() {
+  addCommodity() {
+    this.commodities.push({
+      loadedOn: {
+        type: '',
+        number: ''
+      },
+      description: '',
+      quantity: '',
+      packagingUnit: '',
+      weight: '',
+      weightUnit: '',
+      marksAndNumbers: [],
+      c4ReleaseNumber: '',
+      value: '',
+      countryOfOrigin: '',
+      hazmatDetails: {
+        unCode: '',
+        emergencyContactName: '',
+        contactPhone: '',
+        contactEmail: ''
+      }
+    });
+    // console.log('commodity', this.commodities);
+  }
+  getStates() {
     // console.log('hello states');
     // console.log(this.countries);
     // let countryID = [];
@@ -293,10 +416,10 @@ export class NewAceManifestComponent implements OnInit {
     }
     console.log('asset seals', this.assetSeals);
   }
-  getAssetNumber(e){
+  getAssetNumber(e) {
     let test = [];
     test = this.assets.filter(a => a.assetID === e);
-    
+
     console.log('asset number', test[0].assetIdentification);
   }
   async getAssetData(e) {
@@ -315,6 +438,18 @@ export class NewAceManifestComponent implements OnInit {
       };
       this.assetArray.push(data);
     }
+  }
+  marksArrayFn() {
+    //this.marksArray = [];
+    this.commodities['marksAndNumbers'].push(this.marks1);
+    this.commodities['marksAndNumbers'].push(this.marks2);
+    this.commodities['marksAndNumbers'].push(this.marks3);
+    this.commodities['marksAndNumbers'].push(this.marks4);
+    // this.commodities.marksAndNumbers.push(this.marks1);
+    // this.marksArray.push(this.marks2);
+    // this.marksArray.push(this.marks3);
+    // this.marksArray.push(this.marks4);
+    console.log('marks', this.commodities)
   }
   async getDriverData(e) {
     let testArray = [];
@@ -399,7 +534,7 @@ export class NewAceManifestComponent implements OnInit {
               postalCode: '17067'
             }
           },
-          
+          commodities: this.commodities,
           // commodities: [
           //   {
           //     loadedOn: {
@@ -413,18 +548,28 @@ export class NewAceManifestComponent implements OnInit {
           //     weightUnit: 'L'
           //   }
           // ]
-          commodities:
-          {
-            loadedOn: {
-              type: this.commodities.loadedOn.type,
-              number: this.commodities.loadedOn.type === 'TRUCK' ? this.vehicleNumber : 'hello'
-            },
-            description: this.commodities.description,
-            quantity: this.commodities.quantity,
-            packagingUnit: this.commodities.packagingUnit,
-            weight: this.commodities.weight,
-            weightUnit: this.commodities.weightUnit
-          },
+          // commodities:
+          // [{
+          //   loadedOn: {
+          //     type: this.commodities.loadedOn.type,
+          //     number: this.commodities.loadedOn.type === 'TRUCK' ? this.vehicleNumber : 'hello'
+          //   },
+          //   description: this.commodities.description,
+          //   quantity: this.commodities.quantity,
+          //   packagingUnit: this.commodities.packagingUnit,
+          //   weight: this.commodities.weight,
+          //   weightUnit: this.commodities.weightUnit,
+          //   marksAndNumbers: this.marksArray,
+          //   c4ReleaseNumber: this.commodities.c4ReleaseNumber,
+          //   value: this.commodities.value,
+          //   countryOfOrigin: this.commodities.countryOfOrigin,
+          //   hazmatDetails: {
+          //     unCode: this.commodities.hazmatDetails.unCode,
+          //     emergencyContactName: this.commodities.hazmatDetails.emergencyContactName,
+          //     contactPhone: this.commodities.hazmatDetails.contactPhone,
+          //     contactEmail: this.commodities.hazmatDetails.contactEmail
+          //     }
+          // }],
         }
       ],
     };
