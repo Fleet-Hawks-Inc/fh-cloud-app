@@ -14,7 +14,7 @@
             <header class="page-header">
                 <div class="row pr-5 " style="padding-top:10px;">
                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                      Order LTL- 006
+                      Order {{orderMode}}
                    </div>
                    <div class="col-md-8  col-lg-8 text-right pr-4">
                    <a href="all-estimates.php" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Estimates</a>
@@ -82,19 +82,19 @@
                                                              <div class="widgettbload">
                                                               <span class="pull-right text-3 mt-2 text-dark">
                                                               </span>
-                                                                <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i class="fas fa-box"></i> LTL-006</h2>
+                                                                <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i class="fas fa-box"></i> {{orderMode}}</h2>
                                                              </div>
                                      
-                                                             <div class="widgetlinfo">
+                                                             <div class="widgetlinfo" *ngFor="let quote of quoteData;">
                                      
-                                                              <p class="mb-0 text-4 font-weight-semibold text-dark">James</p>
-                                                              <p class="mb-0 mt-1 text-4 font-weight-semibold text-dark">james@live.com</p>
+                                                              <p class="mb-0 text-4 font-weight-semibold text-dark">{{quote.customerID}}</p>
+                                                              <p class="mb-0 mt-1 text-4 font-weight-semibold text-dark">john@gmail.com</p>
                                                               <p class="mb-0 mt-1 text-4 text-dark">(123) 456-7890</p>
  
  
                                                               <!-- <p class="mb-0 text-dark"><strong>Account#</strong> <span class="pull-right">787355464</span></p> -->
-                                                              <p class="mb-0 text-dark"><strong>Reference</strong> <span class="pull-right">256</span></p>
-                                                              <p class="mb-0 text-dark"><strong>Load Creation Date/Time</strong> <span class="pull-right">05/25/2020 07:41 AM</span></p>
+                                                              <p class="mb-0 text-dark"><strong>Reference</strong> <span class="pull-right">{{quote.reference}}</span></p>
+                                                              <p class="mb-0 text-dark"><strong>Load Creation Date/Time</strong> <span class="pull-right"> {{quote.creationDate}}</span></p>
                                                               <p class="mb-0 text-dark"><strong>C-TPAT</strong> <span class="pull-right">89898ABC</span></p>
                                                               <p class="mb-0 text-dark"><strong>CSA ?</strong> <span class="pull-right">No</span></p>
  
@@ -147,36 +147,18 @@
                                                 <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Shipper</h2>
                                              </div>
                      
-                                             <div class="widgetlinfo">
+                                             <div class="widgetlinfo" *ngFor="let item of shipperInfo;">
                                               <div class="col-lg-2 pull-left">
-                                                 <img src="img/icon-load.png" class="img-fluid" alt="shipper">
+                                                 <img src="assets/img/icon-load.png" class="img-fluid" alt="shipper">
                                               </div>
                                               <div class="col-lg-10 pull-left">
-                                                 <p class="mb-0 text-dark"><strong>James</strong></p>
-                                              <p class="mb-0 text-dark">1155 Mckay Street Regina, SK S4W 0T4</p>
-                                              <p class="mb-0 text-dark"><strong>Pickup Date/Time:</strong>  06/02/2020  05:25 AM</p>
-                                              <p class="mb-0 text-dark"><strong>Contact Phone:</strong>   (103) 069-1461</p>
-                                              <p class="mb-0 text-dark"><strong>Pick Up Instructions:</strong> Please phone</p>
-                                              <p class="mb-0 text-dark"><strong>BOL:</strong> 1239202</p>
+                                                 <p class="mb-0 text-dark"><strong>{{item.shipperName}}</strong></p>
+                                              <p class="mb-0 text-dark">{{item.pickupLocation}}</p>
+                                              <p class="mb-0 text-dark"><strong>Pickup Date/Time:</strong>  {{item.locationDateTime}}</p>
+                                              <p class="mb-0 text-dark"><strong>Contact Phone:</strong>   {{item.phone}}</p>
+                                              <p class="mb-0 text-dark"><strong>Pick Up Instructions:</strong> {{item.pickupInstruction}}</p>
+                                              <p class="mb-0 text-dark"><strong>BOL:</strong> {{item.BOL}}</p>
                                               </div>
- 
-                                             
- 
-                                             </div>
-                                             <div class="widgetlinfo">
-                                              <div class="col-lg-2 pull-left">
-                                                 <img src="img/icon-load.png" class="img-fluid" alt="shipper">
-                                              </div>
-                                              <div class="col-lg-10 pull-left">
-                                                 <p class="mb-0 text-dark"><strong>James</strong></p>
-                                              <p class="mb-0 text-dark">1155 Mckay Street Regina, SK S4W 0T4</p>
-                                              <p class="mb-0 text-dark"><strong>Pickup Date/Time:</strong>  06/02/2020  05:25 AM</p>
-                                              <p class="mb-0 text-dark"><strong>Contact Phone:</strong>   (103) 069-1461</p>
-                                              <p class="mb-0 text-dark"><strong>Pick Up Instructions:</strong> Please phone</p>
-                                              <p class="mb-0 text-dark"><strong>BOL:</strong> 1239202</p>
-                                              </div>
- 
-                                             
  
                                              </div>
                                          </div>
@@ -188,7 +170,7 @@
                                   <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
                                      <div class="col-xl-12 col-12 mb-3">
                                         <div class="boxshadow1 maindisbox w100 pull-left">
-                                         <div class="widgetload">
+                                         <div class="widgetload" *ngFor="let item of receiverInfo;">
                                              <div class="widgettbload">
                                               <span class="pull-right text-3 mt-2 text-dark">
                                               </span>
@@ -197,14 +179,14 @@
                      
                                              <div class="widgetlinfo">
                                               <div class="col-lg-2 pull-left">
-                                                 <img src="img/icon-unload.png" class="img-fluid" alt="shipper">
+                                                 <img src="assets/img/icon-unload.png" class="img-fluid" alt="shipper">
                                               </div>
                                               <div class="col-lg-10 pull-left">
-                                                 <p class="mb-0 text-dark"><strong>ABC Logistics</strong></p>
-                                              <p class="mb-0 text-dark">2060 Flr Bed 2 322 Corydon, Winnipeg, YT R3P 0N3</p>
-                                              <p class="mb-0 text-dark"><strong>Delivery Date/Time:</strong>   06/10/2020 08:20 PM</p>
-                                              <p class="mb-0 text-dark"><strong>Contact Phone:</strong>   (103) 069-1461</p>
-                                              <p class="mb-0 text-dark"><strong>Delivery Instructions:</strong>  Check with dispatch before you leave</p>
+                                                 <p class="mb-0 text-dark"><strong>{{item.receiverName}}</strong></p>
+                                              <p class="mb-0 text-dark">{{item.dropOffLocation}}</p>
+                                              <p class="mb-0 text-dark"><strong>Delivery Date/Time:</strong>   {{item.locationDateTime}}</p>
+                                              <p class="mb-0 text-dark"><strong>Contact Phone:</strong>   {{item.phone}}</p>
+                                              <p class="mb-0 text-dark"><strong>Delivery Instructions:</strong> {{item.dropOffInstruction}}</p>
                                               
                                               </div>
  
@@ -226,15 +208,15 @@
                                                 <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Freight Details</h2>
                                              </div>
                      
-                                             <div class="widgetlinfo">
+                                             <div class="widgetlinfo" *ngFor="let item of freightInfo;">
                                               <div class="col-lg-2 pull-left">
-                                                 <img src="img/icon-freight.png" class="img-fluid" alt="shipper">
+                                                 <img src="assets/img/icon-freight.png" class="img-fluid" alt="shipper">
                                               </div>
                                               <div class="col-lg-10 pull-left">
                                               
-                                              <p class="mb-0 text-dark"><strong>Commodity:</strong> Rubber Balls,Iron Rods</p>
-                                              <p class="mb-0 text-dark"><strong>Weight:</strong> 25000.00 lbs</p>
-                                              <p class="mb-0 text-dark"><strong>Qty:</strong> - 3000 piece</p>
+                                              <p class="mb-0 text-dark"><strong>Commodity:</strong>{{item.commodity}}</p>
+                                              <p class="mb-0 text-dark"><strong>Weight:</strong> {{item.weight}} {{item.weightUnit}}</p>
+                                              <p class="mb-0 text-dark"><strong>Qty:</strong> - {{item.quantity}} {{item.quantityUnit}}</p>
                                               <p class="mb-0 text-dark"><strong>L x W x H:</strong> </p>
                                               <p class="mb-0 text-dark"><strong>Declared Value:</strong> $20,000.00</p>
                                               <p class="mb-0 text-dark"><strong>Load Type:</strong> - LTL</p>
@@ -262,7 +244,7 @@
                      
                                              <div class="widgetlinfo">
                                               <div class="col-lg-2 pull-left">
-                                                 <img src="img/icon-cur.png" class="img-fluid" alt="shipper">
+                                                 <img src="assets/img/icon-cur.png" class="img-fluid" alt="shipper">
                                               </div>
                                               <div class="col-lg-10 pull-left">
                                                  <p class="mb-0 text-dark">Freight Fee <span class="pull-right">$250.00</span></p>

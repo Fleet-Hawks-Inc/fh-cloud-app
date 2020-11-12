@@ -64,7 +64,7 @@
                        <table class="table table-bordered table-responsive-lg table-striped mb-0">
                                          <thead>
                                             <tr>
-                                               <th width="5%"><input type="checkbox"></th>
+                                               
                                                <th >Estimate</th>
                                                <th >Date</th>
                                                <th >Reference No.</th>
@@ -76,24 +76,26 @@
                                                <th >Estimated Miles</th>
                                                <th >Amount</th>
                                                <th >Status</th>
+                                               <th>Actions</th>
                                             </tr>
                                          </thead>
                                          <tbody>
                                             <tr *ngFor="let quote of quotes;let i = index;">
-                                                <td routerLink="/dispatch/quotes/detail/{{quote.quoteID}}">3455</td>
-                                                <td>{{quote.orderMode}}</td>
+                                                <td routerLink="/dispatch/quotes/detail/{{quote.quoteID}}">{{quote.quoteNumber}}</td>
                         
-                                                <td>Date: {{quote.shipperInfo[i].locationDateTime}}<br>
-                                                    Location: {{quote.shipperInfo[i].pickupLocation}}</td>
-                                                <td>Date: {{quote.receiverInfo[i].locationDateTime}}<br>
-                                                    Location: {{quote.receiverInfo[i].dropOffLocation}}</td>
-                                                <td>Name: {{quote.freightDetails.commodity}}<br>
-                                                    Qty: {{quote.freightDetails.quantity}} {{quote.freightDetails.quantityUnit}} <br>
-                                                    Rate: {{quote.freightDetails.rate}} {{quote.freightDetails.rateUnit}}</td>
-                                                <td>T Amt: CAD {{quote.freightDetails.amount}}<br>
-                                                    Received: CAD 1200.00<br>
-                                                    Balance: CAD 300.00</td>
-                                                <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
+                                                <td>{{quote.creationDate}}</td>
+                                                <td>{{quote.reference}}</td>
+                                                <td>{{quote.expiryDate}} </td>
+                                                <td>{{quote.customerID}}</td>
+                                                <td>Date: {{quote.shipperInfo[0].locationDateTime}} <br>
+                                                   Location: {{quote.shipperInfo[0].pickupLocation}}
+                                                </td>
+                                                <td>Date: {{quote.receiverInfo[0].locationDateTime}} <br> 
+                                                   Location: {{quote.receiverInfo[0].dropOffLocation}}</td>
+                                                <td></td>
+                                                <td>{{quote.totalMiles}}</td>
+                                                <td></td>
+                                                <td><span class="badge badge-dark p-1">Sent</span></td>
                                                 <td>
                                                     <div class="dropdown dropright">
                                                        <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -104,150 +106,11 @@
                                                             <a class="dropdown-item"
                                                             routerLink="/dispatch/quotes/edit/{{quote.quoteID}}">Edit</a>
                                                             <a class="dropdown-item" href="javascript:;"
-                                                                (click)="deactivateAsset(quote.quoteID)">Delete</a>
+                                                                (click)="deleteQuote(quote.quoteID)">Delete</a>
                                                         </div>
                                                      </div>
                                                  </td>
                                             </tr>
-                                            <tr onclick="window.location='estimate-detail.php'">
-                                               <td><input type="checkbox"></td>
-                                               
-                                               <td>34523</td>
-                                               <td>09/25/2020</td>
-                                               <td>456456</td>
-                                               <td>10/05/2020</td>
-                                               <td>Neesham</td>
-                                               
-                                               <td >Date: 6/02/2020 05:25 AM<br>
-                                                 Location: Regina, SK</td>
-                                               <td >Date: 06/10/2020 05:20 PM<br>
-                                                 Location: Winnipeg, YT</td>
-                                               <td>Admin</td>
-                                               <td>150 Miles</td>
-                                               <td >Estimated Amt: CAD 1500.00<br>
-                                               Frieght Fees CAD 20.00<br>
-                                               Fuel Surcharge: CAD 380.00<br>
-                                               Taxes: CAD 50.00
-                                               </td>
-                                               <td><span class="badge badge-dark p-1">SENT</span></td>
-     
-                                            </tr>
-                                            
-                                            <tr onclick="window.location='estimate-detail.php'">
-                                               <td><input type="checkbox"></td>
-                                               <td>5689</td>
-                                               <td>09/25/2020</td>
-                                               <td>456456</td>
-                                               <td>10/05/2020</td>
-                                               <td>Neesham</td>
-                                               
-                                               <td >Date: 13/03/2020 04:20 AM<br>
-                                                 Location: Toronto, ON</td>
-                                               <td >Date: 06/10/2020 05:20 PM<br>
-                                                 Location: Delta, BC</td>
-                                               <td>Admin</td>
-                                               <td>150 Miles</td>
-                                               <td >Estimated Amt: CAD 1500.00<br>
-                                               Frieght Fees CAD 20.00<br>
-                                               Fuel Surcharge: CAD 380.00<br>
-                                               Taxes: CAD 50.00
-                                               </td>
-                                               <td><span class="badge badge-dark p-1">SENT</span></td>
-                                            </tr>
-                                            
-                                             <tr onclick="window.location='estimate-detail.php'">
-                                               <td><input type="checkbox"></td>
-                                               <td>98766</td>
-                                               <td>09/25/2020</td>
-                                               <td>456456</td>
-                                               <td>10/05/2020</td>
-                                               <td>Neesham</td>
-                                               
-                                               <td >Date: 14/04/2020 04:00 AM<br>
-                                                 Location: Calgary, AB</td>
-                                               <td >Date: 20/05/2020 05:00 PM<br>
-                                                 Location: Perth, ON</td>
-                                               <td>Admin</td>
-                                               <td>150 Miles</td>
-                                               <td >Estimated Amt: CAD 1500.00<br>
-                                               Frieght Fees CAD 20.00<br>
-                                               Fuel Surcharge: CAD 380.00<br>
-                                               Taxes: CAD 50.00
-                                               </td>
-                                               <td><span class="badge badge-dark p-1">SENT</span></td>
-                                            </tr>
-                                            
-                                            
-                                             <tr onclick="window.location='estimate-detail.php'">
-                                               <td><input type="checkbox"></td>
-                                               <td>225890</td>
-                                               <td>09/25/2020</td>
-                                               <td>456456</td>
-                                               <td>10/05/2020</td>
-                                               <td>Neesham</td>
-                                               
-                                               <td >Date: 14/06/2020 04:00 AM<br>
-                                                 Location: Calgary, AB</td>
-                                               <td >Date: 20/07/2020 05:00 PM<br>
-                                                 Location: Vancouver, BC</td>
-                                               <td>Admin</td>
-                                              <td>150 Miles</td>
-                                               <td >Estimated Amt: CAD 1500.00<br>
-                                               Frieght Fees CAD 20.00<br>
-                                               Fuel Surcharge: CAD 380.00<br>
-                                               Taxes: CAD 50.00
-                                               </td>
-                                               <td><span class="badge badge-dark p-1">SENT</span></td>
-                                            </tr>
-                                            
-                                            <tr onclick="window.location='estimate-detail.php'">
-                                               <td><input type="checkbox"></td>
-                                               
-                                               <td>34523</td>
-                                               <td>09/25/2020</td>
-                                               <td>456456</td>
-                                               <td>10/05/2020</td>
-                                               <td>Neesham</td>
-                                               
-                                               <td >Date: 6/02/2020 05:25 AM<br>
-                                                 Location: Regina, SK</td>
-                                               <td >Date: 06/10/2020 05:20 PM<br>
-                                                 Location: Winnipeg, YT</td>
-                                               <td>Admin</td>
-                                               <td>150 Miles</td>
-                                               <td >Estimated Amt: CAD 1500.00<br>
-                                               Frieght Fees CAD 20.00<br>
-                                               Fuel Surcharge: CAD 380.00<br>
-                                               Taxes: CAD 50.00
-                                               </td>
-                                               <td><span class="badge badge-dark p-1">SENT</span></td>
-     
-                                            </tr>
-                                            
-                                            <tr onclick="window.location='estimate-detail.php'">
-                                               <td><input type="checkbox"></td>
-                                               <td>5689</td>
-                                               <td>09/25/2020</td>
-                                               <td>456456</td>
-                                               <td>10/05/2020</td>
-                                               <td>Neesham</td>
-                                               
-                                               <td >Date: 13/03/2020 04:20 AM<br>
-                                                 Location: Toronto, ON</td>
-                                               <td >Date: 06/10/2020 05:20 PM<br>
-                                                 Location: Delta, BC</td>
-                                               <td>Admin</td>
-                                               <td>150 Miles</td>
-                                               <td >Estimated Amt: CAD 1500.00<br>
-                                               Frieght Fees CAD 20.00<br>
-                                               Fuel Surcharge: CAD 380.00<br>
-                                               Taxes: CAD 50.00
-                                               </td>
-                                               <td><span class="badge badge-dark p-1">SENT</span></td>
-                                            </tr>
-                                            
-                                           
-                                            
                                          </tbody>
                                       </table>
                                       

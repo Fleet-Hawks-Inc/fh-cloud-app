@@ -20,7 +20,7 @@ declare var H: any;
   styleUrls: ['./add-quotes.component.css']
 })
 export class AddQuotesComponent implements OnInit {
-  public getOrderID;
+  public getQuoteID;
   pageTitle = 'Add Order';
   private readonly search: any;
   public searchTerm = new Subject<string>();
@@ -88,7 +88,7 @@ export class AddQuotesComponent implements OnInit {
   quoteData = {
     shipperInfo: [],
     receiverInfo: [],
-    freightDetails: {},
+    freightDetails: [],
     additionalDetails: {},
     charges: {
       freightFee: {},
@@ -143,8 +143,8 @@ export class AddQuotesComponent implements OnInit {
       this.form = $('#form_').validate();
     });
 
-    this.getOrderID = this.route.snapshot.params['quoteID'];
-    if (this.getOrderID) {
+    this.getQuoteID = this.route.snapshot.params['quoteID'];
+    if (this.getQuoteID) {
       this.pageTitle = 'Edit Quote';
       this.fetchOrderByID();
     } else {
@@ -293,6 +293,12 @@ export class AddQuotesComponent implements OnInit {
     this.receiverCurrent.maxTemprature = '';
     this.receiverCurrent.maxTempratureUnit = '';
     this.receiverCurrent.driverUnload = '';
+  }
+
+  addFreight() {
+    // this.quoteData.freightDetails.push({
+
+    // })
   }
 
   /*
@@ -549,25 +555,19 @@ export class AddQuotesComponent implements OnInit {
   */
  fetchOrderByID(){
   this.apiService
-  .getData('quotes/' + this.getOrderID)
+  .getData('quotes/' + this.getQuoteID)
   .subscribe((result: any) => {
     result = result.Items[0];
     console.log(result);
     this.quoteData['customerID'] = result.customerID;
     this.quoteData['additionalContact'] = result.additionalContact;
     this.quoteData['creationDate'] = result.creationDate;
-    this.quoteData['csa'] = result.csa;
-    this.quoteData['ctpat'] = result.ctpat;
-    this.quoteData['customerPO'] = result.customerPO;
-    this.quoteData['email'] = result.email;
-    this.quoteData['orderMode'] = result.orderMode;
-    this.quoteData['orderNumber'] = result.orderNumber;
-    this.quoteData['phone'] = result.phone;
+    this.quoteData['expiryDate'] = result.expiryDate;
+    this.quoteData['quoteNumber'] = result.quoteNumber;
     this.quoteData['reference'] = result.reference;
     this.quoteData['remarks'] = result.remarks;
     this.quoteData['totalMiles'] = result.totalMiles;
-    this.quoteData['tripType'] = result.tripType;
-
+    
     this.quoteData.additionalDetails['dropTrailer'] = result.additionalDetails.dropTrailer;
     this.loadTypeData = result.additionalDetails.loadType;
     

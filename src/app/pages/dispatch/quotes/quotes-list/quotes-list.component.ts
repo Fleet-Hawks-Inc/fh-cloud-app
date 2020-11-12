@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
+import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-quotes-list',
@@ -8,7 +10,9 @@ import {ApiService} from '../../../../services/api.service';
 })
 export class QuotesListComponent implements OnInit {
   quotes;
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService,
+              private router: Router,
+              private toastr: ToastrService) { }
 
   ngOnInit() {
     this.fetchQuotes();
@@ -25,5 +29,14 @@ export class QuotesListComponent implements OnInit {
         }
       });
   };
+
+  deleteQuote(quoteID) {
+    this.apiService
+      .deleteData('quotes/' + quoteID)
+      .subscribe((result: any) => {
+        this.toastr.success('Quote Deleted Successfully!');
+        this.fetchQuotes();
+      });
+  }
 
 }

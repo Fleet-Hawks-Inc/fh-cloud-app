@@ -111,7 +111,7 @@
                                     </thead>
                                     <tbody>
                                        <tr *ngFor="let issue of issues;">
-                                          <td><input type="checkbox"></td>
+                                          <td><input (change)="selectIssues($event, issue.issueID)" type="checkbox"></td>
                                           <td>{{issue.issueName}}</td>
                                           <td>{{issue.assignedTo}}</td>
                                        </tr>
@@ -221,7 +221,7 @@
                                         <ng-option value="Rotate Tires"> Rotate Tires</ng-option>
                                         <ng-option value="Rotor Replacement">Rotor Replacement</ng-option>
                                         
-                                        <ng-option value="Spark Plug Replacement<">Spark Plug Replacement</ng-option>
+                                        <ng-option value="Spark Plug Replacement">Spark Plug Replacement</ng-option>
                                         <ng-option value="Spark Plugs Replacement">Spark Plugs Replacement</ng-option>
                                         <ng-option value="Starter Replacement">Starter Replacement</ng-option>
                                         <ng-option value="Steer Axle Hub Cap Vent Plug Inspection">Steer Axle Hub Cap Vent Plug Inspection</ng-option>

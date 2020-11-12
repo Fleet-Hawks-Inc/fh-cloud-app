@@ -94,7 +94,6 @@ export class TripListComponent implements OnInit {
         for (let i = 0; i < result.Items.length; i++) {
           if (result.Items[i].isDeleted == '0') {
             this.trips.push(result.Items[i]);
-
             if(result.Items[i].tripStatus === 'planned') {
               this.plannedTrips.push(result.Items[i]);
             } else if(result.Items[i].tripStatus === 'dispatched') {
@@ -110,7 +109,7 @@ export class TripListComponent implements OnInit {
             }
           }
         }
-
+        console.log('this.trips', this.trips);
         this.plannedTripsCount = this.plannedTrips.length;
         this.dispatchedTripsCount = this.dispatchedTrips.length;
         this.startedTripsCount = this.startedTrips.length;

@@ -21,6 +21,7 @@ export class AddServiceComponent implements OnInit {
   private issues;
   private inventory = [];
   private selectedTasks = [];
+  selectedIssues = [];
   private allServices = [];
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
@@ -95,13 +96,24 @@ export class AddServiceComponent implements OnInit {
         this.response = res;
         this.uploadFiles(); // upload selected files to bucket
         this.toastr.success('Asset added successfully');
-        this.router.navigateByUrl('/fleet/assets/Assets-List');
+        this.router.navigateByUrl('/fleet/maintenance/service-log/list');
       },
     });
   }
 
   throwErrors() {
     this.form.showErrors(this.errors);
+  }
+
+  selectIssues($event, ids) {
+    console.log($event.target.checked);
+    if($event.target.checked) {
+      this.selectedIssues.push(ids);
+    } else {
+      let index = this.selectedIssues.indexOf(ids);
+      this.selectedIssues.splice(index, 1);
+    }
+    this.serviceData['selectedIssues'] = this.selectedIssues;
   }
   
 
@@ -147,6 +159,7 @@ export class AddServiceComponent implements OnInit {
     this.getReminders(vehicleID);
     this.apiService.getData(`issues/vehicle/${vehicleID}`).subscribe((result: any) => {
       this.issues = result.Items;
+      console.log('this.issues', this.issues);
     });
   }
 

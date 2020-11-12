@@ -2,3 +2,12 @@
     color: #ffff;
     background-color: #2b2b2b;
 }
+.map-search__results {
+    position: absolute;
+    list-style: none;
+    top: 70px;
+    left: 15px;
+    width: 100%;
+    z-index: 9;
+    box-shadow: 0 0 1px 1px rgba(0,0,0,0.1);
+}

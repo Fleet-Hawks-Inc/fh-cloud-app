@@ -114,6 +114,7 @@ const routes: Routes = [
     children: [
       { path: '', component: QuotesListComponent},
       { path: 'add', component: AddQuotesComponent},
+      { path: 'edit/:quoteID', component: AddQuotesComponent},
       { path: 'detail/:quoteID', component: QuoteDetailComponent }
     ]
   },

@@ -26,7 +26,11 @@ export class TripDetailComponent implements OnInit {
   allAssetName = '';
   errors: {};
   trips = [];
+
+  newCoords = [];
+
   ngOnInit() {
+    this.tripID = this.route.snapshot.params['tripID'];
     this.fetchTripDetail();
     this.mapShow();
   }
@@ -117,6 +121,21 @@ export class TripDetailComponent implements OnInit {
       })
   }
 
+  /**
+   * pass trips coords to show on the map
+   * @param data
+   */
+  async getCoords(data) {
+    this.spinner.show();
+    await Promise.all(data.map(async item => {
+      let result = await this.hereMap.geoCode(item.locationName);
+      console.log('result', result);
+      this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
+    }));
+    this.hereMap.calculateRoute(this.newCoords);
+    this.spinner.hide();
+  }
+
   fetchAssetDetail(assetID, index) {
     this.apiService.getData('assets/' + assetID)
       .subscribe((result: any) => {
@@ -191,6 +210,9 @@ export class TripDetailComponent implements OnInit {
         if (result.Items[0].cityName != undefined) {
           this.trips[index].location.cityName = result.Items[0].cityName;
           this.trips[index].locationName = this.trips[index].location.address1 + ', ' + this.trips[index].location.address2 + ', ' + this.trips[index].location.zipcode + ', ' + this.trips[index].location.cityName + ', ' + this.trips[index].location.stateName + ', ' + this.trips[index].location.countryName;
+          if(this.trips[index] === this.trips[this.trips.length - 1]) {
+              this.getCoords(this.trips);
+          }
         }
       })
   }
