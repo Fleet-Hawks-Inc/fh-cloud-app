@@ -1,0 +1,62 @@
+[
+	{
+		"code": "PARS",
+		"description": "PARS"
+	},
+	{
+		"code": "CSA",
+		"description": "CSA"
+	},
+	{
+		"code": "BOND",
+		"description": "In-Bond"
+	},
+	{
+		"code": "E29B",
+		"description": "E29B Temporary Admission Permit"
+	},
+	{
+		"code": "ATA",
+		"description": "ATA Carnet"
+	},
+	{
+		"code": "OIC",
+		"description": "Orders In Council"
+	},
+	{
+		"code": "PG",
+		"description": "Personal Goods"
+	},
+	{
+		"code": "A49",
+		"description": "A49 Automotive Release"
+	},
+	{
+		"code": "PAPER_RMD",
+		"description": "Paper RMD"
+	},
+	{
+		"code": "PAPER_B3",
+		"description": "Paper B3"
+	},
+	{
+		"code": "ASTRAY",
+		"description": "Goods Astray"
+	},
+	{
+		"code": "MILITARY",
+		"description": "Military Goods consigned to Dept of National Defence"
+	},
+	{
+		"code": "VI",
+		"description": "Value Included"
+	},
+	{
+		"code": "MP",
+		"description": "Master Provisional"
+	},
+	{
+		"code": "ALR",
+		"description": "Automotive Line Release"
+	}
+]

@@ -458,6 +458,7 @@ export class NewAceManifestComponent implements OnInit {
       }
     }
     console.log('vehicle seals', this.vehicleSeals);
+    console.log('tags', this.tags);
   }
   onTagsChangedAsset(e) {
     if (e.change === 'add') {

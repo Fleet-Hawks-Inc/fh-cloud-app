@@ -80,6 +80,7 @@ import { EManifestsComponent } from './cross-border/e-manifests/e-manifests.comp
 import { HttpClientModule } from '@angular/common/http';
 import { NgxTagsInputModule } from 'ngx-tags-input';
 import { AceDetailsComponent } from './cross-border/ace-documents/ace-details/ace-details.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -142,7 +143,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     DataTablesModule,
     NgSelectModule,
     HttpClientModule,
-    NgxTagsInputModule
+    NgxTagsInputModule,
+    MatExpansionModule
   ],
 
   declarations: [

@@ -49,7 +49,7 @@
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Type</label>
-                                       <select  class="form-control" >                                      
+                                       <select  class="form-control" name="vehicleType" [(ngModel)]="vehicleType" >                                      
                                           <option *ngFor = "let vehicle of vehicleTypeList" [value]="vehicle.code">{{vehicle.name}}</option>                                      
                                           </select>
                                     </div>
