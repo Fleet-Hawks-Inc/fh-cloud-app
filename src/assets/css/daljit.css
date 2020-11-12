@@ -536,9 +536,3 @@ html.fixed .content-body {
     align-items: center;
     justify-content: center;
 }
-.map-search__results {
-    display: none;
-}
-.show-search__result .map-search__results {
-    display: block !important;
-}
