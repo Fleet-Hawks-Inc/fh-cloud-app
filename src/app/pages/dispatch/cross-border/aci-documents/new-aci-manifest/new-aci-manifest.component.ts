@@ -112,7 +112,7 @@ export class NewAciManifestComponent implements OnInit {
   trips: any = [];
   vehicles: any = [];
   vehicleData: any = [];
-  assetArray: any = [];
+  // assetArray: any = [];
   assets: any = [];
   drivers: any = [];
   driverId: any = [];
@@ -123,9 +123,12 @@ export class NewAciManifestComponent implements OnInit {
   subLocationsList: any = [];
   vehicleSeals: any = [];
   cargoExemptionsList: any = [];
+  documentTypeList: any = [];
   CCC: string;
   tripNo: string;
   truckcargoExemptions: [];
+  assetSeals: any = [];
+  addTrailerBtn = true;
   data: string;
   sendId: string;
   companyKey: string;
@@ -138,145 +141,168 @@ export class NewAciManifestComponent implements OnInit {
   estimatedArrivalTimeZone: '';
   estimatedArrivalDateTime: string;
   truck: {
-      number: '',
-      type: '',
-      vinNumber: '',
-      dotNumber: '',
-      insurancePolicy: {
-        insuranceCompanyName: '',
-        policyNumber: '',
-        issuedDate: '',
-        policyAmount: ''
+    number: '',
+    type: '',
+    vinNumber: '',
+    dotNumber: '',
+    insurancePolicy: {
+      insuranceCompanyName: '',
+      policyNumber: '',
+      issuedDate: '',
+      policyAmount: ''
     },
-      licensePlate: {
-        number: '',
-        stateProvince: ''
-      },
-      sealNumbers: [],
-      cargoExemptions: []
+    licensePlate: {
+      number: '',
+      stateProvince: any,
+    },
+    sealNumbers: [],
+    cargoExemptions: []
 
-    };
-    trailers = [
-      {
+  };
+  assetsArray = [
+    {
+      assetId: '',
+      cargoExemptions: [],
+      sealNumbers: []
+    }
+  ];
+  trailers = [
+    {
       number: '',
       type: '',
       cargoExemptions: [],
       licensePlate: {
-      number: '',
-      stateProvince: ''
+        number: '',
+        stateProvince: ''
       },
       sealNumbers: []
-      }
-     ];
-    passengers = [{
-      firstName: '',
-      lastName: '',
-      gender: '',
-      dateOfBirth: '',
-      citizenshipCountry: '',
-      fastCardNumber: '',
-      travelDocuments: [{
-        type: '',
-        number: '',
-        country: '',
-        stateProvince: ''
-      }]
-    }];
-    passengerDocStates = [];
-    shipments = [
-      {
-          data: 'ACI_SHIPMENT',
-          sendId: '001',
-          companyKey: '56eh67867jti678i9',
-          operation: 'CREATE',
-          shipmentType: '',
-          loadedOn: {
-              type: '',
-              number: ''
-          },
-          CCC: '',
-          cargoControlNumber: '',
-          referenceOnlyShipment: '',
-          portOfEntry: '',
-          releaseOffice: '',
-          estimatedArrivalDate: '',
-          estimatedArrivalTime: '',
-          estimatedArrivalTimeZone: '',
-          cityOfLoading: {
-              cityName: '',
-              stateProvince: ''
-          },
-          cityOfAcceptance: {
-            cityName: '',
-            stateProvince: ''
-        },
-          consolidatedFreight: '',
-          shipper: {
-              name: '',
-              address: {
-                  addressLine: '',
-                  city: '',
-                  stateProvince: '',
-                  postalCode: ''
-              },
-              contactNumber: '',
-          },
-          consignee: {
-              name: '',
-              address: {
-                  addressLine: '',
-                  city: '',
-                  stateProvince: '',
-                  postalCode: ''
-              },
-              contactNumber: '',
-          },
-          commodities: [
-              {
-                  description: '',
-                  quantity: '',
-                  packagingUnit: '',
-                  weight: '',
-                  weightUnit: '',
-                  marksAndNumbers: '',
-                  hazmatDetails: {
-                    unCode: '',
-                    emergencyContactName: '',
-                    contactPhone: '',
-                    handlingInstructions: ''
-                    }
-              }
-          ]
-      }
+    }
   ];
-  packagingUnitsList: any = [];
-  loadedType = 'TRAILER';
-  shipmentTypeList: any = [];
-  CCCShipment: string;
-  cargoControlNumberInput: string;
-    commodities =
-    [{
+  passengers = [{
+    firstName: '',
+    lastName: '',
+    gender: '',
+    dateOfBirth: '',
+    citizenshipCountry: '',
+    fastCardNumber: '',
+    travelDocuments: [{
+      type: '',
+      number: '',
+      country: '',
+      stateProvince: ''
+    }]
+  }];
+  containers = [
+    {
       loadedOn: {
         type: '',
         number: ''
       },
-      description: '',
-      quantity: '',
-      packagingUnit: '',
-      weight: '',
-      weightUnit: '',
-      marksAndNumbers: [],
-      c4LineReleaseNumber: '',
-      harmonizedCode: '',
-      value: '',
-      countryOfOrigin: '',
-      hazmatDetails: {
-        unCode: '',
-        emergencyContactName: '',
-        contactPhone: '',
-        contactEmail: ''
-      }
-    }];
+      number: '',
+      cargoExemptions: [],
+      sealNumbers: []
+    }
+  ];
+
+  passengerDocStates = [];
+  shipments = [
+    {
+      data: 'ACI_SHIPMENT',
+      sendId: '001',
+      companyKey: '56eh67867jti678i9',
+      operation: 'CREATE',
+      shipmentType: '',
+      loadedOn: {
+        type: '',
+        number: ''
+      },
+      CCC: '',
+      cargoControlNumber: '',
+      referenceOnlyShipment: 'ref',
+      portOfEntry: '',
+      releaseOffice: '',
+      subLocation: '',
+      importerCsaBusinessNumber: '',
+      estimatedArrivalDate: '',
+      estimatedArrivalTime: '',
+      estimatedArrivalTimeZone: '',
+      cityOfLoading: {
+        cityName: '',
+        stateProvince: ''
+      },
+      cityOfAcceptance: {
+        cityName: '',
+        stateProvince: ''
+      },
+      consolidatedFreight: 'hi',
+      specialInstructions: '',
+      shipper: {
+        name: 'Elk Corp of Texas',
+        address: {
+          addressLine: '401 Weavertown Rd',
+          city: 'Myerstown',
+          stateProvince: 'PA',
+          postalCode: '17067'
+        },
+        contactNumber: 'tytuy',
+      },
+      consignee: {
+        name: 'Elk Corp of Texas',
+        address: {
+          addressLine: '401 Weavertown Rd',
+          city: 'Myerstown',
+          stateProvince: 'PA',
+          postalCode: '17067'
+        },
+        contactNumber: 'ggry',
+      },
+      commodities: [
+        {
+          description: '',
+          quantity: '',
+          packagingUnit: '',
+          weight: '',
+          weightUnit: '',
+          marksAndNumbers: '',
+          hazmatDetails: {
+            unCode: '',
+            emergencyContactName: '',
+            contactPhone: '',
+            handlingInstructions: ''
+          }
+        }
+      ]
+    }
+  ];
+  packagingUnitsList: any = [];
+  loadedType = 'TRAILER';
+  containerLoaded = 'TRAILER';
+  shipmentTypeList: any = [];
+  CCCShipment: string;
+  cargoControlNumberInput: string;
+  // commodities =
+  // [{
+  //   loadedOn: {
+  //     type: '',
+  //     number: ''
+  //   },
+  //   description: '',
+  //   quantity: '',
+  //   packagingUnit: '',
+  //   weight: '',
+  //   weightUnit: '',
+  //   marksAndNumbers: [],
+  //   c4LineReleaseNumber: '',
+  //   harmonizedCode: '',
+  //   value: '',
+  //   countryOfOrigin: '',
+  //   hazmatDetails: {
+  //     unCode: '',
+  //     emergencyContactName: '',
+  //     contactPhone: '',
+  //     contactEmail: ''
+  //   }
+  // }];
   constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private toastr: ToastrService,
     private apiService: ApiService, private ngbCalendar: NgbCalendar, private location: Location,
     config: NgbTimepickerConfig, private dateAdapter: NgbDateAdapter<string>) {
@@ -295,25 +321,29 @@ export class NewAciManifestComponent implements OnInit {
     this.fetchCities();
     if (this.entryID) {
       this.title = 'Edit ACE e-Manifest';
-     // this.fetchACEEntry();
+      // this.fetchACEEntry();
     } else {
       this.title = 'Add ACE e-Manifest';
     }
     this.httpClient.get('assets/canadianPorts.json').subscribe(data => {
-       this.CANPorts = data;
-     });
-     this.httpClient.get('assets/packagingUnit.json').subscribe(data => {
+      this.CANPorts = data;
+    });
+    this.httpClient.get('assets/packagingUnit.json').subscribe(data => {
       // console.log('Packaging Data', data);
-       this.packagingUnitsList = data;
-     });
-     this.httpClient.get('assets/ACIShipmentType.json').subscribe(data => {
+      this.packagingUnitsList = data;
+    });
+    this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
+      // console.log('Document  Data', data);
+      this.documentTypeList = data;
+    });
+    this.httpClient.get('assets/ACIShipmentType.json').subscribe(data => {
       // console.log('Shipment Data', data);
-       this.shipmentTypeList = data;
-     });
-     this.httpClient.get('assets/ACIReleaseOffice.json').subscribe(data => {
-       this.ACIReleaseOfficeList = data;
-     });
-     this.httpClient.get('assets/manifestETA.json').subscribe(data => {
+      this.shipmentTypeList = data;
+    });
+    this.httpClient.get('assets/ACIReleaseOffice.json').subscribe(data => {
+      this.ACIReleaseOfficeList = data;
+    });
+    this.httpClient.get('assets/manifestETA.json').subscribe(data => {
       this.timeList = data;
     });
     this.httpClient.get('assets/ACIsubLocations.json').subscribe(data => {
@@ -336,7 +366,7 @@ export class NewAciManifestComponent implements OnInit {
     this.apiService.getData('states/country/' + countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
-       // console.log(this.states);
+        // console.log(this.states);
       });
   }
   fetchCities() {
@@ -369,13 +399,22 @@ export class NewAciManifestComponent implements OnInit {
       }
     }
     console.log('vehicle seals', this.vehicleSeals);
-   // console.log('tags', this.tags);
+    this.truck.sealNumbers = this.vehicleSeals;
+  }
+ async fetchStateCode(ID) {
+    let test: any = [];
+    let returnVal: any;
+    return this.apiService.getData('states/' + ID).subscribe((result: any) => {
+     return result.Items[0].stateCode;
+    });
+    // return returnVal;
   }
   fetchVehicleData(ID) {
-    this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
+    this.apiService.getData('vehicles/' + ID).subscribe(async (result: any) => {
       this.vehicleData = result.Items;
       console.log('vehicledata', this.vehicleData);
-      this.fetchStateCode(this.vehicleData[0].stateID);
+      let testReturn =  this.fetchStateCode(this.vehicleData[0].stateID);
+      console.log('return ', testReturn);
       this.truck = {
         number: this.vehicleData[0].vehicleIdentification,
         type: this.vehicleData[0].vehicleType,
@@ -386,37 +425,52 @@ export class NewAciManifestComponent implements OnInit {
           policyNumber: this.vehicleData[0].insurance.vendorID,
           issuedDate: this.vehicleData[0].insurance.dateOfIssue,
           policyAmount: this.vehicleData[0].insurance.premiumAmount
-      },
+        },
         licensePlate: {
           number: this.vehicleData[0].plateNumber,
-          stateProvince: this.vehicleData[0].stateID
+          stateProvince: await this.fetchStateCode(this.vehicleData[0].stateID)
         },
-        sealNumbers : this.vehicleSeals,
+        sealNumbers: this.vehicleSeals,
         cargoExemptions: this.truckcargoExemptions
       };
     });
   }
-  async getAssetData(e) {
+  setTruckCargoExemption() {
+    this.truck.cargoExemptions = this.truckcargoExemptions;
+  }
+  getAssetData(e, t) {
+    console.log('e', e);
+    console.log('t', t);
     let testArray = [];
-    this.assetArray = [];
-    for (let i = 0; i < e.length; i++) {
-      testArray = this.assets.filter(a => a.assetID === e[i]);
-      console.log('asset in fn', testArray);
-      const data = {
-        number: testArray[0].assetIdentification,
-        type: testArray[0].assetDetails.assetType,
-        licensePlate: {
-          number: testArray[0].assetDetails.licencePlateNumber,
-          stateProvince: testArray[0].assetDetails.licenceStateID
-        }
-      };
-      this.assetArray.push(data);
-    }
+    // this.assetArray = [];
+    // for (let i = 0; i < e.length; i++) {
+    //   testArray = this.assets.filter(a => a.assetID === e[i]);
+    //   console.log('asset in fn', testArray);
+    //   const data = {
+    //     number: testArray[0].assetIdentification,
+    //     type: testArray[0].assetDetails.assetType,
+    //     licensePlate: {
+    //       number: testArray[0].assetDetails.licencePlateNumber,
+    //       stateProvince: testArray[0].assetDetails.licenceStateID
+    //     }
+    //   };
+    //   this.assetArray.push(data);
+    // }
+    testArray = this.assets.filter(a => a.assetID === e);
+    console.log('test asset', testArray);
+
+    this.trailers[t].number = testArray[0].assetIdentification,
+      this.trailers[t].type = testArray[0].assetDetails.assetType,
+      this.trailers[t].licensePlate = {
+        number: testArray[0].assetDetails.licencePlateNumber,
+        stateProvince: testArray[0].assetDetails.licenceStateID
+      }
+
   }
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
-        console.log('assets', this.assets);
+      console.log('assets', this.assets);
     });
   }
   fetchDrivers() {
@@ -455,6 +509,79 @@ export class NewAciManifestComponent implements OnInit {
       this.driverArray.push(data);
     }
   }
+  addContainer() {
+    this.containers.push({
+      loadedOn: {
+        type: '',
+        number: ''
+      },
+      number: '',
+      cargoExemptions: [],
+      sealNumbers: []
+    });
+  }
+  deleteContainer(i: number) {
+    this.containers.splice(i, 1);
+  }
+  addTrailer() {
+    this.assetsArray.push({
+      assetId: '',
+      cargoExemptions: [],
+      sealNumbers: []
+    });
+    this.trailers.push({
+      number: '',
+      type: '',
+      cargoExemptions: [],
+      licensePlate: {
+        number: '',
+        stateProvince: ''
+      },
+      sealNumbers: []
+    });
+    this.addTrailerBtn = true;
+
+    if (this.assetsArray.length >= 3) {
+      this.addTrailerBtn = false;
+    }
+    else {
+      this.addTrailerBtn = true;
+    }
+  }
+  deleteTrailer(i: number) {
+    this.trailers.splice(i, 1);
+    this.assetsArray.splice(i, 1);
+    this.addTrailerBtn = true;
+  }
+  onTagsChangedAsset(e, t) {
+    if (e.change === 'add') {
+      this.trailers[t].sealNumbers.push(e.tag.displayValue);
+    }
+    else {
+      for (let i = this.trailers[t].sealNumbers.length; i--;) {
+        if (this.trailers[t].sealNumbers[i] === e.tag.displayValue) {
+          this.trailers[t].sealNumbers.splice(i, 1);
+        }
+      }
+    }
+    console.log('asset seals', this.trailers[t].sealNumbers);
+  }
+  onTagsChangedContainer(e, c) {
+    if (e.change === 'add') {
+      this.containers[c].sealNumbers.push(e.tag.displayValue);
+    }
+    else {
+      for (let i = this.containers[c].sealNumbers.length; i--;) {
+        if (this.containers[c].sealNumbers[i] === e.tag.displayValue) {
+          this.containers[c].sealNumbers.splice(i, 1);
+        }
+      }
+    }
+    console.log('asset seals', this.containers[c].sealNumbers);
+  }
+  trailerExemptionFn(t) {
+    this.trailers[t].cargoExemptions = this.assetsArray[t].cargoExemptions;
+  }
   addMorePassenger() {
     this.passengers.push({
       firstName: '',
@@ -479,10 +606,16 @@ export class NewAciManifestComponent implements OnInit {
       stateProvince: ''
     });
   }
+  deleteDocument(i: number, p: number) {
+    this.passengers[p].travelDocuments.splice(i, 1);
+  }
   addPassenger() {
     console.log('add passenger', this.passengers);
   }
-   getStatesDoc(i, j) {
+  deletePassenger(i: number) {
+    this.passengers.splice(i, 1);
+  }
+  getStatesDoc(i, j) {
     const countryID = this.passengers[i].travelDocuments[j].country;
     console.log('country Id', countryID);
     this.apiService.getData('states/country/' + countryID)
@@ -508,71 +641,80 @@ export class NewAciManifestComponent implements OnInit {
     });
     // console.log('commodity', this.commodities); 
   }
+  deleteCommodity(i: number, s: number) {
+    this.shipments[s].commodities.splice(i, 1);
+  }
   addShipment() {
-    this.shipments.push( {
+    this.shipments.push({
       data: '',
       sendId: '',
       companyKey: '',
       operation: '',
       shipmentType: '',
       loadedOn: {
-          type: '',
-          number: ''
+        type: '',
+        number: ''
       },
       CCC: '',
       cargoControlNumber: '',
       referenceOnlyShipment: '',
       portOfEntry: '',
       releaseOffice: '',
+      subLocation: '',
+      importerCsaBusinessNumber: '',
       estimatedArrivalDate: '',
       estimatedArrivalTime: '',
       estimatedArrivalTimeZone: '',
       cityOfLoading: {
-          cityName: '',
-          stateProvince: ''
+        cityName: '',
+        stateProvince: ''
       },
       cityOfAcceptance: {
         cityName: '',
         stateProvince: ''
-    },
+      },
       consolidatedFreight: 'false',
+      specialInstructions: '',
       shipper: {
-          name: '',
-          address: {
-              addressLine: '',
-              city: '',
-              stateProvince: '',
-              postalCode: ''
-          },
-          contactNumber: '',
+        name: 'Elk Corp of Texas',
+        address: {
+          addressLine: '401 Weavertown Rd',
+          city: 'Myerstown',
+          stateProvince: 'PA',
+          postalCode: '17067'
+        },
+        contactNumber: 'tytuy',
       },
       consignee: {
-          name: '',
-          address: {
-              addressLine: '',
-              city: '',
-              stateProvince: '',
-              postalCode: ''
-          },
-          contactNumber: '',
+        name: 'Elk Corp of Texas',
+        address: {
+          addressLine: '401 Weavertown Rd',
+          city: 'Myerstown',
+          stateProvince: 'PA',
+          postalCode: '17067'
+        },
+        contactNumber: 'ggry',
       },
       commodities: [
-          {
-              description: '',
-              quantity: '',
-              packagingUnit: '',
-              weight: '',
-              weightUnit: '',
-              marksAndNumbers: '',
-              hazmatDetails: {
-                unCode: '',
-                emergencyContactName: '',
-                contactPhone: '',
-                handlingInstructions: '',
-                }
+        {
+          description: '',
+          quantity: '',
+          packagingUnit: '',
+          weight: '',
+          weightUnit: '',
+          marksAndNumbers: '',
+          hazmatDetails: {
+            unCode: '',
+            emergencyContactName: '',
+            contactPhone: '',
+            handlingInstructions: '',
           }
+        }
       ]
-  });
+    });
+  }
+  deleteShipment(i: number) {
+    this.shipments.splice(i, 1);
   }
   loadedOnFn(e) {
     if (e === 'TRUCK') {
@@ -585,21 +727,24 @@ export class NewAciManifestComponent implements OnInit {
       this.loadedType = 'TRAILER';
     }
   }
-  cargoControlNumberFn(s){
+  loadedOnContainerFn(e, c) {
+    console.log('loaded on in fn', e);
+    if (e === 'TRUCK') {
+      this.containers[c].loadedOn.type = 'TRUCK';
+      this.containerLoaded = this.containers[c].loadedOn.type;
+    }
+    else {
+      this.containers[c].loadedOn.type = 'TRAILER';
+      this.containerLoaded = this.containers[c].loadedOn.type;
+    }
+  }
+  cargoControlNumberFn(s) {
     this.shipments[s].cargoControlNumber = this.CCCShipment + this.cargoControlNumberInput;
   }
-  fetchStateCode(ID) {
-    let test: any = [];
-    console.log('State Id', ID);
-    this.apiService.getData('states/' + ID).subscribe((result: any) => {
-      test = result.Items[0];
-      console.log('state code in fn', test.stateCode);
-      return test.stateCode;
-    });
-  }
+
   addACIManifest() {
     const data = {
-      data : 'ACI_TRIP',
+      data: 'ACI_TRIP',
       sendId: '001',
       companyKey: 'c-9000-2bcd8ae5954e0c48',
       operation: 'CREATE',
@@ -611,12 +756,13 @@ export class NewAciManifestComponent implements OnInit {
       tripTime: this.tripTime,
       estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
       truck: this.truck,
-      trailers: this.assetArray,
+      trailers: this.trailers,
       drivers: this.driverArray,
       passengers: this.passengers,
+      containers: this.containers,
       shipments: this.shipments
     };
-    console.log('Data', data);return;
+    console.log('Data', data);
     this.apiService.postData('ACIeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {

@@ -15,6 +15,7 @@ export class EManifestsComponent implements OnInit {
  activeDiv = 'ace';
  countries = [];
  ACEList = [];
+ ACIList = [];
    constructor(  private apiService: ApiService,
     private route: Router,
     private spinner: NgxSpinnerService,
@@ -23,6 +24,7 @@ export class EManifestsComponent implements OnInit {
   ngOnInit() {
     this.fetchCountries();
     this.ACEEntries();
+    this.ACIEntries();
   }
   fetchCountries() {
     this.apiService.getData('countries').subscribe((result: any) => {
@@ -41,7 +43,19 @@ export class EManifestsComponent implements OnInit {
         console.log(this.ACEList);
       },
     });
-
+  }
+  ACIEntries() {
+    this.apiService.getData('ACIeManifest').subscribe({
+      complete: () => {
+        this.initDataTable();
+      },
+      error: () => { },
+      next: (result: any) => {
+        console.log(result);
+        this.ACIList = result.Items;
+        console.log(this.ACIList);
+      },
+    });
   }
   initDataTable() {
     timer(200).subscribe(() => {
