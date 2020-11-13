@@ -35,7 +35,7 @@ import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
 import { EManifestsComponent } from './cross-border/e-manifests/e-manifests.component';
 import { AceDetailsComponent } from './cross-border/ace-documents/ace-details/ace-details.component';
-
+import { AciDetailsComponent } from './cross-border/aci-documents/aci-details/aci-details.component';
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
 
 
@@ -76,6 +76,7 @@ const routes: Routes = [
 
       {path: 'ACI-eManifest', component: AciEmanifestComponent},
       {path: 'ACI-new-eManifest', component: NewAciManifestComponent},
+      {path: 'ACI-details/:entryID', component: AciDetailsComponent},
       {path: 'ACI-shipment', component: AciShipmentComponent},
       {path: 'ACI-commodity', component: AciCommodityComponent}
     ]

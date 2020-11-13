@@ -40,7 +40,7 @@ export class EManifestsComponent implements OnInit {
       next: (result: any) => {
         console.log(result);
         this.ACEList = result.Items;
-        console.log(this.ACEList);
+        console.log('ACE data', this.ACEList);
       },
     });
   }
@@ -53,7 +53,7 @@ export class EManifestsComponent implements OnInit {
       next: (result: any) => {
         console.log(result);
         this.ACIList = result.Items;
-        console.log(this.ACIList);
+        console.log('ACI data', this.ACIList);
       },
     });
   }
