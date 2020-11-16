@@ -83,8 +83,8 @@
                                  </thead>
                                  <tbody>
                                     <tr *ngFor = "let aceManifest of ACEList;">                                       
-                                       <td  routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.tripNumber}}</td>
-                                       <td>AHYR</td>                                          
+                                       <td  routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}{{aceManifest.tripNumber}}</td>
+                                       <td>{{aceManifest.SCAC}}</td>                                          
                                        <td><span *ngFor = "let driver of aceManifest.drivers">{{driver.firstName}}</span></td>
                                        <td>{{aceManifest.truck.number}}</td>
                                        <td><span *ngFor = "let trailer of aceManifest.trailers">{{trailer.number}}</span></td>

@@ -178,7 +178,7 @@
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Assign
                                        Driver</label>
-                                    <ng-select [multiple]="true" [(ngModel)]="driverId" name="driverId"
+                                    <ng-select [multiple]="true" [(ngModel)]="driverIdArray" name="driverIdArray"
                                        (change)="getDriverData($event)">
                                        <ng-option *ngFor="let driver of drivers" [value]="driver.driverID">
                                           {{driver.firstName}}</ng-option>
@@ -226,8 +226,7 @@
                            </div>
                            <div class="col-lg-6">
                               <button type="button" (click)="addShipment()"
-                                 class="btn btn-sm btn-success pull-right">Add Shipment</button>
-                                 
+                                 class="btn btn-sm btn-success pull-right">Add Shipment</button>                               
 
                            </div>
                         </div>

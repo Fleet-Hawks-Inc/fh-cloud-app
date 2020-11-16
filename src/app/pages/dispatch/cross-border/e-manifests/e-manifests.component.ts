@@ -6,6 +6,7 @@ import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+declare var $: any;
 @Component({
   selector: 'app-e-manifests',
   templateUrl: './e-manifests.component.html',
@@ -43,6 +44,15 @@ export class EManifestsComponent implements OnInit {
         console.log('ACE data', this.ACEList);
       },
     });
+  }
+  deleteACEEntry(entryID) {
+    this.apiService
+      .deleteData('ACEeManifest/' + entryID)
+      .subscribe((result: any) => {
+     //   this.spinner.show();
+        this.ACEEntries();
+        this.toastr.success('ACE eManifest Entry Deleted Successfully!');
+      });
   }
   ACIEntries() {
     this.apiService.getData('ACIeManifest').subscribe({

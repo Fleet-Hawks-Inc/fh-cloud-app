@@ -115,7 +115,7 @@ export class NewAciManifestComponent implements OnInit {
   // assetArray: any = [];
   assets: any = [];
   drivers: any = [];
-  driverId: any = [];
+  driverIdArray: any = [];
   driverArray: any = [];
   ACIReleaseOfficeList: any = [];
   timeList: any = [];
@@ -401,20 +401,17 @@ export class NewAciManifestComponent implements OnInit {
     console.log('vehicle seals', this.vehicleSeals);
     this.truck.sealNumbers = this.vehicleSeals;
   }
- async fetchStateCode(ID) {
-    let test: any = [];
-    let returnVal: any;
-    return this.apiService.getData('states/' + ID).subscribe((result: any) => {
-     return result.Items[0].stateCode;
-    });
-    // return returnVal;
+  async fetchStateCode(ID) {
+    const code = await this.apiService.getData('states/' + ID).toPromise();
+    return code.Items[0].stateCode;
   }
   fetchVehicleData(ID) {
     this.apiService.getData('vehicles/' + ID).subscribe(async (result: any) => {
       this.vehicleData = result.Items;
-      console.log('vehicledata', this.vehicleData);
-      let testReturn =  this.fetchStateCode(this.vehicleData[0].stateID);
-      console.log('return ', testReturn);
+
+
+      // let state =  
+      // console.log(state);
       this.truck = {
         number: this.vehicleData[0].vehicleIdentification,
         type: this.vehicleData[0].vehicleType,
@@ -428,34 +425,21 @@ export class NewAciManifestComponent implements OnInit {
         },
         licensePlate: {
           number: this.vehicleData[0].plateNumber,
-          stateProvince: await this.fetchStateCode(this.vehicleData[0].stateID)
+          stateProvince: await this.fetchStateCode(result.Items[0].stateID),
         },
         sealNumbers: this.vehicleSeals,
         cargoExemptions: this.truckcargoExemptions
       };
+      console.log(this.truck);
     });
   }
   setTruckCargoExemption() {
     this.truck.cargoExemptions = this.truckcargoExemptions;
   }
-  getAssetData(e, t) {
+ async getAssetData(e, t) {
     console.log('e', e);
     console.log('t', t);
     let testArray = [];
-    // this.assetArray = [];
-    // for (let i = 0; i < e.length; i++) {
-    //   testArray = this.assets.filter(a => a.assetID === e[i]);
-    //   console.log('asset in fn', testArray);
-    //   const data = {
-    //     number: testArray[0].assetIdentification,
-    //     type: testArray[0].assetDetails.assetType,
-    //     licensePlate: {
-    //       number: testArray[0].assetDetails.licencePlateNumber,
-    //       stateProvince: testArray[0].assetDetails.licenceStateID
-    //     }
-    //   };
-    //   this.assetArray.push(data);
-    // }
     testArray = this.assets.filter(a => a.assetID === e);
     console.log('test asset', testArray);
 
@@ -463,7 +447,7 @@ export class NewAciManifestComponent implements OnInit {
       this.trailers[t].type = testArray[0].assetDetails.assetType,
       this.trailers[t].licensePlate = {
         number: testArray[0].assetDetails.licencePlateNumber,
-        stateProvince: testArray[0].assetDetails.licenceStateID
+        stateProvince: await this.fetchStateCode(testArray[0].assetDetails.licenceStateID),
       }
 
   }
@@ -491,12 +475,13 @@ export class NewAciManifestComponent implements OnInit {
         const docData = {
           number: test1[j].document,
           type: test1[j].documentType,
-          stateProvince: test1[j].issuingState,
+          stateProvince: await this.fetchStateCode(test1[j].issuingState),
           country: test1[j].issuingCountry
         };
         docsArray.push(docData);
       }
       const data = {
+        driverId: testArray[0].driverID,
         driverNumber: testArray[0].employeeId !== ' ' ? testArray[0].employeeId : testArray[0].companyId,
         firstName: testArray[0].firstName,
         lastName: testArray[0].lastName,
