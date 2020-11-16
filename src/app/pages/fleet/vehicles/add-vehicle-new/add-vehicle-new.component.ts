@@ -38,7 +38,6 @@ export class AddVehicleNewComponent implements OnInit {
   driverID = '';
   teamDriverID = '';
   serviceProgramID = '';
-  primaryMeter = '';
   repeatByTime = '';
   repeatByTimeUnit = '';
   reapeatbyOdometerMiles = '';
@@ -293,7 +292,6 @@ export class AddVehicleNewComponent implements OnInit {
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
       serviceProgramID: this.serviceProgramID,
-      primaryMeter: this.primaryMeter,
       repeatByTime: this.repeatByTime,
       repeatByTimeUnit: this.repeatByTimeUnit,
       reapeatbyOdometerMiles: this.reapeatbyOdometerMiles,
