@@ -127,6 +127,8 @@ export class AddRouteComponent implements OnInit {
     },
   ];
 
+  new_length = 0;
+
   constructor(private apiService: ApiService,
               private awsUS: AwsUploadService, private route: ActivatedRoute,
               private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar,
@@ -416,22 +418,27 @@ export class AddRouteComponent implements OnInit {
     
   }
 
-  addStops() {
+  addStops = () => {
     const item = {
       stopName: '',
       stopNotes: ''
     };
-    const length = this.routeData.stops.length - 1;
-    const detination = this.routeData.stops[length];
+    const length = this.routeData.stops.length;
+    
+    this.routeData.stops.splice(length - 1, 0, item);
+    // console.log('length', this.routeData.stops.length);
+    if (length > 2) {
+      console.log('length if', length);
+      this.routeData.stops[this.routeData.stops.length - 1].stopName = this.routeData.destinationInformation['destinationAddress'];
+    } else {
+      console.log('length else', length);
+      this.routeData.stops[length].stopName = this.routeData.destinationInformation['destinationAddress'];
+    }
     
     
-    let index = 1;
-    this.routeData.stops.splice(index, 0, item);
-    index++;
-    this.routeData.stops[length] = detination.stopName;
     
-    // this.routeData.stops[this.routeData.stops.length - 1].stopName = detination.stopName;
-    // console.log('destination', detination.stopName);
+    
+    console.log('this.routeData.stops', this.routeData.stops);
     
     // console.log('this.routeData.stops[length]', this.routeData.stops[this.routeData.stops.length - 1]);
     

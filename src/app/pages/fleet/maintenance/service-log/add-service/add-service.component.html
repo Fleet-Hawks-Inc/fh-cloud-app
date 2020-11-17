@@ -12,7 +12,7 @@
             <header class="page-header">
                <div class="row pr-5" style="padding-top:10px;">
                   <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                     New Service Entry
+                     {{pageTitle}}
                   </div>
                   <div class="col-md-8  col-lg-8 text-right">
                      <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default btn-sm mx-2" style="color:black;"><i class="fas fa-list"></i>  Service Log</a>
@@ -128,7 +128,9 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Task</label>
-                                    <ng-select [(ngModel)]="selectedTasks" name="selectedTasks" bindLabel="selectedTasks" (change)="addTasks()" [multiple]=true style="width: 100%;">
+                                    <ng-select [(ngModel)]="selectedTasks" name="selectedTasks" bindLabel="selectedTasks" 
+                                          (add)="addTasks()" [multiple]=true style="width: 100%;" (clear)="clearTaks('tasks')" (remove)="removeTasks($event)"
+                                    >
                                         <ng-option value="A/C Compressor Replacement">A/C Compressor Replacement</ng-option>
                                         <ng-option value="A/C Condenser Replacemen">A/C Condenser Replacement</ng-option>
                                         <ng-option value="A/C Diagnosis">A/C Diagnosis</ng-option>
@@ -271,12 +273,12 @@
                                        </tr>
                                     </thead>
                                     <tbody>
-                                       <tr *ngFor="let item of allServices; let i = index;">
+                                       <tr *ngFor="let item of serviceData.allServiceTasks; let i = index;">
                                           <td>{{item.task}}</td>
                                           <td>{{item.description}}</td>
-                                          <td><input type="text" value="0.00" name="item[i]" class="form-control"></td>
+                                          <td><input type="text" value="" name="item[i]" [(ngModel)]="item.labor" (blur)="addLabors($event)" class="form-control"></td>
                                           <!-- <td><input type="text" value="0.00" name="{{item.labor}}" class="form-control"></td> -->
-                                          <td><i (click)="remove(i)" class="far fa-trash-alt"></i></td>
+                                          <td><i (click)="remove('tasks', i)" class="far fa-trash-alt"></i></td>
                                        </tr>
                                     </tbody>
                                  </table>
@@ -287,8 +289,8 @@
                                        <tr>
                                           <td width="30%"></td>
                                           <td width="35%" class="text-right"></td>
-                                          <td width="10%"><label class="control-label font-weight-bold text-5">$ 0.00</label></td>
-                                          <td width="10%"><label class="control-label font-weight-bold text-5">$ 0.00</label></td>
+                                          <td width="10%"><label class="control-label font-weight-bold text-5"></label></td>
+                                          <td width="10%"><label class="control-label font-weight-bold text-5">$ <span [innerHtml]="totalLabors">0.00</span></label></td>
                                           <td width="5%"></td>
                                        </tr>
                                     </tbody>
@@ -299,7 +301,7 @@
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Discount(%)</label>                                           
                                  </div>
                                  <div class="col-lg-1">
-                                    <input type="text" value="0.00" class="form-control" id="inputDefault">
+                                    <input type="text" value="0.00" (keyup)="discount('tasks', $event)" class="form-control" id="inputDefault">
                                  </div>
                               </div>
                               <div class="row">
@@ -312,10 +314,10 @@
                               </div>
                               <div class="row">
                                  <div class="col-lg-1 offset-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Total</label>                                           
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Total($)</label>                                           
                                  </div>
                                  <div class="col-lg-1">
-                                    <input type="text" value="0.00" class="form-control" id="inputDefault">
+                                    <input type="text" [value]="totalTasksAmount" class="form-control" id="inputDefault">
                                  </div>
                               </div>
                            </div>
@@ -328,8 +330,9 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10" data-select2-id="14">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Parts</label>
-                                    <ng-select style="width: 100%;">
-                                        <ng-option *ngFor="let item of inventory; let i = index;" value="">{{item}}</ng-option>
+                                    <ng-select [(ngModel)]="selectedParts" name="selectedParts" bindLabel="selectedParts" 
+                                    (add)="addParts()" [multiple]=true (clear)="clearTaks('parts')" (remove)="removeTasks($event)" style="width: 100%;">
+                                        <ng-option *ngFor="let item of inventory; let i = index;" value="{{item.name}}">{{item.name}}</ng-option>
                                           <!-- <ng-option value="" data-select2-id="21">A/C Condenser Replacement</ng-option>
                                           <ng-option value="" data-select2-id="22">A/C Diagnosis</ng-option>
                                           <ng-option value="" data-select2-id="23">A/C Evaporator Replacement</ng-option>
@@ -403,13 +406,13 @@
                                        </tr>
                                     </thead>
                                     <tbody>
-                                       <tr>
-                                          <td>Task 1</td>
-                                          <td>Every 6 month(s) or 5000 miles</td>
+                                       <tr *ngFor="let item of serviceData.allServiceParts; let i = index;">
+                                          <td>{{item.name}}</td>
+                                          <td>{{item.description}}</td>
                                           <td><input type="text" value="0.00" class="form-control"></td>
                                           <td><input type="text" value="0.00" class="form-control"></td>
                                           <td><input type="text" value="0.00" class="form-control"></td>
-                                          <td><i class="far fa-trash-alt"></i></td>
+                                          <td><i (click)="remove('parts', i)" class="far fa-trash-alt"></i></td>
                                        </tr>
                                     </tbody>
                                  </table>
@@ -433,7 +436,7 @@
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Discount(%)</label>                                           
                                  </div>
                                  <div class="col-lg-1">
-                                    <input type="text" value="0.00" class="form-control" id="inputDefault">
+                                    <input type="text" value="0.00" (keyup)="discount('parts', $event)" class="form-control" id="inputDefault">
                                  </div>
                               </div>
                               <div class="row">
@@ -449,7 +452,7 @@
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Total</label>                                           
                                  </div>
                                  <div class="col-lg-1">
-                                    <input type="text" value="0.00" class="form-control" id="inputDefault">
+                                    <input type="text" [value]="totalPartsAmount" class="form-control" id="inputDefault">
                                  </div>
                               </div>
                            </div>
@@ -486,7 +489,8 @@
                         <div class="form-group row">
                            <div class="col-lg-11 text-right">
                               <a href="" class="btn btn-default" id="">Cancel</a>
-                              <a (click)="addService()" class="btn btn-success" id="nextBtn">Save</a>
+                              <a *ngIf="!logID" (click)="addService()" class="btn btn-success" id="nextBtn">Save</a>
+                              <a *ngIf="logID" (click)="updateService()" class="btn btn-success">Update</a>
                            </div>
                         </div>
                      </form>
@@ -520,7 +524,10 @@
                                  <span class="font-size-12">{{reminder.reminderTasks.remindByDays}} days or {{reminder.reminderTasks.odometer}} miles</span><br>
                                  <!-- <span class="text-warning">Due: 3 months from now · 467 mi from now</span> -->
                               </td>
-                              <td width="20%" class="text-right"><button class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Add</button></td>
+                              <td width="20%" class="text-right">
+                                 <a href="javascript:;" *ngIf="!removeTask" class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Add</a>
+                                 <a href="javascript:;" *ngIf="removeTask" class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Remove</a>
+                              </td>
                            </tr>
                            <!-- <tr>
                               <td width="90%">

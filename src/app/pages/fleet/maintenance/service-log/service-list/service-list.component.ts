@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./service-list.component.css']
 })
 export class ServiceListComponent implements OnInit {
+  logs;
 
   constructor(private apiService: ApiService, private router: Router) { }
 
@@ -22,8 +23,8 @@ export class ServiceListComponent implements OnInit {
       complete: () => {},
       error: () => { },
       next: (result: any) => {
-        console.log(result);
-        
+        this.logs = result.Items;
+        console.log("this.logs", this.logs);
       },
     });
   }

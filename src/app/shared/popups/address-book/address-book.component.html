@@ -1,7 +1,7 @@
 <!-- All Contacts Modal Window -->
 <!-- Modal -->
 <div class="modal fade" id="allContactsModal" tabindex="-1" role="dialog" aria-labelledby="allContactsModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" style="max-width: 98%;" role="document">
       <div class="modal-content">
         <div class="modal-header">
             <div class="d-flex justify-content-between flex-wrap w-100">
@@ -14,15 +14,15 @@
                             <span class="caret"></span>
                         </button>
                         <div class="dropdown-menu" role="menu"> 
-                            <a class="dropdown-item text-1 modal-with-form" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" href="javascript:;">Customer</a> 
-                            <a class="dropdown-item text-1 modal-with-form" href="#addDriverModal">Driver</a> 
-                            <a class="dropdown-item text-1 modal-with-form" href="#addBrokerModal">Broker</a> 
-                            <a class="dropdown-item text-1 modal-with-form" href="#addVendorModal">Vendor</a> 
-                            <a class="dropdown-item text-1 modal-with-form" href="#addCarrierModal">Carrier</a> 
-                            <a class="dropdown-item text-1 modal-with-form" href="#addShipperModal">Shipper</a> 
-                            <a class="dropdown-item text-1 modal-with-form" href="#addConsigneeModal">Consignee</a> 
-                            <a class="dropdown-item text-1 modal-with-form" href="#addFCModal">Factoring Company</a> 
-                            <a class="dropdown-item text-1 modal-with-form" href="#addStaffModal">Staff</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" href="javascript:;">Customer</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addDriverModal" href="javascript:;">Driver</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addBrokerModal" href="javascript:;">Broker</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addVendorModal" href="javascript:;">Vendor</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCarrierModal" href="javascript:;">Carrier</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addShipperModal" href="javascript:;">Shipper</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addConsigneeModal" href="javascript:;">Consignee</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addFCModal" href="javascript:;">Factoring Company</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addStaffModal" href="javascript:;">Staff</a> 
                         </div>
                     </div>
                     <div class="btn-group flex-wrap pull-right mr-2">
@@ -1813,3 +1813,1582 @@
         </div>
     </div>
 </div>
+
+<!-- Add Broker MODAL -->
+<div class="modal fade" id="addBrokerModal" tabindex="-1" role="dialog" aria-labelledby="addBrokerModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1200px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Broker</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="card-body p-0">
+                    <section class="card form-wizard" id="w1">
+                        <div class="card-body card-body-nopadding">
+                            <div class="">
+                                <ul class="nav top-tabs nav-tabs">
+                                    <li class="nav-item active"> <a href="#basicDetails" data-toggle="tab"
+                                            class="nav-link text-center active">
+                                            Basic Details
+                                        </a> </li>
+                                    <li class="nav-item"> <a href="#addressDetails" data-toggle="tab" class="nav-link text-center">
+                                            Address
+                                        </a> </li>
+                                    <li class="nav-item"> <a href="#agentDetails" data-toggle="tab" class="nav-link text-center">
+                                            Agents
+                                        </a> </li>
+                                </ul>
+                            </div>
+                            <form class="form-horizontal" novalidate="novalidate">
+                                <div class="tab-content">
+                                    <div id="basicDetails" class="tab-pane p-3 active">
+                                        <div class="row pt-3">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12 pt-2">
+                                                        <div class="row">
+                                                            <div class="col-lg-4">
+                                                                <label class="control-label font-weight-bold text-lg-right">Broker
+                                                                    Type:</label>
+                                                            </div>
+                                                            <div class="col-lg-3 px-0">
+                                                                <div class="radio">
+                                                                    <label>
+                                                                        <input type="radio" name="optionsRadios" value="option1">
+                                                                        Company </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4  pr-0">
+                                                                <div class="radio">
+                                                                    <label>
+                                                                        <input type="radio" name="optionsRadios" value="option2">
+                                                                        Individual </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Company
+                                                            Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">DBA
+                                                            Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                            First Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                            Last Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">EIN</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">MC
+                                                            Number</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">US DOT
+                                                            Number</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <div class="row  mar-top-37">
+                                                    <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img
+                                                            class="business_image_style" src="img\driver\driver.png" />
+                                                        <div class="mt-3">
+                                                            <input type="file" hidden="hidden">
+                                                            <button class="btn btn-dark">Add Picture</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 mt-1">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Account
+                                                            Number</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                        <input type="text" class="form-control">
+                                                        <!-- <span class="far fa-plus-square"></span>
+                                                    <i data-toggle="" class="far fa-plus-square text-dark h5 m-0" style="cursor: pointer;">
+                                                    </i> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="addressDetails" class="tab-pane p-3">
+                                        <div class="row pt-3">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            Type</label>
+                                                        <select data-plugin-selectTwo class="form-control populate">
+                                                            <optgroup label="Select Address">
+                                                                <option value="1">Main</option>
+                                                                <option value="2">Billing Address</option>
+                                                                <option value="2">Shipping Address</option>
+                                                                <option value="2">Office</option>
+                                                                <option value="2">Other</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6"></div>
+                                            <div class="col-lg-3 offset-lg-1 pt-4">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    Country</label>
+                                                <select data-plugin-selectTwo class="form-control populate">
+                                                    <optgroup label="Select Country">
+                                                        <option value="1">Country 1</option>
+                                                        <option value="2">Country 2</option>
+                                                        <option value="2">Country 3</option>
+                                                        <option value="2">Country 4</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-5 pt-4">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Type Your
+                                                    Location</label>
+                                                <input type="text" class="form-control" placeholder="Type Address">
+                                                <div class="checkbox-custom pt-2">
+                                                    <input type="checkbox" name="terms">
+                                                    <label for="w1-terms">Type Manually</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1 mar-top-37 text-right pt-4">
+                                                <button class="btn btn-dark" type="submit" style="width: 100px;">Clear</button>
+                                            </div>
+                                            <div class="col-lg-5 offset-lg-1 pt-3">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                            State</label>
+                                                        <select data-plugin-selectTwo class="form-control populate">
+                                                            <optgroup label="Select State">
+                                                                <option value="1">State 1</option>
+                                                                <option value="2">State 2</option>
+                                                                <option value="2">State 3</option>
+                                                                <option value="2">State 4</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                            City</label>
+                                                        <select data-plugin-selectTwo class="form-control populate">
+                                                            <optgroup label="Select City">
+                                                                <option value="1">City 1</option>
+                                                                <option value="2">City 2</option>
+                                                                <option value="2">City 3</option>
+                                                                <option value="2">City 4</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                                            Code</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5 pt-4">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            1</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            2</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="agentDetails" class="tab-pane p-3">
+                                        <div class="row">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">First
+                                                            Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Last
+                                                            Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-lg-12 text-right pr-5">
+                                            <button class="btn btn-default modal-dismiss">Cancel</button>
+                                            <button class="btn btn-success modal-dismiss">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADD CARRIER MODAL -->
+<div class="modal fade" id="addCarrierModal" tabindex="-1" role="dialog" aria-labelledby="addCarrierModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1200px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Carrier</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="card-body text-dark">
+                    <section class="card form-wizard" id="w1">
+                        <div class="card-body card-body-nopadding">
+                            <div class="">
+                                <ul class="nav top-tabs nav-tabs">
+                                    <li class="nav-item active"> <a href="#basicDetails" data-toggle="tab"
+                                            class="nav-link text-center active">
+                                            Basic Details
+                                        </a> </li>
+                                    <li class="nav-item active"> <a href="#carrierPaymentDetails" data-toggle="tab"
+                                            class="nav-link text-center">
+                                            Payment
+                                        </a> </li>
+                                    <li class="nav-item"> <a href="#addressDetails" data-toggle="tab"
+                                            class="nav-link text-center">
+                                            Address
+                                        </a> </li>
+                                    <li class="nav-item"> <a href="#additionalDetails" data-toggle="tab"
+                                            class="nav-link text-center">
+                                            Additional Contact
+                                        </a> </li>
+                                    
+                                </ul>
+                            </div>
+                            <form class="form-horizontal" novalidate="novalidate">
+                                <div class="tab-content">
+                                    <div id="basicDetails" class="tab-pane p-3 active">
+                                        <div class="row pt-3">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row text-dark">
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Carrier
+                                                            Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                            First Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                            Last Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                        <input type="text" class="form-control">
+                                                        <!-- <span class="far fa-plus-square"></span>
+                                   <i data-toggle="" class="far fa-plus-square text-dark h5 m-0" style="cursor: pointer;">
+                                   </i> -->
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12 d-flex justify-content-between mt-2">
+                                                        <div class="checkbox-custom pt-2">
+                                                            <input type="checkbox" name="csa">
+                                                            <label for="csa">CSA</label>
+                                                        </div>
+                                                        <div class="checkbox-custom pt-2">
+                                                            <input type="checkbox" name="ctpat">
+                                                            <label for="ctpat">CTPAT</label>
+                                                        </div>
+                                                        <div class="checkbox-custom pt-2">
+                                                            <input type="checkbox" name="pip">
+                                                            <label for="pip">PIP</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <div class="row  mar-top-37">
+                                                    <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img
+                                                            class="business_image_style" src="img\driver\driver.png" />
+                                                        <div class="mt-3">
+                                                            <input type="file" hidden="hidden">
+                                                            <button class="btn btn-dark">Add Picture</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="carrierPaymentDetails" class="tab-pane p-3">
+                                        <div class="row pt-3">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12 pl-0">
+                                                        <div class="checkbox-custom pt-2">
+                                                            <input type="checkbox" name="in-bond-carrier">
+                                                            <label for="in-bond-carrier">In-Bonded Carrier</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-10 offset-lg-1">
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">MC</label>
+                                                            <input type="text" class="form-control"> </div>
+                                                        <div class="col-lg-6">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">DOT</label>
+                                                            <input type="text" class="form-control"> </div>
+                                                        <div class="col-lg-6">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">Fast</label>
+                                                            <input type="text" class="form-control"> </div>
+                                                        <div class="col-lg-6">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">Fast
+                                                                Expiry</label>
+                                                            <input type="text" data-plugin-datepicker="" class="form-control">
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">CCC</label>
+                                                            <input type="text" class="form-control"> </div>
+                                                        <div class="col-lg-6">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">SCAC</label>
+                                                            <input type="text" class="form-control"> </div>
+                                                        <div class="col-lg-6">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">CVOR</label>
+                                                            <input type="text" class="form-control"> </div>
+                                                        <div class="col-lg-6">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">Payroll
+                                                                Type</label>
+                                                            <select class="form-control">
+                                                                <option>Hours</option>
+                                                                <option>Miles</option>
+                                                                <option>Flat</option>
+                                                                <option>Percentage</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">Payroll
+                                                                Rate</label>
+                                                            <input type="text" class="form-control"> </div>
+                                                        <div class="col-lg-6">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">Local
+                                                                Tax (in Percentage)</label>
+                                                            <input type="text" class="form-control"> </div>
+                                                        <div class="col-lg-6">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">Federal
+                                                                Tax (in Percentage)</label>
+                                                            <input type="text" class="form-control"> </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="checkbox-custom pt-2">
+                                                                <input type="checkbox" name="terms">
+                                                                <label for="w1-terms">Apply Tax (on Settlement)</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="checkbox-custom pt-2">
+                                                                <input type="checkbox" id="wsib-fields" name="wsib">
+                                                                <label for="wsib">WSIB</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row wsib-wrapper col-12 row m-0 p-0" style="display: none;">
+                                                            <div class="col-lg-6">
+                                                                <label
+                                                                    class="control-label font-weight-bold text-lg-right pt-2">WSIB
+                                                                    Account Number</label>
+                                                                <input type="text" class="form-control"> </div>
+                                                            <div class="col-lg-6">
+                                                                <label
+                                                                    class="control-label font-weight-bold text-lg-right pt-2">WSIB
+                                                                    Expiry</label>
+                                                                <input type="text" data-plugin-datepicker=""
+                                                                    class="form-control"> </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="addressDetails" class="tab-pane p-3">
+                                        <div class="row pt-3">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            Type</label>
+                                                        <select data-plugin-selectTwo class="form-control populate">
+                                                            <optgroup label="Select Address">
+                                                                <option value="1">Billing Address</option>
+                                                                <option value="2">Dispatch Center</option>
+                                                                <option value="2">Office</option>
+                                                                <option value="2">Other</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6"></div>
+                                            <div class="col-lg-3 offset-lg-1 pt-4">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    Country</label>
+                                                <select data-plugin-selectTwo class="form-control populate">
+                                                    <optgroup label="Select Country">
+                                                        <option value="1">Country 1</option>
+                                                        <option value="2">Country 2</option>
+                                                        <option value="2">Country 3</option>
+                                                        <option value="2">Country 4</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-5 pt-4">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Type Your
+                                                    Location</label>
+                                                <input type="text" class="form-control" placeholder="Type Address">
+                                                <div class="checkbox-custom pt-2">
+                                                    <input type="checkbox" name="terms">
+                                                    <label for="w1-terms">Type Manually</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1 mar-top-37 text-right pt-4">
+                                                <button class="btn btn-dark" type="submit" style="width: 100px;">Clear</button>
+                                            </div>
+                                            <div class="col-lg-5 offset-lg-1 pt-3">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                            State</label>
+                                                        <select data-plugin-selectTwo class="form-control populate">
+                                                            <optgroup label="Select State">
+                                                                <option value="1">State 1</option>
+                                                                <option value="2">State 2</option>
+                                                                <option value="2">State 3</option>
+                                                                <option value="2">State 4</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                            City</label>
+                                                        <select data-plugin-selectTwo class="form-control populate">
+                                                            <optgroup label="Select City">
+                                                                <option value="1">City 1</option>
+                                                                <option value="2">City 2</option>
+                                                                <option value="2">City 3</option>
+                                                                <option value="2">City 4</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                                            Code</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5 pt-4">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            1</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            2</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="additionalDetails" class="tab-pane p-3">
+                                        <div class="row">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">First
+                                                            Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Last
+                                                            Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-lg-12 text-right pr-5">
+                                            <button class="btn btn-default modal-dismiss">Cancel</button>
+                                            <button class="btn btn-success modal-dismiss">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADD SHIPPER MODAL -->
+<div class="modal fade" id="addShipperModal" tabindex="-1" role="dialog" aria-labelledby="addShipperModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1200px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Shipper</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="card-body text-dark">
+                    <div class="my-1">
+                        <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                            <li class="nav-item"> <a class="nav-link active" id="shipperBasicDetails-tab"
+                                    data-toggle="tab" href="#shipperBasicDetails" role="tab"
+                                    aria-controls="shipperBasicDetails" aria-selected="true">Basic</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="shipperAddress-tab" data-toggle="tab"
+                                    href="#shipperAddress" role="tab" aria-controls="shipperAddress"
+                                    aria-selected="false">Address</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="shipperAdditionalContact-tab"
+                                    data-toggle="tab" href="#shipperAdditionalContact" role="tab"
+                                    aria-controls="shipperAdditionalContact" aria-selected="false">Additional
+                                    Contact</a> </li>
+                            <!-- <li class="nav-item"> <a class="nav-link" id="shipperAdditionalDetails-tab" data-toggle="tab" href="#shipperAdditionalDetails" role="tab" aria-controls="shipperAdditionalDetails" aria-selected="false">Additional Information</a> </li> -->
+                        </ul>
+                    </div>
+                    <form class="form-horizontal" novalidate="novalidate">
+                        <div class="tab-content p-0" style="box-shadow:none;border:none;">
+                            <div class="tab-pane show active" id="shipperBasicDetails" role="tabpanel"
+                                aria-labelledby="shipperBasicDetails-tab">
+                                <div class="row pt-3">
+                                    <div class="col-lg-12">
+                                        <label class="control-label  font-weight-bold text-lg-right text-5 pt-2">Basic
+                                            Details</label>
+                                    </div>
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Shipper
+                                                    Name</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                    First Name</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                    Last Name</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">MC
+                                                    Number</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">US DOT
+                                                    Number</label>
+                                                <input type="text" class="form-control"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="row ">
+                                            <div class="col-lg-12 text-center"> <img height="150px" width="150px"
+                                                    src="img\driver\driver.png" /></div>
+                                            <div class="col-lg-12 text-center">
+                                                <div class="mt-3 btn btn-dark btn-sm" style="position:relative;">
+                                                    <input type="file" class="hidden_input"> Add Picture </div>
+                                            </div>
+                                            <div class="col-lg-12 pt-1 mt-2">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                <input type="text" class="form-control"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="shipperAddress" role="tabpanel"
+                                aria-labelledby="shipperAddress-tab">
+                                <div class="row pt-3">
+                                    <div class="col-lg-12">
+                                        <label class="control-label  font-weight-bold text-lg-right text-5 pt-2">Address
+                                            Details</label>
+                                    </div>
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                    Type</label>
+                                                <select data-plugin-selectTwo class="form-control populate">
+                                                    <optgroup label="Select Address">
+                                                        <option value="1">Billing Address</option>
+                                                        <option value="2">Dispatch Center</option>
+                                                        <option value="2">Office</option>
+                                                        <option value="2">Other</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6"></div>
+                                    <div class="col-lg-3 offset-lg-1 pt-4">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                            Country</label>
+                                        <select data-plugin-selectTwo class="form-control populate">
+                                            <optgroup label="Select Country">
+                                                <option value="1">Country 1</option>
+                                                <option value="2">Country 2</option>
+                                                <option value="2">Country 3</option>
+                                                <option value="2">Country 4</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-5 pt-4">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Type Your
+                                            Location</label>
+                                        <input type="text" class="form-control" placeholder="Type Address">
+                                        <div class="checkbox-custom pt-2">
+                                            <input type="checkbox" name="terms">
+                                            <label for="w1-terms">Type Manually</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 mar-top-37 text-right pt-4">
+                                        <button class="btn btn-dark btn-sm" type="submit"
+                                            style="width: 100px;">Clear</button>
+                                    </div>
+                                    <div class="col-lg-5 offset-lg-1 pt-3">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    State</label>
+                                                <select data-plugin-selectTwo class="form-control populate">
+                                                    <optgroup label="Select State">
+                                                        <option value="1">State 1</option>
+                                                        <option value="2">State 2</option>
+                                                        <option value="2">State 3</option>
+                                                        <option value="2">State 4</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    City</label>
+                                                <select data-plugin-selectTwo class="form-control populate">
+                                                    <optgroup label="Select City">
+                                                        <option value="1">City 1</option>
+                                                        <option value="2">City 2</option>
+                                                        <option value="2">City 3</option>
+                                                        <option value="2">City 4</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                                    Code</label>
+                                                <input type="text" class="form-control"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 pt-3">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-1">Address
+                                                    1</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                    2</label>
+                                                <input type="text" class="form-control"> </div>
+                                        </div>
+                                    </div>
+                                </div> >
+                            </div>
+                            <div class="tab-pane fade" id="shipperAdditionalContact" role="tabpanel"
+                                aria-labelledby="shipperAdditionalContact-tab">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label
+                                            class="control-label  font-weight-bold text-lg-right text-5 pt-2">Additional
+                                            Contact Details</label>
+                                    </div>
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">First
+                                                    Name</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Last
+                                                    Name</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
+                                                <input type="text" class="form-control"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
+                                                <input type="text" class="form-control"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-12 text-right pr-5">
+                                <button class="btn btn-default modal-dismiss">Cancel</button>
+                                <button class="btn btn-success modal-dismiss">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADD CONSIGNEE MODAL -->
+<div class="modal fade" id="addConsigneeModal" tabindex="-1" role="dialog" aria-labelledby="addConsigneeModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1200px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Consignee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="card-body text-dark">
+                    <div class="my-1">
+                        <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                            <li class="nav-item"> <a class="nav-link active" id="consigneeBasicDetails-tab"
+                                    data-toggle="tab" href="#consigneeBasicDetails" role="tab"
+                                    aria-controls="consigneeBasicDetails" aria-selected="true">Basic</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="consigneeAddress-tab" data-toggle="tab"
+                                    href="#consigneeAddress" role="tab" aria-controls="consigneeAddress"
+                                    aria-selected="false">Address</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="consigneeAdditionalContact-tab"
+                                    data-toggle="tab" href="#consigneeAdditionalContact" role="tab"
+                                    aria-controls="consigneeAdditionalContact" aria-selected="false">Additional
+                                    Contact</a> </li>
+                            <!-- <li class="nav-item"> <a class="nav-link" id="consigneeAdditionalDetails-tab" data-toggle="tab" href="#consigneeAdditionalDetails" role="tab" aria-controls="consigneeAdditionalDetails" aria-selected="false">Additional Information</a> </li> -->
+                        </ul>
+                    </div>
+                    <form class="form-horizontal" novalidate="novalidate">
+                        <div class="tab-content p-0" style="box-shadow:none;border:none;">
+                            <div class="tab-pane show active" id="consigneeBasicDetails" role="tabpanel"
+                                aria-labelledby="consigneeBasicDetails-tab">
+                                <div class="row pt-3">
+                                    <div class="col-lg-12">
+                                        <label class="control-label  font-weight-bold text-lg-right text-5 pt-2">Basic
+                                            Details</label>
+                                    </div>
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Consignee
+                                                    Name</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                    First Name</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                    Last Name</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">MC
+                                                    Number</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">US DOT
+                                                    Number</label>
+                                                <input type="text" class="form-control"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="row ">
+                                            <div class="col-lg-12 text-center"> <img height="150px" width="150px"
+                                                    src="assets/img/driver/driver.png" /></div>
+                                            <div class="col-lg-12 text-center">
+                                                <div class="mt-3 btn btn-dark btn-sm" style="position:relative;">
+                                                    <input type="file" class="hidden_input"> Add Picture </div>
+                                            </div>
+                                            <div class="col-lg-12 pt-1 mt-2">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                <input type="text" class="form-control"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="consigneeAddress" role="tabpanel"
+                                aria-labelledby="consigneeAddress-tab">
+                                <div class="row pt-3">
+                                    <div class="col-lg-12">
+                                        <label class="control-label  font-weight-bold text-lg-right text-5 pt-2">Address
+                                            Details</label>
+                                    </div>
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                    Type</label>
+                                                <select data-plugin-selectTwo class="form-control populate">
+                                                    <optgroup label="Select Address">
+                                                        <option value="1">Billing Address</option>
+                                                        <option value="2">Dispatch Center</option>
+                                                        <option value="2">Office</option>
+                                                        <option value="2">Other</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6"></div>
+                                    <div class="col-lg-3 offset-lg-1 pt-4">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                            Country</label>
+                                        <select data-plugin-selectTwo class="form-control populate">
+                                            <optgroup label="Select Country">
+                                                <option value="1">Country 1</option>
+                                                <option value="2">Country 2</option>
+                                                <option value="2">Country 3</option>
+                                                <option value="2">Country 4</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-5 pt-4">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Type Your
+                                            Location</label>
+                                        <input type="text" class="form-control" placeholder="Type Address">
+                                        <div class="checkbox-custom pt-2">
+                                            <input type="checkbox" name="terms">
+                                            <label for="w1-terms">Type Manually</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 mar-top-37 text-right pt-4">
+                                        <button class="btn btn-dark btn-sm" type="submit"
+                                            style="width: 100px;">Clear</button>
+                                    </div>
+                                    <div class="col-lg-5 offset-lg-1 pt-3">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    State</label>
+                                                <select data-plugin-selectTwo class="form-control populate">
+                                                    <optgroup label="Select State">
+                                                        <option value="1">State 1</option>
+                                                        <option value="2">State 2</option>
+                                                        <option value="2">State 3</option>
+                                                        <option value="2">State 4</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    City</label>
+                                                <select data-plugin-selectTwo class="form-control populate">
+                                                    <optgroup label="Select City">
+                                                        <option value="1">City 1</option>
+                                                        <option value="2">City 2</option>
+                                                        <option value="2">City 3</option>
+                                                        <option value="2">City 4</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                                    Code</label>
+                                                <input type="text" class="form-control"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 pt-3">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-1">Address
+                                                    1</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                    2</label>
+                                                <input type="text" class="form-control"> </div>
+                                        </div>
+                                    </div>
+                                </div> >
+                            </div>
+                            <div class="tab-pane fade" id="consigneeAdditionalContact" role="tabpanel"
+                                aria-labelledby="consigneeAdditionalContact-tab">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label
+                                            class="control-label  font-weight-bold text-lg-right text-5 pt-2">Additional
+                                            Contact Details</label>
+                                    </div>
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">First
+                                                    Name</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Last
+                                                    Name</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
+                                                <input type="text" class="form-control"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-12">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
+                                                <input type="text" class="form-control"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-12 text-right pr-5">
+                                <button class="btn btn-default modal-dismiss">Cancel</button>
+                                <button class="btn btn-success modal-dismiss">Submit</button>
+                            </div>
+                        </div>
+                    
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADD Factoring Company MODAL -->
+<div class="modal fade" id="addFCModal" tabindex="-1" role="dialog" aria-labelledby="addFCModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1200px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Factoring Company</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="card-body p-0">
+                    <section class="card form-wizard" id="w1">
+                        <div class="card-body card-body-nopadding">
+                            <div class="">
+                                <ul class="nav top-tabs nav-tabs">
+                                    <li class="nav-item active"> <a href="#basicDetails" data-toggle="tab"
+                                            class="nav-link text-center active">
+                                            Basic Details
+                                        </a> </li>
+                                    <li class="nav-item"> <a href="#addressDetails" data-toggle="tab"
+                                            class="nav-link text-center">
+                                            Address
+                                        </a> </li>
+                                    <li class="nav-item"> <a href="#factoringDetails" data-toggle="tab"
+                                            class="nav-link text-center">
+                                            Factoring Details
+                                        </a> </li>
+
+                                </ul>
+                            </div>
+                            <form class="form-horizontal" novalidate="novalidate">
+                                <div class="tab-content">
+                                    <div id="basicDetails" class="tab-pane p-3 active">
+                                        <div class="row pt-3">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Company
+                                                            Name</label>
+                                                        <input type="text" class="form-control">
+                                                        <div class="checkbox-custom pt-2">
+                                                            <input type="checkbox" name="terms">
+                                                            <label for="w1-terms">Make this Factoring Company as
+                                                                Default</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                            First Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                            Last Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                        <input type="text" class="form-control">
+                                                        <!-- <span class="far fa-plus-square"></span>
+                               <i data-toggle="" class="far fa-plus-square text-dark h5 m-0" style="cursor: pointer;">
+                               </i> -->
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <div class="row  mar-top-37">
+                                                    <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img
+                                                            class="business_image_style" src="img\driver\driver.png" />
+                                                        <div class="mt-3">
+                                                            <input type="file" hidden="hidden">
+                                                            <button class="btn btn-dark">Add Picture</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="addressDetails" class="tab-pane p-3">
+                                        <div class="row pt-3">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            Type</label>
+                                                        <select data-plugin-selectTwo class="form-control populate">
+                                                            <optgroup label="Select Address">
+                                                                <option value="1">Main</option>
+                                                                <option value="2">Office</option>
+                                                                <option value="2">Other</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6"></div>
+                                            <div class="col-lg-3 offset-lg-1 pt-4">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    Country</label>
+                                                <select data-plugin-selectTwo class="form-control populate">
+                                                    <optgroup label="Select Country">
+                                                        <option value="1">Country 1</option>
+                                                        <option value="2">Country 2</option>
+                                                        <option value="2">Country 3</option>
+                                                        <option value="2">Country 4</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-5 pt-4">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Type
+                                                    Your Location</label>
+                                                <input type="text" class="form-control" placeholder="Type Address">
+                                                <div class="checkbox-custom pt-2">
+                                                    <input type="checkbox" name="terms">
+                                                    <label for="w1-terms">Type Manually</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1 mar-top-37 text-right pt-4">
+                                                <button class="btn btn-dark" type="submit"
+                                                    style="width: 100px;">Clear</button>
+                                            </div>
+                                            <div class="col-lg-5 offset-lg-1 pt-3">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                            State</label>
+                                                        <select data-plugin-selectTwo class="form-control populate">
+                                                            <optgroup label="Select State">
+                                                                <option value="1">State 1</option>
+                                                                <option value="2">State 2</option>
+                                                                <option value="2">State 3</option>
+                                                                <option value="2">State 4</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                            City</label>
+                                                        <select data-plugin-selectTwo class="form-control populate">
+                                                            <optgroup label="Select City">
+                                                                <option value="1">City 1</option>
+                                                                <option value="2">City 2</option>
+                                                                <option value="2">City 3</option>
+                                                                <option value="2">City 4</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                                            Code</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5 pt-4">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            1</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            2</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="factoringDetails" class="tab-pane p-3">
+                                        <div class="row">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Account
+                                                            Number</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Factoring
+                                                            Rate</label>
+                                                        <div class="row">
+                                                            <div class="col-lg-3">
+                                                                <input type="number" class="form-control"> </div>
+                                                            <div class="col-lg-3">
+                                                                <select data-plugin-selectTwo
+                                                                    class="form-control populate">
+                                                                    <optgroup label="">
+                                                                        <option value="1">%</option>
+                                                                        <option value="2">$</option>
+                                                                    </optgroup>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>   
+                            </form>
+                        </div>
+
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addStaffModal" tabindex="-1" role="dialog" aria-labelledby="addStaffModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1200px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Staff</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="card-body p-0">
+                    <section class="card form-wizard" id="w1">
+                        <div class="card-body card-body-nopadding">
+                            <div class="">
+                                <ul class="nav top-tabs nav-tabs">
+                                    <li class="nav-item active"> <a href="#basicDetails" data-toggle="tab"
+                                            class="nav-link text-center active">
+                                            Basic Details
+                                        </a> </li>
+                                    <li class="nav-item"> <a href="#addressDetails" data-toggle="tab"
+                                            class="nav-link text-center">
+                                            Address
+                                        </a> </li>
+                                    <li class="nav-item"> <a href="#userAccountDetails" data-toggle="tab"
+                                            class="nav-link text-center">
+                                            User Account
+                                        </a> </li>
+                                    <li class="nav-item"> <a href="#staffpaymentDetails" data-toggle="tab"
+                                            class="nav-link text-center">
+                                            Payment Details
+                                        </a> </li>
+
+                                </ul>
+                            </div>
+                            <form class="form-horizontal" novalidate="novalidate">
+                                <div class="tab-content">
+                                    <div id="basicDetails" class="tab-pane p-3 active">
+                                        <div class="row pt-3">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">First
+                                                            Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Last
+                                                            Name</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Employee
+                                                            ID</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Date
+                                                            of
+                                                            Birth</label>
+                                                        <input type="text" data-plugin-datepicker=""
+                                                            class="form-control">
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Work
+                                                            Phone</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Work
+                                                            Email</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <div class="row  mar-top-37">
+                                                    <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img
+                                                            class="business_image_style" src="img\driver\driver.png" />
+                                                        <div class="mt-3">
+                                                            <input type="file" hidden="hidden">
+                                                            <button class="btn btn-dark">Add Picture</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="addressDetails" class="tab-pane p-3">
+                                        <div class="row pt-3">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            Type</label>
+                                                        <select data-plugin-selectTwo class="form-control populate">
+                                                            <optgroup label="Select Address">
+                                                                <option value="1">Work</option>
+                                                                <option value="2">Home</option>
+                                                                <option value="2">Other</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6"></div>
+                                            <div class="col-lg-3 offset-lg-1 pt-4">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    Country</label>
+                                                <select data-plugin-selectTwo class="form-control populate">
+                                                    <optgroup label="Select Country">
+                                                        <option value="1">Country 1</option>
+                                                        <option value="2">Country 2</option>
+                                                        <option value="2">Country 3</option>
+                                                        <option value="2">Country 4</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-5 pt-4">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Type
+                                                    Your
+                                                    Location</label>
+                                                <input type="text" class="form-control" placeholder="Type Address">
+                                                <div class="checkbox-custom pt-2">
+                                                    <input type="checkbox" name="terms">
+                                                    <label for="w1-terms">Type Manually</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1 mar-top-37 text-right pt-4">
+                                                <button class="btn btn-dark" type="submit"
+                                                    style="width: 100px;">Clear</button>
+                                            </div>
+                                            <div class="col-lg-5 offset-lg-1 pt-3">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                            State</label>
+                                                        <select data-plugin-selectTwo class="form-control populate">
+                                                            <optgroup label="Select State">
+                                                                <option value="1">State 1</option>
+                                                                <option value="2">State 2</option>
+                                                                <option value="2">State 3</option>
+                                                                <option value="2">State 4</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                            City</label>
+                                                        <select data-plugin-selectTwo class="form-control populate">
+                                                            <optgroup label="Select City">
+                                                                <option value="1">City 1</option>
+                                                                <option value="2">City 2</option>
+                                                                <option value="2">City 3</option>
+                                                                <option value="2">City 4</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                                            Code</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5 pt-4">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            1</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            2</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="userAccountDetails" class="tab-pane p-3">
+                                        <div class="row">
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Contract
+                                                            Start Date</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Contract
+                                                            End Date</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
+                                                        <select class="form-control">
+                                                            <option>Executive</option>
+                                                            <option>Manager</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Department</label>
+                                                        <select class="form-control">
+                                                            <option>Account</option>
+                                                            <option>Dispatch</option>
+                                                            <option>Sales & Operations</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="staffpaymentDetails" class="tab-pane p-3">
+                                        <div class="row">
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Payroll
+                                                            Type</label>
+                                                        <select class="form-control">
+                                                            <option>Hours</option>
+                                                            <option>Flat</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Rate</label>
+                                                        <input type="text" class="form-control"> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Pay
+                                                            Period</label>
+                                                        <select class="form-control">
+                                                            <option>Weekly (52 pay periods a year)</option>
+                                                            <option>Weekly (53 pay periods a year)</option>
+                                                            <option>Biweekly (26 pay periods a year)</option>
+                                                            <option>Biweekly (27 pay periods a year)</option>
+                                                            <option>Semi-monthly (24 pay periods a year)</option>
+                                                            <option>Monthly (12 pay periods a year)</option>
+                                                            <option>Quaterly (4 pay periods a year)</option>
+                                                            <option>Semiannually (2 pay periods a year)</option>
+                                                            <option>Annually (1 pay periods a year)</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">SIN#</label>
+                                                        <input type="text" class="form-control" name=""> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">WCB#</label>
+                                                        <input type="text" class="form-control" name="">
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Health
+                                                            Care#</label>
+                                                        <input type="text" class="form-control" name=""> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

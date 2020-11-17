@@ -42,7 +42,13 @@ export class DriverListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         console.log(result);
-        this.drivers = result.Items;
+        // this.drivers = result.Items;
+        for (let i = 0; i < result.Items.length; i++) {
+          // console.log(result.Items[i].isDeleted);
+          if (result.Items[i].isDeleted === 0) {
+            this.drivers.push(result.Items[i]);
+          }
+        }
         console.log('drivers',this.drivers)
         this.spinner.hide(); // loader hide
       },
@@ -92,7 +98,7 @@ export class DriverListComponent implements OnInit {
   deactivateAsset(value, driverID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .getData(`geofences/isDeleted/${driverID}/${value}`)
+      .getData(`drivers/isDeleted/${driverID}/${value}`)
       .subscribe((result: any) => {
         console.log('result', result);
         this.fetchDrivers();

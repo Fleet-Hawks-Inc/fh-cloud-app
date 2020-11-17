@@ -406,13 +406,13 @@
                                                                         <div class="row">
                                                                             <div class="col-lg-10">
                                                                                 <input name="stop.stopName{{i}}"
-                                                                                [(ngModel)]="stop.stopName" (keyup)="searchTerm.next($event);" class="form-control">
+                                                                                [(ngModel)]="stop.stopName" class="form-control">
                                                 
-                                                                                <ul class="p-0 m-0 text-left map-search__results bg-white" *ngIf="searchResults">
+                                                                                <!-- <ul class="p-0 m-0 text-left map-search__results bg-white" *ngIf="searchResults">
                                                                                     <li *ngFor="let item of searchResults;">
                                                                                         <a href="javascript:;" (click)="assignLocation('stops', item.address.label)" title="{{item.address.label}}">{{item.address.label}}</a>
                                                                                     </li>
-                                                                                </ul>
+                                                                                </ul> -->
                                                                                 <!-- <select class="form-control" name="stopLocation"
                                                                                 [(ngModel)]="routeData.destinationInformation.stop.stopLocation">
                                                                                     <option *ngFor="let location of locations" value="{{ location.locationID }}">{{ location.locationName }}</option>
