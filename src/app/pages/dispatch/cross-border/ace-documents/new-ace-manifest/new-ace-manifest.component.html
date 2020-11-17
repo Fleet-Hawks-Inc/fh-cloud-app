@@ -27,7 +27,7 @@
                                  new ACE eManifest</label>
                            </div>
                            <div class="col-lg-5 offset-lg-1">
-                              <div class="form-group row">
+                              <div class="row">
                                  <div class="col-lg-3 pr-0">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Trip Number</label>
                                     <ng-select  name="SCAC" [(ngModel)]="SCAC">
@@ -71,78 +71,7 @@
                                     </ng-select>
                                  </div>
                               </div>
-                           </div>
-                           <div class="col-lg-5">
                               <div class="row">
-                                 <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Assign
-                                       Vehicle</label>
-                                    <ng-select name="vehicleID" [(ngModel)]="vehicleID"
-                                       (change)="fetchVehicleData($event)">
-                                       <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleID">
-                                          {{vehicle.vehicleIdentification}}</ng-option>
-                                    </ng-select>
-                                 </div>
-                                 <div class="col-lg-2  mar-top-37">
-                                    <a href="#addVehicleModal" class="modal-with-form btn btn-sm btn-success"><i
-                                          class="fas fa-plus"></i></a>
-                                 </div>
-                                 <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2"
-                                       onclick="show_truck_seal_input()">Add Seal</label>
-                                    <ngx-tags-input class="form-control input-lg"
-                                       (onTagsChanged)="onTagsChanged($event)" [removeLastOnBackspace]="true"
-                                       [maxTags]="4" [(ngModel)]="tags" name="tags"></ngx-tags-input>
-                                 </div>
-                                 <div class="col-lg-5 text-right">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2"
-                                       onclick="show_truck_IIT_input()">Add IIT</label>
-                                       <ng-select [multiple]="true" name="truckcargoExemptions"
-                                       [(ngModel)]="truckcargoExemptions" (change) = "setTruckCargoExemption()">
-                                       <ng-option *ngFor="let exemption of cargoExemptionsList"
-                                          [value]="exemption.code">{{exemption.name}}</ng-option>
-                                    </ng-select>
-                                 </div>
-                              </div>
-                                 <div class="row" *ngFor="let trailer of assetsArray; let t = index;">
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Assign
-                                          Trailer</label>
-                                       <ng-select [(ngModel)]="trailer.assetId" name="trailer.assetId{{t}}" (change)="getAssetData($event,t)">
-                                          <ng-option *ngFor="let asset of assets" [value]="asset.assetID">
-                                             {{asset.assetIdentification}}</ng-option>
-                                       </ng-select>
-                                    </div>                                
-                                    <div class="col-lg-2 mar-top-37">
-                                       <a href="#addAssetModal" class="modal-with-form btn btn-sm btn-success"><i
-                                             class="fas fa-plus"></i></a>
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          onclick="show_trailer_seal_input()">Add Seal</label>
-                                          <ngx-tags-input class="form-control input-lg" [(ngModel)]="trailer.sealNumbers" name="trailer.sealNumbers{{t}}"
-                                          (onTagsChanged)="onTagsChangedAsset($event,t)" [removeLastOnBackspace]="true"
-                                          [maxTags]="4" ></ngx-tags-input>
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          onclick="show_trailer_IIT_input()">Add IIT or Exemption</label>
-                                       <ng-select [multiple]="true" name="trailer.cargoExemptions{{t}}"
-                                          [(ngModel)]="trailer.cargoExemptions" (change)="trailerExemptionFn(t)">
-                                          <ng-option *ngFor="let exemption of cargoExemptionsList"
-                                             [value]="exemption.code">{{exemption.name}}</ng-option>
-                                       </ng-select>
-                                    </div>
-                                 </div>
-                                 <div class="row mt-2">
-                                    <div class="col-lg-5">
-                                       <button type="button" *ngIf = "addTrailerBtn" class="btn btn-sm btn-success" (click)="addTrailer()">Add Trailer</button>
-                                    </div>
-                                    <div class="col-lg-5 text-right">
-                                       <button type="button" *ngIf="t != 0;" (click)="deleteTrailer(t)" class="btn btn-sm btn-success"> Delete Trailer</button>
-                                    </div>
-                                 </div>
-                                <div class="row">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Assign
                                        Driver</label>
@@ -169,6 +98,88 @@
                                        class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
                                  </div>
                                 </div>
+                           </div>
+                           <div class="col-lg-5">
+                              <div class="row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Assign
+                                       Vehicle</label>
+                                    <ng-select name="truck.truckId" [(ngModel)]="truck.truckId"
+                                       (change)="fetchVehicleData($event)">
+                                       <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleID">
+                                          {{vehicle.vehicleIdentification}}</ng-option>
+                                    </ng-select>
+                                 </div>
+                                 <div class="col-lg-2  mar-top-37">
+                                    <a href="#addVehicleModal" class="modal-with-form btn btn-sm btn-success"><i
+                                          class="fas fa-plus"></i></a>
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2"
+                                       >Add Seal</label> 
+                                       <div class="row" >
+                                          <div class="col-lg-3"><input type="text" class="form-control" name="truck.sealNumbers1" (change)="truckSealArray()" [(ngModel)]="truck.sealNumbers1"></div>
+                                          <div class="col-lg-3"><input type="text" class="form-control" name="truck.sealNumbers2" (change)="truckSealArray()"  [(ngModel)]="truck.sealNumbers2"></div>
+                                          <div class="col-lg-3"><input type="text" class="form-control" name="truck.sealNumbers3" (change)="truckSealArray()"  [(ngModel)]="truck.sealNumbers3"></div>
+                                          <div class="col-lg-3"><input type="text" class="form-control" name="truck.sealNumbers4" (change)="truckSealArray()"  [(ngModel)]="truck.sealNumbers4"></div>
+                                       </div>                                     
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2"
+                                   >Add IIT</label>      
+                                    <ng-select >
+                                       <ng-option
+                                          value="CARRIER">Trip contains IIt's covered under 10.41(a) with carriers bond.</ng-option>
+                                          <ng-option
+                                          value="IMPORTER">Trip contains IIt's covered under 10.41(a) with importers bond.</ng-option>
+                                    </ng-select>                                
+                                 </div>
+                                
+                              </div>
+                                 <div class="row" *ngFor="let trailer of trailers; let t = index;">
+                                   
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Assign
+                                          Trailer</label>
+                                       <ng-select [(ngModel)]="trailer.assetId" name="trailer.assetId{{t}}" (change)="getAssetData($event,t)">
+                                          <ng-option *ngFor="let asset of assets" [value]="asset.assetID">
+                                             {{asset.assetIdentification}}</ng-option>
+                                       </ng-select>
+                                    </div>                                
+                                    <div class="col-lg-2 mar-top-37">
+                                       <a href="#addAssetModal" class="modal-with-form btn btn-sm btn-success"><i
+                                             class="fas fa-plus"></i></a>
+                                    </div>
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2"
+                                          >Add Seal</label> 
+                                          <div class="row" >
+                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers1{{t}}"  [(ngModel)]="trailer.sealNumbers1"></div>
+                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers2{{t}}"   [(ngModel)]="trailer.sealNumbers2"></div>
+                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers3{{t}}"   [(ngModel)]="trailer.sealNumbers3"></div>
+                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers4{{t}}"   [(ngModel)]="trailer.sealNumbers4"></div>
+                                          </div>                                     
+                                    </div>
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2"
+                                      >Add IIT</label>      
+                                       <ng-select >
+                                          <ng-option
+                                             value="CARRIER">Trip contains IIt's covered under 10.41(a) with carriers bond.</ng-option>
+                                             <ng-option
+                                             value="IMPORTER">Trip contains IIt's covered under 10.41(a) with importers bond.</ng-option>
+                                       </ng-select>                                
+                                    </div>                         
+                                    <div class="col-lg-10 text-right mt-2">
+                                       <button type="button"  (click)="deleteTrailer(t)" class="btn btn-sm btn-danger"> <i class="fas fa-times"></i></button>
+                                    </div>
+                                 </div>
+                                 <div class="row mt-2">
+                                    <div class="col-lg-5">
+                                       <button type="button" *ngIf = "addTrailerBtn" class="btn btn-sm btn-success" (click)="addTrailer()">Add Trailer</button>
+                                    </div>
+                                 </div>
+                               
                               
                            </div>
                         </div>
@@ -341,6 +352,9 @@
                               </div>
                            </div>
                            <div class="form-group row" *ngFor="let commodity of shipment.commodities;let i = index">
+                              <div class="col-lg-12 text-right">
+                                 <button type="button" *ngIf="i != 0;" (click)="deleteCommodity(i,s)" class="btn btn-sm btn-danger"> <i class="fas fa-times"></i></button>
+                           </div>
                               <div class="col-lg-5 offset-lg-1">
                                  <div class="row">
    
@@ -450,17 +464,17 @@
                                           Numbers</label>
                                        <div class="row">
                                           <div class="col-lg-3"><input type="text" class="form-control"
-                                                name="commodity.marksAndNumbers.one{{i}}"
-                                                [(ngModel)]="commodity.marksAndNumbers.one"></div>
+                                                name="commodity.marksAndNumbers1{{i}}"
+                                                [(ngModel)]="commodity.marksAndNumbers1"></div>
                                           <div class="col-lg-3"><input type="text" class="form-control"
-                                                name="commodity.marksAndNumbers.two{{i}}"
-                                                [(ngModel)]="commodity.marksAndNumbers.two"></div>
+                                                name="commodity.marksAndNumbers2{{i}}"
+                                                [(ngModel)]="commodity.marksAndNumbers2"></div>
                                           <div class="col-lg-3"><input type="text" class="form-control"
-                                                name="commodity.marksAndNumbers.three{{i}}"
-                                                [(ngModel)]="commodity.marksAndNumbers.three"></div>
+                                                name="commodity.marksAndNumbers3{{i}}"
+                                                [(ngModel)]="commodity.marksAndNumbers3"></div>
                                           <div class="col-lg-3"><input type="text" class="form-control"
-                                                name="commodity.marksAndNumbers.four{{i}}"
-                                                [(ngModel)]="commodity.marksAndNumbers.four"></div>
+                                                name="commodity.marksAndNumbers4{{i}}"
+                                                [(ngModel)]="commodity.marksAndNumbers4"></div>
                                        </div>
                                     </div>
                                  </div>
@@ -499,10 +513,12 @@
                                        </div> -->
                                  </div>
                               </div>
+                             
+                           </div>
+                           <div class="row">
                               <div class="col-lg-12 text-right">
                                  <button type="button" (click)="addCommodity(s)"
                                     class="btn btn-sm btn-success mr-1">Add More Commodity</button>
-                                    <button type="button" *ngIf="i != 0;" (click)="deleteCommodity(i,s)" class="btn btn-sm btn-success"> Delete Commodity</button>
                               </div>
                            </div>
                           
