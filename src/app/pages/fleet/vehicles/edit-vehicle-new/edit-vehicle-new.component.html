@@ -13,10 +13,10 @@
       <header class="page-header">
         <div class="row pr-5" style="padding-top: 10px">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            Add Vehicle
+            Edit Vehicle
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-4">
-            <a href="vehicles.php" class="btn btn-default btn-sm"
+            <a routerLink="/fleet/vehicles/list" class="btn btn-default btn-sm"
               ><i class="fas fa-list"></i> Vehicles List</a
             >
           </div>
@@ -580,7 +580,9 @@
                               <optgroup label="">
                                 <option value="active">Active</option>
                                 <option value="inActive">Inactive</option>
-                                <option value="outOfService">Out of Service</option>
+                                <option value="outOfService">
+                                  Out of Service
+                                </option>
                                 <option value="sold">Sold</option>
                               </optgroup>
                             </select>
@@ -2579,6 +2581,14 @@
                   class="btn btn-success mt-4"
                   >Submit</a
                 >
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
+                <p class="text text-success" *ngIf="hasSuccess">
+                  {{ Success }}
+                </p>
               </div>
             </div>
           </form>
