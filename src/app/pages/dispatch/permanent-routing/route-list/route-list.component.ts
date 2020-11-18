@@ -82,15 +82,12 @@ export class RouteListComponent implements OnInit {
     
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
-      pageLength: 3,
+      pageLength: 10,
       serverSide: true,
       processing: true,
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('routes/fetch-records?lastEvaluatedKey='+this.lastEvaluated.key+'&lastEvaluatedValue='+this.lastEvaluated.value, dataTablesParameters).subscribe(resp => {
-          console.log('resp');
-          console.log(resp);
-          console.log(resp['LastEvaluatedKey']);
           this.routes = resp['Items'];
           if(resp['LastEvaluatedKey'] !== undefined){
             this.lastEvaluated = {
@@ -110,15 +107,6 @@ export class RouteListComponent implements OnInit {
           });
         });
       },
-      columns: [{ data: 'routeName' }, { data: 'sourceInformation.sourceAddress' },
-      { data: 'destinationInformation.destinationAddress' }, { data: 'miles' },
-      { data: 'sourceInformation.recurring.recurringType' }, { data: '' }, { data: 'notes' }, { data: '' }],
-      // buttons: [
-      //    {
-      //         extend: 'colvis',
-      //         columns: ':not(.noVis)'
-      //     }
-      // ],
       // colReorder: true,
       columnDefs: [
         {

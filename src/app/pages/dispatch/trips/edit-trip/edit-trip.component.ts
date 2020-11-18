@@ -23,7 +23,7 @@ export class EditTripComponent implements OnInit {
     private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) { }
 
   tripID = '';
-  errors: {};
+  errors = {};
   trips = [];
   vehicles = [];
   assets = [];
@@ -900,13 +900,13 @@ export class EditTripComponent implements OnInit {
 
   updateTrip() {
     // console.log('tripData');
+    this.hideErrors();
     if (this.tripData.reeferTemperature != '' && this.tripData.reeferTemperatureUnit != undefined) {
       this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
     } else {
       this.tripData.reeferTemperature = '';
     }
 
-    delete this.tripData.reeferTemperatureUnit;
     this.tripData.orderId = this.OrderIDs;
     this.tripData.tripPlanning = [];
     this.tripData.tripID = this.route.snapshot.params['tripID'];
@@ -997,6 +997,8 @@ export class EditTripComponent implements OnInit {
     // delete this.tripData.carrierID;
     console.log('this.tripData')
     console.log(this.tripData)
+    delete this.tripData.reeferTemperatureUnit;
+
     this.apiService.putData('trips', this.tripData).subscribe({
       complete: () => {
       },
@@ -1004,13 +1006,9 @@ export class EditTripComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              // console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
-            })
+              this.errors[val.context.key] = val.message;
+          })
           )
           .subscribe({
             complete: () => {
@@ -1232,8 +1230,29 @@ export class EditTripComponent implements OnInit {
       })
   }
 
+  // throwErrors() {
+  //   // console.log(this.errors);
+  //   this.form.showErrors(this.errors);
+  // }
+
   throwErrors() {
-    // console.log(this.errors);
-    this.form.showErrors(this.errors);
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error')
+      });
+  }
+
+  hideErrors() {
+      from(Object.keys(this.errors))
+        .subscribe((v) => {
+          $('[name="' + v + '"]')
+            .removeClass('error')
+            .next()
+            .remove('label')
+        });
+      this.errors = {};
   }
 }

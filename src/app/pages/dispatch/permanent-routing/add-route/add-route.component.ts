@@ -19,7 +19,7 @@ declare var $: any;
 export class AddRouteComponent implements OnInit {
 
   pageTitle: string;
-  errors: {};
+  errors = {};
   routeData = {
     sourceInformation: {
       recurring: {
@@ -270,7 +270,8 @@ export class AddRouteComponent implements OnInit {
 
 
   addRoute() {
-    console.log(this.routeData);
+    this.hideErrors();
+    // console.log(this.routeData);
 
     if (this.routeData.sourceInformation.recurring.recurringType !== '') {
       if (this.routeData.sourceInformation.recurring.recurringType === 'weekly') {
@@ -298,13 +299,9 @@ export class AddRouteComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
-            })
+              this.errors[val.context.key] = val.message;
+          })
           )
           .subscribe({
             complete: () => {
@@ -328,7 +325,23 @@ export class AddRouteComponent implements OnInit {
 
   throwErrors() {
     console.log(this.errors);
-    this.form.showErrors(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error')
+      });
+  }
+
+  hideErrors() {
+      from(Object.keys(this.errors))
+        .subscribe((v) => {
+          $('[name="' + v + '"]')
+            .removeClass('error')
+            .next()
+            .remove('label')
+        });
+      this.errors = {};
   }
 
 }
