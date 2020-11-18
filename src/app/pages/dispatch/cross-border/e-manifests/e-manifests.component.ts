@@ -72,4 +72,13 @@ export class EManifestsComponent implements OnInit {
       $('#datatable-default').DataTable();
     });
   }
+  deleteACIEntry(entryID) {
+    this.apiService
+      .deleteData('ACIeManifest/' + entryID)
+      .subscribe((result: any) => {
+     //   this.spinner.show();
+        this.ACIEntries();
+        this.toastr.success('ACI eManifest Entry Deleted Successfully!');
+      });
+  }
 }

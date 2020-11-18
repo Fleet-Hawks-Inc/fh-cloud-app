@@ -9,100 +9,24 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AciDetailsComponent implements OnInit {
 
   public entryID;
-  title = 'Add ACE e-Manifest';
-  vehicleID: string;
-  vehicleData = [];
-  vehicles = [];
-  assets = [];
-  trips = [];
-  drivers = [];
+  title = 'ACI e-Manifest Details';
   data: string;
   sendId: string;
   companyKey: string;
   operation: string;
-  usPortOfArrival: string;
-  estimatedArrivalDateTime: string;
-  truck: {
-    number: '',
-    type: '',
-    vinNumber: '',
-    licensePlate: {
-      number: '',
-      stateProvince: ''
-    }
-  };
-  vehicleNumber: string;
-  vehicleType: string;
-  vinNumber: string;
-  LicencePlatenumber: string;
-  vehicleLicenceProvince: string;
-  vehicleSeals = [];
-  tags = [];
-  ETA: string;
- // date: NgbDateStruct;
-  // time: NgbTimeStruct;
-  assetArray = [];
-  assetSeals = [];
-  assetTags = [];
-  assetId = [];
-  driverId = [];
-  driverArray = [];
-  // shipments: [
-  //   {
-  //     data: 'ACE_SHIPMENT',
-  //     sendId: '001',
-  //     companyKey: 'c-9000-2bcd8ae5954e0c48',
-  //     operation: 'CREATE',
-  //     type: this.shipmentType,
-  //     shipmentControlNumber: this.shipmentControlNumber,
-  //     provinceOfLoading: this.provinceOfLoading,
-  //     shipper: {
-  //       name: 'Art place',
-  //       address: {
-  //         addressLine: '1234 Vancity',
-  //         city: 'Vancouver',
-  //         stateProvince: 'BC',
-  //         postalCode: 'V6H 3J9'
-  //       }
-  //     },
-  //     consignee: {
-  //       name: 'Elk Corp of Texas',
-  //       address: {
-  //         addressLine: '401 Weavertown Rd',
-  //         city: 'Myerstown',
-  //         stateProvince: 'PA',
-  //         postalCode: '17067'
-  //       }
-  //     },
-  //     commodities: this.commodities,
-  //   }
-  // ]
-  // passengers = [
-  //   {
-  //   firstName: '',
-  //   middleName: '',
-  //   lastName: '',
-  //   gender: '',
-  //   dateOfBirth: '',
-  //   citizenshipCountry: '',
-  //   fastCardNumber: '',
-  //   travelDocuments: [
-  //   {
-  //   number: '',
-  //   type: '',
-  //   stateProvince: '',
-  //   country: ''
-  //   },
-  //   {
-  //   number: '',
-  //   type: '',
-  //   stateProvince: '',
-  //   country: ''
-  //   }
-  //   ]
-  //   }
-  //  ];
-  time: '13:30:00';
+  portOfEntry: string;
+  subLocation: string;
+  estimatedArrivalDate: string;
+  estimatedArrivalTime: string;
+  estimatedArrivalTimeZone: string; 
+  drivers = [];
+  truck: any = [];
+  trailers: any = [];
+  shipments: any = [];
+  shipmentArray: any = [];
+  containers: any = [];
+  passengers: any = [];
+  status: string;
   errors = {};
   form;
   response: any = '';
@@ -110,73 +34,298 @@ export class AciDetailsComponent implements OnInit {
   hasSuccess = false;
   Error = '';
   Success = '';
-  USports: any = [];
-  documentTypeList: any = [];
-  shipmentTypeList: any = [];
   shipmentType: string;
   tripNumber: string;
-  SCAC: string;
-  tripNo: string;
-  SCACShipment: string;
-  shipmentInput: string;
-  shipmentControlNumber: string;
+  CCC: string;
   provinceOfLoading: string;
-  states: any = [];
-  countries: any = [];
-  packagingUnitsList: any = [];
-  passengers = [{
-    firstName: '',
-    lastName: '',
-    gender: '',
-    dateOfBirth: '',
-    citizenshipCountry: '',
-    fastCardNumber: '',
-    travelDocuments: [{
-      type: '',
-      number: '',
-      country: '',
-      stateProvince: ''
-    }]
-  }];
-  passengerDocStates = [];
-  commodities =
-    [{
-      loadedOn: {
-        type: '',
-        number: ''
-      },
-      description: '',
-      quantity: '',
-      packagingUnit: '',
-      weight: '',
-      weightUnit: '',
-      marksAndNumbers: [],
-      c4LineReleaseNumber: '',
-      harmonizedCode: '',
-      value: '',
-      countryOfOrigin: '',
-      hazmatDetails: {
-        unCode: '',
-        emergencyContactName: '',
-        contactPhone: '',
-        contactEmail: ''
+  finalData: {
+    data: string,
+    operation: string,
+    tripNumber: string,
+    portOfEntry: string,
+    estimatedArrivalDateTime: string,
+    estimatedArrivalTimeZone: string,
+    truck: {
+      number: string,
+      type: string,
+      vinNumber: string,
+      licensePlates: [
+        {
+          number: string,
+          stateProvince: string
+        }
+      ]
+    },
+    trailers: [
+      {
+        number: string,
+        type: string,
+        licensePlates: [
+          {
+            number: string,
+            stateProvince: string
+          }
+        ]
       }
-    }];
-  marks1: string;
-  marks2: string;
-  marks3: string;
-  marks4: string;
-  marksArray = [];
+    ],
+    drivers: [
+      {
+        firstName: string,
+        lastName: string,
+        gender: string,
+        dateOfBirth: string,
+        citizenshipCountry: string,
+        travelDocuments: [
+          {
+            number: string,
+            type: string,
+            stateProvince: string,
+            country: string
+          }
+        ]
+      }
+    ],
+     shipments: [
+      {
+        data: string,
+        operation: string,
+        shipmentType: string,
+        loadedOn: {
+          type: string,
+          number: string
+        },
+        cargoControlNumber: string,
+        referenceOnlyShipment: boolean,
+        portOfEntry: string,
+        releaseOffice: string,
+        estimatedArrivalDate: string,
+        estimatedArrivalTimeZone: string,
+        cityOfLoading: {
+          cityName: string,
+          stateProvince: string
+        },
+        cityOfAcceptance: {
+          cityName: string,
+          stateProvince: string
+        },
+        consolidatedFreight: false,
+        shipper: {
+          name: string,
+          address: {
+            addressLine: string,
+            city: string,
+            stateProvince: string,
+            postalCode: string
+          }
+        },
+        consignee: {
+          name: string,
+          address: {
+            addressLine: string,
+            city: string,
+            stateProvince: string,
+            postalCode: string
+          }
+        },
+        commodities: [
+          {
+            description: string,
+            quantity: number,
+            packagingUnit: string,
+            weight: string,
+            weightUnit: string
+          }
+        ],
+        autoSend: boolean
+      }
+    ],
+    autoSend: boolean
+  };
   loadedType = 'TRAILER';
-  constructor(private apiService: ApiService, private route: ActivatedRoute,) { }
+  finalTruckData: any = [];
+  finalDrivers: any = [];
+  finalTrailers: any = [];
+  finalshipments: any = [];
+  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params['entryID'];
     this.fetchACEEntry();
   }
+  modifyShipment() {
+
+    for (let i = 0; i < this.shipments.length; i++) {
+      let totalQty = 0;
+      for (let j = 0; j < this.shipments[i].commodities.length; j++) {
+        totalQty = totalQty + this.shipments[i].commodities[j].quantity;
+      }
+      this.shipmentArray.push({
+        shipmentNumber: this.shipments[i].CCC.concat(this.shipments[i].cargoControlNumber.toString()),
+        type: this.shipments[i].shipmentType,
+        totalCommodities: this.shipments[i].commodities.length,
+        totalQuantity: totalQty,
+        loadedOnType: this.shipments[i].loadedOn.type,
+        loadedOnNumber: this.shipments[i].loadedOn.number
+      });
+    }
+  }
+
+  finalTruckFn() {
+    console.log('truck array', this.truck);
+    let licenseArray: any = [];
+    let sealsArray = [];
+    if (this.truck.sealNumbers1) {
+      sealsArray.push(this.truck.sealNumbers1);
+    }
+    if (this.truck.sealNumbers2) {
+      sealsArray.push(this.truck.sealNumbers2);
+    }
+    if (this.truck.sealNumbers3) {
+      sealsArray.push(this.truck.sealNumbers3);
+    }
+    if (this.truck.sealNumbers4) {
+      sealsArray.push(this.truck.sealNumbers4);
+    }
+    for (let i = 0; i < this.truck.licensePlates.length; i++) {
+      let test1 = {
+        number: this.truck.licensePlates[i].number,
+        stateProvince: this.truck.licensePlates[i].stateProvince
+      };
+      licenseArray.push(test1);
+    }
+    let test = {
+      number: this.truck.number,
+      type: this.truck.type,
+      vinNumber: this.truck.vinNumber,
+      licensePlates: licenseArray,
+      sealNumbers: sealsArray
+    };
+    this.finalTruckData = test;
+  }
+  finalDriversArrayFn() {
+    let test: any = [];
+    for (let i = 0; i < this.drivers.length; i++) {
+      let docArray = [];
+      for (let j = 0; j < this.drivers[i].travelDocuments.length; j++) {
+        let test1 = {
+          number: this.drivers[i].travelDocuments[j].number,
+          type: this.drivers[i].travelDocuments[j].type,
+          stateProvince: this.drivers[i].travelDocuments[j].stateProvince,
+          country: this.drivers[i].travelDocuments[j].country
+        };
+        docArray.push(test1);
+      }
+      test = {
+        firstName: this.drivers[i].firstName,
+        lastName: this.drivers[i].lastName,
+        gender: this.drivers[i].gender,
+        dateOfBirth: this.drivers[i].dateOfBirth,
+        citizenshipCountry: this.drivers[i].citizenshipCountry,
+        travelDocuments: docArray,
+      };
+      this.finalDrivers.push(test);
+    }
+    // console.log('final drivers array', this.finalDrivers);
+  }
+  finalTrailersArrayFn() {
+    let test: any = [];
+    for (let i = 0; i < this.trailers.length; i++) {
+      let sealsArray = [];
+      let docArray: any = [];
+      if (this.trailers[i].sealNumbers1) {
+        sealsArray.push(this.trailers[i].sealNumbers1);
+      }
+      if (this.trailers[i].sealNumbers2) {
+        sealsArray.push(this.trailers[i].sealNumbers2);
+      }
+      if (this.trailers[i].sealNumbers3) {
+        sealsArray.push(this.trailers[i].sealNumbers3);
+      }
+      if (this.trailers[i].sealNumbers4) {
+        sealsArray.push(this.trailers[i].sealNumbers4);
+      }
+      for (let j = 0; j < this.trailers[i].licensePlates.length; j++) {
+        let test = {
+          number: this.trailers[i].licensePlates[j].number,
+          stateProvince: this.trailers[i].licensePlates[j].stateProvince
+        };
+        docArray.push(test);
+      }
+      test = {
+        number: this.trailers[i].number,
+        type: this.trailers[i].type,
+        licensePlates: docArray,
+        sealNumbers: sealsArray
+      };
+      this.finalTrailers.push(test);
+    }
+  }
+  finalShipmentsArrayFn() {
+    console.log('shipments in fn', this.shipments);
+    let test: any = [];
+    for (let i = 0; i < this.shipments.length; i++) {
+      let testCommodity: any = [];
+      for (let j = 0; j < this.shipments[i].commodities.length; j++) {       
+        let com = {
+          description: this.shipments[i].commodities[j].description,
+          quantity: this.shipments[i].commodities[j].quantity,
+          packagingUnit: this.shipments[i].commodities[j].packagingUnit,
+          weight: this.shipments[i].commodities[j].weight,
+          weightUnit: this.shipments[i].commodities[j].weightUnit,
+          marksAndNumbers: this.shipments[i].commodities[j].marksAndNumbers
+        };
+        testCommodity.push(com);
+      }
+      test = {
+        data: this.shipments[i].data,
+        operation: this.shipments[i].operation,
+        shipmentType: this.shipments[i].shipmentType,
+        loadedOn: {
+          type: this.shipments[i].loadedOn.type,
+          number: this.shipments[i].loadedOn.number
+        },
+        cargoControlNumber: this.shipments[i].CCC + this.shipments[i].cargoControlNumber,
+        referenceOnlyShipment: false,
+        portOfEntry: this.shipments[i].portOfEntry,
+        releaseOffice: this.shipments[i].releaseOffice,
+        estimatedArrivalDate: this.shipments[i].estimatedArrivalDate + this.shipments[i].estimatedArrivalTime,
+        estimatedArrivalTimeZone: this.shipments[i].estimatedArrivalTimeZone,
+        cityOfLoading: {
+          cityName: this.shipments[i].cityOfLoading.cityName,
+          stateProvince: this.shipments[i].cityOfLoading.stateProvince
+        },
+        cityOfAcceptance: {
+          cityName: this.shipments[i].cityOfAcceptance.cityName,
+          stateProvince: this.shipments[i].cityOfAcceptance.stateProvince
+        },
+        consolidatedFreight: false,
+        shipper: {
+          name: this.shipments[i].shipper.name,
+          address: {
+            addressLine: this.shipments[i].shipper.address.addressLine,
+            city: this.shipments[i].shipper.address.city,
+            stateProvince: this.shipments[i].shipper.address.stateProvince,
+            postalCode: this.shipments[i].shipper.address.postalCode
+          }
+        },
+        consignee: {
+          name: this.shipments[i].consignee.name,
+          address: {
+            addressLine: this.shipments[i].consignee.address.addressLine,
+            city: this.shipments[i].consignee.address.city,
+            stateProvince: this.shipments[i].consignee.address.stateProvince,
+            postalCode: this.shipments[i].consignee.address.postalCode
+          }
+        },
+        commodities: testCommodity,
+        autoSend: false
+      };
+      this.finalshipments.push(test);
+    }
+  }
   fetchACEEntry() {
     this.apiService
-      .getData('ACEeManifest/' + this.entryID)
+      .getData('ACIeManifest/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
         console.log('Fetched Data', result);
@@ -186,27 +335,44 @@ export class AciDetailsComponent implements OnInit {
         this.companyKey = result.companyKey;
         this.operation = result.operation;
         this.tripNumber = result.tripNumber;
-        this.usPortOfArrival = result.usPortOfArrival;
-        this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
-        this.truck = {
-          number: result.truck.number,
-          type: result.truck.type,
-          vinNumber: result.truck.vinNumber,
-          licensePlate: {
-            number: result.truck.licensePlate.number,
-            stateProvince: result.truck.licensePlate.stateProvince
-          }
-        };
-        this.driverArray = result.drivers;
+        this.CCC = result.CCC;
+        this.portOfEntry = result.portOfEntry;
+        this.subLocation = result.subLocation;
+        this.estimatedArrivalDate = result.estimatedArrivalDate;
+        this.estimatedArrivalTime = result.estimatedArrivalTime;
+        this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone,
+        this.truck = result.truck;
+        this.drivers = result.drivers;
         this.passengers = result.passengers;
-      //  setTimeout(() => {
-      //   this.getVehicleId(result.truck.vinNumber);
-      //   this.getDriverIdArray(result.drivers);
-      //   this.getAssetIdArray(result.trailers);
-      //   this.getShipmentData(result.shipments);
-      // }, 2000);
+        this.trailers = result.trailers;
+        this.containers = result.containers,
+        this.shipments = result.shipments;
+        this.status = result.status;
+        this.modifyShipment();
+        setTimeout(() => {
+         this.finalTruckFn();
+          this.finalDriversArrayFn();
+          this.finalTrailersArrayFn();
+         this.finalShipmentsArrayFn();
+        }, 2000);
 
       });
+  }
+  finalDataFn() {
+    this.finalData = {
+      data: 'ACE_TRIP',
+      operation: 'CREATE',
+      tripNumber: this.CCC + this.tripNumber,
+      portOfEntry: this.portOfEntry,
+      estimatedArrivalDateTime: this.estimatedArrivalDate + ' ' + this.estimatedArrivalTime,
+      estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
+      truck: this.finalTruckData,
+      trailers: this.finalTrailers,
+      drivers: this.finalDrivers,
+      shipments: this.finalshipments,
+      autoSend: false
+    };
+    console.log('final data', this.finalData);
   }
 
 }

@@ -9,9 +9,12 @@
       <!-- end: sidebar -->
     <section role="main" class="content-body">
         <header class="page-header pr-5">
-        <h2>ACE Details</h2>
+        <h2>{{title}}</h2>
         <div class="right-wrapper text-right pt-2 pr-2">
-            <a href="javascript:;" class="btn btn-success btn-sm mr-1" style="color:white;"> Send to CBSA</a>
+            <a
+                     [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-success btn-sm mr-1"><i
+                        class="fas fa-list"></i> ACI Manifests</a>
+            <a href="javascript:;"(click)="finalDataFn()" class="btn btn-success btn-sm mr-1" style="color:white;"> Send to CBSA</a>
             <div class="btn-group btn-group1 flex-wrap mr-1">
                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Set Status<span class="caret"></span></button>
                 <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -30,7 +33,7 @@
             <div class="btn-group btn-group1 flex-wrap">
                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                 <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                    <a class="dropdown-item text-1" href="">Edit</a>
+                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"> Edit</a>
                     <a class="dropdown-item text-1" href="">Print</a>
                     <a class="dropdown-item text-1" href="">Fax</a>
                     <a class="dropdown-item text-1" href="">Email</a>
@@ -53,19 +56,19 @@
                                <tbody>
                                    <tr>
                                        <th width="40%" class="back-color-gray">Port of Entry:</th>
-                                       <td>{{usPortOfArrival}}</td>
+                                       <td>{{portOfEntry}}</td>
                                    </tr>
                                    <tr>
                                        <th width="40%"class="back-color-gray">Estimated Arrival Date:</th>
-                                       <td>{{estimatedArrivalDateTime}}</td>
+                                       <td>{{estimatedArrivalDate}} {{estimatedArrivalTime}}</td>
                                    </tr>
                                    <tr>
                                     <th width="40%" class="back-color-gray">Sub Location/Warehouse:</th>
-                                    <td>June 2, 2020 By Demo User</td>
+                                    <td>{{subLocation}}</td>
                                 </tr>
                                    <tr>
                                        <th width="40%" class="back-color-gray">Current Status:</th>
-                                       <td>Draft</td>
+                                       <td>{{status}}</td>
                                    </tr>
 
                                </tbody>
@@ -145,14 +148,13 @@
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                             <h4 class="m-0 ">Truck on <b> #1234984545</b></h4>
                             <div class=" pull-right">
-                                <button class="btn btn-success btn-sm"> Set Cargo Exemption</button>
+                                <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm"> Set Cargo Exemption</a>
                             </div>
                         </div>
                         <div class="card-body border">
                             <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Sr.</th>
                                         <th>Truck Number</th>
                                         <th>Licence Plate</th>
                                         <th>Licence State/Province</th>
@@ -163,14 +165,13 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>1.</td>
-                                        <td>12019</td>
-                                        <td>Demo45</td>
-                                        <td>Alberta</td>
+                                        <td>{{truck.number}}</td>
+                                        <td><span *ngFor = "let license of truck.licensePlates;">{{license.number}}</span></td>
+                                        <td><span *ngFor = "let license of truck.licensePlates;">{{license.stateProvince}}</span></td>
                                         <td>Loaded</td>
-                                        <td>#445ADFE</td>
+                                        <td>{{truck.sealNumbers1}}  {{truck.sealNumbers2}}  {{truck.sealNumbers3}}  {{truck.sealNumbers4}}</td>
                                         <td class="actions">
-                                            <a href=""><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                            <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
                                         </td>
                                     </tr>
@@ -187,17 +188,16 @@
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                             <h4 class="m-0 ">Trailers on <b> #1234984545</b></h4>
                             <div class=" pull-right">
-                                <button class="btn btn-success btn-sm"> Set Cargo Exemption</button>
-                                <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Trailer</button>
+                                <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}" class="btn btn-success btn-sm mr-1"> Set Cargo Exemption</a>
+                                <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Trailer</a>
                             </div>
                         </div>
                         <div class="card-body border">
                             <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Sr.</th>
                                         <th>Trailer Number</th>
-                                        <th>Licence Plate</th>
+                                        <th>Licence Plate(s)</th>
                                         <th>Licence State/Province</th>
                                         <th>Trailer Type</th>
                                         <th>Seal Numbers</th>
@@ -205,18 +205,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1.</td>
-                                        <td>12019</td>
-                                        <td>Demo45</td>
-                                        <td>Alberta</td>
-                                        <td>Loaded</td>
-                                        <td>#445ADFE</td>
+                                    <tr *ngFor = "let trailer of trailers"> 
+                                        <td>{{trailer.number}}</td>
+                                        <td><span *ngFor = "let license of trailer.licensePlates;">{{license.number}}</span></td>
+                                        <td><span *ngFor = "let license of trailer.licensePlates;">{{license.stateProvince}}</span></td>
+                                        <td>{{trailer.type}}</td>
+                                        <td>{{trailer.sealNumbers1}}  {{trailer.sealNumbers2}}  {{trailer.sealNumbers3}}  {{trailer.sealNumbers4}}</td>
                                         <td class="actions">
-                                            <a href=""><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                            <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
-                                            <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Change</a> -->
-                                            <!--  <a href="" class="delete-row"><i class="fas fa-pencil-alt black_color"></i> Add Seal</a> -->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -233,15 +230,14 @@
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                             <h4 class="m-0 ">Driver, Passengers and Team Drivers</h4>
                             <div class=" pull-right">
-                                <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Sub Driver</button>
-                                <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Passenger</button>
+                                <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}" class="btn btn-success btn-sm mr-1"><i class="fas fa-plus"></i> Add Sub Driver</a>
+                                <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Passenger</a>
                             </div>
                         </div>
                         <div class="card-body border">
                             <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Sr.</th>
                                         <th>Name</th>
                                         <th>Driver Number</th>
                                         <th>Travel Documents</th>
@@ -250,9 +246,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor = "let driver of driverArray">
-                                        <td>1.</td>
-                                        <td>{{driver.firstName}}{{driver.lastName}}</td>
+                                    <tr *ngFor = "let driver of drivers">
+                                      
+                                        <td>{{driver.firstName}} {{driver.lastName}}</td>
                                         <td>{{driver.driverNumber}}</td>
                                         <td><span *ngFor= "let document of driver.travelDocuments">{{document.number}}</span></td>
                                         <td>Driver</td>
@@ -261,7 +257,7 @@
                                         </td>
                                     </tr>
                                     <tr *ngFor = "let passenger of passengers">
-                                        <td>1.</td>
+                                     
                                         <td>{{passenger.firstName}}{{passenger.lastName}}</td>
                                         <td>56</td>
                                         <td><span *ngFor= "let document of passenger.travelDocuments">{{document.number}}</span></td>
@@ -284,16 +280,28 @@
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                             <h4 class="m-0 ">ACE Shipments <b> #1234984545</b></h4>
                             <div class=" pull-right">
-                                <button class="btn btn-success btn-sm"> Set Shipment Status</button>
-                                <!-- <button class="btn btn-success btn-sm"> Send to CBP</button> -->
-                                <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Create New Shipment</button>
+                                <div class="btn-group btn-group1 flex-wrap mr-1">
+                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Set Status<span class="caret"></span></button>
+                                    <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                        <a class="dropdown-item text-1" href="">Draft</a>
+                                        <a class="dropdown-item text-1" href="">Cancelled</a>
+                                        <a class="dropdown-item text-1" href="">Transmitted to CBSA</a>
+                                        <a class="dropdown-item text-1" href="">CBSA Returned Error</a>
+                                        <a class="dropdown-item text-1" href="">On File with CBSA</a>
+                                        <a class="dropdown-item text-1" href="">On File with Match Notice</a>
+                                        <a class="dropdown-item text-1" href="">On File with Transaction Number(s)</a>
+                                        <a class="dropdown-item text-1" href="">Arrival Reported at Border</a>
+                                        <a class="dropdown-item text-1" href="">Rejected After Arrival at Border</a>
+                                        <a class="dropdown-item text-1" href="">Released</a>
+                                    </div>
+                                </div>
+                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Create New Shipment</a>
                             </div>
                         </div>
                         <div class="card-body border">
                             <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Sr.</th>
                                         <th>Cargo Control Number</th>
                                         <th>Status</th>
                                         <th>Type</th>
@@ -306,24 +314,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1.</td>
-                                        <td>765876575</td>
+                                    <tr *ngFor = "let shipment of shipmentArray">
+                                        <td>{{shipment.shipmentNumber}}</td>
                                         <td></td>
-                                        <td>PARS</td>
+                                        <td>{{shipment.type}}</td>
                                         <td>
                                             32Street, Alberta,Canada
                                         </td>
                                         <td>
                                             78Ave 180 street, Surrey,Canada
                                         </td>
-                                        <td>44</td>
+                                        <td>{{shipment.totalQuantity}}</td>
                                         <td>Demo User</td>
-                                        <td>Trailer234</td>
+                                        <td>{{shipment.loadedOnType}}[{{shipment.loadedOnNumber}}]</td>
                                         <td class="actions">
-                                            <a href=""><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
-                                            <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Edit</a> -->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -346,7 +352,6 @@
                             <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Sr.</th>
                                         <th>Container</th>
                                         <th>Loaded On</th>
                                         <th>Seal Numbers</th>
@@ -354,16 +359,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1.</td>
-                                        <td>765876575</td>
-                                        <td>Trailer234</td>
-                                        <td>Trailer234</td>
+                                    <tr *ngFor = "let container of containers">
+                                        <td>{{container.number}}</td>
+                                        <td>{{container.loadedOn.type}}{{container.loadedOn.number}}</td>
+                                        <td>{{container.sealNumbers1}}  {{container.sealNumbers2}}  {{container.sealNumbers3}}  {{container.sealNumbers4}}</td>
                                         
                                         <td class="actions">
-                                            <a href=""><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Remove</a>
-                                            <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Edit</a> -->
                                         </td>
                                     </tr>
                                 </tbody>

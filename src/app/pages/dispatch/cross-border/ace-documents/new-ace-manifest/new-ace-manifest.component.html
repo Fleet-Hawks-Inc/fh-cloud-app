@@ -136,7 +136,7 @@
                                  </div>
                                 
                               </div>
-                                 <div class="row" *ngFor="let trailer of trailers; let t = index;">
+                                 <div class="row" *ngFor="let trailer of assetsArray; let t = index;">
                                    
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Assign
@@ -154,10 +154,10 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2"
                                           >Add Seal</label> 
                                           <div class="row" >
-                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers1{{t}}"  [(ngModel)]="trailer.sealNumbers1"></div>
-                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers2{{t}}"   [(ngModel)]="trailer.sealNumbers2"></div>
-                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers3{{t}}"   [(ngModel)]="trailer.sealNumbers3"></div>
-                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers4{{t}}"   [(ngModel)]="trailer.sealNumbers4"></div>
+                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers1{{t}}" (change)="trailerSealArray(t)"  [(ngModel)]="trailer.sealNumbers1"></div>
+                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers2{{t}}" (change)="trailerSealArray(t)"  [(ngModel)]="trailer.sealNumbers2"></div>
+                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers3{{t}}"  (change)="trailerSealArray(t)" [(ngModel)]="trailer.sealNumbers3"></div>
+                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers4{{t}}"  (change)="trailerSealArray(t)" [(ngModel)]="trailer.sealNumbers4"></div>
                                           </div>                                     
                                     </div>
                                     <div class="col-lg-10">
@@ -170,11 +170,11 @@
                                              value="IMPORTER">Trip contains IIt's covered under 10.41(a) with importers bond.</ng-option>
                                        </ng-select>                                
                                     </div>                         
-                                    <div class="col-lg-10 text-right mt-2">
+                                    <div class="col-lg-10 text-right">
                                        <button type="button"  (click)="deleteTrailer(t)" class="btn btn-sm btn-danger"> <i class="fas fa-times"></i></button>
                                     </div>
                                  </div>
-                                 <div class="row mt-2">
+                                 <div class="row">
                                     <div class="col-lg-5">
                                        <button type="button" *ngIf = "addTrailerBtn" class="btn btn-sm btn-success" (click)="addTrailer()">Add Trailer</button>
                                     </div>
@@ -525,7 +525,7 @@
                         </mat-expansion-panel>
                         <div class="form-group row">
                            <div class="col-lg-11 text-right">
-                              <button type="button" onclick="goBack()" class="btn btn-default m-1">Cancel</button>
+                              <button type="button" (click)="cancel()" class="btn btn-default m-1">Cancel</button>
                               <button type="button" *ngIf="!entryID" (click)="addACEManifest()"
                                  class="btn btn-success">Save</button>
                               <button type="button" *ngIf="entryID" (click)="updateACEManifest()"
@@ -551,16 +551,16 @@
                <span aria-hidden="true">&times;</span>
             </button>
          </div>
-         <div class="modal-body">
+         <div class="modal-body text-dark">
             <form>
                <div *ngFor="let passenger of passengers;let i=index ">
                   <div class="form-group">
                      <div class="row">
-                        <div class="col-lg-6"> <label class="col-form-label">First Name</label>
+                        <div class="col-lg-6"> <label class="col-form-label font-weight-bold">First Name</label>
                            <input type="text" class="form-control" name="passenger.firstName{{i}}"
                               [(ngModel)]="passenger.firstName">
                         </div>
-                        <div class="col-lg-6"> <label class="col-form-label">Last Name</label>
+                        <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Last Name</label>
                            <input type="text" class="form-control" name="passenger.lastName{{i}}"
                               [(ngModel)]="passenger.lastName">
                         </div>
@@ -568,7 +568,7 @@
                   </div>
                   <div class="form-group">
                      <div class="row">
-                        <div class="col-lg-6"> <label class="col-form-label">Gender</label>
+                        <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Gender</label>
                            <select data-plugin-selectTwo class="form-control populate" name="passenger.gender{{i}}"
                               [(ngModel)]="passenger.gender">
                               <optgroup label="">
@@ -577,10 +577,9 @@
                               </optgroup>
                            </select>
                         </div>
-                        <div class="col-lg-6"> <label class="col-form-label">Date of Birth</label>
-                           <input class="form-control" placeholder="dd-mm-yyyy" name="passenger.dateOfBirth{{i}}"
-                              [(ngModel)]="passenger.dateOfBirth" (click)="d.toggle()" ngbDatepicker
-                              #d="ngbDatepicker" />
+                        <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Date of Birth</label>
+                           <input class="form-control" type="date" placeholder="mm-dd-yyyy" name="passenger.dateOfBirth{{i}}"
+                              [(ngModel)]="passenger.dateOfBirth"  />
                         </div>
                      </div>
                   </div>
@@ -593,7 +592,7 @@
                                  {{country.countryName}}</ng-option>
                            </ng-select>
                         </div>
-                        <div class="col-lg-6"> <label class="col-form-label">Fast Card#</label>
+                        <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Fast Card#</label>
                            <input type="text" class="form-control" name="passenger.fastCardNumber{{i}}"
                               [(ngModel)]="passenger.fastCardNumber">
                         </div>
@@ -601,11 +600,11 @@
                   </div>
                   <div class="form-group" *ngFor="let document of passenger.travelDocuments;let j = index">
                      <div class="row">
-                        <div class="col-lg-6"> <label class="col-form-label">Document#</label>
+                        <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Document#</label>
                            <input type="text" class="form-control" name="document.number{{j}}"
                               [(ngModel)]="document.number">
                         </div>
-                        <div class="col-lg-6"> <label class="col-form-label">Document Type</label>
+                        <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Document Type</label>
                            <ng-select name="document.type{{j}}" [(ngModel)]="document.type">
                               <ng-option *ngFor="let document of documentTypeList" [value]="document.code">
                                  {{document.description}}</ng-option>
@@ -613,14 +612,14 @@
                         </div>
                      </div>
                      <div class="row">
-                        <div class="col-lg-6"> <label class="col-form-label">Issuing Country</label>
+                        <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Issuing Country</label>
                            <ng-select (change)="getStatesDoc(i,j)" name="document.country{{j}}"
                               [(ngModel)]="document.country">
                               <ng-option *ngFor="let country of countries" [value]="country.countryID">
                                  {{country.countryName}}</ng-option>
                            </ng-select>
                         </div>
-                        <div class="col-lg-6"> <label class="col-form-label">Issuing State</label>
+                        <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Issuing State</label>
                            <ng-select name="document.stateProvince{{j}}" [(ngModel)]="document.stateProvince">
                               <ng-option *ngFor="let state of passengerDocStates" [value]="state.stateCode">
                                  {{state.stateName}}</ng-option>

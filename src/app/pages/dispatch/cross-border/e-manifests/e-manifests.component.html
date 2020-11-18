@@ -113,11 +113,11 @@
                                         <th>Driver</th>
                                        <th>Truck</th>                                          
                                        <th>Trailer</th>
-                                       <th>Shipment No.</th>
+                                       <th>Cargo Control Number</th>
                                        <th>Type</th>
                                        <th>Consignee</th>
                                        <th>Status</th>
-                                       <!-- <th>Action</th> -->
+                                       <th>Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
@@ -127,17 +127,17 @@
                                       <td><span *ngFor = "let driver of aciManifest.drivers">{{driver.firstName}}</span></td>
                                        <td>{{aciManifest.truck.number}}</td>
                                        <td><span *ngFor = "let trailer of aciManifest.trailers">{{trailer.number}}</span></td>
-                                       <td><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.cargoControlNumber}}</span></td>
+                                       <td><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}}</span></td>
                                        <td><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.shipmentType}}</span></td>
                                        <td>Diamond, Detroit</td>
                                        <td><span class="badge badge-dark p-1">DRAFT</span></td>
-                                       <!-- <td><div class="btn-group flex-wrap">
+                                       <td><div class="btn-group flex-wrap">
                                           <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                           <div class="dropdown-menu" role="menu">
-                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{aciManifest.entryID }}" class="dropdown-item text-1" >Edit</a>
-                                              <button type="button" class="dropdown-item text-1" (click)="deleteACEEntry(aciManifest.entryID)">Delete</button> 
+                                             <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{aciManifest.entryID }}" class="dropdown-item text-1" >Edit</a>
+                                              <button type="button" class="dropdown-item text-1" (click)="deleteACIEntry(aciManifest.entryID)">Delete</button> 
                                           </div>
-                                        </div></td>                                        -->
+                                        </div></td>                                       
                                     </tr> 
                                     
                                  </tbody>

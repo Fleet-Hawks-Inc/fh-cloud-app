@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
+import { from, Subject, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+declare var $: any;
+
 @Component({
   selector: 'app-ace-details',
   templateUrl: './ace-details.component.html',
@@ -22,33 +27,14 @@ export class AceDetailsComponent implements OnInit {
   usPortOfArrival: string;
   estimatedArrivalDate: string;
   estimatedArrivalTime: string;
-  // truck: {
-  //   number: '',
-  //   type: '',
-  //   vinNumber: '',
-  //   dotNumber: '',
-  //   insurancePolicy: {
-  //     insuranceCompanyName: '',
-  //     policyNumber: '',
-  //     issuedDate: '',
-  //     policyAmount: ''
-  //   }
-  //   licensePlates: [{
-  //     number: '',
-  //     stateProvince: ''
-  //   }],
-  //   sealNumbers: []
-  // };
+  status: string;
   vehicleNumber: string;
   vehicleType: string;
-  vinNumber: string;
-  LicencePlatenumber: string;
+  vinNumber: string;  
   vehicleLicenceProvince: string;
 
   truck: any = [];
-  assetArray = [];
-  assetSeals = [];
-  assetTags = [];
+  assetArray = []; 
   assetId = [];
   driverId = [];
   driverArray = [];
@@ -163,19 +149,11 @@ export class AceDetailsComponent implements OnInit {
   hasError = false;
   hasSuccess = false;
   Error = '';
-  Success = '';
-  USports: any = [];
-  documentTypeList: any = [];
-  shipmentTypeList: any = [];
+  Success = ''; 
   shipmentArray: any = [];
   shipmentType: string;
   tripNumber: string;
   SCAC: string;
-  tripNo: string;
-  SCACShipment: string;
-  shipmentInput: string;
-  shipmentControlNumber: string;
-  provinceOfLoading: string;
   states: any = [];
   countries: any = [];
   packagingUnitsList: any = [];
@@ -194,7 +172,7 @@ export class AceDetailsComponent implements OnInit {
     }]
   }];
   loadedType = 'TRAILER';
-  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute,private toastr: ToastrService) { }
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params['entryID'];
@@ -400,6 +378,7 @@ export class AceDetailsComponent implements OnInit {
         this.passengers = result.passengers;
         this.trailers = result.trailers;
         this.shipments = result.shipments;
+        this.status = result.status,
         setTimeout(() => {
           this.finalTruckFn();
           this.modifyShipment();
@@ -424,6 +403,19 @@ export class AceDetailsComponent implements OnInit {
       autoSend: false
     };
     console.log('final data', this.finalData);
+  }
+  setStatusFn(val) {
+    const data = {
+      entryID: this.entryID,
+      status: val
+    };
+    // this.apiService.putData('ACEeManifest', data).subscribe({
+    //   next: (res) => {
+    //     this.response = res;
+    //     this.hasSuccess = true;
+    //     this.toastr.success('Status Updated successfully');
+    //   },
+    // });
   }
 
 }

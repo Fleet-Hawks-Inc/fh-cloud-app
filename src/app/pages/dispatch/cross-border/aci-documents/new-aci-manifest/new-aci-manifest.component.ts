@@ -124,6 +124,7 @@ export class NewAciManifestComponent implements OnInit {
   vehicleSeals: any = [];
   cargoExemptionsList: any = [];
   documentTypeList: any = [];
+  status: string;
   CCC: string;
   tripNo: string;
   truckcargoExemptions: [];
@@ -136,11 +137,12 @@ export class NewAciManifestComponent implements OnInit {
   tripNumber: string;
   portOfEntry: string;
   subLocation: string;
-  tripDate: '';
-  tripTime: '';
+  estimatedArrivalDate: '';
+  estimatedArrivalTime: '';
   estimatedArrivalTimeZone: '';
   estimatedArrivalDateTime: string;
-  truck: {
+  truck = {
+    truckId: '',
     number: '',
     type: '',
     vinNumber: '',
@@ -151,31 +153,40 @@ export class NewAciManifestComponent implements OnInit {
       issuedDate: '',
       policyAmount: ''
     },
-    licensePlate: {
+    licensePlates: [{
       number: '',
-      stateProvince: any,
-    },
-    sealNumbers: [],
+      stateProvince: '',
+    }],
+    sealNumbers1: '',
+    sealNumbers2: '',
+    sealNumbers3: '',
+    sealNumbers4: '',
     cargoExemptions: []
-
-  };
+      };
   assetsArray = [
     {
       assetId: '',
       cargoExemptions: [],
-      sealNumbers: []
+      sealNumbers1: '',
+      sealNumbers2: '',
+      sealNumbers3: '',
+      sealNumbers4: '',
     }
   ];
   trailers = [
     {
+      assetId: '',
       number: '',
       type: '',
       cargoExemptions: [],
-      licensePlate: {
+      licensePlates: [{
         number: '',
         stateProvince: ''
-      },
-      sealNumbers: []
+      }],
+      sealNumbers1: '',
+      sealNumbers2: '',
+      sealNumbers3: '',
+      sealNumbers4: '',
     }
   ];
   passengers = [{
@@ -200,7 +211,10 @@ export class NewAciManifestComponent implements OnInit {
       },
       number: '',
       cargoExemptions: [],
-      sealNumbers: []
+      sealNumbers1: '',
+      sealNumbers2: '',
+      sealNumbers3: '',
+      sealNumbers4: '',
     }
   ];
 
@@ -280,29 +294,6 @@ export class NewAciManifestComponent implements OnInit {
   shipmentTypeList: any = [];
   CCCShipment: string;
   cargoControlNumberInput: string;
-  // commodities =
-  // [{
-  //   loadedOn: {
-  //     type: '',
-  //     number: ''
-  //   },
-  //   description: '',
-  //   quantity: '',
-  //   packagingUnit: '',
-  //   weight: '',
-  //   weightUnit: '',
-  //   marksAndNumbers: [],
-  //   c4LineReleaseNumber: '',
-  //   harmonizedCode: '',
-  //   value: '',
-  //   countryOfOrigin: '',
-  //   hazmatDetails: {
-  //     unCode: '',
-  //     emergencyContactName: '',
-  //     contactPhone: '',
-  //     contactEmail: ''
-  //   }
-  // }];
   constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private toastr: ToastrService,
     private apiService: ApiService, private ngbCalendar: NgbCalendar, private location: Location,
     config: NgbTimepickerConfig, private dateAdapter: NgbDateAdapter<string>) {
@@ -312,6 +303,12 @@ export class NewAciManifestComponent implements OnInit {
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params['entryID'];
+    if (this.entryID) {
+      this.title = 'Edit ACI e-Manifest';
+      this.fetchACIEntry();
+    } else {
+      this.title = 'Add ACI e-Manifest';
+    }
     this.fetchTrips();
     this.fetchVehicles();
     this.fetchAssets();
@@ -387,19 +384,11 @@ export class NewAciManifestComponent implements OnInit {
       console.log('vehicles in init', this.vehicles);
     });
   }
-  onTagsChanged(e) {
-    if (e.change === 'add') {
-      this.vehicleSeals.push(e.tag.displayValue);
-    }
-    else {
-      for (let i = this.vehicleSeals.length; i--;) {
-        if (this.vehicleSeals[i] === e.tag.displayValue) {
-          this.vehicleSeals.splice(i, 1);
-        }
-      }
-    }
-    console.log('vehicle seals', this.vehicleSeals);
-    this.truck.sealNumbers = this.vehicleSeals;
+  truckSealArray() {
+    this.truck.sealNumbers1 = this.truck.sealNumbers1;
+    this.truck.sealNumbers2 = this.truck.sealNumbers2;
+    this.truck.sealNumbers3 = this.truck.sealNumbers3;
+    this.truck.sealNumbers4 = this.truck.sealNumbers4;
   }
   async fetchStateCode(ID) {
     const code = await this.apiService.getData('states/' + ID).toPromise();
@@ -408,11 +397,8 @@ export class NewAciManifestComponent implements OnInit {
   fetchVehicleData(ID) {
     this.apiService.getData('vehicles/' + ID).subscribe(async (result: any) => {
       this.vehicleData = result.Items;
-
-
-      // let state =  
-      // console.log(state);
       this.truck = {
+        truckId : ID,
         number: this.vehicleData[0].vehicleIdentification,
         type: this.vehicleData[0].vehicleType,
         vinNumber: this.vehicleData[0].VIN,
@@ -423,11 +409,14 @@ export class NewAciManifestComponent implements OnInit {
           issuedDate: this.vehicleData[0].insurance.dateOfIssue,
           policyAmount: this.vehicleData[0].insurance.premiumAmount
         },
-        licensePlate: {
+        licensePlates: [{
           number: this.vehicleData[0].plateNumber,
           stateProvince: await this.fetchStateCode(result.Items[0].stateID),
-        },
-        sealNumbers: this.vehicleSeals,
+        }],
+        sealNumbers1: this.truck.sealNumbers1,
+        sealNumbers2: this.truck.sealNumbers2,
+        sealNumbers3: this.truck.sealNumbers3,
+        sealNumbers4: this.truck.sealNumbers4,
         cargoExemptions: this.truckcargoExemptions
       };
       console.log(this.truck);
@@ -437,25 +426,35 @@ export class NewAciManifestComponent implements OnInit {
     this.truck.cargoExemptions = this.truckcargoExemptions;
   }
  async getAssetData(e, t) {
-    console.log('e', e);
-    console.log('t', t);
-    let testArray = [];
-    testArray = this.assets.filter(a => a.assetID === e);
-    console.log('test asset', testArray);
-
-    this.trailers[t].number = testArray[0].assetIdentification,
-      this.trailers[t].type = testArray[0].assetDetails.assetType,
-      this.trailers[t].licensePlate = {
-        number: testArray[0].assetDetails.licencePlateNumber,
-        stateProvince: await this.fetchStateCode(testArray[0].assetDetails.licenceStateID),
-      }
-
-  }
+   console.log('e', e);
+   console.log('t', t);
+   let testArray = [];
+   testArray = this.assets.filter(a => a.assetID === e);
+   console.log('test asset', testArray);
+   this.trailers[t].assetId = testArray[0].assetID,
+     this.trailers[t].number = testArray[0].assetIdentification,
+     this.trailers[t].type = testArray[0].assetDetails.assetType,
+     this.trailers[t].licensePlates = [{
+       number: testArray[0].assetDetails.licencePlateNumber,
+       stateProvince: await this.fetchStateCode(testArray[0].assetDetails.licenceStateID)
+     }],
+     this.trailers[t].sealNumbers1 = this.assetsArray[t].sealNumbers1,
+     this.trailers[t].sealNumbers2 = this.assetsArray[t].sealNumbers2,
+     this.trailers[t].sealNumbers3 = this.assetsArray[t].sealNumbers3,
+     this.trailers[t].sealNumbers4 = this.assetsArray[t].sealNumbers4,
+     this.trailers[t].cargoExemptions = this.assetsArray[t].cargoExemptions;
+ }
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
       console.log('assets', this.assets);
     });
+  }
+  trailerSealArray(t) {
+    this.trailers[t].sealNumbers1 = this.assetsArray[t].sealNumbers1;
+    this.trailers[t].sealNumbers2 = this.assetsArray[t].sealNumbers2;
+    this.trailers[t].sealNumbers3 = this.assetsArray[t].sealNumbers3;
+    this.trailers[t].sealNumbers4 = this.assetsArray[t].sealNumbers4;
   }
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
@@ -502,7 +501,10 @@ export class NewAciManifestComponent implements OnInit {
       },
       number: '',
       cargoExemptions: [],
-      sealNumbers: []
+      sealNumbers1: '',
+      sealNumbers2: '',
+      sealNumbers3: '',
+      sealNumbers4: '',
     });
   }
   deleteContainer(i: number) {
@@ -512,17 +514,24 @@ export class NewAciManifestComponent implements OnInit {
     this.assetsArray.push({
       assetId: '',
       cargoExemptions: [],
-      sealNumbers: []
+      sealNumbers1: '',
+      sealNumbers2: '',
+      sealNumbers3: '',
+      sealNumbers4: '',
     });
     this.trailers.push({
+      assetId: '',
       number: '',
       type: '',
       cargoExemptions: [],
-      licensePlate: {
+      licensePlates: [{
         number: '',
         stateProvince: ''
-      },
-      sealNumbers: []
+      }],
+      sealNumbers1: '',
+    sealNumbers2: '',
+    sealNumbers3: '',
+    sealNumbers4: '',
     });
     this.addTrailerBtn = true;
 
@@ -538,32 +547,8 @@ export class NewAciManifestComponent implements OnInit {
     this.assetsArray.splice(i, 1);
     this.addTrailerBtn = true;
   }
-  onTagsChangedAsset(e, t) {
-    if (e.change === 'add') {
-      this.trailers[t].sealNumbers.push(e.tag.displayValue);
-    }
-    else {
-      for (let i = this.trailers[t].sealNumbers.length; i--;) {
-        if (this.trailers[t].sealNumbers[i] === e.tag.displayValue) {
-          this.trailers[t].sealNumbers.splice(i, 1);
-        }
-      }
-    }
-    console.log('asset seals', this.trailers[t].sealNumbers);
-  }
-  onTagsChangedContainer(e, c) {
-    if (e.change === 'add') {
-      this.containers[c].sealNumbers.push(e.tag.displayValue);
-    }
-    else {
-      for (let i = this.containers[c].sealNumbers.length; i--;) {
-        if (this.containers[c].sealNumbers[i] === e.tag.displayValue) {
-          this.containers[c].sealNumbers.splice(i, 1);
-        }
-      }
-    }
-    console.log('asset seals', this.containers[c].sealNumbers);
-  }
+
+
   trailerExemptionFn(t) {
     this.trailers[t].cargoExemptions = this.assetsArray[t].cargoExemptions;
   }
@@ -631,10 +616,10 @@ export class NewAciManifestComponent implements OnInit {
   }
   addShipment() {
     this.shipments.push({
-      data: '',
-      sendId: '',
-      companyKey: '',
-      operation: '',
+      data: 'ACI_SHIPMENT',
+      sendId: '001',
+      companyKey: '56eh67867jti678i9',
+      operation: 'CREATE',
       shipmentType: '',
       loadedOn: {
         type: '',
@@ -642,7 +627,7 @@ export class NewAciManifestComponent implements OnInit {
       },
       CCC: '',
       cargoControlNumber: '',
-      referenceOnlyShipment: '',
+      referenceOnlyShipment: 'false',
       portOfEntry: '',
       releaseOffice: '',
       subLocation: '',
@@ -737,15 +722,16 @@ export class NewAciManifestComponent implements OnInit {
       tripNumber: this.tripNumber,
       portOfEntry: this.portOfEntry,
       subLocation: this.subLocation,
-      tripDate: this.tripDate,
-      tripTime: this.tripTime,
+      estimatedArrivalDate: this.estimatedArrivalDate,
+      estimatedArrivalTime: this.estimatedArrivalTime,
       estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
       truck: this.truck,
       trailers: this.trailers,
       drivers: this.driverArray,
       passengers: this.passengers,
       containers: this.containers,
-      shipments: this.shipments
+      shipments: this.shipments,
+      status: 'Draft'
     };
     console.log('Data', data);
     this.apiService.postData('ACIeManifest', data).subscribe({
@@ -778,5 +764,109 @@ export class NewAciManifestComponent implements OnInit {
   }
   throwErrors() {
     this.form.showErrors(this.errors);
+  }
+  getDriverIdArray(drivers: any) {
+    let test1 = [];
+    for (let i = 0; i < drivers.length; i++) {
+      test1.push(drivers[i].driverId);
+    }
+    this.driverIdArray = test1;
+  }
+  getAssetArray(assets: any) {
+    console.log('assets fetched', assets.length);
+    this.assetsArray = [];
+    for(let i=0; i< assets.length; i++){
+      const data =  {
+        assetId: assets[i].assetId,
+        sealNumbers1: assets[i].sealNumbers1,
+        sealNumbers2: assets[i].sealNumbers2,
+        sealNumbers3: assets[i].sealNumbers3,
+        sealNumbers4: assets[i].sealNumbers4,
+        cargoExemptions: assets[i].cargoExemptions
+      };
+      this.assetsArray.push(data);
+    }
+  }
+  fetchACIEntry() {
+    this.apiService
+      .getData('ACIeManifest/' + this.entryID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+        console.log('Fetched Data', result);
+        this.entryID = this.entryID;
+        this.data = result.data,
+          this.sendId = result.sendId,
+          this.companyKey = result.companyKey,
+          this.operation = result.operation,
+          this.CCC = result.CCC,
+          this.tripNumber = result.tripNumber,
+          this.portOfEntry = result.portOfEntry,
+          this.subLocation = result.subLocation,
+          this.estimatedArrivalDate = result.estimatedArrivalDate,
+          this.estimatedArrivalTime = result.estimatedArrivalTime,
+          this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone,
+          this.truck = result.truck,
+          this.driverArray = result.drivers,
+          this.trailers = result.trailers,
+          this.containers = result.containers,
+          this.passengers = result.passengers,
+          this.shipments = result.shipments,
+          this.status = result.status
+          setTimeout(() => {
+              this.getDriverIdArray(result.drivers);
+              this.getAssetArray(result.trailers);
+          }, 2000);
+
+      });
+  }
+  updateACIManifest()  {
+    const data = {
+      entryID: this.entryID,
+      data: 'ACI_TRIP',
+      sendId: '001',
+      companyKey: 'c-9000-2bcd8ae5954e0c48',
+      operation: 'UPDATE',
+      CCC: this.CCC,
+      tripNumber: this.tripNumber,
+      portOfEntry: this.portOfEntry,
+      subLocation: this.subLocation,
+      estimatedArrivalDate: this.estimatedArrivalDate,
+      estimatedArrivalTime: this.estimatedArrivalTime,
+      estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
+      truck: this.truck,
+      trailers: this.trailers,
+      drivers: this.driverArray,
+      passengers: this.passengers,
+      containers: this.containers,
+      shipments: this.shipments
+    };
+    console.log('Data', data);
+    this.apiService.putData('ACIeManifest', data).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/'.*'/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              // this.spinner.hide(); // loader hide
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.toastr.success('Manifest Updated Successfully');
+        this.router.navigateByUrl('/dispatch/cross-border/eManifests');
+
+      },
+    });
   }
 }

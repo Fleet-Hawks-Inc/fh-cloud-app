@@ -3,14 +3,12 @@ import { ApiService } from '../../../../../services';
 import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbTimeStruct, NgbTimeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
-import { from, Subject, throwError } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { CostExplorer } from 'aws-sdk/clients/all';
-import { IfStmt } from '@angular/compiler';
 declare var $: any;
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -174,7 +172,10 @@ export class NewAceManifestComponent implements OnInit {
   assetsArray = [
     {
       assetId: '',
-      sealNumbers: []
+      sealNumbers1: '',
+      sealNumbers2: '',
+      sealNumbers3: '',
+      sealNumbers4: '',
     }
   ];
   trailers = [
@@ -385,7 +386,10 @@ export class NewAceManifestComponent implements OnInit {
   addTrailer() {
     this.assetsArray.push({
       assetId: '',
-      sealNumbers: []
+      sealNumbers1: '',
+      sealNumbers2: '',
+      sealNumbers3: '',
+      sealNumbers4: '',
     });
     this.trailers.push({
       assetId: '',
@@ -575,36 +579,6 @@ export class NewAceManifestComponent implements OnInit {
       this.loadedType = 'TRAILER';
     }
   }
-  // onTagsChanged(e) {
-  //   if (e.change === 'add') {
-  //     this.vehicleSeals.push(e.tag.displayValue);
-  //   }
-  //   else {
-  //     for (let i = this.vehicleSeals.length; i--;) {
-  //       if (this.vehicleSeals[i] === e.tag.displayValue) {
-  //         this.vehicleSeals.splice(i, 1);
-  //       }
-  //     }
-  //   }
-  //   console.log('vehicle seals', this.vehicleSeals);
-  //   this.truck.sealNumbers = this.vehicleSeals;
-  //   console.log('truck seals', this.tags);
-  // }
-  // onTagsChangedAsset(e, t) {
-  //   if (e.change === 'add') {
-  //     this.trailerSeals.push(e.tag.displayValue);
-  //   }
-  //   else {
-  //     for (let i = this.trailerSeals.length; i--;) {
-  //       if (this.trailerSeals[i] === e.tag.displayValue) {
-  //         this.trailerSeals.splice(i, 1);
-  //       }
-  //     }
-  //   }
-  //   this.trailers[t].sealNumbers = this.trailerSeals;
-  //   console.log('asset seals', this.trailers[t].sealNumbers);
-  // }
-
   async getAssetData(e, t) {
     console.log('e', e);
     console.log('t', t);
@@ -619,8 +593,17 @@ export class NewAceManifestComponent implements OnInit {
         number: testArray[0].assetDetails.licencePlateNumber,
         stateProvince: await this.fetchStateCode(testArray[0].assetDetails.licenceStateID)
       }];
+    this.trailers[t].sealNumbers1 = this.assetsArray[t].sealNumbers1;
+    this.trailers[t].sealNumbers2 = this.assetsArray[t].sealNumbers2;
+    this.trailers[t].sealNumbers3 = this.assetsArray[t].sealNumbers3;
+    this.trailers[t].sealNumbers4 = this.assetsArray[t].sealNumbers4;
   }
-
+  trailerSealArray(t) {
+    this.trailers[t].sealNumbers1 = this.assetsArray[t].sealNumbers1;
+    this.trailers[t].sealNumbers2 = this.assetsArray[t].sealNumbers2;
+    this.trailers[t].sealNumbers3 = this.assetsArray[t].sealNumbers3;
+    this.trailers[t].sealNumbers4 = this.assetsArray[t].sealNumbers4;
+  }
   async getDriverData(e) {
     let testArray = [];
     this.driverArray = [];
@@ -634,7 +617,7 @@ export class NewAceManifestComponent implements OnInit {
           number: test1[j].document,
           type: test1[j].documentType,
           stateProvince: await this.fetchStateCode(test1[j].issuingState),
-          country: await this.fetchCountryCode(test1[j].issuingCountry)
+          country: test1[j].issuingCountry
         };
         docsArray.push(docData);
       }
@@ -645,7 +628,7 @@ export class NewAceManifestComponent implements OnInit {
         lastName: testArray[0].lastName,
         gender: testArray[0].gender,
         dateOfBirth: testArray[0].licenceDetails.DOB,
-        citizenshipCountry: await this.fetchCountryCode(testArray[0].citizenship),
+        citizenshipCountry: testArray[0].citizenship,
         fastCardNumber: testArray[0].crossBorderDetails.fast_ID,
         travelDocuments: docsArray
       };
@@ -712,36 +695,20 @@ export class NewAceManifestComponent implements OnInit {
     }
     this.driverIdArray = test1;
   }
-  // getAssetArray(assets: any) {
-  //   console.log('assets fetched', assets.length);
-
-  //   for (let i = 0; i < assets.length; i++) {
-  //     let sealArray = [];
-  //     const seals = assets[i].sealNumbers.length;
-  //     for (let j = 0; j < assets[i].sealNumbers.length; j++) {
-  //      let seals = {
-  //         displayValue: assets[i].sealNumbers[j]
-  //       };
-  //     sealArray.push(seals);
-  //     }
-  //     const test = {
-  //       assetId: assets[i].assetId,
-  //       sealNumbers: sealArray
-  //     };
-  //     this.trailerSeals = assets[i].sealNumbers;
-  //     console.log('test array in fn', test);
-  //     if(this.entryID) {
-  //       this.assetsArray.push(test);
-  //       console.log('block1');
-  //     }
-  //     else{
-  //       this.assetsArray.push(test);
-  //     }
-  //   }
-  //   console.log('assets array fetched', this.assetsArray);
-  // }
-
-
+  getAssetArray(assets: any) {
+    console.log('assets fetched', assets.length);
+    this.assetsArray = [];
+    for(let i=0; i< assets.length; i++){
+      const data =  {
+        assetId: assets[i].assetId,
+        sealNumbers1: assets[i].sealNumbers1,
+        sealNumbers2: assets[i].sealNumbers2,
+        sealNumbers3: assets[i].sealNumbers3,
+        sealNumbers4: assets[i].sealNumbers4,
+      };
+      this.assetsArray.push(data);
+    }
+  }
   fetchACEEntry() {
     this.apiService
       .getData('ACEeManifest/' + this.entryID)
@@ -765,7 +732,7 @@ export class NewAceManifestComponent implements OnInit {
           this.shipments = result.shipments,
           setTimeout(() => {
               this.getDriverIdArray(result.drivers);
-          //  this.getAssetArray(result.trailers);
+            this.getAssetArray(result.trailers);
             //  this.getShipmentData(result.shipments);
           }, 2000);
 

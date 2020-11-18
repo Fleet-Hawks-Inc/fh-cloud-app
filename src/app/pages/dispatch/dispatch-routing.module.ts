@@ -76,6 +76,7 @@ const routes: Routes = [
 
       {path: 'ACI-eManifest', component: AciEmanifestComponent},
       {path: 'ACI-new-eManifest', component: NewAciManifestComponent},
+      {path: 'ACI-edit-eManifest/:entryID', component: NewAciManifestComponent},
       {path: 'ACI-details/:entryID', component: AciDetailsComponent},
       {path: 'ACI-shipment', component: AciShipmentComponent},
       {path: 'ACI-commodity', component: AciCommodityComponent}

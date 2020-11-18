@@ -11,20 +11,22 @@
         <header class="page-header pr-5">
         <h2>ACE Details</h2>
         <div class="right-wrapper text-right pt-2 pr-2">
+            <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default btn-sm"><i
+                        class="fas fa-list"></i> ACE Manifests</a>
             <a href="javascript:;" class="btn btn-success btn-sm mr-1" style="color:white;" (click)="finalDataFn()"> Send to CBP</a>
             <div class="btn-group btn-group1 flex-wrap mr-1">
                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Set Status<span class="caret"></span></button>
                 <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                    <a class="dropdown-item text-1" href="">Draft</a>
-                    <a class="dropdown-item text-1" href="">Cancelled</a>
-                    <a class="dropdown-item text-1" href="">Transmitted to CBSA</a>
-                    <a class="dropdown-item text-1" href="">CBSA Returned Error</a>
-                    <a class="dropdown-item text-1" href="">On File with CBSA</a>
-                    <a class="dropdown-item text-1" href="">On File with Match Notice</a>
-                    <a class="dropdown-item text-1" href="">On File with Transaction Number(s)</a>
-                    <a class="dropdown-item text-1" href="">Arrival Reported at Border</a>
-                    <a class="dropdown-item text-1" href="">Rejected After Arrival at Border</a>
-                    <a class="dropdown-item text-1" href="">Released</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('Draft')">Draft</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('Cancelled')">Cancelled</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('Transmitted to CBSA')">Transmitted to CBSA</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('CBSA Returned Error')">CBSA Returned Error</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('On File with CBSA')">On File with CBSA</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('On File with Match Notice')">On File with Match Notice</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('On File with Transaction Number(s)')">On File with Transaction Number(s)</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('Arrival Reported at Border')">Arrival Reported at Border</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('Rejected After Arrival at Border')">Rejected After Arrival at Border</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('Released')">Released</a>
                 </div>
             </div>
             <div class="btn-group btn-group1 flex-wrap">
@@ -68,7 +70,7 @@
                           <tbody>
                               <tr>
                                   <th width="40%" class="back-color-gray">Current Status:</th>
-                                  <td>Draft</td>
+                                  <td>{{status}}</td>
                               </tr>                        
                               <tr>
                                 <th width="40%" class="back-color-gray">Last Edited:</th>
@@ -136,7 +138,7 @@
                             <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Sr.</th>
+                                       
                                         <th>Truck Number</th>
                                         <th>VIN Number</th>
                                         <th>Type</th>
@@ -148,13 +150,13 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>1.</td>
+                                       
                                         <td>{{truck.number}}</td>
                                         <td>{{truck.vinNumber}}</td>
                                         <td>{{truck.type}}</td>
                                         <td><span *ngFor = "let license of truck.licensePlates;">{{license.number}}</span></td>
                                         <td>{{truck.dotNumber}}</td>
-                                        <td><span *ngFor = "let seal of truck.sealNumbers;">{{seal}}</span></td>
+                                        <td>{{truck.sealNumbers1}}  {{truck.sealNumbers2}}  {{truck.sealNumbers3}}  {{truck.sealNumbers4}}</td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
@@ -196,7 +198,7 @@
                                         <td>{{trailer.type}}</td>
                                         <td><span *ngFor = "let license of trailer.licensePlates;">{{license.number}}</span></td>
                                         <td><span *ngFor = "let license of trailer.licensePlates;">{{license.stateProvince}}</span></td>
-                                        <td><span *ngFor = "let seal of trailer.sealNumbers;">{{seal}}</span></td>
+                                        <td>{{trailer.sealNumbers1}}  {{trailer.sealNumbers2}}  {{trailer.sealNumbers3}}  {{trailer.sealNumbers4}}</td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
