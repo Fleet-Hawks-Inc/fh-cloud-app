@@ -151,7 +151,6 @@ export class AddFuelEntryComponent implements OnInit {
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
-      console.log('asets', this.assets);
       for (let i = 0; i < result.Items.length; i++) {
         if (result.Items[i].assetDetails.assetType === 'Reefer') {
           this.reeferArray.push(this.assets[i]);
@@ -171,30 +170,16 @@ export class AddFuelEntryComponent implements OnInit {
   }
   calculateGalLit(totalUnits, amountPaid) {
     if (this.fuelQtyUnit === 'litre') {
-      console.log('hello litre');
-      console.log('amount paid', amountPaid);
-      console.log('total units', totalUnits);
       this.fuel.totalGallons = +((totalUnits / 3.785).toFixed(2));
       this.fuel.costPerGallon = +((amountPaid / this.fuel.totalGallons).toFixed(2));
       this.fuel.totalLitres = totalUnits;
       this.fuel.costPerLitre = +((amountPaid / totalUnits).toFixed(2));
-      console.log('total gallons', this.fuel.totalGallons);
-      console.log('total littres', this.fuel.totalLitres);
-      console.log('cost per gallon', this.fuel.costPerGallon);
-      console.log('cost per litre', this.fuel.costPerLitre);
     }
     if (this.fuelQtyUnit === 'gallon') {
-      console.log('hello gallon');
-      console.log('amount paid', amountPaid);
-      console.log('total units', totalUnits);
       this.fuel.totalLitres = +((totalUnits * 3.785).toFixed(2));
       this.fuel.costPerLitre = +((amountPaid / this.fuel.totalLitres).toFixed(2));
       this.fuel.totalGallons = totalUnits;
       this.fuel.costPerGallon = +((amountPaid / totalUnits).toFixed(2));
-      console.log('total littres', this.fuel.totalLitres);
-      console.log('cost per litre', this.fuel.costPerLitre);
-      console.log('total gallons', this.fuel.totalGallons);
-      console.log('cost per gallon', this.fuel.costPerGallon);
     }
   }
   fillCountry() {
@@ -260,7 +245,7 @@ export class AddFuelEntryComponent implements OnInit {
         costPerGallon: this.fuel.costPerGallon
       },
     };
-    console.log('filed data', data);
+    console.log('filled data', data);
     this.apiService.postData('fuelEntries', data).subscribe({
       complete: () => { },
       error: (err) => {
@@ -270,7 +255,7 @@ export class AddFuelEntryComponent implements OnInit {
               const path = val.path;
               // We Can Use This Method
               const key = val.message.match(/"([^']+)"/)[1];
-              console.log(key);
+           //   console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[key] = val.message;
             })
@@ -301,7 +286,7 @@ export class AddFuelEntryComponent implements OnInit {
   */
   selectDocuments(event, obj) {
     this.selectedFiles = event.target.files;
-    console.log('selected files', this.selectedFiles[0].name);
+  //  console.log('selected files', this.selectedFiles[0].name);
     if (obj === 'uploadedPhotos') {
       for (let i = 0; i <= this.selectedFiles.item.length; i++) {
         const randomFileGenerate = this.selectedFiles[i].name.split('.');
@@ -429,7 +414,7 @@ export class AddFuelEntryComponent implements OnInit {
         costPerGallon: this.fuel.costPerGallon
       },
     };
-    console.log(data);
+  //  console.log(data);
     this.apiService.putData('fuelEntries', data).subscribe({
       complete: () => { },
       error: (err) => {

@@ -10,7 +10,7 @@
 
         <section role="main" class="content-body pt-0 pl-0">
             <header class="page-header">
-               <div class="row pr-5" style="padding-top:10px;">
+               <div class="row pr-5 pl-2" style="padding-top:10px;">
                   <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
                     {{pageTitle}}
                   </div>
@@ -31,11 +31,11 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle</label>
-                                    <select [(ngModel)]="reminderData.reminderIdentification" name="reminderIdentification" data-plugin-selectTwo class="form-control populate">
-                                       <optgroup label="">
-                                          <option *ngFor="let item of vehicles" value="{{item.vehicleID}}">{{item.vehicleIdentification}}</option>
-                                       </optgroup>
-                                    </select>
+                                    <ng-select [(ngModel)]="reminderData.reminderIdentification" name="reminderIdentification"  class="form-control populate">
+                                      
+                                          <ng-option *ngFor="let item of vehicles" value="{{item.vehicleID}}">{{item.vehicleIdentification}}</ng-option>
+                                      
+                                    </ng-select>
                                  </div>
                                  <div class="col-lg-2  mar-top-37 pl-0">
                                     <!-- <a href="#addVehicleModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
@@ -61,7 +61,7 @@
                                     <label class="control-label font-weight-bold">Send Email Notification</label>
                                  </div>
                                  </div>
-                                 <div class="col-lg-1 pl-0 mar-top-37">
+                                 <div class="col-lg-1 pl-0" style="margin-top: 34px !important">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">&nbsp;</label>
                                       <a href="#addsubsuser" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
                                     </div>
@@ -72,14 +72,14 @@
                            <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type</label>
-                                    <select [(ngModel)]="reminderData.reminderTasks.task" name="reminderTasks.task" data-plugin-selectTwo class="form-control populate">
-                                       <optgroup label="">
-                                          <option value="Emission Test">Emission Test</option>
-                                          <option value="Inspection">Inspection</option>
-                                          <option value="Insurance">Insurance</option>
-                                          <option value="Registration (Plate Expire)">Registration (Plate Expire)</option>
-                                       </optgroup>
-                                    </select>
+                                    <ng-select [(ngModel)]="reminderData.reminderTasks.task" name="reminderTasks.task" >
+                                       
+                                          <ng-option value="Emission Test">Emission Test</ng-option>
+                                          <ng-option value="Inspection">Inspection</ng-option>
+                                          <ng-option value="Insurance">Insurance</ng-option>
+                                          <ng-option value="Registration (Plate Expire)">Registration (Plate Expire)</ng-option>
+                                       
+                                    </ng-select>
                                  </div>
                               </div>
                               <div class="row pt-2">
@@ -94,14 +94,14 @@
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)</label>
                                     <div class="row">
-                                        <div class="col-lg-4"><input [(ngModel)]="time" name="time" type="number" class="form-control"></div>
-                                        <div class="col-lg-8"> <select [(ngModel)]="timeType" name="timeType" data-plugin-selectTwo class="form-control populate">
-                                       <optgroup label="">
-                                          <option value="Day(s)">Day(s)</option>
-                                          <option value="Week(s)">Week(s)</option>
-                                          <option value="Month(s)">Month(s)</option>
-                                       </optgroup>
-                                    </select>
+                                        <div class="col-lg-4 pr-0"><input [(ngModel)]="time" name="time" type="number" class="form-control"></div>
+                                        <div class="col-lg-8 pl-0"> <ng-select [(ngModel)]="timeType" name="timeType" >
+                                     
+                                          <ng-option value="Day(s)">Day(s)</ng-option>
+                                          <ng-option value="Week(s)">Week(s)</ng-option>
+                                          <ng-option value="Month(s)">Month(s)</ng-option>
+                                      
+                                    </ng-select>
                                  </div> 
                                     </div>
                                    
@@ -110,7 +110,7 @@
                            </div>
                         </div>
                         <div class="form-group row pt-2">
-                           <div class="col-lg-11 text-right">
+                           <div class="col-lg-11 text-right pr-0">
                               <a href="javascript:;" (click)="cancel()" class="btn btn-default mr-1" >Cancel</a>
                               <a href="javascript:;" *ngIf="!reminderID" (click)="addRenewal()" class="btn btn-success" >Save</a> 
                               <a href="javascript:;" *ngIf="reminderID" (click)="updateRenewal()" class="btn btn-success">Update</a>
