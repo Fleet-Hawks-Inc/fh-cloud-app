@@ -49,23 +49,21 @@ export class AciDetailsComponent implements OnInit {
       number: string,
       type: string,
       vinNumber: string,
-      licensePlates: [
-        {
+      licensePlates: {
           number: string,
           stateProvince: string
         }
-      ]
+      
     },
     trailers: [
       {
         number: string,
         type: string,
-        licensePlates: [
-          {
+        licensePlates: {
             number: string,
             stateProvince: string
           }
-        ]
+        
       }
     ],
     drivers: [
@@ -185,20 +183,17 @@ export class AciDetailsComponent implements OnInit {
     }
     if (this.truck.sealNumbers4) {
       sealsArray.push(this.truck.sealNumbers4);
-    }
-    for (let i = 0; i < this.truck.licensePlates.length; i++) {
-      let test1 = {
-        number: this.truck.licensePlates[i].number,
-        stateProvince: this.truck.licensePlates[i].stateProvince
-      };
-      licenseArray.push(test1);
-    }
+    }  
     let test = {
       number: this.truck.number,
       type: this.truck.type,
       vinNumber: this.truck.vinNumber,
-      licensePlates: licenseArray,
-      sealNumbers: sealsArray
+      licensePlate: {
+        number: this.truck.licensePlate.number,
+        stateProvince: this.truck.licensePlate.stateProvince
+      },
+      sealNumbers: sealsArray,
+      cargoExemptions: this.truck.cargoExemptions
     };
     this.finalTruckData = test;
   }
@@ -244,17 +239,13 @@ export class AciDetailsComponent implements OnInit {
       if (this.trailers[i].sealNumbers4) {
         sealsArray.push(this.trailers[i].sealNumbers4);
       }
-      for (let j = 0; j < this.trailers[i].licensePlates.length; j++) {
-        let test = {
-          number: this.trailers[i].licensePlates[j].number,
-          stateProvince: this.trailers[i].licensePlates[j].stateProvince
-        };
-        docArray.push(test);
-      }
       test = {
         number: this.trailers[i].number,
         type: this.trailers[i].type,
-        licensePlates: docArray,
+        licensePlate: {
+          number: this.truck.licensePlate.number,
+          stateProvince: this.truck.licensePlate.stateProvince
+        },
         sealNumbers: sealsArray
       };
       this.finalTrailers.push(test);

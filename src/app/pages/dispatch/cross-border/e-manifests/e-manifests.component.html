@@ -84,14 +84,14 @@
                                  <tbody>
                                     <tr *ngFor = "let aceManifest of ACEList;">                                       
                                        <td  routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}{{aceManifest.tripNumber}}</td>
-                                       <td>{{aceManifest.SCAC}}</td>                                          
-                                       <td><span *ngFor = "let driver of aceManifest.drivers">{{driver.firstName}},</span></td>
-                                       <td>{{aceManifest.truck.number}}</td>
-                                       <td><span *ngFor = "let trailer of aceManifest.trailers">{{trailer.number}},</span></td>
-                                       <td><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.shipmentControlNumber}}</span></td>
-                                       <td><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.type}}</span></td>
-                                       <td>Diamond, Detroit</td>
-                                       <td><span class="badge badge-dark p-1">DRAFT</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}</td>                                          
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let driver of aceManifest.drivers">{{driver.firstName}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.truck.number}}</td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let trailer of aceManifest.trailers">{{trailer.number}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.shipmentControlNumber}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.type}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">Diamond, Detroit</td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span class="badge badge-dark p-1">{{aceManifest.status}}</span></td>
                                        <td><div class="btn-group flex-wrap">
                                           <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                           <div class="dropdown-menu" role="menu">
@@ -124,13 +124,13 @@
                                     <tr *ngFor = "let aciManifest of ACIList;">                                       
                                        <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>
                                         <td>{{aciManifest.CCC}}</td>                                          
-                                      <td><span *ngFor = "let driver of aciManifest.drivers">{{driver.firstName}}</span></td>
-                                       <td>{{aciManifest.truck.number}}</td>
-                                       <td><span *ngFor = "let trailer of aciManifest.trailers">{{trailer.number}}</span></td>
-                                       <td><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}}</span></td>
-                                       <td><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.shipmentType}}</span></td>
-                                       <td>Diamond, Detroit</td>
-                                       <td><span class="badge badge-dark p-1">DRAFT</span></td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let driver of aciManifest.drivers">{{driver.firstName}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.truck.number}}</td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let trailer of aciManifest.trailers">{{trailer.number}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.shipmentType}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">Diamond, Detroit</td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span class="badge badge-dark p-1">{{aciManifest.status}}</span></td>
                                        <td><div class="btn-group flex-wrap">
                                           <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                           <div class="dropdown-menu" role="menu">

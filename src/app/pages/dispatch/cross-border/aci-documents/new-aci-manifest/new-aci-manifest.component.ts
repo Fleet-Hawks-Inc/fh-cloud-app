@@ -153,10 +153,10 @@ export class NewAciManifestComponent implements OnInit {
       issuedDate: '',
       policyAmount: ''
     },
-    licensePlates: [{
+    licensePlate: {
       number: '',
       stateProvince: '',
-    }],
+    },
     sealNumbers1: '',
     sealNumbers2: '',
     sealNumbers3: '',
@@ -179,10 +179,10 @@ export class NewAciManifestComponent implements OnInit {
       number: '',
       type: '',
       cargoExemptions: [],
-      licensePlates: [{
+      licensePlate: {
         number: '',
         stateProvince: ''
-      }],
+      },
       sealNumbers1: '',
       sealNumbers2: '',
       sealNumbers3: '',
@@ -409,10 +409,10 @@ export class NewAciManifestComponent implements OnInit {
           issuedDate: this.vehicleData[0].insurance.dateOfIssue,
           policyAmount: this.vehicleData[0].insurance.premiumAmount
         },
-        licensePlates: [{
+        licensePlate: {
           number: this.vehicleData[0].plateNumber,
           stateProvince: await this.fetchStateCode(result.Items[0].stateID),
-        }],
+        },
         sealNumbers1: this.truck.sealNumbers1,
         sealNumbers2: this.truck.sealNumbers2,
         sealNumbers3: this.truck.sealNumbers3,
@@ -434,10 +434,10 @@ export class NewAciManifestComponent implements OnInit {
    this.trailers[t].assetId = testArray[0].assetID,
      this.trailers[t].number = testArray[0].assetIdentification,
      this.trailers[t].type = testArray[0].assetDetails.assetType,
-     this.trailers[t].licensePlates = [{
+     this.trailers[t].licensePlate = {
        number: testArray[0].assetDetails.licencePlateNumber,
        stateProvince: await this.fetchStateCode(testArray[0].assetDetails.licenceStateID)
-     }],
+     },
      this.trailers[t].sealNumbers1 = this.assetsArray[t].sealNumbers1,
      this.trailers[t].sealNumbers2 = this.assetsArray[t].sealNumbers2,
      this.trailers[t].sealNumbers3 = this.assetsArray[t].sealNumbers3,
@@ -524,10 +524,10 @@ export class NewAciManifestComponent implements OnInit {
       number: '',
       type: '',
       cargoExemptions: [],
-      licensePlates: [{
+      licensePlate: {
         number: '',
         stateProvince: ''
-      }],
+      },
       sealNumbers1: '',
     sealNumbers2: '',
     sealNumbers3: '',
@@ -708,9 +708,6 @@ export class NewAciManifestComponent implements OnInit {
       this.containerLoaded = this.containers[c].loadedOn.type;
     }
   }
-  cargoControlNumberFn(s) {
-    this.shipments[s].cargoControlNumber = this.CCCShipment + this.cargoControlNumberInput;
-  }
 
   addACIManifest() {
     const data = {
@@ -806,12 +803,13 @@ export class NewAciManifestComponent implements OnInit {
           this.estimatedArrivalTime = result.estimatedArrivalTime,
           this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone,
           this.truck = result.truck,
+          this.truckcargoExemptions = result.truck.cargoExemptions,
           this.driverArray = result.drivers,
           this.trailers = result.trailers,
           this.containers = result.containers,
           this.passengers = result.passengers,
           this.shipments = result.shipments,
-          this.status = result.status
+          this.status = result.status,
           setTimeout(() => {
               this.getDriverIdArray(result.drivers);
               this.getAssetArray(result.trailers);

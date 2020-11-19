@@ -11,7 +11,7 @@
         <header class="page-header pr-5">
         <h2>ACE Details</h2>
         <div class="right-wrapper text-right pt-2 pr-2">
-            <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default btn-sm"><i
+            <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-success mr-1 btn-sm"><i
                         class="fas fa-list"></i> ACE Manifests</a>
             <a href="javascript:;" class="btn btn-success btn-sm mr-1" style="color:white;" (click)="finalDataFn()"> Send to CBP</a>
             <div class="btn-group btn-group1 flex-wrap mr-1">
@@ -159,7 +159,7 @@
                                         <td>{{truck.sealNumbers1}}  {{truck.sealNumbers2}}  {{truck.sealNumbers3}}  {{truck.sealNumbers4}}</td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
+                                            <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -201,7 +201,7 @@
                                         <td>{{trailer.sealNumbers1}}  {{trailer.sealNumbers2}}  {{trailer.sealNumbers3}}  {{trailer.sealNumbers4}}</td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
+                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -276,7 +276,7 @@
                             <div class=" pull-right">
                                 <button class="btn btn-success btn-sm"> Set Shipment Status</button>
                                 <!-- <button class="btn btn-success btn-sm"> Send to CBP</button> -->
-                                <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Create New Shipment</button>
+                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Create New Shipment</a>
                             </div>
                         </div>
                         <div class="card-body border">
@@ -310,7 +310,7 @@
                                         <td>{{shipment.totalQuantity}}</td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
+                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
                                             <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Edit</a> -->
                                         </td>
                                     </tr>
@@ -321,7 +321,7 @@
                 </div>
 
             </div>
-            <div class="row mt-3">
+            <!-- <div class="row mt-3">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
@@ -351,7 +351,6 @@
                                         <td class="actions">
                                             <a href=""><i class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Remove</a>
-                                            <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Edit</a> -->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -360,7 +359,7 @@
                     </div>
                 </div>
 
-            </div>
+            </div> -->
         </div>
     </section>
 </div>
