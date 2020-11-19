@@ -218,139 +218,31 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+                        <tr *ngFor="let item of items">
                           <td><input type="checkbox" /></td>
                           <td onclick="window.location='inventory-details.php'">
                             01
                           </td>
                           <td onclick="window.location='inventory-details.php'">
-                            10-30wt Oil
+                            {{item.name}}
                           </td>
                           <td onclick="window.location='inventory-details.php'">
-                            Oil
+                            {{item.categoryID}}
                           </td>
                           <td onclick="window.location='inventory-details.php'">
-                            Warren CAT
+                            {{item.preferredVendorID}}
                           </td>
                           <td onclick="window.location='inventory-details.php'">
-                            18
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            234
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            $ 2.34
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            Warehouse 1
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td onclick="window.location='inventory-details.php'">
-                            01
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            10-30wt Oil
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            Oil
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            Warren CAT
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            9
+                            {{item.quantity}}
                           </td>
                           <td onclick="window.location='inventory-details.php'">
                             234
                           </td>
                           <td onclick="window.location='inventory-details.php'">
-                            $ 2.34
+                            $ {{item.costUnit}}
                           </td>
                           <td onclick="window.location='inventory-details.php'">
-                            Warehouse 2
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td onclick="window.location='inventory-details.php'">
-                            01
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            10-30wt Oil
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            Oil
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            Warren CAT
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            4
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            234
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            $ 2.34
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            Warehouse 3
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td onclick="window.location='inventory-details.php'">
-                            01
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            10-30wt Oil
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            Oil
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            Warren CAT
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            2
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            234
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            $ 2.34
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            Warehouse 4
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td onclick="window.location='inventory-details.php'">
-                            01
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            10-30wt Oil
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            Oil
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            Warren CAT
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            15
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            234
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            $ 2.34
-                          </td>
-                          <td onclick="window.location='inventory-details.php'">
-                            Warehouse 5
+                            {{item.warehouseID}}
                           </td>
                         </tr>
                       </tbody>
