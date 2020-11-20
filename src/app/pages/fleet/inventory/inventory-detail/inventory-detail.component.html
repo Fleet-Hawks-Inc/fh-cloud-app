@@ -20,7 +20,7 @@
               ><i class="fas fa-list"></i> Inventory List</a
             >
 
-            <a href="add-inventory1.php" class="btn btn-success btn-sm"
+            <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm"
               ><i class="fas fa-plus"></i> Add Inventory</a
             >
           </div>
@@ -43,25 +43,25 @@
                             >
                               Part Number
                             </td>
-                            <td width="60%">2100</td>
+                            <td width="60%">{{partNumber}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Part Name
                             </td>
-                            <td>10-3-wt Oil</td>
+                            <td>{{name}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Category
                             </td>
-                            <td>Oil</td>
+                            <td>{{categoryID}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Vendor
                             </td>
-                            <td><a href="#">Warren CAT</a></td>
+                            <td><a href="#">{{preferredVendorID}}</a></td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -73,7 +73,7 @@
                             <td class="back-color-gray font-weight-bold">
                               Unit Cost
                             </td>
-                            <td>$ 5.60</td>
+                            <td>$ {{costUnit}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -91,7 +91,7 @@
                             <td class="back-color-gray font-weight-bold">
                               Description
                             </td>
-                            <td>This is description of part.</td>
+                            <td>{{description}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -151,7 +151,7 @@
                             >
                               Days
                             </td>
-                            <td width="60%">20</td>
+                            <td width="60%">{{days}}</td>
                           </tr>
                           <tr>
                             <td
@@ -160,13 +160,13 @@
                             >
                               Time
                             </td>
-                            <td width="60%">01:08 PM</td>
+                            <td width="60%">{{time}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Notes
                             </td>
-                            <td>These are notes about warranty.</td>
+                            <td>{{notes}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -192,7 +192,7 @@
                             >
                               Quantity
                             </td>
-                            <td width="60%">20</td>
+                            <td width="60%">{{quantity}}</td>
                           </tr>
                           <tr>
                             <td
@@ -201,13 +201,13 @@
                             >
                               Reorder Point
                             </td>
-                            <td width="60%">5</td>
+                            <td width="60%">{{reorderPoint}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Reorder Quantity
                             </td>
-                            <td>0</td>
+                            <td>{{reorderQuality}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -219,13 +219,13 @@
                             <td class="back-color-gray font-weight-bold">
                               Load Time
                             </td>
-                            <td>10:15 AM</td>
+                            <td>{{leadTime}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Preferred Vendor
                             </td>
-                            <td>Sukhjit Singh Grewal</td>
+                            <td>{{preferredVendorID}}</td>
                           </tr>
                         </tbody>
                       </table>
