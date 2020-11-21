@@ -61,6 +61,7 @@ import {
   InventoryListComponent
 
 } from './index';
+import { InventoryDetailComponent } from './inventory/inventory-detail/inventory-detail.component';
 
 const COMPONENTS = [
   AddUserComponent,
@@ -171,6 +172,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   exports: [...COMPONENTS],
   declarations: [
     ...COMPONENTS,
+    InventoryDetailComponent,
   ],
   providers: [NgSelectConfig, ɵs,
     {provide: NgbDateAdapter, useClass: CustomAdapter},
