@@ -15,7 +15,7 @@
 		</header>
 		<div class="row text-dark">
 		   <div class="col pr-0 pb-3">
-			  <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="form_">
+			  <form id="driverForm" class="form-horizontal form-bordered bg-white" method="get" name="form" >
 				 <div class="p-2">
 					<ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
 					   <li class="nav-item">
@@ -76,7 +76,7 @@
 											</div>
 										 </div>
 									  </div>
-									  
+
 									  <div class="col-lg-10" id="employeeIDDiv" *ngIf="driverData.driverType == 'employee'">
 										<label class="control-label font-weight-bold text-lg-right pt-3"
 										   >Employee ID</label>
@@ -87,7 +87,7 @@
 											>Company ID</label>
 										 <input [(ngModel)]="driverData.companyId" name="companyId" type="text" class="form-control" >
 									  </div>
-									  
+
 									  <div class="col-lg-10">
 										 <label class="control-label font-weight-bold text-lg-right pt-2"
 											>Driver Status</label>
@@ -113,7 +113,7 @@
 											</div>
 										 </div>
 									  </div>
-									  
+
 									  <div class="col-lg-10">
 										 <label class="control-label font-weight-bold text-lg-right pt-2"
 											>Citizenship</label>
@@ -135,21 +135,21 @@
 										 <label
 											class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
 											>Group</label>
-										 
-											
+
+
 											   <select
 												  data-plugin-selectTwo
 												  class="form-control populate"
-												  [(ngModel)]="driverData.groupID" 
+												  [(ngModel)]="driverData.groupID"
 												  name="groupID"
 												  >
 												  <optgroup label="">
 													<option *ngFor="let group of groups" value="{{group.groupID}}">{{group.groupName}}</option>
 												  </optgroup>
 											   </select>
-											
-											
-										 
+
+
+
 									  </div>
 									  <div class="col-lg-1 mar-top-37  pl-0">
 										<a href="#addgroup" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
@@ -164,7 +164,7 @@
 										</div>
 										<div class="mt-1">
 											<div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
-											   <input (change)="uploadDriverImg($event)" [(ngModel)]="driverData.driverImage" 
+											   <input (change)="uploadDriverImg($event)" [(ngModel)]="driverData.driverImage"
 											   name="driverImage" type="file" class="hidden_input1" />
 											</div>
 										</div>
@@ -234,7 +234,7 @@
 									<label class="control-label font-weight-bold text-lg-right pt-2"
 									   >Start typing your location, we'll pull
 									address automatically from Map</label>
-									<input [disabled]="manualAddress" (keyup)="searchTerm.next($event);" type="text" class="form-control" 
+									<input [disabled]="manualAddress" (keyup)="searchTerm.next($event);" type="text" class="form-control"
 									   placeholder="Type Address">
 									<div class="checkbox-custom pt-2">
 									   <input [(ngModel)]="manualAddress" type="checkbox" name="man_address">
@@ -254,15 +254,15 @@
 								 </div>
 							</div>
 							<div class="row" *ngIf="manualAddress">
-								
+
 								<div class="col-lg-5 offset-lg-1 pt-3">
 									<div class="row">
 										<div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2"
 											   >Select Country</label>
-											<select 
+											<select
 													[(ngModel)]="driverData.address.country"
-												 name="country" data-plugin-selectTwo 
+												 name="country" data-plugin-selectTwo
 												 (change)="getStates()"
 												 class="form-control populate">
 											   <optgroup label="Select Country">
@@ -380,19 +380,19 @@
 									  <div class="col-5">
 										 <label class="control-label font-weight-bold text-lg-right pt-2">
 										 Issue Date</label>
-										<input 
-											 [(ngModel)]="document.issueDate" 
-											 name="document.issueDate{{i}}" 
+										<input
+											 [(ngModel)]="document.issueDate"
+											 name="document.issueDate{{i}}"
 											 (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
-											 type="text" 
-											 class="form-control" 
+											 type="text"
+											 class="form-control"
 										>
 									  </div>
-									  <div class="col-5">         
+									  <div class="col-5">
 										 <label class="control-label font-weight-bold text-lg-right pt-2" >Expiry Date</label>
-										 <input 
-											 [(ngModel)]="document.expiryDate" 
-											 name="document.expiryDate{{i}}" 
+										 <input
+											 [(ngModel)]="document.expiryDate"
+											 name="document.expiryDate{{i}}"
 											 (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker"
 											 type="text" class="form-control" >
 									  </div>
@@ -402,9 +402,9 @@
 									<div class="row">
 										<div class="col-lg-10">
 											<label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Document</label>
-											<input class="form-control p-0" 
-												[(ngModel)]="document.uploadedDocs" 
-												name="document.uploadedDocs{{i}}" 
+											<input class="form-control p-0"
+												[(ngModel)]="document.uploadedDocs"
+												name="document.uploadedDocs{{i}}"
 												type="file"
 											>
 										</div>
@@ -508,7 +508,7 @@
 										 Issue Date</label>
 										 <input type="text" data-plugin-datepicker="" class="form-control" >
 									  </div>
-									  <div class="col-5">         
+									  <div class="col-5">
 										 <label class="control-label font-weight-bold text-lg-right pt-2" >Expiry Date</label>
 										 <input type="text" data-plugin-datepicker="" class="form-control" >
 									  </div>
@@ -558,11 +558,11 @@
 										 <div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2"
 											   >FAST Expiry</label>
-											<input 
-											[(ngModel)]="driverData.crossBorderDetails.fastExpiry" 
-											name="crossBorderDetails.fastExpiry" 
+											<input
+											[(ngModel)]="driverData.crossBorderDetails.fastExpiry"
+											name="crossBorderDetails.fastExpiry"
 											(click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
-											type="text" 
+											type="text"
 											class="form-control"
 											>
 										 </div>
@@ -720,10 +720,10 @@
 									  <div class="col-lg-5">
 										 <label class="control-label font-weight-bold text-lg-right pt-2"
 											>Issued Country</label>
-										 <select 
-										 	(change)="getStates()" 
+										 <select
+										 	(change)="getStates()"
 											 [(ngModel)]="driverData.licenceDetails.issuedCountry"
-											 name="licenceDetails.issuedCountry" 
+											 name="licenceDetails.issuedCountry"
 											 class="form-control populate">
 											<optgroup label="Select Country">
 												<option class="text-capitalize" *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
@@ -796,7 +796,7 @@
 									  <div class="col-lg-5 pt-3">
 										 <div class="checkbox-custom">
 											<input [(ngModel)]="driverData.hosDetails.pcAllowed" name="hosDetails.pcAllowed" type="checkbox">
-											<label 
+											<label
 											class="control-label font-weight-bold">Allow Personal Conveyance (PC)</label>
 										 </div>
 									  </div>
@@ -899,13 +899,13 @@
 							 </div>
 						  </div>
 					   </div>
-					   
+
 					</div>
 				 </div>
 				 <div class="form-group row mt-3">
 					<div class="col-lg-12 text-right pb-4 pr-5">
 					   <button type="button" class="btn btn-default btnPrevious">Cancel</button>
-					   <a href="javascript:;" class="btn btn-success btnNext">Next</a>   
+					   <a href="javascript:;" class="btn btn-success btnNext">Next</a>
 					   <a href="javascript:;" *ngIf="!driverID" (click)="addDriver()" class="btn btn-success">Submit</a>
 					   <a href="javascript:;" *ngIf="driverID" (click)="addDriver()" class="btn btn-success">Update</a>
 					</div>
@@ -1069,9 +1069,9 @@
                       >Group
                     </label>
                     <select data-plugin-selectTwo class="form-control populate" name="groupID" [(ngModel)]="groupID">
-                      
+
                         <option *ngFor="let q of groups" value="{{q.groupID}}">{{q.groupName}}</option>
-                      
+
                     </select>
 
                   </div>

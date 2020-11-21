@@ -1,0 +1,601 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body pt-0 pl-0 pr-0">
+            <header class="page-header pr-5">
+                <div class="row pr-1 " style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4  text-dark">
+                        <span class="font-weight-bold text-4">Trip #{{ tripData.tripNo }}</span> <span
+                            class="badge p-1 badge-dark mt-2 mb-0">{{ tripData.tripStatus }}</span>
+                    </div>
+                    <div class="col-md-8  col-lg-8 text-right">
+                        <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a>
+                        <div class="btn-group flex-wrap">
+                            <button type="button" class="mb-1 mx-1 btn btn-success btn-sm dropdown-toggle"
+                                data-toggle="dropdown" aria-expanded="false">Send to Manifest<span
+                                    class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                <a href="#sendACEmanifestModal" class="modal-with-form dropdown-item text-1">ACE
+                                    eManifest</a>
+                                <a href="#sendACImanifestModal" class="modal-with-form dropdown-item text-1">ACI
+                                    eManifest</a>
+                            </div>
+                        </div>
+                        <a href="javascript:;" routerLink="/dispatch/trips/trip-list" class="btn btn-default btn-sm"><i
+                                class="fas fa-list"></i>
+                            Trips List</a>
+                        <a href="javascript:;" routerLink="/dispatch/trips/add-trip" class="btn btn-success btn-sm "><i
+                                class="fas fa-plus"></i> Create Trip</a>
+                    </div>
+                </div>
+            </header>
+            <section class="card mb-4">
+                <div class="card-body">
+                    <div class="col-lg-12">
+                        <div class="">
+                            <div class="row pl-3 pr-3">
+                                <div class="col-xl-9 col-12 mb-3 boxshadow1 pl-0 pr-0">
+                                    <div class="widgetload">
+                                        <div class="widgettbload">
+                                            <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
+                                                    class="fas fa-file-alt"></i> Order Information</h2>
+                                        </div>
+                                        <div class="widgetlinfo">
+                                            <table
+                                                class="table table-bordered table-hover table-responsive-md table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Order#</th>
+                                                        <th>Customer</th>
+                                                        <th>Invoice#</th>
+                                                        <th>Pick Up Location</th>
+                                                        <th>Delivery Location</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td rowspan="2">OR-3455</td>
+                                                        <td rowspan="2">ABC Inc</td>
+                                                        <td rowspan="2">INV-67785<br>Amount: CAD 5768</td>
+                                                        <td>100 street, King Town, Canada</td>
+                                                        <td>1 Main street, King Town, Canada</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>100 street, King Town, Canada</td>
+                                                        <td>1 Main street, King Town, Canada</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-xl-3 col-12 mb-3 pl-0 pr-0">
+                                    <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                            <div class="widgetload">
+                                                <div class="widgettbload">
+                                                    <span class="pull-right text-3 mt-2 text-dark">
+
+                                                    </span>
+
+                                                    <h2
+                                                        class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                        <i class="fas fa-box"></i> Attachments</h2>
+                                                </div>
+
+                                                <div class="widgetlinfo">
+                                                    <div class="row">
+                                                        <div class="col-lg-4"> <label
+                                                                class="control-label font-weight-semibold">Upload
+                                                                BOL/POD</label></div>
+                                                        <div class="col-lg-8"><input type="file"
+                                                                class="p-0 form-control mb-2"></div>
+                                                    </div>
+
+
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <a class="image-popup-no-margins"
+                                                                href="http://3.6.238.81/pankaj_fleetdash/img/doc.jpg">
+                                                                <img class="img-fluid"
+                                                                    src="http://3.6.238.81/pankaj_fleetdash/img/doc.jpg"
+                                                                    width="75">
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-xl-12 col-12 mb-3 boxshadow1 pl-0 pr-0">
+                                    <div class="widgetload">
+
+                                        <div class="widgetlinfo">
+                                            <h4 class="mt-0 text-dark font-weight-bold text-4">Trip Route</h4>
+                                            <table class="table table-sm table-bordered table-striped table-hover"
+                                                id="locationTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Type</th>
+                                                        <th>Date</th>
+                                                        <th>Time</th>
+                                                        <th>Pickup Time</th>
+                                                        <th>Drop Time</th>
+                                                        <th>Actual Pickup Time</th>
+                                                        <th>Actual Drop Time</th>
+                                                        <!-- <th>Departure Date/Time</th> -->
+                                                        <th>Name</th>
+                                                        <th>Location</th>
+                                                        <th>Miles</th>
+                                                        <th>Vehicle</th>
+                                                        <th>Trailer</th>
+                                                        <th>Driver</th>
+                                                        <th>Co-Driver</th>
+                                                        <th>Carrier</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let trip of trips">
+                                                        <td>{{ trip.type }}</td>
+                                                        <td>{{ trip.date }}</td>
+                                                        <td>{{ trip.time }}</td>
+                                                        <td>{{ trip.pickupTime }}</td>
+                                                        <td>{{ trip.dropTime }}</td>
+                                                        <td>{{ trip.actualPickupTime }}</td>
+                                                        <td>{{ trip.actualDropTime }}</td>
+                                                        <!-- <td>6/6/2020 10:00 AM</td> -->
+                                                        <td>{{ trip.name }}</td>
+                                                        <td>{{ trip.locationName }}</td>
+                                                        <td>{{ trip.miles }}</td>
+                                                        <td>{{ trip.vehicleName }}</td>
+                                                        <td>{{ trip.trailerName }}</td>
+                                                        <td>{{ trip.driverName }}</td>
+                                                        <td>{{ trip.coDriverName }}</td>
+                                                        <td>{{ trip.carrierName }}</td>
+                                                    </tr>
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h3 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Route Detail</h3>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mapclass vehiclemain" id="map_view">
+                                    <div id="map" class=""></div>
+                                </div>
+                            </div>
+                            <!-- TRIP DIV -->
+                            <div class="col-lg-6">
+                                <h3 class="font-weight-bold">Trip Information</h3>
+                                <div class="tab-content" style="height: 310px">
+                                    <div style="height: 310px;overflow: auto;">
+                                        <div class="wizard-progress"
+                                            style="max-width: 100%;overflow-x: auto; position: sticky; top: 0; background: #fff; margin: 0;">
+                                            <div class="steps-progress">
+                                                <div class="progress-indicator" style="width: 0%;"></div>
+                                            </div>
+                                            <ul class="wizard-steps">
+                                                <li class="">
+                                                    <a class="" href=""><span>P</span>Regina, SK S4W 0T4</a>
+                                                </li>
+                                                <li class="">
+                                                    <a class="" href=""><span>1</span>Brandon, MB S4W 0T4</a>
+                                                </li>
+                                                <li class="">
+                                                    <a class="" href=""><span>2</span>Winnipeg, YT R3P 0N3</a>
+                                                </li>
+                                                <li class="">
+                                                    <a class="" href=""><span>3</span>Winnipeg, YT R3P 0N3</a>
+                                                </li>
+                                                <li class="">
+                                                    <a class="" href=""><span>D</span>Regina, SK S4W 0T4</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped table-sm mb-0">
+                                                <thead>
+                                                    <tr class="bgcol2">
+                                                        <th>Location/Stop</th>
+                                                        <th>Arrival Date/Time</th>
+                                                        <th>Departure Date/Time</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><span class="cirgrn">&nbsp;</span> Regina, SK S4W 0T4</td>
+                                                        <td>Jun 12, 2020 04:34 PM</td>
+                                                        <td>Jun 12, 2020 04:34 PM</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="cirgrn">&nbsp;</span> Brandon, MB S4W 0T4</td>
+                                                        <td>Jun 12, 2020 04:34 PM</td>
+                                                        <td>Jun 12, 2020 04:34 PM</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="cirred">&nbsp;</span> Winnipeg, YT R3P 0N3</td>
+                                                        <td>Jun 12, 2020 04:34 PM</td>
+                                                        <td>Jun 12, 2020 04:34 PM</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="cirgrn">&nbsp;</span> Regina, SK S4W 0T4</td>
+                                                        <td>Jun 12, 2020 04:34 PM</td>
+                                                        <td>Jun 12, 2020 04:34 PM</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4 pl-3 pr-3">
+                            <div class=" col-6 mb-3 boxshadow1 pl-0 pr-0">
+                                <div class="widgetload">
+                                    <div class="widgettbload">
+                                        <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
+                                                class="fas fa-user"></i> Driver Activity</h2>
+                                    </div>
+                                </div>
+                                <div class="timeline timeline-simple changelog"
+                                    style="max-height: 497px;overflow-x: auto;width: 100%;">
+                                    <div class="tm-body text-dark">
+                                        <ol class="tm-items">
+                                            <li>
+                                                <div class="tm-box">
+                                                    <span class="release-date">16 May 2020 04:10 PM</span>
+                                                    <ul class="list-unstyled">
+                                                        <li><span class="badge badge-dark p-1">Arrival</span> - Driver
+                                                            Arrived
+                                                            at Pick-up location.
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="tm-box">
+                                                    <span class="release-date">29 November 17 05:12 PM</span>
+                                                    <ul class="list-unstyled">
+                                                        <li><span class="badge badge-dark p-1">Departure</span> - Driver
+                                                            picked
+                                                            up load and departed
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="tm-box">
+                                                    <span class="release-date">29 April 17 02:40PM</span>
+                                                    <ul class="list-unstyled">
+                                                        <li><span class="badge p-1 badge-dark">Stop</span> - Driver
+                                                            stopped for
+                                                            30min break
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="tm-box">
+                                                    <span class="release-date">11 March 17 02:40PM</span>
+                                                    <ul class="list-unstyled">
+                                                        <li><span class="badge badge-dark p-1">Driving</span> - Driver
+                                                            Resumed
+                                                            Driving after break
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="tm-box">
+                                                    <span class="release-date">11 March 17 12:23PM</span>
+                                                    <ul class="list-unstyled">
+                                                        <li><span class="badge badge-dark p-1">Stop</span> - Driver
+                                                            Stopped for
+                                                            8 hours
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="tm-box">
+                                                    <span class="release-date">12 March 17 02:40PM</span>
+                                                    <ul class="list-unstyled">
+                                                        <li><span class="badge badge-dark p-1">Arrival</span> - Driver
+                                                            Arrived
+                                                            at Destination.
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="tm-box">
+                                                    <span class="release-date">11 March 17 03:40PM</span>
+                                                    <ul class="list-unstyled">
+                                                        <li><span class="badge badge-dark p-1">Departure</span> - Driver
+                                                            Departed from Destination.
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+
+                                <div class="boxshadow1 w100 pull-left mb-3">
+                                    <div class="widgetload">
+                                        <div class="widgettbload">
+                                            <div class="row">
+                                                <div class="col-lg-8">
+                                                    <h2
+                                                        class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                        <i class="fas fa-dollar-sign"></i> Expenses</h2>
+                                                </div>
+                                                <div class="col-lg-4 text-right mt-2">
+                                                    <a href="fuel-expenses.php" class=" btn btn-xs btn-dark"> Fuel
+                                                        Expenses</a>
+                                                    <a href="other-expenses.php" class="btn btn-xs btn-dark"> Other
+                                                        Expenses</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="widgetlinfo" style="max-height: 190px;overflow-x: auto;">
+                                        <table class="table table-responsive-md table-bordered table-sm mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Expense Date</th>
+                                                    <th>Expense Name</th>
+                                                    <th>Expense Type</th>
+                                                    <th>Expense Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td> 05/25/2020</td>
+                                                    <td> Meal Expense</td>
+                                                    <td> Other Expense</td>
+                                                    <td> CAD 25.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td> 05/25/2020</td>
+                                                    <td> Parking</td>
+                                                    <td> Other Expense</td>
+                                                    <td> CAD 50.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td> 05/25/2020</td>
+                                                    <td> Meal Expense</td>
+                                                    <td> Other Expense</td>
+                                                    <td> CAD 25.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td> 05/25/2020</td>
+                                                    <td> Parking</td>
+                                                    <td> Other Expense</td>
+                                                    <td> CAD 50.00</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="font-weight-bold">Total Amount</td>
+                                                    <td class="font-weight-bold">CAD 234</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                        <div class="disbtmpart w100">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-lg-12">
+                                        <table class="table table-bordered table-sm mb-0 text-center">
+                                            <thead>
+                                                <tr class=" back-color-gray">
+                                                    <th>
+                                                        <h3 class="my-1"><b>Planned</b></h3>
+                                                    </th>
+                                                    <th style="width: 10%">
+                                                        <h3 class="my-1"><small><b>VS</b></small></h3>
+                                                    </th>
+                                                    <th>
+                                                        <h3 class="my-1"><b>Actual</b></h3>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <h4 class="my-0">2340 miles</h4>
+                                                    </td>
+                                                    <td class="text-center back-color-gray py-3">
+                                                        <i class="fa fa-route fa-2x"></i>
+                                                    </td>
+                                                    <td>
+                                                        <h4 class="my-0">2550 miles</h4>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <h4 class="my-0">3 Stops</h4>
+                                                    </td>
+                                                    <td class="text-center back-color-gray py-3">
+                                                        <i class="fa fa-calendar-alt  fa-2x"></i>
+                                                    </td>
+                                                    <td>
+                                                        <h4 class="my-0">4 Stops</h4>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <h4 class="my-0">Pick-up June 23, 2020 12:00 PM</h4>
+                                                    </td>
+                                                    <td class="text-center back-color-gray py-3">
+                                                        <i class="fa fa-map-marker-alt fa-2x"></i>
+                                                    </td>
+                                                    <td>
+                                                        <h4 class="my-0">Pick-up June 23, 2020 2:00 PM</h4>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <h4 class="my-0">Delivery June 30, 2020 12:00 PM</h4>
+                                                    </td>
+                                                    <td class="text-center back-color-gray py-3">
+                                                        <i class="fa fa-map-marker-alt fa-2x"></i>
+                                                    </td>
+                                                    <td>
+                                                        <h4 class="my-0">Delivery June 30, 2020 2:00 PM</h4>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div>
+                        </div>
+                        <div class="row mt-3 text-dark">
+                            <div class="col-lg-6">
+                                <h4 class="font-weight-bold">Speed Chart</h4>
+                                <div>
+                                    <div class="chartjs-size-monitor">
+                                        <div class="chartjs-size-monitor-expand">
+                                            <div class=""></div>
+                                        </div>
+                                        <div class="chartjs-size-monitor-shrink">
+                                            <div class=""></div>
+                                        </div>
+                                    </div>
+                                    <canvas id="speedChart" style="height: 260px; display: block; width: 470px;"
+                                        width="470" height="260" class="chartjs-render-monitor"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h4 class="font-weight-bold">Reefer Temperature Chart</h4>
+                                <div>
+                                    <div class="chartjs-size-monitor">
+                                        <div class="chartjs-size-monitor-expand">
+                                            <div class=""></div>
+                                        </div>
+                                        <div class="chartjs-size-monitor-shrink">
+                                            <div class=""></div>
+                                        </div>
+                                    </div>
+                                    <canvas id="reeferChart" style="height: 260px; display: block; width: 470px;"
+                                        width="470" height="260" class="chartjs-render-monitor">
+                                    </canvas>
+                                    <!-- <canvas baseChart [datasets]="dataSets" [labels]="reeferChartLabels" [options]="chartOptions"
+                                        [legend]="chartLegend" [chartType]="reeferChartType">
+                                    </canvas> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+</section>
+
+<!-- split popoup -->
+<div class="modal fade" id="splitpopup">
+    <div class="modal-dialog" role="document" style="max-width: 600px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Split</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-lg-3 col-md-12">
+                            <div class="radio">
+                                <label><input type="radio" name="split-stop" value="split_stop" id="stop"
+                                        onclick="show_stop_dropdown()" checked="checked">
+                                    Stop</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3 col-md-12">
+                            <div class="radio">
+                                <label><input type="radio" name="split-stop" value="split_yard" id="yard"
+                                        onclick="show_yard_dropdown()">
+                                    Location</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-6 col-md-12" id="split_stop_dropdown">
+                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Stops</label>
+                            <select class="form-control">
+                                <option value="2" data-select2-id="260">Fleet trucking | 7050 Weston Row</option>
+                                <option value="2">Truck AtoZ | 1818 Weston Row</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-6 col-md-12" id="split_yard_dropdown" style="display: none;">
+                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Location</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-6 col-md-12">
+                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Stop Arrival Date
+                            </label>
+                            <input type="date" data-plugin-datepicker="" class="form-control" placeholder="3/4/2020">
+                        </div>
+                        <div class="form-group col-lg-6 col-md-12">
+                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Stop
+                                Departure Date</label>
+                            <input type="date" data-plugin-datepicker="" class="form-control" placeholder="select date">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                        <button class="btn btn-success modal-confirm">Split</button>
+                        <button class="btn btn-default modal-dismiss">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- split popup end -->

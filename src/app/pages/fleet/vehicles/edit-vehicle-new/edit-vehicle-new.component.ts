@@ -229,7 +229,7 @@ export class EditVehicleNewComponent implements OnInit {
         this.year = result.year;
         this.manufacturerID = result.manufacturerID;
         this.modelID = result.modelID;
-        this.plateNumber = result.model;
+        this.plateNumber = result.plateNumber;
         this.stateID = result.stateID;
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;

@@ -30,6 +30,15 @@ export class GeofenceListComponent implements OnInit {
     { value: 2, label: 'Kaunas' },
     { value: 3, label: 'Pavilnys' }
   ];
+
+
+  suggestedGeofences = [];
+  geofenceID = '';
+  type = '';
+  geofenceName = '';
+
+
+
   constructor(
     private apiService: ApiService,
     private LeafletMap: LeafletMapService,
@@ -91,35 +100,33 @@ export class GeofenceListComponent implements OnInit {
         100);
     }
   }
-  // beforeChange($event: NgbPanelChangeEvent, cords) {
-  //   setTimeout( () => {
-  //     let new_cords = [];
-  //     for (let i = 0; i < cords[0].length - 1; i++) {
 
-  //       for (let j = 0; j < cords[0][i].length - 1; j++) {
-  //         new_cords.push([cords[0][i][j + 1], cords[0][i][j]]);
+  getSuggestions(value) {
+    this.apiService
+      .getData(`geofences/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedGeofences = result.Items;
+        if(this.suggestedGeofences.length == 0){
+          this.geofenceID = '';
+        }
+      });
+  }
 
-  //       }
-  //     }
-  //     this.map = this.LeafletMap.initGeoFenceMap();
-  //     const poly = L.polygon(new_cords).addTo(this.map);
-  //     this.map.fitBounds(poly.getBounds());
-  //   },
-  //   100);
-  // }
+  setGeofence(geofenceID, geofenceName) {
+    this.geofenceName = geofenceName;
+    this.geofenceID = geofenceID;
+
+    this.suggestedGeofences = [];
+  }
+
   fetchGeofences() {
+    this.geofences = [];
     this.spinner.show();
-    this.apiService.getData('geofences').subscribe({
+    this.apiService.getData(`geofences?geofenceID=${this.geofenceID}&type=${this.type}`).subscribe({
       complete: () => {},
       error: () => { },
       next: (result: any) => {
-        console.log(result);
-        for (let i = 0; i < result.Items.length; i++) {
-          // console.log(result.Items[i].isDeleted);
-          if (result.Items[i].isDeleted === 0) {
-            this.geofences.push(result.Items[i]);
-          }
-        }
+        this.geofences = result.Items;
         this.spinner.hide();
       },
     });

@@ -17,34 +17,37 @@
         <form>
            <div class="row px-4" style="padding-top:10px;">
               <div class="col-md-2 col-lg-2">
-                 <div class="input-group input-group-sm mb-3">
-                  <ng-select [items]="defaultBindingsList" name="searchDriver"
-                  [(ngModel)]="selectedCity" style="width: 100%;">
-                    </ng-select>
-                 </div>
+               <div class="input-group input-group-md mb-3">
+                  <input type="text" autocomplete="off" name="geofenceName" [(ngModel)]="geofenceName" class="form-control" (input)="getSuggestions($event.target.value)">
+                </div>
+                <div *ngFor="let suggestedGeofence of suggestedGeofences" style="cursor: pointer;" (click)="setGeofence(suggestedGeofence.geofenceID, suggestedGeofence.geofenceName)">
+                  {{ suggestedGeofence.geofenceName }}
+               </div>
               </div>
               <div class="col-md-2  col-lg-2">
                  <select
                     data-plugin-selectTwo
+                    [(ngModel)]="type" 
+                    name="type"
                     class="form-control populate">
                     <optgroup label="Select Type">
-                       <option value="">Uncategorized</option>
-                       <option value="">Fuel Station</option>
-                       <option value="">Job Site</option>
-                       <option value="">Maintenance Facility</option>
-                       <option value="">Receiver / Consignee</option>
-                       <option value="">Restricted Location</option>
-                       <option value="">Shipper</option>
-                       <option value="">Shipper / Receiver</option>
-                       <option value="">Terminal / Yard</option>
-                       <option value="">Truck Stop / Rest Area</option>
-                       <option value="">Weigh Station / Scale</option>
+                        <option value="Uncategorized">Uncategorized</option>
+                        <option value="Fuel Station">Fuel Station</option>
+                        <option value="Job Site">Job Site</option>
+                        <option value="Maintenance Facility">Maintenance Facility</option>
+                        <option value="Receiver/Consignee">Receiver/Consignee</option>
+                        <option value="Restricted Location">Restricted Location</option>
+                        <option value="Shipper">Shipper</option>
+                        <option value="Shipper/Receiver">Shipper/Receiver</option>
+                        <option value="Terminal/Yard">Terminal/Yard</option>
+                        <option value="Truck Stop/Rest Area">Truck Stop/Rest Area</option>
+                        <option value="Weigh Station/Scale">Weigh Station/Scale</option>
                     </optgroup>
                  </select>
               </div>
               
               <div class="col-md-1  col-lg-1">
-                 <button type="submit" class="btn btn-sm btn-success">Search</button>
+                 <button type="submit" (click)="fetchGeofences()" class="btn btn-sm btn-success">Search</button>
               </div>
               <div class="col-md-7  col-lg-7 text-right pr-5">
                  <div class="btn-group flex-wrap">

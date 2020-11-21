@@ -13,6 +13,7 @@ import { MapDashboardComponent } from './entry/map-dashboard/map-dashboard.compo
 
 import {ChartsModule} from 'ng2-charts';
 import {PreLoadStrategy} from './preload/PreLoadStrategy';
+import { PdfAutomationComponent } from './pages/automation/pdf-automation/pdf-automation.component';
 
 
 
@@ -30,9 +31,14 @@ const routes: Routes = [
     component: MapDashboardComponent,
     canActivate: [AuthService],
   },
+  {
+    path: 'pdf-automation',
+    component: PdfAutomationComponent,
+    canActivate: [AuthService],
+  },
   { path: 'healthcheck', component: HealthcheckComponent },
   // { path: 'Register', component: RegisterComponent },
-  {
+   {
     path: 'fleet',
     // canActivate: [AuthService],
     // data: { roles: [Role.Admin] },

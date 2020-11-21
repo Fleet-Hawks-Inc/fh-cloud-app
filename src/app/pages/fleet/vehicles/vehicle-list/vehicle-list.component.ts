@@ -1,28 +1,40 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../../../../services';
+import { ApiService } from '../../../../services';
 import { timer } from 'rxjs';
 declare var $: any;
 
 @Component({
   selector: 'app-vehicle-list',
   templateUrl: './vehicle-list.component.html',
-  styleUrls: ['./vehicle-list.component.css']
+  styleUrls: ['./vehicle-list.component.css'],
 })
 export class VehicleListComponent implements OnInit {
-
   title = 'Vehicle List';
   vehicles;
 
-  constructor(private apiService: ApiService) { }
+  suggestedVehicles = [];
+  vehicleID = '';
+  currentStatus = '';
+  vehicleIdentification = '';
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
+    this.fetchVehicles();
+  }
 
-      this.fetchVehicles();
-
+  getSuggestions(value) {
+    this.apiService
+      .getData(`vehicles/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedVehicles = result.Items;
+        if(this.suggestedVehicles.length == 0){
+          this.vehicleID = '';
+        }
+      });
   }
 
   fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe({
+    this.apiService.getData(`vehicles?vehicleID=${this.vehicleID}&status=${this.currentStatus}`).subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -34,19 +46,25 @@ export class VehicleListComponent implements OnInit {
     });
   }
 
+  setVehicle(vehicleID, vehicleIdentification) {
+    this.vehicleIdentification = vehicleIdentification;
+    this.vehicleID = vehicleID;
 
+    this.suggestedVehicles = [];
+  }
 
   deleteVehicle(vehicleId) {
     /******** Clear DataTable ************/
     if ($.fn.DataTable.isDataTable('#datatable-default')) {
-    $('#datatable-default').DataTable().clear().destroy();
+      $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
 
-    this.apiService.deleteData('vehicles/' + vehicleId)
-        .subscribe((result: any) => {
-            this.fetchVehicles();
-        });
+    this.apiService
+      .deleteData('vehicles/' + vehicleId)
+      .subscribe((result: any) => {
+        this.fetchVehicles();
+      });
   }
 
   initDataTable() {
@@ -54,5 +72,4 @@ export class VehicleListComponent implements OnInit {
       $('#datatable-default').DataTable();
     });
   }
-
 }

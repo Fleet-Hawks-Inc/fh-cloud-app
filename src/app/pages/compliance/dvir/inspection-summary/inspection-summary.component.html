@@ -106,171 +106,26 @@
               >
                 <thead>
                   <tr>
-                    <th><input type="checkbox" /></th>
                     <th>Date/Time</th>
                     <th>Driver</th>
-                    <th>Vehicle</th>
-                    <th>Vehicle Defects</th>
-                    <th>Asset</th>
-                    <th>Asset Defects</th>
+                    <th>Vehicle/Asset</th>
+                    <th>Defects</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td><input type="checkbox" /></td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_assets.php'"
-                    >
-                      Jul 05,1:20AM
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_assets.php'"
-                    >
-                      Pankaj
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_assets.php'"
-                    >
-                      Vehicle 1
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_assets.php'"
-                    >
-                      18-Lamps/Reflectors
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_assets.php'"
-                    >
-                      9455656
-                      <span
-                        class="badge badge-secondary text-3"
-                        title="Assets Attached"
-                        >+1</span
-                      >
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_assets.php'"
-                    ></td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_assets.php'"
-                      class="text-success font-weight-bold"
-                    >
+                  <tr
+                    routerLink="/compliance/dvir/inspection-detail/{{
+                      inspection.inspectionID
+                    }}"
+                    *ngFor="let inspection of dailyInspections"
+                  >
+                    <td>{{ inspection.timeCreated | date:'medium' }}</td>
+                    <td>driveruser1</td>
+                    <td>{{ inspection.inspectionType }}</td>
+                    <td>{{ inspection.parameters.length }}</td>
+                    <td class="text-success font-weight-bold">
                       Safe to Drive.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" /></td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page.php'"
-                    >
-                      Jul 05,1:20AM
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page.php'"
-                    >
-                      Panav
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page.php'"
-                    >
-                      Vehicle 1
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page.php'"
-                    >
-                      18-Lamps/Reflectors
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page.php'"
-                    ></td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page.php'"
-                    ></td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page.php'"
-                      class="text-success font-weight-bold"
-                    >
-                      Safe to Drive.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" /></td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_more_assets.php'"
-                    >
-                      Jul 05,1:20AM
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_more_assets.php'"
-                    >
-                      Panav
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_more_assets.php'"
-                    >
-                      Vehicle 1
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_more_assets.php'"
-                    >
-                      18-Lamps/Reflectors
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_more_assets.php'"
-                    >
-                      9455656
-                      <span
-                        class="badge badge-secondary text-3"
-                        title="Assets Attached"
-                        >+2</span
-                      >
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_more_assets.php'"
-                    ></td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_more_assets.php'"
-                      class="text-success font-weight-bold"
-                    >
-                      Safe to Drive.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" /></td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_defects.php'"
-                    >
-                      Jul 05,1:20AM
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_defects.php'"
-                    >
-                      Panav
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_defects.php'"
-                    >
-                      Vehicle 1
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_defects.php'"
-                    >
-                      18-Lamps/Reflectors
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_defects.php'"
-                    >
-                      9455656
-                    </td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_defects.php'"
-                    ></td>
-                    <td
-                      onclick="window.location='inspection_summary_detail_page_defects.php'"
-                      class="text-danger font-weight-bold"
-                    >
-                      Unsafe to Drive.
                     </td>
                   </tr>
                 </tbody>
