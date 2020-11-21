@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Location } from '@angular/common';
 declare var $: any;
 @Component({
   selector: 'app-add-contact-renew',
@@ -38,7 +39,7 @@ export class AddContactRenewComponent implements OnInit {
   hasError = false;
   hasSuccess = false;
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
-    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) { }
+    private ngbCalendar: NgbCalendar,private location: Location, private dateAdapter: NgbDateAdapter<string>) { }
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -95,6 +96,9 @@ export class AddContactRenewComponent implements OnInit {
       }
     }
     return this.finalSubscribers;
+  }
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
   }
   addRenewal() {
     this.errors = {};
