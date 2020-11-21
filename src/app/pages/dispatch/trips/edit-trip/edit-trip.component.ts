@@ -8,6 +8,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
+import { merge } from 'jquery';
+import { async } from 'rxjs/internal/scheduler/async';
 declare var $: any;
 
 @Component({
@@ -16,7 +18,10 @@ declare var $: any;
   styleUrls: ['./edit-trip.component.css']
 })
 export class EditTripComponent implements OnInit {
-
+  getAllLocations = ['101 9 Ave SW, Calgary, AB T2P 1J9, Canada',
+                  'Rocky View County, AB, Canada',
+                'Monterey Park, Calgary, AB T1Y 7C5, Canada',
+              'Taracove Estate Dr NE, Calgary, AB T3J 5A1, Canada']
   carriers = [];
   routes = [];
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
@@ -204,6 +209,8 @@ export class EditTripComponent implements OnInit {
   assetDataCoDriverUsername = '';
   informationAsset = [];
 
+  newCoords = [];
+
   ngOnInit() {
 
     this.tripID = this.route.snapshot.params['tripID'];
@@ -243,8 +250,24 @@ export class EditTripComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
+    this.getCoords(this.trips);
     this.ArrayShuffle(this.trips, event.previousIndex, event.currentIndex);
     moveItemInArray(this.trips, event.previousIndex, event.currentIndex);
+  }
+
+/**
+ * pass trips coords to show on the map
+ * @param data 
+ */
+  async getCoords(data) {
+    this.spinner.show();
+    await Promise.all( data.map(async item => {
+      let result = await this.hereMap.geoCode(item.locationName);
+      console.log('result', result);
+      this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
+    }));
+    this.hereMap.calculateRoute(this.newCoords);
+    this.spinner.hide();
   }
 
   async ArrayShuffle(array, previousIndex, currentIndex) {
@@ -420,9 +443,14 @@ export class EditTripComponent implements OnInit {
     })
   }
 
-  mapShow() {
+  async mapShow() {
     this.hereMap.mapInit();
+    // let result = await this.hereMap.geoCode('Calgary Tower, 9 Avenue Southwest, Calgary, AB, Canada');
+    // let origin = `${result.items[0].position.lat},${result.items[0].position.lng}`;
+    // console.log('origin', origin);
+    // this.hereMap.calculateRoute(['51.079101,-114.092657', '50.453733,-104.633429']);
   }
+  
 
   showMOdal() {
     $("#orderModal").modal('show');
@@ -1034,11 +1062,11 @@ export class EditTripComponent implements OnInit {
 
   fetchTripDetail() {
     this.spinner.show();
-    this.apiService.getData('trips/' + this.tripID).
-      subscribe((result: any) => {
+    this.apiService.getData('trips/' + this.tripID)
+    .subscribe((result: any) => {
         result = result.Items[0];
         this.tripData = result;
-        // console.log('result');
+        // console.log('this.tripData', this.tripData);
         // console.log(result);
         let refTemp = this.tripData.reeferTemperature;
         let temp = refTemp.substring(0, refTemp.length - 1);
@@ -1053,6 +1081,7 @@ export class EditTripComponent implements OnInit {
           for (let m = 0; m < result.orderId.length; m++) {
             const element = result.orderId[m];
             this.typeOptions.unshift(element);
+            
           }
         }
 
@@ -1077,7 +1106,7 @@ export class EditTripComponent implements OnInit {
 
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
-
+          // console.log('tripPlanning[i]', tripPlanning[i])
           // this.fetchAssetDetail();
 
           let obj = {
@@ -1151,10 +1180,11 @@ export class EditTripComponent implements OnInit {
           this.fetchCountryName(element.location.countryID, i);
           this.fetchStateDetail(element.location.stateID, i);
           this.fetchCityDetail(element.location.cityID, i);
-          this.fetchCarrierName(element.carrierID, i)
+          console.log("this.trips", this.trips);
+          this.fetchCarrierName(element.carrierID, i);
         }
         this.spinner.hide();
-      })
+      });
   }
 
   fetchAssetDetail(assetID, index) {
@@ -1221,15 +1251,38 @@ export class EditTripComponent implements OnInit {
       })
   }
 
-  fetchCityDetail(cityID, index) {
+  fetchCityDetail (cityID, index) {
+    console.log("fetch cities");
     this.apiService.getData('cities/' + cityID)
       .subscribe((result: any) => {
-        // console.log(result.Items[0]);
+        console.log('result.Items[0]', result);
         if (result.Items[0].cityName != undefined) {
           this.trips[index].location.cityName = result.Items[0].cityName;
-          this.trips[index].locationName = this.trips[index].location.address1 + ', ' + this.trips[index].location.address2 + ', ' + this.trips[index].location.zipcode + ', ' + this.trips[index].location.cityName + ', ' + this.trips[index].location.stateName + ', ' + this.trips[index].location.countryName;
+          this.trips[index].locationName =  this.trips[index].location.address1 + ', ' +
+                                            this.trips[index].location.address2 + ', ' +
+                                            this.trips[index].location.zipcode + ', ' +
+                                            this.trips[index].location.cityName + ', ' +
+                                            this.trips[index].location.stateName + ', ' +
+                                            this.trips[index].location.countryName;
+
+          if(this.trips[index] === this.trips[this.trips.length - 1]) {
+              this.getCoords(this.trips);
+          }
         }
       })
+  }
+
+  getLocations () {
+    for (let i = 0; i < this.trips.length; i++) {
+      this.getAllLocations.push(this.trips[i].location.address1 +
+        this.trips[i].location.address2 + this.trips[i].location.cityName + this.trips[i].location.stateName +
+        this.trips[i].location.countryName + this.trips[i].location.zipcode
+      )
+    }
+    console.log('this.trips', this.trips);
+    
+
+    console.log('getAllLocations', this.getAllLocations);
   }
 
   throwErrors() {

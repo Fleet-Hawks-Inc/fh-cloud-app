@@ -17,6 +17,11 @@ export class DriverDetailComponent implements OnInit {
   private driverData;
   carrierID;
   public driverImages = [];
+  cdl;
+  homeTerminal;
+  phone;
+  email;
+  cycle;
 
   constructor(
         private hereMap: HereMapService,
@@ -45,6 +50,11 @@ export class DriverDetailComponent implements OnInit {
         if (result) {
           this.driverData = result['Items'][0];
           console.log('driverData', this.driverData)
+          this.cdl = this.driverData.licenceDetails.CDL_Number;
+          this.homeTerminal = this.driverData.hosDetails.homeTerminal;
+          this.phone = this.driverData.workPhone;
+          this.email = this.driverData.workEmail;
+          this.cycle =this.driverData.hosDetails.hosCycle;
           //this.getImages();
           this.spinner.hide(); // loader hide
         }

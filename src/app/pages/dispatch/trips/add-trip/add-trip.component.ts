@@ -223,6 +223,7 @@ export class AddTripComponent implements OnInit {
     }
 
     drop(event: CdkDragDrop<string[]>) {
+        console.log('this.trips', this.trips);
         this.ArrayShuffle(this.trips, event.previousIndex, event.currentIndex);
         moveItemInArray(this.trips, event.previousIndex, event.currentIndex);
     }
@@ -875,7 +876,7 @@ export class AddTripComponent implements OnInit {
 
     createTrip() {
         console.log('start tripData');
-        console.log(this.tripData);
+        
         if (this.tripData.reeferTemperature != '') {
             this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
         } else {
@@ -971,7 +972,7 @@ export class AddTripComponent implements OnInit {
         this.errors = {};
         this.hasError = false;
         this.hasSuccess = false;
-
+        // console.log('this.tripData', this.tripData);
         this.apiService.postData('trips', this.tripData).subscribe({
             complete: () => {
             },

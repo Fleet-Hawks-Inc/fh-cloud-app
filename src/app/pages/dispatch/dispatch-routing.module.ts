@@ -33,6 +33,9 @@ import { MyDocumentListComponent } from './new-documents/my-documents/my-documen
 import { OrdersListComponent } from './orders/orders-list/orders-list.component';
 import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
+import { QuotesListComponent } from './quotes/quotes-list/quotes-list.component';
+import { AddQuotesComponent } from './quotes/add-quotes/add-quotes.component';
+import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
 
 import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
 import { TripListComponent } from './trips/trip-list/trip-list.component';
@@ -103,8 +106,18 @@ const routes: Routes = [
     path: 'orders',
     children: [
       { path: '', component: OrdersListComponent},
+      { path: 'edit/:orderID', component: AddOrdersComponent},
       { path: 'add', component: AddOrdersComponent},
-      { path: 'detail', component: OrderDetailComponent }
+      { path: 'detail/:orderID', component: OrderDetailComponent }
+    ]
+  },
+  {
+    path: 'quotes',
+    children: [
+      { path: '', component: QuotesListComponent},
+      { path: 'add', component: AddQuotesComponent},
+      { path: 'edit/:quoteID', component: AddQuotesComponent},
+      { path: 'detail/:quoteID', component: QuoteDetailComponent }
     ]
   },
   {

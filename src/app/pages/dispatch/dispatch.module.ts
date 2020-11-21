@@ -78,6 +78,9 @@ import { MyDocumentListComponent } from './new-documents/my-documents/my-documen
 import { OrdersListComponent } from './orders/orders-list/orders-list.component';
 import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
+import { AddQuotesComponent } from './quotes/add-quotes/add-quotes.component';
+import { QuotesListComponent } from './quotes/quotes-list/quotes-list.component';
+import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
 
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -123,7 +126,7 @@ export class CustomAdapter extends NgbDateAdapter<string> {
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
-  readonly DELIMITER = '/';
+  readonly DELIMITER = ',';
 
   parse(value: string): NgbDateStruct | null {
     if (value) {
@@ -138,7 +141,22 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   }
 
   format(date: NgbDateStruct | null): string {
-    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
+    // return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
+    let MonthList = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'April',
+      'May',
+      'Jun',
+      'July',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ]
+    return date ? MonthList[date.month - 1] + ' ' + date.day + this.DELIMITER + date.year : '';
   }
 }
 
@@ -237,6 +255,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     OrdersListComponent,
     AddOrdersComponent,
     OrderDetailComponent,
+    AddQuotesComponent,
+    QuotesListComponent,
+    QuoteDetailComponent,
     
 
     RouteDetailComponent,
