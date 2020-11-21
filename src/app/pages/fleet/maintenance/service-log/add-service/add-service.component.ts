@@ -7,7 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../../services';
 import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+declare var $: any;
 @Component({
   selector: 'app-add-service',
   templateUrl: './add-service.component.html',
@@ -61,9 +62,12 @@ export class AddServiceComponent implements OnInit {
     private dateAdapter: NgbDateAdapter<string>,
   ) {
     this.selectedFileNames = new Map<any, any>();
+    $(document).ready(() => {
+      this.form = $('#serviceForm').validate();
+    });
    }
 
-   
+
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -96,7 +100,7 @@ export class AddServiceComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/'.*'/, 'This Field');
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -122,6 +126,7 @@ export class AddServiceComponent implements OnInit {
     this.form.showErrors(this.errors);
   }
 
+
   selectIssues($event, ids) {
     console.log($event.target.checked);
     if($event.target.checked) {
@@ -133,6 +138,7 @@ export class AddServiceComponent implements OnInit {
     this.serviceData['selectedIssues'] = this.selectedIssues;
   }
   
+
 
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
@@ -171,7 +177,7 @@ export class AddServiceComponent implements OnInit {
       // }
     });
   }
-  
+
 
   getIssues(id) {
     const vehicleID = id;

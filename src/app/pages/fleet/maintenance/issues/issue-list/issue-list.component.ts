@@ -20,6 +20,13 @@ export class IssueListComponent implements OnInit {
   contacts: [];
   vehicleName: string;
   contactName: string;
+
+  unitID = '';
+  unitName = '';
+  issueName = '';
+  suggestedUnits = [];
+
+
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
 
@@ -28,6 +35,50 @@ export class IssueListComponent implements OnInit {
     this.fetchContacts();
     this.fetchVehicles();
     this.fetchAssets();
+  }
+
+  setUnit(unitID, unitName) {
+    this.unitName = unitName;
+    this.unitID = unitID;
+
+    this.suggestedUnits = [];
+  }
+
+  getSuggestions(value) {
+    this.suggestedUnits = [];
+    this.apiService
+      .getData(`vehicles/suggestion/${value}`)
+      .subscribe((result) => {
+        result = result.Items;
+
+        for(let i = 0; i < result.length; i++){
+          this.suggestedUnits.push({
+            unitID: result[i].vehicleID,
+            unitName: result[i].vehicleIdentification
+          });
+        }
+        
+        this.getAssetsSugg(value);
+      });
+  }
+
+  getAssetsSugg(value) {
+    this.apiService
+      .getData(`assets/suggestion/${value}`)
+      .subscribe((result) => {
+        result = result.Items;
+
+        for(let i = 0; i < result.length; i++){
+          this.suggestedUnits.push({
+            unitID: result[i].assetID,
+            unitName: result[i].assetIdentification
+          });
+        }
+      });
+      console.log(this.suggestedUnits);
+      if(this.suggestedUnits.length == 0){
+        this.unitID = '';
+      }
   }
 
   fetchVehicles() {
@@ -69,7 +120,7 @@ export class IssueListComponent implements OnInit {
     }
   }
   fetchIssues() {
-    this.apiService.getData('issues').subscribe({
+    this.apiService.getData(`issues?unitID=${this.unitID}&issueName=${this.issueName}`).subscribe({
       complete: () => {
         this.initDataTable();
       },

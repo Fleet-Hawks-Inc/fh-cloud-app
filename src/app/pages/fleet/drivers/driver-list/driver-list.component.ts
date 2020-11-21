@@ -17,6 +17,12 @@ export class DriverListComponent implements OnInit {
   drivers = [];
   dtOptions: any = {};
 
+
+  driverID = '';
+  driverName = '';
+  dutyStatus = '';
+  suggestedDrivers = [];
+
   constructor(
             private apiService: ApiService,
             private router: Router,
@@ -33,9 +39,27 @@ export class DriverListComponent implements OnInit {
     });
   }
 
+  getSuggestions(value) {
+    this.apiService
+      .getData(`drivers/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedDrivers = result.Items;
+        if(this.suggestedDrivers.length == 0){
+          this.driverID = '';
+        }
+      });
+  }
+
+  setDriver(driverID, driverName) {
+    this.driverName = driverName;
+    this.driverID = driverID;
+
+    this.suggestedDrivers = [];
+  }
+
   fetchDrivers() {
-    this.spinner.show(); // loader init
-    this.apiService.getData('drivers').subscribe({
+   // this.spinner.show(); // loader init
+    this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`).subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -50,7 +74,7 @@ export class DriverListComponent implements OnInit {
           }
         }
         console.log('drivers',this.drivers)
-        this.spinner.hide(); // loader hide
+      //  this.spinner.hide(); // loader hide
       },
     });
   }

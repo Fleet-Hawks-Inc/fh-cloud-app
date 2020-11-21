@@ -34,6 +34,11 @@ export class FuelEntryListComponent implements OnInit {
   formattedFromDate: any = '';
   formattedToDate: any = '';
   fuelList;
+
+
+  amount = '';
+
+
   constructor(
     private apiService: ApiService,
     private route: Router,
@@ -53,7 +58,7 @@ export class FuelEntryListComponent implements OnInit {
   //   });
   // }
   fuelEntries() {
-    this.apiService.getData('fuelEntries').subscribe({
+    this.apiService.getData(`fuelEntries?amount=${this.amount}&from=${this.fromDate}&to=${this.toDate}`).subscribe({
       complete: () => {
         this.initDataTable();
       },

@@ -5,6 +5,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import {ChartsModule} from 'ng2-charts'; 
 
 import { AddShipperComponent } from './shipper/add-shipper/add-shipper.component';
 import { ShipperListComponent } from './shipper/shipper-list/shipper-list.component';
@@ -91,6 +92,7 @@ import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
 import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
 import { CalendarViewComponent } from './planner/calendar-view/calendar-view.component';
 import { MapViewComponent } from './planner/map-view/map-view.component';
+import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
 
 
 /**
@@ -170,7 +172,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     DragDropModule,
     NgSelectModule,
     NgxMaterialTimepickerModule,
-    FullCalendarModule 
+    FullCalendarModule,
+    ChartsModule
   ],
 
   declarations: [
@@ -264,6 +267,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     EditTripComponent,
     CalendarViewComponent,
     MapViewComponent,
+    DispatchOverviewComponent,
 
   ],
 

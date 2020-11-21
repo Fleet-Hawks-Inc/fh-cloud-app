@@ -22,7 +22,7 @@
             <div class="row" data-select2-id="19">
                <div class="col" data-select2-id="18">
                   <div class="card-body text-dark" data-select2-id="17">
-                     <form class="form-horizontal form-bordered" method="get" data-select2-id="16">
+                     <form id="serviceForm" class="form-horizontal form-bordered" method="post">
                         <div class="form-group row">
                            <div class="col-lg-12">
                               <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service Details</label>
@@ -62,7 +62,7 @@
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor ID</label>
                                     <ng-select [(ngModel)]="serviceData.vendor" name="vendor" style="width: 100%;">
                                         <ng-option *ngFor="let vendor of vendors;" value="{{vendor.vendorID}}">{{vendor.vendorName}}</ng-option>
-                                           
+
                                     </ng-select>
                                  </div>
                                  <div class="col-lg-2  mar-top-37">
@@ -143,7 +143,7 @@
                                         <ng-option value="Air Dryer Desiccant Replacement">Air Dryer Desiccant Replacement</ng-option>
                                         <ng-option value="Air Dryer Inspection">Air Dryer Inspection</ng-option>
                                         <ng-option value="Air Filter Replacement">Air Filter Replacement</ng-option>
-                                        
+
                                         <ng-option value="Alcohol Evaporator Cleaning">Alcohol Evaporator Cleaning</ng-option>
                                         <ng-option value="Alternator Replacement">Alternator Replacement</ng-option>
                                         <ng-option value="Automatic Drain Valve Inspection">Automatic Drain Valve Inspection</ng-option>
@@ -156,7 +156,7 @@
                                         <ng-option value="Brake Camshaft Bracket Lubrication">Brake Camshaft Bracket Lubrication</ng-option>
                                         <ng-option value="Brake Inspection">Brake Inspection</ng-option>
                                         <ng-option value="Brake Pad(s) Replacement">Brake Pad(s) Replacement</ng-option>
-                                        
+
                                         <ng-option value="Brake Rotor Replacement">Brake Rotor Replacement</ng-option>
                                         <ng-option value="Brake Slack Adjuster Lubrication">Brake Slack Adjuster Lubrication</ng-option>
                                         <ng-option value="Cabin Air FIlter Replacement">Cabin Air FIlter Replacement</ng-option>
@@ -169,7 +169,7 @@
                                         <ng-option value="Clutch Hydraulic Fluid Replacement">Clutch Hydraulic Fluid Replacement</ng-option>
                                         <ng-option value="Clutch Release Bearing Lubrication">Clutch Release Bearing Lubrication</ng-option>
                                         <ng-option value="Coolant Flush">Coolant Flush</ng-option>
-                                        
+
                                         <ng-option value="Cooling System Fluid Level Inspection">Cooling System Fluid Level Inspection</ng-option>
                                         <ng-option value="Clutch Hydraulic Fluid Replacement">Clutch Hydraulic Fluid Replacement</ng-option>
                                         <ng-option value="Door Window Motor/Regulator Replacement">Door Window Motor/Regulator Replacement</ng-option>
@@ -182,8 +182,8 @@
                                         <ng-option value="Engine Coolant Drain & Refill">Engine Coolant Drain & Refill</ng-option>
                                         <ng-option value="Engine Coolant Replacement">Engine Coolant Replacement</ng-option>
                                         <ng-option value="Engine/Drive Belt(s) Inspection">Engine/Drive Belt(s) Inspection</ng-option>
-                                        
-                                        
+
+
                                         <ng-option value="Engine/Drive Belt(s) Replacement">Engine/Drive Belt(s) Replacement</ng-option>
                                         <ng-option value="Engine Oil & Filter Replacement">Engine Oil & Filter Replacement</ng-option>
                                         <ng-option value="Exhaust Manifold Replacement">Exhaust Manifold Replacement</ng-option>
@@ -196,7 +196,7 @@
                                         <ng-option value="Fuel Injector Replacement">Fuel Injector Replacement</ng-option>
                                         <ng-option value="Fuel Pump Replacement">Fuel Pump Replacement</ng-option>
                                         <ng-option value="Fuel/Water Separator Filter Replacement"> Fuel/Water Separator Filter Replacement</ng-option>
-                                        
+
                                         <ng-option value="Head Gasket(s) Replacement">Head Gasket(s) Replacement</ng-option>
                                         <ng-option value="Heater Blower Motor Replacement">Heater Blower Motor Replacement</ng-option>
                                         <ng-option value="Heater Control Valve Replacement">Heater Control Valve Replacement</ng-option>
@@ -209,7 +209,7 @@
                                         <ng-option value="Oil Change">Oil Change</ng-option>
                                         <ng-option value="Oil & Filter Change">Oil & Filter Change</ng-option>
                                         <ng-option value=" Oil Pump Replacement"> Oil Pump Replacement</ng-option>
-                                        
+
                                         <ng-option value="Other Maintenance">Other Maintenance</ng-option>
                                         <ng-option value="Oxygen Sensor Replacement">Oxygen Sensor Replacement</ng-option>
                                         <ng-option value="Power Steering Fluid and Filter Replacement">Power Steering Fluid and Filter Replacement</ng-option>
@@ -222,8 +222,10 @@
                                         <ng-option value="Resurface Rotors">Resurface Rotors</ng-option>
                                         <ng-option value="Rotate Tires"> Rotate Tires</ng-option>
                                         <ng-option value="Rotor Replacement">Rotor Replacement</ng-option>
+
                                         
                                         <ng-option value="Spark Plug Replacement">Spark Plug Replacement</ng-option>
+
                                         <ng-option value="Spark Plugs Replacement">Spark Plugs Replacement</ng-option>
                                         <ng-option value="Starter Replacement">Starter Replacement</ng-option>
                                         <ng-option value="Steer Axle Hub Cap Vent Plug Inspection">Steer Axle Hub Cap Vent Plug Inspection</ng-option>
@@ -235,7 +237,7 @@
                                         <ng-option value="Tire Check">Tire Check</ng-option>
                                         <ng-option value="Tire Replacement">Tire Replacement</ng-option>
                                         <ng-option value="Tire Rotation">Tire Rotation</ng-option>
-                                        
+
                                         <ng-option value="Tire Service">Tire Service</ng-option>
                                         <ng-option value="Trailer Cable Inspection">Trailer Cable Inspection</ng-option>
                                         <ng-option value="Transfer Case Fluid Replacement">Transfer Case Fluid Replacement</ng-option>
@@ -253,7 +255,7 @@
                                  </div>
                               </div>
                            </div>
-                           <div class="col-lg-5 offset-lg-1"> 
+                           <div class="col-lg-5 offset-lg-1">
                               <div class="row pt-2">
                                  <div class="col-lg-10 text-right">
                                     <a href="javascript:;" data-toggle="modal" data-target="#serviceReminderModal"><label class="btn btn-dark text-3 pt-2">Service Reminders<span class="text-danger font-weight-bold"> {{reminders.length}}</span></label></a>
@@ -298,7 +300,7 @@
                               </div>
                               <div class="row">
                                  <div class="col-lg-1 offset-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Discount(%)</label>                                           
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Discount(%)</label>
                                  </div>
                                  <div class="col-lg-1">
                                     <input type="text" value="0.00" (keyup)="discount('tasks', $event)" class="form-control" id="inputDefault">
@@ -306,7 +308,7 @@
                               </div>
                               <div class="row">
                                  <div class="col-lg-1 offset-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Tax(%)</label>                                           
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Tax(%)</label>
                                  </div>
                                  <div class="col-lg-1">
                                     <input type="text" value="0.00" class="form-control" id="inputDefault">
@@ -314,7 +316,9 @@
                               </div>
                               <div class="row">
                                  <div class="col-lg-1 offset-lg-10">
+
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Total($)</label>                                           
+
                                  </div>
                                  <div class="col-lg-1">
                                     <input type="text" [value]="totalTasksAmount" class="form-control" id="inputDefault">
@@ -381,7 +385,7 @@
                                           <ng-option value="" data-select2-id="66">Engine Coolant Replacement</ng-option>
                                           <ng-option value="" data-select2-id="67">Engine/Drive Belt(s) Inspection</ng-option> -->
                                       </ng-select>
-                                    
+
                                  </div>
                               </div>
                            </div>
@@ -433,7 +437,7 @@
                               </div>
                               <div class="row">
                                  <div class="col-lg-1 offset-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Discount(%)</label>                                           
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Discount(%)</label>
                                  </div>
                                  <div class="col-lg-1">
                                     <input type="text" value="0.00" (keyup)="discount('parts', $event)" class="form-control" id="inputDefault">
@@ -441,7 +445,7 @@
                               </div>
                               <div class="row">
                                  <div class="col-lg-1 offset-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Tax(%)</label>                                           
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Tax(%)</label>
                                  </div>
                                  <div class="col-lg-1">
                                     <input type="text" value="0.00" class="form-control" id="inputDefault">
@@ -449,7 +453,7 @@
                               </div>
                               <div class="row">
                                  <div class="col-lg-1 offset-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Total</label>                                           
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Total</label>
                                  </div>
                                  <div class="col-lg-1">
                                     <input type="text" [value]="totalPartsAmount" class="form-control" id="inputDefault">
@@ -497,9 +501,9 @@
                   </div>
                </div>
             </div>
-            
 
-            
+
+
          </section>
     </div>
 </section>
@@ -602,4 +606,3 @@
  </div>
 
 
- 

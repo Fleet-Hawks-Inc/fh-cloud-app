@@ -46,6 +46,8 @@ import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
 import { CalendarViewComponent } from './planner/calendar-view/calendar-view.component';
 import { MapViewComponent } from './planner/map-view/map-view.component';
 
+import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
+
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
 
@@ -153,7 +155,14 @@ const routes: Routes = [
       { path: 'map-view', component: MapViewComponent},
     ]
   },
+  {
+    path: "home",
+    children: [
+      { path: 'routing-dispatch-overview', component: DispatchOverviewComponent}
+    ]
+  },
 ];
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

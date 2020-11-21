@@ -1836,3 +1836,11 @@ html.fixed .reports-wrapper {
   color: #fff;
   text-transform: uppercase;
 }
+
+.dataTables_empty {
+  display: none;
+}
+
+.no-data-available {
+  text-align: center;
+}

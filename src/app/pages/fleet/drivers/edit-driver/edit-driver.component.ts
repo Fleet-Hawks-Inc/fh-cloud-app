@@ -78,7 +78,7 @@ export class EditDriverComponent implements OnInit {
     this.fetchDriver();
     this.fetchCycles();
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      this.form = $('#driverForm').validate();
     });
   }
 
@@ -189,7 +189,7 @@ export class EditDriverComponent implements OnInit {
   }
 
   updateDriver() {
-    this.errors = {};
+    this.hideErrors();
     const data = {
       driverID: this.driverID,
       userType: this.userType,
@@ -257,7 +257,24 @@ export class EditDriverComponent implements OnInit {
   }
 
   throwErrors() {
-    this.form.showErrors(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error')
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
   }
 
   concatArray(path) {

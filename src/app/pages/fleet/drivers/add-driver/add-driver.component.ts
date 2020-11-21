@@ -266,22 +266,25 @@ export class AddDriverComponent implements OnInit {
   addDriver() {
     //this.spinner.show(); // loader init
     this.register();
-    this.errors = {};
+    this.hideErrors();
     console.log('this.driverData', this.driverData);
     this.apiService.postData('drivers', this.driverData).subscribe({
       complete: () => {},
-      error : (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
-            }),
+            })
           )
-          .subscribe((val) => {
-            this.throwErrors();
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
           });
-
       },
       next: (res) => {
         this.response = res;
@@ -296,7 +299,25 @@ export class AddDriverComponent implements OnInit {
 
 
   throwErrors() {
-    this.form.showErrors(this.errors);
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error')
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
   }
 
   addDocument() {

@@ -41,6 +41,7 @@ export class TripDetailComponent implements OnInit {
 
   fetchTripDetail() {
     this.spinner.show();
+    this.tripID = this.route.snapshot.params['tripID'];
     this.apiService.getData('trips/' + this.tripID).
       subscribe((result: any) => {
         result = result.Items[0];
@@ -77,7 +78,12 @@ export class TripDetailComponent implements OnInit {
             trailerName: "",
             type: element.type,
             vehicleID: element.vehicleID,
-            vehicleName: ""
+            vehicleName: "",
+            actualDropTime: element.actualDropTime,
+            actualPickupTime: element.actualPickupTime,
+            dropTime: element.dropTime,
+            time: element.time,
+            pickupTime: element.pickupTime
           };
 
           this.trips.push(obj);
