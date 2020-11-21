@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AwsUploadService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { HttpClient } from '@angular/common/http';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
@@ -84,7 +85,7 @@ export class AddDriverComponent implements OnInit {
   yardID = '';
 
 
-
+  documentTypeList: any = [];
   driverLicenseCountry = '';
   groups = [];
   countries = [];
@@ -102,6 +103,7 @@ export class AddDriverComponent implements OnInit {
   Success: string = '';
 
   constructor(private apiService: ApiService,
+              private httpClient: HttpClient,
               private toastr: ToastrService,
               private awsUS: AwsUploadService,
               private route: ActivatedRoute,
@@ -133,6 +135,10 @@ export class AddDriverComponent implements OnInit {
     this.fetchVehicles();
     this.getToday();
     this.searchLocation();
+    this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
+      console.log('Document  Data', data);
+      this.documentTypeList = data;
+    });
     $(document).ready(() => {
       $('.btnNext').click(() => {
         this.nextTab = $('.nav-tabs li a.active').closest('li').next('li');
@@ -215,7 +221,7 @@ export class AddDriverComponent implements OnInit {
   }
 
   getToday(): string {
-    return new Date().toISOString().split('T')[0]
+    return new Date().toISOString().split('T')[0];
   }
 
   uploadDriverImg(event): void {

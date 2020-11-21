@@ -1,0 +1,168 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+  
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+  
+        <section role="main" class="content-body p-0">
+            <header class="page-header pr-5">
+               <form class="form-horizontal" method="get">
+                  <div class="row px-2" style="padding-top:10px;">
+                     <div class="col-md-2 col-lg-3">
+                        <div class="input-group input-group-md mb-3">
+                        <input type="text" class="form-control" placeholder="Search by Trip Number, Driver, Shipment Control Number etc." name="">
+                        </div>
+                     </div>
+                     <div class="col-md-2  col-lg-2">
+                        <div class="btn-group flex-wrap" style="width:240px;">
+                           <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle text-left" data-toggle="dropdown">Search by Status <span class="caret"></span></button>
+                           <div class="dropdown-menu" role="menu">
+                              <a class="dropdown-item text-1" href="#">Draft</a>
+                              <a class="dropdown-item text-1" href="#">Accepted</a>
+                              <a class="dropdown-item text-1" href="#">On file with CBP</a>
+                              <a class="dropdown-item text-1" href="#">Rejected</a>
+                           </div>
+                        </div>
+                     </div>
+                    
+                     <div class="col-md-1  col-lg-1">
+                        <button type="submit" class="btn btn-sm btn-success">Search</button>
+                     </div>
+                     <div class="col-md-7 col-lg-6 text-right">
+                        
+                        <div class="btn-group flex-wrap">
+                           <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                           <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                            
+                              <a class="dropdown-item text-1" href="">Import</a>
+                              <a class="dropdown-item text-1" href="">Export</a>
+                           </div>
+                        </div>
+                        <a [routerLink] = "['/dispatch','cross-border','ACE-new-eManifest']" *ngIf="activeDiv === 'ace'" class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add ACE eManifest</a>
+                        <a [routerLink] = "['/dispatch','cross-border','ACI-new-eManifest']" *ngIf="activeDiv === 'aci'"  class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add ACI eManifest</a>
+                     </div>
+                  </div>
+               </form>
+            </header>
+            <div id="list_view">
+               <ul class="nav nav-tabs top-tabs p-2" id="eManifests-tabs" role="tablist">
+                  <li class="nav-item">
+                     <a class="nav-link active" id="ace-emanifest-tab" (click)= "activeDiv = 'ace'" data-toggle="tab" href="#ace-emanifest" role="tab" aria-controls="ace-emanifest" aria-selected="true">ACE eManifest</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" id="aci-emanifest-tab"  (click)= "activeDiv = 'aci'" data-toggle="tab" href="#aci-emanifest" role="tab" aria-controls="aci-emanifest" aria-selected="false">ACI eManifest</a>
+                  </li>
+                  <!-- <li class="nav-item">
+                     <a class="nav-link" id="csaFast-tab" data-toggle="tab" href="#csaFast" role="tab" aria-controls="csaFast" aria-selected="false">CSA/FAST Shipment</a>
+                  </li> -->
+               </ul>
+            <div class="row">
+               <div class="col">
+                  <section class="card">
+                     <div class="card-body">
+                         <div class="tab-content p-0">
+                           <div class="tab-pane show active" id="ace-emanifest" role="tabpanel" aria-labelledby="ace-tab">
+                              <table class="table table-bordered table-responsive-lg table-striped mb-0 allAssets-datatable">
+                                 <thead>
+                                    <tr> 
+                                       <th>Trip</th>
+                                       <th>SCAC Code</th>                                          
+                                       <th>Driver</th>
+                                       <th>Truck</th>                                          
+                                       <th>Trailer</th>
+                                       <th>Shipment No.</th>
+                                       <th>Type</th>
+                                       <th>Consignee</th>
+                                       <th>Status</th>
+                                       <th>Action</th>  
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngFor = "let aceManifest of ACEList;">                                       
+                                       <td  routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}{{aceManifest.tripNumber}}</td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}</td>                                          
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let driver of aceManifest.drivers">{{driver.firstName}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.truck.number}}</td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let trailer of aceManifest.trailers">{{trailer.number}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.shipmentControlNumber}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.type}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">Diamond, Detroit</td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span class="badge badge-dark p-1">{{aceManifest.status}}</span></td>
+                                       <td><div class="btn-group flex-wrap">
+                                          <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                          <div class="dropdown-menu" role="menu">
+                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{aceManifest.entryID }}" class="dropdown-item text-1" >Edit</a>
+                                              <button type="button" class="dropdown-item text-1" (click)="deleteACEEntry(aceManifest.entryID)">Delete</button> 
+                                          </div>
+                                        </div></td>                                       
+                                    </tr> 
+                                 </tbody>
+                              </table>                              
+                           </div>
+                           <div class="tab-pane" id="aci-emanifest" role="tabpanel" aria-labelledby="aci-tab">
+                               <table class="table table-bordered table-responsive-lg table-striped mb-0 allAssets-datatable">
+                                 <thead>
+                                    <tr>                                 
+                                       
+                                       <th>Trip</th>
+                                       <th>CCC Code</th>                                          
+                                        <th>Driver</th>
+                                       <th>Truck</th>                                          
+                                       <th>Trailer</th>
+                                       <th>Cargo Control Number</th>
+                                       <th>Type</th>
+                                       <th>Consignee</th>
+                                       <th>Status</th>
+                                       <th>Action</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngFor = "let aciManifest of ACIList;">                                       
+                                       <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>
+                                        <td>{{aciManifest.CCC}}</td>                                          
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let driver of aciManifest.drivers">{{driver.firstName}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.truck.number}}</td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let trailer of aciManifest.trailers">{{trailer.number}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.shipmentType}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">Diamond, Detroit</td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span class="badge badge-dark p-1">{{aciManifest.status}}</span></td>
+                                       <td><div class="btn-group flex-wrap">
+                                          <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                          <div class="dropdown-menu" role="menu">
+                                             <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{aciManifest.entryID }}" class="dropdown-item text-1" >Edit</a>
+                                              <button type="button" class="dropdown-item text-1" (click)="deleteACIEntry(aciManifest.entryID)">Delete</button> 
+                                          </div>
+                                        </div></td>                                       
+                                    </tr> 
+                                    
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div class="tab-pane" id="csaFast" role="tabpanel" aria-labelledby="csaFast-tab">
+                               <table class="table table-bordered table-striped mb-0 simple-table">
+                          
+                                 <tbody>
+                                    <tr>
+                                       <td width="5%"><p>CSA FAST</p></td>
+                                    </tr>
+
+                                    
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                        
+                     </div>
+                  </section>
+               </div>
+            </div>
+            </div>
+         </section>
+    </div>
+</section>
+  

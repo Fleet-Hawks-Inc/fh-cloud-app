@@ -66,6 +66,11 @@ export class DriverListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         console.log(result);
+
+        this.drivers = result.Items;
+        console.log('drivers', this.drivers);
+        this.spinner.hide(); // loader hide
+
         // this.drivers = result.Items;
         for (let i = 0; i < result.Items.length; i++) {
           // console.log(result.Items[i].isDeleted);
@@ -75,6 +80,7 @@ export class DriverListComponent implements OnInit {
         }
         console.log('drivers',this.drivers)
       //  this.spinner.hide(); // loader hide
+
       },
     });
   }

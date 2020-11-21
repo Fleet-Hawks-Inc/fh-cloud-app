@@ -69,15 +69,24 @@ import { RouteListComponent } from './permanent-routing/route-list/route-list.co
 import { AddRouteComponent } from './permanent-routing/add-route/add-route.component';
 import { EditRouteComponent } from './permanent-routing/edit-route/edit-route.component';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { NgSelectConfig } from '@ng-select/ng-select';
-import { DataTablesModule } from 'angular-datatables'
-import {Injectable} from '@angular/core';
 import { ɵs } from '@ng-select/ng-select';
+import { DataTablesModule } from 'angular-datatables';
+import {Injectable} from '@angular/core';
 import { NewDocumentsComponent } from './new-documents/new-documents.component';
 import { MyDocumentListComponent } from './new-documents/my-documents/my-document-list.component';
 import { OrdersListComponent } from './orders/orders-list/orders-list.component';
 import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
+
+import { EManifestsComponent } from './cross-border/e-manifests/e-manifests.component';
+import { HttpClientModule } from '@angular/common/http';
+import { NgxTagsInputModule } from 'ngx-tags-input';
+import { AceDetailsComponent } from './cross-border/ace-documents/ace-details/ace-details.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { AciDetailsComponent } from './cross-border/aci-documents/aci-details/aci-details.component';
+
 import { AddQuotesComponent } from './quotes/add-quotes/add-quotes.component';
 import { QuotesListComponent } from './quotes/quotes-list/quotes-list.component';
 import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
@@ -94,7 +103,6 @@ import { CalendarViewComponent } from './planner/calendar-view/calendar-view.com
 import { MapViewComponent } from './planner/map-view/map-view.component';
 import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
 
-
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -105,7 +113,7 @@ export class CustomAdapter extends NgbDateAdapter<string> {
 
   fromModel(value: string | null): NgbDateStruct | null {
     if (value) {
-      let date = value.split(this.DELIMITER);
+      const date = value.split(this.DELIMITER);
       return {
         day : parseInt(date[0], 10),
         month : parseInt(date[1], 10),
@@ -130,7 +138,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
   parse(value: string): NgbDateStruct | null {
     if (value) {
-      let date = value.split(this.DELIMITER);
+      const date = value.split(this.DELIMITER);
       return {
         day : parseInt(date[0], 10),
         month : parseInt(date[1], 10),
@@ -169,11 +177,18 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ReactiveFormsModule,
     NgbModule,
     DataTablesModule,
+
+    NgSelectModule,
+    HttpClientModule,
+    NgxTagsInputModule,
+    MatExpansionModule
+
     DragDropModule,
     NgSelectModule,
     NgxMaterialTimepickerModule,
     FullCalendarModule,
     ChartsModule
+
   ],
 
   declarations: [
@@ -233,7 +248,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AddDispatchComponent,
 
 
-
+    EManifestsComponent,
     AciEmanifestComponent,
     NewAciManifestComponent,
     AciShipmentComponent,
@@ -255,6 +270,10 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     OrdersListComponent,
     AddOrdersComponent,
     OrderDetailComponent,
+
+    AceDetailsComponent,
+    AciDetailsComponent,
+
     AddQuotesComponent,
     QuotesListComponent,
     QuoteDetailComponent,
@@ -268,6 +287,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     CalendarViewComponent,
     MapViewComponent,
     DispatchOverviewComponent,
+
 
   ],
 

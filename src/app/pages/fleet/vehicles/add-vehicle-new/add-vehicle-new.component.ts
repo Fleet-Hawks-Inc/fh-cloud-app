@@ -5,6 +5,7 @@ import {concatMap, map, mergeAll, toArray} from 'rxjs/operators';
 import {from, of} from 'rxjs';
 import {AwsUploadService} from '../../../../services';
 import { v4 as uuidv4 } from 'uuid';
+import { HttpClient } from '@angular/common/http';
 declare var $: any;
 
 @Component({
@@ -27,9 +28,11 @@ export class AddVehicleNewComponent implements OnInit {
   /**
    * Vehicle Prop
    */
+  vehicleTypeList: any = [];
   vehicleIdentification = '';
   vehicleType = '';
   VIN = '';
+  DOT = '';
   year = '';
   manufacturerID = '';
   modelID = '';
@@ -88,6 +91,7 @@ export class AddVehicleNewComponent implements OnInit {
     vendorID: '',
     dateOfExpiry: '',
     remiderEvery: '',
+    policyNumber: ''
   };
   fluid = {
     fuelType: '',
@@ -198,7 +202,7 @@ export class AddVehicleNewComponent implements OnInit {
     autoplaySpeed: 1500,
   };
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private router: Router) {
+  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private router: Router, private httpClient: HttpClient,) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       this.vehicleForm = $('#vehicleForm').validate();
@@ -215,7 +219,10 @@ export class AddVehicleNewComponent implements OnInit {
     this.apiService.getData('devices').subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
-
+    this.httpClient.get('assets/vehicleType.json').subscribe(data => {
+      console.log('Vehicle Type', data);
+      this.vehicleTypeList = data;
+    });
     this.settings.hardBreakingParams = 6;
     this.settings.hardAccelrationParams = 6;
     this.settings.turningParams = 6;
@@ -284,6 +291,7 @@ export class AddVehicleNewComponent implements OnInit {
       vehicleIdentification: this.vehicleIdentification,
       vehicleType: this.vehicleType,
       VIN: this.VIN,
+      DOT: this.DOT,
       year: this.year,
       manufacturerID: this.manufacturerID,
       modelID: this.modelID,
@@ -342,6 +350,7 @@ export class AddVehicleNewComponent implements OnInit {
         vendorID: this.insurance.vendorID,
         dateOfExpiry: this.insurance.dateOfExpiry,
         remiderEvery: this.insurance.remiderEvery,
+        policyNumber: this.insurance.policyNumber,
       },
       fluid: {
         fuelType: this.fluid.fuelType,
