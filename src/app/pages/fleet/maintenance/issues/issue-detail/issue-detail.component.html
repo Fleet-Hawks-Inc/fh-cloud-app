@@ -11,7 +11,7 @@
       <section role="main" class="content-body pl-0 pr-0 pt-0">
          <header class="page-header">
             <div class="row pr-5 " style="padding-top:10px;">
-               <div class="col-md-4 col-lg-4">
+               <div class="col-md-4 col-lg-4 pl-4">
                   <span class=" font-weight-bold text-4 text-dark"> Issue #{{issueID}} </span> <span
                      class="badge badge-dark p-1"> {{status | uppercase}}</span>
                </div>
@@ -45,14 +45,15 @@
                <div class="card-body text-dark">
                   <form class="form-horizontal form-bordered" method="get">
                      <div class=" row">
-                        <div class="col-lg-12">
-                           <div class="row mb-3">
-                              <div class="col-lg-12"><label class="control-label font-weight-bold text-4">Issue
-                                    Name:</label><span class="font-weight-bold"> {{issueName}}</span></div>
-                              <div class="col-lg-12"><span class="font-weight-bold text-4">Description:
+                        <div class="col-lg-12"><label class="control-label font-weight-bold text-4">Issue
+                           Name:</label><span class="font-weight-bold"> {{issueName}}</span></div>
+                     
+                          
+                              
+                              <div class="col-lg-12 pb-4"><span class="font-weight-bold text-4">Description:
                                  </span>{{description}}</div>
-                           </div>
-                        </div>
+                          
+                        
                         <div class="col-lg-6">
                            <div class="row">
                               <div class="col-lg-12">

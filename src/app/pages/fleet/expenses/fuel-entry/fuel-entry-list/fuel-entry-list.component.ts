@@ -34,7 +34,7 @@ export class FuelEntryListComponent implements OnInit {
   formattedFromDate: any = '';
   formattedToDate: any = '';
   fuelList;
-
+  dtOptions: any = {};
 
   amount = '';
 
@@ -49,6 +49,11 @@ export class FuelEntryListComponent implements OnInit {
     this.fuelEntries();
     // this.fetchVehicles();
     this.fetchCountries();
+    $(document).ready(() => {
+      setTimeout(() => {
+        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      }, 1800);
+    });
   }
 
   // fetchVehicle(ID) {
@@ -91,8 +96,6 @@ export class FuelEntryListComponent implements OnInit {
     console.log(this.formattedToDate);
     return;
   }
- 
-
   deleteFuelEntry(entryID) {
     /******** Clear DataTable ************/
     if ($.fn.DataTable.isDataTable('#datatable-default')) {
@@ -104,14 +107,43 @@ export class FuelEntryListComponent implements OnInit {
       .subscribe((result: any) => {
      //   this.spinner.show();
         this.fuelEntries();
-        this.toastr.success('Fuel Entry Deleted Successfully!');        
+        this.toastr.success('Fuel Entry Deleted Successfully!');
       });
   }
 
   initDataTable() {
-    timer(200).subscribe(() => {
-      $('#datatable-default').DataTable();
-    });
+    this.dtOptions = {
+      dom: 'lrtip', // lrtip to hide search field
+      processing: true,
+      columnDefs: [
+          {
+              targets: 0,
+              className: 'noVis'
+          },
+          {
+              targets: 1,
+              className: 'noVis'
+          },
+          {
+              targets: 2,
+              className: 'noVis'
+          },
+          {
+              targets: 3,
+              className: 'noVis'
+          },
+          {
+              targets: 4,
+              className: 'noVis'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      buttons: [
+        'colvis',
+      ],
+    };
   }
 
 

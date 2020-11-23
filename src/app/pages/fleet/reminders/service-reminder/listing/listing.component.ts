@@ -11,6 +11,7 @@ declare var $: any;
 })
 export class ListingComponent implements OnInit {
   public remindersData = [];
+  dtOptions: any = {};
   vehicles = [];
   groups = [];
   allRemindersData = [];
@@ -22,8 +23,12 @@ export class ListingComponent implements OnInit {
   ngOnInit() {
     this.fetchReminders();
     this.fetchVehicles();
-
     this.fetchGroups();
+    $(document).ready(() => {
+      setTimeout(() => {
+        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      }, 1800);
+    });
 
   }
   fetchVehicles() {
@@ -92,8 +97,37 @@ export class ListingComponent implements OnInit {
       });
   }
   initDataTable() {
-    timer(200).subscribe(() => {
-      $('#datatable-default').DataTable();
-    });
+    this.dtOptions = {
+      dom: 'Bfrtip', // lrtip to hide search field
+      processing: true,
+      columnDefs: [
+          {
+              targets: 0,
+              className: 'noVis'
+          },
+          {
+              targets: 1,
+              className: 'noVis'
+          },
+          {
+              targets: 2,
+              className: 'noVis'
+          },
+          {
+              targets: 3,
+              className: 'noVis'
+          },
+          {
+              targets: 4,
+              className: 'noVis'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      buttons: [
+        'colvis',
+      ],
+    };
   }
 }

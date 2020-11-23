@@ -57,7 +57,9 @@ const routes: Routes = [
       { path: 'list', component: ServiceListComponent },
       { path: 'add-service', component: AddServiceComponent },
       { path: 'edit/:logID', component: AddServiceComponent },
+
       { path: 'detail/:logID', component: ServiceDetailComponent },
+
     ],
   },
   {

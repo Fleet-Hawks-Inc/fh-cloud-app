@@ -7,13 +7,13 @@
       <!-- start: sidebar -->
       <app-sidebar></app-sidebar>
       <!-- end: sidebar -->
-      <section role="main" class="content-body pl-0  pr-5">
+      <section role="main" class="content-body pl-0">
         <header class="page-header pl-2">
            <div class="row pr-5 " style="padding-top:10px;">
               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
                  {{title}}                     
               </div>
-              <div class="col-md-8  col-lg-8 text-right pr-3">
+              <div class="col-md-8  col-lg-8 text-right pr-4">
                  <a routerLink="/fleet/expenses/fuel/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Fuel List</a>  
                  <div class="btn-group flex-wrap mx-2">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
@@ -23,7 +23,7 @@
                        <a class="modal-with-form dropdown-item text-1" href="javascript:;" (click)="deleteFuelEntry(entryID)">Delete</a>
                     </div>
                  </div>
-                 <a routerLink="/fleet/expenses/fuel/add"  class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Fuel Entry</a>
+                 <a routerLink="/fleet/expenses/fuel/add"  class="btn btn-success btn-sm mr-1"><i class="fas fa-plus"></i> Add Fuel Entry</a>
               </div>
            </div>
         </header>
@@ -42,12 +42,12 @@
                                    <tbody>
                                       <tr>
                                          <td width="40%" class="back-color-gray font-weight-bold">{{unitType | titlecase}}</td>
-                                         <td  width="60%" *ngIf="unitType ==='vehicle'"><a href="#"  class="text-info"  >{{vehicleName}}</a></td>
-                                         <td  width="60%" *ngIf="unitType ==='reefer'"><a href="#"  class="text-info" >{{assetName}}</a></td>
+                                         <td  width="60%" *ngIf="unitType ==='vehicle'"><a routerLink="/fleet/vehicles/detail/{{unitID}}"  class="text-info"  >{{unitName}}</a></td>
+                                         <td  width="60%" *ngIf="unitType ==='reefer'"><a routerLink="/fleet/assets/detail/{{unitID }}"  class="text-info" >{{unitName}}</a></td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Trip Number</td>
-                                         <td><a href="#" class="text-info">{{tripID}}</a></td>
+                                         <td><a routerLink="/dispatch/trips/trip-details/{{tripID }}" class="text-info">{{tripNumber}}</a></td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Date</td>

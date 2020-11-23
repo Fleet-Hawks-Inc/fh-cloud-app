@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DispatchRoutingModule } from './dispatch-routing.module';
@@ -68,10 +69,11 @@ import { RouteListComponent } from './permanent-routing/route-list/route-list.co
 import { AddRouteComponent } from './permanent-routing/add-route/add-route.component';
 import { EditRouteComponent } from './permanent-routing/edit-route/edit-route.component';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { NgSelectConfig } from '@ng-select/ng-select';
-import { DataTablesModule } from 'angular-datatables'
-import {Injectable} from '@angular/core';
 import { ɵs } from '@ng-select/ng-select';
+import { DataTablesModule } from 'angular-datatables';
+import {Injectable} from '@angular/core';
 import { NewDocumentsComponent } from './new-documents/new-documents.component';
 import { MyDocumentListComponent } from './new-documents/my-documents/my-document-list.component';
 import { OrdersListComponent } from './orders/orders-list/orders-list.component';
@@ -81,9 +83,18 @@ import { AddQuotesComponent } from './quotes/add-quotes/add-quotes.component';
 import { QuotesListComponent } from './quotes/quotes-list/quotes-list.component';
 import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
 
+import { EManifestsComponent } from './cross-border/e-manifests/e-manifests.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AceDetailsComponent } from './cross-border/ace-documents/ace-details/ace-details.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { AciDetailsComponent } from './cross-border/aci-documents/aci-details/aci-details.component';
+
+import { AddQuotesComponent } from './quotes/add-quotes/add-quotes.component';
+import { QuotesListComponent } from './quotes/quotes-list/quotes-list.component';
+import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
+
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
 import { TripListComponent } from './trips/trip-list/trip-list.component';
 import { AddTripComponent } from './trips/add-trip/add-trip.component';
@@ -98,23 +109,24 @@ import { MapViewComponent } from './planner/map-view/map-view.component';
  */
 @Injectable()
 export class CustomAdapter extends NgbDateAdapter<string> {
-
-  readonly DELIMITER = '-';
+  readonly DELIMITER = "-";
 
   fromModel(value: string | null): NgbDateStruct | null {
     if (value) {
-      let date = value.split(this.DELIMITER);
+      const date = value.split(this.DELIMITER);
       return {
-        day : parseInt(date[0], 10),
-        month : parseInt(date[1], 10),
-        year : parseInt(date[2], 10)
+        day: parseInt(date[0], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[2], 10),
       };
     }
     return null;
   }
 
   toModel(date: NgbDateStruct | null): string | null {
-    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : null;
+    return date
+      ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year
+      : null;
   }
 }
 
@@ -126,13 +138,14 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
   readonly DELIMITER = ',';
 
+
   parse(value: string): NgbDateStruct | null {
     if (value) {
-      let date = value.split(this.DELIMITER);
+      const date = value.split(this.DELIMITER);
       return {
-        day : parseInt(date[0], 10),
-        month : parseInt(date[1], 10),
-        year : parseInt(date[2], 10)
+        day: parseInt(date[0], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[2], 10),
       };
     }
     return null;
@@ -155,6 +168,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
       'Dec'
     ]
     return date ? MonthList[date.month - 1] + ' ' + date.day + this.DELIMITER + date.year : '';
+
   }
 }
 
@@ -167,10 +181,21 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ReactiveFormsModule,
     NgbModule,
     DataTablesModule,
+
+    NgSelectModule,
+    HttpClientModule,
+
+    NgxTagsInputModule,
+
+    MatExpansionModule,
+
     DragDropModule,
     NgSelectModule,
     NgxMaterialTimepickerModule,
-    FullCalendarModule 
+
+    FullCalendarModule,
+    ChartsModule,
+
   ],
 
   declarations: [
@@ -229,8 +254,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     DispatchPlannerComponent,
     AddDispatchComponent,
 
-
-
+    EManifestsComponent,
     AciEmanifestComponent,
     NewAciManifestComponent,
     AciShipmentComponent,
@@ -238,7 +262,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
     MyDocumentsComponent,
     CompanyDocumentsComponent,
-
 
     AceManifestComponent,
     AceShipmentComponent,
@@ -252,10 +275,15 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     OrdersListComponent,
     AddOrdersComponent,
     OrderDetailComponent,
+
+
+    AceDetailsComponent,
+    AciDetailsComponent,
+
     AddQuotesComponent,
     QuotesListComponent,
     QuoteDetailComponent,
-    
+
 
     RouteDetailComponent,
     TripListComponent,
@@ -265,12 +293,15 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     CalendarViewComponent,
     MapViewComponent,
 
+    DispatchOverviewComponent,
+
   ],
 
-  providers: [NgSelectConfig, ɵs,
-    {provide: NgbDateAdapter, useClass: CustomAdapter},
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},
+  providers: [
+    NgSelectConfig,
+    ɵs,
+    { provide: NgbDateAdapter, useClass: CustomAdapter },
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
-
 })
 export class DispatchModule {}

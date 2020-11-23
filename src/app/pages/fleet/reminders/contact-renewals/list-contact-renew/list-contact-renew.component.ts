@@ -15,12 +15,18 @@ export class ListContactRenewComponent implements OnInit {
   allRemindersData = [];
   subcribersArray = [];
   groups = [];
+  dtOptions: any = {};
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.fetchRenewals();
     this.fetchContacts();
     this.fetchGroups();
+    $(document).ready(() => {
+      setTimeout(() => {
+        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      }, 1800);
+    });
   }
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
@@ -69,16 +75,45 @@ export class ListContactRenewComponent implements OnInit {
     return cName;
   }
   deleteRenewal(entryID) {
-    /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable('#datatable-default')) {
-      $('#datatable-default').DataTable().clear().destroy();
-    }
-    /******************************/
     this.apiService
       .deleteData('reminders/' + entryID)
       .subscribe((result: any) => {
         this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
         this.fetchRenewals();
       });
+  }
+  initDataTable() {
+    this.dtOptions = {
+      dom: 'Bfrtip', // lrtip to hide search field
+      processing: true,
+      columnDefs: [
+          {
+              targets: 0,
+              className: 'noVis'
+          },
+          {
+              targets: 1,
+              className: 'noVis'
+          },
+          {
+              targets: 2,
+              className: 'noVis'
+          },
+          {
+              targets: 3,
+              className: 'noVis'
+          },
+          {
+              targets: 4,
+              className: 'noVis'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      buttons: [
+        'colvis',
+      ],
+    };
   }
 }

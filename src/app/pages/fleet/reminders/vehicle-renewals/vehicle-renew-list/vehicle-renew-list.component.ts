@@ -3,6 +3,7 @@ import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { group } from 'console';
+declare var $: any;
 @Component({
   selector: 'app-vehicle-renew-list',
   templateUrl: './vehicle-renew-list.component.html',
@@ -10,6 +11,7 @@ import { group } from 'console';
 })
 export class VehicleRenewListComponent implements OnInit {
   public remindersData = [];
+  dtOptions: any = {};
   vehicles = [];
   vehicleName: string;
   groups = [];
@@ -23,6 +25,11 @@ export class VehicleRenewListComponent implements OnInit {
     this.fetchRenewals();
     this.fetchVehicles();
     this.fetchGroups();
+    $(document).ready(() => {
+      setTimeout(() => {
+        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      }, 1800);
+    });
   }
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
@@ -81,5 +88,39 @@ export class VehicleRenewListComponent implements OnInit {
         this.fetchRenewals();
         this.toastr.success('Vehicle Renewal Deleted Successfully!');
       });
+  }
+  initDataTable() {
+    this.dtOptions = {
+      dom: 'Bfrtip', // lrtip to hide search field
+      processing: true,
+      columnDefs: [
+          {
+              targets: 0,
+              className: 'noVis'
+          },
+          {
+              targets: 1,
+              className: 'noVis'
+          },
+          {
+              targets: 2,
+              className: 'noVis'
+          },
+          {
+              targets: 3,
+              className: 'noVis'
+          },
+          {
+              targets: 4,
+              className: 'noVis'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      buttons: [
+        'colvis',
+      ],
+    };
   }
 }
