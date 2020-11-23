@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DispatchRoutingModule } from './dispatch-routing.module';
@@ -101,28 +102,30 @@ import { CalendarViewComponent } from './planner/calendar-view/calendar-view.com
 import { MapViewComponent } from './planner/map-view/map-view.component';
 import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
 
+
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
 @Injectable()
 export class CustomAdapter extends NgbDateAdapter<string> {
-
-  readonly DELIMITER = '-';
+  readonly DELIMITER = "-";
 
   fromModel(value: string | null): NgbDateStruct | null {
     if (value) {
       const date = value.split(this.DELIMITER);
       return {
-        day : parseInt(date[0], 10),
-        month : parseInt(date[1], 10),
-        year : parseInt(date[2], 10)
+        day: parseInt(date[0], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[2], 10),
       };
     }
     return null;
   }
 
   toModel(date: NgbDateStruct | null): string | null {
-    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : null;
+    return date
+      ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year
+      : null;
   }
 }
 
@@ -131,16 +134,15 @@ export class CustomAdapter extends NgbDateAdapter<string> {
  */
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
-
-  readonly DELIMITER = ',';
+  readonly DELIMITER = ",";
 
   parse(value: string): NgbDateStruct | null {
     if (value) {
       const date = value.split(this.DELIMITER);
       return {
-        day : parseInt(date[0], 10),
-        month : parseInt(date[1], 10),
-        year : parseInt(date[2], 10)
+        day: parseInt(date[0], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[2], 10),
       };
     }
     return null;
@@ -149,20 +151,22 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   format(date: NgbDateStruct | null): string {
     // return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
     let MonthList = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'April',
-      'May',
-      'Jun',
-      'July',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ]
-    return date ? MonthList[date.month - 1] + ' ' + date.day + this.DELIMITER + date.year : '';
+      "Jan",
+      "Feb",
+      "Mar",
+      "April",
+      "May",
+      "Jun",
+      "July",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    return date
+      ? MonthList[date.month - 1] + " " + date.day + this.DELIMITER + date.year
+      : "";
   }
 }
 
@@ -178,14 +182,16 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
     NgSelectModule,
     HttpClientModule,
+
+    NgxTagsInputModule,
+
     MatExpansionModule,
 
     DragDropModule,
     NgSelectModule,
     NgxMaterialTimepickerModule,
     FullCalendarModule,
-    ChartsModule
-
+    ChartsModule,
   ],
 
   declarations: [
@@ -244,7 +250,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     DispatchPlannerComponent,
     AddDispatchComponent,
 
-
     EManifestsComponent,
     AciEmanifestComponent,
     NewAciManifestComponent,
@@ -253,7 +258,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
     MyDocumentsComponent,
     CompanyDocumentsComponent,
-
 
     AceManifestComponent,
     AceShipmentComponent,
@@ -274,7 +278,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AddQuotesComponent,
     QuotesListComponent,
     QuoteDetailComponent,
-    
 
     RouteDetailComponent,
     TripListComponent,
@@ -284,14 +287,13 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     CalendarViewComponent,
     MapViewComponent,
     DispatchOverviewComponent,
-
-
   ],
 
-  providers: [NgSelectConfig, ɵs,
-    {provide: NgbDateAdapter, useClass: CustomAdapter},
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},
+  providers: [
+    NgSelectConfig,
+    ɵs,
+    { provide: NgbDateAdapter, useClass: CustomAdapter },
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
-
 })
 export class DispatchModule {}
