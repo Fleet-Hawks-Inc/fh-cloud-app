@@ -33,6 +33,9 @@ import { MyDocumentListComponent } from './new-documents/my-documents/my-documen
 import { OrdersListComponent } from './orders/orders-list/orders-list.component';
 import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
+import { QuotesListComponent } from './quotes/quotes-list/quotes-list.component';
+import { AddQuotesComponent } from './quotes/add-quotes/add-quotes.component';
+import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
 
 import { EManifestsComponent } from './cross-border/e-manifests/e-manifests.component';
 import { AceDetailsComponent } from './cross-border/ace-documents/ace-details/ace-details.component';
@@ -52,6 +55,7 @@ import { CalendarViewComponent } from './planner/calendar-view/calendar-view.com
 import { MapViewComponent } from './planner/map-view/map-view.component';
 
 import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
+
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
 
@@ -164,14 +168,7 @@ const routes: Routes = [
       { path: 'map-view', component: MapViewComponent},
     ]
   },
-  {
-    path: "home",
-    children: [
-      { path: 'routing-dispatch-overview', component: DispatchOverviewComponent}
-    ]
-  },
 ];
-
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
