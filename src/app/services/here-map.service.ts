@@ -216,7 +216,6 @@ export class HereMapService {
   }
 
   calculateRoute(coordinates) {
-    console.log('coordinates', coordinates);
     try {
       if (coordinates.length > 2) {
         coordinates.forEach(element => {
@@ -241,7 +240,7 @@ export class HereMapService {
       };
       this.router = this.platform.getRoutingService(null, 8);
       this.map.removeObjects(this.map.getObjects());
-      const routeColors = ['#3700b3', '#03dac6', '#cf6679', '#000080', '#f5d200', '#13a2c2'];
+      const routeColors = ['#bbbdbf', '#03dac6', '#cf6679', '#000080', '#f5d200', '#13a2c2'];
       this.router.calculateRoute(params, route => {
         // console.log("route", route);
         if (route.routes) {
