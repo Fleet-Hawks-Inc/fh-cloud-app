@@ -20,12 +20,14 @@ declare var $: any;
 })
 export class AddFuelEntryComponent implements OnInit {
   title = 'Add Fuel Entry';
+  myform;
   imageError = '';
   fileName = '';
   public entryID;
   /********** Form Fields ***********/
 
   unitType = 'vehicle';
+  unitID: string;
   currency = 'USD';
   vehicleID = '';
   fuelQtyAmt = 0;
@@ -93,12 +95,12 @@ export class AddFuelEntryComponent implements OnInit {
 
 
   constructor(private apiService: ApiService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private spinner: NgxSpinnerService,
-              private location: Location,
-              private awsUS: AwsUploadService, private toaster: ToastrService,
-              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
+    private router: Router,
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
+    private location: Location,
+    private awsUS: AwsUploadService, private toaster: ToastrService,
+    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
     this.selectedFileNames = new Map<any, any>();
   }
   get today() {
@@ -119,7 +121,7 @@ export class AddFuelEntryComponent implements OnInit {
       this.title = 'Add Fuel Entry';
     }
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      this.myform = $('#fuelForm').validate();
     });
   }
   cancel() {
@@ -208,11 +210,12 @@ export class AddFuelEntryComponent implements OnInit {
     this.hasSuccess = false;
     const data = {
       unitType: this.unitType,
-      vehicleID: this.vehicleID,
+      unitID: this.unitID,
+      // vehicleID: this.vehicleID,
       fuelQty: this.fuelQty,
       fuelQtyUnit: this.fuelQtyUnit,
       fuelQtyAmt: this.fuelQtyAmt,
-      reeferID: this.reeferID,
+      // reeferID: this.reeferID,
       DEFFuelQty: this.DEFFuelQty,
       DEFFuelQtyAmt: this.DEFFuelQtyAmt,
       discount: this.discount,
@@ -248,25 +251,16 @@ export class AddFuelEntryComponent implements OnInit {
     console.log('filled data', data);
     this.apiService.postData('fuelEntries', data).subscribe({
       complete: () => { },
-      error: (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-           //   console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
-            })
+              this.errors[val.context.key] = val.message;
+            }),
           )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-              this.Success = '';
-            },
-            error: () => { },
-            next: () => { },
+          .subscribe((val) => {
+            this.throwErrors();
           });
       },
       next: (res) => {
@@ -279,14 +273,14 @@ export class AddFuelEntryComponent implements OnInit {
   }
 
   throwErrors() {
-    this.form.showErrors(this.errors);
+    this.myform.showErrors(this.errors);
   }
   /*
   * Selecting files before uploading
   */
   selectDocuments(event, obj) {
     this.selectedFiles = event.target.files;
-  //  console.log('selected files', this.selectedFiles[0].name);
+    //  console.log('selected files', this.selectedFiles[0].name);
     if (obj === 'uploadedPhotos') {
       for (let i = 0; i <= this.selectedFiles.item.length; i++) {
         const randomFileGenerate = this.selectedFiles[i].name.split('.');
@@ -319,49 +313,50 @@ export class AddFuelEntryComponent implements OnInit {
         this.entryID = this.entryID;
         this.currency = result.currency,
           this.unitType = result.unitType;
-        this.vehicleID = result.vehicleID,
-          this.reeferID = result.reeferID,
-          this.fuelQty = result.fuelQty,
-          this.fuelQtyUnit = result.fuelQtyUnit,
-          this.fuelQtyAmt = +result.fuelQtyAmt,
-          this.DEFFuelQty = +result.DEFFuelQty,
-          this.DEFFuelQtyUnit = result.fuelQtyUnit,
-          this.DEFFuelQtyAmt = +result.DEFFuelQtyAmt,
-          this.discount = +result.discount,
-          this.totalAmount = result.totalAmount,
-          this.costPerUnit = +result.costPerUnit,
-          this.amountPaid = result.amountPaid,
-          this.date = result.date,
-          this.fuelType = result.fuelType,
+        this.unitID = result.unitID;
+        // this.vehicleID = result.vehicleID;
+        // this.reeferID = result.reeferID;
+        this.fuelQty = result.fuelQty;
+        this.fuelQtyUnit = result.fuelQtyUnit;
+        this.fuelQtyAmt = +result.fuelQtyAmt;
+        this.DEFFuelQty = +result.DEFFuelQty;
+        this.DEFFuelQtyUnit = result.fuelQtyUnit;
+        this.DEFFuelQtyAmt = +result.DEFFuelQtyAmt;
+        this.discount = +result.discount;
+        this.totalAmount = result.totalAmount;
+        this.costPerUnit = +result.costPerUnit;
+        this.amountPaid = result.amountPaid;
+        this.date = result.date;
+        this.fuelType = result.fuelType;
 
-          this.paidBy = result.paidBy,
-          this.paymentMode = result.paymentMode,
-          this.reference = result.reference,
-          this.reimburseToDriver = result.reimburseToDriver,
-          this.deductFromPay = result.deductFromPay,
+        this.paidBy = result.paidBy;
+        this.paymentMode = result.paymentMode;
+        this.reference = result.reference;
+        this.reimburseToDriver = result.reimburseToDriver;
+        this.deductFromPay = result.deductFromPay;
 
 
-          this.vendorID = result.vendorID,
-          this.countryID = result.countryID,
-          this.stateID = result.stateID,
-          this.cityID = result.cityID,
-          this.tripID = result.tripID,
+        this.vendorID = result.vendorID;
+        this.countryID = result.countryID;
+        this.stateID = result.stateID;
+        this.cityID = result.cityID;
+        this.tripID = result.tripID;
 
-          this.additionalDetails = {
-            avgGVW: result.additionalDetails.avgGVW,
-            odometer: result.additionalDetails.odometer,
-            description: result.additionalDetails.description,
-            uploadedPhotos: result.additionalDetails.uploadedPhotos,
-          },
-          this.fuel = {
-            costPerGallon: result.fuel.costPerGallon,
-            costPerLitre: result.fuel.costPerLitre,
-            totalGallons: result.fuel.totalGallons,
-            totalLitres: result.fuel.totalLitres
-          },
-          setTimeout(() => {
-            this.fillCountry();
-          }, 2000);
+        this.additionalDetails = {
+          avgGVW: result.additionalDetails.avgGVW,
+          odometer: result.additionalDetails.odometer,
+          description: result.additionalDetails.description,
+          uploadedPhotos: result.additionalDetails.uploadedPhotos,
+        };
+        this.fuel = {
+          costPerGallon: result.fuel.costPerGallon,
+          costPerLitre: result.fuel.costPerLitre,
+          totalGallons: result.fuel.totalGallons,
+          totalLitres: result.fuel.totalLitres
+        };
+        setTimeout(() => {
+          this.fillCountry();
+        }, 2000);
       });
   }
   updateFuelEntry() {
@@ -377,11 +372,12 @@ export class AddFuelEntryComponent implements OnInit {
     const data = {
       entryID: this.entryID,
       unitType: this.unitType,
-      vehicleID: this.vehicleID,
+      unitID: this.unitID,
+      // vehicleID: this.vehicleID,
       fuelQty: this.fuelQty,
       fuelQtyUnit: this.fuelQtyUnit,
       fuelQtyAmt: this.fuelQtyAmt,
-      reeferID: this.reeferID,
+      // reeferID: this.reeferID,
       DEFFuelQty: this.DEFFuelQty,
       DEFFuelQtyAmt: this.DEFFuelQtyAmt,
       discount: this.discount,
@@ -414,26 +410,19 @@ export class AddFuelEntryComponent implements OnInit {
         costPerGallon: this.fuel.costPerGallon
       },
     };
-  //  console.log(data);
+    //  console.log(data);
     this.apiService.putData('fuelEntries', data).subscribe({
       complete: () => { },
-      error: (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/'([^']+)'/)[1];
-              val.message = val.message.replace(/'.*'/, 'This Field');
-              this.errors[key] = val.message;
-            })
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            }),
           )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
+          .subscribe((val) => {
+            this.throwErrors();
           });
       },
       next: (res) => {

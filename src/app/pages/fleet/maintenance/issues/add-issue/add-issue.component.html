@@ -11,19 +11,14 @@
         <section role="main" class="content-body pl-0 pr-0 pt-0">
             <header class="page-header">
                 <div class="row pr-5 " style="padding-top:10px;">
-                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark pl-4">
                         {{title}}
                     </div>
-
                     <div class="col-md-8  col-lg-8 text-right pr-4">
-
                         <a routerLink="/fleet/maintenance/issues/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Issues
                             List</a>
-
-
                     </div>
                 </div>
-
             </header>
             <div class="row">
                 <div class="col pr-0">
@@ -144,10 +139,10 @@
                                         Details</label>
                                 </div>
                                 <div class="col-lg-5 offset-lg-1">
-                                    <div class="row pt-2">
+                                    <div class="row">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
+                                                class="control-label font-weight-bold font-bold text-lg-right">Attach
                                                 Photo</label>
                                                 <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" type="file" multiple class="form-control p-0">
                                             </div>
@@ -160,10 +155,10 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-5 offset-lg-1">
-                                    <div class="row pt-2">
+                                    <div class="row">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
+                                                class="control-label font-weight-bold font-bold text-lg-right">Attach
                                                 Document</label>
                                                 <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple class="form-control p-0">
                                         </div>

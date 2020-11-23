@@ -20,7 +20,7 @@ export class IssueListComponent implements OnInit {
   contacts: [];
   vehicleName: string;
   contactName: string;
-
+  dtOptions: any = {};
   unitID = '';
   unitName = '';
   issueName = '';
@@ -31,10 +31,16 @@ export class IssueListComponent implements OnInit {
 
 
   ngOnInit() {
+    this.fetchAllIssues();
     this.fetchIssues();
     this.fetchContacts();
     this.fetchVehicles();
     this.fetchAssets();
+    $(document).ready(() => {
+      setTimeout(() => {
+        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      }, 1800);
+    });
   }
 
   setUnit(unitID, unitName) {
@@ -119,35 +125,80 @@ export class IssueListComponent implements OnInit {
       return assetName;
     }
   }
-  fetchIssues() {
-    this.apiService.getData(`issues?unitID=${this.unitID}&issueName=${this.issueName}`).subscribe({
+  fetchIssues() {   
+ 
+      this.apiService.getData(`issues?unitID=${this.unitID}&issueName=${this.issueName}`).subscribe({
+        complete: () => {
+          this.initDataTable();
+        },
+        error: () => { },
+        next: (result: any) => {
+          this.issues = result.Items;
+        //  console.log('Array', this.issues);
+        },
+      });
+  }
+  fetchAllIssues() {
+    this.apiService.getData(`issues/`).subscribe({
       complete: () => {
         this.initDataTable();
       },
       error: () => { },
       next: (result: any) => {
         this.issues = result.Items;
-      //  console.log('Array', this.issues);
+      // console.log('all issues Array', this.issues);
       },
     });
   }
+  // deleteIssue(issueID) {
+  //   /******************************/
+  //   this.apiService
+  //     .deleteData('issues/' + issueID)
+  //     .subscribe((result: any) => {
+  //       //   this.spinner.show();
+  //       this.fetchIssues();
+  //       this.toastr.success('Issue Deleted Successfully!');
+  //     });
+  // }
   deleteIssue(issueID) {
-    /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable('#datatable-default')) {
-      $('#datatable-default').DataTable().clear().destroy();
-    }
-    /******************************/
     this.apiService
       .deleteData('issues/' + issueID)
       .subscribe((result: any) => {
-        //   this.spinner.show();
-        this.fetchIssues();
         this.toastr.success('Issue Deleted Successfully!');
       });
   }
   initDataTable() {
-    timer(200).subscribe(() => {
-      $('#datatable-default').DataTable();
-    });
+    this.dtOptions = {
+      dom: 'lrtip', // lrtip to hide search field
+      processing: true,
+      columnDefs: [
+          {
+              targets: 0,
+              className: 'noVis'
+          },
+          {
+              targets: 1,
+              className: 'noVis'
+          },
+          {
+              targets: 2,
+              className: 'noVis'
+          },
+          {
+              targets: 3,
+              className: 'noVis'
+          },
+          {
+              targets: 4,
+              className: 'noVis'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      buttons: [
+        'colvis',
+      ],
+    };
   }
 }

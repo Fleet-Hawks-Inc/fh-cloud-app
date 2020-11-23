@@ -42,12 +42,12 @@
                                    <tbody>
                                       <tr>
                                          <td width="40%" class="back-color-gray font-weight-bold">{{unitType | titlecase}}</td>
-                                         <td  width="60%" *ngIf="unitType ==='vehicle'"><a routerLink="/fleet/vehicles/detail/{{vehicleID}}"  class="text-info"  >{{vehicleName}}</a></td>
-                                         <td  width="60%" *ngIf="unitType ==='reefer'"><a routerLink="/fleet/assets/detail/{{reeferID }}"  class="text-info" >{{assetName}}</a></td>
+                                         <td  width="60%" *ngIf="unitType ==='vehicle'"><a routerLink="/fleet/vehicles/detail/{{unitID}}"  class="text-info"  >{{unitName}}</a></td>
+                                         <td  width="60%" *ngIf="unitType ==='reefer'"><a routerLink="/fleet/assets/detail/{{unitID }}"  class="text-info" >{{unitName}}</a></td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Trip Number</td>
-                                         <td><a href="#" class="text-info">{{tripID}}</a></td>
+                                         <td><a routerLink="/dispatch/trips/trip-details/{{tripID }}" class="text-info">{{tripNumber}}</a></td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Date</td>

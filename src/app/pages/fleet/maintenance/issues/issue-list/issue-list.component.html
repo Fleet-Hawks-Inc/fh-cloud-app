@@ -11,8 +11,8 @@
     <section role="main" class="content-body pt-0 pr-0 pl-0">
       <header class="page-header">
         <div class="row px-4" style="padding-top: 10px">
-          <div class="col-md-2 col-lg-2">
-            <div class="input-group input-group-sm mb-3">
+          <div class="col-md-2 col-lg-2 pr-0 pl-0">
+            <!-- <div class="input-group input-group-sm mb-3">
               <input
                 autocomplete="off"
                 type="text"
@@ -29,9 +29,14 @@
               (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)"
             >
               {{ suggestedUnit.unitName }}
-            </div>
+            </div> -->
+            <ng-select placeholder="Search By Vehicle" name="unitID"
+            [(ngModel)]="unitID">
+              <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleID">{{vehicle.vehicleIdentification}}</ng-option>
+              <ng-option *ngFor="let asset of assets" [value]="asset.assetID">{{asset.assetIdentification}}</ng-option>
+          </ng-select> 
           </div>
-          <div class="col-md-2 col-lg-2">
+          <div class="col-md-2 col-lg-2 pr-0 pl-2">
             <div class="input-group input-group-sm mb-3">
               <input
                 type="text"
@@ -42,7 +47,7 @@
               />
             </div>
           </div>
-          <div class="col-md-1 col-lg-1">
+          <div class="col-md-1 col-lg-1 pl-2">
             <button
               type="submit"
               (click)="fetchIssues()"
@@ -51,7 +56,7 @@
               Search
             </button>
           </div>
-          <div class="col-md-7 col-lg-7 text-right pr-5">
+          <div class="col-md-7 col-lg-7 text-right pr-5 page-buttons">
             <div class="btn-group flex-wrap">
               <button
                 type="button"
@@ -79,37 +84,22 @@
             </div>
             <a
               [routerLink]="['/fleet', 'maintenance', 'issues', 'add']"
-              class="btn btn-success btn-sm mx-2"
+              class="btn btn-success btn-sm ml-2"
               style="color: white"
               ><i class="fas fa-plus"></i> Add Issue</a
             >
           </div>
         </div>
       </header>
-      <!-- <section class="card">
-           <div class="row">
-              <div class="col-lg-8">
-                 <div class="wtopnav">
-                    <ul>
-                       <li><a routerLink="/fleet/maintenance/issues/list"  class="active">Issues</a></li>
-                       <li><a routerLink="/fleet/maintenance/service-log/list" >Services </a></li>
-                    </ul>
-                 </div>
-              </div>
-              <div class="col-lg-4 pt-1 text-right">
-              </div>
-           </div>
-        </section> -->
       <div class="row">
         <div class="col pr-0">
           <section class="card">
             <div class="card-body">
               <table
-                class="table table-responsive-lg table-bordered table-striped mb-0"
+                class="table table-responsive-lg table-bordered table-striped mb-0"  datatable [dtOptions]="dtOptions"
               >
                 <thead>
                   <tr>
-                    <!-- <th><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
                     <th>Unit Type</th>
                     <th>Vehicle/Assets</th>
                     <th>Issue</th>
@@ -121,7 +111,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let issue of issues">
+                  <tr *ngFor="let issue of issues" style="cursor: pointer;">
                     <td
                       routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
@@ -134,8 +124,7 @@
                         issue.issueID
                       }}"
                     >
-                      <span class="font-weight-bold line-height-lg">{{
-                        <!-- getUnitName(issue.unitID, issue.unitType) -->
+                      <span class="font-weight-bold line-height-lg">{{issue.unitID
                       }}</span>
                     </td>
                     <td
@@ -150,14 +139,14 @@
                         issue.issueID
                       }}"
                     >
-                      {{ issue.reportedDate }}
+                      {{issue.reportedDate}}
                     </td>
                     <td
                       routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
                       }}"
                     >
-                      {{ getContactName(issue.reportedBy) }}
+                      {{issue.reportedBy}}
                     </td>
                     <td
                       routerLink="/fleet/maintenance/issues/detail/{{

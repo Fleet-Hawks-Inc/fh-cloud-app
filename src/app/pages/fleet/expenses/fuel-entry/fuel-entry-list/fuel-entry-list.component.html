@@ -9,15 +9,15 @@
 	  <!-- end: sidebar -->
   
 	  <section role="main" class="content-body pl-0">
-		<header class="page-header pl-3">
+		<header class="page-header">
 		  <form class="form-horizontal" method="get" name="form" id="form_">
-			 <div class="row px-4" style="padding-top:10px;">
-				<div class="col-md-2 col-lg-2">
+			 <div class="row pr-4 pl-2" style="padding-top:10px;">
+				<div class="col-md-2 col-lg-2 pr-0">
 				   <div class="input-group input-group-md mb-3">
 					<input class="form-control" name="amount" [(ngModel)]="amount" >
 				   </div>
 				</div>
-				<div class="col-lg-2 col-md-2">              
+				<div class="col-lg-2 col-md-2 pl-2 pr-0">              
 				  <div class="form-group">
 					<div class="input-group">
 					   <span class="input-group-prepend positionsta">
@@ -30,11 +30,10 @@
 						 placeholder="Enter Start Date"
 						 name="fromDate" [(ngModel)]="fromDate" ngbDatepicker #from="ngbDatepicker"
 					   />
-					 </div>
-				   
+					 </div>				   
 				  </div> 
 				 </div>
-				 <div class="col-lg-2 col-md-2">
+				 <div class="col-lg-2 col-md-2 pr-0 pl-2">
 					<div class="form-group">
 					   <div class="input-group">
 						  <span class="input-group-prepend positionsta">
@@ -47,16 +46,13 @@
 							placeholder="Enter End Date"
 							name="toDate" [(ngModel)]="toDate" ngbDatepicker #to="ngbDatepicker"
 						  />
-						</div>
-					  
-					 </div>
-				  
-				  
+						</div>					  
+					 </div>					  
 				</div>
-				<div class="col-md-1  col-lg-1">
+				<div class="col-md-1  col-lg-1 pl-2">
 				   <button type="submit" (click)="fuelEntries()" class="btn btn-sm btn-success">Search</button>
 				</div>
-				<div class="col-md-5  col-lg-5 text-right pr-5">
+				<div class="col-md-5  col-lg-5 text-right pr-5 page-buttons">
 				   <div class="btn-group flex-wrap">
 					  <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
 					  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -75,7 +71,7 @@
 			 <section class="card">
 				<div class="card-body">
 				   <table
-				  class="table table-bordered table-responsive table-hover table-striped mb-0">
+				  class="table table-bordered table-responsive table-hover table-striped mb-0"  datatable [dtOptions]="dtOptions">
 				  <thead>
 					<tr>
 						<!-- <th><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
