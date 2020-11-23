@@ -15,12 +15,12 @@ import { element } from 'protractor';
 declare var $: any;
 declare var H: any;
 @Component({
-  selector: 'app-add-orders',
-  templateUrl: './add-orders.component.html',
-  styleUrls: ['./add-orders.component.css']
+  selector: 'app-add-quotes',
+  templateUrl: './add-quotes.component.html',
+  styleUrls: ['./add-quotes.component.css']
 })
-export class AddOrdersComponent implements OnInit {
-  public getOrderID;
+export class AddQuotesComponent implements OnInit {
+  public getQuoteID;
   pageTitle = 'Add Order';
   private readonly search: any;
   public searchTerm = new Subject<string>();
@@ -85,10 +85,10 @@ export class AddOrdersComponent implements OnInit {
     maxTempratureUnit: '',
     driverUnload: '',
   }
-  orderData = {
+  quoteData = {
     shipperInfo: [],
     receiverInfo: [],
-    freightDetails: {},
+    freightDetails: [],
     additionalDetails: {},
     charges: {
       freightFee: {},
@@ -143,17 +143,17 @@ export class AddOrdersComponent implements OnInit {
       this.form = $('#form_').validate();
     });
 
-    this.getOrderID = this.route.snapshot.params['orderID'];
-    if (this.getOrderID) {
-      this.pageTitle = 'Edit Order';
+    this.getQuoteID = this.route.snapshot.params['quoteID'];
+    if (this.getQuoteID) {
+      this.pageTitle = 'Edit Quote';
       this.fetchOrderByID();
     } else {
-      this.pageTitle = 'Add Order';
+      this.pageTitle = 'Add Quote';
     }
   }
   userLocation(label) {
     console.log(label);
-    this.orderData.shipperInfo['pickupLocation'] = label;
+    this.quoteData.shipperInfo['pickupLocation'] = label;
   }
   public searchLocation() {
     let target;
@@ -211,7 +211,7 @@ export class AddOrdersComponent implements OnInit {
       driverLoad: this.shipperCurrent.driverLoad,
       position: geoCodeResponse.position.lng + ',' + geoCodeResponse.position.lat
     }
-    this.orderData.shipperInfo.push(currentShipper);
+    this.quoteData.shipperInfo.push(currentShipper);
     this.emptyShipper();
     this.shipperReceiverMerge();
   }
@@ -246,15 +246,15 @@ export class AddOrdersComponent implements OnInit {
       driverUnload: this.receiverCurrent.driverUnload,
       position: geoCodeResponse.position.lng + ',' +  geoCodeResponse.position.lat
     }
-    this.orderData.receiverInfo.push(currentReceiver);
+    this.quoteData.receiverInfo.push(currentReceiver);
     this.shipperReceiverMerge();
     this.emptyReceiver()
-    console.log("orderData", this.orderData)
+    console.log("orderData", this.quoteData)
   }
 
   shipperReceiverMerge () {
-    this.mergedArray = this.orderData.shipperInfo.concat(this.orderData.receiverInfo);
-    console.log("this.orderData", this.orderData);
+    this.mergedArray = this.quoteData.shipperInfo.concat(this.quoteData.receiverInfo);
+    console.log("this.orderData", this.quoteData);
     console.log("mergedArray", this.mergedArray);
     this.mergedArray.sort((a, b) => {
       return new Date(a.locationDateTime).valueOf() - new Date(b.locationDateTime).valueOf();
@@ -295,6 +295,12 @@ export class AddOrdersComponent implements OnInit {
     this.receiverCurrent.driverUnload = '';
   }
 
+  addFreight() {
+    // this.quoteData.freightDetails.push({
+
+    // })
+  }
+
   /*
    * Get all customers from api
    */
@@ -330,19 +336,19 @@ export class AddOrdersComponent implements OnInit {
       
       this.google.googleDistance([this.origin], [this.googleCords.join('|')]).subscribe(res => {
         console.log("google res", res);
-        this.orderData['totalMiles'] =  res;
+        this.quoteData['totalMiles'] =  res;
       }, err => {
         console.log('google res', err);
       });
     } else if (value === 'pcmiles') {
       this.google.pcMiles.next(true);
       this.google.pcMilesDistance(this.getAllCords.join(';')).subscribe(res => {
-        this.orderData['totalMiles'] =  res;
+        this.quoteData['totalMiles'] =  res;
       }, err => {
         console.log('pc res', err);
       });
     } else {
-      this.orderData['totalMiles'] =  '';
+      this.quoteData['totalMiles'] =  '';
     }
     this.getAllCords = [];
  }
@@ -356,7 +362,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   addShipper() {
-    this.orderData.shipperInfo.push({
+    this.quoteData.shipperInfo.push({
       shipperName: '',
       pickupLocation: '',
       pickupDate: '',
@@ -373,11 +379,11 @@ export class AddOrdersComponent implements OnInit {
       maxTempratureUnit: '',
       driverLoad: '',
     })
-    console.log(this.orderData)
+    console.log(this.quoteData)
   }
 
   addReceiver() {
-    this.orderData.receiverInfo.push({
+    this.quoteData.receiverInfo.push({
       receiverName: '',
       dropOffLocation: '',
       dropOffDate: '',
@@ -393,7 +399,7 @@ export class AddOrdersComponent implements OnInit {
       maxTempratureUnit: '',
       driverUnload: '',
     })
-    console.log(this.orderData)
+    console.log(this.quoteData)
   }
 
   toggleAccordian(ind) {
@@ -407,8 +413,8 @@ export class AddOrdersComponent implements OnInit {
 
   
   onSubmit() {
-    console.log("order", this.orderData);
-    this.apiService.postData('orders', this.orderData).
+    console.log("quotes", this.quoteData);
+    this.apiService.postData('quotes', this.quoteData).
     subscribe({
       complete : () => {},
       error: (err: any) => {
@@ -441,9 +447,9 @@ export class AddOrdersComponent implements OnInit {
 
   remove(data, i ){
     if(data === 'shipper') {
-      this.orderData.shipperInfo.splice(i, 1);
+      this.quoteData.shipperInfo.splice(i, 1);
     } else {
-      this.orderData.receiverInfo.splice(i, 1);
+      this.quoteData.receiverInfo.splice(i, 1);
     }
   }
 
@@ -451,23 +457,23 @@ export class AddOrdersComponent implements OnInit {
     console.log(value);
   }
   amountCalculate() {
-    if(this.orderData.charges.freightFee['amount'] !== '' && this.orderData.charges.freightFee['amount'] !== undefined){
-      this.freightFee = `${this.orderData.charges.freightFee['amount']}`;
+    if(this.quoteData.charges.freightFee['amount'] !== '' && this.quoteData.charges.freightFee['amount'] !== undefined){
+      this.freightFee = `${this.quoteData.charges.freightFee['amount']}`;
     } else {
       this.freightFee = 0;
     }
-    if(this.orderData.charges.fuelSurcharge['amount'] !== '' && this.orderData.charges.fuelSurcharge['amount'] !== undefined){
-      this.fuelSurcharge = `${this.orderData.charges.fuelSurcharge['amount']}`;
+    if(this.quoteData.charges.fuelSurcharge['amount'] !== '' && this.quoteData.charges.fuelSurcharge['amount'] !== undefined){
+      this.fuelSurcharge = `${this.quoteData.charges.fuelSurcharge['amount']}`;
     } else {
       this.fuelSurcharge = 0;
     }
-    if(this.orderData.charges.accessorialFee['amount'] !== '' && this.orderData.charges.accessorialFee['amount'] !== undefined){
-      this.accessorialFee = `${this.orderData.charges.accessorialFee['amount']}`;
+    if(this.quoteData.charges.accessorialFee['amount'] !== '' && this.quoteData.charges.accessorialFee['amount'] !== undefined){
+      this.accessorialFee = `${this.quoteData.charges.accessorialFee['amount']}`;
     } else {
       this.accessorialFee = 0;
     }
-    if(this.orderData.charges.accessorialDeduction['amount'] !== '' && this.orderData.charges.accessorialDeduction['amount'] !== undefined){
-      this.accessorialDeduction = `${this.orderData.charges.accessorialDeduction['amount']}`;
+    if(this.quoteData.charges.accessorialDeduction['amount'] !== '' && this.quoteData.charges.accessorialDeduction['amount'] !== undefined){
+      this.accessorialDeduction = `${this.quoteData.charges.accessorialDeduction['amount']}`;
     } else {
       this.accessorialDeduction = 0;
     }
@@ -480,7 +486,7 @@ export class AddOrdersComponent implements OnInit {
       if(this.loadTypeData.indexOf(value) !== -1) {}
       else {
         this.loadTypeData.push(value);
-        this.orderData.additionalDetails['loadType'] = this.loadTypeData;
+        this.quoteData.additionalDetails['loadType'] = this.loadTypeData;
       }
     } else {
       this.loadTypeData.splice(i , 1);
@@ -489,15 +495,15 @@ export class AddOrdersComponent implements OnInit {
 
   removeList(elem, i) {
     if (elem === 'shipper') {
-      this.orderData.shipperInfo.splice(i, 1);
+      this.quoteData.shipperInfo.splice(i, 1);
     } else {
-      this.orderData.receiverInfo.splice(i, 1);
+      this.quoteData.receiverInfo.splice(i, 1);
     }
   }
 
   discountCalculate(){
-    let discountUnit = this.orderData.discount['unit'];
-    let discountAmount = this.orderData.discount['amount'];
+    let discountUnit = this.quoteData.discount['unit'];
+    let discountAmount = this.quoteData.discount['amount'];
     if (this.subTotal) {
       if (discountUnit === 'percentage') {
         this.discount = discountAmount;
@@ -515,14 +521,14 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.receiverCurrent.dropOffLocation = label;
       console.log(this.receiverCurrent.dropOffLocation);
-      console.log("orders", this.orderData);
+      console.log("orders", this.quoteData);
     }
     this.searchResults = false;
   }
 
   editList(elem, item, i) {
     if (elem === 'shipper') {
-      let index = this.orderData.shipperInfo.indexOf(item);
+      let index = this.quoteData.shipperInfo.indexOf(item);
       console.log("index", index);
       this.shipperCurrent.shipperName = item.shipperName;
       this.shipperCurrent.pickupLocation = item.pickupLocation;
@@ -549,44 +555,38 @@ export class AddOrdersComponent implements OnInit {
   */
  fetchOrderByID(){
   this.apiService
-  .getData('orders/' + this.getOrderID)
+  .getData('quotes/' + this.getQuoteID)
   .subscribe((result: any) => {
     result = result.Items[0];
     console.log(result);
-    this.orderData['customerID'] = result.customerID;
-    this.orderData['additionalContact'] = result.additionalContact;
-    this.orderData['creationDate'] = result.creationDate;
-    this.orderData['csa'] = result.csa;
-    this.orderData['ctpat'] = result.ctpat;
-    this.orderData['customerPO'] = result.customerPO;
-    this.orderData['email'] = result.email;
-    this.orderData['orderMode'] = result.orderMode;
-    this.orderData['orderNumber'] = result.orderNumber;
-    this.orderData['phone'] = result.phone;
-    this.orderData['reference'] = result.reference;
-    this.orderData['remarks'] = result.remarks;
-    this.orderData['totalMiles'] = result.totalMiles;
-    this.orderData['tripType'] = result.tripType;
-
-    this.orderData.additionalDetails['dropTrailer'] = result.additionalDetails.dropTrailer;
+    this.quoteData['customerID'] = result.customerID;
+    this.quoteData['additionalContact'] = result.additionalContact;
+    this.quoteData['creationDate'] = result.creationDate;
+    this.quoteData['expiryDate'] = result.expiryDate;
+    this.quoteData['quoteNumber'] = result.quoteNumber;
+    this.quoteData['reference'] = result.reference;
+    this.quoteData['remarks'] = result.remarks;
+    this.quoteData['totalMiles'] = result.totalMiles;
+    
+    this.quoteData.additionalDetails['dropTrailer'] = result.additionalDetails.dropTrailer;
     this.loadTypeData = result.additionalDetails.loadType;
     
-    this.orderData.charges.accessorialDeduction['amount'] = result.charges.accessorialDeduction.amount;
-    this.orderData.charges.accessorialDeduction['type'] = result.charges.accessorialDeduction.type;
-    this.orderData.charges.accessorialDeduction['unit'] = result.charges.accessorialDeduction.unit;
-    this.orderData.charges.accessorialFee['amount'] = result.charges.accessorialFee.amount;
-    this.orderData.charges.accessorialFee['currency'] = result.charges.accessorialFee.currency;
-    this.orderData.charges.accessorialFee['type'] = result.charges.accessorialFee.type;
-    this.orderData.charges.freightFee['amount'] = result.charges.freightFee.amount;
-    this.orderData.charges.freightFee['currency'] = result.charges.freightFee.currency;
-    this.orderData.charges.freightFee['type'] = result.charges.freightFee.type;
-    this.orderData.charges.fuelSurcharge['amount'] = result.charges.fuelSurcharge.amount;
-    this.orderData.charges.fuelSurcharge['currency'] = result.charges.fuelSurcharge.currency;
-    this.orderData.charges.fuelSurcharge['type'] = result.charges.fuelSurcharge.type;
+    this.quoteData.charges.accessorialDeduction['amount'] = result.charges.accessorialDeduction.amount;
+    this.quoteData.charges.accessorialDeduction['type'] = result.charges.accessorialDeduction.type;
+    this.quoteData.charges.accessorialDeduction['unit'] = result.charges.accessorialDeduction.unit;
+    this.quoteData.charges.accessorialFee['amount'] = result.charges.accessorialFee.amount;
+    this.quoteData.charges.accessorialFee['currency'] = result.charges.accessorialFee.currency;
+    this.quoteData.charges.accessorialFee['type'] = result.charges.accessorialFee.type;
+    this.quoteData.charges.freightFee['amount'] = result.charges.freightFee.amount;
+    this.quoteData.charges.freightFee['currency'] = result.charges.freightFee.currency;
+    this.quoteData.charges.freightFee['type'] = result.charges.freightFee.type;
+    this.quoteData.charges.fuelSurcharge['amount'] = result.charges.fuelSurcharge.amount;
+    this.quoteData.charges.fuelSurcharge['currency'] = result.charges.fuelSurcharge.currency;
+    this.quoteData.charges.fuelSurcharge['type'] = result.charges.fuelSurcharge.type;
 
     this.amountCalculate();
     this.discountCalculate();
     
-  });
- }
+    });
+  }
 }

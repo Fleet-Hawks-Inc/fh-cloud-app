@@ -1,8 +1,3 @@
-<style>
-    td .dataTables_empty {
-        display: none !important;
-    }
-</style>
 <section class="body">
     <!-- start: header -->
     <app-header></app-header>
@@ -46,7 +41,7 @@
                     <section class="card">
                         <div class="card-body">
 
-                            <table datatable [dtOptions]="dtOptions"  class="row-border hover table table-bordered table-striped mb-0 ">
+                            <table datatable [dtOptions]="dtOptions"  class="row-border hover table table-bordered table-striped mb-0 " *ngIf="routes.length > 0">
                                     <thead>
                                         <tr>
                                             <!-- <th><input type="checkbox"></th> -->
@@ -60,7 +55,7 @@
                                             <th>Action</th>
                                          </tr>
                                     </thead>
-                                    <tbody *ngIf="routes.length > 0">
+                                    <tbody>
                                         <tr *ngFor="let route of routes; let i= index">
                                             <!-- <td class="w-50px sorting_1"><input type="checkbox"></td> -->
                                             <td routerLink="/dispatch/routes/route-detail/{{ route.routeID }}">{{ route.routeName }}</td>
@@ -83,15 +78,10 @@
                                             </td>
                                         </tr>
                                     </tbody>
-                                    <tbody *ngIf="routes.length === 0">
-                                        <tr>
-                                          <td colspan="8" class="no-data-available">No record(s) found</td>
-                                        </tr>
-                                      <tbody>
                                 </table>
-                                <!-- <div *ngIf="!routes.length > 0" class="alert alert-info m-0 text-center" role="alert">
+                                <div *ngIf="!routes.length > 0" class="alert alert-info m-0 text-center" role="alert">
                                     No records found                                    
-                                </div> -->
+                                </div>
                             
                         </div>
                     </section>

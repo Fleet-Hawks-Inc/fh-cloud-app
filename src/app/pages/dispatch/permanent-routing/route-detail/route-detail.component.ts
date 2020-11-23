@@ -48,10 +48,10 @@ export class RouteDetailComponent implements OnInit {
 
   fetchRoute(){
     this.spinner.show();
-    this.apiService.getData('routes/'+this.routeID).
+    this.apiService.getData('routes/' + this.routeID).
       subscribe(async (result: any) => {
         result = result.Items[0];
-
+        console.log("route", result);
         this.routeNo   = result.routeNo;
         console.log(result);
         this.routeName = result.routeName;
