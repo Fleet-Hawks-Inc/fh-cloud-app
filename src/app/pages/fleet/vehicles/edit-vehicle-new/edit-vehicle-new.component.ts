@@ -98,7 +98,7 @@ export class EditVehicleNewComponent implements OnInit {
   };
   wheelsAndTyres = {
     numberOfTyres: '',
-    driverType: '',
+    driveType: '',
     brakeSystem: '',
     wheelbase: '',
     rearAxle: '',
@@ -296,7 +296,7 @@ export class EditVehicleNewComponent implements OnInit {
         };
         this.wheelsAndTyres = {
           numberOfTyres: result.wheelsAndTyres.numberOfTyres,
-          driverType: result.wheelsAndTyres.driverType,
+          driveType: result.wheelsAndTyres.driveType,
           brakeSystem: result.wheelsAndTyres.brakeSystem,
           wheelbase: result.wheelsAndTyres.wheelbase,
           rearAxle: result.wheelsAndTyres.rearAxle,
@@ -506,7 +506,7 @@ export class EditVehicleNewComponent implements OnInit {
       },
       wheelsAndTyres: {
         numberOfTyres: this.wheelsAndTyres.numberOfTyres,
-        driverType: this.wheelsAndTyres.driverType,
+        driveType: this.wheelsAndTyres.driveType,
         brakeSystem: this.wheelsAndTyres.brakeSystem,
         wheelbase: this.wheelsAndTyres.wheelbase,
         rearAxle: this.wheelsAndTyres.rearAxle,
