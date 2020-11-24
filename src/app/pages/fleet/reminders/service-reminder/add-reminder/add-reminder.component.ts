@@ -31,7 +31,7 @@ export class AddReminderComponent implements OnInit {
   users = [];
   groups = [];
   finalSubscribers = [];
-  form;
+  serviceForm;
   errors = {};
   Error: string = '';
   Success: string = '';
@@ -58,7 +58,7 @@ export class AddReminderComponent implements OnInit {
     }
 
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      this.serviceForm = $('#serviceForm').validate();
     });
   }
   fetchVehicles() {
@@ -127,9 +127,7 @@ export class AddReminderComponent implements OnInit {
     return this.finalSubscribers;
   }
   addReminder() {
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    this.hideErrors();
     if (this.time > 0) {
       switch (this.timeType) {
         case 'Day(s)': {
@@ -160,22 +158,17 @@ export class AddReminderComponent implements OnInit {
       console.log('Filled Reminder Data', this.reminderData);
       this.apiService.postData('reminders', this.reminderData).subscribe({
         complete: () => { },
-        error: (err) => {
+        error: (err: any) => {
           from(err.error)
             .pipe(
               map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/'([^']+)'/)[1];
-                //console.log(key);
-                val.message = val.message.replace(/'.*'/, 'This Field');
-                this.errors[key] = val.message;
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
               })
             )
             .subscribe({
               complete: () => {
                 this.throwErrors();
-                this.Success = '';
               },
               error: () => { },
               next: () => { },
@@ -194,14 +187,30 @@ export class AddReminderComponent implements OnInit {
   }
 
   throwErrors() {
-    this.form.showErrors(this.errors);
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+  
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label');
+      });
+    this.errors = {};
   }
 
   // UPDATING REMINDER
   updateReminder() {
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    this.hideErrors();
     if (this.time > 0) {
       switch (this.timeType) {
         case 'Day(s)': {
@@ -232,22 +241,17 @@ export class AddReminderComponent implements OnInit {
       console.log('updated data', this.reminderData);
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },
-        error: (err) => {
+        error: (err: any) => {
           from(err.error)
             .pipe(
               map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/'([^']+)'/)[1];
-                //console.log(key);
-                val.message = val.message.replace(/'.*'/, 'This Field');
-                this.errors[key] = val.message;
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
               })
             )
             .subscribe({
               complete: () => {
                 this.throwErrors();
-                this.Success = '';
               },
               error: () => { },
               next: () => { },

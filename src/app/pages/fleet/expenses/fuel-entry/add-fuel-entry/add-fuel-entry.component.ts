@@ -20,9 +20,6 @@ declare var $: any;
 })
 export class AddFuelEntryComponent implements OnInit {
   title = 'Add Fuel Entry';
-  myform;
-  imageError = '';
-  fileName = '';
   public entryID;
   /********** Form Fields ***********/
 
@@ -85,12 +82,12 @@ export class AddFuelEntryComponent implements OnInit {
   /******************/
 
   errors = {};
-  form;
+  fuelForm;
   response: any = '';
-  hasError = false;
-  hasSuccess = false;
-  Error = '';
-  Success = '';
+  hasError: boolean = false;
+  hasSuccess: boolean = false;
+  Error: string = '';
+  Success: string = '';
 
 
 
@@ -121,7 +118,7 @@ export class AddFuelEntryComponent implements OnInit {
       this.title = 'Add Fuel Entry';
     }
     $(document).ready(() => {
-      this.myform = $('#fuelForm').validate();
+      this.fuelForm = $('#fuelForm').validate();
     });
   }
   cancel() {
@@ -204,18 +201,13 @@ export class AddFuelEntryComponent implements OnInit {
     //   this.imageError = 'Please Choose Image To Upload';
     //   return;
     // }
-
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    this.hideErrors();
     const data = {
       unitType: this.unitType,
       unitID: this.unitID,
-      // vehicleID: this.vehicleID,
       fuelQty: this.fuelQty,
       fuelQtyUnit: this.fuelQtyUnit,
       fuelQtyAmt: this.fuelQtyAmt,
-      // reeferID: this.reeferID,
       DEFFuelQty: this.DEFFuelQty,
       DEFFuelQtyAmt: this.DEFFuelQtyAmt,
       discount: this.discount,
@@ -257,10 +249,14 @@ export class AddFuelEntryComponent implements OnInit {
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
-            }),
+            })
           )
-          .subscribe((val) => {
-            this.throwErrors();
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -273,7 +269,25 @@ export class AddFuelEntryComponent implements OnInit {
   }
 
   throwErrors() {
-    this.myform.showErrors(this.errors);
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label');
+      });
+    this.errors = {};
   }
   /*
   * Selecting files before uploading
@@ -366,9 +380,7 @@ export class AddFuelEntryComponent implements OnInit {
     //   return;
     // }
 
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    this.hideErrors();
     const data = {
       entryID: this.entryID,
       unitType: this.unitType,
@@ -419,10 +431,14 @@ export class AddFuelEntryComponent implements OnInit {
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
-            }),
+            })
           )
-          .subscribe((val) => {
-            this.throwErrors();
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {

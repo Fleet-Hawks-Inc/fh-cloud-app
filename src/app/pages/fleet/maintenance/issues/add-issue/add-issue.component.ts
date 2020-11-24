@@ -17,10 +17,9 @@ declare var $: any;
 })
 export class AddIssueComponent implements OnInit {
   title: string;
-  imageError = '';
   fileName = '';
   public issueID;
-  myform;
+  issueForm;
   /**
    * Issue Prop
    */
@@ -75,7 +74,7 @@ export class AddIssueComponent implements OnInit {
       this.title = 'Add Issue';
     }
     $(document).ready(() => {
-      this.myform = $('#issueForm').validate();
+      this.issueForm = $('#issueForm').validate();
     });
   }
   cancel() {
@@ -104,9 +103,7 @@ export class AddIssueComponent implements OnInit {
       this.unitType = value;
     }
   addIssue() {
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    this.hideErrors();
     const data = {
       issueName: this.issueName,
       unitType: this.unitType,
@@ -124,19 +121,22 @@ export class AddIssueComponent implements OnInit {
     this.apiService.postData('issues/', data).
   subscribe({
     complete : () => {},
-      error : (err: any) => {
+    error: (err: any) => {
       from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            }),
-          )
-          .subscribe((val) => {
+        .pipe(
+          map((val: any) => {
+            val.message = val.message.replace(/".*"/, 'This Field');
+            this.errors[val.context.key] = val.message;
+          })
+        )
+        .subscribe({
+          complete: () => {
             this.throwErrors();
-          });
-
-      },
+          },
+          error: () => { },
+          next: () => { },
+        });
+    },
     next: (res) => {
       this.response = res;
       this.uploadFiles(); // upload selected files to bucket
@@ -146,9 +146,25 @@ export class AddIssueComponent implements OnInit {
   });
 }
 throwErrors() {
-   // console.log(this.myform);
-   // console.log(this.errors);
-    this.myform.showErrors(this.errors);
+  console.log(this.errors);
+  from(Object.keys(this.errors))
+    .subscribe((v) => {
+      $('[name="' + v + '"]')
+        .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+        .addClass('error');
+    });
+  // this.vehicleForm.showErrors(this.errors);
+}
+
+hideErrors() {
+  from(Object.keys(this.errors))
+    .subscribe((v) => {
+      $('[name="' + v + '"]')
+        .removeClass('error')
+        .next()
+        .remove('label');
+    });
+  this.errors = {};
 }
  /*
    * Selecting files before uploading
@@ -232,19 +248,22 @@ throwErrors() {
   this.apiService.putData('issues/', data).
 subscribe({
   complete : () => {},
-    error : (err: any) => {
-      from(err.error)
-        .pipe(
-          map((val: any) => {
-            val.message = val.message.replace(/".*"/, 'This Field');
-            this.errors[val.context.key] = val.message;
-          }),
-        )
-        .subscribe((val) => {
+  error: (err: any) => {
+    from(err.error)
+      .pipe(
+        map((val: any) => {
+          val.message = val.message.replace(/".*"/, 'This Field');
+          this.errors[val.context.key] = val.message;
+        })
+      )
+      .subscribe({
+        complete: () => {
           this.throwErrors();
-        });
-
-    },
+        },
+        error: () => { },
+        next: () => { },
+      });
+  },
   next: (res) => {
     this.response = res;
     this.uploadFiles(); // upload selected files to bucket

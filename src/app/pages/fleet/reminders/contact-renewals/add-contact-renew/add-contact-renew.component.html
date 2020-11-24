@@ -1,117 +1,130 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
+   <!-- start: header -->
+   <app-header></app-header>
+   <!-- end: header -->
 
-    <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
+   <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->
 
-        <section role="main" class="content-body pt-0 pl-0">
-            <header class="page-header">
-               <div class="row pr-5 pl-2" style="padding-top:10px;">
-                  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                    {{pageTitle}}
-                  </div>
-                  <div class="col-md-8  col-lg-8 text-right">
-                     <a routerLink="/fleet/reminders/contact-renewals/list" class="btn btn-default btn-sm mx-2" style="color:black;"><i class="fas fa-list"></i> Contact Renewals</a>
-                  </div>
+      <section role="main" class="content-body pt-0 pl-0">
+         <header class="page-header">
+            <div class="row pr-5 pl-2" style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                  {{pageTitle}}
                </div>
-            </header>
-            <div class="row">
-               <div class="col">
-                  <div class="card-body text-dark">
-                     <form class="form-horizontal form-bordered" method="post" id="contactRenewalForm">
-                        <div class="row pt-2">
-                           <div class="col-lg-12">
-                              <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Contact Renewal Reminder Details</label>
+               <div class="col-md-8  col-lg-8 text-right">
+                  <a routerLink="/fleet/reminders/contact-renewals/list" class="btn btn-default btn-sm mx-2"
+                     style="color:black;"><i class="fas fa-list"></i> Contact Renewals</a>
+               </div>
+            </div>
+         </header>
+         <div class="row">
+            <div class="col">
+               <div class="card-body text-dark">
+                  <form class="form-horizontal form-bordered" name="contactRenewalForm" method="get" id="contactRenewalForm">
+                     <div class="row pt-2">
+                        <div class="col-lg-12">
+                           <label
+                              class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Contact
+                              Renewal Reminder Details</label>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1">
+                           <div class="row pt-2">
+                            <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                    Contact</label>
+                                 <ng-select [(ngModel)]="reminderData.reminderIdentification"
+                                    name="reminderIdentification">
+
+                                    <ng-option *ngFor="let contact of contacts" value="{{contact.contactID}}">
+                                       {{contact.contactName}}</ng-option>
+
+                                 </ng-select>
+                              </div> 
                            </div>
-                           <div class="col-lg-5 offset-lg-1">
-                              <div class="row pt-2">
-                                 <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Contact</label>
-                                    <ng-select [(ngModel)]="reminderData.reminderIdentification" name="reminderIdentification">
-                                       
-                                          <ng-option *ngFor="let contact of contacts" value="{{contact.contactID}}">{{contact.contactName}}</ng-option>
-                                        
-                                    </ng-select>
-                                 </div>
-                              </div>                      
-                              
-                             
-                              <div class="row pt-2">
-                                 <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups</label>
-                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="reminderData.subscribers" style="width: 100%;" >                                       
-                                       <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}</ng-option>
-                                       <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}</ng-option>
-                                   </ng-select>
-                                    <div class="checkbox-custom mt-2">
-                                    <input [(ngModel)]="reminderData.sendEmail" name="reminderData.sendEmail" type="checkbox" [checked]="reminderData.sendEmail">
+
+
+                           <div class="row pt-2">
+                             <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed
+                                    Users/Groups</label>
+                                 <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers"
+                                    style="width: 100%;">
+                                    <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}
+                                    </ng-option>
+                                    <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}
+                                    </ng-option>
+                                 </ng-select>
+                                 <div class="checkbox-custom mt-2">
+                                    <input [(ngModel)]="reminderData.sendEmail" name="reminderData.sendEmail"
+                                       type="checkbox" [checked]="reminderData.sendEmail">
                                     <label class="control-label font-weight-bold">Send Email Notification</label>
                                  </div>
-                               
-                                 </div>
-                                 <div class="col-lg-1 pl-0" style="margin-top: 39px !important">
-                                    <a data-toggle="modal" data-target="#addsubsuser"
-                                       class="modal-with-form btn btn-sm btn-success text-light"><i
-                                          class="fas fa-plus"></i></a>
-                                 </div>
-                               
+
+                              </div> 
+                             <div class="col-lg-1 pl-0" style="margin-top: 39px !important">
+                                 <a data-toggle="modal" data-target="#addsubsuser"
+                                    class="modal-with-form btn btn-sm btn-success text-light"><i
+                                       class="fas fa-plus"></i></a>
+                              </div> 
+
+                           </div>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1">
+                           <div class="row pt-2">
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                    Renewal Type</label>
+                                 <ng-select [(ngModel)]="reminderData.reminderTasks.task" name="task">
+                                    <ng-option value="Licence">Licence</ng-option>
+                                    <ng-option value="Certification">Certification</ng-option>
+                                 </ng-select>
                               </div>
                            </div>
-                           <div class="col-lg-5 offset-lg-1">
                            <div class="row pt-2">
-                                 <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type</label>
-                                    <ng-select  [(ngModel)]="reminderData.reminderTasks.task" name="reminderData.reminderTasks.task">
-                                       
-                                          <ng-option value="Licence">Licence</ng-option>
-                                          <ng-option value="Certification">Certification</ng-option>
-                                       
-                                    </ng-select>
-                                 </div>
+                              <div class="col-lg-5">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Date</label>
+                                 <input class="form-control" placeholder="dd-mm-yyyy"
+                                    name="dueDate"
+                                    [(ngModel)]="reminderData.reminderTasks.dueDate" (click)="d.toggle()" ngbDatepicker
+                                    #d="ngbDatepicker" />
                               </div>
-                              <div class="row pt-2">
-                                 <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Date</label>
-                                    <input
-                                    class="form-control"
-                                    placeholder="dd-mm-yyyy"
-                                    name="reminderData.reminderTasks.dueDate" [(ngModel)]="reminderData.reminderTasks.dueDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
-                                  />
-                                 </div>
-                                 <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)</label>
-                                    <div class="row">
-                                          <div class="col-lg-4 pr-0">
-                                             <input type="number" class="form-control"  [(ngModel)]="time" name="time">
-                                          </div>
-                                        <div class="col-lg-8 pl-0"> 
-                                           <ng-select  [(ngModel)]="timeType" name="timeType">                                       
+                              <div class="col-lg-5">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time
+                                    (Reminder of Due Soon)</label>
+                                 <div class="row">
+                                    <div class="col-lg-4 pr-0">
+                                       <input type="number" class="form-control" [(ngModel)]="time" name="time">
+                                    </div>
+                                    <div class="col-lg-8 pl-0">
+                                       <ng-select [(ngModel)]="timeType" name="timeType">
                                           <ng-option value="Day(s)">Day(s)</ng-option>
                                           <ng-option value="Week(s)">Week(s)</ng-option>
                                           <ng-option value="Month(s)">Month(s)</ng-option>
-                                      
-                                    </ng-select></div> 
+
+                                       </ng-select>
                                     </div>
-                                   
                                  </div>
+
                               </div>
-                           </div>
+                           </div> 
                         </div>
-                        <div class="form-group row pt-2">
-                           <div class="col-lg-11 text-right">
-                              <button type="button" class="btn btn-default mr-1" (click)="cancel()">Cancel</button> 
-                              <a href="javascript:;" *ngIf="!reminderID" (click)="addRenewal()" class="btn btn-success" >Save</a> 
-                              <a href="javascript:;" *ngIf="reminderID" (click)="updateRenewal()" class="btn btn-success">Update</a>
-                           </div>
+                     </div>
+                     <div class="form-group row pt-2">
+                        <div class="col-lg-11 text-right">
+                           <button type="button" class="btn btn-default mr-1" (click)="cancel()">Cancel</button>
+                           <a href="javascript:;" *ngIf="!reminderID" (click)="addRenewal()"
+                              class="btn btn-success">Save</a>
+                           <a href="javascript:;" *ngIf="reminderID" (click)="updateRenewal()"
+                              class="btn btn-success">Update</a>
                         </div>
-                     </form>
-                  </div>
+                     </div>
+                  </form>
                </div>
             </div>
-         </section>
-    </div>
+         </div>
+      </section>
+   </div>
 </section>

@@ -23,7 +23,7 @@
          <div class="row">
             <div class="col">
                <div class="card-body text-dark">
-                  <form id="form_" name="form" class="form-horizontal form-bordered" method="get">
+                  <form id="serviceForm" name="serviceForm" class="form-horizontal form-bordered" method="get">
                      <div class="row pt-2">
                         <div class="col-lg-12">
                            <label
@@ -36,7 +36,7 @@
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                     Vehicle</label>
                                  <ng-select [(ngModel)]="reminderData.reminderIdentification"
-                                    name="reminderData.reminderIdentification">
+                                    name="reminderIdentification">
                                    
                                        <ng-option *ngFor="let item of vehicles" value="{{item.vehicleID}}">
                                           {{item.vehicleIdentification}}</ng-option>
@@ -80,7 +80,7 @@
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                     Service Tasks</label>
                                  <ng-select [(ngModel)]="reminderData.reminderTasks.task"
-                                    name="reminderData.reminderTasks.task">
+                                    name="task">
                                     <ng-option value="A/C Compressor Replacement">A/C Compressor Replacement</ng-option>
                                     <ng-option value="A/C Condenser Replacemen">A/C Condenser Replacement</ng-option>
                                     <ng-option value="A/C Diagnosis">A/C Diagnosis</ng-option>
@@ -279,7 +279,7 @@
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer
                                           Miles<span id="primary_meter">miles</span></label>
                                        <input [(ngModel)]="reminderData.reminderTasks.odometer"
-                                          name="reminderData.reminderTasks.odometer" type="text" class="form-control">
+                                          name="odometer" type="text" class="form-control">
                                     </div>
                                  </div>
                               </div>

@@ -22,9 +22,9 @@ export class AddContactRenewComponent implements OnInit {
     },
     subscribers: []
   };
-  myform;
+  contactRenewalForm;
   numberOfDays: number;
-  time: number;
+  time = 1;
   timeType: string;
   vehicles = [];
   contacts = [];
@@ -51,7 +51,7 @@ export class AddContactRenewComponent implements OnInit {
     this.fetchGroups();
     this.fetchContacts();
     $(document).ready(() => {
-      this.myform = $('#contactRenewalForm').validate();
+      this.contactRenewalForm = $('#contactRenewalForm').validate();
     });
     if (this.reminderID) {
       this.pageTitle = ' Edit Contact Renewal Reminder';
@@ -101,9 +101,7 @@ export class AddContactRenewComponent implements OnInit {
     this.location.back(); // <-- go back to previous location on cancel
   }
   addRenewal() {
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    this.hideErrors();
     if (this.time > 0) {
       switch (this.timeType) {
         case 'Day(s)': {
@@ -129,18 +127,22 @@ export class AddContactRenewComponent implements OnInit {
       console.log('contact renewal data', this.reminderData);
       this.apiService.postData('reminders', this.reminderData).subscribe({
         complete: () => { },
-        error : (err: any) => {
+        error: (err: any) => {
           from(err.error)
-              .pipe(
-                map((val: any) => {
-                  val.message = val.message.replace(/".*"/, 'This Field');
-                  this.errors[val.context.key] = val.message;
-                }),
-              )
-              .subscribe((val) => {
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
                 this.throwErrors();
-              });
-          },
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
         next: (res) => {
           this.response = res;
           this.toastr.success('Contact Renewal Added Successfully');
@@ -153,10 +155,26 @@ export class AddContactRenewComponent implements OnInit {
     }
   }
   throwErrors() {
-    // console.log(this.myform);
-    // console.log(this.errors);
-     this.myform.showErrors(this.errors);
- }
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+  
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label');
+      });
+    this.errors = {};
+  }
   /*
 * Fetch Reminder details before updating
 */
