@@ -89,11 +89,6 @@ import { AceDetailsComponent } from './cross-border/ace-documents/ace-details/ac
 import {MatExpansionModule} from '@angular/material/expansion';
 import { AciDetailsComponent } from './cross-border/aci-documents/aci-details/aci-details.component';
 
-import { AddQuotesComponent } from './quotes/add-quotes/add-quotes.component';
-import { QuotesListComponent } from './quotes/quotes-list/quotes-list.component';
-import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
-
-
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
 import { TripListComponent } from './trips/trip-list/trip-list.component';
@@ -185,7 +180,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgSelectModule,
     HttpClientModule,
 
-    NgxTagsInputModule,
+    // NgxTagsInputModule,
 
     MatExpansionModule,
 
@@ -194,7 +189,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgxMaterialTimepickerModule,
 
     FullCalendarModule,
-    ChartsModule,
+    // ChartsModule,
 
   ],
 
@@ -293,7 +288,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     CalendarViewComponent,
     MapViewComponent,
 
-    DispatchOverviewComponent,
+    // DispatchOverviewComponent,
 
   ],
 

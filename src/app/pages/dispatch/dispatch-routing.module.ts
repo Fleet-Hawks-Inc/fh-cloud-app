@@ -41,10 +41,6 @@ import { EManifestsComponent } from './cross-border/e-manifests/e-manifests.comp
 import { AceDetailsComponent } from './cross-border/ace-documents/ace-details/ace-details.component';
 import { AciDetailsComponent } from './cross-border/aci-documents/aci-details/aci-details.component';
 
-import { QuotesListComponent } from './quotes/quotes-list/quotes-list.component';
-import { AddQuotesComponent } from './quotes/add-quotes/add-quotes.component';
-import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
-
 import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
 import { TripListComponent } from './trips/trip-list/trip-list.component';
 import { AddTripComponent } from './trips/add-trip/add-trip.component';
@@ -147,12 +143,12 @@ const routes: Routes = [
     children: [
       { path: 'route-list', component: RouteListComponent},
       { path: 'add-route', component: AddRouteComponent },
-      { path:'edit-route/:routeID', component:EditRouteComponent},
-      { path:'route-detail/:routeID', component:RouteDetailComponent},
+      { path: 'edit-route/:routeID', component: EditRouteComponent},
+      { path: 'route-detail/:routeID', component: RouteDetailComponent},
     ]
   },
   {
-    path: "trips",
+    path: 'trips',
     children: [
       { path: 'trip-list', component: TripListComponent},
       { path: 'add-trip', component: AddTripComponent},
@@ -162,7 +158,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: "planner",
+    path: 'planner',
     children: [
       { path: 'calendar-view', component: CalendarViewComponent},
       { path: 'map-view', component: MapViewComponent},

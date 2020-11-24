@@ -186,7 +186,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of remindersData;">
+                                <tr *ngFor="let item of remindersData;" style="cursor: pointer;">
                                     <td>{{ getVehicleName(item.reminderIdentification)}}</td>
                                     <td><span class="font-weight-bold" title="Service Task" >{{item.reminderTasks.task}}</span><br>
                                     </td> 
