@@ -3302,8 +3302,10 @@
                                 min="1"
                                 max="10"
                                 class="slider"
+                                [value]="settings.hardBreakingParams"
                                 id="hardBreakingParameters"
                                 name="hardBreakingParameters"
+                                disabled
                               />
                               <p>
                                 Value:
@@ -3323,8 +3325,10 @@
                                 min="1"
                                 max="10"
                                 class="slider"
+                                [value]="settings.hardAccelrationParams"
                                 id="hardAccelrationParameters"
                                 #ranger
+                                disabled
                                 name="hardAccelrationParameters"
                               />
 
@@ -3347,8 +3351,10 @@
                                 type="range"
                                 min="1"
                                 max="10"
+                                disabled
                                 class="slider"
                                 id="turningParameters"
+                                [value]="settings.turningParams"
                                 #ranger
                                 name="turningParameters"
                               />
