@@ -27,8 +27,8 @@ export class VehicleRenewAddComponent implements OnInit {
   test = [];
   midArray = [];
   numberOfDays: number;
-  time: number;
-  timeType: string;
+  time = 1;
+  timeType = 'Day(s)';
   finalSubscribers = [];
   vehicles = [];
   users = [];
@@ -46,7 +46,7 @@ export class VehicleRenewAddComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   ngOnInit() {
-    this.reminderID = this.route.snapshot.params['reminderID'];
+    this.reminderID = this.route.snapshot.params[`reminderID`];
     if (this.reminderID) {
       this.pageTitle = 'Edit Vehicle Renewal Reminder';
       this.fetchReminderByID();
@@ -161,14 +161,14 @@ export class VehicleRenewAddComponent implements OnInit {
         for (let i = 0; i < result.subscribers.length; i++) {
           this.test.push(result.subscribers[i].subscriberIdentification);
         }
-        this.reminderData['reminderID'] = this.reminderID;
-        this.reminderData['reminderTasks']['dueDate'] = result.reminderTasks.dueDate;
-        this.reminderData['reminderTasks']['task'] = result.reminderTasks.task;
+        this.reminderData[`reminderID`] = this.reminderID;
+        this.reminderData[`reminderTasks`][`dueDate`] = result.reminderTasks.dueDate;
+        this.reminderData[`reminderTasks`][`task`] = result.reminderTasks.task;
         this.time = result.reminderTasks.remindByDays;
         this.timeType = 'Day(s)';
-        this.reminderData['sendEmail'] = result.sendEmail;
-        this.reminderData['reminderIdentification'] = result.reminderIdentification;
-        this.reminderData['subscribers'] = this.test;
+        this.reminderData[`sendEmail`] = result.sendEmail;
+        this.reminderData[`reminderIdentification`] = result.reminderIdentification;
+        this.reminderData[`subscribers`] = this.test;
       });
 
   }

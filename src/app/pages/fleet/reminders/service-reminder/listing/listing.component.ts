@@ -13,6 +13,7 @@ export class ListingComponent implements OnInit {
   public remindersData = [];
   dtOptions: any = {};
   vehicles = [];
+  vehicleList: any;
   groups = [];
   allRemindersData = [];
   vehicleIdentification = '';
@@ -24,6 +25,7 @@ export class ListingComponent implements OnInit {
     this.fetchReminders();
     this.fetchVehicles();
     this.fetchGroups();
+    this.fetchVehicleList();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -34,6 +36,13 @@ export class ListingComponent implements OnInit {
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
+      console.log('fetched vehciles', this.vehicles);
+    });
+  }
+  fetchVehicleList() {
+    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+      this.vehicleList = result;
+      console.log('fetched vehcile list', this.vehicleList);
     });
   }
   fetchGroups() {
@@ -68,7 +77,7 @@ export class ListingComponent implements OnInit {
   }
   fetchReminders = () => {
     this.apiService.getData('reminders').subscribe({
-      complete: () => { },
+      complete: () => {this.initDataTable(); },
       error: () => { },
       next: (result: any) => {
         this.allRemindersData = result.Items;
@@ -84,16 +93,12 @@ export class ListingComponent implements OnInit {
 
 
   deleteReminder(entryID) {
-    /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable('#datatable-default')) {
-      $('#datatable-default').DataTable().clear().destroy();
-    }
-    /******************************/
     this.apiService
       .deleteData('reminders/' + entryID)
       .subscribe((result: any) => {
-        this.toastr.success('Service Reminder Deleted Successfully!');
         this.fetchReminders();
+        this.toastr.success('Service Reminder Deleted Successfully!');
+        
       });
   }
   initDataTable() {

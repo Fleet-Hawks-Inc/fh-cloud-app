@@ -12,7 +12,7 @@
          <header class="page-header">
             <div class="row pr-5 " style="padding-top:10px;">
                <div class="col-md-4 col-lg-4 pl-4">
-                  <span class=" font-weight-bold text-4 text-dark"> Issue #{{issueID}} </span> <span
+                  <span class=" font-weight-bold text-4 text-dark"> Issue </span> <span
                      class="badge badge-dark p-1"> {{status | uppercase}}</span>
                </div>
                <div class="col-md-8  col-lg-8 text-right pr-4">
@@ -23,8 +23,8 @@
                         aria-expanded="false">Resolve<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1" href="service-entry.php">Resolve via Service Entry</a>
-                        <a class="modal-with-form dropdown-item text-1" href="#issueCloseModal">Close</a>
+                        <a class="dropdown-item text-1"  routerLink="/fleet/maintenance/service-log/add-service">Resolve via Service Entry</a>
+                        <a class="dropdown-item text-1" href="#" data-toggle="modal" data-target="#issueCloseModal">Close</a>
                      </div>
                   </div>
                   <div class="btn-group flex-wrap">
@@ -46,8 +46,7 @@
                   <form class="form-horizontal form-bordered" method="get">
                      <div class=" row">
                         <div class="col-lg-12"><label class="control-label font-weight-bold text-4">Issue
-                           Name:</label><span class="font-weight-bold"> {{issueName}}</span></div>
-                     
+                           Name:</label><span class="font-weight-bold"> {{issueName}}</span></div>                 
                           
                               
                               <div class="col-lg-12 pb-4"><span class="font-weight-bold text-4">Description:
@@ -63,7 +62,9 @@
                                           <td width="40%" class="back-color-gray font-weight-bold">
                                              {{unitType | titlecase}}</td>
                                           <!-- <td  width="60%"><a routerLink="/fleet/vehicles/Vehicle-List" class="text-info">{{unitName}}</a></td> -->
-                                          <td width="60%">{{unitName}}</td>
+                                          <td width="60%"><span *ngIf= "unitType === 'asset'">{{assetList[unitID]}}</span>
+                                             <span *ngIf= "unitType === 'vehicle'">{{vehicleList[unitID]}}</span>
+                                          </td>
                                        </tr>
                                        <tr>
                                           <td class="back-color-gray font-weight-bold">Reported Date</td>
@@ -140,7 +141,8 @@
                                     <div class="row">
                                        <div class="col-lg-9"><i class="fas fa-exclamation-circle"></i> Issue Created
                                           <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-size-12">By:
-                                             {{contactName}}</span></div>
+                                             <!-- {{contactList[reportedBy]}} -->
+                                          </span></div>
                                        <div class="col-lg-3 text-right">
                                           {{reportedDate}}
                                        </div>
@@ -232,14 +234,17 @@
                         </footer>
                      </section>
                   </div>
-                  <!-- Issue close MODAL -->
-                  <div id="issueCloseModal" class="modal-block modal-block-primary mfp-hide">
-                     <section class="card">
-                        <header class="card-header">
-                           <h2 class="card-title">Corfirm Action <span class="modal-dismiss pull-right"><i
-                                    class="fas fa-times text-danger"></i></span></h2>
-                        </header>
-                        <div class="card-body text-dark">
+                  <!-- Issue close MODAL -->                 
+                  <div class="modal fade" id="issueCloseModal" tabindex="-1" role="dialog" aria-labelledby="issueCloseModalLabel" aria-hidden="true">
+                     <div class="modal-dialog" role="document">
+                       <div class="modal-content">
+                         <div class="modal-header">
+                           <h5 class="modal-title" id="issueCloseModalLabel">Corfirm Action</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                             <span aria-hidden="true">&times;</span>
+                           </button>
+                         </div>
+                         <div class="modal-body">
                            <form>
                               <div class="form-row">
                                  <div class="form-group col-md-12">
@@ -247,43 +252,14 @@
                                  </div>
                               </div>
                            </form>
-                        </div>
-                        <footer class="card-footer">
-                           <div class="row">
-                              <div class="col-md-12 text-right">
-                                 <button class="btn btn-default modal-dismiss">Cancel</button>
-                                 <button class="btn btn-danger modal-confirm">OK</button>
-                              </div>
-                           </div>
-                        </footer>
-                     </section>
-                  </div>
-                  <!-- Delete MODAL -->
-                  <div id="deleteModal" class="modal-block modal-block-primary mfp-hide">
-                     <section class="card">
-                        <header class="card-header">
-                           <h2 class="card-title">Corfirm Action <span class="modal-dismiss pull-right"><i
-                                    class="fas fa-times text-danger"></i></span></h2>
-                        </header>
-                        <div class="card-body text-dark">
-                           <form>
-                              <div class="form-row">
-                                 <div class="form-group col-md-12">
-                                    <label for="inputEmail4">Are you sure?</label>
-                                 </div>
-                              </div>
-                           </form>
-                        </div>
-                        <footer class="card-footer">
-                           <div class="row">
-                              <div class="col-md-12 text-right">
-                                 <button class="btn btn-default modal-dismiss">Cancel</button>
-                                 <button class="btn btn-danger modal-confirm">OK</button>
-                              </div>
-                           </div>
-                        </footer>
-                     </section>
-                  </div>
+                         </div>
+                         <div class="modal-footer">
+                           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                           <button type="button" class="btn btn-success" (click)="setStatus(issueID)" data-dismiss="modal">Close Issue</button>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
                </div>
             </div>
          </div>

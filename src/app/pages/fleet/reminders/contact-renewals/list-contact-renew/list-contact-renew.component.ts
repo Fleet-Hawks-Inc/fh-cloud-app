@@ -42,7 +42,7 @@ export class ListContactRenewComponent implements OnInit {
   }
   fetchRenewals = () => {
     this.apiService.getData('reminders').subscribe({
-      complete: () => { },
+      complete: () => { this.initDataTable(); },
       error: () => { },
       next: (result: any) => {
         this.allRemindersData = result.Items;
@@ -71,15 +71,16 @@ export class ListContactRenewComponent implements OnInit {
   getContactName(ID): string {
     let contact = [];
     contact = this.contacts.filter((c: any) => c.contactID === ID);
-    let cName = (contact[0].contactName);
+    let cName = (contact[0].firstName);
     return cName;
   }
   deleteRenewal(entryID) {
     this.apiService
       .deleteData('reminders/' + entryID)
       .subscribe((result: any) => {
-        this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
         this.fetchRenewals();
+        this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
+       
       });
   }
   initDataTable() {

@@ -25,7 +25,7 @@ export class AddContactRenewComponent implements OnInit {
   contactRenewalForm;
   numberOfDays: number;
   time = 1;
-  timeType: string;
+  timeType = 'Day(s)';
   vehicles = [];
   contacts = [];
   users = [];
@@ -34,19 +34,20 @@ export class AddContactRenewComponent implements OnInit {
   finalSubscribers = [];
   form;
   errors = {};
-  Error: string = '';
-  Success: string = '';
+  Error: string;
+  Success: string;
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
-    private ngbCalendar: NgbCalendar,private location: Location, private dateAdapter: NgbDateAdapter<string>) { }
+  constructor(private apiService: ApiService,
+              private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
+              private ngbCalendar: NgbCalendar, private location: Location, private dateAdapter: NgbDateAdapter<string>) { }
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
 
   ngOnInit() {
-    this.reminderID = this.route.snapshot.params['reminderID'];
+    this.reminderID = this.route.snapshot.params[`reminderID`];
     this.fetchUsers();
     this.fetchGroups();
     this.fetchContacts();
@@ -81,14 +82,14 @@ export class AddContactRenewComponent implements OnInit {
     this.finalSubscribers = [];
     for (let i = 0; i < arr.length; i++) {
       let test: any = [];
-       test = this.groups.filter((g: any) => g.groupID === arr[i]);
+      test = this.groups.filter((g: any) => g.groupID === arr[i]);
       if (test.length > 0) {
         this.finalSubscribers.push({
           subscriberType: 'group',
           subscriberIdentification: arr[i]
         });
       }
-      else{
+      else {
         this.finalSubscribers.push({
           subscriberType: 'user',
           subscriberIdentification: arr[i]
@@ -164,7 +165,7 @@ export class AddContactRenewComponent implements OnInit {
       });
     // this.vehicleForm.showErrors(this.errors);
   }
-  
+
   hideErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
@@ -185,16 +186,16 @@ export class AddContactRenewComponent implements OnInit {
         result = result.Items[0];
         console.log('Contact renewal FETCHED  data', result);
         for (let i = 0; i < result.subscribers.length; i++) {
-          this.test.push( result.subscribers[i].subscriberIdentification);
-    }
-        this.reminderData['reminderID'] = this.reminderID;
-        this.reminderData['reminderTasks']['dueDate']  = result.reminderTasks.dueDate;
-        this.reminderData['reminderTasks']['task']  = result.reminderTasks.task;
-        this.time  = result.reminderTasks.remindByDays;
-        this.timeType = 'Day(s)';
-        this.reminderData['sendEmail']  = result.sendEmail;
-        this.reminderData['subscribers'] = this.test;
-        this.reminderData['reminderIdentification']  = result.reminderIdentification;
+          this.test.push(result.subscribers[i].subscriberIdentification);
+        }
+        this.reminderData[`reminderID`] = this.reminderID;
+        this.reminderData[`reminderTasks`][`dueDate`] = result.reminderTasks.dueDate;
+        this.reminderData[`reminderTasks`][`task`] = result.reminderTasks.task;
+        this.time = result.reminderTasks.remindByDays;
+        this.timeType = `Day(s)`;
+        this.reminderData[`sendEmail`] = result.sendEmail;
+        this.reminderData[`subscribers`] = this.test;
+        this.reminderData[`reminderIdentification`] = result.reminderIdentification;
       });
   }
   // UPDATING REMINDER
@@ -227,19 +228,19 @@ export class AddContactRenewComponent implements OnInit {
       console.log('updated data', this.reminderData);
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },
-        error : (err: any) => {
+        error: (err: any) => {
           from(err.error)
-              .pipe(
-                map((val: any) => {
-                  val.message = val.message.replace(/".*"/, 'This Field');
-                  this.errors[val.context.key] = val.message;
-                }),
-              )
-              .subscribe((val) => {
-                this.throwErrors();
-              });
-    
-          },
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              }),
+            )
+            .subscribe((val) => {
+              this.throwErrors();
+            });
+
+        },
         next: (res) => {
           this.response = res;
           this.toastr.success('Contact Renewal Reminder Updated Successfully');
@@ -247,8 +248,7 @@ export class AddContactRenewComponent implements OnInit {
           this.Success = '';
         },
       });
-    }
-    else {
+    } else {
       this.toastr.warning('Time Must Be Positive Value');
     }
   }

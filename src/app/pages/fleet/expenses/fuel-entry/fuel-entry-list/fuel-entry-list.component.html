@@ -128,11 +128,14 @@
 						<td >Card Number</td>
 						<td>Driver ID</td>
 						<td>Driver Name</td>
-						<td>Unit#</td>
+						<td>
+							<span *ngIf = "fuelEntry.unitType === 'vehicle'">{{vehicleList[fuelEntry.unitID]}}</span>
+							<span *ngIf = "fuelEntry.unitType === 'reefer'">{{assetList[fuelEntry.unitID]}}</span>
+						</td>
 						<td>Sub-Fleet</td>
 						<td>Hub Miles</td>
 						<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.additionalDetails.odometer }}</td>
-						<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.tripID}}</td>
+						<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ tripList[fuelEntry.tripID]}}</td>
 						<td>Invoice</td>
 						<td>T/S Code</td>
 						<td>In Dir</td>
