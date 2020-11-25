@@ -85,7 +85,7 @@ export class VehicleDetailComponent implements OnInit {
   };
   wheelsAndTyres = {
     numberOfTyres: '',
-    driverType: '',
+    driveType: '',
     brakeSystem: '',
     wheelbase: '',
     rearAxle: '',
@@ -239,7 +239,7 @@ export class VehicleDetailComponent implements OnInit {
         };
         this.wheelsAndTyres = {
           numberOfTyres: result.wheelsAndTyres.numberOfTyres,
-          driverType: result.wheelsAndTyres.driverType,
+          driveType: result.wheelsAndTyres.driveType,
           brakeSystem: result.wheelsAndTyres.brakeSystem,
           wheelbase: result.wheelsAndTyres.wheelbase,
           rearAxle: result.wheelsAndTyres.rearAxle,
