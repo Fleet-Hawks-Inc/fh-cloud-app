@@ -13,6 +13,12 @@ import { DomSanitizer} from '@angular/platform-browser';
 })
 export class DriverDetailComponent implements OnInit {
   image;
+  driverName;
+  CDL;
+  workPhone;
+  workEmail;
+  homeTerminal;
+  cycle;
   private driverID;
   private driverData;
   carrierID;
@@ -38,28 +44,54 @@ export class DriverDetailComponent implements OnInit {
    * fetch Asset data
    */
   fetchDriver() {
-    this.spinner.show(); // loader init
+    // this.spinner.show(); // loader init
     this.apiService
       .getData(`drivers/${this.driverID}`)
       .subscribe((result: any) => {
         if (result) {
           this.driverData = result['Items'][0];
-          console.log('driverData', this.driverData)
-          //this.getImages();
-          this.spinner.hide(); // loader hide
+          console.log('driverData', this.driverData);
+          this.getCycleByID(this.driverData.hosDetails.hosCycle);
+          this.fetchYardByID(this.driverData.hosDetails.homeTerminal);
+          this.workEmail = this.driverData.workEmail;
+          this.workPhone = this.driverData.workPhone;
+          this.CDL = this.driverData.licenceDetails.CDL_Number;
+          this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
+          
+          this.getImages();
+          // this.spinner.hide(); // loader hide
         }
       }, (err) => {
         console.log('Driver detail', err);
       });
   }
 
-  // getImages = async () => {
-  //   this.carrierID = await this.apiService.getCarrierID();
-  //   for (let i = 0; i <= this.driverData.length; i++) {
-  //     this.image = this.domSanitizer.bypassSecurityTrustUrl(
-  //       await this.awsUS.getFiles(this.carrierID, this.driverData[0].uploadedPhotos[i]));
-  //     this.driverImages.push(this.image);
-  //   }
-  // }
+  getCycleByID(cycleID:any) {
+    this.apiService.getData('cycles/' + cycleID)
+      .subscribe((result: any) => {
+        this.cycle = result.Items[0].cycleName;
+        return this.cycle;
+      });
+  }
+
+  fetchYardByID(yardID: any) {
+    this.apiService.getData('yards/' + yardID)
+      .subscribe((result: any) => {
+        this.homeTerminal = result.Items[0].yardName;
+        return this.homeTerminal;
+      });
+  }
+
+  
+
+  getImages = async () => {
+    this.carrierID = await this.apiService.getCarrierID();
+    
+    this.image = this.domSanitizer.bypassSecurityTrustUrl(
+      await this.awsUS.getFiles(this.carrierID, this.driverData.driverImage));
+    this.driverImages.push(this.image);
+    
+    console.log(' this.driverImages',  this.driverImages);
+  }
 
 }

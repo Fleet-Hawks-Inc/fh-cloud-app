@@ -536,3 +536,18 @@ html.fixed .content-body {
     align-items: center;
     justify-content: center;
 }
+.map-search__results {
+    position: absolute;
+    list-style: none;
+    top: 75px;
+    left: 15px;
+    width: 100%;
+    z-index: 9;
+    box-shadow: 0 0 1px 1px rgba(0,0,0,0.1);
+}
+.custom-dt-buttons .buttons-excel {
+    display: none;
+}
+.dataTables_filter {
+    display: none;
+}

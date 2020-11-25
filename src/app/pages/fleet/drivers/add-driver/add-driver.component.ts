@@ -10,6 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { DomSanitizer} from '@angular/platform-browser';
+
 declare var $: any;
 
 @Component({
@@ -19,6 +21,11 @@ declare var $: any;
 })
 export class AddDriverComponent implements OnInit {
   pageTitle: string;
+  lastElement;
+  hideNextBtn: boolean = true;
+  addressField = -1;
+  currentTab =  1;
+  userLocation: any;
   public driverID;
   public driverProfileSrc: any = 'assets/img/driver/driver.png';
   selectedFiles: FileList;
@@ -26,11 +33,23 @@ export class AddDriverComponent implements OnInit {
   errors = {};
   form;
   concatArrayKeys = '';
-  manualAddress: boolean;
+  manualAddress: boolean = false;
   nextTab: any;
   carrierID: any;
+  driverAddress = {
+    address: [],
+  };
   driverData = {
-    address: {},
+    address: [{
+      addressType: '',
+      countryID: '',
+      stateID: '',
+      cityID: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: {lat: '', lng: ''}
+    }],
     documentDetails: [{
       documentType: '',
       document: '',
@@ -100,7 +119,7 @@ export class AddDriverComponent implements OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
-
+  visibleIndex = 0 ;
   constructor(private apiService: ApiService,
               private toastr: ToastrService,
               private awsUS: AwsUploadService,
@@ -108,6 +127,7 @@ export class AddDriverComponent implements OnInit {
               private spinner: NgxSpinnerService,
               private HereMap: HereMapService,
               private ngbCalendar: NgbCalendar,
+              private domSanitizer: DomSanitizer,
               private dateAdapter: NgbDateAdapter<string>,
               private router: Router) {
       this.selectedFileNames = new Map<any, any>();
@@ -118,7 +138,6 @@ export class AddDriverComponent implements OnInit {
   }
   ngOnInit() {
     this.driverID = this.route.snapshot.params['driverID'];
-    console.log(this.driverID)
     if (this.driverID) {
       this.pageTitle = 'Edit Driver';
       this.fetchDriverByID();
@@ -133,26 +152,44 @@ export class AddDriverComponent implements OnInit {
     this.fetchVehicles();
     this.getToday();
     this.searchLocation();
-    $(document).ready(() => {
-      $('.btnNext').click(() => {
-        this.nextTab = $('.nav-tabs li a.active').closest('li').next('li');
-        this.nextTab.find('a').trigger('click');
-      });
+    
+    $('#address-wrap-0').hide();
 
-      $('.btnPrevious').click(() => {
-        $('.nav-tabs li a.active').closest('li').prev('li').find('a').trigger('click');
-      });
-
-
-
-      // $('#document-two').hide();
-      // $('#add-document').on('click', function(){
-      //   $(this).hide();
-      //   $('#document-two').show();
-      // });
-    });
     $(document).ready(() => {
       this.form = $('#driverForm').validate();
+    });
+  }
+
+  nextStep() {
+    this.currentTab++;
+    console.log('currentTab', this.currentTab);
+  }
+  prevStep() {
+    this.currentTab--;
+    console.log('currentTab', this.currentTab);
+  }
+  tabChange(value) {
+    this.currentTab = value;
+  }
+
+  manAddress(event, i) {
+    if (event.target.checked) {
+      this.addressField = i;
+    } else {
+      this.addressField = -1;
+    }
+  }
+
+  addAddress() {
+    this.driverData.address.push({
+      addressType: '',
+      countryID: '',
+      stateID: '',
+      cityID: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: {lat: '', lng: ''}
     });
   }
 
@@ -194,20 +231,22 @@ export class AddDriverComponent implements OnInit {
       });
   }
 
-  getStates() {
-    const countryID = this.driverData.address['country'];
-    this.apiService.getData('states/country/' + countryID)
+  getStates(id: any) {
+    console.log('countryID', id);
+    
+    // const countryID = this.driverData.address['countryID'];
+    this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
         this.states = result.Items;
         this.adrStates = result.Items;
         this.docStates = result.Items;
-        console.log('this.states', this.states)
+        console.log('this.adrStates', this.adrStates)
       });
   }
 
-  getCities() {
-    const stateID = this.driverData.address['state'];
-    this.apiService.getData('cities/state/' + stateID)
+  getCities(id: any) {
+    // const stateID = this.driverData.address['stateID'];
+    this.apiService.getData('cities/state/' + id)
       .subscribe((result: any) => {
         this.cities = result.Items;
         console.log('this.cities', this.cities)
@@ -218,9 +257,9 @@ export class AddDriverComponent implements OnInit {
     return new Date().toISOString().split('T')[0]
   }
 
-  uploadDriverImg(event): void {
+  uploadDriverImg(elem, event): void {
     console.log(event);
-    if (event.target.files[0]) {
+    if (elem === 'profile') {
       const file = event.target.files[0];
       const reader = new FileReader();
       reader.onload = e => this.driverProfileSrc = reader.result;
@@ -230,7 +269,18 @@ export class AddDriverComponent implements OnInit {
       const fileName = `${uuidv4(newFile[0])}.${newFile[1]}`;
       this.selectedFileNames.set(fileName, newFile);
       this.driverData['driverImage'] = fileName;
+    } else if (elem === 'docs') {
+      this.selectedFiles = event.target.files;
+      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
+        const randomFileGenerate = this.selectedFiles[i].name.split('.');
+        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
+        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
+        this.driverData.documentDetails[i].uploadedDocs.push(fileName);
+      }
+    } else {
+
     }
+    
   }
 
   /*
@@ -243,10 +293,23 @@ export class AddDriverComponent implements OnInit {
     });
   }
 
+  getImages = async () => {
+    this.carrierID = await this.apiService.getCarrierID();
+    console.log(' this.driverData',  this.driverData['driverImage']);
+    // this.image = this.domSanitizer.bypassSecurityTrustUrl(
+    //   await this.awsUS.getFiles(this.carrierID, this.driverData.driverImage));
+    //   console.log(' this.driverImages',  this.driverImages);
+    // this.driverImages.push(this.image);
+    
+    
+  }
+
   public searchLocation() {
     let target;
     this.searchTerm.pipe(
       map((e: any) => {
+        $('.map-search__results').hide();
+        $(e.target).closest('div').addClass('show-search__result');
         target = e;
         return e.target.value;
       }),
@@ -260,6 +323,7 @@ export class AddDriverComponent implements OnInit {
       }),
     ).subscribe(res => {
       this.searchResults = res;
+      console.log('res', this.searchResults);
     });
   }
 
@@ -268,6 +332,11 @@ export class AddDriverComponent implements OnInit {
     this.register();
     this.hideErrors();
     console.log('this.driverData', this.driverData);
+    // this.driverAddress.address = this.driverData.address;
+    // this.driverAddress.address.forEach(element => {
+    //     delete element.userLocation;
+    // });
+    // console.log('this.driverAddress', this.driverAddress);
     this.apiService.postData('drivers', this.driverData).subscribe({
       complete: () => {},
       error: (err: any) => {
@@ -297,6 +366,29 @@ export class AddDriverComponent implements OnInit {
     });
   }
 
+  async userAddress(i, item) {
+    let result = await this.HereMap.geoCode(item.address.label);
+    result = result.items[0];
+    console.log('result', result);
+    
+    
+    this.driverData.address[i].geoCords.lat = result.position.lat;
+    this.driverData.address[i].geoCords.lng = result.position.lng;
+    this.driverData.address[i].countryID = result.address.countryName;
+    console.log('this.driverData.address[i]', this.driverData.address[i]);
+    // this.driverData.address['geoCords'].lat = result.position.lat;
+    // this.driverData.address['geoCords'].lng = result.position.lng;
+    // console.log('driver', this.driverAddress)
+    $('div').removeClass('show-search__result');
+  }
+
+  remove(obj, i) {
+    if (obj === 'address') {
+      this.driverData.address.splice(i, 1);
+    } else {
+      this.driverData.documentDetails.splice(i, 1);
+    }
+  }
 
   throwErrors() {
     console.log(this.errors);
@@ -345,6 +437,11 @@ export class AddDriverComponent implements OnInit {
       .subscribe((result: any) => {
         result = result.Items[0];
         console.log(result);
+        this.getImages();
+        this.driverData['driverType'] = result.driverType;
+        this.driverData['employeeId'] = result.employeeId;
+        this.driverData['companyId'] = result.companyId;
+        
         this.driverData['driverStatus'] = result.driverStatus;
         this.driverData['userName'] = result.userName;
         this.driverData['firstName'] = result.firstName;
@@ -352,15 +449,16 @@ export class AddDriverComponent implements OnInit {
         this.driverData['citizenship'] = result.citizenship;
         this.driverData['assignedVehicle'] = result.assignedVehicle;
         this.driverData['groupID'] = result.groupID;
+        this.driverProfileSrc = result.driverImage;
         this.driverData['gender'] = result.gender;
         this.driverData['workEmail'] = result.workEmail;
         this.driverData['workPhone'] = result.workPhone;
-        this.driverData.address['addressType'] = result.address.addressType;
-        this.driverData.address['country'] = result.address.country;
-        this.driverData.address['state'] = result.address.state;
-        this.driverData.address['zipCode'] = result.address.zipCode;
-        this.driverData.address['address1'] = result.address.address1;
-        this.driverData.address['address2'] = result.address.address2;
+        // this.driverData.address['addressType'] = result.address.addressType;
+        // this.driverData.address['country'] = result.address.country;
+        // this.driverData.address['state'] = result.address.state;
+        // this.driverData.address['zipCode'] = result.address.zipCode;
+        // this.driverData.address['address1'] = result.address.address1;
+        // this.driverData.address['address2'] = result.address.address2;
         this.driverData.documentDetails['documentType'] = result.documentDetails.documentType;
         this.driverData.documentDetails['document'] = result.documentDetails.document;
         this.driverData.documentDetails['issuingAuthority'] = result.documentDetails.issuingAuthority;

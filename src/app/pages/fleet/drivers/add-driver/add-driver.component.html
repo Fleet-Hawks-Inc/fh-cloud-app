@@ -17,33 +17,33 @@
 		   <div class="col pr-0 pb-3">
 			  <form id="driverForm" class="form-horizontal form-bordered bg-white" method="get" name="form" >
 				 <div class="p-2">
-					<ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+					<ul class="nav nav-tabs top-tabs" id="driver-tabs" role="tablist">
 					   <li class="nav-item">
-						  <a class="nav-link active" id="addDriverBasic-tab" data-toggle="tab" href="#addDriverBasic" role="tab" aria-controls="addDriverBasic" aria-selected="true">Basic Details</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 1}" (click)="tabChange(1)" id="addDriverBasic-tab" data-toggle="tab" href="#addDriverBasic" role="tab" aria-controls="addDriverBasic" aria-selected="true">Basic Details</a>
 					   </li>
 					   <li class="nav-item">
-						  <a class="nav-link" id="addDriverAddress-tab" data-toggle="tab" href="#addDriverAddress" role="tab" aria-controls="addDriverAddress" aria-selected="false">Address</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 2}" (click)="tabChange(2)" id="addDriverAddress-tab" data-toggle="tab" href="#addDriverAddress" role="tab" aria-controls="addDriverAddress" aria-selected="false">Address</a>
 					   </li>
 					   <li class="nav-item">
-						  <a class="nav-link" id="documents-tab" data-toggle="tab" href="#documents" role="tab" aria-controls="documents" aria-selected="false">Documents Details</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 3}" (click)="tabChange(3)" id="documents-tab" data-toggle="tab" href="#documents" role="tab" aria-controls="documents" aria-selected="false">Documents Details</a>
 					   </li>
 					   <li class="nav-item">
-						  <a class="nav-link" id="addDriverCrossBorder-tab" data-toggle="tab" href="#addDriverCrossBorder" role="tab" aria-controls="addDriverCrossBorder" aria-selected="false">Cross Border</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 4}" (click)="tabChange(4)" id="addDriverCrossBorder-tab" data-toggle="tab" href="#addDriverCrossBorder" role="tab" aria-controls="addDriverCrossBorder" aria-selected="false">Cross Border</a>
 					   </li>
 					   <li class="nav-item">
-						  <a class="nav-link" id="payment-tab" data-toggle="tab" href="#payment" role="tab" aria-controls="payment" aria-selected="false">Payment & licence Details</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 5}" (click)="tabChange(5)" id="payment-tab" data-toggle="tab" href="#payment" role="tab" aria-controls="payment" aria-selected="false">Payment & licence Details</a>
 					   </li>
 					   <li class="nav-item">
-						  <a class="nav-link" id="Driverhos-tab" data-toggle="tab" href="#Driverhos" role="tab" aria-controls="Driverhos" aria-selected="false">HOS Compliance</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 6}" (click)="tabChange(6)" id="Driverhos-tab" data-toggle="tab" href="#Driverhos" role="tab" aria-controls="Driverhos" aria-selected="false">HOS Compliance</a>
 					   </li>
 					   <li class="nav-item">
-						  <a class="nav-link" id="emergency-tab" data-toggle="tab" href="#emergency" role="tab" aria-controls="emergency" aria-selected="false">Emergency Contact</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 7}" (click)="tabChange(7)" id="emergency-tab" data-toggle="tab" href="#emergency" role="tab" aria-controls="emergency" aria-selected="false">Emergency Contact</a>
 					   </li>
 					</ul>
 				 </div>
 				 <div class="card-body">
 					<div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-					   <div class="tab-pane show active" id="addDriverBasic" role="tabpanel" aria-labelledby="addDriverBasic-tab">
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 1}" *ngIf="currentTab == 1" id="addDriverBasic" role="tabpanel" aria-labelledby="addDriverBasic-tab">
 						  <div>
 							 <div class="form-group row">
 								<div class="col-lg-10">
@@ -164,7 +164,7 @@
 										</div>
 										<div class="mt-1">
 											<div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
-											   <input (change)="uploadDriverImg($event)" [(ngModel)]="driverData.driverImage"
+											   <input (change)="uploadDriverImg('profile', $event)" [(ngModel)]="driverData.driverImage"
 											   name="driverImage" type="file" class="hidden_input1" />
 											</div>
 										</div>
@@ -208,19 +208,21 @@
 						  </div>
 					   </div>
 					   <!-- ADDRESS -->
-					   <div class="tab-pane fade" id="addDriverAddress" role="tabpanel" aria-labelledby="addDriverAddress-tab">
-						  <div>
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 2}" *ngIf="currentTab == 2" id="addDriverAddress" role="tabpanel" aria-labelledby="addDriverAddress-tab">
+						   <div class="row">
+							<div class="col-lg-10">
+								<label class="control-label font-weight-bold text-lg-right text-5 pt-2"
+								   >Address Details</label>
+							 </div>
+						   </div>
+						  <div *ngFor="let item of driverData.address; let i = index;">
 							 <div class="form-group row">
-								<div class="col-lg-10">
-								   <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
-									  >Address Details</label>
-								</div>
-								<div class="col-lg-5 offset-lg-1">
+								<div class="col-lg-4 offset-lg-1">
 								   <div class="row">
 									  <div class="col-lg-10">
 										 <label class="control-label font-weight-bold text-lg-right pt-2"
 											>Address Type</label>
-										 <select [(ngModel)]="driverData.address.addressType" name="addressType" data-plugin-selectTwo class="form-control populate">
+										 <select [(ngModel)]="item.addressType" name="item.addressType{{i}}" data-plugin-selectTwo class="form-control populate">
 											<optgroup label="Select Address">
 											   <option value="Work">Work</option>
 											   <option value="Home">Home</option>
@@ -234,26 +236,33 @@
 									<label class="control-label font-weight-bold text-lg-right pt-2"
 									   >Start typing your location, we'll pull
 									address automatically from Map</label>
-									<input [disabled]="manualAddress" (keyup)="searchTerm.next($event);" type="text" class="form-control"
-									   placeholder="Type Address">
+									<input [(ngModel)]="item.userLocation" 
+										name="item.userLocation{{i}}" 
+										(keyup)="searchTerm.next($event);"
+										type="text" 
+										class="form-control"
+									   	placeholder="Type Address">
 									<div class="checkbox-custom pt-2">
-									   <input [(ngModel)]="manualAddress" type="checkbox" name="man_address">
+									   <input (change)="manAddress($event, i)" [(ngModel)]="manualAddress" name="manualAddress{{i}}" type="checkbox" >
 									   <label for="man_address">Type Manually</label>
 									</div>
 									<div class="map-search__results bg-white">
 									 <ul class="p-0 m-0 text-left">
-									   <li *ngFor="let item of searchResults; let i = index">
-										 <a href="javascript:;">{{item.address.label}}</a>
+									   <li *ngFor="let item of searchResults;">
+										 <a href="javascript:;" (click)="userAddress(i, item)">{{item.address.label}}</a>
 									   </li>
 									 </ul>
 								   </div>
 								 </div>
-								 <div class="col-lg-1 mar-top-37 text-right">
-									<button class="btn btn-dark" type="submit"
-									   style="width: 100px;">Clear</button>
+								 <div class="col-lg-2 mar-top-37">
+									<button class="btn btn-dark" >Clear</button> 
+									<a *ngIf="i == 0;" (click)="addAddress();" class="btn btn-success" href="javascript:;"
+									   ><i class="fa fa-plus fa-fw"></i></a>
+									<a *ngIf="i != 0;" (click)="remove('address', i)" class="btn btn-success" href="javascript:;"
+									   ><i class="fa fa-minus fa-fw"></i></a>
 								 </div>
 							</div>
-							<div class="row" *ngIf="manualAddress">
+							<div class="row mb-3" *ngIf="addressField === i">
 
 								<div class="col-lg-5 offset-lg-1 pt-3">
 									<div class="row">
@@ -261,9 +270,9 @@
 											<label class="control-label font-weight-bold text-lg-right pt-2"
 											   >Select Country</label>
 											<select
-													[(ngModel)]="driverData.address.country"
-												 name="country" data-plugin-selectTwo
-												 (change)="getStates()"
+													[(ngModel)]="item.countryID"
+												 name="item.countryID{{i}}" data-plugin-selectTwo
+												 (change)="getStates($event.target.value)"
 												 class="form-control populate">
 											   <optgroup label="Select Country">
 												 <option class="text-capitalize" *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
@@ -273,28 +282,25 @@
 									   <div class="col-lg-5">
 										  <label class="control-label font-weight-bold text-lg-right pt-2"
 											 >Select State</label>
-										  <select (change)="getCities()" [(ngModel)]="driverData.address.state" name="state" data-plugin-selectTwo class="form-control populate">
+										  <select (change)="getCities($event.target.value)" [(ngModel)]="item.stateID" name="item.stateID{{i}}" data-plugin-selectTwo class="form-control populate">
 											 <optgroup label="Select State">
-												<option class="text-capitalize" *ngFor="let state of adrStates" value="">{{state.stateName}}</option>
+												<option class="text-capitalize" *ngFor="let state of adrStates" value="{{state.stateID}}">{{state.stateName}}</option>
 											</optgroup>
 										  </select>
 									   </div>
 									   <div class="col-lg-5">
 										  <label class="control-label font-weight-bold text-lg-right pt-2"
 											 >Select City</label>
-										  <select [(ngModel)]="driverData.address.city" name="city" data-plugin-selectTwo class="form-control populate">
+										  <select [(ngModel)]="item.cityID" name="item.cityID{{i}}" data-plugin-selectTwo class="form-control populate">
 											 <optgroup label="Select City">
-												<option value="City 1">City 1</option>
-												<option value="City 2">City 2</option>
-												<option value="City 3">City 3</option>
-												<option value="City 4">City 4</option>
+												<option class="text-capitalize" *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
 											 </optgroup>
 										  </select>
 									   </div>
 									   <div class="col-lg-5">
 										  <label class="control-label font-weight-bold text-lg-right pt-2"
 											 >Zip Code</label>
-										  <input [(ngModel)]="driverData.address.zipCode" name="zipCode" type="text" class="form-control" >
+										  <input [(ngModel)]="item.zipCode" name="item.zipCode{{i}}" type="text" class="form-control" >
 									   </div>
 									</div>
 								 </div>
@@ -303,12 +309,12 @@
 									   <div class="col-lg-10">
 										  <label class="control-label font-weight-bold text-lg-right"
 											 >Address 1</label>
-										  <input [(ngModel)]="driverData.address.address1" name="address1" type="text" class="form-control" >
+										  <input [(ngModel)]="item.address1" name="item.address1{{i}}" type="text" class="form-control" >
 									   </div>
 									   <div class="col-lg-10">
 										  <label class="control-label font-weight-bold text-lg-right pt-2"
 											 >Address 2</label>
-										  <input [(ngModel)]="driverData.address.address2" name="address2" type="text" class="form-control" >
+										  <input [(ngModel)]="item.address2" name="item.address2{{i}}" type="text" class="form-control" >
 									   </div>
 									</div>
 								 </div>
@@ -316,7 +322,7 @@
 						  </div>
 					   </div>
 					   <!-- Travel -->
-					   <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 3}" *ngIf="currentTab == 3" id="documents" role="tabpanel" aria-labelledby="documents-tab">
 						  <div>
 							 <div class="row">
 								<div class="col-lg-10">
@@ -342,9 +348,9 @@
 									  </div>
 								   </div>
 								</div>
-								<div class="col-lg-5 offset-lg-1">
+								<div class="col-lg-5">
 								   <div>
-									  <div class="row">
+									  <div class="row"  style="align-items: flex-end;">
 										 <div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Document#</label>
 											<input [(ngModel)]="document.document" name="document.document{{i}}" type="text" class="form-control" >
@@ -354,7 +360,10 @@
 											   >Issuing Authority</label>
 											<input [(ngModel)]="document.issuingAuthority" name="document.issuingAuthority{{i}}" type="text" class="form-control" >
 										 </div>
-									  </div>
+										 <div class="col-lg-1">
+											<a href="javascript:;" *ngIf="i != 0;" (click)="remove('document', i)" class="btn btn-success"><i class="fa fa-minus"></i></a>
+										 </div>
+										</div>
 								   </div>
 								</div>
 								<div class="col-lg-5 offset-lg-1">
@@ -379,7 +388,7 @@
 									  </div>
 								   </div>
 								</div>
-								<div class="col-lg-5 offset-lg-1">
+								<div class="col-lg-5">
 								   <div class="row">
 									  <div class="col-5">
 										 <label class="control-label font-weight-bold text-lg-right pt-2">
@@ -409,12 +418,13 @@
 											<input class="form-control p-0"
 												[(ngModel)]="document.uploadedDocs"
 												name="document.uploadedDocs{{i}}"
+												(change)="uploadDriverImg('docs', $event)"
 												type="file"
+												multiple
 											>
 										</div>
 									</div>
 								</div>
-								<a href="javascript:;" *ngIf="i != 0;" (click)="deleteInput(i)" class="btn btn-success"><i class="fa fa-plus"></i> Delete</a>
 								<div class="col-lg-5 offset-lg-1"></div>
 							</div>
 							<div class="col-lg-5 offset-lg-1">
@@ -522,7 +532,7 @@
 						  </div>
 					   </div>
 					   <!--    CROSS BORDER -->
-					   <div class="tab-pane fade" id="addDriverCrossBorder" role="tabpanel" aria-labelledby="addDriverCrossBorder-tab">
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 4}" *ngIf="currentTab == 4" id="addDriverCrossBorder" role="tabpanel" aria-labelledby="addDriverCrossBorder-tab">
 						  <div>
 							 <div class="row">
 								<div class="col-lg-10">
@@ -577,7 +587,7 @@
 						  </div>
 					   </div>
 					   <!-- Payment -->
-					   <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 5}" *ngIf="currentTab == 5" id="payment" role="tabpanel" aria-labelledby="payment-tab">
 						  <div>
 							<div class="form-group row">
 								<div class="col-lg-10">
@@ -645,12 +655,12 @@
 											<div class="col-lg-5">
 												<label class="control-label font-weight-bold text-lg-right pt-2"
 												>Loaded Miles ($)</label>
-												<input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles" type="number" class="form-control" >
+												<input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles" type="text" class="form-control" >
 											</div>
 											<div class="col-lg-5">
 												<label class="control-label font-weight-bold text-lg-right pt-2"
 												>Empty Miles ($)</label>
-												<input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles" type="number" class="form-control" >
+												<input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles" type="text" class="form-control" >
 											</div>
 										</div>
 										 <div class="row">
@@ -770,7 +780,7 @@
 							 </div>
 						  </div>
 					   </div>
-					   <div class="tab-pane fade" id="Driverhos" role="tabpanel" aria-labelledby="Driverhos-tab">
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 6}" *ngIf="currentTab == 6" id="Driverhos" role="tabpanel" aria-labelledby="Driverhos-tab">
 						  <div>
 							 <div class="form-group row">
 								<div class="col-lg-10">
@@ -859,7 +869,7 @@
 							 </div>
 						  </div>
 					   </div>
-					   <div class="tab-pane fade" id="emergency" role="tabpanel" aria-labelledby="emergency-tab">
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 7}" *ngIf="currentTab == 7" id="emergency" role="tabpanel" aria-labelledby="emergency-tab">
 						  <div>
 							 <div class="form-group row">
 								<div class="col-lg-10">
@@ -908,10 +918,10 @@
 				 </div>
 				 <div class="form-group row mt-3">
 					<div class="col-lg-12 text-right pb-4 pr-5">
-					   <button type="button" class="btn btn-default btnPrevious">Cancel</button>
-					   <a href="javascript:;" class="btn btn-success btnNext">Next</a>
-					   <a href="javascript:;" *ngIf="!driverID" (click)="addDriver()" class="btn btn-success">Submit</a>
-					   <a href="javascript:;" *ngIf="driverID" (click)="addDriver()" class="btn btn-success">Update</a>
+					   <button type="button" (click)="prevStep()" class="btn btn-default btnPrevious">Cancel</button>
+					   <a href="javascript:;" (click)="nextStep()"  *ngIf="currentTab != 7" class="btn btn-success btnNext">Next</a>
+					   <a href="javascript:;" *ngIf="currentTab == 7 " (click)="addDriver()" class="btn btn-success">Submit</a>
+					   <a href="javascript:;" *ngIf="currentTab == 7 " (click)="addDriver()" class="btn btn-success">Update</a>
 					</div>
 				 </div>
 			  </form>
