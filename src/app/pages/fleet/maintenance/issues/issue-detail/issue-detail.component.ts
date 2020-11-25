@@ -28,6 +28,9 @@ export class IssueDetailComponent implements OnInit {
   vehicles = [];
   assets = [];
   contacts = [];
+  vehicleList: any;
+  contactList: any;
+  assetList: any;
   uploadedPhotos = [];
   docs: SafeResourceUrl;
   public issueImages = [];
@@ -40,41 +43,28 @@ export class IssueDetailComponent implements OnInit {
   ngOnInit() {
     this.issueID = this.route.snapshot.params['issueID'];
     this.fetchIssue();
+    this.fetchVehicleList();
+    this.fetchContactList();
+    this.fetchAssetList();
   }
-  fetchContacts(ID) {
-    this.apiService.getData('contacts/' + ID).subscribe((result: any) => {
-      this.contacts = result.Items;
-      this.contactName = this.contacts[0].contactName;
+    fetchVehicleList() {
+    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+      this.vehicleList = result;
     });
   }
-  fetchVehicles(ID) {
-    this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
-      this.vehicles = result.Items;
-      this.unitName =  this.vehicles[0].vehicleIdentification;
+ 
+  fetchContactList() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.contactList = result;
+      console.log('contact list', this.contactList);
     });
   }
-  fetchAssets(ID) {
-    this.apiService.getData('assets/' + ID).subscribe((result: any) => {
-      this.assets = result.Items;
-      this.unitName =  this.assets[0].assetIdentification;
+  fetchAssetList() {
+    this.apiService.getData('assets/get/list').subscribe((result: any) => {
+      this.assetList = result;
+      console.log('asset list', this.assetList);
     });
-  }
-  // fetchAssets() {
-  //   this.apiService.getData('assets').subscribe((result: any) => {
-  //     this.assets = result.Items;
-  //   });
-  // }
-  getContactName(){
-    this.fetchContacts(this.reportedBy);
-  }
-  getUnitName() {
-    if (this.unitType === 'vehicle') {
-      this.fetchVehicles(this.unitID);
-    }
-    else {
-      this.fetchAssets(this.unitID);
-    }
-  }
+  } 
   editIssue = () => {
       this.router.navigateByUrl('/fleet/maintenance/issues/edit/' + this.issueID);
       }
@@ -88,7 +78,7 @@ export class IssueDetailComponent implements OnInit {
       this.issueID = this.issueID;
       this.issueName = result.issueName;
       this.unitID = result.unitID;
-      this.status = result.status;
+      this.status = result.currentStatus;
       this.unitType = result.unitType;
       this.reportedDate = result.reportedDate;
       this.description = result.description;
@@ -97,8 +87,6 @@ export class IssueDetailComponent implements OnInit {
       this.assignedTo = result.assignedTo;
       this.uploadedPhotos = result.uploadedPhotos;
       this.getImages();
-      this.getUnitName();
-      this.getContactName();
     });
   }
   getImages = async () => {
@@ -119,5 +107,11 @@ export class IssueDetailComponent implements OnInit {
         this.toastr.success('Issue Deleted Successfully!');
         this.router.navigateByUrl('/fleet/maintenance/issues/list');
       });
+  }
+  setStatus(issueID) {
+    const issueStatus = 'CLOSE';
+    this.apiService.getData('issues/setStatus/' + issueID + '/' + issueStatus).subscribe((result: any) => {
+      this.toastr.success('Issue Status Updated Successfully!');
+    });
   }
 }

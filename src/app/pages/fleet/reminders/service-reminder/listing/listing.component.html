@@ -187,7 +187,9 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of remindersData;" style="cursor: pointer;">
-                                    <td>{{ getVehicleName(item.reminderIdentification)}}</td>
+                                    <td>
+                                        {{vehicleList[item.reminderIdentification]}}
+                                    </td>
                                     <td><span class="font-weight-bold" title="Service Task" >{{item.reminderTasks.task}}</span><br>
                                     </td> 
                                     <td><span>{{item.reminderTasks.remindByDays}} Days from now</span><br> {{item.reminderTasks.odometer}} miles from now</td>

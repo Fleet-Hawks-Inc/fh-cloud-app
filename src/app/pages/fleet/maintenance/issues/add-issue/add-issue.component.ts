@@ -26,7 +26,7 @@ export class AddIssueComponent implements OnInit {
   issueName = '';
   unitID = '';
   unitType = 'vehicle';
-  status = 'open';
+  currentStatus = 'OPEN';
   reportedDate: NgbDateStruct;
   description = '';
   odometer = '';
@@ -108,7 +108,7 @@ export class AddIssueComponent implements OnInit {
       issueName: this.issueName,
       unitType: this.unitType,
       unitID: this.unitID,
-      status: this.status,
+      currentStatus: this.currentStatus,
       reportedDate: this.reportedDate,
       description: this.description,
       odometer: this.odometer,
@@ -213,7 +213,7 @@ hideErrors() {
       this.issueName = result.issueName;
       this.unitID = result.unitID;
       this.unitType = result.unitType;
-      this.status = result.status;
+      this.currentStatus = result.currentStatus;
       this.reportedDate = result.reportedDate;
       this.description = result.description;
       this.odometer = result.odometer;
@@ -235,7 +235,7 @@ hideErrors() {
     issueName: this.issueName,
     unitID: this.unitID,
     unitType: this.unitType,
-    status: this.status,
+    currentStatus: this.currentStatus,
     reportedDate: this.reportedDate,
     description: this.description,
     odometer: this.odometer,

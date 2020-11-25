@@ -24,6 +24,9 @@ export class FuelEntryListComponent implements OnInit {
   toDate: any = '';
   entryId = '';
   vehicles = [];
+  vehicleList: any;
+  tripList: any;
+  assetList: any;
   countries = [];
   checked = false;
   isChecked = false;
@@ -47,8 +50,10 @@ export class FuelEntryListComponent implements OnInit {
   }
   ngOnInit() {
     this.fuelEntries();
-    // this.fetchVehicles();
+    this.fetchVehicleList();
+    this.fetchAssetList();
     this.fetchCountries();
+    this.fetchTripList();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -56,12 +61,22 @@ export class FuelEntryListComponent implements OnInit {
     });
   }
 
-  // fetchVehicle(ID) {
-  //   this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
-  //     this.vehicles = result.Items;
-  //     return this.vehicles[0].vehicleName;
-  //   });
-  // }
+  fetchVehicleList() {
+    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+      this.vehicleList = result;
+    });
+  }
+  fetchAssetList() {
+    this.apiService.getData('assets/get/list').subscribe((result: any) => {
+      this.assetList = result;
+      console.log('asset list', this.assetList);
+    });
+  }
+  fetchTripList() {
+    this.apiService.getData('trips/get/list').subscribe((result: any) => {
+      this.tripList = result;
+    });
+  }
   fuelEntries() {
     this.apiService.getData(`fuelEntries?amount=${this.amount}&from=${this.fromDate}&to=${this.toDate}`).subscribe({
       complete: () => {
@@ -97,11 +112,6 @@ export class FuelEntryListComponent implements OnInit {
     return;
   }
   deleteFuelEntry(entryID) {
-    /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable('#datatable-default')) {
-      $('#datatable-default').DataTable().clear().destroy();
-    }
-    /******************************/
     this.apiService
       .deleteData('fuelEntries/' + entryID)
       .subscribe((result: any) => {

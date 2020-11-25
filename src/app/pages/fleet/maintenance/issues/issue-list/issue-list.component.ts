@@ -18,6 +18,9 @@ export class IssueListComponent implements OnInit {
   vehicles: [];
   assets: [];
   contacts: [];
+  contactList: any;
+  vehicleList: any;
+  assetList: any;
   vehicleName: string;
   contactName: string;
   dtOptions: any = {};
@@ -36,6 +39,9 @@ export class IssueListComponent implements OnInit {
     this.fetchContacts();
     this.fetchVehicles();
     this.fetchAssets();
+    this.fetchVehicleList();
+    this.fetchContactList();
+    this.fetchAssetList();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -95,13 +101,26 @@ export class IssueListComponent implements OnInit {
   fetchContacts() {
     this.apiService.getData('contacts').subscribe((result: any) => {
       this.contacts = result.Items;
-      console.log('Contacts', this.contacts);
+    });
+  }
+  fetchVehicleList() {
+    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+      this.vehicleList = result;
+    });
+  }
+  fetchContactList() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.contactList = result;
+    });
+  }
+  fetchAssetList() {
+    this.apiService.getData('assets/get/list').subscribe((result: any) => {
+      this.assetList = result;
     });
   }
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
-      console.log('ASSETS', this.assets);
       // this.assetName =  this.assets[0].assetIdentification;
     });
   }
@@ -125,8 +144,7 @@ export class IssueListComponent implements OnInit {
       return assetName;
     }
   }
-  fetchIssues() {   
- 
+  fetchIssues() { 
       this.apiService.getData(`issues?unitID=${this.unitID}&issueName=${this.issueName}`).subscribe({
         complete: () => {
           this.initDataTable();
@@ -150,21 +168,12 @@ export class IssueListComponent implements OnInit {
       },
     });
   }
-  // deleteIssue(issueID) {
-  //   /******************************/
-  //   this.apiService
-  //     .deleteData('issues/' + issueID)
-  //     .subscribe((result: any) => {
-  //       //   this.spinner.show();
-  //       this.fetchIssues();
-  //       this.toastr.success('Issue Deleted Successfully!');
-  //     });
-  // }
   deleteIssue(issueID) {
     this.apiService
       .deleteData('issues/' + issueID)
       .subscribe((result: any) => {
         this.toastr.success('Issue Deleted Successfully!');
+        this. fetchAllIssues();
       });
   }
   initDataTable() {

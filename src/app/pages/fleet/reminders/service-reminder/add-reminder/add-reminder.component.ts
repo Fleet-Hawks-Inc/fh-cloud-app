@@ -25,8 +25,8 @@ export class AddReminderComponent implements OnInit {
     subscribers: [],
   };
   numberOfDays: number;
-  time: number;
-  timeType: string;
+  time = 1;
+  timeType = 'Day(s)';
   vehicles = [];
   users = [];
   groups = [];
