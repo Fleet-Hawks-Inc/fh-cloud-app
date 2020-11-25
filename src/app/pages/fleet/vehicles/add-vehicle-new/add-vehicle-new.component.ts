@@ -178,6 +178,7 @@ export class AddVehicleNewComponent implements OnInit {
   countries = [];
   states = [];
   groups = [];
+  drivers = [];
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedPhotos = [];
@@ -214,7 +215,9 @@ export class AddVehicleNewComponent implements OnInit {
     this.fetchInspectionForms();
     this.fetchManufacturers();
     this.fetchCountries();
+    this.fetchStates();
     this.fetchGroups();
+    this.fetchDrivers();
 
     this.apiService.getData('devices').subscribe((result: any) => {
       this.quantumsList = result.Items;
@@ -233,6 +236,12 @@ export class AddVehicleNewComponent implements OnInit {
 
 
 
+  }
+
+  fetchDrivers(){
+    this.apiService.getData('drivers').subscribe((result: any) => {
+      this.drivers = result.Items;
+    });
   }
 
   fetchServicePrograms() {
@@ -266,6 +275,15 @@ export class AddVehicleNewComponent implements OnInit {
         this.states = result.Items;
       });
   }
+
+  fetchStates() {
+    this.apiService
+      .getData('states')
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
+
 
   getModels() {
     this.apiService

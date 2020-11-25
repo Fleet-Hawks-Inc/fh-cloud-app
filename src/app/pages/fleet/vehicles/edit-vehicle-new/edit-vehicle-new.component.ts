@@ -177,6 +177,7 @@ export class EditVehicleNewComponent implements OnInit {
   countries = [];
   states = [];
   groups = [];
+  drivers = [];
 
   errors = {};
   form;
@@ -206,7 +207,9 @@ export class EditVehicleNewComponent implements OnInit {
     this.fetchInspectionForms();
     this.fetchManufacturers();
     this.fetchCountries();
+    this.fetchStates();
     this.fetchGroups();
+    this.fetchDrivers();
 
     this.apiService.getData('devices')
     .subscribe((result: any) => {
@@ -214,6 +217,20 @@ export class EditVehicleNewComponent implements OnInit {
     });
 
     this.getVehicle();
+  }
+
+  fetchDrivers(){
+    this.apiService.getData('drivers').subscribe((result: any) => {
+      this.drivers = result.Items;
+    });
+  }
+
+  fetchStates() {
+    this.apiService
+      .getData('states')
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
   }
 
   getVehicle(){
