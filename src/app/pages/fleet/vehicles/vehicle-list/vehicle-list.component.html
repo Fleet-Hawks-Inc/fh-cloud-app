@@ -166,14 +166,14 @@
                           vehicle.vehicleID
                         }}"
                       >
-                        Ford
+                        {{vehicle.manufacturerID}}
                       </td>
                       <td
                         routerLink="/fleet/vehicles/detail/{{
                           vehicle.vehicleID
                         }}"
                       >
-                        Fh-450
+                      {{vehicle.modelID}}
                       </td>
                       <td
                         routerLink="/fleet/vehicles/detail/{{
@@ -201,28 +201,28 @@
                           vehicle.vehicleID
                         }}"
                       >
-                        Diesel
+                        {{vehicle.fluid.fuelType}
                       </td>
                       <td
                         routerLink="/fleet/vehicles/detail/{{
                           vehicle.vehicleID
                         }}"
                       >
-                        Active
+                        {{vehicle.currentStatus}}
                       </td>
                       <td
                         routerLink="/fleet/vehicles/detail/{{
                           vehicle.vehicleID
                         }}"
                       >
-                        Short Haul
+                        {{vehicle.groupID}}
                       </td>
                       <td
                         routerLink="/fleet/vehicles/detail/{{
                           vehicle.vehicleID
                         }}"
                       >
-                        Rented
+                        {{vehicle.ownership}}
                       </td>
                       <td>
                         <div class="dropdown dropright">
