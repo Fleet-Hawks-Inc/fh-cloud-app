@@ -291,7 +291,7 @@ export class MapViewComponent implements OnInit {
           return false;
         }
 
-        if(this.tripData.tripStatus === 'pending') {
+        if(this.tripData.tripStatus === 'pending' || this.tripData.tripStatus === 'planned') {
           $("#assetModal").modal('show');
           console.log(this.tripData)
           this.spinner.hide();
@@ -426,7 +426,7 @@ export class MapViewComponent implements OnInit {
   }
 
   updateTripStatus(tripId) {
-    this.apiService.getData('trips/update-status/'+tripId+'/planned').subscribe({
+    this.apiService.getData('trips/update-status/'+tripId+'/dispatched').subscribe({
       complete: () => {
       },
       error: (err: any) => {

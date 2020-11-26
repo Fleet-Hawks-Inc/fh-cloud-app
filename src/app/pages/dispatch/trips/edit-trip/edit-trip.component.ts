@@ -8,8 +8,6 @@ import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
-import { merge } from 'jquery';
-import { async } from 'rxjs/internal/scheduler/async';
 declare var $: any;
 
 @Component({
@@ -18,17 +16,14 @@ declare var $: any;
   styleUrls: ['./edit-trip.component.css']
 })
 export class EditTripComponent implements OnInit {
-  getAllLocations = ['101 9 Ave SW, Calgary, AB T2P 1J9, Canada',
-                  'Rocky View County, AB, Canada',
-                'Monterey Park, Calgary, AB T1Y 7C5, Canada',
-              'Taracove Estate Dr NE, Calgary, AB T3J 5A1, Canada']
+
   carriers = [];
   routes = [];
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
     private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) { }
 
   tripID = '';
-  errors: {};
+  errors = {};
   trips = [];
   vehicles = [];
   assets = [];
@@ -209,8 +204,6 @@ export class EditTripComponent implements OnInit {
   assetDataCoDriverUsername = '';
   informationAsset = [];
 
-  newCoords = [];
-
   ngOnInit() {
 
     this.tripID = this.route.snapshot.params['tripID'];
@@ -250,24 +243,8 @@ export class EditTripComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    this.getCoords(this.trips);
     this.ArrayShuffle(this.trips, event.previousIndex, event.currentIndex);
     moveItemInArray(this.trips, event.previousIndex, event.currentIndex);
-  }
-
-/**
- * pass trips coords to show on the map
- * @param data 
- */
-  async getCoords(data) {
-    this.spinner.show();
-    await Promise.all( data.map(async item => {
-      let result = await this.hereMap.geoCode(item.locationName);
-      console.log('result', result);
-      this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
-    }));
-    this.hereMap.calculateRoute(this.newCoords);
-    this.spinner.hide();
   }
 
   async ArrayShuffle(array, previousIndex, currentIndex) {
@@ -443,14 +420,9 @@ export class EditTripComponent implements OnInit {
     })
   }
 
-  async mapShow() {
+  mapShow() {
     this.hereMap.mapInit();
-    // let result = await this.hereMap.geoCode('Calgary Tower, 9 Avenue Southwest, Calgary, AB, Canada');
-    // let origin = `${result.items[0].position.lat},${result.items[0].position.lng}`;
-    // console.log('origin', origin);
-    // this.hereMap.calculateRoute(['51.079101,-114.092657', '50.453733,-104.633429']);
   }
-  
 
   showMOdal() {
     $("#orderModal").modal('show');
@@ -928,13 +900,13 @@ export class EditTripComponent implements OnInit {
 
   updateTrip() {
     // console.log('tripData');
+    this.hideErrors();
     if (this.tripData.reeferTemperature != '' && this.tripData.reeferTemperatureUnit != undefined) {
       this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
     } else {
       this.tripData.reeferTemperature = '';
     }
 
-    delete this.tripData.reeferTemperatureUnit;
     this.tripData.orderId = this.OrderIDs;
     this.tripData.tripPlanning = [];
     this.tripData.tripID = this.route.snapshot.params['tripID'];
@@ -1025,6 +997,8 @@ export class EditTripComponent implements OnInit {
     // delete this.tripData.carrierID;
     console.log('this.tripData')
     console.log(this.tripData)
+    delete this.tripData.reeferTemperatureUnit;
+
     this.apiService.putData('trips', this.tripData).subscribe({
       complete: () => {
       },
@@ -1032,13 +1006,9 @@ export class EditTripComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              // console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
-            })
+              this.errors[val.context.key] = val.message;
+          })
           )
           .subscribe({
             complete: () => {
@@ -1062,11 +1032,11 @@ export class EditTripComponent implements OnInit {
 
   fetchTripDetail() {
     this.spinner.show();
-    this.apiService.getData('trips/' + this.tripID)
-    .subscribe((result: any) => {
+    this.apiService.getData('trips/' + this.tripID).
+      subscribe((result: any) => {
         result = result.Items[0];
         this.tripData = result;
-        // console.log('this.tripData', this.tripData);
+        // console.log('result');
         // console.log(result);
         let refTemp = this.tripData.reeferTemperature;
         let temp = refTemp.substring(0, refTemp.length - 1);
@@ -1081,7 +1051,6 @@ export class EditTripComponent implements OnInit {
           for (let m = 0; m < result.orderId.length; m++) {
             const element = result.orderId[m];
             this.typeOptions.unshift(element);
-            
           }
         }
 
@@ -1106,7 +1075,7 @@ export class EditTripComponent implements OnInit {
 
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
-          // console.log('tripPlanning[i]', tripPlanning[i])
+
           // this.fetchAssetDetail();
 
           let obj = {
@@ -1180,11 +1149,10 @@ export class EditTripComponent implements OnInit {
           this.fetchCountryName(element.location.countryID, i);
           this.fetchStateDetail(element.location.stateID, i);
           this.fetchCityDetail(element.location.cityID, i);
-          console.log("this.trips", this.trips);
-          this.fetchCarrierName(element.carrierID, i);
+          this.fetchCarrierName(element.carrierID, i)
         }
         this.spinner.hide();
-      });
+      })
   }
 
   fetchAssetDetail(assetID, index) {
@@ -1251,42 +1219,40 @@ export class EditTripComponent implements OnInit {
       })
   }
 
-  fetchCityDetail (cityID, index) {
-    console.log("fetch cities");
+  fetchCityDetail(cityID, index) {
     this.apiService.getData('cities/' + cityID)
       .subscribe((result: any) => {
-        console.log('result.Items[0]', result);
+        // console.log(result.Items[0]);
         if (result.Items[0].cityName != undefined) {
           this.trips[index].location.cityName = result.Items[0].cityName;
-          this.trips[index].locationName =  this.trips[index].location.address1 + ', ' +
-                                            this.trips[index].location.address2 + ', ' +
-                                            this.trips[index].location.zipcode + ', ' +
-                                            this.trips[index].location.cityName + ', ' +
-                                            this.trips[index].location.stateName + ', ' +
-                                            this.trips[index].location.countryName;
-
-          if(this.trips[index] === this.trips[this.trips.length - 1]) {
-              this.getCoords(this.trips);
-          }
+          this.trips[index].locationName = this.trips[index].location.address1 + ', ' + this.trips[index].location.address2 + ', ' + this.trips[index].location.zipcode + ', ' + this.trips[index].location.cityName + ', ' + this.trips[index].location.stateName + ', ' + this.trips[index].location.countryName;
         }
       })
   }
 
-  getLocations () {
-    for (let i = 0; i < this.trips.length; i++) {
-      this.getAllLocations.push(this.trips[i].location.address1 +
-        this.trips[i].location.address2 + this.trips[i].location.cityName + this.trips[i].location.stateName +
-        this.trips[i].location.countryName + this.trips[i].location.zipcode
-      )
-    }
-    console.log('this.trips', this.trips);
-    
-
-    console.log('getAllLocations', this.getAllLocations);
-  }
+  // throwErrors() {
+  //   // console.log(this.errors);
+  //   this.form.showErrors(this.errors);
+  // }
 
   throwErrors() {
-    // console.log(this.errors);
-    this.form.showErrors(this.errors);
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error')
+      });
+  }
+
+  hideErrors() {
+      from(Object.keys(this.errors))
+        .subscribe((v) => {
+          $('[name="' + v + '"]')
+            .removeClass('error')
+            .next()
+            .remove('label')
+        });
+      this.errors = {};
   }
 }

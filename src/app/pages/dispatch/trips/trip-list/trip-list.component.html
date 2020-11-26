@@ -20,7 +20,7 @@
                     <div class="row px-2" style="padding-top:10px;">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
-                                <input type="text" class="form-control" placeholder="Search">
+                                <input type="text" class="form-control" placeholder="Search" name="searchValue" [(ngModel)]="tripsFiltr.searchValue">
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3">
@@ -30,32 +30,32 @@
                                         <i class="fas fa-calendar-alt"></i>
                                     </span>
                                 </span>
-                                <input type="text" data-plugin-datepicker="" class="form-control" name="start">
+                                <input type="date" data-plugin-datepicker="" class="form-control" name="startDate" [(ngModel)]="tripsFiltr.startDate">
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
-                                <input type="text" data-plugin-datepicker="" class="form-control" name="end">
+                                <input type="date" data-plugin-datepicker="" class="form-control" name="endDate" [(ngModel)]="tripsFiltr.endDate">
                             </div>
                         </div>
-                        <div class="col-md-2  col-lg-2">
+                        <div class="col-md-2 col-lg-2">
                             <div class="btn-group flex-wrap" style="width:100%;">
                                 <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle"
-                                    data-toggle="dropdown">Search by Category<span class="caret"></span></button>
+                                    data-toggle="dropdown" id="categorySelect">Search by Category<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item text-1" href="#">All</a>
-                                    <a class="dropdown-item text-1" href="#">Trip Number</a>
-                                    <a class="dropdown-item text-1" href="#">Trip Type</a>
-                                    <a class="dropdown-item text-1" href="#">Order Number</a>
-                                    <a class="dropdown-item text-1" href="#">Customer</a>
-                                    <a class="dropdown-item text-1" href="#">Driver</a>
-                                    <a class="dropdown-item text-1" href="#">Vehicle</a>
-                                    <a class="dropdown-item text-1" href="#">Trailer</a>
-                                    <a class="dropdown-item text-1" href="#">Location</a>
+                                    <a class="dropdown-item text-1" href="javascript:;" (click)="selectCategory('All')" >All</a>
+                                    <a class="dropdown-item text-1" href="javascript:;" (click)="selectCategory('TripNo')" >Trip Number</a>
+                                    <a class="dropdown-item text-1" href="javascript:;" (click)="selectCategory('TripType')" >Trip Type</a>
+                                    <a class="dropdown-item text-1" href="javascript:;" (click)="selectCategory('OrderNo')" >Order Number</a>
+                                    <a class="dropdown-item text-1" href="javascript:;" (click)="selectCategory('Customer')" >Customer</a>
+                                    <a class="dropdown-item text-1" href="javascript:;" (click)="selectCategory('Driver')" >Driver</a>
+                                    <a class="dropdown-item text-1" href="javascript:;" (click)="selectCategory('Vehicle')" >Vehicle</a>
+                                    <a class="dropdown-item text-1" href="javascript:;" (click)="selectCategory('Trailer')" >Trailer</a>
+                                    <a class="dropdown-item text-1" href="javascript:;" (click)="selectCategory('Location')" >Location</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-1 col-lg-1">
-                            <button type="submit" class="btn btn-sm btn-success">Search</button>
+                            <button type="button" class="btn btn-sm btn-success" (click)="filterTrips()">Search</button>
                         </div>
                         <div class="col-md-4 col-lg-4 text-right pr-3">
                             <div class="btn-group flex-wrap">
@@ -78,52 +78,45 @@
                 </form>
             </header>
 
-
             <section class="card mt-0 mb-4 pr-0 mr-0">
-
                 <div class="card-body pr-0">
                     <div class="m-2">
                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="allTrips-tab" data-toggle="tab" href="#allTrips"
-                                    role="tab" aria-controls="allTrips" aria-selected="true">All</a>
+                                <a class="nav-link active navtabs" id="allTrips-tab" href="javascript:;"
+                                    role="tab" (click)="fetchTabData('all')" aria-controls="allTrips" aria-selected="true">All</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="planned-tab" data-toggle="tab" href="#planned" role="tab"
-                                    aria-controls="planned" aria-selected="false">Planned : {{ plannedTripsCount }}</a>
+                                <a class="nav-link navtabs" id="planned-tab" href="javascript:;" (click)="fetchTabData('planned')">
+                                    Planned : {{ plannedTripsCount }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="dispatchedTrip-tab" data-toggle="tab" href="#dispatchedTrip"
-                                    role="tab" aria-controls="dispatchedTrip" aria-selected="false">Dispatched :
-                                    {{ dispatchedTripsCount }}</a>
+                                <a class="nav-link navtabs" id="dispatchedTrip-tab" href="javascript:;" (click)="fetchTabData('dispatched')">
+                                    Dispatched : {{ dispatchedTripsCount }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="started-tab" data-toggle="tab" href="#started" role="tab"
-                                    aria-controls="started" aria-selected="false">Started : {{ startedTripsCount }}</a>
+                                <a class="nav-link navtabs" id="started-tab" href="javascript:;" (click)="fetchTabData('started')">
+                                    Started : {{ startedTripsCount }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="enroute-tab" data-toggle="tab" href="#enroute" role="tab"
-                                    aria-controls="enroute" aria-selected="false">En-Route : {{ enrouteTripsCount }}</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" id="cancelled-tab" data-toggle="tab" href="#cancelled" role="tab"
-                                    aria-controls="cancelled" aria-selected="false">Cancelled :
-                                    {{ cancelledTripsCount }}</a>
+                                <a class="nav-link navtabs" id="enroute-tab" href="javascript:;" (click)="fetchTabData('enroute')">
+                                    En-Route : {{ enrouteTripsCount }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="delivered-tab" data-toggle="tab" href="#delivered" role="tab"
-                                    aria-controls="delivered" aria-selected="false">Delivered :
-                                    {{ deliveredTripsCount }}</a>
+                                <a class="nav-link navtabs" id="cancelled-tab" href="javascript:;" (click)="fetchTabData('cancelled')">
+                                    Cancelled : {{ cancelledTripsCount }}</a>
                             </li>
-
+                            <li class="nav-item navtabs">
+                                <a class="nav-link" id="delivered-tab" href="javascript:;" (click)="fetchTabData('delivered')">
+                                    Delivered : {{ deliveredTripsCount }}</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
                         <div class="tab-pane show active" id="allTrips" role="tabpanel" aria-labelledby="allTrips-tab">
                             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
                                 class="row-border hover table table-bordered table-striped mb-0"
-                                *ngIf="trips.length > 0" id="allTripsDT">
+                                 id="allTripsDT">
                                 <thead>
                                     <tr>
                                         <!-- <th width="5%"><input type="checkbox"></th> -->
@@ -144,7 +137,7 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody *ngIf="trips.length > 0">
                                     <tr *ngFor="let trip of trips; let i= index">
                                         <!-- <td><input type="checkbox"></td> -->
                                         <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
@@ -155,7 +148,7 @@
                                         <td>-</td>
                                         <td>{{ trip.pickupLocation }}, {{ trip.pickupCity }}, {{ trip.pickupState }}, {{ trip.pickupCountry }}</td>
                                         <td>
-                                            {{ trip.dropTime }}, {{ trip.dropCity }}, {{ trip.dropState }}, {{ trip.dropCountry }}
+                                            {{ trip.dropLocation }}, {{ trip.dropCity }}, {{ trip.dropState }}, {{ trip.dropCountry }}
                                         </td>
                                         <td>{{ trip.pickupTime }}</td>
                                         <td>{{ trip.dropTime }}</td>
@@ -184,397 +177,13 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table>
-                            <div *ngIf="!trips.length > 0" class="alert alert-info m-0 text-center" role="alert">
-                                No records found
-                            </div>
-                        </div>
-                        <!-- planned -->
-                        <div class="tab-pane fade" id="planned" role="tabpanel" aria-labelledby="planned-tab">
-                            <table datatable [dtOptions]="dtOptions"
-                                class="row-border hover table table-bordered table-striped mb-0"
-                                *ngIf="plannedTrips.length > 0">
-                                <thead>
+
+                                <tbody *ngIf="trips.length === 0">
                                     <tr>
-                                        <!-- <th width="5%"><input type="checkbox"></th> -->
-
-                                        <th>Trip</th>
-                                        <th>Type</th>
-                                        <th>Date</th>
-                                        <th>Order No.</th>
-                                        <th>Pick-up</th>
-                                        <th>Delivery</th>
-                                        <th>Driver</th>
-                                        <th>Vehicle</th>
-                                        <th>Assets</th>
-                                        <th>Carrier</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                      <td colspan="14" class="no-data-available">No record(s) found</td>
                                     </tr>
-                                </thead>
                                 <tbody>
-                                    <tr *ngFor="let trip of plannedTrips; let i= index"
-                                        routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
-                                        <!-- <td><input type="checkbox"></td> -->
-
-                                        <td>
-                                            <a href="javascript:;"> {{ trip.tripNo }}</a>
-                                        </td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-
-                                </tbody>
                             </table>
-                            <div *ngIf="!plannedTrips.length > 0" class="alert alert-info m-0 text-center" role="alert">
-                                No records found
-                            </div>
-                        </div>
-
-                        <!-- dispatched -->
-                        <div class="tab-pane fade" id="dispatchedTrip" role="tabpanel"
-                            aria-labelledby="dispatchedTrip-tab">
-                            <table datatable [dtOptions]="dtOptions"
-                                class="row-border hover table table-bordered table-striped mb-0"
-                                *ngIf="dispatchedTrips.length > 0">
-                                <thead>
-                                    <tr>
-                                        <!-- <th width="5%"><input type="checkbox"></th> -->
-
-                                        <th>Trip</th>
-                                        <th>Type</th>
-                                        <th>Date</th>
-                                        <th>Order No.</th>
-                                        <th>Pick-up</th>
-                                        <th>Delivery</th>
-                                        <th>Driver</th>
-                                        <th>Vehicle</th>
-                                        <th>Assets</th>
-                                        <th>Carrier</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let trip of dispatchedTrips; let i= index"
-                                        routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
-                                        <!-- <td><input type="checkbox"></td> -->
-
-                                        <td>
-                                            <a href="javascript:;"> {{ trip.tripNo }}</a>
-                                        </td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div *ngIf="!dispatchedTrips.length > 0" class="alert alert-info m-0 text-center"
-                                role="alert">
-                                No records found
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="started" role="tabpanel" aria-labelledby="started-tab">
-                            <table datatable [dtOptions]="dtOptions"
-                                class="row-border hover table table-bordered table-striped mb-0"
-                                *ngIf="startedTrips.length > 0">
-                                <thead>
-                                    <tr>
-                                        <!-- <th width="5%"><input type="checkbox"></th> -->
-
-                                        <th>Trip</th>
-                                        <th>Type</th>
-                                        <th>Date</th>
-                                        <th>Order No.</th>
-                                        <th>Pick-up</th>
-                                        <th>Delivery</th>
-                                        <th>Driver</th>
-                                        <th>Vehicle</th>
-                                        <th>Assets</th>
-                                        <th>Carrier</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let trip of startedTrips; let i= index"
-                                        routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
-                                        <!-- <td><input type="checkbox"></td> -->
-
-                                        <td>
-                                            <a href="javascript:;"> {{ trip.tripNo }}</a>
-                                        </td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div *ngIf="!startedTrips.length > 0" class="alert alert-info m-0 text-center" role="alert">
-                                No records found
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="enroute" role="tabpanel" aria-labelledby="enroute-tab">
-                            <table datatable [dtOptions]="dtOptions"
-                                class="row-border hover table table-bordered table-striped mb-0"
-                                *ngIf="enrouteTrips.length > 0">
-                                <thead>
-                                    <tr>
-                                        <!-- <th width="5%"><input type="checkbox"></th> -->
-
-                                        <th>Trip</th>
-                                        <th>Type</th>
-                                        <th>Date</th>
-                                        <th>Order No.</th>
-                                        <th>Pick-up</th>
-                                        <th>Delivery</th>
-                                        <th>Driver</th>
-                                        <th>Vehicle</th>
-                                        <th>Assets</th>
-                                        <th>Carrier</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let trip of enrouteTrips; let i= index"
-                                        routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
-                                        <!-- <td><input type="checkbox"></td> -->
-
-                                        <td>
-                                            <a href="javascript:;"> {{ trip.tripNo }}</a>
-                                        </td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div *ngIf="!enrouteTrips.length > 0" class="alert alert-info m-0 text-center" role="alert">
-                                No records found
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
-                            <table datatable [dtOptions]="dtOptions"
-                                class="row-border hover table table-bordered table-striped mb-0"
-                                *ngIf="cancelledTrips.length > 0">
-                                <thead>
-                                    <tr>
-                                        <!-- <th width="5%"><input type="checkbox"></th> -->
-
-                                        <th>Trip</th>
-                                        <th>Type</th>
-                                        <th>Date</th>
-                                        <th>Order No.</th>
-                                        <th>Pick-up</th>
-                                        <th>Delivery</th>
-                                        <th>Driver</th>
-                                        <th>Vehicle</th>
-                                        <th>Assets</th>
-                                        <th>Carrier</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let trip of cancelledTrips; let i= index"
-                                        routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
-                                        <!-- <td><input type="checkbox"></td> -->
-
-                                        <td>
-                                            <a href="javascript:;"> {{ trip.tripNo }}</a>
-                                        </td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div *ngIf="!cancelledTrips.length > 0" class="alert alert-info m-0 text-center"
-                                role="alert">
-                                No records found
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="delivered" role="tabpanel" aria-labelledby="delivered-tab">
-                            <table datatable [dtOptions]="dtOptions"
-                                class="row-border hover table table-bordered table-striped mb-0"
-                                *ngIf="deliveredTrips.length > 0">
-                                <thead>
-                                    <tr>
-                                        <!-- <th width="5%"><input type="checkbox"></th> -->
-
-                                        <th>Trip</th>
-                                        <th>Type</th>
-                                        <th>Date</th>
-                                        <th>Order No.</th>
-                                        <th>Pick-up</th>
-                                        <th>Delivery</th>
-                                        <th>Driver</th>
-                                        <th>Vehicle</th>
-                                        <th>Assets</th>
-                                        <th>Carrier</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let trip of deliveredTrips; let i= index"
-                                        routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
-                                        <!-- <td><input type="checkbox"></td> -->
-
-                                        <td>
-                                            <a href="javascript:;"> {{ trip.tripNo }}</a>
-                                        </td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div *ngIf="!deliveredTrips.length > 0" class="alert alert-info m-0 text-center"
-                                role="alert">
-                                No records found
-                            </div>
                         </div>
                     </div>
                 </div>
