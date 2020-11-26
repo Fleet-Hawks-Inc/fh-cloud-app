@@ -74,8 +74,7 @@
 				  class="table table-bordered table-responsive table-hover table-striped mb-0"  datatable [dtOptions]="dtOptions">
 				  <thead>
 					<tr>
-						<!-- <th><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
-						<th>Date</th>
+						<th style="min-width: 50px !important;">Date</th>
 						<th>Time</th>
 						<th>Card Number</th>
 						<th>Driver ID</th>
@@ -120,10 +119,8 @@
 					</tr>
 				  </thead>
 				  <tbody>
-					<tr *ngFor="let fuelEntry of fuelList">
-						<!-- <td><input type="checkbox" [checked]="isChecked" [(ngModel)]="fuelEntry.checked"  (ngModelChange)="checkboxCount(fuelList)" value="{{ fuelEntry.entryID }}"></td> -->
-					 
-					    <td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.date }}</td>
+					<tr *ngFor="let fuelEntry of fuelList">					 
+					    <td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.fuelDate }}</td>
 						<td>Time</td>
 						<td >Card Number</td>
 						<td>Driver ID</td>

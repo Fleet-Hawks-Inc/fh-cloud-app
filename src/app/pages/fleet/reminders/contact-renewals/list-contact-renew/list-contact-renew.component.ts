@@ -11,7 +11,8 @@ declare var $: any;
 })
 export class ListContactRenewComponent implements OnInit {
   public remindersData = [];
-  public contacts = [];
+  contacts: [];
+  contactList: any;
   allRemindersData = [];
   subcribersArray = [];
   groups = [];
@@ -22,6 +23,7 @@ export class ListContactRenewComponent implements OnInit {
     this.fetchRenewals();
     this.fetchContacts();
     this.fetchGroups();
+    this.fetchContactList();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -29,15 +31,19 @@ export class ListContactRenewComponent implements OnInit {
     });
   }
   fetchGroups() {
-    this.apiService.getData('groups').subscribe((result: any) => {
-      this.groups = result.Items;
+    this.apiService.getData('groups/get/list').subscribe((result: any) => {
+      this.groups = result;
       //   console.log('Groups Data', this.groups);
     });
   }
   fetchContacts() {
     this.apiService.getData('contacts').subscribe((result: any) => {
       this.contacts = result.Items;
-      console.log('Contacts', this.contacts);
+    });
+  }
+  fetchContactList() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.contactList = result;
     });
   }
   fetchRenewals = () => {
@@ -55,25 +61,7 @@ export class ListContactRenewComponent implements OnInit {
       },
     });
   }
-  getSubscribers(arr: any[]) {
-    this.subcribersArray = [];
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].subscriberType === 'user') {
-        this.subcribersArray.push(arr[i].subscriberIdentification);
-      }
-      else {
-        let test = this.groups.filter((g: any) => g.groupID === arr[i].subscriberIdentification);
-        this.subcribersArray.push(test[0].groupName);
-      }
-    }
-    return this.subcribersArray;
-  }
-  getContactName(ID): string {
-    let contact = [];
-    contact = this.contacts.filter((c: any) => c.contactID === ID);
-    let cName = (contact[0].firstName);
-    return cName;
-  }
+ 
   deleteRenewal(entryID) {
     this.apiService
       .deleteData('reminders/' + entryID)

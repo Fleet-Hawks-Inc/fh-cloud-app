@@ -35,8 +35,8 @@ export class VehicleRenewListComponent implements OnInit {
     });
   }
   fetchGroups() {
-    this.apiService.getData('groups').subscribe((result: any) => {
-      this.groups = result.Items;
+    this.apiService.getData('groups/get/list').subscribe((result: any) => {
+      this.groups = result;
       //   console.log('Groups Data', this.groups);
     });
   }
@@ -56,20 +56,7 @@ export class VehicleRenewListComponent implements OnInit {
       this.vehicleList = result;
       console.log('fetched vehcile list', this.vehicleList);
     });
-  }
-  getSubscribers(arr: any[]) {
-    this.subcribersArray = [];
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].subscriberType === 'user') {
-        this.subcribersArray.push(arr[i].subscriberIdentification);
-      }
-      else {
-        let test = this.groups.filter((g: any) => g.groupID === arr[i].subscriberIdentification);
-        this.subcribersArray.push(test[0].groupName);
-      }
-    }
-    return this.subcribersArray;
-  }
+  } 
   fetchRenewals = () => {
     this.apiService.getData('reminders').subscribe({
       complete: () => { this.initDataTable(); },

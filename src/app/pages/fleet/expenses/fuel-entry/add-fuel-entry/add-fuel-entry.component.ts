@@ -38,7 +38,7 @@ export class AddFuelEntryComponent implements OnInit {
   totalAmount = 0;
   costPerUnit = 0;
   amountPaid = 0;
-  date: NgbDateStruct;
+  fuelDate: NgbDateStruct;
   fuelType = '';
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
@@ -215,7 +215,7 @@ export class AddFuelEntryComponent implements OnInit {
       costPerUnit: this.costPerUnit,
       amountPaid: this.amountPaid,
       currency: this.currency,
-      date: this.date,
+      fuelDate: this.fuelDate,
       fuelType: this.fuelType,
       paidBy: this.paidBy,
       paymentMode: this.paymentMode,
@@ -340,7 +340,7 @@ export class AddFuelEntryComponent implements OnInit {
         this.totalAmount = result.totalAmount;
         this.costPerUnit = +result.costPerUnit;
         this.amountPaid = result.amountPaid;
-        this.date = result.date;
+        this.fuelDate = result.fuelDate;
         this.fuelType = result.fuelType;
 
         this.paidBy = result.paidBy;
@@ -397,7 +397,7 @@ export class AddFuelEntryComponent implements OnInit {
       costPerUnit: this.costPerUnit,
       amountPaid: this.amountPaid,
       currency: this.currency,
-      date: this.date,
+      fuelDate: this.fuelDate,
       fuelType: this.fuelType,
       paidBy: this.paidBy,
       paymentMode: this.paymentMode,

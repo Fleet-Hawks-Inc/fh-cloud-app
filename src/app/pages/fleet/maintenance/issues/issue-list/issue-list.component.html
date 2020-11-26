@@ -96,9 +96,9 @@
                     </td>
                     <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
-                      }}">{{issue.unitID}}
-                      <!-- <span *ngIf= "issue.unitType === 'asset'">{{assetList[issue.unitID]}}</span>
-                                             <span *ngIf= "issue.unitType === 'vehicle'">{{vehicleList[issue.unitID]}}</span> -->
+                      }}">
+                      <span *ngIf= "issue.unitType === 'asset'">{{assetList[issue.unitID]}}</span>
+                                             <span *ngIf= "issue.unitType === 'vehicle'">{{vehicleList[issue.unitID]}}</span>
                     </td>
                     <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
@@ -113,7 +113,7 @@
                     <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
                       }}">
-                      <!-- {{contactList[issue.reportedBy]}} -->
+                      {{contactList[issue.reportedBy]}}
                     </td>
                     <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID

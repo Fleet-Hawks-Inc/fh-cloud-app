@@ -75,13 +75,15 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of remindersData;"  style="cursor: pointer;">                                       
-                                        <td >{{getContactName(item.reminderIdentification)}}</td>
+                                        <td >{{contactList[item.reminderIdentification]}}</td>
                                         <td >{{item.reminderTasks.task}}</td>
                                         <td><span
                                                 class="font-size-12">{{item.reminderTasks.remindByDays}} Days Before</span></td>
                                         <td ><span class="font-size-12">{{item.reminderTasks.dueDate}}</span></td>
-                                        <td>{{getSubscribers(item.subscribers)}}
-                                        </td>
+                                        <td><span *ngFor="let s of item.subscribers">
+                                            <span *ngIf="s.subscriberType === 'user'">{{s.subscriberIdentification}},</span>
+                                            <span *ngIf="s.subscriberType === 'group'">{{groups[s.subscriberIdentification]}},</span>
+                                        </span></td>
                                         <td>
                                             <div class="btn-group flex-wrap">
                                                 <button type="button" class="btn p-0" data-toggle="dropdown"><i

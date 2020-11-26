@@ -80,8 +80,10 @@
                                                 class="font-weight-bold" title="Task">{{item.reminderTasks.task}}</span></td>
                                         <td>{{item.reminderTasks.dueDate}}</td>
                                         <td>{{item.reminderTasks.remindByDays}} Days</td>
-                                        <td>{{getSubscribers(item.subscribers)}}
-                                            </td>
+                                        <td><span *ngFor="let s of item.subscribers">
+                                            <span *ngIf="s.subscriberType === 'user'">{{s.subscriberIdentification}},</span>
+                                            <span *ngIf="s.subscriberType === 'group'">{{groups[s.subscriberIdentification]}},</span>
+                                        </span></td>
                                             <td>
                                                 <div class="btn-group flex-wrap">
                                                     <button type="button" class="btn p-0" data-toggle="dropdown"><i

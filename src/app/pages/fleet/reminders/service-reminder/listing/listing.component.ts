@@ -13,6 +13,9 @@ export class ListingComponent implements OnInit {
   public remindersData = [];
   dtOptions: any = {};
   vehicles = [];
+  reminderIdentification = '';
+  reminderID = '';
+  task: string;
   vehicleList: any;
   groups = [];
   allRemindersData = [];
@@ -36,51 +39,47 @@ export class ListingComponent implements OnInit {
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
-      console.log('fetched vehciles', this.vehicles);
     });
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
-      console.log('fetched vehcile list', this.vehicleList);
     });
   }
   fetchGroups() {
-    this.apiService.getData('groups').subscribe((result: any) => {
-      this.groups = result.Items;
+    this.apiService.getData('groups/get/list').subscribe((result: any) => {
+      this.groups = result;
       //   console.log('Groups Data', this.groups);
     });
   }
 
-  getVehicleName(ID) {
-    let vehicle = [];
-    vehicle = this.vehicles.filter((v: any) => v.vehicleID === ID);
-    let vehicleName = (vehicle[0].vehicleIdentification);
-    return vehicleName;
-  }
-  getSubscribers(arr: any[]) {
-    this.subcribersArray = [];
-    console.log('array', arr);
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].subscriberType === 'user') {
-        this.subcribersArray.push(arr[i].subscriberIdentification);
-      }
-      else {
-        let test = this.groups.filter((g: any) => g.groupID === arr[i].subscriberIdentification);
-        this.subcribersArray.push(test[0].groupName);
-      }
-    }
-    return this.subcribersArray;
-  }
   getLengthOfArray(arr: any[]) {
     return arr.length;
   }
-  fetchReminders = () => {
-    this.apiService.getData('reminders').subscribe({
-      complete: () => {this.initDataTable(); },
+  // fetchReminders = () => {
+  //   this.apiService.getData('reminders').subscribe({
+  //     complete: () => {this.initDataTable(); },
+  //     error: () => { },
+  //     next: (result: any) => {
+  //       this.allRemindersData = result.Items;
+  //       for (let i = 0; i < this.allRemindersData.length; i++) {
+  //         if (this.allRemindersData[i].reminderType === 'service') {
+  //           this.remindersData.push(this.allRemindersData[i]);
+  //         }
+  //       }
+  //       console.log('Service Reminder array', this.remindersData);
+  //     },
+  //   });
+  // }
+  fetchReminders() {
+    this.apiService.getData(`reminders?reminderID=${this.reminderID}&reminderIdentification=${this.reminderIdentification}`).subscribe({
+      complete: () => {
+        this.initDataTable();
+      },
       error: () => { },
       next: (result: any) => {
         this.allRemindersData = result.Items;
+        console.log('reminders data', this.allRemindersData);
         for (let i = 0; i < this.allRemindersData.length; i++) {
           if (this.allRemindersData[i].reminderType === 'service') {
             this.remindersData.push(this.allRemindersData[i]);
@@ -89,8 +88,7 @@ export class ListingComponent implements OnInit {
         console.log('Service Reminder array', this.remindersData);
       },
     });
-  }
-
+}
 
   deleteReminder(entryID) {
     this.apiService
@@ -98,8 +96,11 @@ export class ListingComponent implements OnInit {
       .subscribe((result: any) => {
         this.fetchReminders();
         this.toastr.success('Service Reminder Deleted Successfully!');
-        
       });
+  }
+  resolveReminder(ID) {
+    window.localStorage.setItem('reminderVehicleLocalID', ID);
+    this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
   }
   initDataTable() {
     this.dtOptions = {

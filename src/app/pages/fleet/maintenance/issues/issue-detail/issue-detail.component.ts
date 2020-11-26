@@ -12,18 +12,18 @@ import { ToastrService } from 'ngx-toastr';
 export class IssueDetailComponent implements OnInit {
 
   public issueID;
-  issueName = '';
-  unitID = '';
-  unitType = '';
-  unitName = '';
-  status = '';
-  reportedDate: '';
-  description = '';
-  odometer = '';
-  reportedBy = '';
-  assignedTo = '';
+  issueName: string;
+  unitID: string;
+  unitType: string;
+  unitName: string;
+  currentStatus: string;
+  reportedDate: string;
+  description: string;
+  odometer: string;
+  reportedBy: string;
+  assignedTo: string;
   carrierID;
-  contactName = '';
+  contactName: string;
   image;
   vehicles = [];
   assets = [];
@@ -41,7 +41,7 @@ export class IssueDetailComponent implements OnInit {
               private domSanitizer: DomSanitizer, private awsUS: AwsUploadService) { }
 
   ngOnInit() {
-    this.issueID = this.route.snapshot.params['issueID'];
+    this.issueID = this.route.snapshot.params[`issueID`];
     this.fetchIssue();
     this.fetchVehicleList();
     this.fetchContactList();
@@ -64,7 +64,7 @@ export class IssueDetailComponent implements OnInit {
       this.assetList = result;
       console.log('asset list', this.assetList);
     });
-  } 
+  }
   editIssue = () => {
       this.router.navigateByUrl('/fleet/maintenance/issues/edit/' + this.issueID);
       }
@@ -78,7 +78,7 @@ export class IssueDetailComponent implements OnInit {
       this.issueID = this.issueID;
       this.issueName = result.issueName;
       this.unitID = result.unitID;
-      this.status = result.currentStatus;
+      this.currentStatus = result.currentStatus;
       this.unitType = result.unitType;
       this.reportedDate = result.reportedDate;
       this.description = result.description;
@@ -93,10 +93,10 @@ export class IssueDetailComponent implements OnInit {
     this.carrierID = await this.apiService.getCarrierID();
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
       // this.docs = this.domSanitizer.bypassSecurityTrustResourceUrl(
-              //await this.awsUS.getFiles(this.carrierID, this.assetData[0].uploadedDocs[i]));
+      //await this.awsUS.getFiles(this.carrierID, this.assetData[0].uploadedDocs[i]));
       // this.assetsDocs.push(this.docs)
       this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles
-                                                           (this.carrierID, this.uploadedPhotos[i]));
+      (this.carrierID, this.uploadedPhotos[i]));
       this.issueImages.push(this.image);
     }
   }
@@ -113,5 +113,9 @@ export class IssueDetailComponent implements OnInit {
     this.apiService.getData('issues/setStatus/' + issueID + '/' + issueStatus).subscribe((result: any) => {
       this.toastr.success('Issue Status Updated Successfully!');
     });
+  }
+  resolveIssue() {
+    window.localStorage.setItem('vehicleLocalID', this.unitID);
+    this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
   }
 }

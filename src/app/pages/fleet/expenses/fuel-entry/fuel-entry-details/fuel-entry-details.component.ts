@@ -29,8 +29,8 @@ export class FuelEntryDetailsComponent implements OnInit {
   totalAmount: number;
   costPerUnit: number;
   amountPaid: number;
-  currency: '';
-  date: '';
+  currency: string;
+  fuelDate: string;
   fuelType = '';
   carrierID;
 
@@ -178,7 +178,7 @@ export class FuelEntryDetailsComponent implements OnInit {
           this.totalAmount = result.totalAmount,
           this.costPerUnit = result.costPerUnit,
           this.amountPaid = result.amountPaid,
-          this.date = result.date,
+          this.fuelDate = result.fuelDate,
           this.fuelType = result.fuelType,
 
           this.paidBy = result.paidBy,
