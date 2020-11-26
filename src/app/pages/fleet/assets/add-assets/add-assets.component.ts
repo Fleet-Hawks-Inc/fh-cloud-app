@@ -224,7 +224,7 @@ export class AddAssetsComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success('Asset updated successfully');
-        this.router.navigateByUrl('/fleet/assets/Assets-List');
+        this.router.navigateByUrl('/fleet/assets/list');
         this.Success = '';
       },
     });

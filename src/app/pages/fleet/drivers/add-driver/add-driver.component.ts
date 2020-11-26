@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AwsUploadService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { HttpClient } from '@angular/common/http';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
@@ -84,7 +85,7 @@ export class AddDriverComponent implements OnInit {
   yardID = '';
 
 
-
+  documentTypeList: any = [];
   driverLicenseCountry = '';
   groups = [];
   countries = [];
@@ -102,6 +103,7 @@ export class AddDriverComponent implements OnInit {
   Success: string = '';
 
   constructor(private apiService: ApiService,
+              private httpClient: HttpClient,
               private toastr: ToastrService,
               private awsUS: AwsUploadService,
               private route: ActivatedRoute,
@@ -133,6 +135,10 @@ export class AddDriverComponent implements OnInit {
     this.fetchVehicles();
     this.getToday();
     this.searchLocation();
+    this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
+      console.log('Document  Data', data);
+      this.documentTypeList = data;
+    });
     $(document).ready(() => {
       $('.btnNext').click(() => {
         this.nextTab = $('.nav-tabs li a.active').closest('li').next('li');
@@ -215,7 +221,7 @@ export class AddDriverComponent implements OnInit {
   }
 
   getToday(): string {
-    return new Date().toISOString().split('T')[0]
+    return new Date().toISOString().split('T')[0];
   }
 
   uploadDriverImg(event): void {
@@ -266,22 +272,25 @@ export class AddDriverComponent implements OnInit {
   addDriver() {
     //this.spinner.show(); // loader init
     this.register();
-    this.errors = {};
+    this.hideErrors();
     console.log('this.driverData', this.driverData);
     this.apiService.postData('drivers', this.driverData).subscribe({
       complete: () => {},
-      error : (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
-            }),
+            })
           )
-          .subscribe((val) => {
-            this.throwErrors();
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
           });
-
       },
       next: (res) => {
         this.response = res;
@@ -296,7 +305,25 @@ export class AddDriverComponent implements OnInit {
 
 
   throwErrors() {
-    this.form.showErrors(this.errors);
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error')
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
   }
 
   addDocument() {

@@ -33,6 +33,13 @@ import { MyDocumentListComponent } from './new-documents/my-documents/my-documen
 import { OrdersListComponent } from './orders/orders-list/orders-list.component';
 import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
+import { QuotesListComponent } from './quotes/quotes-list/quotes-list.component';
+import { AddQuotesComponent } from './quotes/add-quotes/add-quotes.component';
+import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
+
+import { EManifestsComponent } from './cross-border/e-manifests/e-manifests.component';
+import { AceDetailsComponent } from './cross-border/ace-documents/ace-details/ace-details.component';
+import { AciDetailsComponent } from './cross-border/aci-documents/aci-details/aci-details.component';
 
 import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
 import { TripListComponent } from './trips/trip-list/trip-list.component';
@@ -76,15 +83,20 @@ const routes: Routes = [
   {
     path: 'cross-border',
     children: [
-      {path: 'ACE-eManifest',component: AceManifestComponent},
-      {path: 'ACE-new-eManifest',component: NewAceManifestComponent},
-      {path: 'ACE-shipment',component: AceShipmentComponent},
-      {path: 'ACE-commodity',component: AceCommodityComponent},
+      {path: 'eManifests', component: EManifestsComponent},
+      {path: 'ACE-eManifest', component: AceManifestComponent},
+      {path: 'ACE-new-eManifest', component: NewAceManifestComponent},
+      {path: 'ACE-edit-eManifest/:entryID', component: NewAceManifestComponent},
+      {path: 'ACE-details/:entryID', component: AceDetailsComponent},
+      {path: 'ACE-shipment', component: AceShipmentComponent},
+      {path: 'ACE-commodity', component: AceCommodityComponent},
 
-      {path: 'ACI-eManifest',component: AciEmanifestComponent},
-      {path: 'ACI-new-eManifest',component: NewAciManifestComponent},
-      {path: 'ACI-shipment',component: AciShipmentComponent},
-      {path: 'ACI-commodity',component: AciCommodityComponent}
+      {path: 'ACI-eManifest', component: AciEmanifestComponent},
+      {path: 'ACI-new-eManifest', component: NewAciManifestComponent},
+      {path: 'ACI-edit-eManifest/:entryID', component: NewAciManifestComponent},
+      {path: 'ACI-details/:entryID', component: AciDetailsComponent},
+      {path: 'ACI-shipment', component: AciShipmentComponent},
+      {path: 'ACI-commodity', component: AciCommodityComponent}
     ]
   },
   {
@@ -103,8 +115,18 @@ const routes: Routes = [
     path: 'orders',
     children: [
       { path: '', component: OrdersListComponent},
+      { path: 'edit/:orderID', component: AddOrdersComponent},
       { path: 'add', component: AddOrdersComponent},
-      { path: 'detail', component: OrderDetailComponent }
+      { path: 'detail/:orderID', component: OrderDetailComponent }
+    ]
+  },
+  {
+    path: 'quotes',
+    children: [
+      { path: '', component: QuotesListComponent},
+      { path: 'add', component: AddQuotesComponent},
+      { path: 'edit/:quoteID', component: AddQuotesComponent},
+      { path: 'detail/:quoteID', component: QuoteDetailComponent }
     ]
   },
   {
@@ -121,12 +143,12 @@ const routes: Routes = [
     children: [
       { path: 'route-list', component: RouteListComponent},
       { path: 'add-route', component: AddRouteComponent },
-      { path:'edit-route/:routeID', component:EditRouteComponent},
-      { path:'route-detail/:routeID', component:RouteDetailComponent},
+      { path: 'edit-route/:routeID', component: EditRouteComponent},
+      { path: 'route-detail/:routeID', component: RouteDetailComponent},
     ]
   },
   {
-    path: "trips",
+    path: 'trips',
     children: [
       { path: 'trip-list', component: TripListComponent},
       { path: 'add-trip', component: AddTripComponent},
@@ -136,20 +158,13 @@ const routes: Routes = [
     ]
   },
   {
-    path: "planner",
+    path: 'planner',
     children: [
       { path: 'calendar-view', component: CalendarViewComponent},
       { path: 'map-view', component: MapViewComponent},
     ]
   },
-  {
-    path: "home",
-    children: [
-      { path: 'routing-dispatch-overview', component: DispatchOverviewComponent}
-    ]
-  },
 ];
-
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

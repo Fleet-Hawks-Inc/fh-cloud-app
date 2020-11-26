@@ -16,23 +16,30 @@
             <div class="row" style="padding-top:10px;">
                <div class="col-md-2 col-lg-2">
                   <div class="input-group input-group-md mb-3">
-                     <ng-select [(ngModel)]="selectedAssets" name='search_asset' style="width: 100%;">
-                        <ng-option class="p-0" *ngFor="let item of allData" [value]="item.id"><a class="p-2 d-block" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</a></ng-option>
-                    </ng-select>
+                     <input type="text" autocomplete="off" name="assetIdentification" [(ngModel)]="assetIdentification" class="form-control" (input)="getSuggestions($event.target.value)">
+                   </div>
+                   <div *ngFor="let suggestedAsset of suggestedAssets" style="cursor: pointer;" (click)="setAsset(suggestedAsset.assetID, suggestedAsset.assetIdentification)">
+                     {{ suggestedAsset.assetIdentification }}
                   </div>
                </div>
+               
                <div class="col-md-2  col-lg-2">
-                  <div class="btn-group flex-wrap" style="width:240px;">
-                     <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle" data-toggle="dropdown">Search by Status <span class="caret"></span></button>
-                     <div class="dropdown-menu" role="menu">
-                        <a class="dropdown-item text-1" href="#">All</a>
-                        <a class="dropdown-item text-1" href="#">Active</a>
-                        <a class="dropdown-item text-1" href="#">Inactive</a>
-                     </div>
-                  </div>
+                  <select
+                     data-plugin-selectTwo
+                     [(ngModel)]="currentStatus" 
+                     name="currentStatus"
+                     class="form-control populate">
+                     <optgroup label="Select Status">
+                         <option value="">All</option>
+                         <option value="active">Active</option>
+                         <option value="inActive">Inactive</option>
+                     </optgroup>
+                  </select>
                </div>
+
+               
                <div class="col-md-1  col-lg-1">
-                  <button type="submit" class="btn btn-sm btn-success">Search</button>
+                  <button type="submit" (click)="fetchAssets()" class="btn btn-sm btn-success">Search</button>
                </div>
                <div class="col-md-7  col-lg-7 text-right pr-5 page-buttons">
                   <button type="button" (click)="mapShow()" id="map_view_btn" class="btn btn-sm btn-default">Map View</button>
@@ -192,7 +199,7 @@
                   <div class="card-body">
                      <div class="tab-content p-0" id="myTabContent">
                         <div class="tab-pane show active" id="allassets" role="tabpanel" aria-labelledby="all-tab">
-                           <table datatable [dtOptions]="allOptions" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="allData.length > 0">
+                           <table datatable [dtOptions]="allOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="allData.length > 0">
                               <thead>
                                  <tr>
                                     <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->

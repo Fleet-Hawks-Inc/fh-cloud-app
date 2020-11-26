@@ -32,13 +32,13 @@
                              </div>
                           </div>
                           <div class="widget-toggle-expand mb-1">
-                             <div class="row  m-0" *ngFor="let item of driverData | keyvalue">
+                             <div class="row  m-0">
                                 <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CDL:</div>
-                                <div class="col-lg-6 p-2 bor_half">759567</div>
+                                <div class="col-lg-6 p-2 bor_half">{{cdl}}</div>
                              </div>
                              <div class="row  m-0" >
                                 <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Cycle:</div>
-                                <div class="col-lg-6 p-2 bor_half">70 hours/ 8 days</div>
+                                <div class="col-lg-6 p-2 bor_half">{{cycle}}</div>
                              </div>
                              <!-- <div class="row  m-0">
                                 <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Exempted/Non-Exempted:</div>
@@ -46,15 +46,15 @@
                                 </div> -->
                              <div class="row  m-0">
                                 <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
-                                <div class="col-lg-6 p-2 bor_half">Yard 3</div>
+                                <div class="col-lg-6 p-2 bor_half">{{homeTerminal}}</div>
                              </div>
                              <div class="row  m-0">
                                 <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Phone:</div>
-                                <div class="col-lg-6 p-2 bor_half">987 767 8767</div>
+                                <div class="col-lg-6 p-2 bor_half">{{phone}}</div>
                              </div>
                              <div class="row  m-0">
                                 <div class="col-lg-6 p-2 font-weight-bold text-4 text-left back-color-gray">Email:</div>
-                                <div class="col-lg-6 p-2 bor_half">singh@hotmail.com</div>
+                                <div class="col-lg-6 p-2 bor_half">{{email}}</div>
                              </div>
                           </div>
                           <div class="row" style="margin-top:20px;">

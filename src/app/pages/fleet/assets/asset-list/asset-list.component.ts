@@ -54,6 +54,11 @@ export class AssetListComponent implements OnInit {
   message: any;
   dtTrigger = new Subject();
 
+  suggestedAssets = [];
+  assetID = '';
+  currentStatus = '';
+  assetIdentification = '';
+
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -76,6 +81,25 @@ export class AssetListComponent implements OnInit {
   ngOnDestroy = (): void => {
     // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();
+  }
+
+
+  getSuggestions(value) {
+    this.apiService
+      .getData(`assets/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedAssets = result.Items;
+        if(this.suggestedAssets.length == 0){
+          this.assetID = '';
+        }
+      });
+  }
+
+  setAsset(assetID, assetIdentification) {
+    this.assetIdentification = assetIdentification;
+    this.assetID = assetID;
+
+    this.suggestedAssets = [];
   }
 
   someClickHandler(info: any): void {
@@ -206,8 +230,9 @@ export class AssetListComponent implements OnInit {
   }
 
   fetchAssets = () => {
+    this.allData = this.refers = this.drybox = this.flatbed = this.curtainSlide = this.autoHauler = this.dumpTipper = this.interModal = this.liveStock = this.lowboy = this.stake = this.stepDeck = this.tanker = [];
     this.spinner.show(); // loader init
-    this.apiService.getData('assets').subscribe({
+    this.apiService.getData(`assets?assetID=${this.assetID}&status=${this.currentStatus}`).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {

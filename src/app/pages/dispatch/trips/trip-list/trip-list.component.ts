@@ -115,51 +115,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     // this.initPage();
   }
 
-  async initPage () {
-    let current = this;
-    let tripCount = new Promise(function(resolve, reject){
-      current.apiService.getData('trips').
-      subscribe(async (result: any) => {
-
-        for (let i = 0; i < result.Items.length; i++) {
-          if(result.Items[i].isDeleted === 0) {
-            current.allTripsCount = current.allTripsCount+1;
-            if (result.Items[i].tripStatus === 'planned') {
-              current.plannedTripsCount = current.plannedTripsCount + 1;
-
-            } else if (result.Items[i].tripStatus === 'dispatched') {
-              current.dispatchedTripsCount = current.dispatchedTripsCount + 1;
-
-            } else if (result.Items[i].tripStatus === 'started') {
-              current.startedTripsCount = current.startedTripsCount + 1;
-
-            } else if (result.Items[i].tripStatus === 'enroute') {
-              current.enrouteTripsCount = current.enrouteTripsCount + 1;
-
-            } else if (result.Items[i].tripStatus === 'cancelled') {
-              current.cancelledTripsCount = current.cancelledTripsCount + 1;
-
-            } else if (result.Items[i].tripStatus === 'delivered') {
-              current.deliveredTripsCount = current.deliveredTripsCount + 1
-            }
-          }
-        }
-        current.totalRecords = current.allTripsCount;
-        resolve(current.allTripsCount);
-      })
-    })
-
-    await tripCount.then(function (result11) {
-      current.rerender();
-      current.initDataTable('all');
-    });
-
-    // await dbInit.then(function (result) {
-    //   // this.activities = result;
-    // }.bind(this));
-  }
-
-  async fetchTrips(result, tripStatuss) {
+  async fetchTrips(result) {
     this.trips = [];
     let current = this;
     console.log('in fetch trips')
@@ -282,8 +238,6 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
         this.trips.push(result.Items[i]);
       }
     }
-    console.log('this.trips')
-    console.log(this.trips)
 
     this.spinner.hide();
   }
@@ -292,9 +246,10 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     let current = this;
     this.apiService.getData('trips').
       subscribe(async (result: any) => {
+        this.allTripsCount = result.Count;
+        this.totalRecords = result.Count;
 
         for (let i = 0; i < result.Items.length; i++) {
-          this.allTripsCount = this.allTripsCount+1;
           if (result.Items[i].tripStatus === 'planned') {
             this.plannedTripsCount = this.plannedTripsCount + 1;
 
@@ -525,18 +480,17 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.totalRecords = this.deliveredTripsCount;
 
     }
+    current.lastEvaluated = {
+      value1: '',
+      value2: ''
+    }
     current.initDataTable(tabType, 'reload');
   }
 
   initDataTable(tabType, check = '', filters:any = '') {
     let current = this;
-    // console.log('current.allTripsCount')
-    // console.log(current.allTripsCount)
-    // this.totalRecords = 10;
-    // console.log('in db init')
     if(tabType === 'all') {
-      this.serviceUrl = "trips/fetch-records/" + tabType + "?value1="+current.lastEvaluated.value1 + 
-        '&value2=' + current.lastEvaluated.value2;
+      this.serviceUrl = "trips/fetch-records/" + tabType + "?value1=";
     } else {
       this.serviceUrl = "trips/fetch-records/" + tabType + "?recLimit="+this.allTripsCount+"&value1=";
     }
@@ -552,7 +506,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
         endDatee = new Date(this.tripsFiltr.endDate+" 00:00:00").getTime();
       }
       this.tripsFiltr.category = 'tripNo';
-      this.serviceUrl = this.serviceUrl+'&filter=true&searchValue='+this.tripsFiltr.searchValue+"&startDate="+startDatee+"&endDate="+endDatee+"&category="+this.tripsFiltr.category;
+      this.serviceUrl = this.serviceUrl+'&filter=true&searchValue='+this.tripsFiltr.searchValue+"&startDate="+startDatee+"&endDate="+endDatee+"&category="+this.tripsFiltr.category+"&value1=";
     }
     // console.log(this.serviceUrl);
 
@@ -567,8 +521,9 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData(current.serviceUrl, dataTablesParameters).subscribe(resp => {
-          current.fetchTrips(resp, tabType)
+        current.apiService.getDatatablePostData(current.serviceUrl+current.lastEvaluated.value1 + 
+          '&value2=' + current.lastEvaluated.value2, dataTablesParameters).subscribe(resp => {
+          current.fetchTrips(resp)
           // console.log('in ajax')
           // console.log(resp)
           if (resp['LastEvaluatedKey'] !== undefined) {

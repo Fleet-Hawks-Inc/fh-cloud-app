@@ -13,32 +13,27 @@
             <div class="row px-2" style="padding-top:10px;">
                <div class="col-md-2 col-lg-2">
                   <div class="input-group input-group-md mb-3">
-                     <select data-plugin-selectTwo class="form-control populate">
-                        <optgroup label="">
-                           <option value="1">Driver 1</option>
-                           <option value="2">Driver 2</option>
-                           <option value="2">Driver 3</option>
-                           <option value="2">Driver 4</option>
-                           <option value="2">Driver 5</option>
-                        </optgroup>
-                     </select>
+                     <input type="text" autocomplete="off" name="driverName" [(ngModel)]="driverName" class="form-control" (input)="getSuggestions($event.target.value)">
+                  </div>
+                  <div *ngFor="let suggestedDriver of suggestedDrivers" style="cursor: pointer;" (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)">
+                     {{ suggestedDriver.firstName }} {{ suggestedDriver.lastName }}
                   </div>
                </div>
                <div class="col-md-4 col-lg-4" >
                   <div class="btn-group flex-wrap" style="width:240px;">
                      <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle" data-toggle="dropdown">Search by Duty Status <span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu">
-                        <a class="dropdown-item text-1" href="#">All</a>
-                        <a class="dropdown-item text-1" href="#">On Duty</a>
-                        <a class="dropdown-item text-1" href="#">Off Duty</a>
-                        <a class="dropdown-item text-1" href="#">Sleeper</a>
-                        <a class="dropdown-item text-1" href="#">Driving</a>
+                        <a class="dropdown-item text-1" [routerLink]="">All</a>
+                        <a class="dropdown-item text-1" [routerLink]="">On Duty</a>
+                        <a class="dropdown-item text-1" [routerLink]="">Off Duty</a>
+                        <a class="dropdown-item text-1" [routerLink]="">Sleeper</a>
+                        <a class="dropdown-item text-1" [routerLink]="">Driving</a>
                      </div>
                   </div>
                </div>
                
                <div class="col-md-1  col-lg-1">
-                  <button type="submit" class="btn btn-sm btn-success">Search</button>
+                  <button type="submit" (click)="fetchDrivers()" class="btn btn-sm btn-success">Search</button>
                </div>
                <div class="col-md-5 col-lg-5 pr-3 text-right page-buttons">
                   <button type="button" id="map_view_btn" class="btn btn-default btn-sm">Map View</button>

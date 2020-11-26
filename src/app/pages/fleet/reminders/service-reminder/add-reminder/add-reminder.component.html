@@ -10,7 +10,7 @@
 
       <section role="main" class="content-body pt-0 pl-0">
          <header class="page-header">
-            <div class="row pr-5" style="padding-top:10px;">
+            <div class="row pr-5 pl-2" style="padding-top:10px;">
                <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
                   {{pageTitle}}
                </div>
@@ -23,7 +23,7 @@
          <div class="row">
             <div class="col">
                <div class="card-body text-dark">
-                  <form id="form_" name="form" class="form-horizontal form-bordered" method="get">
+                  <form id="serviceForm" name="serviceForm" class="form-horizontal form-bordered" method="get">
                      <div class="row pt-2">
                         <div class="col-lg-12">
                            <label
@@ -35,14 +35,13 @@
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                     Vehicle</label>
-                                 <select [(ngModel)]="reminderData.reminderIdentification"
-                                    name="reminderData.reminderIdentification" data-plugin-selectTwo
-                                    class="form-control populate">
-                                    <optgroup label="">
-                                       <option *ngFor="let item of vehicles" value="{{item.vehicleID}}">
-                                          {{item.vehicleIdentification}}</option>
-                                    </optgroup>
-                                 </select>
+                                 <ng-select [(ngModel)]="reminderData.reminderIdentification"
+                                    name="reminderIdentification">
+                                   
+                                       <ng-option *ngFor="let item of vehicles" value="{{item.vehicleID}}">
+                                          {{item.vehicleIdentification}}</ng-option>
+                                   
+                                 </ng-select>
                               </div>
                            </div>
 
@@ -67,7 +66,7 @@
                                     <label class="control-label font-weight-bold">Send Email Notification</label>
                                  </div>
                               </div>
-                              <div class="col-lg-1 mar-top-37">
+                              <div class="col-lg-1 pl-0" style="margin-top: 39px !important">
                                  <a data-toggle="modal" data-target="#addsubsuser"
                                     class="modal-with-form btn btn-sm btn-success text-light"><i
                                        class="fas fa-plus"></i></a>
@@ -81,7 +80,7 @@
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                     Service Tasks</label>
                                  <ng-select [(ngModel)]="reminderData.reminderTasks.task"
-                                    name="reminderData.reminderTasks.task">
+                                    name="task">
                                     <ng-option value="A/C Compressor Replacement">A/C Compressor Replacement</ng-option>
                                     <ng-option value="A/C Condenser Replacemen">A/C Condenser Replacement</ng-option>
                                     <ng-option value="A/C Diagnosis">A/C Diagnosis</ng-option>
@@ -247,7 +246,7 @@
 
                                  </ng-select>
                               </div>
-                              <div class="col-lg-1 pl-0 mar-top-37">
+                              <div class="col-lg-1 pl-0" style="margin-top: 38px !important;">
                                  <a href="#addServiceTaskModal" class="modal-with-form btn btn-sm btn-success"><i
                                        class="fas fa-plus"></i></a>
                               </div>
@@ -259,20 +258,19 @@
                                        <label
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Time</label>
                                        <div class="row">
-                                          <div class="col-lg-6">
-                                             <input [(ngModel)]="time" name="time" type="number" min='0'
+                                          <div class="col-lg-6 pr-0">
+                                             <input [(ngModel)]="time" name="time" type="number" min='1'
                                                 class="form-control">
                                           </div>
-                                          <div class="col-lg-6 col-lg-pl-0">
-                                             <select [(ngModel)]="timeType" name="timeType" data-plugin-selectTwo
-                                                class="form-control populate">
-                                                <optgroup label="">
-                                                   <option value="Day(s)">Day(s)</option>
-                                                   <option value="Week(s)">Week(s)</option>
-                                                   <option value="Month(s)">Month(s)</option>
-                                                   <option value="Year(s)">Year(s)</option>
-                                                </optgroup>
-                                             </select>
+                                          <div class="col-lg-6 pl-0">
+                                             <ng-select [(ngModel)]="timeType" name="timeType">
+                                               
+                                                   <ng-option value="Day(s)">Day(s)</ng-option>
+                                                   <ng-option value="Week(s)">Week(s)</ng-option>
+                                                   <ng-option value="Month(s)">Month(s)</ng-option>
+                                                   <ng-option value="Year(s)">Year(s)</ng-option>
+                                           
+                                             </ng-select>
                                           </div>
                                        </div>
                                     </div>
@@ -281,7 +279,7 @@
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer
                                           Miles<span id="primary_meter">miles</span></label>
                                        <input [(ngModel)]="reminderData.reminderTasks.odometer"
-                                          name="reminderData.reminderTasks.odometer" type="text" class="form-control">
+                                          name="odometer" type="text" class="form-control">
                                     </div>
                                  </div>
                               </div>

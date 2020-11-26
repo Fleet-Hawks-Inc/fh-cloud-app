@@ -215,20 +215,24 @@
                                                        </tr>
                                                     </thead>
                                                     <tbody>
-                                                       <tr>
-                                                          <td><span class="font-weight-bold">Vehicle 1</span><br><span class="text-success">Active</span>
+
+                                                       <tr *ngFor="let item of logs; let i = index;">
+                                                          <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}"><span class="font-weight-bold">{{item.vehicle}}</span><br><span class="text-success">Active</span>
+
                                                            </td>
-                                                          <td>Jun 23, 2020 <br><span class="font-size-12">4,678 mi</span></td>
-                                                          <td><span title="Service Task">A/C Condenser Replacement</span><br><a href="#" class="text-info font-size-12" title="Issue"> Brake Light</a>
-                                                          <br><a href="#" class="text-info font-size-12" title="Vendor"> NAPA</a></td>
-                                                          <td>$ 466</td>  
+                                                          <td>{{item.completionDate}}<br><span class="font-size-12">{{item.odometer}} mi</span></td>
+                                                          <td><span title="Service Task">{{item.allServiceTasks[i].task}}</span><br><a href="#" class="text-info font-size-12" title="Issue"> Brake Light</a>
+                                                          <br><a href="#" class="text-info font-size-12" title="Vendor"> {{item.vendor}}</a></td>
+                                                          <td>$ {{item.amount}}</td>  
                                                           <td>
                                                             <div class="dropdown dropright">
                                                                 <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                    <i class="fas fa-ellipsis-v"></i>
                                                                 </button>
                                                                 <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                   <a class="dropdown-item" routerLink="/fleet/maintenance/service-log/edit/">Edit</a>
+
+                                                                   <a class="dropdown-item" routerLink="/fleet/maintenance/service-log/edit/{{item.logID}}">Edit</a>
+
                                                                    <a class="dropdown-item" href="#">Activate</a>
                                                                 </div>
                                                               </div>

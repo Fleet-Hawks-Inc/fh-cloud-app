@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../../../../services';
-import {Router, ActivatedRoute} from '@angular/router';
-import {map} from 'rxjs/operators';
-import {from} from 'rxjs';
-import {ToastrService} from 'ngx-toastr';
-import {AwsUploadService} from '../../../../services';
-import {NgxSpinnerService} from 'ngx-spinner';
-import {NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
-import {HereMapService} from '../../../../services';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../services';
+import { Router, ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { AwsUploadService } from '../../../../services';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { HereMapService } from '../../../../services';
+import { EventActivitiesService } from '../../../../services/event-activities.service';
 
 declare var $: any;
 
@@ -37,16 +38,16 @@ export class AddRouteComponent implements OnInit {
     },
     destinationInformation: {
       destinationLocationID: '',
-    destinationAddress: '',
-    destinationCountryID: '',
-    destinationStateID: '',
-    destinationCityID: '',
-    destinationZipCode: '',
-    stop: {
-      destinationStop: '',
-      stopLocation: '',
-      stopNotes: ''
-    }
+      destinationAddress: '',
+      destinationCountryID: '',
+      destinationStateID: '',
+      destinationCityID: '',
+      destinationZipCode: '',
+      stop: {
+        destinationStop: '',
+        stopLocation: '',
+        stopNotes: ''
+      }
     },
   };
   form;
@@ -131,9 +132,17 @@ export class AddRouteComponent implements OnInit {
     },
   ];
 
+  activityData = {
+    action: '',
+    userID: '',
+    tableName: '',
+    eventID: '',
+    message: ""
+  };
+
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
-              private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar,
-              private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService) {
+    private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar,
+    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService, private EventActivity: EventActivitiesService) {
   }
 
   get today() {
@@ -301,7 +310,7 @@ export class AddRouteComponent implements OnInit {
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
-          })
+            })
           )
           .subscribe({
             complete: () => {
@@ -317,6 +326,7 @@ export class AddRouteComponent implements OnInit {
       next: (res) => {
         this.spinner.hide();
         this.response = res;
+        this.addActivityLog();
         this.toastr.success('Route added successfully');
         this.router.navigateByUrl('/dispatch/routes/route-list');
       },
@@ -334,15 +344,27 @@ export class AddRouteComponent implements OnInit {
   }
 
   hideErrors() {
-      from(Object.keys(this.errors))
-        .subscribe((v) => {
-          $('[name="' + v + '"]')
-            .removeClass('error')
-            .next()
-            .remove('label')
-        });
-      this.errors = {};
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
   }
+
+  addActivityLog() {
+    this.activityData = {
+      action: 'add',
+      userID: '1',
+      tableName: 'serviceroutes',
+      eventID: '',
+      message: "added a route"
+    };
+    this.EventActivity.addEventActivity(this.activityData);
+  }
+
 
 }
 

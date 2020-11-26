@@ -3,6 +3,8 @@ import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { group } from 'console';
+import { NgxSpinnerService } from 'ngx-spinner';
+declare var $: any;
 @Component({
   selector: 'app-vehicle-renew-list',
   templateUrl: './vehicle-renew-list.component.html',
@@ -10,19 +12,27 @@ import { group } from 'console';
 })
 export class VehicleRenewListComponent implements OnInit {
   public remindersData = [];
+  dtOptions: any = {};
   vehicles = [];
   vehicleName: string;
+  vehicleList: any;
   groups = [];
   group: string;
   subcribersArray = [];
   allRemindersData = [];
   vehicleIdentification = '';
-  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, private router: Router,private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.fetchRenewals();
     this.fetchVehicles();
     this.fetchGroups();
+    this.fetchVehicleList();
+    $(document).ready(() => {
+      setTimeout(() => {
+        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      }, 1800);
+    });
   }
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
@@ -41,10 +51,11 @@ export class VehicleRenewListComponent implements OnInit {
       this.vehicles = result.Items;
     });
   }
-  getVehicleName(ID): string {
-    let vehicle = this.vehicles.filter((v: any) => v.vehicleID === ID);
-    let vehicleName = (vehicle[0].vehicleIdentification);
-    return vehicleName;
+  fetchVehicleList() {
+    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+      this.vehicleList = result;
+      console.log('fetched vehcile list', this.vehicleList);
+    });
   }
   getSubscribers(arr: any[]) {
     this.subcribersArray = [];
@@ -61,7 +72,7 @@ export class VehicleRenewListComponent implements OnInit {
   }
   fetchRenewals = () => {
     this.apiService.getData('reminders').subscribe({
-      complete: () => { },
+      complete: () => { this.initDataTable(); },
       error: () => { },
       next: (result: any) => {
         this.allRemindersData = result.Items;
@@ -80,6 +91,41 @@ export class VehicleRenewListComponent implements OnInit {
       .subscribe((result: any) => {
         this.fetchRenewals();
         this.toastr.success('Vehicle Renewal Deleted Successfully!');
+               
       });
+  }
+  initDataTable() {
+    this.dtOptions = {
+      dom: 'Bfrtip', // lrtip to hide search field
+      processing: true,
+      columnDefs: [
+          {
+              targets: 0,
+              className: 'noVis'
+          },
+          {
+              targets: 1,
+              className: 'noVis'
+          },
+          {
+              targets: 2,
+              className: 'noVis'
+          },
+          {
+              targets: 3,
+              className: 'noVis'
+          },
+          {
+              targets: 4,
+              className: 'noVis'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      buttons: [
+        'colvis',
+      ],
+    };
   }
 }

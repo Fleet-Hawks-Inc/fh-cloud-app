@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Location } from '@angular/common';
 declare var $: any;
 @Component({
   selector: 'app-add-contact-renew',
@@ -21,9 +22,10 @@ export class AddContactRenewComponent implements OnInit {
     },
     subscribers: []
   };
+  contactRenewalForm;
   numberOfDays: number;
-  time: number;
-  timeType: string;
+  time = 1;
+  timeType = 'Day(s)';
   vehicles = [];
   contacts = [];
   users = [];
@@ -32,32 +34,32 @@ export class AddContactRenewComponent implements OnInit {
   finalSubscribers = [];
   form;
   errors = {};
-  Error: string = '';
-  Success: string = '';
+  Error: string;
+  Success: string;
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
-    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) { }
+  constructor(private apiService: ApiService,
+              private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
+              private ngbCalendar: NgbCalendar, private location: Location, private dateAdapter: NgbDateAdapter<string>) { }
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
 
   ngOnInit() {
-    this.reminderID = this.route.snapshot.params['reminderID'];
+    this.reminderID = this.route.snapshot.params[`reminderID`];
     this.fetchUsers();
     this.fetchGroups();
     this.fetchContacts();
+    $(document).ready(() => {
+      this.contactRenewalForm = $('#contactRenewalForm').validate();
+    });
     if (this.reminderID) {
       this.pageTitle = ' Edit Contact Renewal Reminder';
       this.fetchReminderByID();
     } else {
       this.pageTitle = ' Add Contact Renewal Reminder';
     }
-
-    $(document).ready(() => {
-      this.form = $('#form_').validate();
-    });
   }
   fetchUsers() {
     this.apiService.getData('users').subscribe((result: any) => {
@@ -80,14 +82,14 @@ export class AddContactRenewComponent implements OnInit {
     this.finalSubscribers = [];
     for (let i = 0; i < arr.length; i++) {
       let test: any = [];
-       test = this.groups.filter((g: any) => g.groupID === arr[i]);
+      test = this.groups.filter((g: any) => g.groupID === arr[i]);
       if (test.length > 0) {
         this.finalSubscribers.push({
           subscriberType: 'group',
           subscriberIdentification: arr[i]
         });
       }
-      else{
+      else {
         this.finalSubscribers.push({
           subscriberType: 'user',
           subscriberIdentification: arr[i]
@@ -96,10 +98,11 @@ export class AddContactRenewComponent implements OnInit {
     }
     return this.finalSubscribers;
   }
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   addRenewal() {
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    this.hideErrors();
     if (this.time > 0) {
       switch (this.timeType) {
         case 'Day(s)': {
@@ -125,22 +128,17 @@ export class AddContactRenewComponent implements OnInit {
       console.log('contact renewal data', this.reminderData);
       this.apiService.postData('reminders', this.reminderData).subscribe({
         complete: () => { },
-        error: (err) => {
+        error: (err: any) => {
           from(err.error)
             .pipe(
               map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/'([^']+)'/)[1];
-                //console.log(key);
-                val.message = val.message.replace(/'.*'/, 'This Field');
-                this.errors[key] = val.message;
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
               })
             )
             .subscribe({
               complete: () => {
                 this.throwErrors();
-                this.Success = '';
               },
               error: () => { },
               next: () => { },
@@ -158,7 +156,25 @@ export class AddContactRenewComponent implements OnInit {
     }
   }
   throwErrors() {
-    this.form.showErrors(this.errors);
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label');
+      });
+    this.errors = {};
   }
   /*
 * Fetch Reminder details before updating
@@ -170,17 +186,16 @@ export class AddContactRenewComponent implements OnInit {
         result = result.Items[0];
         console.log('Contact renewal FETCHED  data', result);
         for (let i = 0; i < result.subscribers.length; i++) {
-               
-          this.test.push( result.subscribers[i].subscriberIdentification);
-    }
-        this.reminderData['reminderID'] = this.reminderID;
-        this.reminderData['reminderTasks']['dueDate']  = result.reminderTasks.dueDate;
-        this.reminderData['reminderTasks']['task']  = result.reminderTasks.task;
-        this.time  = result.reminderTasks.remindByDays;
-        this.timeType = 'Day(s)';
-        this.reminderData['sendEmail']  = result.sendEmail;
-        this.reminderData['subscribers'] = this.test;
-        this.reminderData['reminderIdentification']  = result.reminderIdentification;
+          this.test.push(result.subscribers[i].subscriberIdentification);
+        }
+        this.reminderData[`reminderID`] = this.reminderID;
+        this.reminderData[`reminderTasks`][`dueDate`] = result.reminderTasks.dueDate;
+        this.reminderData[`reminderTasks`][`task`] = result.reminderTasks.task;
+        this.time = result.reminderTasks.remindByDays;
+        this.timeType = `Day(s)`;
+        this.reminderData[`sendEmail`] = result.sendEmail;
+        this.reminderData[`subscribers`] = this.test;
+        this.reminderData[`reminderIdentification`] = result.reminderIdentification;
       });
   }
   // UPDATING REMINDER
@@ -213,26 +228,18 @@ export class AddContactRenewComponent implements OnInit {
       console.log('updated data', this.reminderData);
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },
-        error: (err) => {
+        error: (err: any) => {
           from(err.error)
             .pipe(
               map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/'([^']+)'/)[1];
-                //console.log(key);
-                val.message = val.message.replace(/'.*'/, 'This Field');
-                this.errors[key] = val.message;
-              })
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              }),
             )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-                this.Success = '';
-              },
-              error: () => { },
-              next: () => { },
+            .subscribe((val) => {
+              this.throwErrors();
             });
+
         },
         next: (res) => {
           this.response = res;
@@ -241,8 +248,7 @@ export class AddContactRenewComponent implements OnInit {
           this.Success = '';
         },
       });
-    }
-    else {
+    } else {
       this.toastr.warning('Time Must Be Positive Value');
     }
   }

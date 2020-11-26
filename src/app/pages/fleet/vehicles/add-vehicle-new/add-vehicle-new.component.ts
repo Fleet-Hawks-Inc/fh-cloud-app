@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
+import {concatMap, map, mergeAll, toArray} from 'rxjs/operators';
+import {from, of} from 'rxjs';
 import {AwsUploadService} from '../../../../services';
 import { v4 as uuidv4 } from 'uuid';
+import { HttpClient } from '@angular/common/http';
 declare var $: any;
 
 @Component({
@@ -27,9 +28,11 @@ export class AddVehicleNewComponent implements OnInit {
   /**
    * Vehicle Prop
    */
+  vehicleTypeList: any = [];
   vehicleIdentification = '';
   vehicleType = '';
   VIN = '';
+  DOT = '';
   year = '';
   manufacturerID = '';
   modelID = '';
@@ -38,7 +41,6 @@ export class AddVehicleNewComponent implements OnInit {
   driverID = '';
   teamDriverID = '';
   serviceProgramID = '';
-  primaryMeter = '';
   repeatByTime = '';
   repeatByTimeUnit = '';
   reapeatbyOdometerMiles = '';
@@ -89,6 +91,7 @@ export class AddVehicleNewComponent implements OnInit {
     vendorID: '',
     dateOfExpiry: '',
     remiderEvery: '',
+    policyNumber: ''
   };
   fluid = {
     fuelType: '',
@@ -175,6 +178,7 @@ export class AddVehicleNewComponent implements OnInit {
   countries = [];
   states = [];
   groups = [];
+  drivers = [];
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedPhotos = [];
@@ -182,7 +186,7 @@ export class AddVehicleNewComponent implements OnInit {
     carrierID;
 
   errors = {};
-  form;
+  vehicleForm;
   response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
@@ -199,8 +203,11 @@ export class AddVehicleNewComponent implements OnInit {
     autoplaySpeed: 1500,
   };
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private router: Router) {
+  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private router: Router, private httpClient: HttpClient,) {
     this.selectedFileNames = new Map<any, any>();
+    $(document).ready(() => {
+      this.vehicleForm = $('#vehicleForm').validate();
+    });
   }
 
   ngOnInit() {
@@ -208,12 +215,17 @@ export class AddVehicleNewComponent implements OnInit {
     this.fetchInspectionForms();
     this.fetchManufacturers();
     this.fetchCountries();
+    this.fetchStates();
     this.fetchGroups();
+    this.fetchDrivers();
 
     this.apiService.getData('devices').subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
-
+    this.httpClient.get('assets/vehicleType.json').subscribe(data => {
+      console.log('Vehicle Type', data);
+      this.vehicleTypeList = data;
+    });
     this.settings.hardBreakingParams = 6;
     this.settings.hardAccelrationParams = 6;
     this.settings.turningParams = 6;
@@ -222,10 +234,14 @@ export class AddVehicleNewComponent implements OnInit {
     $('#hardAccelrationParametersValue').html(6);
     $('#turningParametersValue').html(6);
 
-    $(document).ready(() => {
-      this.form = $('#form_').validate();
-    });
 
+
+  }
+
+  fetchDrivers(){
+    this.apiService.getData('drivers').subscribe((result: any) => {
+      this.drivers = result.Items;
+    });
   }
 
   fetchServicePrograms() {
@@ -260,6 +276,15 @@ export class AddVehicleNewComponent implements OnInit {
       });
   }
 
+  fetchStates() {
+    this.apiService
+      .getData('states')
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
+
+
   getModels() {
     this.apiService
       .getData(`vehicleModels/manufacturer/${this.manufacturerID}`)
@@ -279,10 +304,12 @@ export class AddVehicleNewComponent implements OnInit {
   addVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
+    this.hideErrors();
     const data = {
       vehicleIdentification: this.vehicleIdentification,
       vehicleType: this.vehicleType,
       VIN: this.VIN,
+      DOT: this.DOT,
       year: this.year,
       manufacturerID: this.manufacturerID,
       modelID: this.modelID,
@@ -291,7 +318,6 @@ export class AddVehicleNewComponent implements OnInit {
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
       serviceProgramID: this.serviceProgramID,
-      primaryMeter: this.primaryMeter,
       repeatByTime: this.repeatByTime,
       repeatByTimeUnit: this.repeatByTimeUnit,
       reapeatbyOdometerMiles: this.reapeatbyOdometerMiles,
@@ -342,6 +368,7 @@ export class AddVehicleNewComponent implements OnInit {
         vendorID: this.insurance.vendorID,
         dateOfExpiry: this.insurance.dateOfExpiry,
         remiderEvery: this.insurance.remiderEvery,
+        policyNumber: this.insurance.policyNumber,
       },
       fluid: {
         fuelType: this.fluid.fuelType,
@@ -428,7 +455,7 @@ export class AddVehicleNewComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/'.*'/, 'This Field');
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -450,8 +477,27 @@ export class AddVehicleNewComponent implements OnInit {
   }
 
   throwErrors() {
-    this.form.showErrors(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error')
+      });
+    // this.vehicleForm.showErrors(this.errors);
   }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
+  }
+
+
  /*
    * Selecting files before uploading
    */

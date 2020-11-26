@@ -3,6 +3,9 @@ import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -11,15 +14,26 @@ declare var $: any;
   styleUrls: ['./route-list.component.css']
 })
 
-export class RouteListComponent implements OnInit {
+export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
+  
+  @ViewChild(DataTableDirective, { static: false })
+  dtElement: DataTableDirective;
+
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
+
   title = "Permanent Routes";
   routes = [];
+  suggestedRoutes = [];
   // dtOptions: any = {};
-  dtOptions: DataTables.Settings = {};
+  // dtOptions: DataTables.Settings = {};
   lastEvaluated = {
     key: '',
     value: ''
   };
+
+  searchedRouteId = '';
+  searchedRouteName = '';
 
   hasError = false;
   hasSuccess = false;
@@ -30,30 +44,17 @@ export class RouteListComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.fetchRoutes();
     this.initDataTable();
   }
 
   fetchRoutes() {
-    this.spinner.show();
-    this.apiService.getData('routes').subscribe({
-      complete: () => {
-        this.initDataTable();
-      },
+    this.apiService.getData('routes/get/active').subscribe({
+      complete: () => {},
       error: () => { },
       next: (result: any) => {
-        this.spinner.hide();
-        console.log(result);
-        // for (let i = 0; i < result.Items.length; i++) {
-        //   if (result.Items[i].isDeleted == '0') {
-        //     this.routes.push(result.Items[i])
-        //   }
-
-        // }
-        // this.routes = result.Items;
         this.totalRecords = result.Count;
-        console.log(this.routes);
       }
     })
   }
@@ -61,17 +62,12 @@ export class RouteListComponent implements OnInit {
   deleteRoute(routeID) {
     this.spinner.show();
     this.apiService.getData('routes/delete/' + routeID + '/1').subscribe({
-      complete: () => {
-        // this.initDataTable();
-      },
-      error: () => { },
+      complete: () => {},
+      error: () => {},
       next: (result: any) => {
-        this.fetchRoutes();
-        // this.initDataTable();
+        this.rerender();
         this.spinner.hide();
         this.hasSuccess = true;
-        // this.router.navigateByUrl('/dispatch/routes/route-list');
-        this.toastr.success('Route deleted successfully');
       }
     })
   }
@@ -79,7 +75,6 @@ export class RouteListComponent implements OnInit {
   initDataTable() {
 
     let current = this;
-    
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
       pageLength: 10,
@@ -87,7 +82,7 @@ export class RouteListComponent implements OnInit {
       processing: true,
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('routes/fetch-records?lastEvaluatedKey='+this.lastEvaluated.key+'&lastEvaluatedValue='+this.lastEvaluated.value, dataTablesParameters).subscribe(resp => {
+        current.apiService.getDatatablePostData('routes/fetch-records?lastEvaluatedKey='+this.lastEvaluated.key+'&lastEvaluatedValue='+this.lastEvaluated.value+'&search='+this.searchedRouteId, dataTablesParameters).subscribe(resp => {
           this.routes = resp['Items'];
           if(resp['LastEvaluatedKey'] !== undefined){
             this.lastEvaluated = {
@@ -107,31 +102,54 @@ export class RouteListComponent implements OnInit {
           });
         });
       },
-      // colReorder: true,
-      columnDefs: [
-        {
-          targets: 1,
-          className: 'noVis'
-        },
-        {
-          targets: 2,
-          className: 'noVis'
-        },
-        {
-          targets: 3,
-          className: 'noVis'
-        },
-        {
-          targets: 4,
-          className: 'noVis'
-        },
-        {
-          targets: 5,
-          className: 'noVis'
-        }
-      ],
     };
   }
 
+  getSuggestions(searchvalue='') {
+    this.suggestedRoutes = [];
+    if(searchvalue !== '') {
+      this.apiService.getData('routes/get/suggestions/'+searchvalue).subscribe({
+        complete: () => {},
+        error: () => { },
+        next: (result: any) => {
+          for (let i = 0; i < result.Items.length; i++) {
+            const element = result.Items[i];
+  
+            let obj = {
+              id: element.routeID,
+              name: element.routeName
+            };
+            this.suggestedRoutes.push(obj)
+          }
+        }
+      })
+    }    
+  }
 
+  searchSelectedRoute(route) {
+    this.searchedRouteId = route.id;
+    this.searchedRouteName = route.name;
+    this.suggestedRoutes = [];
+
+    this.rerender();
+    this.initDataTable();
+  }
+
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+
+  rerender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
 }

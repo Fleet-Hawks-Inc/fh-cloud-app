@@ -1,0 +1,501 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body pl-0 pt-0 pr-0">
+      <header class="page-header">
+        <div class="row pr-5" style="padding-top: 10px">
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+            Inventory Details
+          </div>
+          <div class="col-md-8 col-lg-8 text-right pr-4">
+            <a href="inventory1.php" class="btn btn-sm btn-default"
+              ><i class="fas fa-list"></i> Inventory List</a
+            >
+
+            <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm"
+              ><i class="fas fa-plus"></i> Add Inventory</a
+            >
+          </div>
+        </div>
+      </header>
+      <div class="row">
+        <div class="col pr-0">
+          <div class="card-body text-dark">
+            <form class="form-horizontal form-bordered" method="get">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-responsive-lg">
+                        <tbody>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Part Number
+                            </td>
+                            <td width="60%">{{partNumber}}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Part Name
+                            </td>
+                            <td>{{name}}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Category
+                            </td>
+                            <td>{{categoryID}}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Vendor
+                            </td>
+                            <td><a href="#">{{preferredVendorID}}</a></td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              In Stock
+                            </td>
+                            <td>3445</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Unit Cost
+                            </td>
+                            <td>$ {{costUnit}}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Unit Measure
+                            </td>
+                            <td>Gallon</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Purchase Order Number
+                            </td>
+                            <td>54560</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Description
+                            </td>
+                            <td>{{description}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <!-- Warehouse TABLE -->
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <label class="control-label font-weight-bold text-3"
+                        >Warehouse Inventory Details</label
+                      >
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table
+                        class="table table-bordered table-striped table-responsive-lg"
+                      >
+                        <thead>
+                          <tr>
+                            <th>Warehouse</th>
+                            <th>Quantity</th>
+                            <th>Location</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>TATA's Warehouse</td>
+                            <td>90</td>
+                            <td>100 street 34Ave King Town,City,Country</td>
+                          </tr>
+                          <tr>
+                            <td>TATA's Warehouse</td>
+                            <td>90</td>
+                            <td>100 street 34Ave King Town,City,Country</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <!-- Warrenty TABLE -->
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <label class="control-label font-weight-bold text-3"
+                        >Warranty Details</label
+                      >
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-responsive-lg">
+                        <tbody>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Days
+                            </td>
+                            <td width="60%">{{days}}</td>
+                          </tr>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Time
+                            </td>
+                            <td width="60%">{{time}}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Notes
+                            </td>
+                            <td>{{notes}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- inventory TABLE -->
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <label class="control-label font-weight-bold text-3"
+                        >Inventory Tracking</label
+                      >
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-responsive-lg">
+                        <tbody>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Quantity
+                            </td>
+                            <td width="60%">{{quantity}}</td>
+                          </tr>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Reorder Point
+                            </td>
+                            <td width="60%">{{reorderPoint}}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Reorder Quantity
+                            </td>
+                            <td>{{reorderQuality}}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Max. Quantity
+                            </td>
+                            <td>0</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Load Time
+                            </td>
+                            <td>{{leadTime}}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Preferred Vendor
+                            </td>
+                            <td>{{preferredVendorID}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="vehicle-common-box p-3">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <label class="control-label font-weight-bold text-3"
+                              >Photo(s)</label
+                            >
+                          </div>
+                          <!-- <div class="col-lg-6 text-right"><input type="file" hidden id="hidden_photo_input"><button type="button" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo</button></div> -->
+                        </div>
+                        <hr class="solid mt-3" />
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="vehicle-photo-box">
+                              <img
+                                src="img/truck1.jpg"
+                                height="180px"
+                                width="330px"
+                              />
+                              <hr class="m-3" />
+                              <div class="row">
+                                <div class="col-lg-8">Name of the Image</div>
+                                <div class="col-lg-4 text-right">
+                                  <div class="btn-group flex-wrap mx-2">
+                                    <button
+                                      type="button"
+                                      class="btn btn-default btn-xs dropdown-toggle"
+                                      data-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      <span class="caret"></span>
+                                    </button>
+                                    <div
+                                      class="dropdown-menu"
+                                      role="menu"
+                                      x-placement="bottom-start"
+                                      style="
+                                        position: absolute;
+                                        will-change: transform;
+                                        top: 0px;
+                                        left: 0px;
+                                        transform: translate3d(0px, 38px, 0px);
+                                      "
+                                    >
+                                      <a class="dropdown-item text-1" href=""
+                                        >Crop/Rotate Image</a
+                                      >
+                                      <a
+                                        class="modal-with-form dropdown-item text-1"
+                                        href="#editPhoto"
+                                        >Edit</a
+                                      >
+                                      <a
+                                        class="modal-with-form dropdown-item text-1"
+                                        href="#deleteModal"
+                                        >Delete</a
+                                      >
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="vehicle-photo-box">
+                              <img
+                                src="img/truck2.jpg"
+                                height="180px"
+                                width="330px"
+                              />
+                              <hr class="m-3" />
+                              <div class="row">
+                                <div class="col-lg-8">Name of the Image</div>
+                                <div class="col-lg-4 text-right">
+                                  <div class="btn-group flex-wrap mx-2">
+                                    <button
+                                      type="button"
+                                      class="btn btn-default btn-xs dropdown-toggle"
+                                      data-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      <span class="caret"></span>
+                                    </button>
+                                    <div
+                                      class="dropdown-menu"
+                                      role="menu"
+                                      x-placement="bottom-start"
+                                      style="
+                                        position: absolute;
+                                        will-change: transform;
+                                        top: 0px;
+                                        left: 0px;
+                                        transform: translate3d(0px, 38px, 0px);
+                                      "
+                                    >
+                                      <a class="dropdown-item text-1" href=""
+                                        >Crop/Rotate Image</a
+                                      >
+                                      <a class="dropdown-item text-1" href=""
+                                        >Edit</a
+                                      >
+                                      <a
+                                        class="modal-with-form dropdown-item text-1"
+                                        href="#deleteModal"
+                                        >Delete</a
+                                      >
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row pt-2">
+                    <div class="col-lg-12">
+                      <div class="vehicle-common-box p-3">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <label class="control-label font-weight-bold text-3"
+                              >Documents(s)</label
+                            >
+                          </div>
+                          <!-- <div class="col-lg-6 text-right"><input type="file" hidden id="hidden_issue_document_input"><button type="button" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Documents</button></div> -->
+                        </div>
+                        <hr class="solid mt-3" />
+                        <div class="row">
+                          <div class="col-lg-9">Name of the Document</div>
+                          <div class="col-lg-3 text-right">
+                            <div class="btn-group flex-wrap mx-2">
+                              <button
+                                type="button"
+                                class="btn btn-default btn-xs dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                <span class="caret"></span>
+                              </button>
+                              <div
+                                class="dropdown-menu"
+                                role="menu"
+                                x-placement="bottom-start"
+                                style="
+                                  position: absolute;
+                                  will-change: transform;
+                                  top: 0px;
+                                  left: 0px;
+                                  transform: translate3d(0px, 38px, 0px);
+                                "
+                              >
+                                <a
+                                  class="modal-with-form dropdown-item text-1"
+                                  href="#deleteModal"
+                                  >Delete</a
+                                >
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- VENDOR LIST -->
+                  <div class="row pt-2">
+                    <div class="col-lg-12">
+                      <table
+                        class="table table-bordered table-responsive-lg table-striped mb-0"
+                        id="simple-table"
+                      >
+                        <thead>
+                          <tr>
+                            <th width="60%">Vendor Name</th>
+                            <th width="40%">Part Price</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Vendor 1</td>
+                            <td>$4.90</td>
+                          </tr>
+                          <tr>
+                            <td>Vendor 2</td>
+                            <td>$5.00</td>
+                          </tr>
+                          <tr>
+                            <td>Vendor 3</td>
+                            <td>$4.70</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!--  close MODAL -->
+          <div
+            id="issueCloseModal"
+            class="modal-block modal-block-primary mfp-hide"
+          >
+            <section class="card">
+              <header class="card-header">
+                <h2 class="card-title">Corfirm Action</h2>
+              </header>
+              <div class="card-body text-dark">
+                <form>
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <label for="inputEmail4"
+                        >Are you sure you want to close issue?</label
+                      >
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <footer class="card-footer">
+                <div class="row">
+                  <div class="col-md-12 text-right">
+                    <button class="btn btn-danger modal-confirm">OK</button>
+                    <button class="btn btn-default modal-dismiss">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </footer>
+            </section>
+          </div>
+          <!-- Delete MODAL -->
+          <div
+            id="deleteModal"
+            class="modal-block modal-block-primary mfp-hide"
+          >
+            <section class="card">
+              <header class="card-header">
+                <h2 class="card-title">Corfirm Action</h2>
+              </header>
+              <div class="card-body text-dark">
+                <form>
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <label for="inputEmail4">Are you sure?</label>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <footer class="card-footer">
+                <div class="row">
+                  <div class="col-md-12 text-right">
+                    <button class="btn btn-danger modal-confirm">OK</button>
+                    <button class="btn btn-default modal-dismiss">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </footer>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
