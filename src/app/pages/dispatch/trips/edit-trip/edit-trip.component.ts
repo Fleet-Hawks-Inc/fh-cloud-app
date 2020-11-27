@@ -788,7 +788,7 @@ export class EditTripComponent implements OnInit {
           this.assetDataDriverUsername = $event.userName;
         }
         $(".driverClass").removeClass('td_border');
-        $("#drivr_" + $event.userName).addClass('td_border');
+        $("#drivr_" + $event.driverID).addClass('td_border');
 
         await this.spinner.hide();
 
@@ -799,7 +799,7 @@ export class EditTripComponent implements OnInit {
           this.assetDataCoDriverUsername = $event.userName;
         }
         $(".codriverClass").removeClass('td_border');
-        $("#codrivr_" + $event.userName).addClass('td_border');
+        $("#codrivr_" + $event.driverID).addClass('td_border');
       }
     }
   }
@@ -1035,6 +1035,8 @@ export class EditTripComponent implements OnInit {
     this.apiService.getData('trips/' + this.tripID).
       subscribe((result: any) => {
         result = result.Items[0];
+        delete result.timeCreated;
+        delete result.timeModified;
         this.tripData = result;
         // console.log('result');
         // console.log(result);
