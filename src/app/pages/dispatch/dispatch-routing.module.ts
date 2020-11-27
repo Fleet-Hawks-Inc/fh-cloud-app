@@ -164,6 +164,12 @@ const routes: Routes = [
       { path: 'map-view', component: MapViewComponent},
     ]
   },
+  {
+    path: "home",
+    children: [
+      { path: 'routing-dispatch-overview', component: DispatchOverviewComponent}
+    ]
+  },
 ];
 
 @NgModule({

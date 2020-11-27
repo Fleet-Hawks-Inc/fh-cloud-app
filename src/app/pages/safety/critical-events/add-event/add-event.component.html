@@ -1,0 +1,144 @@
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header --> 
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body pr-0 pl-0 pt-0">
+            <header class="page-header">
+               <div class="row pr-5 " style="padding-top:10px;">
+                  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                     Add Critical Event
+                  </div>
+                  <div class="col-md-8  col-lg-8 text-right pr-4">                               
+                     <a href="javascript:;" routerLink="/safety/critical-events" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Events List</a>
+                  </div>
+               </div>
+            </header>
+            <div class="add-incident__main">
+               <div class="card pr-0">
+                  <div class="card-body">
+                     <div class="row">
+                        <div class="col pr-0">
+                           <form class="form-horizontal form-bordered text-dark">
+                              <div class="form-group row">
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                       <div class="col-lg-5">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Date</label>
+                                          <input 
+                                             [(ngModel)]="event.eventDate" name="eventDate" 
+                                             type="text" 
+                                             placeholder="DD-MM-YYYY"
+                                             (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
+                                             class="form-control" readonly> 
+
+                                       </div>
+                                       <div class="col-lg-5">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Time</label>
+                                          <input type="text" class="form-control" [ngxTimepicker]="timep" 
+                                             [format]="24" readonly [(ngModel)]="event.eventTime" name="eventTime">
+                                             <ngx-material-timepicker #timep></ngx-material-timepicker>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Location</label>
+                                          <input type="text" class="form-control" [(ngModel)]="event.location" name="location" placeholder="Location">
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Driver Name</label>
+                                          <select class="form-control populate"[(ngModel)]="event.driverUsername" name="driverUsername">
+                                             <option value="">Select Driver</option>
+                                             <option *ngFor="let driver of drivers" value="{{ driver.userName }}">{{ driver.fullName }}</option>
+                                          </select>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle</label>
+                                          <select class="form-control populate"[(ngModel)]="event.vehicleID" name="vehicleID">
+                                             <option value="">Select Vehicle</option>
+                                             <option *ngFor="let vehicle of vehicles" value="{{ vehicle.vehicleID }}">{{ vehicle.vehicleIdentification }}</option>
+                                          </select>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Severity</label>
+                                          <select class="form-control populate" name="severity"[(ngModel)]="event.severity">
+                                             <option value="">Select Severity</option>
+                                             <option *ngFor="let data of severity" value="{{ data.value }}">{{ data.name }}</option>
+                                          </select>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Criticality Type</label>
+                                          <select class="form-control populate" name="criticalityType" [(ngModel)]="event.criticalityType">
+                                             <option value="">Select Criticality Type</option>
+                                             <option *ngFor="let data of criticalityType" value="{{ data.value }}">{{ data.name }}</option>
+                                          </select>
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                    <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Trip ID</label>
+                                    <select class="form-control populate" [(ngModel)]="event.tripID" name="tripID">
+                                       <option value=''>Select Trip</option>
+                                       <option *ngFor="let data of trips" value="{{ data.tripID }}">{{ data.tripNo }}</option>
+                                    </select>
+                                 </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Assigned To</label>
+                                    <select class="form-control populate" [(ngModel)]="event.username" name="username">
+                                       <option>Select Asignee</option>
+                                       <option *ngFor="let data of users" value="{{ data.userName }}">{{ data.fullName }}</option>
+                                    </select>
+                                 </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Upload Documents</label>
+                                    <input type="file" class="form-control p-0" name="upload-doc" (change)="selectDocuments($event, 'document')">
+                                 </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Add Incident Video</label>
+                                    <input type="file" class="form-control p-0" name="add_vid"(change)="selectDocuments($event, 'video')">
+                                 </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Remarks </label>
+                                    <textarea class="form-control" rows="3" placeholder="Remarks" name="remarks" [(ngModel)]="event.remarks"></textarea>
+                                 </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-11 text-right">
+                                    <button type="button" class="btn btn-default mt-4" onclick="goBack()">Cancel</button>
+                                    <a href="javascript:;" (click)="addEvent()" class="btn btn-success mt-4 modal-confirm">Submit</a>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+    </div>
+</section>
