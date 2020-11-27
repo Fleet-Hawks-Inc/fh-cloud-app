@@ -82,22 +82,27 @@ export class GeofenceListComponent implements OnInit {
       this.visibleIndex = -1;
     } else {
       this.visibleIndex = ind;
-      setTimeout(() => {
-        let new_cords = [];
-        for (let i = 0; i < cords[0].length - 1; i++) {
-
-          for (let j = 0; j < cords[0][i].length - 1; j++) {
-            new_cords.push([cords[0][i][j + 1], cords[0][i][j]]);
-
+      if (cords[0]) {
+        setTimeout(() => {
+          let new_cords = [];
+          for (let i = 0; i < cords[0].length - 1; i++) {
+  
+            for (let j = 0; j < cords[0][i].length - 1; j++) {
+              new_cords.push([cords[0][i][j + 1], cords[0][i][j]]);
+  
+            }
           }
-        }
-        console.log('new_cords', new_cords);
-        // console.log(new_cords);
-        this.map = this.LeafletMap.initGeoFenceMap();
-        const poly = L.polygon(new_cords).addTo(this.map);
-        this.map.fitBounds(poly.getBounds());
-      },
-        100);
+          console.log('new_cords', new_cords);
+          // console.log(new_cords);
+          this.map = this.LeafletMap.initGeoFenceMap();
+          const poly = L.polygon(new_cords).addTo(this.map);
+          this.map.fitBounds(poly.getBounds());
+        },
+          100);
+      } else {
+        console.log('geofence not found!')
+      }
+     
     }
   }
 
@@ -122,11 +127,15 @@ export class GeofenceListComponent implements OnInit {
   fetchGeofences() {
     this.geofences = [];
     this.spinner.show();
-    this.apiService.getData(`geofences?geofenceID=${this.geofenceID}&type=${this.type}`).subscribe({
+    this.apiService.getData(`geofences`).subscribe({
       complete: () => {},
       error: () => { },
       next: (result: any) => {
-        this.geofences = result.Items;
+        for (const iterator of result.Items) {
+          if (iterator.isDeleted === 0) {
+            this.geofences.push(iterator);
+          }
+        }
         this.spinner.hide();
       },
     });

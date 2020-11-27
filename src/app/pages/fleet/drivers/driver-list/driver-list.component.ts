@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
+import { mergeMap, map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
@@ -23,12 +24,15 @@ export class DriverListComponent implements OnInit {
   drivers = [];
   dtOptions: any = {};
 
+  statesObject: any;
+  vehiclesObject: any;
+  cyclesObject: any;
 
   driverID = '';
   driverName = '';
   dutyStatus = '';
   suggestedDrivers = [];
-
+  homeworld: Observable<{}>;
   constructor(
             private apiService: ApiService,
             private router: Router,
@@ -40,6 +44,8 @@ export class DriverListComponent implements OnInit {
     this.fetchDrivers();
     this.fetchAddress();
     this.fetchAllStatesIDs();
+    this.fetchAllVehiclesIDs();
+    this.fetchAllCyclesIDs();
 
     $(document).ready(() => {
       setTimeout(() => {
@@ -101,14 +107,41 @@ export class DriverListComponent implements OnInit {
 
   fetchDrivers() {
    // this.spinner.show(); // loader init
-    this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`).subscribe({
+    // let character = this.apiService.getData('drivers');
+    // let characterHomeworld = this.apiService.getData('addresses');
+
+    // forkJoin([character, characterHomeworld]).subscribe(results => {
+    //   console.log("results", results);
+    // });
+
+  //  this.apiService.getData('drivers')
+  //     .pipe(mergeMap(character => this.apiService.getData('addresses'))).subscribe( res => {
+  //       console.log('homeworld', this.homeworld);
+  //     });
+  //   console.log('homeworld', this.homeworld);
+    // this.apiService.getData(`drivers`).pipe(
+    //   mergeMap(resp => {
+    //     console.log("resp", resp);
+    //     return this.apiService.getData(`addresses`).pipe(
+    //       map(countResp => {
+    //         console.log("countResp", countResp);
+    //       })
+    //     )
+    //   })
+    // ).subscribe(res => {
+    //   console.log("drivers", res);
+    // })
+    this.apiService.getData(`drivers`).subscribe({
       complete: () => {
         this.initDataTable();
       },
       error: () => {},
       next: (result: any) => {
-        console.log(result);
-        this.drivers = result.Items;
+        for (const iterator of result.Items) {
+          if (iterator.isDeleted === 0) {
+            this.drivers.push(iterator);
+          }
+        }
         console.log('drivers', this.drivers);
       //  this.spinner.hide(); // loader hide
       },
@@ -118,7 +151,22 @@ export class DriverListComponent implements OnInit {
   fetchAllStatesIDs() {
     this.apiService.getData('states/get/list')
       .subscribe((result: any) => {
-        console.log('states', result);
+        this.statesObject = result;
+      });
+  }
+
+   fetchAllVehiclesIDs() {
+    this.apiService.getData('vehicles/get/list')
+      .subscribe((result: any) => {
+        this.vehiclesObject = result;
+      });
+  }
+
+  fetchAllCyclesIDs() {
+    this.apiService.getData('cycles/get/list')
+      .subscribe((result: any) => {
+        this.cyclesObject = result;
+        console.log('this.cyclesObject', this.cyclesObject);
       });
   }
 
@@ -183,13 +231,16 @@ export class DriverListComponent implements OnInit {
       .getData(`drivers/isDeleted/${driverID}/${value}`)
       .subscribe((result: any) => {
         console.log('result', result);
-        this.fetchDrivers();
+      }, err => {
+        console.log('driver delete', err);
       });
+      
     }
   }
 
   initDataTable() {
     this.dtOptions = {
+      searching:false,
       dom: 'Bfrtip', // lrtip to hide search field
       processing: true,
       columnDefs: [
@@ -215,7 +266,7 @@ export class DriverListComponent implements OnInit {
           }
       ],
       colReorder: {
-        fixedColumnsLeft: 1
+        fixedColumnsLeft: 0
       },
       buttons: [
         'colvis',

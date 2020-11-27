@@ -522,7 +522,7 @@ export class AddressBookComponent implements OnInit {
             this.customers.push(result.Items[i]);
           }
         }
-        console.log('this.fetchContacts', this.customers);
+        // console.log('this.fetchContacts', this.customers);
       }
     });
   }

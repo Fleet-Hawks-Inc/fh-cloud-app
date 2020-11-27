@@ -284,7 +284,7 @@
 											 >Select State</label>
 										  <select (change)="getCities($event.target.value)" [(ngModel)]="item.stateID" name="item.stateID{{i}}" data-plugin-selectTwo class="form-control populate">
 											 <optgroup label="Select State">
-												<option class="text-capitalize" *ngFor="let state of adrStates" value="{{state.stateID}}">{{state.stateName}}</option>
+												<option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
 											</optgroup>
 										  </select>
 									   </div>
@@ -371,7 +371,7 @@
 									  <div class="col-lg-5">
 										 <label class="control-label font-weight-bold text-lg-right pt-2">
 										 Issuing Country</label>
-										 <select (change)="getStates()"  [(ngModel)]="document.issuingCountry" name="document.issuingCountry{{i}}" class="form-control populate" data-plugin-selecttwo>
+										 <select (change)="getStates($event.target.value)"  [(ngModel)]="document.issuingCountry" name="document.issuingCountry{{i}}" class="form-control populate" data-plugin-selecttwo>
 											<optgroup label="Select Country">
 												<option class="text-capitalize" *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
 											</optgroup>
@@ -380,9 +380,9 @@
 									  <div class="col-lg-5">
 										 <label class="control-label font-weight-bold text-lg-right pt-2">
 										 Issuing State </label>
-										 <select [(ngModel)]="document.issuingState" name="document.issuingState{{i}}" class="form-control populate" data-plugin-selecttwo>
+										 <select (change)="getCities($event.target.value)" [(ngModel)]="document.issuingState" name="document.issuingState{{i}}" class="form-control populate" data-plugin-selecttwo>
 											<optgroup label="Select State">
-												<option class="text-capitalize" *ngFor="let state of docStates" value="{{state.stateID}}">{{state.stateName}}</option>
+												<option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
 											</optgroup>
 										 </select>
 									  </div>
@@ -735,7 +735,7 @@
 										 <label class="control-label font-weight-bold text-lg-right pt-2"
 											>Issued Country</label>
 										 <select
-										 	(change)="getStates()"
+										 	(change)="getStates($event.target.value)"
 											 [(ngModel)]="driverData.licenceDetails.issuedCountry"
 											 name="licenceDetails.issuedCountry"
 											 class="form-control populate">
@@ -920,8 +920,8 @@
 					<div class="col-lg-12 text-right pb-4 pr-5">
 					   <button type="button" (click)="prevStep()" class="btn btn-default btnPrevious">Cancel</button>
 					   <a href="javascript:;" (click)="nextStep()"  *ngIf="currentTab != 7" class="btn btn-success btnNext">Next</a>
-					   <a href="javascript:;" *ngIf="currentTab == 7 " (click)="addDriver()" class="btn btn-success">Submit</a>
-					   <a href="javascript:;" *ngIf="currentTab == 7 " (click)="addDriver()" class="btn btn-success">Update</a>
+					   <a href="javascript:;" *ngIf="currentTab == 7 && !driverID" (click)="addDriver()" class="btn btn-success">Submit</a>
+					   <a href="javascript:;" *ngIf="currentTab == 7 && driverID" (click)="updateDriver()" class="btn btn-success">Update</a>
 					</div>
 				 </div>
 			  </form>
