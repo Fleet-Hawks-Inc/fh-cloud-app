@@ -124,7 +124,7 @@ export class NewAciManifestComponent implements OnInit {
   vehicleSeals: any = [];
   cargoExemptionsList: any = [];
   documentTypeList: any = [];
-  status: string;
+  currentStatus: string;
   CCC: string;
   tripNo: string;
   truckcargoExemptions: [];
@@ -728,7 +728,7 @@ export class NewAciManifestComponent implements OnInit {
       passengers: this.passengers,
       containers: this.containers,
       shipments: this.shipments,
-      status: 'Draft'
+      currentStatus: 'DRAFT'
     };
     console.log('Data', data);
     this.apiService.postData('ACIeManifest', data).subscribe({
@@ -809,7 +809,7 @@ export class NewAciManifestComponent implements OnInit {
           this.containers = result.containers,
           this.passengers = result.passengers,
           this.shipments = result.shipments,
-          this.status = result.status,
+          this.currentStatus = result.currentStatus,
           setTimeout(() => {
               this.getDriverIdArray(result.drivers);
               this.getAssetArray(result.trailers);
@@ -836,7 +836,8 @@ export class NewAciManifestComponent implements OnInit {
       drivers: this.driverArray,
       passengers: this.passengers,
       containers: this.containers,
-      shipments: this.shipments
+      shipments: this.shipments,
+      currentStatus: 'DRAFT'
     };
     console.log('Data', data);
     this.apiService.putData('ACIeManifest', data).subscribe({

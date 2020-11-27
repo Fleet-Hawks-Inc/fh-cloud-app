@@ -1394,6 +1394,24 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Insurance Policy#</label>
                             <input type="text" class="form-control" name="insurance.policyNumber" [(ngModel)]="insurance.policyNumber"> 
                          </div>
+                         <div class="col-lg-5">
+                          <div class="row">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Insurance Amount</label>
+                             <div class="col-lg-6">
+                                
+                                <input type="number" class="form-control" name="insurance.amount" [(ngModel)]="insurance.amount"> 
+                             </div>
+                             <div class="col-lg-6">
+                                <select data-plugin-selectTwo class="form-control populate" name="insurance.amountCurrency" [(ngModel)]="insurance.amountCurrency">
+                                   <optgroup label="">
+                                      <option value="USD">USD</option>
+                                      <option value="CAD">CAD</option>
+                                   </optgroup>
+                                </select>
+                             </div>
+                          </div>
+                         
+                       </div>
                         </div>
                       </div>
                     </div>

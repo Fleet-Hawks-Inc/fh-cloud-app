@@ -27,7 +27,7 @@ export class AceDetailsComponent implements OnInit {
   usPortOfArrival: string;
   estimatedArrivalDate: string;
   estimatedArrivalTime: string;
-  status: string;
+  currentStatus: string;
   vehicleNumber: string;
   vehicleType: string;
   vinNumber: string;  
@@ -378,7 +378,7 @@ export class AceDetailsComponent implements OnInit {
         this.passengers = result.passengers;
         this.trailers = result.trailers;
         this.shipments = result.shipments;
-        this.status = result.status,
+        this.currentStatus = result.currentStatus,
         setTimeout(() => {
           this.finalTruckFn();
           this.modifyShipment();
@@ -404,18 +404,11 @@ export class AceDetailsComponent implements OnInit {
     };
     console.log('final data', this.finalData);
   }
-  setStatusFn(val) {
-    const data = {
-      entryID: this.entryID,
-      status: val
-    };
-    // this.apiService.putData('ACEeManifest', data).subscribe({
-    //   next: (res) => {
-    //     this.response = res;
-    //     this.hasSuccess = true;
-    //     this.toastr.success('Status Updated successfully');
-    //   },
-    // });
+  setStatus(entryID, val) {
+    this.apiService.getData('ACEeManifest/setStatus/' + entryID + '/' + val).subscribe((result: any) => {
+      this.toastr.success('Status Updated Successfully!');
+      this.currentStatus = val;
+    });
   }
 
 }

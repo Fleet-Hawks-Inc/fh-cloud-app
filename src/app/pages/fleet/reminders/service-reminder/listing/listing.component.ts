@@ -20,8 +20,9 @@ export class ListingComponent implements OnInit {
   groups = [];
   allRemindersData = [];
   vehicleIdentification = '';
-  subscribedUsersArray = [];
-  subcribersArray = [];
+  unitID = '';
+  unitName = '';
+  suggestedUnits = [];
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -72,7 +73,7 @@ export class ListingComponent implements OnInit {
   //   });
   // }
   fetchReminders() {
-    this.apiService.getData(`reminders?reminderID=${this.reminderID}&reminderIdentification=${this.reminderIdentification}`).subscribe({
+    this.apiService.getData(`reminders?reminderIdentification=${this.unitID}`).subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -89,7 +90,27 @@ export class ListingComponent implements OnInit {
       },
     });
 }
+setUnit(unitID, unitName) {
+  this.unitName = unitName;
+  this.unitID = unitID;
 
+  this.suggestedUnits = [];
+}
+getSuggestions(value) {
+  this.suggestedUnits = [];
+  this.apiService
+    .getData(`vehicles/suggestion/${value}`)
+    .subscribe((result) => {
+      result = result.Items;
+
+      for(let i = 0; i < result.length; i++){
+        this.suggestedUnits.push({
+          unitID: result[i].vehicleID,
+          unitName: result[i].vehicleIdentification
+        });
+      }
+    });
+}
   deleteReminder(entryID) {
     this.apiService
       .deleteData('reminders/' + entryID)

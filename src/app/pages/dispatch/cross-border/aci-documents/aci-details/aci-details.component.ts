@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-aci-details',
   templateUrl: './aci-details.component.html',
@@ -18,15 +19,15 @@ export class AciDetailsComponent implements OnInit {
   subLocation: string;
   estimatedArrivalDate: string;
   estimatedArrivalTime: string;
-  estimatedArrivalTimeZone: string; 
+  estimatedArrivalTimeZone: string;
   drivers = [];
-  truck: any = [];
+  truck: any;
   trailers: any = [];
   shipments: any = [];
   shipmentArray: any = [];
   containers: any = [];
   passengers: any = [];
-  status: string;
+  currentStatus: string;
   errors = {};
   form;
   response: any = '';
@@ -144,7 +145,7 @@ export class AciDetailsComponent implements OnInit {
   finalDrivers: any = [];
   finalTrailers: any = [];
   finalshipments: any = [];
-  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute,private toastr: ToastrService) { }
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params['entryID'];
@@ -169,7 +170,6 @@ export class AciDetailsComponent implements OnInit {
   }
 
   finalTruckFn() {
-    console.log('truck array', this.truck);
     let licenseArray: any = [];
     let sealsArray = [];
     if (this.truck.sealNumbers1) {
@@ -338,7 +338,7 @@ export class AciDetailsComponent implements OnInit {
         this.trailers = result.trailers;
         this.containers = result.containers,
         this.shipments = result.shipments;
-        this.status = result.status;
+        this.currentStatus = result.currentStatus;
         this.modifyShipment();
         setTimeout(() => {
          this.finalTruckFn();
@@ -346,7 +346,6 @@ export class AciDetailsComponent implements OnInit {
           this.finalTrailersArrayFn();
          this.finalShipmentsArrayFn();
         }, 2000);
-
       });
   }
   finalDataFn() {
@@ -365,5 +364,10 @@ export class AciDetailsComponent implements OnInit {
     };
     console.log('final data', this.finalData);
   }
-
+  setStatus(entryID, val) {
+    this.apiService.getData('ACIeManifest/setStatus/' + entryID + '/' + val).subscribe((result: any) => {
+      this.toastr.success('Status Updated Successfully!');
+      this.currentStatus = val;
+    });
+  }
 }

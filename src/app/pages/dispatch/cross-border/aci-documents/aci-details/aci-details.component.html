@@ -12,22 +12,22 @@
         <h2>{{title}}</h2>
         <div class="right-wrapper text-right pt-2 pr-2">
             <a
-                     [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-success btn-sm mr-1"><i
+                     [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default btn-sm mr-1"><i
                         class="fas fa-list"></i> ACI Manifests</a>
             <a href="javascript:;"(click)="finalDataFn()" class="btn btn-success btn-sm mr-1" style="color:white;"> Send to CBSA</a>
             <div class="btn-group btn-group1 flex-wrap mr-1">
                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Set Status<span class="caret"></span></button>
                 <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                    <a class="dropdown-item text-1" href="">Draft</a>
-                    <a class="dropdown-item text-1" href="">Cancelled</a>
-                    <a class="dropdown-item text-1" href="">Transmitted to CBSA</a>
-                    <a class="dropdown-item text-1" href="">CBSA Returned Error</a>
-                    <a class="dropdown-item text-1" href="">On File with CBSA</a>
-                    <a class="dropdown-item text-1" href="">On File with Match Notice</a>
-                    <a class="dropdown-item text-1" href="">On File with Transaction Number(s)</a>
-                    <a class="dropdown-item text-1" href="">Arrival Reported at Border</a>
-                    <a class="dropdown-item text-1" href="">Rejected After Arrival at Border</a>
-                    <a class="dropdown-item text-1" href="">Released</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Draft')">Draft</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Cancelled')">Cancelled</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Transmitted to CBSA')">Transmitted to CBSA</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'CBSA Returned Error')">CBSA Returned Error</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'On File with CBSA')">On File with CBSA</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'On File with Match Notice')">On File with Match Notice</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'On File with Transaction Number(s)')">On File with Transaction Number(s)</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Arrival Reported at Border')">Arrival Reported at Border</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Rejected After Arrival at Border')">Rejected After Arrival at Border</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Released')">Released</a>
                 </div>
             </div>
             <div class="btn-group btn-group1 flex-wrap">
@@ -68,7 +68,7 @@
                                 </tr>
                                    <tr>
                                        <th width="40%" class="back-color-gray">Current Status:</th>
-                                       <td>{{status}}</td>
+                                       <td>{{currentStatus}}</td>
                                    </tr>
 
                                </tbody>
@@ -166,8 +166,8 @@
                                 <tbody>
                                     <tr>
                                         <td>{{truck.number}}</td>
-                                        <td>{{licensePlate.number}}</td>
-                                        <td>{{licensePlate.stateProvince}}</td>
+                                        <td>{{truck.licensePlate.number}}</td>
+                                        <td>{{truck.licensePlate.stateProvince}}</td>
                                         <td>Loaded</td>
                                         <td>{{truck.sealNumbers1}}  {{truck.sealNumbers2}}  {{truck.sealNumbers3}}  {{truck.sealNumbers4}}</td>
                                         <td class="actions">
@@ -206,9 +206,11 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor = "let trailer of trailers"> 
-                                        <td>{{trailer.number}}</td>
-                                        <td>{{licensePlate.number}}</td>
-                                        <td>{{licensePlate.stateProvince}}</td>
+                                        <td>
+                                            {{trailer.number}}
+                                        </td>
+                                        <td>{{trailer.licensePlate.number}}</td>
+                                        <td>{{trailer.licensePlate.stateProvince}}</td>
                                         <td>{{trailer.type}}</td>
                                         <td>{{trailer.sealNumbers1}}  {{trailer.sealNumbers2}}  {{trailer.sealNumbers3}}  {{trailer.sealNumbers4}}</td>
                                         <td class="actions">
