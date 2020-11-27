@@ -4,8 +4,6 @@
     <app-header></app-header>
     <!-- end: header -->
 
-
-
     <div class="inner-wrapper">
         <!-- start: sidebar -->
         <app-sidebar></app-sidebar>
@@ -13,14 +11,14 @@
         <section role="main" class="content-body p-0">
             <header class="page-header">
                 <form class="form-horizontal" method="get">
-            
+
                     <div class="row px-4" style="padding-top:10px;">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
-                                <input type="text" class="form-control" placeholder="Search">
+                                <input type="text" class="form-control" name="searchValue" [(ngModel)]="orderFiltr.searchValue" placeholder="Search">
                             </div>
                         </div>
-            
+
                         <div class="col-lg-3 col-md-3">
                             <div class="input-daterange input-group" data-plugin-datepicker>
                                 <span class="input-group-prepend">
@@ -28,39 +26,40 @@
                                         <i class="fas fa-calendar-alt"></i>
                                     </span>
                                 </span>
-                                <input type="text" class="form-control" name="start">
+                                <input type="text" class="form-control" name="startDate" [(ngModel)]="orderFiltr.startDate">
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
-                                <input type="text" class="form-control" name="end">
+                                <input type="text" class="form-control" name="endDate" [(ngModel)]="orderFiltr.endDate">
                             </div>
                         </div>
                         <div class="col-md-2  col-lg-2">
                             <div class="btn-group flex-wrap" style="width:100%;">
                                 <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle"
-                                    data-toggle="dropdown">Search by Category<span class="caret"></span></button>
+                                    data-toggle="dropdown"  id="categorySelect">Search by Category<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item text-1" href="#">All</a>
-                                    <a class="dropdown-item text-1" href="#">Company</a>
-                                    <a class="dropdown-item text-1" href="#">Customer</a>
-                                    <a class="dropdown-item text-1" href="#">Driver</a>
-                                    <a class="dropdown-item text-1" href="#">Vehicle</a>
-                                    <a class="dropdown-item text-1" href="#">Trailer</a>
-                                    <a class="dropdown-item text-1" href="#">Vendor</a>
-                                    <a class="dropdown-item text-1" href="#">Broker</a>
-                                    <a class="dropdown-item text-1" href="#">Location</a>
+                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('All')">All</a>
+                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Company')">Company</a>
+                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Customer')">Customer</a>
+                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Driver')">Driver</a>
+                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Vehicle')">Vehicle</a>
+                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Trailer')">Trailer</a>
+                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Vendor')">Vendor</a>
+                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Broker')">Broker</a>
+                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Location')">Location</a>
                                 </div>
                             </div>
                         </div>
-            
+
                         <div class="col-md-1  col-lg-1">
-                            <button type="submit" class="btn btn-sm btn-success">Search</button>
+                            <button type="submit" class="btn btn-sm btn-success" (click)="filterTrips()">Search</button>
                         </div>
                         <div class="col-md-4  col-lg-4 text-right pr-5">
-            
+
                             <div class="btn-group flex-wrap">
-                                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                                    aria-expanded="false">Actions<span class="caret"></span></button>
+                                <button type="button" class="btn btn-success btn-sm dropdown-toggle"
+                                    data-toggle="dropdown" aria-expanded="false">Actions<span
+                                        class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                                     <a class="dropdown-item text-1" href="">Edit</a>
@@ -69,9 +68,10 @@
                                     <a class="dropdown-item text-1" href="">Export</a>
                                 </div>
                             </div>
-                            <a data-toggle="modal" data-target="#addSequenceModal" href="javascript:;" class="btn btn-success btn-sm ml-2 modal-with-form" style="color:white;"><i
+                            <a data-toggle="modal" data-target="#addSequenceModal" href="javascript:;"
+                                class="btn btn-success btn-sm ml-2 modal-with-form" style="color:white;"><i
                                     class="fas fa-plus"></i> Add Order </a>
-            
+
                         </div>
                     </div>
                 </form>
@@ -81,45 +81,48 @@
                     <div class="m-2">
                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="allOrders-tab" data-toggle="tab" href="#allOrders" role="tab"
-                                    aria-controls="allOrders" aria-selected="true">All</a>
+                                <a class="nav-link active navtabs" id="allOrders-tab"
+                                    (click)="fetchTabData('all')">All</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="confirmed-tab" data-toggle="tab" href="#confirmed" role="tab"
-                                    aria-controls="confirmed" aria-selected="false">Confirmed : 5</a>
+                                <a class="nav-link navtabs" id="confirmed-tab"
+                                    (click)="fetchTabData('confirmed')">Confirmed : {{ confirmedOrdersCount }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="dispatched-tab" data-toggle="tab" href="#dispatched" role="tab"
-                                    aria-controls="dispatched" aria-selected="false">Dispatched : 3</a>
+                                <a class="nav-link navtabs" id="dispatched-tab"
+                                    (click)="fetchTabData('dispatched')">Dispatched : {{ dispatchedOrdersCount }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="delivered-tab" data-toggle="tab" href="#delivered" role="tab"
-                                    aria-controls="delivered" aria-selected="false">Delivered : 10</a>
+                                <a class="nav-link navtabs" id="delivered-tab"
+                                    (click)="fetchTabData('delivered')">Delivered : {{ deliveredOrdersCount }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="cancelledDispatch-tab" data-toggle="tab" href="#cancelledDispatch" role="tab"
-                                    aria-controls="cancelledDispatch" aria-selected="false">Cancelled Dispatch :
-                                    5</a>
+                                <a class="nav-link navtabs" id="cancelledDispatch-tab"
+                                    (click)="fetchTabData('cancelled')">Cancelled Dispatch :
+                                    {{ cancelledOrdersCount }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="quoted-tab" data-toggle="tab" href="#quoted" role="tab" aria-controls="quoted"
-                                    aria-selected="false">Quoted : 12</a>
+                                <a class="nav-link navtabs" id="quoted-tab" (click)="fetchTabData('quoted')">Quoted :
+                                    {{ quotedOrdersCount }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="invoiced-tab" data-toggle="tab" href="#invoiced" role="tab"
-                                    aria-controls="invoiced" aria-selected="false">Invoiced : 5</a>
+                                <a class="nav-link navtabs" id="invoiced-tab"
+                                    (click)="fetchTabData('invoiced')">Invoiced : {{ invoicedOrdersCount }}</a>
                             </li>
-                
                             <li class="nav-item">
-                                <a class="nav-link" id="partiallyPaid-tab" data-toggle="tab" href="#partiallyPaid" role="tab"
-                                    aria-controls="partiallyPaid" aria-selected="false">Partially Paid : 13</a>
+                                <a class="nav-link navtabs" id="partiallyPaid-tab"
+                                    (click)="fetchTabData('partiallyPaid')">Partially Paid :
+                                    {{ partiallyPaidOrdersCount }}</a>
                             </li>
                         </ul>
                     </div>
                     <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-                        <div class="tab-pane show active" id="allOrders" role="tabpanel" aria-labelledby="allOrders-tab">
-                
-                            <table class="table table-bordered table-responsive-lg table-striped mb-0">
+                        <div class="tab-pane show active" id="allOrders" role="tabpanel"
+                            aria-labelledby="allOrders-tab">
+
+                            <!-- <table class="table table-bordered table-responsive-lg table-striped mb-0"> -->
+                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                class="row-border hover table table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
                                         <th>Order</th>
@@ -132,1524 +135,66 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody *ngIf="orders.length > 0">
                                     <tr *ngFor="let order of orders;let i = index;">
-                                        <td routerLink="/dispatch/orders/detail/{{order.orderID}}">3455</td>
+                                        <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                            {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
-                
-                                        <td>Date: {{order.shipperInfo[i].locationDateTime}}<br>
+                                        <td>Date: -<br>
+                                            Location: -</td>
+                                        <td>Date:-<br>
+                                            Location: -</td>
+                                        <td>Name: -<br>
+                                            Qty:-<br>
+                                            Rate:-</td>
+                                        <td>T Amt: CAD -<br>
+                                            <!-- <td>Date: {{order.shipperInfo[i].locationDateTime}}<br>
                                             Location: {{order.shipperInfo[i].pickupLocation}}</td>
                                         <td>Date: {{order.receiverInfo[i].locationDateTime}}<br>
                                             Location: {{order.receiverInfo[i].dropOffLocation}}</td>
                                         <td>Name: {{order.freightDetails.commodity}}<br>
                                             Qty: {{order.freightDetails.quantity}} {{order.freightDetails.quantityUnit}} <br>
                                             Rate: {{order.freightDetails.rate}} {{order.freightDetails.rateUnit}}</td>
-                                        <td>T Amt: CAD {{order.freightDetails.amount}}<br>
+                                        <td>T Amt: CAD {{order.freightDetails.amount}}<br> -->
                                             Received: CAD 1200.00<br>
                                             Balance: CAD 300.00</td>
                                         <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
                                         <td>
                                             <div class="dropdown dropright">
-                                               <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                  <i class="fas fa-ellipsis-v"></i>
-                                               </button>
-                                               <div class="dropdown-menu"
+                                                <button class="bg-transparent border-0" type="button"
+                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu"
                                                     attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                     <a class="dropdown-item"
-                                                    routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
+                                                        routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;"
                                                         (click)="deactivateAsset(order.orderID)">Delete</a>
                                                 </div>
-                                             </div>
-                                         </td>
+                                            </div>
+                                        </td>
                                     </tr>
-                
-                                    
-                
                                 </tbody>
-                            </table>
-                        </div>
-                        <!-- dispatched -->
-                        <div class="tab-pane fade" id="dispatched" role="tabpanel" aria-labelledby="dispatched-tab">
-                            <table class="table table-bordered table-responsive-lg table-striped mb-0">
-                                <thead>
+
+                                <tbody *ngIf="orders.length === 0">
                                     <tr>
-                                        <th width="5%"><input type="checkbox"></th>
-                                        <th>Order</th>
-                                        <th>Type</th>
-                                        <th>Trip</th>
-                                        <th>Pickup</th>
-                                        <th>Deliver</th>
-                                        <th>Commodity</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
+                                        <td colspan="8" class="no-data-available">No record(s) found</td>
                                     </tr>
-                                </thead>
                                 <tbody>
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">QUOTED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">INVOICED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">DELIVERED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">CANCEL DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">INVOICED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">QUOTED</span></td>
-                                    </tr>
-                
-                
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="tab-pane fade" id="delivered" role="tabpanel" aria-labelledby="delivered-tab">
-                            <table class="table table-bordered table-responsive-lg table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th width="5%"><input type="checkbox"></th>
-                                        <th>Order</th>
-                                        <th>Type</th>
-                                        <th>Trip</th>
-                                        <th>Pickup</th>
-                                        <th>Deliver</th>
-                                        <th>Commodity</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">QUOTED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">INVOICED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">DELIVERED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">CANCEL DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">INVOICED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">QUOTED</span></td>
-                                    </tr>
-                
-                
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="tab-pane fade" id="cancelledDispatch" role="tabpanel" aria-labelledby="cancelledDispatch-tab">
-                            <table class="table table-bordered table-responsive-lg table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th width="5%"><input type="checkbox"></th>
-                                        <th>Order</th>
-                                        <th>Type</th>
-                                        <th>Trip</th>
-                                        <th>Pickup</th>
-                                        <th>Deliver</th>
-                                        <th>Commodity</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">QUOTED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">INVOICED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">DELIVERED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">CANCEL DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">INVOICED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">QUOTED</span></td>
-                                    </tr>
-                
-                
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="tab-pane fade" id="quoted" role="tabpanel" aria-labelledby="quoted-tab">
-                            <table class="table table-bordered table-responsive-lg table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th width="5%"><input type="checkbox"></th>
-                                        <th>Order</th>
-                                        <th>Type</th>
-                                        <th>Trip</th>
-                                        <th>Pickup</th>
-                                        <th>Deliver</th>
-                                        <th>Commodity</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">QUOTED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">INVOICED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">DELIVERED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">CANCEL DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">INVOICED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">QUOTED</span></td>
-                                    </tr>
-                
-                
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="tab-pane fade" id="invoiced" role="tabpanel" aria-labelledby="invoiced-tab">
-                            <table class="table table-bordered table-responsive-lg table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th width="5%"><input type="checkbox"></th>
-                                        <th>Order</th>
-                                        <th>Type</th>
-                                        <th>Trip</th>
-                                        <th>Pickup</th>
-                                        <th>Deliver</th>
-                                        <th>Commodity</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">QUOTED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">INVOICED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">DELIVERED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">CANCEL DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">INVOICED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">QUOTED</span></td>
-                                    </tr>
-                
-                
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="tab-pane fade" id="partiallyPaid" role="tabpanel" aria-labelledby="partiallyPaid-tab">
-                            <table class="table table-bordered table-responsive-lg table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th width="5%"><input type="checkbox"></th>
-                                        <th>Order</th>
-                                        <th>Type</th>
-                                        <th>Trip</th>
-                                        <th>Pickup</th>
-                                        <th>Deliver</th>
-                                        <th>Commodity</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">QUOTED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">INVOICED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">DELIVERED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">CANCEL DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                
-                                        <td>34523</td>
-                                        <td>LTL</td>
-                                        <td>2239</td>
-                                        <td>Date: 6/02/2020 05:25 AM<br>
-                                            Location: Regina, SK</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Winnipeg, YT</td>
-                                        <td>Name: Cricket Bats<br>
-                                            Qty: 1500 Pieces<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1500.00<br>
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
-                
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>5689</td>
-                                        <td>FTL</td>
-                                        <td>8956</td>
-                                        <td>Date: 13/03/2020 04:20 AM<br>
-                                            Location: Toronto, ON</td>
-                                        <td>Date: 06/10/2020 05:20 PM<br>
-                                            Location: Delta, BC</td>
-                                        <td>Name: Food<br>
-                                            Qty: 1500 Packets<br>
-                                            Rate: 0.5/piece</td>
-                                        <td>T Amt: CAD 1100.00<br>
-                                            Received: CAD 900.00<br>
-                                            Balance: CAD 200.00</td>
-                                        <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
-                                    </tr>
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>98766</td>
-                                        <td>LTL</td>
-                                        <td>7700</td>
-                                        <td>Date: 14/04/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/05/2020 05:00 PM<br>
-                                            Location: Perth, ON</td>
-                                        <td>Name: Beverage<br>
-                                            Qty: 2500 Bottle<br>
-                                            Rate: 1/piece</td>
-                                        <td>T Amt: CAD 2500.00<br>
-                                            Received: CAD 1000.00<br>
-                                            Balance: CAD 1500.00</td>
-                                        <td><span class="badge badge-dark p-1">INVOICED</span></td>
-                                    </tr>
-                
-                
-                                    <tr onclick="window.location='order-detail.php'">
-                                        <td><input type="checkbox"></td>
-                                        <td>225890</td>
-                                        <td>LTL</td>
-                                        <td>3333</td>
-                                        <td>Date: 14/06/2020 04:00 AM<br>
-                                            Location: Calgary, AB</td>
-                                        <td>Date: 20/07/2020 05:00 PM<br>
-                                            Location: Vancouver, BC</td>
-                                        <td>Name: Fruits<br>
-                                            Qty: 750 Bags<br>
-                                            Rate: 20/bag</td>
-                                        <td>T Amt: CAD 3000.00<br>
-                                            Received: CAD 2000.00<br>
-                                            Balance: CAD 1000.00</td>
-                                        <td><span class="badge badge-dark p-1">QUOTED</span></td>
-                                    </tr>
-                
-                
-                                </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-                
-                </section>
+            </section>
         </section>
     </div>
 </section>
 
 <!-- Modal -->
-<div class="modal fade" id="addSequenceModal" tabindex="-1" role="dialog" aria-labelledby="addSequenceModalLabel" aria-hidden="true">
+<div class="modal fade" id="addSequenceModal" tabindex="-1" role="dialog" aria-labelledby="addSequenceModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" style="max-width: 600px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -1661,45 +206,49 @@
             <div class="modal-body">
                 <form>
                     <div class="form-row">
-                          <div class="form-group col-lg-6 col-md-12">
-                                <div class="btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn btn-outline btn-fleet mr-2 active" style="width:125px;" id="stop" onclick="show_manual_sequence()">
+                        <div class="form-group col-lg-6 col-md-12">
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-outline btn-fleet mr-2 active" style="width:125px;" id="stop"
+                                    onclick="show_manual_sequence()">
                                     <input id="multiplePickupRadio" name="routeType" type="radio"> Manual </label>
-                                    <label class="btn btn-outline btn-fleet mr-2 " style="width:125px;" id="yard" onclick="show_automatic_sequence()">
+                                <label class="btn btn-outline btn-fleet mr-2 " style="width:125px;" id="yard"
+                                    onclick="show_automatic_sequence()">
                                     <input id="permanentRouteRadio" name="routeType" type="radio"> Automatic</label>
-                                </div>
-                          </div>
-                       </div>
-                       <div class="form-row">
-                       <div class="form-group col-lg-12 col-md-12" id="manualDiv"
-                            >
-                             <label
-                                class="control-label font-weight-semibold labelmt text-3 text-dark">Document Number</label>                         
-                                <div class="row">
-                                  <div class="col-lg-12"><small>Document number must be entered manually for each new Document.</small></div>
-                                </div>
-                           
-                          </div>
-                          <div class="form-group col-lg-12 col-md-12" id="automaticDiv"
-                             style="display: none;">
-                             <label
-                                class="control-label font-weight-semibold labelmt text-3 text-dark">Document Number</label>
-                                <div class="row">
-                                  <div class="col-lg-5"><input type="text" class="form-control" value="Prefix"></div>
-                                  <div class="col-lg-1">-</div>
-                                  <div class="col-lg-5"> <input type="text" class="form-control" value="Sequence"></div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-lg-12"><small>Prefix can be any combinatiion of alphanumeric characters.</small></div>
-                                  <div class="col-lg-12"><small>Sequence is numeric value and will be increased by 1 for each new "Document".</small></div>
-                                </div>
-                           
-                          </div>
-                       </div>
-                    </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12 col-md-12" id="manualDiv">
+                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Document
+                                Number</label>
+                            <div class="row">
+                                <div class="col-lg-12"><small>Document number must be entered manually for each new
+                                        Document.</small></div>
+                            </div>
+
+                        </div>
+                        <div class="form-group col-lg-12 col-md-12" id="automaticDiv" style="display: none;">
+                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Document
+                                Number</label>
+                            <div class="row">
+                                <div class="col-lg-5"><input type="text" class="form-control" value="Prefix"></div>
+                                <div class="col-lg-1">-</div>
+                                <div class="col-lg-5"> <input type="text" class="form-control" value="Sequence"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12"><small>Prefix can be any combinatiion of alphanumeric
+                                        characters.</small></div>
+                                <div class="col-lg-12"><small>Sequence is numeric value and will be increased by 1 for
+                                        each new "Document".</small></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button data-dismiss="modal" routerLink="/dispatch/orders/add" type="button" class="btn btn-success">Save</button>
+                <button data-dismiss="modal" routerLink="/dispatch/orders/add" type="button"
+                    class="btn btn-success">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
