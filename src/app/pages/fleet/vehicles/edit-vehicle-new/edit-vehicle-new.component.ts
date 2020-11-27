@@ -11,7 +11,7 @@ declare var $: any;
 export class EditVehicleNewComponent implements OnInit {
   title = 'Edit Vehicles';
 
-  activeTab = 'details';
+  activeTab = 1;
   /**
    * Quantum prop
    */
@@ -639,4 +639,16 @@ export class EditVehicleNewComponent implements OnInit {
     this.quantum = newValue;
     this.quantumSelected = newValue;
    }
+
+   next(){
+    this.activeTab++;
+  }
+
+  previous(){
+    this.activeTab--;
+  }
+
+  changeTab(value){
+    this.activeTab = value;
+  }
 }

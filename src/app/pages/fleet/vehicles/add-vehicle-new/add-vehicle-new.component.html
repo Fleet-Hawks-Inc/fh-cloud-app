@@ -21,16 +21,16 @@
 
                <div class="p-2">
                   <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                     <li class="nav-item"> <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="true">Basic Details</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="lifecycle-tab" data-toggle="tab" href="#lifecycle" role="tab" aria-controls="lifecycle" aria-selected="false">Lifecycle</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="specifications-tab" data-toggle="tab" href="#specifications" role="tab" aria-controls="specifications" aria-selected="false">Specifications</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="insurance-tab" data-toggle="tab" href="#insurance" role="tab" aria-controls="insurance" aria-selected="false">Insurance</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="fluids-tab" data-toggle="tab" href="#fluids" role="tab" aria-controls="fluids" aria-selected="false">Fluids</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="wheels-tab" data-toggle="tab" href="#wheels" role="tab" aria-controls="wheels" aria-selected="false">Wheels & Tires</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="engine-tab" data-toggle="tab" href="#engine" role="tab" aria-controls="engine" aria-selected="false">Engine & Transmission</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="purchase-tab" data-toggle="tab" href="#purchase" role="tab" aria-controls="purchase" aria-selected="false">Purchase</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="loan-tab" data-toggle="tab" href="#loan" role="tab" aria-controls="loan" aria-selected="false">Loan</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="vsettings-tab" data-toggle="tab" href="#vsettings" role="tab" aria-controls="vsettings" aria-selected="false">Settings</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(1)" [ngClass]="{'active': activeTab == 1}">Basic Details</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(2)" [ngClass]="{'active': activeTab == 2}" >Lifecycle</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(3)" [ngClass]="{'active': activeTab == 3}" >Specifications</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(4)" [ngClass]="{'active': activeTab == 4}" >Insurance</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(5)"  [ngClass]="{'active': activeTab == 5}">Fluids</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(6)"  [ngClass]="{'active': activeTab == 6}" >Wheels & Tires</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(7)"  [ngClass]="{'active': activeTab == 7}" >Engine & Transmission</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(8)"  [ngClass]="{'active': activeTab == 8}" >Purchase</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(9)" [ngClass]="{'active': activeTab == 9}" >Loan</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(10)" [ngClass]="{'active': activeTab == 10}">Settings</a> </li>
                   </ul>
                </div>
 
@@ -38,7 +38,7 @@
 
              <div class="card-body">
                   <div class="tab-content" id="myTabContent">
-                     <div class="tab-pane show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                     <div class="tab-pane" [ngClass]="{'show active': activeTab == 1}" id="details" role="tabpanel" aria-labelledby="details-tab">
                         <div class="">
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -383,7 +383,7 @@
                         </div>
                      </div>
                      <!-- Lifecycle -->
-                     <div class="tab-pane fade" id="lifecycle" role="tabpanel" aria-labelledby="lifecycle-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 2}" id="lifecycle" role="tabpanel" aria-labelledby="lifecycle-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -455,7 +455,7 @@
                         </div>
                      </div>
                      <!-- specifications -->
-                     <div class="tab-pane fade" id="specifications" role="tabpanel" aria-labelledby="specifications-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 3}" id="specifications" role="tabpanel" aria-labelledby="specifications-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -622,7 +622,7 @@
                         </div>
                      </div>
                      <!-- insurance -->
-                     <div class="tab-pane fade" id="insurance" role="tabpanel" aria-labelledby="insurance-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 4}" id="insurance" role="tabpanel" aria-labelledby="insurance-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -714,7 +714,7 @@
                         </div>
                      </div>
                      <!-- fuel -->
-                     <div class="tab-pane fade" id="fluids" role="tabpanel" aria-labelledby="fluids-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 5}" id="fluids" role="tabpanel" aria-labelledby="fluids-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -781,7 +781,7 @@
                         </div>
                      </div>
                      <!-- wheel -->
-                     <div class="tab-pane fade" id="wheels" role="tabpanel" aria-labelledby="wheels-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 6}" id="wheels" role="tabpanel" aria-labelledby="wheels-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -851,7 +851,7 @@
                         </div>
                      </div>
                      <!-- engine -->
-                     <div class="tab-pane fade" id="engine" role="tabpanel" aria-labelledby="engine-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 7}" id="engine" role="tabpanel" aria-labelledby="engine-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -962,7 +962,7 @@
                         </div>
                      </div>
                      <!-- Purchase -->
-                     <div class="tab-pane fade" id="purchase" role="tabpanel" aria-labelledby="purchase-tab">
+                     <div class="tab-pane fade"  [ngClass]="{'show active': activeTab == 8}" id="purchase" role="tabpanel" aria-labelledby="purchase-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -1028,7 +1028,7 @@
                         </div>
                      </div>
                      <!-- loan -->
-                     <div class="tab-pane fade" id="loan" role="tabpanel" aria-labelledby="loan-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 9}" id="loan" role="tabpanel" aria-labelledby="loan-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -1112,7 +1112,7 @@
                         </div>
                      </div>
                      <!-- setting -->
-                     <div class="tab-pane fade" id="vsettings" role="tabpanel" aria-labelledby="vsettings-tab">
+                     <div [ngClass]="{'show active': activeTab == 10}" class="tab-pane fade" id="vsettings" role="tabpanel" aria-labelledby="vsettings-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-5">
@@ -1215,8 +1215,9 @@
            </form>
             <div class="form-group row">
                   <div class="col-lg-12 pr-5 text-right pb-4">
-                     <button type="button" class="btn btn-default mt-4" onclick="goBack()">Cancel</button>
-                      <a [routerLink]="" (click)="addVehicle()" class="btn btn-success mt-4">Submit</a>
+                     <button *ngIf="activeTab != 1" type="button" (click)="previous()" class="btn btn-default mt-4">Previous</button>
+                     <a *ngIf="activeTab != 10" [routerLink]="" (click)="next()" class="btn btn-success mt-4">Next</a>
+                      <a *ngIf="activeTab == 10" [routerLink]="" (click)="addVehicle()" class="btn btn-success mt-4">Submit</a>
                   </div>
             </div>
             <div class="form-group row">
