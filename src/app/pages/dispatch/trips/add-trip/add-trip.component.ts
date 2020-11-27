@@ -731,6 +731,8 @@ export class AddTripComponent implements OnInit {
     }
 
     async driverChange($event, type, eventType) {
+        console.log('$event')
+        console.log($event)
         if ($event === undefined) {
             if (type === 'driver') {
                 $(".driverClass").removeClass('td_border');
@@ -756,7 +758,7 @@ export class AddTripComponent implements OnInit {
                     this.assetDataDriverUsername = $event.userName;
                 }
                 $(".driverClass").removeClass('td_border');
-                $("#drivr_" + $event.userName).addClass('td_border');
+                $("#drivr_" + $event.driverID).addClass('td_border');
 
                 await this.spinner.hide();
 
@@ -767,7 +769,7 @@ export class AddTripComponent implements OnInit {
                     this.assetDataCoDriverUsername = $event.userName;
                 }
                 $(".codriverClass").removeClass('td_border');
-                $("#codrivr_" + $event.userName).addClass('td_border');
+                $("#codrivr_" + $event.driverID).addClass('td_border');
             }
         }
     }
