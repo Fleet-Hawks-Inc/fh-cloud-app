@@ -162,7 +162,7 @@ export class MapViewComponent implements OnInit {
           this.assetDataDriverUsername = $event.userName;
         }
         $(".driverClass").removeClass('td_border');
-        $("#drivr_" + $event.userName).addClass('td_border');
+        $("#drivr_" + $event.driverID).addClass('td_border');
 
         await this.spinner.hide();
 
@@ -173,7 +173,7 @@ export class MapViewComponent implements OnInit {
           this.assetDataCoDriverUsername = $event.userName;
         }
         $(".codriverClass").removeClass('td_border');
-        $("#codrivr_" + $event.userName).addClass('td_border');
+        $("#codrivr_" + $event.driverID).addClass('td_border');
       }
     }
   }
@@ -283,6 +283,8 @@ export class MapViewComponent implements OnInit {
     this.apiService.getData('trips/' + tripID).
       subscribe((result: any) => {
         result = result.Items[0];
+        delete result.timeCreated;
+        delete result.timeModified;
         this.tripData = result;
 
         if(this.tripData.tripPlanning.length === 0) { 

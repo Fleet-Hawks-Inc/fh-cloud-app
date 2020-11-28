@@ -151,7 +151,7 @@ export class EditEventComponent implements OnInit {
               this.throwErrors();
             },
             error: () => {
-            },
+            }, 
             next: () => {
             },
           });

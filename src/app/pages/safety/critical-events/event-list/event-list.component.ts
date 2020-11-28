@@ -111,6 +111,10 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
         element.criticalityType = 'Harsh Acceleration';
       } else if(element.criticalityType == 'overSpeeding') {
         element.criticalityType = 'Over Speeding';
+      } else if(element.criticalityType == 'overSpeedingStart') {
+        element.criticalityType = 'Over Speeding Start';
+      } else if(element.criticalityType == 'overSpeedingEnd') {
+        element.criticalityType = 'Over Speeding End';
       }
       this.fetchVehicleDetail(element.vehicleID, element);
       this.fetchDriverDetail(element.driverUsername, element);
@@ -161,7 +165,7 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
       error: () => { },
       next: (result: any) => {
         current.rerender();
-        current.initDataTable();
+        // current.initDataTable();
         current.spinner.hide();
         current.toastr.success('Event deleted successfully');
       }
