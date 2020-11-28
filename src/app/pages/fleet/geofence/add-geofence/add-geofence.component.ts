@@ -154,7 +154,7 @@ export class AddGeofenceComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.spinner.show();
-   // console.log(this.geofenceData);
+    console.log(this.geofenceData);
     this.apiService.postData('geofences', this.geofenceData)
       .pipe(tap(v => {
         console.log(v)
@@ -183,7 +183,7 @@ export class AddGeofenceComponent implements OnInit {
         this.hasSuccess = true;
         this.toastr.success('Geofence Added successfully');
         this.spinner.hide();
-        this.router.navigateByUrl('/fleet/geofence/geofence-list');
+        this.router.navigateByUrl('/fleet/geofence/list');
       },
     });
   }

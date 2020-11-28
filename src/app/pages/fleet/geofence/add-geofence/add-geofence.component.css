@@ -17,3 +17,7 @@
     background-color: #363636;
     color: #fff;
 }
+.map-search__results {
+    left: unset;
+    top: unset;
+}
