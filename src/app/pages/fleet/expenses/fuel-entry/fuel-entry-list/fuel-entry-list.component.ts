@@ -86,7 +86,7 @@ export class FuelEntryListComponent implements OnInit {
       next: (result: any) => {
         console.log(result);
         this.fuelList = result.Items;
-        console.log(this.fuelList);
+        console.log('Fuel data',this.fuelList);
       },
     });
 

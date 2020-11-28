@@ -71,7 +71,7 @@
 			 <section class="card">
 				<div class="card-body">
 				   <table
-				  class="table table-bordered table-responsive table-hover table-striped mb-0"  datatable [dtOptions]="dtOptions">
+				  class="table table-bordered table-responsive table-hover table-striped mb-0"  datatable [dtOptions]="dtOptions"  *ngIf="fuelList.length > 0">
 				  <thead>
 					<tr>
 						<th style="min-width: 50px !important;">Date</th>
@@ -172,6 +172,10 @@
 					</tr>
 				  </tbody>
 				</table>
+				<div *ngIf="!fuelList.length > 0" class="alert alert-info m-0 text-center" role="alert">
+					No records found
+					
+				 </div>
 				</div>
 			 </section>
 			

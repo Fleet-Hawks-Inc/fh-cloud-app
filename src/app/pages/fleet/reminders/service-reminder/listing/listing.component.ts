@@ -3,6 +3,7 @@ import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { timer } from 'rxjs';
+import * as moment from 'moment';
 declare var $: any;
 @Component({
   selector: 'app-listing',
@@ -16,18 +17,23 @@ export class ListingComponent implements OnInit {
   reminderIdentification = '';
   reminderID = '';
   task: string;
-  vehicleList: any;
-  groups = [];
+  vehicleList: any = {};
+  groups: any = {};
+  serviceLogs: [];
   allRemindersData = [];
   vehicleIdentification = '';
   unitID = '';
   unitName = '';
   suggestedUnits = [];
+  currentDate = moment();
+  currentOdometer = 12500;
+  
+  newData = [];
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
+    this.fetchServiceLogs();
     this.fetchReminders();
-    this.fetchVehicles();
     this.fetchGroups();
     this.fetchVehicleList();
     $(document).ready(() => {
@@ -37,11 +43,6 @@ export class ListingComponent implements OnInit {
     });
 
   }
-  fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.vehicles = result.Items;
-    });
-  }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
@@ -50,45 +51,53 @@ export class ListingComponent implements OnInit {
   fetchGroups() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groups = result;
-      //   console.log('Groups Data', this.groups);
     });
   }
-
-  getLengthOfArray(arr: any[]) {
-    return arr.length;
+  fetchServiceLogs() {
+    this.apiService.getData('serviceLogs').subscribe((result: any) => {
+      this.serviceLogs = result.Items;
+    });
   }
-  // fetchReminders = () => {
-  //   this.apiService.getData('reminders').subscribe({
-  //     complete: () => {this.initDataTable(); },
-  //     error: () => { },
-  //     next: (result: any) => {
-  //       this.allRemindersData = result.Items;
-  //       for (let i = 0; i < this.allRemindersData.length; i++) {
-  //         if (this.allRemindersData[i].reminderType === 'service') {
-  //           this.remindersData.push(this.allRemindersData[i]);
-  //         }
-  //       }
-  //       console.log('Service Reminder array', this.remindersData);
-  //     },
-  //   });
-  // }
-  fetchReminders() {
-    this.apiService.getData(`reminders?reminderIdentification=${this.unitID}`).subscribe({
-      complete: () => {
-        this.initDataTable();
-      },
-      error: () => { },
-      next: (result: any) => {
-        this.allRemindersData = result.Items;
-        console.log('reminders data', this.allRemindersData);
-        for (let i = 0; i < this.allRemindersData.length; i++) {
-          if (this.allRemindersData[i].reminderType === 'service') {
-            this.remindersData.push(this.allRemindersData[i]);
-          }
+ 
+fetchReminders = async () => {
+  this.apiService.getData(`reminders`).subscribe({
+    complete: () => {this.initDataTable(); },
+    error: () => { },
+    next: (result: any) => {
+      this.allRemindersData = result.Items;
+      for(let j=0; j < this.allRemindersData.length; j++) {
+        if (this.allRemindersData[j].reminderType === 'service') {
+          // USE BELOW LOGIC TO FETCH REMINDERS INSTEAD OF ISSUES
+          const issueId = 'b81aba00-1066-11eb-a5d6-113a0b66f655';
+          const selectedIssues: any = this.serviceLogs.filter( (s: any) =>  s.selectedIssues.some((issue: any) => issue === issueId));
+          console.log('selected issues', selectedIssues);
+          const lastCompleted = selectedIssues[0].completionDate;
+          console.log('last completed', lastCompleted);
+          const serviceOdometer = +selectedIssues[0].odometer;
+          console.log('service odometer', serviceOdometer);
+          let convertedDate = moment(lastCompleted, 'DD/MM/YYYY').add(this.allRemindersData[j].reminderTasks.remindByDays,'days');
+          const remainingDays = convertedDate.diff(this.currentDate, 'days');
+          const remainingMiles = (serviceOdometer + (+this.allRemindersData[j].reminderTasks.odometer)) - this.currentOdometer;
+          console.log('odometer', remainingMiles);
+          const data = {
+            reminderID: this.allRemindersData[j].reminderID,
+            reminderIdentification: this.allRemindersData[j].reminderIdentification,
+            reminderTasks: {
+              task: this.allRemindersData[j].reminderTasks.task,
+              remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
+              remainingDays: remainingDays,
+              odometer: this.allRemindersData[j].reminderTasks.odometer,
+              remainingMiles: remainingMiles
+            },
+            subscribers : this.allRemindersData[j].subscribers,
+            lastCompleted: lastCompleted
+          };
+        this.remindersData.push(data);
         }
-        console.log('Service Reminder array', this.remindersData);
-      },
-    });
+      }
+      console.log('new data', this.remindersData);
+    },
+  });
 }
 setUnit(unitID, unitName) {
   this.unitName = unitName;

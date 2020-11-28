@@ -171,7 +171,7 @@ hideErrors() {
    */
   selectDocuments(event, obj) {
     this.selectedFiles = event.target.files;
-    console.log('selected files', this.selectedFiles[0].name);
+    console.log('selected files', this.selectedFiles);
     if (obj === 'uploadedDocs') {
       for (let i = 0; i <= this.selectedFiles.item.length; i++) {
         const randomFileGenerate = this.selectedFiles[i].name.split('.');
@@ -188,6 +188,7 @@ hideErrors() {
         this.uploadedPhotos.push(fileName);
       }
     }
+    console.log('uploaded photos',this.uploadedPhotos);
   }
   /*
    * Uploading files which selected

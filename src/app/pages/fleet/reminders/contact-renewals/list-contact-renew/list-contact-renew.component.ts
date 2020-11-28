@@ -3,7 +3,7 @@ import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 declare var $: any;
-
+import * as moment from 'moment';
 @Component({
   selector: 'app-list-contact-renew',
   templateUrl: './list-contact-renew.component.html',
@@ -12,16 +12,17 @@ declare var $: any;
 export class ListContactRenewComponent implements OnInit {
   public remindersData = [];
   contacts: [];
-  contactList: any;
+  contactList: any = {};
   allRemindersData = [];
   subcribersArray = [];
-  groups = [];
+  groups: any = {};
   dtOptions: any = {};
+  currentDate = moment();
+  newData = [];
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.fetchRenewals();
-    this.fetchContacts();
     this.fetchGroups();
     this.fetchContactList();
     $(document).ready(() => {
@@ -33,12 +34,6 @@ export class ListContactRenewComponent implements OnInit {
   fetchGroups() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groups = result;
-      //   console.log('Groups Data', this.groups);
-    });
-  }
-  fetchContacts() {
-    this.apiService.getData('contacts').subscribe((result: any) => {
-      this.contacts = result.Items;
     });
   }
   fetchContactList() {
@@ -46,18 +41,33 @@ export class ListContactRenewComponent implements OnInit {
       this.contactList = result;
     });
   }
-  fetchRenewals = () => {
-    this.apiService.getData('reminders').subscribe({
-      complete: () => { this.initDataTable(); },
+  fetchRenewals = async () => {
+    this.apiService.getData(`reminders`).subscribe({
+      complete: () => {this.initDataTable(); },
       error: () => { },
       next: (result: any) => {
         this.allRemindersData = result.Items;
-        for (let i = 0; i < this.allRemindersData.length; i++) {
-          if (this.allRemindersData[i].reminderType === 'contact') {
-            this.remindersData.push(this.allRemindersData[i]);
+        for(let j=0; j < this.allRemindersData.length; j++) {
+          if (this.allRemindersData[j].reminderType === 'contact') {
+            const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate,'DD-MM-YYYY');
+            const remainingDays = convertedDate.diff(this.currentDate, 'days');
+            console.log('remaining days', remainingDays);
+            const data = {
+              reminderID: this.allRemindersData[j].reminderID,
+              reminderIdentification: this.allRemindersData[j].reminderIdentification,
+              reminderTasks: {
+                task: this.allRemindersData[j].reminderTasks.task,
+                remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
+                remainingDays: remainingDays,
+                dueDate: this.allRemindersData[j].reminderTasks.dueDate,
+              },
+              subscribers : this.allRemindersData[j].subscribers,
+             };
+             this.remindersData.push(data); 
           }
+        
         }
-        console.log('Contact renewal array', this.remindersData);
+        console.log('new data', this.remindersData);
       },
     });
   }

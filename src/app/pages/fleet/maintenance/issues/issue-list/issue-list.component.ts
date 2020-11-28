@@ -15,12 +15,9 @@ declare var $: any;
 export class IssueListComponent implements OnInit {
   title = 'Issues List';
   issues: [];
-  vehicles: [];
-  assets: [];
-  contacts: [];
-  contactList: any;
-  vehicleList: any;
-  assetList: any;
+  contactList: any = {};
+  vehicleList: any = {};
+  assetList: any = {};
   vehicleName: string;
   contactName: string;
   dtOptions: any = {};
@@ -34,10 +31,7 @@ export class IssueListComponent implements OnInit {
 
 
   ngOnInit() {
-    this.fetchAllIssues();
     this.fetchIssues();
-    this.fetchVehicles();
-    this.fetchAssets();
     this.fetchVehicleList();
     this.fetchContactList();
     this.fetchAssetList();
@@ -88,13 +82,7 @@ export class IssueListComponent implements OnInit {
       if(this.suggestedUnits.length == 0){
         this.unitID = '';
       }
-  }
-
-  fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.vehicles = result.Items;
-    });
-  }
+  } 
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
@@ -111,12 +99,7 @@ export class IssueListComponent implements OnInit {
       this.assetList = result;
     });
   }
-  fetchAssets() {
-    this.apiService.getData('assets').subscribe((result: any) => {
-      this.assets = result.Items;
-      // this.assetName =  this.assets[0].assetIdentification;
-    });
-  }
+ 
   fetchIssues() {
       this.apiService.getData(`issues?unitID=${this.unitID}&issueName=${this.issueName}`).subscribe({
         complete: () => {
@@ -125,28 +108,15 @@ export class IssueListComponent implements OnInit {
         error: () => { },
         next: (result: any) => {
           this.issues = result.Items;
-        //  console.log('Array', this.issues);
         },
       });
-  }
-  fetchAllIssues() {
-    this.apiService.getData(`issues/`).subscribe({
-      complete: () => {
-        this.initDataTable();
-      },
-      error: () => { },
-      next: (result: any) => {
-        this.issues = result.Items;
-      // console.log('all issues Array', this.issues);
-      },
-    });
   }
   deleteIssue(issueID) {
     this.apiService
       .deleteData('issues/' + issueID)
       .subscribe((result: any) => {
         this.toastr.success('Issue Deleted Successfully!');
-        this. fetchAllIssues();
+        this. fetchIssues();
       });
   }
   initDataTable() {

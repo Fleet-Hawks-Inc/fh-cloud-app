@@ -74,7 +74,7 @@
           <section class="card">
             <div class="card-body">
               <table class="table table-responsive-lg table-bordered table-striped mb-0" datatable
-                [dtOptions]="dtOptions">
+                [dtOptions]="dtOptions"  *ngIf="issues.length > 0" >
                 <thead>
                   <tr>
                     <th>Unit Type</th>
@@ -145,6 +145,10 @@
                   </tr>
                 </tbody>
               </table>
+              <div *ngIf="!issues.length > 0" class="alert alert-info m-0 text-center" role="alert">
+                No records found
+                
+               </div>
             </div>
           </section>
         </div>

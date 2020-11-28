@@ -61,19 +61,16 @@
                                        <tr>
                                           <td width="40%" class="back-color-gray font-weight-bold">
                                              {{unitType | titlecase}}</td>
-                                          <!-- <td  width="60%"><a routerLink="/fleet/vehicles/Vehicle-List" class="text-info">{{unitName}}</a></td> -->
-                                          <td width="60%"><span *ngIf= "unitType === 'asset'">{{assetList[unitID]}}</span>
-                                             <span *ngIf= "unitType === 'vehicle'">{{vehicleList[unitID]}}</span>
+                                          <td width="60%"><a routerLink="/fleet/assets/detail/{{unitID}}"  class="text-info">
+                                             <span *ngIf= "unitType === 'asset'">{{assetList[unitID]}}</span></a>
+                                             <a routerLink="/fleet/vehicles/detail/{{unitID}}" class="text-info">
+                                                 <span *ngIf= "unitType === 'vehicle'">{{vehicleList[unitID]}}</span></a>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td class="back-color-gray font-weight-bold">Reported Date</td>
                                           <td>{{reportedDate}}</td>
                                        </tr>
-                                       <!-- <tr>
-                                             <td class="back-color-gray font-weight-bold">Source</td>
-                                             <td></td>
-                                          </tr> -->
                                        <tr>
                                           <td class="back-color-gray font-weight-bold">Odometer</td>
                                           <td>{{odometer}}</td>
@@ -86,29 +83,8 @@
                                  </table>
                               </div>
                            </div>
-                           <!-- OVER DUE SETTINGS TABLE -->
-                           <!-- <div class="row">
-                              <div class="col-lg-12"><label class="control-label font-weight-bold text-3">Overdue
-                                    Settings</label></div>
-                           </div>
-                           <div class="row">
-                              <div class="col-lg-12">
-                                 <table class="table table-bordered table-responsive-lg">
-                                    <tbody>
-                                       <tr>
-                                          <td width="40%" class="back-color-gray font-weight-bold">Due Date</td>
-                                          <td width="60%"><span class="text-danger">Jun 15, 2020</span></td>
-                                       </tr>
-                                       <tr>
-                                          <td class="back-color-gray font-weight-bold">Odometer</td>
-                                          <td>56,398 mi</td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div> -->
-                           <!-- CUSTOM FIELDS TABLE -->
-                           <div class="row">
+                           <!-- Docs TABLE -->
+                            <div class="row" *ngIf="issueDocs?.length">
                               <div class="col-lg-12">
                                  <div class="vehicle-common-box p-3">
                                     <div class="row">
@@ -118,8 +94,8 @@
                                        </div>
                                     </div>
                                     <hr class="solid mt-2">
-                                    <div class="row">
-                                       <div class="col-lg-9">Name of the Document</div>
+                                    <div class="row" *ngFor="let doc of issueDocs;let d= index">
+                                       <div class="col-lg-9">Document {{d+1}}</div>
                                        <div class="col-lg-3 text-right">
                                           <a href="#deleteModal" class="modal-with-form"><i
                                                 class="fas fa-times text-danger"></i></a>
@@ -127,7 +103,7 @@
                                     </div>
                                  </div>
                               </div>
-                           </div>
+                           </div> 
                         </div>
                         <div class="col-lg-6">
                            <div class="row">
@@ -141,7 +117,7 @@
                                     <div class="row">
                                        <div class="col-lg-9"><i class="fas fa-exclamation-circle"></i> Issue Created
                                           <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-size-12">By:
-                                             <!-- {{contactList[reportedBy]}} -->
+                                             {{contactList[reportedBy]}}
                                           </span></div>
                                        <div class="col-lg-3 text-right">
                                           {{reportedDate}}
@@ -162,15 +138,16 @@
                                     </div>
                                     <hr class="solid mt-3">
                                     <div class="row">
-                                       <div class="col-lg-6" *ngFor="let photo of issueImages;">
+                                       <div class="col-lg-6" *ngFor="let photo of issueImages;let i= index">
                                           <div class="vehicle-photo-box">
                                              <img [src]="photo" width="100%" class="img-fluid"
                                                 style="height: 180px; object-fit: cover;">
                                              <hr class="m-3">
                                              <div class="row">
-                                                <div class="col-lg-8">Name of the Image</div>
+                                                <div class="col-lg-8">Image {{i+1}}</div>
                                                 <div class="col-lg-4 text-right">
-                                                   <div class="btn-group flex-wrap mx-2">
+                                                   <i class="fas fa-times text-danger" (click)="deleteImage(i)"></i>
+                                                   <!-- <div class="btn-group flex-wrap mx-2">
                                                       <button type="button"
                                                          class="btn btn-default btn-xs dropdown-toggle"
                                                          data-toggle="dropdown" aria-expanded="false"><span
@@ -183,7 +160,7 @@
                                                          <a class="modal-with-form dropdown-item text-1"
                                                             href="#deleteModal">Delete</a>
                                                       </div>
-                                                   </div>
+                                                   </div> -->
                                                 </div>
                                              </div>
                                           </div>

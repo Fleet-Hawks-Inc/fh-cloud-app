@@ -28,12 +28,14 @@ export class IssueDetailComponent implements OnInit {
   vehicles = [];
   assets = [];
   contacts = [];
-  vehicleList: any;
-  contactList: any;
-  assetList: any;
+  vehicleList: any = {};
+  contactList: any = {};
+  assetList: any = {};
   uploadedPhotos = [];
+  uploadedDocs = [];
   docs: SafeResourceUrl;
   public issueImages = [];
+  public issueDocs = [];
   constructor(private apiService: ApiService,
               private router: Router,
               private route: ActivatedRoute,
@@ -56,13 +58,11 @@ export class IssueDetailComponent implements OnInit {
   fetchContactList() {
     this.apiService.getData('contacts/get/list').subscribe((result: any) => {
       this.contactList = result;
-      console.log('contact list', this.contactList);
     });
   }
   fetchAssetList() {
     this.apiService.getData('assets/get/list').subscribe((result: any) => {
       this.assetList = result;
-      console.log('asset list', this.assetList);
     });
   }
   editIssue = () => {
@@ -86,19 +86,37 @@ export class IssueDetailComponent implements OnInit {
       this.reportedBy = result.reportedBy;
       this.assignedTo = result.assignedTo;
       this.uploadedPhotos = result.uploadedPhotos;
-      this.getImages();
+      this.uploadedDocs = result.uploadedDocs;
+      setTimeout(() => {
+        this.getImages();
+        this.getDocuments();
+       }, 1500);
     });
   }
   getImages = async () => {
     this.carrierID = await this.apiService.getCarrierID();
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      // this.docs = this.domSanitizer.bypassSecurityTrustResourceUrl(
-      //await this.awsUS.getFiles(this.carrierID, this.assetData[0].uploadedDocs[i]));
-      // this.assetsDocs.push(this.docs)
       this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles
       (this.carrierID, this.uploadedPhotos[i]));
       this.issueImages.push(this.image);
     }
+    console.log('fetched images', this.issueImages);
+  }
+  deleteImage(i: number) {
+    console.log('i', i);
+    this.uploadedPhotos.splice(i, 1);
+    this.apiService.getData('issues/updatePhotos/' + this.issueID + '/' + this.uploadedPhotos).subscribe((result: any) => {
+      this.toastr.success('Image Deleted Successfully!');
+    });
+  }
+  getDocuments = async () => {
+    this.carrierID = await this.apiService.getCarrierID();
+    for (let i = 0; i < this.uploadedDocs.length; i++) {
+      this.docs = this.domSanitizer.bypassSecurityTrustResourceUrl(
+              await this.awsUS.getFiles(this.carrierID, this.uploadedDocs[i]));
+      this.issueDocs.push(this.docs);
+    }
+    console.log('docs', this.issueDocs);
   }
   deleteIssue(issueID) {
     this.apiService
@@ -112,6 +130,7 @@ export class IssueDetailComponent implements OnInit {
     const issueStatus = 'CLOSE';
     this.apiService.getData('issues/setStatus/' + issueID + '/' + issueStatus).subscribe((result: any) => {
       this.toastr.success('Issue Status Updated Successfully!');
+      this.currentStatus = 'CLOSE';
     });
   }
   resolveIssue() {
