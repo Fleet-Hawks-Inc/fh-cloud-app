@@ -153,11 +153,34 @@ export class VehicleDetailComponent implements OnInit {
     measurmentUnit: '',
   };
 
+
+  issues = [];
+  reminders = [];
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.vehicleID = this.route.snapshot.params['vehicleID'];
     this.getVehicle();
+    this.fetchIssues();
+    this.fetchReminders();
+  }
+
+  closeIssue(issueID){
+    this.apiService.getData(`issues/setStatus/${issueID}/CLOSE`).subscribe((result) => {
+      this.fetchIssues();
+    })
+  }
+
+  fetchReminders(){
+    this.apiService.getData(`reminders/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.reminders = result.Items;
+    })
+  }
+
+  fetchIssues(){
+    this.apiService.getData(`issues/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.issues = result.Items;
+    })
   }
 
   getVehicle() {
