@@ -468,110 +468,61 @@
                                   >
                                 </div>
                               </div>
-                              <hr class="solid m-0 p-0" />
-                              <div class="row m-0">
-                                <div
-                                  class="col-lg-6 p-2 text-gray"
-                                  style="font-size: 11px"
-                                >
-                                  <a href="#"
-                                    ><span
-                                      class="text-5 font-weight-bold text-danger"
-                                      >Brake light</span
-                                    ></a
-                                  ><br />Reported 3days ago by Mr.Singh<br />Passenger
-                                  Side brake light is out
-                                </div>
-                                <div class="col-lg-6 p-2 text-right">
-                                  <div class="btn-group flex-wrap">
-                                    <button
-                                      type="button"
-                                      class="mb-1 btn btn-default btn-sm dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Resolve Via Service Entry</a
+                              <ng-container *ngFor="let issue of issues">
+                                <hr class="solid m-0 p-0" />
+                                <div class="row m-0">
+                                  <div
+                                    class="col-lg-6 p-2 text-gray"
+                                    style="font-size: 11px"
+                                  >
+                                    <a href="#"
+                                      ><span
+                                        class="text-5 font-weight-bold text-danger"
+                                        >{{issue.issueName}}</span
+                                      ></a
+                                    ><br />Reported 3days ago by Mr.Singh<br />Passenger
+                                    Side brake light is out
+                                  </div>
+                                  <div class="col-lg-6 p-2 text-right">
+                                    <div class="btn-group flex-wrap">
+                                      <button
+                                        type="button"
+                                        class="mb-1 btn btn-default btn-sm dropdown-toggle"
+                                        data-toggle="dropdown"
+                                        aria-expanded="false"
                                       >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Close Issue</a
+                                        <span class="caret"></span>
+                                      </button>
+                                      <div
+                                        class="dropdown-menu"
+                                        role="menu"
+                                        x-placement="bottom-start"
+                                        style="
+                                          position: absolute;
+                                          will-change: transform;
+                                          top: 0px;
+                                          left: 0px;
+                                          transform: translate3d(0px, 38px, 0px);
+                                        "
                                       >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
+                                        <a class="dropdown-item text-1" href=""
+                                          >Resolve Via Service Entry</a
+                                        >
+                                        <a class="dropdown-item text-1" href=""
+                                          >Close Issue</a
+                                        >
+                                        <a class="dropdown-item text-1" href=""
+                                          >Edit</a
+                                        >
+                                        <a class="dropdown-item text-1" href=""
+                                          >Delete</a
+                                        >
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                              <hr class="solid m-0 p-0" />
-                              <div class="row m-0">
-                                <div
-                                  class="col-lg-6 p-2 text-gray"
-                                  style="font-size: 11px"
-                                >
-                                  <a href="#"
-                                    ><span
-                                      class="text-5 font-weight-bold text-danger"
-                                      >Brake light</span
-                                    ></a
-                                  ><br />Reported 3days ago by Mr.Singh<br />Passenger
-                                  Side brake light is out
-                                </div>
-                                <div class="col-lg-6 p-2 text-right">
-                                  <div class="btn-group flex-wrap">
-                                    <button
-                                      type="button"
-                                      class="mb-1 btn btn-default btn-sm dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Resolve Via Service Entry</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Close Issue</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                              </ng-container>
+                            
                             </div>
                           </div>
                           <div class="col-lg-6">

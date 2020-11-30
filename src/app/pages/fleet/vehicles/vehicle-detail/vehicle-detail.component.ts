@@ -153,11 +153,21 @@ export class VehicleDetailComponent implements OnInit {
     measurmentUnit: '',
   };
 
+
+  issues = [];
+
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.vehicleID = this.route.snapshot.params['vehicleID'];
     this.getVehicle();
+    this.fetchIssues();
+  }
+
+  fetchIssues(){
+    this.apiService.getData(`issues/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.issues = result.Items;
+    })
   }
 
   getVehicle() {
