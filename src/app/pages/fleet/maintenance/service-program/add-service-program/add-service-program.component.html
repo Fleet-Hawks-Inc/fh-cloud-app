@@ -17,7 +17,7 @@
 
                </div>
                <div class="col-md-8  col-lg-8 text-right">
-                  <a href="service-programs1.php" class="btn btn-default btn-sm mx-2" style="color:black;"><i
+                  <a routerLink="/fleet/maintenance/service-program/list" class="btn btn-default btn-sm mx-2" style="color:black;"><i
                         class="fas fa-list"></i> Service Programs List</a>
 
 
@@ -293,6 +293,7 @@
                                              name="task.repeatByOdometer{{i}}" type="text" class="form-control">
                                           </div>
                                           <div class="col-lg-2 pt-4">
+                                             <button *ngIf="i == 0"(click)="addDocument()" class="btn btn-success add-more">Add More</button>
                                              <button *ngIf="i != 0" class="btn btn-success" (click)="removeTasks(i)"><i class="fas fa-minus"></i></button>
                                           </div>
                                        </div>
@@ -306,11 +307,7 @@
                                  </div>
                               </div>
                            </div>
-                           <div class="row pt-2">
-                              <div class="col-lg-10">
-                                 <button (click)="addDocument()" class="btn btn-success add-more">Add More</button>
-                              </div>
-                           </div>
+                           
                         </div>
                      </div>
                      <div class="form-group row">
