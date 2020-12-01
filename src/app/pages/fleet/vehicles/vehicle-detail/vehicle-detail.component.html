@@ -674,7 +674,7 @@
                                   ><span class="text-5 font-weight-bold text-dark"
                                     >{{reminder.reminderTasks.task}}</span
                                   ></a
-                                ><br />Due:11 jan 1991
+                                ><br />Due:{{reminder.reminderTasks.dueDate}}
                               </div>
                               <div class="col-lg-6 p-2 text-right">
                                 <div class="btn-group flex-wrap">
@@ -962,7 +962,7 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
+                              <tr *ngFor="let inspection of inspectionForms">
                                 <td>Driver Vehicle Inspection Report</td>
                                 <td>
                                   off <br />
@@ -1401,51 +1401,7 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td>Mar 15, 2020</td>
-                                <td>23,8567 mi</td>
-                                <td>267 mi</td>
-                                <td>23.7</td>
-                                <td>
-                                  235 USD (<span class="font-size-12"
-                                    >2.3/gallon</span
-                                  >)
-                                </td>
-                                <td>23,85</td>
-                                <td>2.09 USD</td>
-                                <td>
-                                  <div class="btn-group flex-wrap mx-2">
-                                    <button
-                                      type="button"
-                                      class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
+                              <tr *ngFor="let fuel of fuelEntries">
                                 <td>Mar 15, 2020</td>
                                 <td>23,8567 mi</td>
                                 <td>267 mi</td>
