@@ -156,6 +156,8 @@ export class VehicleDetailComponent implements OnInit {
 
   issues = [];
   reminders = [];
+  inspectionForms = [];
+  fuelEntries = [];
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -163,6 +165,21 @@ export class VehicleDetailComponent implements OnInit {
     this.getVehicle();
     this.fetchIssues();
     this.fetchReminders();
+    this.fetchInspectionForms();
+    this.fetchFuel();
+  }
+
+  fetchInspectionForms(){
+    this.apiService.getData(`inspectionForms/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.inspectionForms = result.Items;
+    })
+  }
+
+  
+  fetchFuel(){
+    this.apiService.getData(`fuelEntries/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.fuelEntries = result.Items;
+    })
   }
 
   closeIssue(issueID){
