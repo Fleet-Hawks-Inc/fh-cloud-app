@@ -18,6 +18,7 @@ export class ServiceListComponent implements OnInit {
   vehicleID = '';
   currentStatus = '';
   vehicleIdentification = '';
+  vehiclesObject: any = {};
 
   constructor(
       private apiService: ApiService,
@@ -27,6 +28,7 @@ export class ServiceListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchLogs();
+    this.fetchAllVehiclesIDs();
   }
 
   getSuggestions(value) {
@@ -45,6 +47,13 @@ export class ServiceListComponent implements OnInit {
     this.vehicleID = vehicleID;
 
     this.suggestedVehicles = [];
+  }
+
+  fetchAllVehiclesIDs() {
+    this.apiService.getData('vehicles/get/list')
+      .subscribe((result: any) => {
+        this.vehiclesObject = result;
+      });
   }
 
 

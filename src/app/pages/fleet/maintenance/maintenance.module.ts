@@ -66,19 +66,19 @@ const routes: Routes = [
     path: 'service-program',
     children: [
       {
-        path: 'Add-Service-Program',
+        path: 'add',
         component: AddServiceProgramComponent,
       },
       {
-        path: 'service-program-list',
+        path: 'list',
         component: ServiceProgramListComponent,
       },
       {
-        path: 'edit-service-program/:programID',
+        path: 'edit/:programID',
         component: AddServiceProgramComponent,
       },
       {
-        path: 'service-program-detail/:programID',
+        path: 'detail/:programID',
         component: ServiceProgramDetailComponent,
       },
     ],

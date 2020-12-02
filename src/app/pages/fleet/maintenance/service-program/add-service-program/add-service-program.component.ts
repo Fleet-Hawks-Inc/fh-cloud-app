@@ -120,7 +120,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
           this.hasSuccess = true;
           // this.Success = 'Service Program Added successfully';
           this.toastr.success('Service added successfully');
-          this.router.navigateByUrl('/fleet/maintenance/service-program/service-program-list');
+          this.router.navigateByUrl('/fleet/maintenance/service-program/list');
 
         }
       });
@@ -198,7 +198,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       this.response = res;
       this.hasSuccess = true;
       this.toastr.success('Service Updated Successfully');
-      this.router.navigateByUrl('/fleet/maintenance/service-program/service-program-list');
+      this.router.navigateByUrl('/fleet/maintenance/service-program/list');
     },
   });
 }
