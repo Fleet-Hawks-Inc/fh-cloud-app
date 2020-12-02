@@ -51,5 +51,6 @@ export * from './reminders/vehicle-renewals/vehicle-renew-detail/vehicle-renew-d
 export * from './inventory/add-inventory/add-inventory.component';
 export * from './inventory/inventory-list/inventory-list.component';
 export * from './inventory/edit-inventory/edit-inventory.component';
+export * from './inventory/inventory-detail/inventory-detail.component';
 
 

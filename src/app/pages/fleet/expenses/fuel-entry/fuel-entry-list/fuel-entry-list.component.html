@@ -9,15 +9,15 @@
 	  <!-- end: sidebar -->
   
 	  <section role="main" class="content-body pl-0">
-		<header class="page-header pl-3">
+		<header class="page-header">
 		  <form class="form-horizontal" method="get" name="form" id="form_">
-			 <div class="row px-4" style="padding-top:10px;">
-				<div class="col-md-2 col-lg-2">
+			 <div class="row pr-4 pl-2" style="padding-top:10px;">
+				<div class="col-md-2 col-lg-2 pr-0">
 				   <div class="input-group input-group-md mb-3">
 					<input class="form-control" name="amount" [(ngModel)]="amount" >
 				   </div>
 				</div>
-				<div class="col-lg-2 col-md-2">              
+				<div class="col-lg-2 col-md-2 pl-2 pr-0">              
 				  <div class="form-group">
 					<div class="input-group">
 					   <span class="input-group-prepend positionsta">
@@ -30,11 +30,10 @@
 						 placeholder="Enter Start Date"
 						 name="fromDate" [(ngModel)]="fromDate" ngbDatepicker #from="ngbDatepicker"
 					   />
-					 </div>
-				   
+					 </div>				   
 				  </div> 
 				 </div>
-				 <div class="col-lg-2 col-md-2">
+				 <div class="col-lg-2 col-md-2 pr-0 pl-2">
 					<div class="form-group">
 					   <div class="input-group">
 						  <span class="input-group-prepend positionsta">
@@ -47,16 +46,13 @@
 							placeholder="Enter End Date"
 							name="toDate" [(ngModel)]="toDate" ngbDatepicker #to="ngbDatepicker"
 						  />
-						</div>
-					  
-					 </div>
-				  
-				  
+						</div>					  
+					 </div>					  
 				</div>
-				<div class="col-md-1  col-lg-1">
+				<div class="col-md-1  col-lg-1 pl-2">
 				   <button type="submit" (click)="fuelEntries()" class="btn btn-sm btn-success">Search</button>
 				</div>
-				<div class="col-md-5  col-lg-5 text-right pr-5">
+				<div class="col-md-5  col-lg-5 text-right pr-5 page-buttons">
 				   <div class="btn-group flex-wrap">
 					  <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
 					  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -75,14 +71,10 @@
 			 <section class="card">
 				<div class="card-body">
 				   <table
-				  class="table table-bordered table-responsive table-hover table-striped mb-0"
-				  #FhDataTable
-				  id="datatable-default"
-				>
+				  class="table table-bordered table-responsive table-hover table-striped mb-0"  datatable [dtOptions]="dtOptions"  *ngIf="fuelList.length > 0">
 				  <thead>
 					<tr>
-						<!-- <th><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
-						<th>Date</th>
+						<th style="min-width: 50px !important;">Date</th>
 						<th>Time</th>
 						<th>Card Number</th>
 						<th>Driver ID</th>
@@ -109,13 +101,13 @@
 						<th>Add_CUR</th>
 						<th>Cash Adv</th>
 						<th>Tax</th>
-						<th>Amount</th>
+						<!-- <th>Amount</th>
 						<th>RFuel_UOM</th>
 						<th>RFuel_CUR</th>
 						<th>Oil_CUR</th>
 						<th>Add_CUR</th>
 						<th>Cash Adv</th>
-						<th>Tax</th>
+						<th>Tax</th> -->
 						<th>Amount Billed</th>
 						<th>Svc Bill</th>
 						<th>Chain</th>
@@ -127,19 +119,20 @@
 					</tr>
 				  </thead>
 				  <tbody>
-					<tr *ngFor="let fuelEntry of fuelList">
-						<!-- <td><input type="checkbox" [checked]="isChecked" [(ngModel)]="fuelEntry.checked"  (ngModelChange)="checkboxCount(fuelList)" value="{{ fuelEntry.entryID }}"></td> -->
-					 
-					    <td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.date }}</td>
+					<tr *ngFor="let fuelEntry of fuelList">					 
+					    <td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.fuelDate }}</td>
 						<td>Time</td>
 						<td >Card Number</td>
 						<td>Driver ID</td>
 						<td>Driver Name</td>
-						<td>Unit#</td>
+						<td>
+							<span *ngIf = "fuelEntry.unitType === 'vehicle'">{{vehicleList[fuelEntry.unitID]}}</span>
+							<span *ngIf = "fuelEntry.unitType === 'reefer'">{{assetList[fuelEntry.unitID]}}</span>
+						</td>
 						<td>Sub-Fleet</td>
 						<td>Hub Miles</td>
 						<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.additionalDetails.odometer }}</td>
-						<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.tripID}}</td>
+						<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ tripList[fuelEntry.tripID]}}</td>
 						<td>Invoice</td>
 						<td>T/S Code</td>
 						<td>In Dir</td>
@@ -158,13 +151,13 @@
 						<td>Cash Adv</td>
 						<td>Tax</td>
 						<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.amountPaid}}</td>
-						<td>RFuel_UOM</td>
+						<!-- <td>RFuel_UOM</td>
 						<td>RFuel_CUR</td>
 						<td>Oil_CUR</td>
 						<td>Add_CUR</td>
 						<td>Cash Adv</td>
 						<td>Tax</td>
-						<td>Amount Billed</td>
+						<td>Amount Billed</td> -->
 						<td>Svc Bill</td>
 						<td>Chain</td>
 						<td>Ambest</td>
@@ -179,6 +172,10 @@
 					</tr>
 				  </tbody>
 				</table>
+				<div *ngIf="!fuelList.length > 0" class="alert alert-info m-0 text-center" role="alert">
+					No records found
+					
+				 </div>
 				</div>
 			 </section>
 			

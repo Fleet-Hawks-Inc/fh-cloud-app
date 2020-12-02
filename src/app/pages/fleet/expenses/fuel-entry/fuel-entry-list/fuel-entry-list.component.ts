@@ -24,6 +24,9 @@ export class FuelEntryListComponent implements OnInit {
   toDate: any = '';
   entryId = '';
   vehicles = [];
+  vehicleList: any;
+  tripList: any;
+  assetList: any;
   countries = [];
   checked = false;
   isChecked = false;
@@ -34,7 +37,7 @@ export class FuelEntryListComponent implements OnInit {
   formattedFromDate: any = '';
   formattedToDate: any = '';
   fuelList;
-
+  dtOptions: any = {};
 
   amount = '';
 
@@ -47,16 +50,33 @@ export class FuelEntryListComponent implements OnInit {
   }
   ngOnInit() {
     this.fuelEntries();
-    // this.fetchVehicles();
+    this.fetchVehicleList();
+    this.fetchAssetList();
     this.fetchCountries();
+    this.fetchTripList();
+    $(document).ready(() => {
+      setTimeout(() => {
+        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      }, 1800);
+    });
   }
 
-  // fetchVehicle(ID) {
-  //   this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
-  //     this.vehicles = result.Items;
-  //     return this.vehicles[0].vehicleName;
-  //   });
-  // }
+  fetchVehicleList() {
+    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+      this.vehicleList = result;
+    });
+  }
+  fetchAssetList() {
+    this.apiService.getData('assets/get/list').subscribe((result: any) => {
+      this.assetList = result;
+      console.log('asset list', this.assetList);
+    });
+  }
+  fetchTripList() {
+    this.apiService.getData('trips/get/list').subscribe((result: any) => {
+      this.tripList = result;
+    });
+  }
   fuelEntries() {
     this.apiService.getData(`fuelEntries?amount=${this.amount}&from=${this.fromDate}&to=${this.toDate}`).subscribe({
       complete: () => {
@@ -66,7 +86,7 @@ export class FuelEntryListComponent implements OnInit {
       next: (result: any) => {
         console.log(result);
         this.fuelList = result.Items;
-        console.log(this.fuelList);
+        console.log('Fuel data',this.fuelList);
       },
     });
 
@@ -91,27 +111,49 @@ export class FuelEntryListComponent implements OnInit {
     console.log(this.formattedToDate);
     return;
   }
- 
-
   deleteFuelEntry(entryID) {
-    /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable('#datatable-default')) {
-      $('#datatable-default').DataTable().clear().destroy();
-    }
-    /******************************/
     this.apiService
       .deleteData('fuelEntries/' + entryID)
       .subscribe((result: any) => {
      //   this.spinner.show();
         this.fuelEntries();
-        this.toastr.success('Fuel Entry Deleted Successfully!');        
+        this.toastr.success('Fuel Entry Deleted Successfully!');
       });
   }
 
   initDataTable() {
-    timer(200).subscribe(() => {
-      $('#datatable-default').DataTable();
-    });
+    this.dtOptions = {
+      dom: 'lrtip', // lrtip to hide search field
+      processing: true,
+      columnDefs: [
+          {
+              targets: 0,
+              className: 'noVis'
+          },
+          {
+              targets: 1,
+              className: 'noVis'
+          },
+          {
+              targets: 2,
+              className: 'noVis'
+          },
+          {
+              targets: 3,
+              className: 'noVis'
+          },
+          {
+              targets: 4,
+              className: 'noVis'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      buttons: [
+        'colvis',
+      ],
+    };
   }
 
 

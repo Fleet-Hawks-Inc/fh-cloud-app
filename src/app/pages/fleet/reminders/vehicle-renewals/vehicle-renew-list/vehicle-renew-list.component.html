@@ -10,41 +10,53 @@
 
         <section role="main" class="content-body pl-0 pt-0">
             <header class="page-header">
-                <div class="row pr-5" style="padding-top:10px;">
-                    <div class="col-md-2 col-lg-2">
-                        <div class="btn-group flex-wrap" style="width:240px;">
-                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false">Search Reminders<span class="caret"></span></button>
-                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a class="dropdown-item text-1" href="">All Reminders</a>
+                <div class="row pr-5 pl-1" style="padding-top:10px;">
+                    <div class="col-md-2 col-lg-2 pr-0">
+                        <div class="input-group input-group-sm mb-3">
+                            <input
+                              autocomplete="off"
+                              type="text"
+                              name="unitName"
+                              [(ngModel)]="unitName"
+                              class="form-control"
+                              (input)="getSuggestions($event.target.value)"
+                              placeholder="Search by Unit"
+                            />
+                          </div>
+                          <div
+                            *ngFor="let suggestedUnit of suggestedUnits"
+                            style="cursor: pointer"
+                            (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)"
+                          >
+                            {{ suggestedUnit.unitName }}
+                          </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-2 pl-1 pr-0">
+                        <ng-select  placeholder="Select Renewal Type">
+                           
+                               <ng-option value="Emission Test">Emission Test</ng-option>
+                               <ng-option value="Inspection">Inspection</ng-option>
+                               <ng-option value="Insurance">Insurance</ng-option>
+                               <ng-option value="Registration (Plate Expire)">Registration (Plate Expire)</ng-option>
+                          
+                         </ng-select>
+                    </div>
+                    <div class="col-md-2 col-lg-2 pl-1 pr-0">
+                        <div class="btn-group flex-wrap" style="width:100%;">
+                            <button type="button" class="btn btn-default btn-md dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Search Renewals<span class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+                                <a class="dropdown-item text-1" href="">All Renewals</a>
                                 <a class="dropdown-item text-1" href="">Overdue Only</a>
                                 <a class="dropdown-item text-1" href="">Overdue + Due Soon</a>
                                 <a class="dropdown-item text-1" href="">Due Soon Only</a>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-sm mb-3">
-                            <input type="text" class="form-control" placeholder="Search by Vehicle Name">
                         </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-3">
-                        <div class="input-daterange input-group" data-plugin-datepicker="">
-                            <span class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </span>
-                            </span>
-                            <input type="text" class="form-control" name="start">
-                            <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                                to
-                            </span>
-                            <input type="text" class="form-control" name="end">
-                        </div>
-                    </div>
-                    <div class="col-md-5  col-lg-5 text-right">
+                    <div class="col-md-1  col-lg-1 pl-1">
+                        <button type="submit"  class="btn btn-sm btn-success">Search</button>
+                     </div>
+                    <div class="col-md-5  col-lg-5 text-right page-buttons">
                         <div class="btn-group flex-wrap mr-1">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false">Actions<span class="caret"></span></button>
@@ -54,7 +66,7 @@
                                 <a class="dropdown-item text-1" href="">Export</a>
                             </div>
                         </div>
-                        <a routerLink="/fleet/reminders/vehicle-renewals/add" class="btn btn-sm btn-success "><i
+                        <a routerLink="/fleet/reminders/vehicle-renewals/add" class="btn btn-sm btn-success mr-1"><i
                                 class="fas fa-plus"></i> Add Vehicle Renewal Service Reminder</a>
                        
                     </div>
@@ -73,8 +85,7 @@
                 <div class="col">
                     <section class="card">
                         <div class="card-body">
-                            <table class="table table-bordered table-responsive-lg table-striped mb-0"
-                                id="simple-table">
+                            <table class="table table-bordered table-responsive-lg table-striped mb-0" datatable [dtOptions]="dtOptions"  *ngIf="remindersData.length > 0">
                                 <thead>
                                     <tr>
                                         
@@ -87,16 +98,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of remindersData;">
-                                        <td >{{  getVehicleName(item.reminderIdentification)}}</td>
+                                    <tr *ngFor="let item of remindersData;"  style="cursor: pointer;">
+                                        <td >{{ vehicleList[item.reminderIdentification]}}</td>
                                         <td>
-                                            <!-- <span class="text-danger font-weight-bold font-size-12">Overdue</span> -->
+                                            <span class="text-danger font-weight-bold font-size-12" *ngIf ="item.reminderTasks.remainingDays === 0 ||  0 > item.reminderTasks.remainingDays">Overdue<br></span>
+                                            <span class="text-warning font-weight-bold font-size-12" *ngIf = "5 > item.reminderTasks.remainingDays && item.reminderTasks.remainingDays > 0">Due Soon<br></span>
                                             <span
                                                 class="font-weight-bold" title="Task">{{item.reminderTasks.task}}</span></td>
                                         <td>{{item.reminderTasks.dueDate}}</td>
-                                        <td>{{item.reminderTasks.remindByDays}} Days</td>
-                                        <td>{{getSubscribers(item.subscribers)}}
-                                            </td>
+                                        <td>{{item.reminderTasks.remindByDays}} Day(s) Before</td>
+                                        <td><span *ngFor="let s of item.subscribers">
+                                            <span *ngIf="s.subscriberType === 'user'">{{s.subscriberIdentification}},</span>
+                                            <span *ngIf="s.subscriberType === 'group'">{{groups[s.subscriberIdentification]}},</span>
+                                        </span></td>
                                             <td>
                                                 <div class="btn-group flex-wrap">
                                                     <button type="button" class="btn p-0" data-toggle="dropdown"><i
@@ -111,6 +125,10 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <div *ngIf="!remindersData.length > 0" class="alert alert-info m-0 text-center" role="alert">
+                                No records found
+                                
+                             </div>
                         </div>
                     </section>
                 </div>

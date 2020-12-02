@@ -466,22 +466,22 @@
                                             </div>
                                             <div class="col-lg-6 col-md-12">
                                                 <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat" name="changeRoute" [(ngModel)]="tripData.notifications.changeRoute">
+                                                    <input type="checkbox" id="HazMat1" name="changeRoute" [(ngModel)]="tripData.notifications.changeRoute">
                                                     <label
                                                         class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                        for="HazMat">Notify Dispatcher about changed route?</label>
+                                                        for="HazMat1">Notify Dispatcher about changed route?</label>
                                                 </div>
                                                 <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat" name="pickUp" [(ngModel)]="tripData.notifications.pickUp">
+                                                    <input type="checkbox" id="HazMat2" name="pickUp" [(ngModel)]="tripData.notifications.pickUp">
                                                     <label
                                                         class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                        for="HazMat">Notify Dispatcher about pick up?</label>
+                                                        for="HazMat2">Notify Dispatcher about pick up?</label>
                                                 </div>
                                                 <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat" name="dropOff" [(ngModel)]="tripData.notifications.dropOff">
+                                                    <input type="checkbox" id="HazMat3" name="dropOff" [(ngModel)]="tripData.notifications.dropOff">
                                                     <label
                                                         class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                        for="HazMat">Notify Dispatcher about drop off?</label>
+                                                        for="HazMat3">Notify Dispatcher about drop off?</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -495,16 +495,16 @@
                                             </div>
                                             <div class="col-lg-6 col-md-12">
                                                 <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat" name="tripToDriver" [(ngModel)]="tripData.notifications.tripToDriver">
+                                                    <input type="checkbox" id="HazMat4" name="tripToDriver" [(ngModel)]="tripData.notifications.tripToDriver">
                                                     <label
                                                         class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                        for="HazMat">Send trip details to the driver</label>
+                                                        for="HazMat4">Send trip details to the driver</label>
                                                 </div>
                                                 <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat" name="tripToDispatcher" [(ngModel)]="tripData.notifications.tripToDispatcher">
+                                                    <input type="checkbox" id="HazMat5" name="tripToDispatcher" [(ngModel)]="tripData.notifications.tripToDispatcher">
                                                     <label
                                                         class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                        for="HazMat">Send trip details to the dispatcher</label>
+                                                        for="HazMat5">Send trip details to the dispatcher</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -733,7 +733,7 @@
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of drivers">
-                                                <td class="driverClass" id="drivr_{{ driver.userName }}" (click)="driverChange(driver,'driver','click')">
+                                                <td class="driverClass" id="drivr_{{ driver.driverID }}" (click)="driverChange(driver,'driver','click')">
                                                     <div class="">
                                                         <p class="mb-1 text-4 font-weight-semibold text-dark"><span
                                                                 class="offduty pull-right">OFF</span> {{ driver.fullName }}</p>
@@ -755,7 +755,7 @@
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of codrivers">
-                                                <td class="codriverClass" id="codrivr_{{ driver.userName }}" (click)="driverChange(driver,'codriver','click')">
+                                                <td class="codriverClass" id="codrivr_{{ driver.driverID }}" (click)="driverChange(driver,'codriver','click')">
                                                      {{ driver.fullName }} <span class="offduty pull-right">OFF</span>
                                                     <span class="driverstatus"><i class="fas fa-clock"></i> <span
                                                             class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30 mins</span>

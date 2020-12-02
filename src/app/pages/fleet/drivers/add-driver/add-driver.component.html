@@ -338,11 +338,7 @@
 										 Document Type</label>
 										 <select [(ngModel)]="document.documentType" name="document.documentType{{i}}" class="form-control populate">
 											<optgroup label="Select Document Type">
-											   <option value="Birth Certificate">Birth Certificate</option>
-											   <option value="Certificate of Naturalization">Certificate of Naturalization</option>
-											   <option value=">Citizenship Document Number (Citizenship Card)">Citizenship Document Number (Citizenship Card)</option>
-											   <option value="DHS Refusee travel Document">DHS Refusee travel Document</option>
-											   <option value="Enhanced Driver">Enhanced Driver</option>
+											   <option *ngFor = "let documentType of documentTypeList" [value]="documentType.code">{{documentType.description}}</option>
 											</optgroup>
 										 </select>
 									  </div>

@@ -3,7 +3,7 @@ import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { EventActivitiesService } from '../../../../services/event-activities.service';
+// import { EventActivitiesService } from '../../../../services/event-activities.service';
 import {forkJoin} from 'rxjs';
 declare var $: any;
 
@@ -54,45 +54,24 @@ export class DispatchOverviewComponent implements OnInit {
 
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
-    private spinner: NgxSpinnerService, private EventActivity: EventActivitiesService) { }
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.initManifestGraph();
     this.initTripsGraph();
     this.dispatchData();
+
+    this.fetchAllTrips();
+    this.fetchAllTrips();
+    this.fetchAllRoutes();
+    this.fetchAllCustomers();
+    this.fetchAlldrivers();
+    this.fetchAllVehicles();
   }
 
   async dispatchData(){ 
     const current = this;
     current.spinner.show()
-    let activeTripsCount = new Promise(function(resolve, reject){ 
-      current.apiService.getData('trips/status/enroute').
-      subscribe((result: any) => {
-        resolve(result.Count)
-      })
-    })
-
-    let allTripsCount = new Promise(function(resolve, reject){
-      current.apiService.getData('trips/active/all').
-      subscribe((result: any) => {
-        resolve(result.Count)
-      })
-    })
-
-    let allRoutesCount = new Promise(function(resolve, reject){
-      current.apiService.getData('routes/get/active').
-      subscribe((result: any) => {
-        resolve(result.Count)
-      })
-    })
-
-    let allCustomersCount = new Promise(function(resolve, reject){
-      current.apiService.getData('customers/get/active').
-      subscribe((result: any) => {
-        resolve(result.Count)
-      })
-    })
-
     let latestEventActivities = new Promise(function(resolve, reject){
       current.apiService.getData('activities').
       subscribe(async (result: any) => {
@@ -152,54 +131,16 @@ export class DispatchOverviewComponent implements OnInit {
       })
     })
 
-    let driversCount = new Promise(function(resolve, reject){
-      current.apiService.getData('drivers')
-        .subscribe((result: any) => {
-          resolve(result.Count);
-        })
-    })
-
-    let vehiclesCount = new Promise(function(resolve, reject){
-      current.apiService.getData('vehicles')
-      .subscribe((result: any) => {
-        resolve(result.Count);
-      })
-    })
-    
     await latestEventActivities.then(function(result){
       this.activities = result;
-    }.bind(this))
-
-    await activeTripsCount.then(function(result){
-      this.activeTripsCount = result;
-    }.bind(this))
-
-    await allTripsCount.then(function(result){
-      this.totalTripsCount = result;
-    }.bind(this))
-
-    await allRoutesCount.then(function(result){
-      this.permanentRoutesCount = result;
+      current.spinner.hide()
     }.bind(this))
 
     await todayPickupCount.then(function(result){
       this.todaysPickCount = result.todPickupCount;
       this.tomorrowsPickCount = result.tomPickupCount;
+      
     }.bind(this));
-
-    await driversCount.then(function(result){
-      this.availableDriversCount = result;
-    }.bind(this));
-
-    await vehiclesCount.then(function(result){
-      this.availableVehiclesCount = result;
-    }.bind(this));
-
-    await allCustomersCount.then(function(result){
-      this.customerCount = result;
-      current.spinner.hide()
-    }.bind(this)) 
-
     
   }
 
@@ -262,6 +203,26 @@ export class DispatchOverviewComponent implements OnInit {
       })
   }
 
+  fetchAlldrivers() {
+    this.spinner.show();
+    this.apiService.getData('drivers').
+      subscribe((result: any) => {
+        // result = result.Items[0];
+        this.availableDriversCount = result.Count;
+        this.spinner.hide();
+      })
+  }
+
+  fetchAllVehicles() {
+    this.spinner.show();
+    this.apiService.getData('vehicles').
+      subscribe((result: any) => {
+        // result = result.Items[0];
+        this.availableVehiclesCount = result.Count;
+        this.spinner.hide();
+      })
+  }
+
   fetchRouteDetail(routeID, index, callback){
     this.apiService.getData('routes/'+routeID).
       subscribe((result: any) => {
@@ -269,17 +230,6 @@ export class DispatchOverviewComponent implements OnInit {
         // this.activities[index].typeValue   = result.routeNo;
         callback(result.routeNo)
       })
-  }
-
-  addActivityLog() {
-    this.activityData = {
-      action: 'add',
-      userID: '1',
-      tableName: 'serviceroutes',
-      eventID: '12345678',
-      message: "deleted a route"
-    };
-    this.EventActivity.addEventActivity(this.activityData);
   }
 
   initManifestGraph() {

@@ -1,0 +1,146 @@
+[
+	{
+		"code": "BCN",
+		"description": "Birth Certificate",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "CON",
+		"description": "Certificate of Naturalization",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "CDN",
+		"description": "Citizenship Document Number  (Citizenship Card)",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "5K",
+		"description": "Commercial Driver's License",
+		"stateProvinceRequired": true,
+		"countryRequired": false
+	},
+	{
+		"code": "HD",
+		"description": "DOT Hazardous Number",
+		"stateProvinceRequired": true,
+		"countryRequired": false
+	},
+	{
+		"code": "5J",
+		"description": "Driver's License",
+		"stateProvinceRequired": true,
+		"countryRequired": false
+	},
+	{
+		"code": "6W",
+		"description": "Enhanced Drivers License",
+		"stateProvinceRequired": true,
+		"countryRequired": false
+	},
+	{
+		"code": "BCP",
+		"description": "Laser Visa Border Crossing Card",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "AAG",
+		"description": "Military ID Document",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "ALY",
+		"description": "Native American Indian/INAC",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "AEW",
+		"description": "NEXUS Card",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "OTD",
+		"description": "Other Travel Document ID",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "ACW",
+		"description": "Passport",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "AGS",
+		"description": "Permanent Resident Card C1 - US Resident",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "ACU",
+		"description": "Permanent Resident Card C2 - Resident Commuter",
+		"stateProvinceRequired": false,
+		"countryRequired": false
+	},
+	{
+		"code": "REP",
+		"description": "Reentry Permit",
+		"stateProvinceRequired": false,
+		"countryRequired": false
+	},
+	{
+		"code": "RTP",
+		"description": "Refugee Travel Permit",
+		"stateProvinceRequired": false,
+		"countryRequired": false
+	},
+	{
+		"code": "ALV",
+		"description": "SENTRI Card",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "AGR",
+		"description": "US Alien Registration Card A1",
+		"stateProvinceRequired": false,
+		"countryRequired": false
+	},
+	{
+		"code": "ALR",
+		"description": "US Alien Registration Card A2",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "30",
+		"description": "US Government Visa",
+		"stateProvinceRequired": false,
+		"countryRequired": false
+	},
+	{
+		"code": "ALX",
+		"description": "US Merchant Mariner Document ID",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "AEF",
+		"description": "US Passport Card",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	},
+	{
+		"code": "AGT",
+		"description": "Visa Non-Immigrant",
+		"stateProvinceRequired": false,
+		"countryRequired": true
+	}
+]
