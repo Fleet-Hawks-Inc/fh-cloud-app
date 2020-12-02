@@ -12,7 +12,7 @@
       <header class="page-header">
         <div class="row px-4" style="padding-top: 10px">
           <div class="col-md-2 col-lg-2 pr-0 pl-0">
-            <!-- <div class="input-group input-group-sm mb-3">
+            <div class="input-group input-group-sm mb-3">
               <input
                 autocomplete="off"
                 type="text"
@@ -20,7 +20,7 @@
                 [(ngModel)]="unitName"
                 class="form-control"
                 (input)="getSuggestions($event.target.value)"
-                placeholder="Search Issues by Vehicle"
+                placeholder="Search Issues by Unit"
               />
             </div>
             <div
@@ -29,12 +29,12 @@
               (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)"
             >
               {{ suggestedUnit.unitName }}
-            </div> -->
-            <ng-select placeholder="Search By Vehicle" name="unitID" [(ngModel)]="unitID">
+            </div>
+            <!-- <ng-select placeholder="Search By Vehicle" name="unitID" [(ngModel)]="unitID">
               <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleID">{{vehicle.vehicleIdentification}}
               </ng-option>
               <ng-option *ngFor="let asset of assets" [value]="asset.assetID">{{asset.assetIdentification}}</ng-option>
-            </ng-select>
+            </ng-select> -->
           </div>
           <div class="col-md-2 col-lg-2 pr-0 pl-2">
             <div class="input-group input-group-sm mb-3">
@@ -74,7 +74,7 @@
           <section class="card">
             <div class="card-body">
               <table class="table table-responsive-lg table-bordered table-striped mb-0" datatable
-                [dtOptions]="dtOptions">
+                [dtOptions]="dtOptions"  *ngIf="issues.length > 0" >
                 <thead>
                   <tr>
                     <th>Unit Type</th>
@@ -96,9 +96,9 @@
                     </td>
                     <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
-                      }}">{{issue.unitID}}
-                      <!-- <span *ngIf= "issue.unitType === 'asset'">{{assetList[issue.unitID]}}</span>
-                                             <span *ngIf= "issue.unitType === 'vehicle'">{{vehicleList[issue.unitID]}}</span> -->
+                      }}">
+                      <span *ngIf= "issue.unitType === 'asset'">{{assetList[issue.unitID]}}</span>
+                                             <span *ngIf= "issue.unitType === 'vehicle'">{{vehicleList[issue.unitID]}}</span>
                     </td>
                     <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
@@ -113,7 +113,7 @@
                     <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
                       }}">
-                      <!-- {{contactList[issue.reportedBy]}} -->
+                      {{contactList[issue.reportedBy]}}
                     </td>
                     <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
@@ -145,6 +145,10 @@
                   </tr>
                 </tbody>
               </table>
+              <div *ngIf="!issues.length > 0" class="alert alert-info m-0 text-center" role="alert">
+                No records found
+                
+               </div>
             </div>
           </section>
         </div>

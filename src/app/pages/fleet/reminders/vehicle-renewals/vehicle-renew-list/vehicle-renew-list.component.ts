@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { group } from 'console';
 import { NgxSpinnerService } from 'ngx-spinner';
+import * as moment from 'moment';
 declare var $: any;
 @Component({
   selector: 'app-vehicle-renew-list',
@@ -15,12 +16,17 @@ export class VehicleRenewListComponent implements OnInit {
   dtOptions: any = {};
   vehicles = [];
   vehicleName: string;
-  vehicleList: any;
-  groups = [];
+  vehicleList: any = {};
+  groups; any = {};
   group: string;
   subcribersArray = [];
   allRemindersData = [];
   vehicleIdentification = '';
+  currentDate = moment();
+  newData = [];
+  suggestedUnits = [];
+  unitID = '';
+  unitName = '';
   constructor(private apiService: ApiService, private router: Router,private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -35,8 +41,8 @@ export class VehicleRenewListComponent implements OnInit {
     });
   }
   fetchGroups() {
-    this.apiService.getData('groups').subscribe((result: any) => {
-      this.groups = result.Items;
+    this.apiService.getData('groups/get/list').subscribe((result: any) => {
+      this.groups = result;
       //   console.log('Groups Data', this.groups);
     });
   }
@@ -54,34 +60,36 @@ export class VehicleRenewListComponent implements OnInit {
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
-      console.log('fetched vehcile list', this.vehicleList);
     });
-  }
-  getSubscribers(arr: any[]) {
-    this.subcribersArray = [];
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].subscriberType === 'user') {
-        this.subcribersArray.push(arr[i].subscriberIdentification);
-      }
-      else {
-        let test = this.groups.filter((g: any) => g.groupID === arr[i].subscriberIdentification);
-        this.subcribersArray.push(test[0].groupName);
-      }
-    }
-    return this.subcribersArray;
-  }
-  fetchRenewals = () => {
-    this.apiService.getData('reminders').subscribe({
-      complete: () => { this.initDataTable(); },
+  } 
+ 
+  fetchRenewals = async () => {
+    this.apiService.getData(`reminders`).subscribe({
+      complete: () => {this.initDataTable(); },
       error: () => { },
       next: (result: any) => {
         this.allRemindersData = result.Items;
-        for (let i = 0; i < this.allRemindersData.length; i++) {
-          if (this.allRemindersData[i].reminderType === 'vehicle') {
-            this.remindersData.push(this.allRemindersData[i]);
+        console.log(this.allRemindersData);
+        for(let j=0; j < this.allRemindersData.length; j++) {
+          if (this.allRemindersData[j].reminderType === 'vehicle') {
+            const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate,'DD-MM-YYYY');
+            const remainingDays = convertedDate.diff(this.currentDate, 'days');
+            const data = {
+              reminderID: this.allRemindersData[j].reminderID,
+              reminderIdentification: this.allRemindersData[j].reminderIdentification,
+              reminderTasks: {
+                task: this.allRemindersData[j].reminderTasks.task,
+                remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
+                remainingDays: remainingDays,
+                dueDate: this.allRemindersData[j].reminderTasks.dueDate,
+              },
+              subscribers : this.allRemindersData[j].subscribers,
+             };
+             this.remindersData.push(data); 
           }
+        
         }
-        console.log('vehicle renewal array', this.remindersData);
+        console.log('new data', this.remindersData);
       },
     });
   }
@@ -92,6 +100,27 @@ export class VehicleRenewListComponent implements OnInit {
         this.fetchRenewals();
         this.toastr.success('Vehicle Renewal Deleted Successfully!');
                
+      });
+  }
+  setUnit(unitID, unitName) {
+    this.unitName = unitName;
+    this.unitID = unitID;
+  
+    this.suggestedUnits = [];
+  }
+  getSuggestions(value) {
+    this.suggestedUnits = [];
+    this.apiService
+      .getData(`vehicles/suggestion/${value}`)
+      .subscribe((result) => {
+        result = result.Items;
+  
+        for(let i = 0; i < result.length; i++){
+          this.suggestedUnits.push({
+            unitID: result[i].vehicleID,
+            unitName: result[i].vehicleIdentification
+          });
+        }
       });
   }
   initDataTable() {

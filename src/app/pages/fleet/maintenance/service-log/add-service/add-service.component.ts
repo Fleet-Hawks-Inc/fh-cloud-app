@@ -41,6 +41,7 @@ export class AddServiceComponent implements OnInit {
   Success: string = '';
 
   serviceData = {
+    vehicle: '',
     allServiceTasks: [],
     allServiceParts: [],
     uploadedDocuments : [],
@@ -50,6 +51,8 @@ export class AddServiceComponent implements OnInit {
   totalTasksAmount: any = '';
   totalPartsAmount: any = '';
   logID;
+  VID;
+  reminderVehicleID: string;
 
   constructor(
     private apiService: ApiService,
@@ -84,6 +87,18 @@ export class AddServiceComponent implements OnInit {
     this.fetchVehicles();
     this.fetchVendors();
     this.fetchInventory();
+    this.VID = window.localStorage.getItem('vehicleLocalID');
+    if (this.VID) {
+      this.serviceData.vehicle = this.VID;
+      this.getIssues(this.VID);
+      window.localStorage.removeItem('vehicleLocalID');
+    }
+    this.reminderVehicleID = window.localStorage.getItem('reminderVehicleLocalID');
+    if (this.reminderVehicleID){
+      this.serviceData.vehicle = this.reminderVehicleID;
+      this.getIssues(this.reminderVehicleID);
+      window.localStorage.removeItem('reminderVehicleLocalID');
+    }
   }
 
   /*
@@ -135,7 +150,7 @@ export class AddServiceComponent implements OnInit {
       let index = this.selectedIssues.indexOf(ids);
       this.selectedIssues.splice(index, 1);
     }
-    this.serviceData['selectedIssues'] = this.selectedIssues;
+    this.serviceData[`selectedIssues`] = this.selectedIssues;
   }
   
 

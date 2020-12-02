@@ -11,22 +11,22 @@
         <header class="page-header pr-5">
         <h2>ACE Details</h2>
         <div class="right-wrapper text-right pt-2 pr-2">
-            <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-success mr-1 btn-sm"><i
+            <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default mr-1 btn-sm"><i
                         class="fas fa-list"></i> ACE Manifests</a>
             <a href="javascript:;" class="btn btn-success btn-sm mr-1" style="color:white;" (click)="finalDataFn()"> Send to CBP</a>
             <div class="btn-group btn-group1 flex-wrap mr-1">
                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Set Status<span class="caret"></span></button>
                 <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('Draft')">Draft</a>
-                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('Cancelled')">Cancelled</a>
-                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('Transmitted to CBSA')">Transmitted to CBSA</a>
-                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('CBSA Returned Error')">CBSA Returned Error</a>
-                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('On File with CBSA')">On File with CBSA</a>
-                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('On File with Match Notice')">On File with Match Notice</a>
-                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('On File with Transaction Number(s)')">On File with Transaction Number(s)</a>
-                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('Arrival Reported at Border')">Arrival Reported at Border</a>
-                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('Rejected After Arrival at Border')">Rejected After Arrival at Border</a>
-                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatusFn('Released')">Released</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Draft')">Draft</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Cancelled')">Cancelled</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Transmitted to CBSA')">Transmitted to CBSA</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'CBSA Returned Error')">CBSA Returned Error</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'On File with CBSA')">On File with CBSA</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'On File with Match Notice')">On File with Match Notice</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'On File with Transaction Number(s)')">On File with Transaction Number(s)</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Arrival Reported at Border')">Arrival Reported at Border</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Rejected After Arrival at Border')">Rejected After Arrival at Border</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Released')">Released</a>
                 </div>
             </div>
             <div class="btn-group btn-group1 flex-wrap">
@@ -70,7 +70,7 @@
                           <tbody>
                               <tr>
                                   <th width="40%" class="back-color-gray">Current Status:</th>
-                                  <td>{{status}}</td>
+                                  <td>{{currentStatus}}</td>
                               </tr>                        
                               <tr>
                                 <th width="40%" class="back-color-gray">Last Edited:</th>

@@ -15,12 +15,9 @@ declare var $: any;
 export class IssueListComponent implements OnInit {
   title = 'Issues List';
   issues: [];
-  vehicles: [];
-  assets: [];
-  contacts: [];
-  contactList: any;
-  vehicleList: any;
-  assetList: any;
+  contactList: any = {};
+  vehicleList: any = {};
+  assetList: any = {};
   vehicleName: string;
   contactName: string;
   dtOptions: any = {};
@@ -34,11 +31,7 @@ export class IssueListComponent implements OnInit {
 
 
   ngOnInit() {
-    this.fetchAllIssues();
     this.fetchIssues();
-    this.fetchContacts();
-    this.fetchVehicles();
-    this.fetchAssets();
     this.fetchVehicleList();
     this.fetchContactList();
     this.fetchAssetList();
@@ -69,7 +62,6 @@ export class IssueListComponent implements OnInit {
             unitName: result[i].vehicleIdentification
           });
         }
-        
         this.getAssetsSugg(value);
       });
   }
@@ -79,7 +71,6 @@ export class IssueListComponent implements OnInit {
       .getData(`assets/suggestion/${value}`)
       .subscribe((result) => {
         result = result.Items;
-
         for(let i = 0; i < result.length; i++){
           this.suggestedUnits.push({
             unitID: result[i].assetID,
@@ -91,18 +82,7 @@ export class IssueListComponent implements OnInit {
       if(this.suggestedUnits.length == 0){
         this.unitID = '';
       }
-  }
-
-  fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.vehicles = result.Items;
-    });
-  }
-  fetchContacts() {
-    this.apiService.getData('contacts').subscribe((result: any) => {
-      this.contacts = result.Items;
-    });
-  }
+  } 
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
@@ -111,6 +91,7 @@ export class IssueListComponent implements OnInit {
   fetchContactList() {
     this.apiService.getData('contacts/get/list').subscribe((result: any) => {
       this.contactList = result;
+      console.log('fetched contacts', this.contactList);
     });
   }
   fetchAssetList() {
@@ -118,33 +99,8 @@ export class IssueListComponent implements OnInit {
       this.assetList = result;
     });
   }
-  fetchAssets() {
-    this.apiService.getData('assets').subscribe((result: any) => {
-      this.assets = result.Items;
-      // this.assetName =  this.assets[0].assetIdentification;
-    });
-  }
-  getContactName(ID: any) {
-   let contact = [];
-   contact = this.contacts.filter((c: any) => c.contactID === ID);
-   let contactName = contact[0].contactName;
-   return contactName;
-  }
-  getUnitName(ID: any, type: any) {
-    if (type === 'vehicle') {
-      let vehicle = [];
-      vehicle = this.vehicles.filter((v: any) => v.vehicleID === ID);
-      let vehicleName =  vehicle[0].vehicleIdentification;
-      return vehicleName;
-    }
-    else {
-      let asset = [];
-      asset = this.assets.filter((a: any) => a.assetID === ID);
-      let assetName = asset[0].assetIdentification;
-      return assetName;
-    }
-  }
-  fetchIssues() { 
+ 
+  fetchIssues() {
       this.apiService.getData(`issues?unitID=${this.unitID}&issueName=${this.issueName}`).subscribe({
         complete: () => {
           this.initDataTable();
@@ -152,28 +108,15 @@ export class IssueListComponent implements OnInit {
         error: () => { },
         next: (result: any) => {
           this.issues = result.Items;
-        //  console.log('Array', this.issues);
         },
       });
-  }
-  fetchAllIssues() {
-    this.apiService.getData(`issues/`).subscribe({
-      complete: () => {
-        this.initDataTable();
-      },
-      error: () => { },
-      next: (result: any) => {
-        this.issues = result.Items;
-      // console.log('all issues Array', this.issues);
-      },
-    });
   }
   deleteIssue(issueID) {
     this.apiService
       .deleteData('issues/' + issueID)
       .subscribe((result: any) => {
         this.toastr.success('Issue Deleted Successfully!');
-        this. fetchAllIssues();
+        this. fetchIssues();
       });
   }
   initDataTable() {

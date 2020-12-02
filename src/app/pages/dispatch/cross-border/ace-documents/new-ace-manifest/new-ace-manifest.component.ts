@@ -654,7 +654,7 @@ export class NewAceManifestComponent implements OnInit {
       passengers: this.passengers,
       shipments: this.shipments,
       autoSend: false,
-      status: 'DRAFT'
+      currentStatus: 'DRAFT'
     };
     console.log('Added Data', data);
     this.apiService.postData('ACEeManifest', data).subscribe({
@@ -756,7 +756,7 @@ export class NewAceManifestComponent implements OnInit {
       passengers: this.passengers,
       shipments: this.shipments,
       autoSend: false,
-      status: 'DRAFT'
+      currentStatus: 'DRAFT'
     };
     console.log('Updated Data', data);
     this.apiService.putData('ACEeManifest', data).subscribe({

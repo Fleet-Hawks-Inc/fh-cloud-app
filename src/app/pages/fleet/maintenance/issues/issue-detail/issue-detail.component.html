@@ -13,18 +13,18 @@
             <div class="row pr-5 " style="padding-top:10px;">
                <div class="col-md-4 col-lg-4 pl-4">
                   <span class=" font-weight-bold text-4 text-dark"> Issue </span> <span
-                     class="badge badge-dark p-1"> {{status | uppercase}}</span>
+                     class="badge badge-dark p-1"> {{currentStatus | uppercase}}</span>
                </div>
                <div class="col-md-8  col-lg-8 text-right pr-4">
-                  <a [routerLink]="['/fleet','maintenance', 'issues', 'list']" class="btn btn-sm btn-default mr-1"><i
+                  <a [routerLink]="['/fleet','maintenance', 'issues', 'list']" class="btn btn-sm btn-default"><i
                         class="fas fa-list"></i> Issues List</a>
-                  <div class="btn-group flex-wrap mr-1">
+                  <div class="btn-group flex-wrap mx-2">
                      <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                         aria-expanded="false">Resolve<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1"  routerLink="/fleet/maintenance/service-log/add-service">Resolve via Service Entry</a>
-                        <a class="dropdown-item text-1" href="#" data-toggle="modal" data-target="#issueCloseModal">Close</a>
+                        <a class="dropdown-item text-1"(click)="resolveIssue()" href="javascript:;">Resolve via Service Entry</a>
+                        <a class="dropdown-item text-1" href="#" *ngIf="currentStatus ==='OPEN'" data-toggle="modal" data-target="#issueCloseModal">Close</a>
                      </div>
                   </div>
                   <div class="btn-group flex-wrap">
@@ -61,19 +61,16 @@
                                        <tr>
                                           <td width="40%" class="back-color-gray font-weight-bold">
                                              {{unitType | titlecase}}</td>
-                                          <!-- <td  width="60%"><a routerLink="/fleet/vehicles/Vehicle-List" class="text-info">{{unitName}}</a></td> -->
-                                          <td width="60%"><span *ngIf= "unitType === 'asset'">{{assetList[unitID]}}</span>
-                                             <span *ngIf= "unitType === 'vehicle'">{{vehicleList[unitID]}}</span>
+                                          <td width="60%"><a routerLink="/fleet/assets/detail/{{unitID}}"  class="text-info">
+                                             <span *ngIf= "unitType === 'asset'">{{assetList[unitID]}}</span></a>
+                                             <a routerLink="/fleet/vehicles/detail/{{unitID}}" class="text-info">
+                                                 <span *ngIf= "unitType === 'vehicle'">{{vehicleList[unitID]}}</span></a>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td class="back-color-gray font-weight-bold">Reported Date</td>
                                           <td>{{reportedDate}}</td>
                                        </tr>
-                                       <!-- <tr>
-                                             <td class="back-color-gray font-weight-bold">Source</td>
-                                             <td></td>
-                                          </tr> -->
                                        <tr>
                                           <td class="back-color-gray font-weight-bold">Odometer</td>
                                           <td>{{odometer}}</td>
@@ -86,29 +83,8 @@
                                  </table>
                               </div>
                            </div>
-                           <!-- OVER DUE SETTINGS TABLE -->
-                           <!-- <div class="row">
-                              <div class="col-lg-12"><label class="control-label font-weight-bold text-3">Overdue
-                                    Settings</label></div>
-                           </div>
-                           <div class="row">
-                              <div class="col-lg-12">
-                                 <table class="table table-bordered table-responsive-lg">
-                                    <tbody>
-                                       <tr>
-                                          <td width="40%" class="back-color-gray font-weight-bold">Due Date</td>
-                                          <td width="60%"><span class="text-danger">Jun 15, 2020</span></td>
-                                       </tr>
-                                       <tr>
-                                          <td class="back-color-gray font-weight-bold">Odometer</td>
-                                          <td>56,398 mi</td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div> -->
-                           <!-- CUSTOM FIELDS TABLE -->
-                           <div class="row">
+                           <!-- Docs TABLE -->
+                            <div class="row" *ngIf="issueDocs?.length">
                               <div class="col-lg-12">
                                  <div class="vehicle-common-box p-3">
                                     <div class="row">
@@ -118,16 +94,16 @@
                                        </div>
                                     </div>
                                     <hr class="solid mt-2">
-                                    <div class="row">
-                                       <div class="col-lg-9">Name of the Document</div>
+                                    <div class="row" *ngFor="let doc of issueDocs;let d= index">
+                                       <div class="col-lg-9" (click)="setPDFSrc(doc)" data-toggle="modal" data-target="#viewDocModal">Document {{d+1}}</div> 
                                        <div class="col-lg-3 text-right">
-                                          <a href="#deleteModal" class="modal-with-form"><i
+                                          <a href="javascript:;" (click)="deleteDoc(i)" class="modal-with-form"><i
                                                 class="fas fa-times text-danger"></i></a>
                                        </div>
                                     </div>
                                  </div>
                               </div>
-                           </div>
+                           </div> 
                         </div>
                         <div class="col-lg-6">
                            <div class="row">
@@ -141,7 +117,7 @@
                                     <div class="row">
                                        <div class="col-lg-9"><i class="fas fa-exclamation-circle"></i> Issue Created
                                           <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-size-12">By:
-                                             <!-- {{contactList[reportedBy]}} -->
+                                             {{contactList[reportedBy]}}
                                           </span></div>
                                        <div class="col-lg-3 text-right">
                                           {{reportedDate}}
@@ -162,14 +138,15 @@
                                     </div>
                                     <hr class="solid mt-3">
                                     <div class="row">
-                                       <div class="col-lg-6" *ngFor="let photo of issueImages;">
+                                       <div class="col-lg-6" *ngFor="let photo of issueImages;let i= index">
                                           <div class="vehicle-photo-box">
                                              <img [src]="photo" width="100%" class="img-fluid"
                                                 style="height: 180px; object-fit: cover;">
                                              <hr class="m-3">
                                              <div class="row">
-                                                <div class="col-lg-8">Name of the Image</div>
+                                                <div class="col-lg-8">Image {{i+1}}</div>
                                                 <div class="col-lg-4 text-right">
+                                                   <!-- <i class="fas fa-times text-danger" (click)="deleteImage(i)"></i> -->
                                                    <div class="btn-group flex-wrap mx-2">
                                                       <button type="button"
                                                          class="btn btn-default btn-xs dropdown-toggle"
@@ -181,7 +158,7 @@
                                                          <a class="modal-with-form dropdown-item text-1"
                                                             href="#editPhoto">Edit</a>
                                                          <a class="modal-with-form dropdown-item text-1"
-                                                            href="#deleteModal">Delete</a>
+                                                            href="javascript:;" (click)="deleteImage(i)">Delete</a>
                                                       </div>
                                                    </div>
                                                 </div>
@@ -234,6 +211,33 @@
                         </footer>
                      </section>
                   </div>
+                  <!-- VIEW DOCUMENT MODAL -->
+                  <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel" aria-hidden="true">
+                     <div class="modal-dialog" role="document">
+                       <div class="modal-content">
+                         <div class="modal-header">
+                           <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                             <span aria-hidden="true">&times;</span>
+                           </button>
+                         </div>
+                         <div class="modal-body">                          
+                              <div class="form-row">
+                                 <div class="form-group col-md-12">
+                                    <div>
+                                       <embed [src]="pdfSrc"
+                                       frameborder="0" width="100%" height="400px">
+                                    </div>
+                                 </div>
+                              </div>
+                          
+                         </div>
+                         <div class="modal-footer">
+                           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
                   <!-- Issue close MODAL -->                 
                   <div class="modal fade" id="issueCloseModal" tabindex="-1" role="dialog" aria-labelledby="issueCloseModalLabel" aria-hidden="true">
                      <div class="modal-dialog" role="document">

@@ -88,6 +88,8 @@ export class EditVehicleNewComponent implements OnInit {
     dateOfExpiry: '',
     remiderEvery: '',
     policyNumber: '',
+    amount: 0,
+    amountCurrency: ''
   };
   fluid = {
     fuelType: '',
@@ -302,7 +304,9 @@ export class EditVehicleNewComponent implements OnInit {
           vendorID: result.insurance.vendorID,
           dateOfExpiry: result.insurance.dateOfExpiry,
           remiderEvery: result.insurance.remiderEvery,
-          policyNumber: result.insurance.policyNumber
+          policyNumber: result.insurance.policyNumber,
+          amount: result.insurance.amount,
+        amountCurrency: result.insurance.amountCurrency
         };
         this.fluid = {
           fuelType: result.fluid.fuelType,
@@ -512,7 +516,9 @@ export class EditVehicleNewComponent implements OnInit {
         vendorID: this.insurance.vendorID,
         dateOfExpiry: this.insurance.dateOfExpiry,
         remiderEvery: this.insurance.remiderEvery,
-        policyNumber: this.insurance.policyNumber
+        policyNumber: this.insurance.policyNumber,
+        amount: this.insurance.amount,
+        amountCurrency: this.insurance.amountCurrency
       },
       fluid: {
         fuelType: this.fluid.fuelType,

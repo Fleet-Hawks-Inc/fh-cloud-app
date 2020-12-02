@@ -69,13 +69,11 @@ export class AddContactRenewComponent implements OnInit {
   fetchContacts() {
     this.apiService.getData('contacts').subscribe((result: any) => {
       this.contacts = result.Items;
-      console.log('CONTACTS', this.contacts);
     });
   }
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
       this.groups = result.Items;
-      console.log('Groups Data', this.groups);
     });
   }
   getSubscribers(arr: any[]) {

@@ -108,7 +108,25 @@ export class AwsUploadService {
     }, '');
     return btoa(str).replace(/.{76}(?=.)/g, '$&\n');
   }
-
+  deleteFile = async (carrierID, filename) => {
+    const s3 = new S3({
+      accessKeyId: environment.awsBucket.accessKeyId,
+      secretAccessKey: environment.awsBucket.secretAccessKey,
+      region: environment.awsBucket.region
+  
+    });
+    const params = {
+        Bucket: this.bucketName, // your bucket name,
+        Key: `${carrierID}/${filename}` // path to the object you're looking for
+     };
+    const data = s3.deleteObject(params).promise();
+     if(data) {
+       console.log('file deleted successfully');
+     }
+     else{
+       console.log('Error in deletion');
+     }
+   }
   // getExtensionIndex(file) {
   //   //file && this.validFormats.includes(file['type']);
   //   return file && $.inArray(file['type'], this.validFormats);
