@@ -205,19 +205,25 @@ export class FuelEntryDetailsComponent implements OnInit {
           this.fetchUnitName(this.unitType, this.unitID);
           this.fetchTripNumber(this.tripID);
         }, 2000);
-      });    
+      });
     this.fetchVendors(this.vendorID);
   }
   getImages = async () => {
     this.carrierID = await this.apiService.getCarrierID();
     for (let i = 0; i < this.additionalDetails.uploadedPhotos.length; i++) {
-      // this.docs = this.domSanitizer.bypassSecurityTrustResourceUrl(
-      // await this.awsUS.getFiles(this.carrierID, this.assetData[0].uploadedDocs[i]));
-      // this.assetsDocs.push(this.docs)
       this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles
         (this.carrierID, this.additionalDetails.uploadedPhotos[i]));
       this.fuelEntryImages.push(this.image);
     }
+  }
+  deleteImage(i: number) {
+    this.carrierID =  this.apiService.getCarrierID();
+    this.awsUS.deleteFile(this.carrierID, this.additionalDetails.uploadedPhotos[i]);
+    this.additionalDetails.uploadedPhotos.splice(i, 1);
+    console.log('new array',this.additionalDetails.uploadedPhotos);
+    // this.apiService.getData('fuelEntries//updatePhotos/' + this.entryID + '/' + this.additionalDetails.uploadedPhotos).subscribe((result: any) => {
+    //   this.toastr.success('Image Deleted Successfully!');
+    // });
   }
   deleteFuelEntry(entryID) {
     this.apiService

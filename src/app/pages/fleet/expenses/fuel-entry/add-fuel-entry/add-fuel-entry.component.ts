@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 declare var jquery: any;
 declare var $: any;
@@ -79,6 +80,8 @@ export class AddFuelEntryComponent implements OnInit {
   assets = [];
   reeferArray = [];
   trips = [];
+  fuelEntryImages = [];
+  image;
   /******************/
 
   errors = {};
@@ -94,7 +97,7 @@ export class AddFuelEntryComponent implements OnInit {
   constructor(private apiService: ApiService,
     private router: Router,
     private route: ActivatedRoute,
-    private spinner: NgxSpinnerService,
+    private spinner: NgxSpinnerService,private domSanitizer: DomSanitizer,
     private location: Location,
     private awsUS: AwsUploadService, private toaster: ToastrService,
     private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
@@ -372,6 +375,23 @@ export class AddFuelEntryComponent implements OnInit {
           this.fillCountry();
         }, 2000);
       });
+  }
+  getImages = async () => {
+    this.carrierID = await this.apiService.getCarrierID();
+    for (let i = 0; i < this.additionalDetails.uploadedPhotos.length; i++) {
+      this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles
+        (this.carrierID, this.additionalDetails.uploadedPhotos[i]));
+      this.fuelEntryImages.push(this.image);
+    }
+  }
+  deleteImage(i: number) {
+    this.carrierID =  this.apiService.getCarrierID();
+    this.awsUS.deleteFile(this.carrierID, this.additionalDetails.uploadedPhotos[i]);
+    this.additionalDetails.uploadedPhotos.splice(i, 1);
+    console.log('new array',this.additionalDetails.uploadedPhotos);
+    // this.apiService.getData('fuelEntries//updatePhotos/' + this.entryID + '/' + this.additionalDetails.uploadedPhotos).subscribe((result: any) => {
+    //   this.toastr.success('Image Deleted Successfully!');
+    // });
   }
   updateFuelEntry() {
 

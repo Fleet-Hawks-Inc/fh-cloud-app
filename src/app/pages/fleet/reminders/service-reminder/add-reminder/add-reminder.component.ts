@@ -20,7 +20,7 @@ export class AddReminderComponent implements OnInit {
   reminderData = {
     reminderType: 'service',
     reminderTasks: {
-      remindByDays: 0
+      remindByDays: 0,
     },
     subscribers: [],
   };
@@ -91,15 +91,15 @@ export class AddReminderComponent implements OnInit {
           this.test.push(result.subscribers[i].subscriberIdentification);
         }
         // console.log('Check in fetched', this.test);
-        this.reminderData['reminderID'] = this.reminderID;
-        this.reminderData['reminderType'] = result.reminderType;
-        this.reminderData['reminderIdentification'] = result.reminderIdentification;
-        this.reminderData['reminderTasks']['task'] = result.reminderTasks.task;
-        this.reminderData['reminderTasks']['odometer'] = result.reminderTasks.odometer;
+        this.reminderData[`reminderID`] = this.reminderID;
+        this.reminderData[`reminderType`] = result.reminderType;
+        this.reminderData[`reminderIdentification`] = result.reminderIdentification;
+        this.reminderData[`reminderTasks`][`task`] = result.reminderTasks.task;
+        this.reminderData[`reminderTasks`][`odometer`] = result.reminderTasks.odometer;
         this.time = result.reminderTasks.remindByDays;
         this.timeType = 'Day(s)';
-        this.reminderData['sendEmail'] = result.sendEmail;
-        this.reminderData['subscribers'] = this.test;
+        this.reminderData[`sendEmail`] = result.sendEmail;
+        this.reminderData[`subscribers`] = this.test;
       });
 
   }
@@ -152,7 +152,7 @@ export class AddReminderComponent implements OnInit {
             break;
           }
       }
-
+      
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
       console.log('Filled Reminder Data', this.reminderData);

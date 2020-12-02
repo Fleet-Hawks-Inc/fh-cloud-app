@@ -36,6 +36,7 @@ export class IssueDetailComponent implements OnInit {
   docs: SafeResourceUrl;
   public issueImages = [];
   public issueDocs = [];
+  pdfSrc: string;
   constructor(private apiService: ApiService,
               private router: Router,
               private route: ActivatedRoute,
@@ -103,8 +104,10 @@ export class IssueDetailComponent implements OnInit {
     console.log('fetched images', this.issueImages);
   }
   deleteImage(i: number) {
-    console.log('i', i);
+    this.carrierID =  this.apiService.getCarrierID();
+    this.awsUS.deleteFile(this.carrierID, this.uploadedPhotos[i]);
     this.uploadedPhotos.splice(i, 1);
+    console.log('new array',this.uploadedPhotos);
     this.apiService.getData('issues/updatePhotos/' + this.issueID + '/' + this.uploadedPhotos).subscribe((result: any) => {
       this.toastr.success('Image Deleted Successfully!');
     });
@@ -117,6 +120,15 @@ export class IssueDetailComponent implements OnInit {
       this.issueDocs.push(this.docs);
     }
     console.log('docs', this.issueDocs);
+  }
+  deleteDoc(i: number) {
+    this.carrierID =  this.apiService.getCarrierID();
+    this.awsUS.deleteFile(this.carrierID, this.uploadedDocs[i]);
+    this.uploadedDocs.splice(i, 1);
+    console.log('new array',this.uploadedDocs);
+    this.apiService.getData('issues/updateDocs/' + this.issueID + '/' + this.uploadedDocs).subscribe((result: any) => {
+      this.toastr.success('Document Deleted Successfully!');
+    });
   }
   deleteIssue(issueID) {
     this.apiService
@@ -136,5 +148,9 @@ export class IssueDetailComponent implements OnInit {
   resolveIssue() {
     window.localStorage.setItem('vehicleLocalID', this.unitID);
     this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
+  }
+  setPDFSrc(val) {
+    this.pdfSrc = val;
+    console.log('pdf', this.pdfSrc);
   }
 }

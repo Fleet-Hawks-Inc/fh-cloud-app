@@ -9,6 +9,7 @@ import { from } from 'rxjs';
 import {  map } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 declare var $: any;
 @Component({
   selector: 'app-add-issue',
@@ -48,13 +49,18 @@ export class AddIssueComponent implements OnInit {
   Error = '';
   errors = {};
   Success  = '';
+  docs: SafeResourceUrl;
+  public issueImages = [];
+  image;
+  public issueDocs = [];
+  pdfSrc: string;
   // date: {year: number, month: number};
   constructor(private apiService: ApiService,
               private router: Router,
               private route: ActivatedRoute,
               private awsUS: AwsUploadService, private toaster: ToastrService,
               private spinner: NgxSpinnerService,
-              private location: Location,
+              private location: Location, private domSanitizer: DomSanitizer,
               private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
                 this.selectedFileNames = new Map<any, any>();
               }
@@ -188,7 +194,7 @@ hideErrors() {
         this.uploadedPhotos.push(fileName);
       }
     }
-    console.log('uploaded photos',this.uploadedPhotos);
+    console.log('uploaded photos', this.uploadedPhotos);
   }
   /*
    * Uploading files which selected
@@ -220,10 +226,60 @@ hideErrors() {
       this.odometer = result.odometer;
       this.reportedBy = result.reportedBy;
       this.assignedTo = result.assignedTo;
+      this.uploadedPhotos = result.uploadedPhotos;
+      this.uploadedDocs = result.uploadedDocs;
+      setTimeout(() => {
+        this.getImages();
+        this.getDocuments();
+       }, 1500);
     });
   this.spinner.hide();
 }
-
+getImages = async () => {
+  this.carrierID = await this.apiService.getCarrierID();
+  for (let i = 0; i < this.uploadedPhotos.length; i++) {
+    this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles
+    (this.carrierID, this.uploadedPhotos[i]));
+    this.issueImages.push(this.image);
+  }
+  console.log('fetched images', this.issueImages);
+}
+deleteImage(i: number) {
+  this.carrierID =  this.apiService.getCarrierID();
+  this.awsUS.deleteFile(this.carrierID, this.uploadedPhotos[i]);
+  this.uploadedPhotos.splice(i, 1);
+  console.log('new array' ,this.uploadedPhotos);
+  this.toaster.success('Image Deleted Successfully!');
+  // this.apiService.getData('issues/updatePhotos/' + this.issueID + '/' + this.uploadedPhotos).subscribe((result: any) => {
+  //   this.toaster.success('Image Deleted Successfully!');
+  // });
+}
+getDocuments = async () => {
+  this.carrierID = await this.apiService.getCarrierID();
+  for (let i = 0; i < this.uploadedDocs.length; i++) {
+    this.docs = this.domSanitizer.bypassSecurityTrustResourceUrl(
+            await this.awsUS.getFiles(this.carrierID, this.uploadedDocs[i]));
+    this.issueDocs.push(this.docs);
+  }
+  console.log('docs', this.issueDocs);
+}
+deleteDoc(i: number) {
+  this.carrierID =  this.apiService.getCarrierID();
+  this.awsUS.deleteFile(this.carrierID, this.uploadedDocs[i]);
+  this.uploadedDocs.splice(i, 1);
+  console.log('new array',this.uploadedDocs);
+  this.apiService.getData('issues/updateDocs/' + this.issueID + '/' + this.uploadedDocs).subscribe((result: any) => {
+    this.toaster.success('Document Deleted Successfully!');
+  });
+}
+setPDFSrc(val) {
+  this.pdfSrc = '';
+  this.pdfSrc = val;
+  console.log('pdf', this.pdfSrc);
+}
+setSrcValue(){
+  this.pdfSrc = '';
+}
 /*
    * Update Issue
   */
