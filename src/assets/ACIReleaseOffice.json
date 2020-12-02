@@ -1,0 +1,1078 @@
+[
+	{
+		"number": "0817",
+		"name": "ABBOTSFORD-HUNTINGDON"
+	},
+	{
+		"number": "0318",
+		"name": "ABERCORN"
+	},
+	{
+		"number": "0706",
+		"name": "ADEN"
+	},
+	{
+		"number": "0841",
+		"name": "ALDERGROVE"
+	},
+	{
+		"number": "0214",
+		"name": "ANDOVER"
+	},
+	{
+		"number": "0921",
+		"name": "ARGENTIA"
+	},
+	{
+		"number": "0329",
+		"name": "ARMSTRONG"
+	},
+	{
+		"number": "0494",
+		"name": "ARNPRIOR"
+	},
+	{
+		"number": "0355",
+		"name": "BAIE-COMEAU"
+	},
+	{
+		"number": "0459",
+		"name": "BARRIE"
+	},
+	{
+		"number": "0201",
+		"name": "BATHURST"
+	},
+	{
+		"number": "0892",
+		"name": "BEAVER CREEK"
+	},
+	{
+		"number": "0402",
+		"name": "BELLEVILLE"
+	},
+	{
+		"number": "0614",
+		"name": "BIG BEAVER"
+	},
+	{
+		"number": "0507",
+		"name": "BOISSEVAIN"
+	},
+	{
+		"number": "0815",
+		"name": "BOUNDARY BAY"
+	},
+	{
+		"number": "0460",
+		"name": "BRACEBRIDGE"
+	},
+	{
+		"number": "0480",
+		"name": "BRAMPTON"
+	},
+	{
+		"number": "0404",
+		"name": "BRANTFORD"
+	},
+	{
+		"number": "0405",
+		"name": "BROCKVILLE"
+	},
+	{
+		"number": "0701",
+		"name": "CALGARY"
+	},
+	{
+		"number": "0457",
+		"name": "CAMBRIDGE"
+	},
+	{
+		"number": "0838",
+		"name": "CAMPBELL RIVER"
+	},
+	{
+		"number": "0225",
+		"name": "CAMPOBELLO"
+	},
+	{
+		"number": "0363",
+		"name": "CAP-AUX-MEULES"
+	},
+	{
+		"number": "0221",
+		"name": "CARAQUET"
+	},
+	{
+		"number": "0612",
+		"name": "CARIEVALE"
+	},
+	{
+		"number": "0834",
+		"name": "CARSON"
+	},
+	{
+		"number": "0521",
+		"name": "CARTWRIGHT"
+	},
+	{
+		"number": "0707",
+		"name": "CARWAY"
+	},
+	{
+		"number": "0816",
+		"name": "CASCADE"
+	},
+	{
+		"number": "0215",
+		"name": "CENTREVILLE"
+	},
+	{
+		"number": "0101",
+		"name": "CHARLOTTETOWN"
+	},
+	{
+		"number": "0365",
+		"name": "CHARTIERVILLE"
+	},
+	{
+		"number": "0406",
+		"name": "CHATHAM"
+	},
+	{
+		"number": "0301",
+		"name": "CHICOUTIMI"
+	},
+	{
+		"number": "0709",
+		"name": "CHIEF MOUNTAIN"
+	},
+	{
+		"number": "0836",
+		"name": "CHOPAKA"
+	},
+	{
+		"number": "0511",
+		"name": "CHURCHILL"
+	},
+	{
+		"number": "0216",
+		"name": "CLAIR"
+	},
+	{
+		"number": "0337",
+		"name": "CLARENCEVILLE"
+	},
+	{
+		"number": "0900",
+		"name": "CLARENVILLE"
+	},
+	{
+		"number": "0619",
+		"name": "CLIMAX"
+	},
+	{
+		"number": "0473",
+		"name": "COBOURG"
+	},
+	{
+		"number": "0458",
+		"name": "COLLINGWOOD"
+	},
+	{
+		"number": "0911",
+		"name": "CORNER BROOK"
+	},
+	{
+		"number": "0409",
+		"name": "CORNWALL"
+	},
+	{
+		"number": "0615",
+		"name": "CORONACH"
+	},
+	{
+		"number": "0524",
+		"name": "COULTER"
+	},
+	{
+		"number": "0830",
+		"name": "COURTENAY"
+	},
+	{
+		"number": "0705",
+		"name": "COUTTS"
+	},
+	{
+		"number": "0311",
+		"name": "COVEY HILL"
+	},
+	{
+		"number": "0356",
+		"name": "COWANSVILLE"
+	},
+	{
+		"number": "0801",
+		"name": "CRANBROOK"
+	},
+	{
+		"number": "0520",
+		"name": "CRYSTAL CITY"
+	},
+	{
+		"number": "0371",
+		"name": "DAAQUAM"
+	},
+	{
+		"number": "0202",
+		"name": "DALHOUSIE"
+	},
+	{
+		"number": "0894",
+		"name": "DAWSON CITY"
+	},
+	{
+		"number": "0839",
+		"name": "DAWSON CREEK"
+	},
+	{
+		"number": "0208",
+		"name": "DEER ISLAND POINT"
+	},
+	{
+		"number": "0708",
+		"name": "DEL BONITA"
+	},
+	{
+		"number": "0840",
+		"name": "DOUGLAS"
+	},
+	{
+		"number": "0303",
+		"name": "DRUMMONDVILLE"
+	},
+	{
+		"number": "0330",
+		"name": "DUNDEE"
+	},
+	{
+		"number": "0362",
+		"name": "EAST HEREFORD"
+	},
+	{
+		"number": "0369",
+		"name": "EAST PINNACLE"
+	},
+	{
+		"number": "0702",
+		"name": "EDMONTON"
+	},
+	{
+		"number": "0213",
+		"name": "EDMUNSTON"
+	},
+	{
+		"number": "0502",
+		"name": "EMERSON"
+	},
+	{
+		"number": "0610",
+		"name": "ESTEVAN HIGHWAY"
+	},
+	{
+		"number": "0410",
+		"name": "FORT ERIE"
+	},
+	{
+		"number": "0478",
+		"name": "FORT FRANCES BRIDGE"
+	},
+	{
+		"number": "0919",
+		"name": "FORTUNE"
+	},
+	{
+		"number": "0893",
+		"name": "FRASER"
+	},
+	{
+		"number": "0204",
+		"name": "FREDERICTON"
+	},
+	{
+		"number": "0332",
+		"name": "FRELIGHSBURG"
+	},
+	{
+		"number": "0912",
+		"name": "GANDER"
+	},
+	{
+		"number": "0304",
+		"name": "GASPE"
+	},
+	{
+		"number": "1000",
+		"name": "Generic"
+	},
+	{
+		"number": "0219",
+		"name": "GILLESPIE PORTAGE"
+	},
+	{
+		"number": "0370",
+		"name": "GLEN SUTTON"
+	},
+	{
+		"number": "0508",
+		"name": "GOODLANDS"
+	},
+	{
+		"number": "0913",
+		"name": "GOOSE BAY"
+	},
+	{
+		"number": "0305",
+		"name": "GRANBY"
+	},
+	{
+		"number": "0217",
+		"name": "GRAND FALLS"
+	},
+	{
+		"number": "0910",
+		"name": "GRAND FALLS, NEWFOUNDLAND"
+	},
+	{
+		"number": "0224",
+		"name": "GRAND MANAN"
+	},
+	{
+		"number": "0503",
+		"name": "GRETNA"
+	},
+	{
+		"number": "0414",
+		"name": "GUELPH"
+	},
+	{
+		"number": "0009",
+		"name": "HALIFAX"
+	},
+	{
+		"number": "0026",
+		"name": "HALIFAX - INTERNATIONAL AIRPORT"
+	},
+	{
+		"number": "0007",
+		"name": "HALIFAX - POSTAL OPERATIONS"
+	},
+	{
+		"number": "0483",
+		"name": "HALTON HILLS"
+	},
+	{
+		"number": "0417",
+		"name": "HAMILTON"
+	},
+	{
+		"number": "0448",
+		"name": "HANOVER"
+	},
+	{
+		"number": "0922",
+		"name": "HARBOUR GRACE"
+	},
+	{
+		"number": "0333",
+		"name": "HEMMINGFORD"
+	},
+	{
+		"number": "0302",
+		"name": "HERDMAN"
+	},
+	{
+		"number": "0366",
+		"name": "HEREFORD ROAD"
+	},
+	{
+		"number": "0334",
+		"name": "HIGHWATER"
+	},
+	{
+		"number": "0491",
+		"name": "INTERNATIONAL MAIL PROCESSING CENTER"
+	},
+	{
+		"number": "0512",
+		"name": "INUVIK"
+	},
+	{
+		"number": "0403",
+		"name": "IQALUIT"
+	},
+	{
+		"number": "0342",
+		"name": "JOLIETTE"
+	},
+	{
+		"number": "0814",
+		"name": "KAMLOOPS"
+	},
+	{
+		"number": "0831",
+		"name": "KELOWNA"
+	},
+	{
+		"number": "0490",
+		"name": "KENORA"
+	},
+	{
+		"number": "0010",
+		"name": "KENTVILLE"
+	},
+	{
+		"number": "0818",
+		"name": "KINGSGATE"
+	},
+	{
+		"number": "0420",
+		"name": "KINGSTON"
+	},
+	{
+		"number": "0401",
+		"name": "KITCHENER"
+	},
+	{
+		"number": "0827",
+		"name": "KITIMAT"
+	},
+	{
+		"number": "0343",
+		"name": "LACHUTE"
+	},
+	{
+		"number": "0351",
+		"name": "LACOLLE - ST BERNARD DE LACOLLE"
+	},
+	{
+		"number": "0456",
+		"name": "LANSDOWNE - THOUSAND ISLANDS BRIDGE"
+	},
+	{
+		"number": "0522",
+		"name": "LENA"
+	},
+	{
+		"number": "0703",
+		"name": "LETHBRIDGE"
+	},
+	{
+		"number": "0477",
+		"name": "LINDSAY"
+	},
+	{
+		"number": "0895",
+		"name": "LITTLE GOLD CREEK"
+	},
+	{
+		"number": "0011",
+		"name": "LIVERPOOL"
+	},
+	{
+		"number": "0423",
+		"name": "LONDON"
+	},
+	{
+		"number": "0013",
+		"name": "LUNENBURG"
+	},
+	{
+		"number": "0523",
+		"name": "LYLETON"
+	},
+	{
+		"number": "0424",
+		"name": "MIDLAND"
+	},
+	{
+		"number": "0835",
+		"name": "MIDWAY"
+	},
+	{
+		"number": "0207",
+		"name": "MIRAMICHI"
+	},
+	{
+		"number": "0620",
+		"name": "MONCHY"
+	},
+	{
+		"number": "0206",
+		"name": "MONCTON"
+	},
+	{
+		"number": "0344",
+		"name": "MONTMAGNY"
+	},
+	{
+		"number": "0398",
+		"name": "MONTREAL - INTERMEDIATE TERMINAL (C.D.L.)"
+	},
+	{
+		"number": "0396",
+		"name": "MONTREAL - INTERNATIONAL AIRPORT (DORVAL)"
+	},
+	{
+		"number": "0399",
+		"name": "MONTREAL - INTERNATIONAL AIRPORT (MIRABEL)"
+	},
+	{
+		"number": "0395",
+		"name": "MONTREAL - MAIN LONGROOM"
+	},
+	{
+		"number": "0601",
+		"name": "MOOSE JAW"
+	},
+	{
+		"number": "0367",
+		"name": "MORSES LINE"
+	},
+	{
+		"number": "0804",
+		"name": "NANAIMO"
+	},
+	{
+		"number": "0828",
+		"name": "NELWAY"
+	},
+	{
+		"number": "0015",
+		"name": "NEW GLASGOW"
+	},
+	{
+		"number": "0486",
+		"name": "NEWMARKET"
+	},
+	{
+		"number": "0427",
+		"name": "NIAGARA FALLS - QUEENSTON LEWISTON BRIDGE"
+	},
+	{
+		"number": "0428",
+		"name": "NORTH BAY"
+	},
+	{
+		"number": "0613",
+		"name": "NORTHGATE"
+	},
+	{
+		"number": "0602",
+		"name": "NORTH PORTAL"
+	},
+	{
+		"number": "0368",
+		"name": "NOYAN"
+	},
+	{
+		"number": "0476",
+		"name": "OAKVILLE"
+	},
+	{
+		"number": "0487",
+		"name": "ORANGEVILLE"
+	},
+	{
+		"number": "0429",
+		"name": "ORILLIA"
+	},
+	{
+		"number": "0430",
+		"name": "OSHAWA"
+	},
+	{
+		"number": "0819",
+		"name": "OSOYOOS"
+	},
+	{
+		"number": "0431",
+		"name": "OTTAWA - LONGROOM/SUFFERANCE"
+	},
+	{
+		"number": "0485",
+		"name": "OTTAWA MACDONALD - CARTIER INTERNATIONAL AIRPORT"
+	},
+	{
+		"number": "0616",
+		"name": "OUNGRE"
+	},
+	{
+		"number": "0482",
+		"name": "OWEN SOUND"
+	},
+	{
+		"number": "0842",
+		"name": "PACIFIC CUSTOMS BROKERS HIGHWAY SUFFERANCE WAREHOUSE"
+	},
+	{
+		"number": "0813",
+		"name": "PACIFIC HIGHWAY"
+	},
+	{
+		"number": "0435",
+		"name": "PARRY SOUND - GEORGIAN BAY AIRPORT"
+	},
+	{
+		"number": "0832",
+		"name": "PATERSON"
+	},
+	{
+		"number": "0469",
+		"name": "PEMBROKE"
+	},
+	{
+		"number": "0807",
+		"name": "PENTICTON"
+	},
+	{
+		"number": "0470",
+		"name": "PERTH"
+	},
+	{
+		"number": "0400",
+		"name": "PETERBOROUGH"
+	},
+	{
+		"number": "0475",
+		"name": "PIGEON RIVER"
+	},
+	{
+		"number": "0517",
+		"name": "PINEY"
+	},
+	{
+		"number": "0891",
+		"name": "PLEASANT CAMP"
+	},
+	{
+		"number": "0331",
+		"name": "POHENEGAMOOK"
+	},
+	{
+		"number": "0825",
+		"name": "PORT ALBERNI"
+	},
+	{
+		"number": "0471",
+		"name": "PORT COLBORNE"
+	},
+	{
+		"number": "0019",
+		"name": "PORT HAWKESBURY"
+	},
+	{
+		"number": "0826",
+		"name": "POWELL RIVER"
+	},
+	{
+		"number": "0439",
+		"name": "PRESCOTT"
+	},
+	{
+		"number": "0603",
+		"name": "PRINCE ALBERT"
+	},
+	{
+		"number": "0820",
+		"name": "PRINCE GEORGE"
+	},
+	{
+		"number": "0808",
+		"name": "PRINCE RUPERT"
+	},
+	{
+		"number": "0312",
+		"name": "QUEBEC"
+	},
+	{
+		"number": "0488",
+		"name": "RAINY RIVER"
+	},
+	{
+		"number": "0604",
+		"name": "REGINA"
+	},
+	{
+		"number": "0607",
+		"name": "REGWAY"
+	},
+	{
+		"number": "0345",
+		"name": "RICHMOND"
+	},
+	{
+		"number": "0313",
+		"name": "RIMOUSKI"
+	},
+	{
+		"number": "0340",
+		"name": "RIVIERE-DU-LOUP"
+	},
+	{
+		"number": "0824",
+		"name": "ROOSVILLE"
+	},
+	{
+		"number": "0324",
+		"name": "ROUTE 221: LACOLLE"
+	},
+	{
+		"number": "0341",
+		"name": "ROUTE 223: LACOLLE"
+	},
+	{
+		"number": "0349",
+		"name": "ROUYN-NORANDA"
+	},
+	{
+		"number": "0822",
+		"name": "RYKERTS"
+	},
+	{
+		"number": "0210",
+		"name": "SAINT JOHN, NEW BRUNSWICK"
+	},
+	{
+		"number": "0440",
+		"name": "SARNIA"
+	},
+	{
+		"number": "0605",
+		"name": "SASKATOON"
+	},
+	{
+		"number": "0441",
+		"name": "SAULT STE. MARIE"
+	},
+	{
+		"number": "0361",
+		"name": "SEPT-ILES"
+	},
+	{
+		"number": "0315",
+		"name": "SHAWINIGAN"
+	},
+	{
+		"number": "0020",
+		"name": "SHELBURNE"
+	},
+	{
+		"number": "0316",
+		"name": "SHERBROOKE"
+	},
+	{
+		"number": "0442",
+		"name": "SIMCOE"
+	},
+	{
+		"number": "0474",
+		"name": "SMITHS FALLS"
+	},
+	{
+		"number": "0509",
+		"name": "SNOWFLAKE"
+	},
+	{
+		"number": "0465",
+		"name": "SOMBRA"
+	},
+	{
+		"number": "0317",
+		"name": "SOREL"
+	},
+	{
+		"number": "0506",
+		"name": "SOUTH JUNCTION"
+	},
+	{
+		"number": "0505",
+		"name": "SPRAGUE"
+	},
+	{
+		"number": "0209",
+		"name": "ST. ANDREWS"
+	},
+	{
+		"number": "0354",
+		"name": "STANHOPE"
+	},
+	{
+		"number": "0314",
+		"name": "STANSTEAD 55"
+	},
+	{
+		"number": "0376",
+		"name": "STANSTEAD BEEBE"
+	},
+	{
+		"number": "0375",
+		"name": "STANSTEAD RTE 143"
+	},
+	{
+		"number": "0328",
+		"name": "ST ARMAND/PHILIPSBURG"
+	},
+	{
+		"number": "0445",
+		"name": "ST. CATHARINES"
+	},
+	{
+		"number": "0205",
+		"name": "ST. CROIX"
+	},
+	{
+		"number": "0339",
+		"name": "Ste Aurelie"
+	},
+	{
+		"number": "0918",
+		"name": "STEPHENVILLE"
+	},
+	{
+		"number": "0896",
+		"name": "STEWART"
+	},
+	{
+		"number": "0320",
+		"name": "ST-HYACINTHE"
+	},
+	{
+		"number": "0321",
+		"name": "ST-JEAN"
+	},
+	{
+		"number": "0346",
+		"name": "ST-JEROME"
+	},
+	{
+		"number": "0914",
+		"name": "ST. JOHNS, NEWFOUNDLAND"
+	},
+	{
+		"number": "0336",
+		"name": "ST-JUST DE BRETENIERES"
+	},
+	{
+		"number": "0218",
+		"name": "ST. LEONARD"
+	},
+	{
+		"number": "0335",
+		"name": "ST PAMPHILE"
+	},
+	{
+		"number": "0425",
+		"name": "STRATFORD"
+	},
+	{
+		"number": "0231",
+		"name": "ST. STEPHEN 3RD BRIDGE"
+	},
+	{
+		"number": "0211",
+		"name": "ST. STEPHEN FERRY POINT BRIDGE"
+	},
+	{
+		"number": "0446",
+		"name": "ST. THOMAS"
+	},
+	{
+		"number": "0444",
+		"name": "SUDBURY"
+	},
+	{
+		"number": "0102",
+		"name": "SUMMERSIDE"
+	},
+	{
+		"number": "0021",
+		"name": "SYDNEY"
+	},
+	{
+		"number": "0837",
+		"name": "SYDNEY"
+	},
+	{
+		"number": "0347",
+		"name": "THETFORD MINES"
+	},
+	{
+		"number": "0461",
+		"name": "THUNDER BAY"
+	},
+	{
+		"number": "0447",
+		"name": "TILLSONBURG"
+	},
+	{
+		"number": "0467",
+		"name": "TIMMINS"
+	},
+	{
+		"number": "0516",
+		"name": "TOLSTOI"
+	},
+	{
+		"number": "0496",
+		"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
+	},
+	{
+		"number": "0495",
+		"name": "TORONTO - METRO OPERATIONS DIVISION"
+	},
+	{
+		"number": "0497",
+		"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+	},
+	{
+		"number": "0499",
+		"name": "TORONTO - SUFFERANCE TRUCK TERMINAL (KENNEDY ROAD)"
+	},
+	{
+		"number": "0617",
+		"name": "TORQUAY"
+	},
+	{
+		"number": "0449",
+		"name": "TRENTON"
+	},
+	{
+		"number": "0322",
+		"name": "TROIS-RIVIERES"
+	},
+	{
+		"number": "0307",
+		"name": "TROUT RIVER"
+	},
+	{
+		"number": "0022",
+		"name": "TRURO"
+	},
+	{
+		"number": "0514",
+		"name": "TUKTOYAKTUK"
+	},
+	{
+		"number": "0350",
+		"name": "VAL-D'OR"
+	},
+	{
+		"number": "0323",
+		"name": "VALLEYFIELD"
+	},
+	{
+		"number": "0810",
+		"name": "VANCOUVER - COMMERCIAL OPERATIONS EAST"
+	},
+	{
+		"number": "0809",
+		"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+	},
+	{
+		"number": "0821",
+		"name": "VANCOUVER - INTERNATIONAL AIRPORT"
+	},
+	{
+		"number": "0806",
+		"name": "VANCOUVER - INTERNATIONAL MARINE OPERATIONS"
+	},
+	{
+		"number": "0803",
+		"name": "VANCOUVER - MAIL CENTRE"
+	},
+	{
+		"number": "0823",
+		"name": "VERNON"
+	},
+	{
+		"number": "0811",
+		"name": "VICTORIA"
+	},
+	{
+		"number": "0327",
+		"name": "VICTORIAVILLE"
+	},
+	{
+		"number": "0450",
+		"name": "WALLACEBURG"
+	},
+	{
+		"number": "0833",
+		"name": "WANETA"
+	},
+	{
+		"number": "0618",
+		"name": "WEST POPLAR RIVER"
+	},
+	{
+		"number": "0890",
+		"name": "WHITEHORSE"
+	},
+	{
+		"number": "0711",
+		"name": "WILD HORSE"
+	},
+	{
+		"number": "0621",
+		"name": "WILLOW CREEK"
+	},
+	{
+		"number": "0453",
+		"name": "WINDSOR AMBASSADOR BRIDGE"
+	},
+	{
+		"number": "0454",
+		"name": "WINDSOR METRO OPERATIONS"
+	},
+	{
+		"number": "0452",
+		"name": "WINDSOR TUNNEL"
+	},
+	{
+		"number": "0519",
+		"name": "WINDYGATES"
+	},
+	{
+		"number": "0518",
+		"name": "WINKLER"
+	},
+	{
+		"number": "0510",
+		"name": "WINNIPEG - INTERNATIONAL AIRPORT"
+	},
+	{
+		"number": "0504",
+		"name": "WINNIPEG - MAIN LONGROOM"
+	},
+	{
+		"number": "0308",
+		"name": "WOBURN"
+	},
+	{
+		"number": "0212",
+		"name": "WOODSTOCK"
+	},
+	{
+		"number": "0492",
+		"name": "WOODSTOCK"
+	},
+	{
+		"number": "0025",
+		"name": "YARMOUTH"
+	},
+	{
+		"number": "0515",
+		"name": "YELLOWKNIFE"
+	}
+]

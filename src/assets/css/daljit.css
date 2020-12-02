@@ -233,7 +233,8 @@ html.fixed .content-body {
 
 /*Sidebar css*/
 .sidebar-left li a:hover {
-    background-color: #d7d7d7 !important;
+    background-color: #aaa !important;
+    color: #fff;
 }
 
 /*--dispatch overview */
@@ -536,6 +537,7 @@ html.fixed .content-body {
     align-items: center;
     justify-content: center;
 }
+
 .map-search__results {
     position: absolute;
     list-style: none;
@@ -551,3 +553,4 @@ html.fixed .content-body {
 .dataTables_filter {
     display: none;
 }
+

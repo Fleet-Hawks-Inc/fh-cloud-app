@@ -535,11 +535,11 @@ html .btn-secondary:disabled {
 html .btn-secondary:active,
 html .btn-secondary.active,
 .show > html .btn-secondary.dropdown-toggle {
-	background-color: #dd4238 !important;
-	background-image: none !important;
-	border-color: #dc372d #dc372d #b7281f !important;
-	-webkit-box-shadow: 0 0 0 0.2rem rgba(227, 97, 89, 0.5) !important;
-	        box-shadow: 0 0 0 0.2rem rgba(227, 97, 89, 0.5) !important;
+	background-color: #3d3d3d !important;
+    background-image: none !important;
+    border-color: #3d3d3d #3d3d3d #3d3d3d !important;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(227, 97, 89, 0) !important;
+    box-shadow: 0 0 0 0.2rem rgba(227, 97, 89, 0) !important;
 }
 
 html .btn-secondary-scale-2 {

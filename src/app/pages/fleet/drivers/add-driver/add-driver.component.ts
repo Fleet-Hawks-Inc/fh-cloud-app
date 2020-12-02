@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AwsUploadService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { HttpClient } from '@angular/common/http';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer} from '@angular/platform-browser';
@@ -103,7 +104,7 @@ export class AddDriverComponent implements OnInit {
   yardID = '';
 
 
-
+  documentTypeList: any = [];
   driverLicenseCountry = '';
   groups = [];
   countries = [];
@@ -121,6 +122,7 @@ export class AddDriverComponent implements OnInit {
   Success: string = '';
   visibleIndex = 0 ;
   constructor(private apiService: ApiService,
+              private httpClient: HttpClient,
               private toastr: ToastrService,
               private awsUS: AwsUploadService,
               private route: ActivatedRoute,
@@ -153,7 +155,23 @@ export class AddDriverComponent implements OnInit {
     this.getToday();
     this.searchLocation();
     
-    $('#address-wrap-0').hide();
+    /*** Daljit to look into it ***/
+// <<<<<<< daljit-26nov
+    
+//     $('#address-wrap-0').hide();
+// =======
+//     this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
+//       console.log('Document  Data', data);
+//       this.documentTypeList = data;
+//     });
+//     $(document).ready(() => {
+//       $('.btnNext').click(() => {
+//         this.nextTab = $('.nav-tabs li a.active').closest('li').next('li');
+//         this.nextTab.find('a').trigger('click');
+//       });
+// >>>>>>> develop
+    
+/****************************/
 
     $(document).ready(() => {
       this.form = $('#driverForm').validate();
@@ -254,7 +272,7 @@ export class AddDriverComponent implements OnInit {
   }
 
   getToday(): string {
-    return new Date().toISOString().split('T')[0]
+    return new Date().toISOString().split('T')[0];
   }
 
   uploadDriverImg(elem, event): void {

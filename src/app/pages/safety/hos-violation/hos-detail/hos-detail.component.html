@@ -1,0 +1,434 @@
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body pl-0 pt-0 pr-0">
+            <header class="page-header">
+                <div class="row pr-5 " style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                        Event Details
+                    </div>
+                    <div class="col-md-8  col-lg-8 text-right pr-4">
+                        <!-- <a href="#assignSafetyProgramModal" class="btn btn-sm btn-success modal-with-form "><i class="fas fa-list"></i> Assign Safety Program</a> -->
+                        <a routerLink="/safety/hos-violations" class="btn btn-sm btn-default">
+                            <i class="fas fa-list"></i> HOS Violation List
+                        </a>
+                        <!-- <div class="btn-group flex-wrap">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">Actions<span class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+                                <a class="dropdown-item text-1" href="edit-fuel-expenses.php">Edit</a>
+                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                            </div>
+                        </div>
+                        <a href="add-incident.php" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add
+                            Event</a> -->
+                    </div>
+                </div>
+            </header>
+            <div class="row">
+                <div class="col pr-0">
+                    <div class="card-body text-dark">
+                        <form class="form-horizontal form-bordered" method="get">
+                            <div class="row cmaindiv">
+                                <div class="col-md-2 col-lg-2">
+                                    <div class="text-center p-4 cerbor">
+                                        <i class="far fa-user text-7"></i>
+                                        <br>
+                                        <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.driverID }}</p>
+                                        <p class="mb-0">DRIVER ID</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-lg-2">
+                                    <div class="text-center p-4 cerbor">
+                                        <i class="far fa-user text-7"></i>
+                                        <br>
+                                        <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.driverName }}</p>
+                                        <p class="mb-0">DRIVER NAME</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-lg-2">
+                                    <div class="text-center p-4 cerbor">
+                                        <i class="far fa-calendar-alt text-7"></i>
+                                        <br>
+                                        <p class="mb-0 text-4 font-weight-bold text-dark">{{ event.eventDate }}, {{ event.eventTime }}</p>
+                                        <p class="mb-0">DATE</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-lg-2">
+                                    <div class="text-center p-4 cerbor">
+                                        <i class="fas fa-map-marker-alt text-7"></i>
+                                        <br>
+                                        <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.location }}</p>
+                                        <p class="mb-0">LOCATION</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-lg-2">
+                                    <div class="text-center p-4 cerbor">
+                                        <i class="far fa-user text-7"></i>
+                                        <br>
+                                        <p class="mb-0 text-5 font-weight-bold text-dark">-</p>
+                                        <p class="mb-0">CO DRIVER</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-lg-2">
+                                    <div class="text-center p-4">
+                                        <i class="fa fa-truck text-7"></i>
+                                        <br>
+                                        <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.vehicleName }}</p>
+                                        <p class="mb-0">VEHICLE</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-lg-12 text-4 font-weight-bold">
+                                    Log Events
+                                </div>
+
+                                <div class="col-lg-12" style="margin-left: 60px;">
+                                    <div class="gmainbox">
+                                        <div class="gleftbox text-right">
+                                            <h5 class="font-weight-bold text-dark">OFF</h5>
+                                            <h5 class="font-weight-bold text-dark" style="padding-top:40px;">SB</h5>
+                                            <h5 class="font-weight-bold text-dark" style="padding-top:40px;">D</h5>
+                                            <h5 class="font-weight-bold text-dark" style="padding-top:34px;">ON</h5>
+                                        </div>
+                                        <div class="gtime">
+                                            <ul>
+                                                <li class="one">M</li>
+                                                <li class="one">1</li>
+                                                <li class="one">2</li>
+                                                <li class="one">3</li>
+                                                <li class="one">4</li>
+                                                <li class="one">5</li>
+                                                <li class="two">6</li>
+                                                <li class="one">7</li>
+                                                <li class="one">8</li>
+                                                <li class="one">9</li>
+                                                <li class="three">10</li>
+                                                <li class="three">11</li>
+                                                <li class="one">N</li>
+                                                <li class="one">1</li>
+                                                <li class="two">2</li>
+                                                <li class="two">3</li>
+                                                <li class="two">4</li>
+                                                <li class="two">5</li>
+                                                <li class="two">6</li>
+                                                <li class="one">7</li>
+                                                <li class="one">8</li>
+                                                <li class="three">9</li>
+                                                <li class="three">10</li>
+                                                <li class="four">11</li>
+                                                <li>M</li>
+                                            </ul>
+                                            <div class="gbox">
+                                                <svg style="height:100%; width:100%;">
+                                                    <!-- OFf duty line -->
+                                                    <line x1="0" y1="40" x2="200" y2="40"
+                                                        style="stroke:rgb(0,0,0);stroke-width:6"></line>
+                                                    <!-- 1st divder starting from 37 -->
+                                                    <line x1="200" y1="103" x2="200" y2="37"
+                                                        style="stroke:rgb(0,0,0);stroke-width:6"></line>
+                                                    <!-- SB duty line -->
+                                                    <line x1="200" y1="100" x2="300" y2="100"
+                                                        style="stroke:rgb(0,0,0);stroke-width:6"></line>
+                                                    <!-- 2nd divder starting from 97 -->
+                                                    <line x1="300" y1="150" x2="300" y2="97"
+                                                        style="stroke:rgb(0,0,0);stroke-width:6"></line>
+                                                    <!-- Driving line -->
+                                                    <line x1="297" y1="150" x2="600" y2="150"
+                                                        style="stroke:rgb(0,0,0);stroke-width:6"></line>
+                                                    <!-- 3rd divder starting from 182 -->
+                                                    <line x1="600" y1="147" x2="600" y2="211"
+                                                        style="stroke:rgb(0,0,0);stroke-width:6"></line>
+                                                    <!-- ON duty line -->
+                                                    <line x1="600" y1="208" x2="800" y2="208"
+                                                        style="stroke:rgb(0,0,0);stroke-width:6"></line>
+                                                    <!-- 1st divder for go to off duty -->
+                                                    <line x1="800" y1="211" x2="800" y2="37"
+                                                        style="stroke:rgb(0,0,0);stroke-width:6"></line>
+                                                    <!-- OFf duty line -->
+                                                    <line x1="800" y1="40" x2="1050" y2="40"
+                                                        style="stroke:rgb(0,0,0);stroke-width:6"></line>
+                                                    <!-- 1st divder for go to off duty -->
+                                                    <line x1="1050" y1="213" x2="1050" y2="37"
+                                                        style="stroke:rgb(0,0,0);stroke-width:6"></line>
+                                                    <!-- ON duty line -->
+                                                    <line x1="1052" y1="210" x2="1298" y2="210"
+                                                        style="stroke:rgb(0,0,0);stroke-width:6"></line>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="grightbox text-left">
+                                            <h5 class="font-weight-bold text-dark">4:20:10</h5>
+                                            <h5 class="font-weight-bold text-dark" style="padding-top:40px;">2:00:00
+                                            </h5>
+                                            <h5 class="font-weight-bold text-dark" style="padding-top:40px;">4:10:00
+                                            </h5>
+                                            <h5 class="font-weight-bold text-dark" style="padding-top:34px;">9:05:00
+                                            </h5>
+                                        </div>
+                                        <div>
+                                            <h5 class="font-weight-bold text-dark text-right">Total Time: 13:15:00</h5>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-8">
+                                    <div id="DataTables_Table_16_wrapper"
+                                        class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="dataTables_length" id="DataTables_Table_16_length">
+                                                    <label>Show <select name="DataTables_Table_16_length"
+                                                            aria-controls="DataTables_Table_16"
+                                                            class="custom-select custom-select-sm form-control form-control-sm">
+                                                            <option value="10">10</option>
+                                                            <option value="25">25</option>
+                                                            <option value="50">50</option>
+                                                            <option value="100">100</option>
+                                                        </select> entries</label></div>
+                                            </div>
+                                            <div class="col-lg-6"></div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table
+                                                class="table table-responsive-lg table-bordered table-striped mb-0 simple-table dataTable no-footer"
+                                                id="DataTables_Table_16" role="grid" style="width: 665px;">
+                                                <thead>
+                                                    <tr class="font-weight-bold" role="row">
+                                                        <td width="10%" class="sorting_asc" tabindex="0"
+                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
+                                                            data-column-index="0" aria-sort="ascending"
+                                                            aria-label="Time: activate to sort column descending"
+                                                            style="width: 35px;">Time</td>
+                                                        <td width="10%" class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
+                                                            data-column-index="1"
+                                                            aria-label="Duration: activate to sort column ascending"
+                                                            style="width: 58px;">Duration</td>
+                                                        <td width="20%" class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
+                                                            data-column-index="2"
+                                                            aria-label="Location: activate to sort column ascending"
+                                                            style="width: 80px;">Location</td>
+                                                        <td width="10%" class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
+                                                            data-column-index="3"
+                                                            aria-label="Odometer: activate to sort column ascending"
+                                                            style="width: 66px;">Odometer</td>
+                                                        <td width="40%" class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
+                                                            data-column-index="4"
+                                                            aria-label="Notes: activate to sort column ascending"
+                                                            style="width: 157px;">Notes</td>
+                                                        <td width="10%" class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
+                                                            data-column-index="5"
+                                                            aria-label="Status: activate to sort column ascending"
+                                                            style="width: 41px;">Status</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr role="row" class="odd">
+
+                                                        <td class="sorting_1"> 12:00:00 AM</td>
+                                                        <td>7 mins 11 secs</td>
+                                                        <td>12.8 km S of Portage, WI</td>
+                                                        <td>5658 miles</td>
+                                                        <td>This is real good business in the world evenin time of
+                                                            crisis.</td>
+                                                        <td><span class="badge badge-dark p-1">ON</span></td>
+                                                    </tr>
+                                                    <tr role="row" class="even">
+
+                                                        <td class="sorting_1"> 12:00:00 AM</td>
+                                                        <td>7 mins 11 secs</td>
+                                                        <td>12.8 km S of Portage, WI</td>
+                                                        <td>5658 miles</td>
+                                                        <td>This is real good business in the world evenin time of
+                                                            crisis.</td>
+                                                        <td><span class="badge badge-dark p-1">OFF</span></td>
+                                                    </tr>
+                                                    <tr role="row" class="odd">
+
+                                                        <td class="sorting_1"> 12:00:00 AM</td>
+                                                        <td>7 mins 11 secs</td>
+                                                        <td>12.8 km S of Portage, WI</td>
+                                                        <td>5658 miles</td>
+                                                        <td>This is real good business in the world evenin time of
+                                                            crisis.</td>
+                                                        <td><span class="badge badge-dark p-1">SB</span></td>
+                                                    </tr>
+                                                    <tr role="row" class="even">
+
+                                                        <td class="sorting_1"> 12:00:00 AM</td>
+                                                        <td>7 mins 11 secs</td>
+                                                        <td>12.8 km S of Portage, WI</td>
+                                                        <td>5658 miles</td>
+                                                        <td>This is real good business in the world evenin time of
+                                                            crisis.</td>
+                                                        <td><span class="badge badge-dark p-1">YM</span></td>
+                                                    </tr>
+                                                    <tr role="row" class="odd">
+
+                                                        <td class="sorting_1"> 12:00:00 AM</td>
+                                                        <td>7 mins 11 secs</td>
+                                                        <td>12.8 km S of Portage, WI</td>
+                                                        <td>5658 miles</td>
+                                                        <td>This is real good business in the world evenin time of
+                                                            crisis.</td>
+                                                        <td><span class="badge badge-dark p-1">ON</span></td>
+                                                    </tr>
+                                                    <tr role="row" class="even">
+
+                                                        <td class="sorting_1"> 12:00:00 AM</td>
+                                                        <td>7 mins 11 secs</td>
+                                                        <td>12.8 km S of Portage, WI</td>
+                                                        <td>5658 miles</td>
+                                                        <td>This is real good business in the world evenin time of
+                                                            crisis.</td>
+                                                        <td><span class="badge badge-dark p-1">SB</span></td>
+                                                    </tr>
+                                                    <tr role="row" class="odd">
+
+                                                        <td class="sorting_1"> 12:00:00 AM</td>
+                                                        <td>7 mins 11 secs</td>
+                                                        <td>12.8 km S of Portage, WI</td>
+                                                        <td>5658 miles</td>
+                                                        <td>This is real good business in the world evenin time of
+                                                            crisis.</td>
+                                                        <td><span class="badge badge-dark p-1">ON</span></td>
+                                                    </tr>
+                                                    <tr role="row" class="even">
+
+                                                        <td class="sorting_1"> 12:00:00 AM</td>
+                                                        <td>7 mins 11 secs</td>
+                                                        <td>12.8 km S of Portage, WI</td>
+                                                        <td>5658 miles</td>
+                                                        <td>This is real good business in the world evenin time of
+                                                            crisis.</td>
+                                                        <td><span class="badge badge-dark p-1">ON</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="dataTables_paginate paging_simple_numbers"
+                                            id="DataTables_Table_16_paginate">
+                                            <ul class="pagination">
+                                                <li class="paginate_button page-item previous disabled"
+                                                    id="DataTables_Table_16_previous"><a href="#"
+                                                        aria-controls="DataTables_Table_16" data-dt-idx="0" tabindex="0"
+                                                        class="page-link">Previous</a></li>
+                                                <li class="paginate_button page-item active"><a href="#"
+                                                        aria-controls="DataTables_Table_16" data-dt-idx="1" tabindex="0"
+                                                        class="page-link">1</a></li>
+                                                <li class="paginate_button page-item next disabled"
+                                                    id="DataTables_Table_16_next"><a href="#"
+                                                        aria-controls="DataTables_Table_16" data-dt-idx="2" tabindex="0"
+                                                        class="page-link">Next</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4 pl-1">
+                                    <div class="bg-white ">
+                                        <p class="mb-2 text-4 font-weight-bold text-dark">Safety Manager Internal Notes
+                                        </p>
+                                        <div class="timeline dispatch-timeline timeline-simple changelog pb-3"
+                                            style="max-height: 450px;overflow-x: auto;">
+                                            <div class="tm-body text-dark py-0">
+                                                <ol class="tm-items">
+                                                    <li>
+                                                        <div class="tm-box">
+                                                            <span class="release-date">31 Aug 2020 04:10 PM</span>
+                                                            <ul class="list-unstyled">
+                                                                <li>
+                                                                    <b class="text-success">Mike</b> is on the way.
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="tm-box">
+                                                            <span class="release-date">31 Aug 2020 04:16 PM</span>
+                                                            <ul class="list-unstyled">
+                                                                <li>
+                                                                    <b class="text-success">Mike</b> reached at the
+                                                                    spot.
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="tm-box">
+                                                            <span class="release-date">31 Aug 2020 04:40 PM</span>
+                                                            <ul class="list-unstyled">
+                                                                <li>
+                                                                    <b class="text-success">Mike</b> Solved the case.
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="tm-box">
+                                                            <span class="release-date">31 Aug 2020 04:10 PM</span>
+                                                            <ul class="list-unstyled">
+                                                                <li>
+                                                                    <b class="text-success">Mike</b> is on the way.
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="tm-box">
+                                                            <span class="release-date">31 Aug 2020 04:16 PM</span>
+                                                            <ul class="list-unstyled">
+                                                                <li>
+                                                                    <b class="text-success">Mike</b> reached at the
+                                                                    spot.
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="tm-box">
+                                                            <span class="release-date">31 Aug 2020 04:40 PM</span>
+                                                            <ul class="list-unstyled">
+                                                                <li>
+                                                                    <b class="text-success">Mike</b> Solved the case.
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+
+                                                </ol>
+                                            </div>
+                                        </div>
+                                        <div class="send-field d-flex">
+                                            <input type="text" class="form-control" placeholder="Enter your message"
+                                                name="">
+                                            <a href="javascript:;" class="btn btn-success btn-sm">Send</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>

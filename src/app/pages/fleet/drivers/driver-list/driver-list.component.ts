@@ -108,9 +108,21 @@ export class DriverListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         console.log(result);
+
         this.drivers = result.Items;
         console.log('drivers', this.drivers);
+
+
+        // this.drivers = result.Items;
+        for (let i = 0; i < result.Items.length; i++) {
+          // console.log(result.Items[i].isDeleted);
+          if (result.Items[i].isDeleted === 0) {
+            this.drivers.push(result.Items[i]);
+          }
+        }
+
       //  this.spinner.hide(); // loader hide
+
       },
     });
   }

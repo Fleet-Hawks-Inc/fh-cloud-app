@@ -21,16 +21,16 @@
 
                <div class="p-2">
                   <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                     <li class="nav-item"> <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="true">Basic Details</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="lifecycle-tab" data-toggle="tab" href="#lifecycle" role="tab" aria-controls="lifecycle" aria-selected="false">Lifecycle</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="specifications-tab" data-toggle="tab" href="#specifications" role="tab" aria-controls="specifications" aria-selected="false">Specifications</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="insurance-tab" data-toggle="tab" href="#insurance" role="tab" aria-controls="insurance" aria-selected="false">Insurance</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="fluids-tab" data-toggle="tab" href="#fluids" role="tab" aria-controls="fluids" aria-selected="false">Fluids</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="wheels-tab" data-toggle="tab" href="#wheels" role="tab" aria-controls="wheels" aria-selected="false">Wheels & Tires</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="engine-tab" data-toggle="tab" href="#engine" role="tab" aria-controls="engine" aria-selected="false">Engine & Transmission</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="purchase-tab" data-toggle="tab" href="#purchase" role="tab" aria-controls="purchase" aria-selected="false">Purchase</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="loan-tab" data-toggle="tab" href="#loan" role="tab" aria-controls="loan" aria-selected="false">Loan</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="vsettings-tab" data-toggle="tab" href="#vsettings" role="tab" aria-controls="vsettings" aria-selected="false">Settings</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(1)" [ngClass]="{'active': activeTab == 1}">Basic Details</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(2)" [ngClass]="{'active': activeTab == 2}" >Lifecycle</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(3)" [ngClass]="{'active': activeTab == 3}" >Specifications</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(4)" [ngClass]="{'active': activeTab == 4}" >Insurance</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(5)"  [ngClass]="{'active': activeTab == 5}">Fluids</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(6)"  [ngClass]="{'active': activeTab == 6}" >Wheels & Tires</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(7)"  [ngClass]="{'active': activeTab == 7}" >Engine & Transmission</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(8)"  [ngClass]="{'active': activeTab == 8}" >Purchase</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(9)" [ngClass]="{'active': activeTab == 9}" >Loan</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(10)" [ngClass]="{'active': activeTab == 10}">Settings</a> </li>
                   </ul>
                </div>
 
@@ -38,7 +38,7 @@
 
              <div class="card-body">
                   <div class="tab-content" id="myTabContent">
-                     <div class="tab-pane show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                     <div class="tab-pane" [ngClass]="{'show active': activeTab == 1}" id="details" role="tabpanel" aria-labelledby="details-tab">
                         <div class="">
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -52,84 +52,71 @@
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Type</label>
-                                       <select class="form-control" name="vehicleType" [(ngModel)]="vehicleType">
-                                          <optgroup>
-                                             <option>Box truck</option>
-                                             <option>Platform truck</option>
-                                             <option>Panel truck</option>
-                                             <option>Pickup truck</option>
-                                             <option>Garbage truck</option>
-                                             <option>Constrution truck</option>
-                                          </optgroup>
-                                       </select>
+                                       <select  class="form-control" name="vehicleType" [(ngModel)]="vehicleType" >                                      
+                                          <option *ngFor = "let vehicle of vehicleTypeList" [value]="vehicle.code">{{vehicle.name}}</option>                                      
+                                          </select>
                                     </div>
-                                    <div class="col-lg-10">
+                                    <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">VIN</label>
                                        <input type="text" class="form-control" name="VIN" [(ngModel)]="VIN">
+                                    </div>
+                                    <div class="col-lg-5">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">DOT#</label>
+                                       <input type="text" class="form-control" name="DOT" [(ngModel)]="DOT"> 
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Year</label>
                                        <select data-plugin-selectTwo class="form-control populate" name="year" [(ngModel)]="year">
                                           <optgroup label="">
-                                             <option value="1">1980</option>
-                                             <option value="2">1981</option>
-                                             <option value="2">1982</option>
-                                             <option value="2">1983</option>
-                                             <option value="2">1984</option>
-                                             <option value="2">1985</option>
-                                             <option value="2">1986</option>
-                                             <option value="2">1987</option>
-                                             <option value="2">1988</option>
-                                             <option value="2">1989</option>
-                                             <option value="2">1990</option>
-                                             <option value="2">1991</option>
-                                             <option value="2">1992</option>
-                                             <option value="2">1993</option>
-                                             <option value="2">1994</option>
-                                             <option value="2">1995</option>
-                                             <option value="2">1996</option>
-                                             <option value="2">1997</option>
-                                             <option value="2">1998</option>
-                                             <option value="2">1999</option>
-                                             <option value="2">2000</option>
-                                             <option value="2">2001</option>
-                                             <option value="2">2002</option>
-                                             <option value="2">2003</option>
-                                             <option value="2">2004</option>
-                                             <option value="2">2005</option>
-                                             <option value="2">2006</option>
-                                             <option value="2">2007</option>
-                                             <option value="2">2008</option>
-                                             <option value="2">2009</option>
-                                             <option value="2">2010</option>
-                                             <option value="2">2011</option>
-                                             <option value="2">2012</option>
-                                             <option value="2">2013</option>
-                                             <option value="2">2014</option>
-                                             <option value="2">2015</option>
-                                             <option value="2">2016</option>
-                                             <option value="2">2017</option>
-                                             <option value="2">2018</option>
-                                             <option value="2">2019</option>
-                                             <option value="2">2020</option>
+                                             <option value="1980">1980</option>
+                                             <option value="1981">1981</option>
+                                             <option value="1982">1982</option>
+                                             <option value="1983">1983</option>
+                                             <option value="1984">1984</option>
+                                             <option value="1985">1985</option>
+                                             <option value="1986">1986</option>
+                                             <option value="1987">1987</option>
+                                             <option value="1988">1988</option>
+                                             <option value="1989">1989</option>
+                                             <option value="1990">1990</option>
+                                             <option value="1991">1991</option>
+                                             <option value="1992">1992</option>
+                                             <option value="1993">1993</option>
+                                             <option value="1994">1994</option>
+                                             <option value="1995">1995</option>
+                                             <option value="1996">1996</option>
+                                             <option value="1997">1997</option>
+                                             <option value="1998">1998</option>
+                                             <option value="1999">1999</option>
+                                             <option value="2000">2000</option>
+                                             <option value="2001">2001</option>
+                                             <option value="2002">2002</option>
+                                             <option value="2003">2003</option>
+                                             <option value="2004">2004</option>
+                                             <option value="2005">2005</option>
+                                             <option value="2006">2006</option>
+                                             <option value="2007">2007</option>
+                                             <option value="2008">2008</option>
+                                             <option value="2009">2009</option>
+                                             <option value="2010">2010</option>
+                                             <option value="2011">2011</option>
+                                             <option value="2012">2012</option>
+                                             <option value="2013">2013</option>
+                                             <option value="2014">2014</option>
+                                             <option value="2015">2015</option>
+                                             <option value="2016">2016</option>
+                                             <option value="2017">2017</option>
+                                             <option value="2018">2018</option>
+                                             <option value="2019">2019</option>
+                                             <option value="2020">2020</option>
                                           </optgroup>
                                        </select>
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Make</label>
-                                       <select data-plugin-selectTwo class="form-control populate" name="manufacturerID" [(ngModel)]="manufacturerID">
+                                       <select data-plugin-selectTwo class="form-control populate" name="manufacturerID" [(ngModel)]="manufacturerID" (change)="getModels()">
                                           <optgroup label="">
-                                             <option value="1">Tesla</option>
-                                             <option value="2">BMW</option>
-                                             <option value="2">GM</option>
-                                             <option value="2">Ford</option>
-                                             <option value="2">Fiat</option>
-                                             <option value="2">Daimler</option>
-                                             <option value="2">Honda</option>
-                                             <option value="2">Hyundai</option>
-                                             <option value="2">Kia</option>
-                                             <option value="2">Nissan</option>
-                                             <option value="2">Rivian</option>
+                                             <option *ngFor="let manufacturer of manufacturers" value="{{manufacturer.manufacturerID}}">{{manufacturer.name}}</option>
                                           </optgroup>
                                        </select>
                                     </div>
@@ -137,17 +124,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Model</label>
                                        <select data-plugin-selectTwo class="form-control populate" name="modelID" [(ngModel)]="modelID">
                                           <optgroup label="">
-                                             <option value="1">ST8189LD</option>
-                                             <option value="2">ZZ0189LD</option>
-                                             <option value="2">FK36189D</option>
-                                             <option value="2">IT55855G</option>
-                                             <option value="2">POLD2132</option>
-                                             <option value="2">QJ23659W</option>
-                                             <option value="2">454564564</option>
-                                             <option value="2">1231231456789</option>
-                                             <option value="2">789798001</option>
-                                             <option value="2">0416546503</option>
-                                             <option value="2">KDF2355U</option>
+                                             <option *ngFor="let model of models" value="model.modelID">{{model.name}}</option>
                                           </optgroup>
                                        </select>
                                     </div>
@@ -159,16 +136,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
                                        <select data-plugin-selectTwo class="form-control populate" name="stateID" [(ngModel)]="stateID">
                                           <optgroup label="">
-                                             <option value="1">California</option>
-                                             <option value="2">Florida</option>
-                                             <option value="2">New Jersey</option>
-                                             <option value="2">New York</option>
-                                             <option value="2">New Mexico</option>
-                                             <option value="2">Texas</option>
-                                             <option value="2">Washington</option>
-                                             <option value="2">West Virginia</option>
-                                             <option value="2">Nevada</option>
-                                             <option value="2">Montana</option>
+                                             <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
                                           </optgroup>
                                        </select>
                                     </div>
@@ -177,11 +145,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Assign Driver</label>
                                        <select data-plugin-selectTwo class="form-control populate" name="driverID" [(ngModel)]="driverID">
                                           <optgroup label="">
-                                             <option value="1">John Smith</option>
-                                             <option value="2">William Black</option>
-                                             <option value="3">Harry Jonas</option>
-                                             <option value="4">James</option>
-                                             <option value="5">Charlie</option>
+                                             <option *ngFor="let driver of drivers" value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</option>
                                           </optgroup>
                                        </select>
                                     </div>
@@ -192,11 +156,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Driver's Team <small>(If any)</small></label>
                                        <select data-plugin-selectTwo class="form-control populate" name="teamDriverID" [(ngModel)]="teamDriverID">
                                           <optgroup label="">
-                                             <option value="2">William Black</option>
-                                             <option value="3">Harry Jonas</option>
-                                             <option value="4">James</option>
-                                             <option value="5">Charlie</option>
-                                             <option value="1">John Smith</option>
+                                                <option *ngFor="let driver of drivers" value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</option>
                                           </optgroup>
                                        </select>
                                     </div>
@@ -257,9 +217,9 @@
                                                 <div class="col-lg-6 pl-0">
                                                    <select data-plugin-selectTwo class="form-control populate" name="repeatByTimeUnit" [(ngModel)]="repeatByTimeUnit">
                                                       <optgroup label="">
-                                                         <option value="1">Days</option>
-                                                         <option value="2">Weeks</option>
-                                                         <option value="2">Months</option>
+                                                         <option value="Days">Days</option>
+                                                         <option value="Weeks">Weeks</option>
+                                                         <option value="Months">Months</option>
                                                       </optgroup>
                                                    </select>
                                                 </div>
@@ -295,16 +255,16 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Group</label>
                                        <select data-plugin-selectTwo class="form-control populate" name="groupID" [(ngModel)]="groupID">
                                           <optgroup label="">
-                                             <option value="1">California</option>
-                                             <option value="2">Florida</option>
-                                             <option value="2">New Jersey</option>
-                                             <option value="2">New York</option>
-                                             <option value="2">New Mexico</option>
-                                             <option value="2">Texas</option>
-                                             <option value="2">Washington</option>
-                                             <option value="2">West Virginia</option>
-                                             <option value="2">Nevada</option>
-                                             <option value="2">Montana</option>
+                                             <option value="California">California</option>
+                                             <option value="Florida">Florida</option>
+                                             <option value="New Jersey">New Jersey</option>
+                                             <option value="New York">New York</option>
+                                             <option value="New Mexico">New Mexico</option>
+                                             <option value="Texas">Texas</option>
+                                             <option value="Washington">Washington</option>
+                                             <option value="West Virginia">West Virginia</option>
+                                             <option value="Nevada">Nevada</option>
+                                             <option value="Montana">Montana</option>
                                           </optgroup>
                                        </select>
                                     </div>
@@ -319,10 +279,10 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Ownership</label>
                                        <select data-plugin-selectTwo class="form-control populate" name="ownership" [(ngModel)]="ownership">
                                           <optgroup label="">
-                                             <option value="1">Owned</option>
-                                             <option value="2">Leased</option>
-                                             <option value="2">Rented</option>
-                                             <option value="2">Customer</option>
+                                             <option value="Owned">Owned</option>
+                                             <option value="Leased">Leased</option>
+                                             <option value="Rented">Rented</option>
+                                             <option value="Customer">Customer</option>
                                           </optgroup>
                                        </select>
                                     </div>
@@ -376,9 +336,9 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Body Type</label>
                                        <select data-plugin-selectTwo class="form-control populate" name="bodyType" [(ngModel)]="bodyType">
                                           <optgroup label="">
-                                             <option value="1">Conventional</option>
-                                             <option value="2">Full Size</option>
-                                             <option value="2">Pickup</option>
+                                             <option value="Conventional">Conventional</option>
+                                             <option value="Full Size">Full Size</option>
+                                             <option value="Pickup">Pickup</option>
                                           </optgroup>
                                        </select>
                                     </div>
@@ -386,9 +346,9 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Body Subtype</label>
                                        <select data-plugin-selectTwo class="form-control populate" name="bodySubType" [(ngModel)]="bodySubType">
                                           <optgroup label="">
-                                             <option value="1">Cargo</option>
-                                             <option value="2">Sleeper Cab</option>
-                                             <option value="2">Crew Cab</option>
+                                             <option value="Cargo">Cargo</option>
+                                             <option value="Sleeper Cab">Sleeper Cab</option>
+                                             <option value="Crew Cab">Crew Cab</option>
                                           </optgroup>
                                        </select>
                                     </div>
@@ -423,7 +383,7 @@
                         </div>
                      </div>
                      <!-- Lifecycle -->
-                     <div class="tab-pane fade" id="lifecycle" role="tabpanel" aria-labelledby="lifecycle-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 2}" id="lifecycle" role="tabpanel" aria-labelledby="lifecycle-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -495,7 +455,7 @@
                         </div>
                      </div>
                      <!-- specifications -->
-                     <div class="tab-pane fade" id="specifications" role="tabpanel" aria-labelledby="specifications-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 3}" id="specifications" role="tabpanel" aria-labelledby="specifications-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -511,10 +471,10 @@
                                           </div>
                                           <div class="col-lg-6">
                                              <select class="form-control populate" name="specifications.heightUnit" [(ngModel)]="specifications.heightUnit">
-                                                <option value="1">Feet</option>
-                                                <option value="2">Centimeters</option>
-                                                <option value="3">Inches</option>
-                                                <option value="4">Meter</option>
+                                                <option value="Feet">Feet</option>
+                                                <option value="Centimeters">Centimeters</option>
+                                                <option value="Inches">Inches</option>
+                                                <option value="Meter">Meter</option>
                                              </select>
                                           </div>
                                        </div>
@@ -527,10 +487,10 @@
                                           </div>
                                           <div class="col-lg-6">
                                              <select class="form-control populate" name="specifications.lengthUnit" [(ngModel)]="specifications.lengthUnit">
-                                                <option value="1">Feet</option>
-                                                <option value="2">Centimeters</option>
-                                                <option value="3">Inches</option>
-                                                <option value="4">Meter</option>
+                                                <option value="Feet">Feet</option>
+                                                <option value="Centimeters">Centimeters</option>
+                                                <option value="Inches">Inches</option>
+                                                <option value="Meter">Meter</option>
                                              </select>
                                           </div>
                                        </div>
@@ -543,10 +503,10 @@
                                           </div>
                                           <div class="col-lg-6">
                                              <select class="form-control populate" name="specifications.groundClearnceUnit" [(ngModel)]="specifications.groundClearnceUnit">
-                                                <option value="1">Feet</option>
-                                                <option value="2">Centimeters</option>
-                                                <option value="3">Inches</option>
-                                                <option value="4">Meter</option>
+                                                <option value="Feet">Feet</option>
+                                                <option value="Centimeters">Centimeters</option>
+                                                <option value="Inches">Inches</option>
+                                                <option value="Meter">Meter</option>
                                              </select>
                                           </div>
                                        </div>
@@ -559,10 +519,10 @@
                                           </div>
                                           <div class="col-lg-6">
                                              <select class="form-control populate" name="specifications.badLengthUnit" [(ngModel)]="specifications.badLengthUnit">
-                                                <option value="1">Feet</option>
-                                                <option value="2">Centimeters</option>
-                                                <option value="3">Inches</option>
-                                                <option value="4">Meter</option>
+                                                <option value="Feet">Feet</option>
+                                                <option value="Centimeters">Centimeters</option>
+                                                <option value="Inches">Inches</option>
+                                                <option value="Meter">Meter</option>
                                              </select>
                                           </div>
                                        </div>
@@ -662,7 +622,7 @@
                         </div>
                      </div>
                      <!-- insurance -->
-                     <div class="tab-pane fade" id="insurance" role="tabpanel" aria-labelledby="insurance-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 4}" id="insurance" role="tabpanel" aria-labelledby="insurance-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -683,8 +643,8 @@
                                           <div class="col-lg-6">
                                              <select data-plugin-selectTwo class="form-control populate" name="insurance.premiumCurrency" [(ngModel)]="insurance.premiumCurrency">
                                                 <optgroup label="">
-                                                   <option value="1">USD</option>
-                                                   <option value="2">CAD</option>
+                                                   <option value="USD">USD</option>
+                                                   <option value="CAD">CAD</option>
                                                 </optgroup>
                                              </select>
                                           </div>
@@ -728,13 +688,13 @@
                                           <div class="col-lg-12">
                                              <select data-plugin-selectTwo class="form-control populate" name="insurance.remiderEvery" [(ngModel)]="insurance.remiderEvery">
                                                 <optgroup label="">
-                                                   <option value="1">Weekly</option>
-                                                   <option value="2">2 Weeks</option>
-                                                   <option value="2">Monthly</option>
-                                                   <option value="2">Quarterly</option>
-                                                   <option value="2">Half Yearly</option>
-                                                   <option value="2">Yearly</option>
-                                                   <option value="2">Custom</option>
+                                                   <option value="Weekly">Weekly</option>
+                                                   <option value="2 Weeks">2 Weeks</option>
+                                                   <option value="Monthly">Monthly</option>
+                                                   <option value="Quarterly">Quarterly</option>
+                                                   <option value="Half Yearly">Half Yearly</option>
+                                                   <option value="Yearly">Yearly</option>
+                                                   <option value="Custom">Custom</option>
                                                 </optgroup>
                                              </select>
                                           </div>
@@ -743,13 +703,36 @@
                                  </div>
                               </div>
                               <div class="col-lg-5 offset-lg-1">
-                                 <div class="row"> </div>
+                                 <div class="row">
+                                    <div class="col-lg-5">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Insurance Policy#</label>
+                                       <input type="text" class="form-control" name="insurance.policyNumber" [(ngModel)]="insurance.policyNumber"> 
+                                    </div>
+                                    <div class="col-lg-5">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Insurance Amount</label>
+                                       <div class="row">
+                                          <div class="col-lg-6">
+                                            
+                                             <input type="number" class="form-control" name="insurance.amount" [(ngModel)]="insurance.amount"> 
+                                          </div>
+                                          <div class="col-lg-6">
+                                             <select data-plugin-selectTwo class="form-control populate" name="insurance.amountCurrency" [(ngModel)]="insurance.amountCurrency">
+                                                <optgroup label="">
+                                                   <option value="USD">USD</option>
+                                                   <option value="CAD">CAD</option>
+                                                </optgroup>
+                                             </select>
+                                          </div>
+                                       </div>
+                                      
+                                    </div>
+                                  </div>
                               </div>
                            </div>
                         </div>
                      </div>
                      <!-- fuel -->
-                     <div class="tab-pane fade" id="fluids" role="tabpanel" aria-labelledby="fluids-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 5}" id="fluids" role="tabpanel" aria-labelledby="fluids-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -761,10 +744,10 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Type</label>
                                        <select data-plugin-selectTwo class="form-control populate" name="fluid.fuelType" [(ngModel)]="fluid.fuelType">
                                           <optgroup label="">
-                                             <option value="1">CNG</option>
-                                             <option value="2">Diesal</option>
-                                             <option value="2">Gasoline</option>
-                                             <option value="2">Propane</option>
+                                             <option value="CNG">CNG</option>
+                                             <option value="Diesal">Diesal</option>
+                                             <option value="Gasoline">Gasoline</option>
+                                             <option value="Propane">Propane</option>
                                           </optgroup>
                                        </select>
                                     </div>
@@ -772,15 +755,15 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Quality</label>
                                        <select data-plugin-selectTwo class="form-control populate" name="fluid.fuelQuality" [(ngModel)]="fluid.fuelQuality">
                                           <optgroup label="">
-                                             <option value="1">Regular</option>
-                                             <option value="2">Extra</option>
-                                             <option value="3">Supreme</option>
-                                             <option value="4">Supreme+</option>
-                                             <option value="5">Regular Clean</option>
-                                             <option value="6">Plus Clean</option>
-                                             <option value="7">Super Clean</option>
-                                             <option value="8">Ultra94</option>
-                                             <option value="9">V-Power</option>
+                                             <option value="Regular">Regular</option>
+                                             <option value="Extra">Extra</option>
+                                             <option value="Supreme">Supreme</option>
+                                             <option value="Supreme+">Supreme+</option>
+                                             <option value="Regular Clean">Regular Clean</option>
+                                             <option value="Plus Clean">Plus Clean</option>
+                                             <option value="Super Clean">Super Clean</option>
+                                             <option value="Ultra94">Ultra94</option>
+                                             <option value="V-Power">V-Power</option>
                                           </optgroup>
                                        </select>
                                     </div>
@@ -816,7 +799,7 @@
                         </div>
                      </div>
                      <!-- wheel -->
-                     <div class="tab-pane fade" id="wheels" role="tabpanel" aria-labelledby="wheels-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 6}" id="wheels" role="tabpanel" aria-labelledby="wheels-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -886,7 +869,7 @@
                         </div>
                      </div>
                      <!-- engine -->
-                     <div class="tab-pane fade" id="engine" role="tabpanel" aria-labelledby="engine-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 7}" id="engine" role="tabpanel" aria-labelledby="engine-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -997,7 +980,7 @@
                         </div>
                      </div>
                      <!-- Purchase -->
-                     <div class="tab-pane fade" id="purchase" role="tabpanel" aria-labelledby="purchase-tab">
+                     <div class="tab-pane fade"  [ngClass]="{'show active': activeTab == 8}" id="purchase" role="tabpanel" aria-labelledby="purchase-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -1026,8 +1009,8 @@
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Price</label>
                                     <select data-plugin-selectTwo class="form-control populate" name="purchase.purchasePrice" [(ngModel)]="purchase.purchasePrice">
                                        <optgroup label="">
-                                          <option value="1">USD</option>
-                                          <option value="2">CAD</option>
+                                          <option value="USD">USD</option>
+                                          <option value="CAD">CAD</option>
                                        </optgroup>
                                     </select>
                                  </div>
@@ -1063,7 +1046,7 @@
                         </div>
                      </div>
                      <!-- loan -->
-                     <div class="tab-pane fade" id="loan" role="tabpanel" aria-labelledby="loan-tab">
+                     <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 9}" id="loan" role="tabpanel" aria-labelledby="loan-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-10">
@@ -1147,7 +1130,7 @@
                         </div>
                      </div>
                      <!-- setting -->
-                     <div class="tab-pane fade" id="vsettings" role="tabpanel" aria-labelledby="vsettings-tab">
+                     <div [ngClass]="{'show active': activeTab == 10}" class="tab-pane fade" id="vsettings" role="tabpanel" aria-labelledby="vsettings-tab">
                         <div>
                            <div class="row pt-3">
                               <div class="col-lg-5">
@@ -1250,8 +1233,9 @@
            </form>
             <div class="form-group row">
                   <div class="col-lg-12 pr-5 text-right pb-4">
-                     <button type="button" class="btn btn-default mt-4" onclick="goBack()">Cancel</button>
-                      <a [routerLink]="" (click)="addVehicle()" class="btn btn-success mt-4">Submit</a>
+                     <button *ngIf="activeTab != 1" type="button" (click)="previous()" class="btn btn-default mt-4">Previous</button>
+                     <a *ngIf="activeTab != 10" [routerLink]="" (click)="next()" class="btn btn-success mt-4">Next</a>
+                      <a *ngIf="activeTab == 10" [routerLink]="" (click)="addVehicle()" class="btn btn-success mt-4">Submit</a>
                   </div>
             </div>
             <div class="form-group row">
