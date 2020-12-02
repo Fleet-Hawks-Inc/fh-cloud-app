@@ -127,7 +127,7 @@ export class GeofenceListComponent implements OnInit {
   fetchGeofences() {
     this.geofences = [];
     this.spinner.show();
-    this.apiService.getData(`geofences`).subscribe({
+    this.apiService.getData(`geofences?geofenceID=${this.geofenceID}&type=${this.type}`).subscribe({
       complete: () => {},
       error: () => { },
       next: (result: any) => {

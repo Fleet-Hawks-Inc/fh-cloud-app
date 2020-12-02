@@ -847,9 +847,9 @@
   }
 
   /* Datatable Pagination Style */
-  .dataTables_wrapper .dataTables_paginate .paginate_button{
+  /* .dataTables_wrapper .dataTables_paginate .paginate_button{
     padding: 0px!important;
-  }
+  } */
   
   
   /* BORDER CLASS */

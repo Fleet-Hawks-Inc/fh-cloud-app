@@ -44,7 +44,7 @@
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                         <!-- <a (click)="editDriver()" class="dropdown-item text-1" href="javascript:;">Edit</a>
                         <a (click)="deleteDriver()" class="dropdown-item text-1" href="javascript:;">Delete</a> -->
-                        <a class="dropdown-item text-1 dt-button" href="javascript:;" >Import</a>
+                        <a class="dropdown-item text-1" href="javascript:;" >Import</a>
                         <a class="dropdown-item text-1" href="javascript:;" (click)="export()">Export</a>
                      </div>
                   </div>
@@ -322,7 +322,7 @@
                            <tr *ngFor="let driver of drivers;let i = index;">
                               <!-- <td><input [checked]="isChecked" [(ngModel)]="driver.checked" (ngModelChange)="checkboxCount()" value="{{driver.assetIdentification}}" type="checkbox"></td> -->
                               
-                              <td routerLink="/fleet/drivers/detail/{{driver.driverID}}">
+                              <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;">
                                  <span class="font-weight-bold line-height-lg">{{driver.firstName}} {{driver.lastName}}</span>
                               </td>
                               <td>Live Status</td>

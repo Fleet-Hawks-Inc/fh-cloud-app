@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {from, Subject, throwError} from 'rxjs';
-import {ApiService} from '../../../../services';
+import { from, Subject, throwError } from 'rxjs';
+import { ApiService } from '../../../../services';
 import { Auth } from 'aws-amplify';
 import { HereMapService } from '../../../../services';
 import { v4 as uuidv4 } from 'uuid';
@@ -11,7 +11,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { HttpClient } from '@angular/common/http';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
-import { DomSanitizer} from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare var $: any;
 
@@ -25,7 +25,7 @@ export class AddDriverComponent implements OnInit {
   lastElement;
   hideNextBtn: boolean = true;
   addressField = -1;
-  currentTab =  1;
+  currentTab = 1;
   userLocation: any;
   public driverID;
   public driverProfileSrc: any = 'assets/img/driver/driver.png';
@@ -37,10 +37,12 @@ export class AddDriverComponent implements OnInit {
   manualAddress: boolean = false;
   nextTab: any;
   carrierID: any;
-  
+
   statesObject: any;
   countriesObject: any;
   citiesObject: any;
+
+  groupData = {};
 
   driverAddress = {
     address: [],
@@ -54,7 +56,7 @@ export class AddDriverComponent implements OnInit {
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: {lat: '', lng: ''}
+      geoCords: { lat: '', lng: '' }
     }],
     documentDetails: [{
       documentType: '',
@@ -119,7 +121,7 @@ export class AddDriverComponent implements OnInit {
   countries = [];
   vehicles = [];
   states = [];
-  
+
   cities = [];
   yards = [];
   cycles = [];
@@ -128,8 +130,9 @@ export class AddDriverComponent implements OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
-  visibleIndex = 0 ;
+  visibleIndex = 0;
   constructor(private apiService: ApiService,
+
               private httpClient: HttpClient,
               private toastr: ToastrService,
               private awsUS: AwsUploadService,
@@ -142,6 +145,7 @@ export class AddDriverComponent implements OnInit {
               private router: Router) {
       this.selectedFileNames = new Map<any, any>();
     }
+
 
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
@@ -167,10 +171,10 @@ export class AddDriverComponent implements OnInit {
     this.fetchAllCountriesIDs(); // fetch all countries Ids with name
     this.fetchAllStatesIDs(); // fetch all states Ids with name
     this.fetchAllCitiesIDs(); // fetch all cities Ids with name
-    
+
 
     $(document).ready(() => {
-      this.form = $('#driverForm').validate();
+      this.form = $('#driverForm, #groupForm').validate();
     });
   }
 
@@ -186,6 +190,11 @@ export class AddDriverComponent implements OnInit {
     this.currentTab = value;
   }
 
+  clearUserLocation(i) {
+    this.driverData.address[i]['userLocation'] = '';
+    console.log('driver', this.driverData);
+    $('div').removeClass('show-search__result');
+  }
   manAddress(event, i) {
     if (event.target.checked) {
       this.addressField = i;
@@ -203,23 +212,23 @@ export class AddDriverComponent implements OnInit {
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: {lat: '', lng: ''}
+      geoCords: { lat: '', lng: '' }
     });
   }
 
   fetchCycles() {
     this.apiService.getData('cycles')
-    .subscribe((result: any) => {
-      this.cycles = result.Items;
-      // console.log('this.cycle', this.cycles);
-    });
+      .subscribe((result: any) => {
+        this.cycles = result.Items;
+        // console.log('this.cycle', this.cycles);
+      });
   }
 
   fetchGroups() {
     this.apiService.getData('groups')
-    .subscribe((result: any) => {
-      this.groups = result.Items;
-    });
+      .subscribe((result: any) => {
+        this.groups = result.Items;
+      });
   }
 
   fetchCountries() {
@@ -230,11 +239,20 @@ export class AddDriverComponent implements OnInit {
       });
   }
 
+
+  fetchCountryByID(id: any) {
+    this.apiService.getData('countries' + id)
+      .subscribe((result: any) => {
+        this.countries = result.Items;
+        console.log('fetchCountryByID', this.countries)
+      });
+  }
+
   fetchVehicles() {
     this.apiService.getData('vehicles')
       .subscribe((result: any) => {
         this.vehicles = result.Items;
-       // console.log('vehicles', this.vehicles);
+        // console.log('vehicles', this.vehicles);
       });
   }
 
@@ -248,7 +266,7 @@ export class AddDriverComponent implements OnInit {
 
   getStates(id: any) {
     console.log('countryID', id);
-    
+
     // const countryID = this.driverData.address['countryID'];
     this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
@@ -280,7 +298,7 @@ export class AddDriverComponent implements OnInit {
         // console.log('this.countriesObject', this.countriesObject);
       });
   }
-  
+
   fetchAllCitiesIDs() {
     this.apiService.getData('cities/get/list')
       .subscribe((result: any) => {
@@ -316,7 +334,7 @@ export class AddDriverComponent implements OnInit {
     } else {
 
     }
-    
+
   }
 
   /*
@@ -336,8 +354,8 @@ export class AddDriverComponent implements OnInit {
     //   await this.awsUS.getFiles(this.carrierID, this.driverData.driverImage));
     //   console.log(' this.driverImages',  this.driverImages);
     // this.driverImages.push(this.image);
-    
-    
+
+
   }
 
   public searchLocation() {
@@ -363,6 +381,37 @@ export class AddDriverComponent implements OnInit {
     });
   }
 
+  addGroup() {
+    this.apiService.postData('groups', this.groupData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.fetchGroups();
+        this.toastr.success('Group added successfully');
+        $('#addGroupModal').modal('hide');
+
+
+      },
+    });
+  }
+
   async addDriver() {
     //this.spinner.show(); // loader init
     this.register();
@@ -375,14 +424,14 @@ export class AddDriverComponent implements OnInit {
                          ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
       let result = await this.HereMap.geoCode(fullAddress);
       result = result.items[0];
-      element.geoCords.lat =  result.position.lat;
-      element.geoCords.lng =  result.position.lng;
+      element.geoCords.lat = result.position.lat;
+      element.geoCords.lng = result.position.lng;
       delete element['userLocation'];
     }
 
     console.log('this.driverData', this.driverData);
     this.apiService.postData('drivers', this.driverData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -412,20 +461,58 @@ export class AddDriverComponent implements OnInit {
 
   async userAddress(i, item) {
     console.log('item', item, i);
-    
+
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
     console.log('result', result);
-    
-    
+
+    this.driverData.address[i]['userLocation'] = result.address.label;
     this.driverData.address[i].geoCords.lat = result.position.lat;
     this.driverData.address[i].geoCords.lng = result.position.lng;
-    this.driverData.address[i].countryID = result.address.countryName;
-    console.log('this.driverData.address[i]', this.driverData.address[i]);
-    // this.driverData.address['geoCords'].lat = result.position.lat;
-    // this.driverData.address['geoCords'].lng = result.position.lng;
-    // console.log('driver', this.driverAddress)
+    // this.driverData.address[i].countryID = result.address.countryName;
+    let countryID = await this.fetchCountriesByName(result.address.countryName);
+    this.driverData.address[i].countryID = countryID;
+    
+    let stateID = await this.fetchStatesByName(result.address.state);
+    this.driverData.address[i].stateID = stateID;
+
+    let cityID = await this.fetchCitiesByName(result.address.city);
+    this.driverData.address[i].cityID = cityID;
+    
+    this.driverData.address[i].zipCode = result.address.postalCode;
+    this.driverData.address[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;
+
     $('div').removeClass('show-search__result');
+  }
+
+  async fetchCountriesByName(name: string) {
+    let result = await this.apiService.getData(`countries/get/${name}`)
+      .toPromise();
+    if (result.Items.length > 0) {
+      this.getStates(result.Items[0].countryID);
+      return result.Items[0].countryID;
+    }
+    return '';
+  }
+
+  async fetchStatesByName(name: string) {
+    let result = await this.apiService.getData(`states/get/${name}`)
+      .toPromise();
+    if (result.Items.length > 0) {
+      this.getCities(result.Items[0].stateID);
+      return result.Items[0].stateID;
+    }
+    return '';
+  }
+
+  async fetchCitiesByName(name: string) {
+    let result = await this.apiService.getData(`cities/get/${name}`)
+      .toPromise();
+      console.log('cities', result);
+    if (result.Items.length > 0) {
+      return result.Items[0].cityID;
+    }
+    return '';
   }
 
   remove(obj, i) {
@@ -442,7 +529,7 @@ export class AddDriverComponent implements OnInit {
       .subscribe((v) => {
         $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error')
+          .addClass('error');
       });
     // this.vehicleForm.showErrors(this.errors);
   }
@@ -468,8 +555,8 @@ export class AddDriverComponent implements OnInit {
       issueDate: '',
       expiryDate: '',
       uploadedDocs: []
-    })
-    console.log(this.driverData)
+    });
+    console.log(this.driverData);
   }
 
   deleteInput(i: number) {
@@ -478,7 +565,7 @@ export class AddDriverComponent implements OnInit {
   /**
    * fetch driver data
    */
- fetchDriverByID() {
+  fetchDriverByID() {
     this.apiService
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
@@ -488,7 +575,7 @@ export class AddDriverComponent implements OnInit {
         this.driverData['driverType'] = result.driverType;
         this.driverData['employeeId'] = result.employeeId;
         this.driverData['companyId'] = result.companyId;
-        
+
         this.driverData['driverStatus'] = result.driverStatus;
         this.driverData['userName'] = result.userName;
         this.driverData['firstName'] = result.firstName;
@@ -500,7 +587,7 @@ export class AddDriverComponent implements OnInit {
         this.driverData['gender'] = result.gender;
         this.driverData['workEmail'] = result.workEmail;
         this.driverData['workPhone'] = result.workPhone;
-        
+
         // this.driverData.address['addressType'] = result.address.addressType;
         // this.driverData.address['country'] = result.address.country;
         // this.driverData.address['state'] = result.address.state;
@@ -518,7 +605,7 @@ export class AddDriverComponent implements OnInit {
             expiryDate: result.documentDetails[i].expiryDate,
           });
           this.driverData.documentDetails = this.newDocuments;
-          
+
         }
         this.driverData.crossBorderDetails['ACI_ID'] = result.crossBorderDetails.ACI_ID;
         this.driverData.crossBorderDetails['ACE_ID'] = result.crossBorderDetails.ACE_ID;
@@ -567,7 +654,7 @@ export class AddDriverComponent implements OnInit {
     this.hideErrors();
     console.log('this.driverData', this.driverData);
     this.apiService.postData('drivers', this.driverData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -596,6 +683,8 @@ export class AddDriverComponent implements OnInit {
   }
 
 
+
+
   fetchAddress() {
     this.apiService.getData('addresses')
       .subscribe((result: any) => {
@@ -606,7 +695,7 @@ export class AddDriverComponent implements OnInit {
   concatArray(path) {
     this.concatArrayKeys = '';
     for (const i in path) {
-        this.concatArrayKeys += path[i] + '.';
+      this.concatArrayKeys += path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(0, this.concatArrayKeys.length - 1);
     return this.concatArrayKeys;

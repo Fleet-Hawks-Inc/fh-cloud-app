@@ -24,9 +24,9 @@ export class DriverListComponent implements OnInit {
   drivers = [];
   dtOptions: any = {};
 
-  statesObject: any;
-  vehiclesObject: any;
-  cyclesObject: any;
+  statesObject: any = {};
+  vehiclesObject: any = {};
+  cyclesObject: any = {};
 
   driverID = '';
   driverName = '';
@@ -131,7 +131,7 @@ export class DriverListComponent implements OnInit {
     // ).subscribe(res => {
     //   console.log("drivers", res);
     // })
-    this.apiService.getData(`drivers`).subscribe({
+    this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`).subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -183,7 +183,6 @@ export class DriverListComponent implements OnInit {
     this.apiService.getData('cycles/get/list')
       .subscribe((result: any) => {
         this.cyclesObject = result;
-        console.log('this.cyclesObject', this.cyclesObject);
       });
   }
 
@@ -219,29 +218,7 @@ export class DriverListComponent implements OnInit {
     this.visible = !this.visible;
   }
 
-  deleteDriver() {
-    //  /******** Clear DataTable ************/
-    //  if ($.fn.DataTable.isDataTable('#datatable-default')) {
-    //   $('#datatable-default').DataTable().clear().destroy();
-    //   }
-    //   /******************************/
-    const selectedDrivers = this.drivers.filter(product => product.checked);
-    console.log(selectedDrivers);
-    if (selectedDrivers && selectedDrivers.length > 0) {
-      for (const i of selectedDrivers) {
-        this.apiService.deleteData('drivers/' + this.selectedDriverID).subscribe((result: any) => {
-          this.fetchDrivers();
-          if (selectedDrivers.length == 1) {
-            this.toastr.success('Driver Deleted Successfully!');
-          } else {
-            this.toastr.success('Drivers Deleted Successfully!');
-          }
-
-        });
-      }
-    }
-  }
-
+  
   deactivateDriver(value, driverID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
@@ -251,7 +228,6 @@ export class DriverListComponent implements OnInit {
       }, err => {
         console.log('driver delete', err);
       });
-      
     }
   }
 
