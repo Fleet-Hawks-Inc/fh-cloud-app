@@ -44,7 +44,7 @@
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                         <!-- <a (click)="editDriver()" class="dropdown-item text-1" href="javascript:;">Edit</a>
                         <a (click)="deleteDriver()" class="dropdown-item text-1" href="javascript:;">Delete</a> -->
-                        <a class="dropdown-item text-1" href="">Import</a>
+                        <a class="dropdown-item text-1 dt-button" href="javascript:;" >Import</a>
                         <a class="dropdown-item text-1" href="javascript:;" (click)="export()">Export</a>
                      </div>
                   </div>
@@ -315,7 +315,7 @@
                               <th>DL</th>
                               <th>Document</th>
                               <th>Status</th>
-                              <th>Actions</th>
+                              <th width="50">Actions</th>
                            </tr>
                         </thead>
                         <tbody>
@@ -327,12 +327,12 @@
                               </td>
                               <td>Live Status</td>
                               <td></td>
-                              <td>{{driver.hosDetails.hosCycle}}</td>
-                              <td>{{driver.assignedVehicle}}</td>
+                              <td>{{cyclesObject[driver.hosDetails.hosCycle]}}</td>
+                              <td>{{vehiclesObject[driver.assignedVehicle]}}</td>
                               <td>Live Status</td>
                               <td><span class="font-weight-bold">Phone:</span>{{driver.workPhone}} <br> <span class="font-weight-bold">E-mail:</span>{{driver.workEmail}}</td>
-                              <td><span class="font-weight-bold">DL#:</span>{{driver.licenceDetails.CDL_Number}} <br><span class="font-weight-bold">DL State:</span> {{driver.licenceDetails.issuedState}}</td>
-                              <td><span class="font-weight-bold">Type#:</span>{{driver.documentDetails[0].documentType}} <br><span class="font-weight-bold">Issue State:</span>{{driver.documentDetails[0].issuingState}}</td>
+                              <td><span class="font-weight-bold">DL#:</span>{{driver.licenceDetails.CDL_Number}} <br><span class="font-weight-bold">DL State:</span> {{statesObject[driver.licenceDetails.issuedState]}}</td>
+                              <td><span class="font-weight-bold">Type#:</span>{{driver.documentDetails[0].documentType}} <br><span class="font-weight-bold">Issue State:</span>{{statesObject[driver.documentDetails[0].issuingState]}}</td>
                               
                               <td>{{driver.driverStatus}}</td>
                               <td class="border-0">
