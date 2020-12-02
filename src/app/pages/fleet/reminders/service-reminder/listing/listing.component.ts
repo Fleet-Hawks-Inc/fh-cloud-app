@@ -27,7 +27,7 @@ export class ListingComponent implements OnInit {
   suggestedUnits = [];
   currentDate = moment();
   currentOdometer = 12500;
-  
+  taskName: string;
   newData = [];
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
@@ -60,7 +60,8 @@ export class ListingComponent implements OnInit {
   }
  
 fetchReminders = async () => {
-  this.apiService.getData(`reminders`).subscribe({
+   //this.apiService.getData(`reminders?reminderIdentification=${this.unitID}&taskName=${this.taskName}`).subscribe({
+    this.apiService.getData(`reminders`).subscribe({
     complete: () => {this.initDataTable(); },
     error: () => { },
     next: (result: any) => {

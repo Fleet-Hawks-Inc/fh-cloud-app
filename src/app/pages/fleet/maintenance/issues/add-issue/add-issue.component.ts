@@ -248,9 +248,10 @@ deleteImage(i: number) {
   this.carrierID =  this.apiService.getCarrierID();
   this.awsUS.deleteFile(this.carrierID, this.uploadedPhotos[i]);
   this.uploadedPhotos.splice(i, 1);
+  this.issueImages.splice(i, 1);
   console.log('new array' ,this.uploadedPhotos);
   this.toaster.success('Image Deleted Successfully!');
-  // this.apiService.getData('issues/updatePhotos/' + this.issueID + '/' + this.uploadedPhotos).subscribe((result: any) => {
+  // this.apiService.getData(`issues/updatePhotos?issueID=${this.issueID}&uploadedPhotos=${this.uploadedPhotos}`).subscribe((result: any) => {
   //   this.toaster.success('Image Deleted Successfully!');
   // });
 }
@@ -267,10 +268,11 @@ deleteDoc(i: number) {
   this.carrierID =  this.apiService.getCarrierID();
   this.awsUS.deleteFile(this.carrierID, this.uploadedDocs[i]);
   this.uploadedDocs.splice(i, 1);
+  this.issueDocs.splice(i, 1);
   console.log('new array',this.uploadedDocs);
-  this.apiService.getData('issues/updateDocs/' + this.issueID + '/' + this.uploadedDocs).subscribe((result: any) => {
-    this.toaster.success('Document Deleted Successfully!');
-  });
+  // this.apiService.getData(`issues/updateDocs?issueID=${this.issueID}&uploadedDocs=${this.uploadedDocs}`).subscribe((result: any) => {
+  //   this.toaster.success('Document Deleted Successfully!');
+  // });
 }
 setPDFSrc(val) {
   this.pdfSrc = '';

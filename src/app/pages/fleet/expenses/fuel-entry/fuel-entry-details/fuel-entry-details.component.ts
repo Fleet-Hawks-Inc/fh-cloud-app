@@ -33,7 +33,9 @@ export class FuelEntryDetailsComponent implements OnInit {
   fuelDate: string;
   fuelType = '';
   carrierID;
-
+  vehicleList: any = {};
+  assetList: any = {};
+  tripList: any = {};
   paidBy = '';
   paymentMode = '';
   reference = '';
@@ -85,56 +87,10 @@ export class FuelEntryDetailsComponent implements OnInit {
   ngOnInit() {
     this.entryID = this.route.snapshot.params['entryID'];
     this.fetchFuelEntry();
-    this.fetchTrips();
-    this.fetchCountries();
+    this.fetchAssetList();
+    this.fetchTripList();
     this.carrierID = this.apiService.getCarrierID();
-
-  }
-  getStates() {
-    this.apiService
-      .getData('states/country/' + this.countryID)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
-  }
-  getCities() {
-    this.apiService.getData('cities/state/' + this.stateID)
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-      });
-  }
-
-  fillCountry() {
-    this.apiService
-      .getData('states/' + this.stateID)
-      .subscribe((result: any) => {
-        result = result.Items[0];
-        this.countryID = result.countryID;
-      });
-
-    setTimeout(() => {
-      this.getStates();
-    }, 1500);
-    setTimeout(() => {
-      this.getCities();
-    }, 1500);
-  }  
-  fetchCountries() {
-    this.apiService.getData('countries').subscribe((result: any) => {
-      this.countries = result.Items;
-    });
-  }
-  fetchTrips() {
-    this.apiService.getData('trips').subscribe((result: any) => {
-      this.trips = result.Items;
-    });
-  }
-  fetchTripNumber(ID) {
-    this.apiService.getData('trips/' + ID).subscribe((result: any) => {
-      this.trips = result.Items;
-      console.log('trips', this.trips);
-      this.tripNumber = this.trips[0].tripNo;
-    });
+    this.fetchVehicleList();
   }
   fetchVendors(ID) {
     this.apiService.getData('vendors/' + ID).subscribe((result: any) => {
@@ -142,28 +98,26 @@ export class FuelEntryDetailsComponent implements OnInit {
       this.vendorName = this.vendors[0].vendorName;
     });
   }
-  fetchUnitName(type, ID) {
-    if (type === 'vehicle') {
-      this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
-        this.vehicles = result.Items;
-        console.log('VEHICLES', this.vehicles);
-        this.unitName = this.vehicles[0].vehicleIdentification;
-      });
-    }
-    else {
-      this.apiService.getData('assets/' + ID).subscribe((result: any) => {
-        this.assets = result.Items;
-        console.log('ASSETS', this.assets);
-        this.unitName = this.assets[0].assetIdentification;
-      });
-    }
+  fetchVehicleList() {
+    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+      this.vehicleList = result;
+    });
   }
+  fetchAssetList() {
+    this.apiService.getData('assets/get/list').subscribe((result: any) => {
+      this.assetList = result;
+    });
+  }
+  fetchTripList() {
+    this.apiService.getData('trips/get/list').subscribe((result: any) => {
+      this.tripList = result;
+    });
+  } 
   fetchFuelEntry() {
     this.apiService
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
-
         this.entryID = this.entryID;
         this.currency = result.currency,
           this.unitType = result.unitType;
@@ -200,11 +154,6 @@ export class FuelEntryDetailsComponent implements OnInit {
             uploadedPhotos: result.additionalDetails.uploadedPhotos,
           },
           this.getImages();
-        setTimeout(() => {
-          this.fillCountry();
-          this.fetchUnitName(this.unitType, this.unitID);
-          this.fetchTripNumber(this.tripID);
-        }, 2000);
       });
     this.fetchVendors(this.vendorID);
   }
