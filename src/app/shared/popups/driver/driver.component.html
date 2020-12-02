@@ -30,65 +30,69 @@
                                 <div class="col-6">
                                     <div class="row m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Type:</div>
-                                        <div class="col-lg-6 p-2 bor_half">Employee</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{driverType}}</div>
                                     </div>
-                                    <div class="row m-0">
+                                    <div class="row m-0" *ngIf="employeeId">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Employee ID:</div>
-                                        <div class="col-lg-6 p-2 bor_half">52145</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{employeeId}}</div>
+                                    </div>
+                                    <div class="row m-0" *ngIf="companyId">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Company ID:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{companyId}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Status:</div>
-                                        <div class="col-lg-6 p-2 bor_half">Active</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{driverStatus}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">User Name:</div>
-                                        <div class="col-lg-6 p-2 bor_half">John001</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{userName}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Name:</div>
-                                        <div class="col-lg-6 p-2 bor_half">John Smith</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{driverName}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Gender:</div>
-                                        <div class="col-lg-6 p-2 bor_half">Male</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{gender}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACE ID:</div>
-                                        <div class="col-lg-6 p-2 bor_half">786768</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{aceID}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACI ID:</div>
-                                        <div class="col-lg-6 p-2 bor_half">575676</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{aciID}}</div>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast ID:</div>
-                                        <div class="col-lg-6 p-2 bor_half">8977878</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{fastID}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast Expiry Date:</div>
-                                        <div class="col-lg-6 p-2 bor_half">20 Sep, 2020</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{fastExpiry}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Citizenship:</div>
-                                        <div class="col-lg-6 p-2 bor_half">Canadian</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{citizenship}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CSA:</div>
-                                        <div class="col-lg-6 p-2 bor_half">True</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{csa}}</div>
                                     </div>
                                     <div class="row m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Work Phone:</div>
-                                        <div class="col-lg-6 p-2 bor_half">+567-86775446</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{workPhone}}</div>
                                     </div>
                                     <div class="row m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Work Email:</div>
-                                        <div class="col-lg-6 p-2 bor_half">john@diamond.com</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{workEmail}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Group:</div>
-                                        <div class="col-lg-6 p-2 bor_half">Group 1</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{group}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -135,31 +139,31 @@
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Document Type:</div>
-                                            <div class="col-lg-6 p-2 bor_half">Birth Certificate</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{docType}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Document Number:</div>
-                                            <div class="col-lg-6 p-2 bor_half">52481</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{document}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Authority:</div>
-                                            <div class="col-lg-6 p-2 bor_half">Authority Name</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{issuingAuthority}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Country:</div>
-                                            <div class="col-lg-6 p-2 bor_half">Canada</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{issuingCountry}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing State:</div>
-                                            <div class="col-lg-6 p-2 bor_half">Alberta</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{issuingState}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issue Date:</div>
-                                            <div class="col-lg-6 p-2 bor_half">Jun 6,2019</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{issueDate}}</div>
                                         </div>
                                         <div class="row  m-0">
-                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issue Date:</div>
-                                            <div class="col-lg-6 p-2 bor_half">Jun 6,2024</div>
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Expiry Date:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{expiryDate}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -175,27 +179,27 @@
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issued State:</div>
-                                            <div class="col-lg-6 p-2 bor_half">Alberta</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{liceIssueSate}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Licence Expiration:</div>
-                                            <div class="col-lg-6 p-2 bor_half">Jun 6,2021</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{licenceExpiry}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract Start Date:</div>
-                                            <div class="col-lg-6 p-2 bor_half">Jun 6,2019</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{liceContractStart}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract End Date:</div>
-                                            <div class="col-lg-6 p-2 bor_half">Jun 6,2020</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{liceContractEnd}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Medical Card Renewal:</div>
-                                            <div class="col-lg-6 p-2 bor_half">Jun 20,2019</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{liceMedicalCardRenewal}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Birth Date:</div>
-                                            <div class="col-lg-6 p-2 bor_half">Jun 6,1983</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{liceDOB}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -206,15 +210,15 @@
                                         </div>
                                         <div class="row m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Default Payment Type:</div>
-                                            <div class="col-lg-6 p-2 bor_half">Pay Per Mile</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{paymentType}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Loaded Miles:</div>
-                                            <div class="col-lg-6 p-2 bor_half">546</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{loadedMiles}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Empty Miles:</div>
-                                            <div class="col-lg-6 p-2 bor_half">4756</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{emptyMiles}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Calculate Empty Miles for a Dispatch After:</div>
@@ -231,23 +235,23 @@
                                 </div>
                                 <div class="row m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Status:</div>
-                                    <div class="col-lg-6 p-2 bor_half">Exempted</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{hosStatus}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Remarks:</div>
-                                    <div class="col-lg-6 p-2 bor_half">Remarks for being Exempted</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{hosRemarks}}</div>
                                 </div>
-                                <div class="row  m-0">
+                                <div class="row  m-0" *ngIf="hosPcAllowed">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Personal Conveyance (PC):</div>
-                                    <div class="col-lg-6 p-2 bor_half">no</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{hosPcAllowed}}</div>
                                 </div>
-                                <div class="row  m-0">
+                                <div class="row  m-0" *ngIf="hosYmAllowed">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Yard Move (YM):</div>
-                                    <div class="col-lg-6 p-2 bor_half">yes</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{hosYmAllowed}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Type:</div>
-                                    <div class="col-lg-6 p-2 bor_half">ELD</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{hosType}}</div>
                                 </div>
                             </div>
                         </div>
@@ -258,23 +262,23 @@
                                 </div>
                                 <div class="row m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Name:</div>
-                                    <div class="col-lg-6 p-2 bor_half">Mark</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{emerName}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Relationship:</div>
-                                    <div class="col-lg-6 p-2 bor_half">Brother</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{emerRelationship}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Phone:</div>
-                                    <div class="col-lg-6 p-2 bor_half">5463466</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{emerPhone}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Email:</div>
-                                    <div class="col-lg-6 p-2 bor_half">www.email.com</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{emerEmail}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address:</div>
-                                    <div class="col-lg-6 p-2 bor_half">100 street, Kings Town, Queen </div>
+                                    <div class="col-lg-6 p-2 bor_half">{{emergencyAddress}} </div>
                                 </div>
                             </div>
                         </div>

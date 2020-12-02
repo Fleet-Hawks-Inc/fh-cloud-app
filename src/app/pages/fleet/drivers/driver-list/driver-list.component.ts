@@ -3,6 +3,8 @@ import {ApiService} from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { HereMapService } from '../../../../services/here-map.service';
+import { forkJoin } from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -12,6 +14,10 @@ declare var $: any;
 })
 export class DriverListComponent implements OnInit {
   title = 'Driver List';
+  mapView: boolean = false;
+  listView: boolean = true;
+  visible = true;
+
   driverCheckCount;
   selectedDriverID;
   drivers = [];
@@ -26,17 +32,53 @@ export class DriverListComponent implements OnInit {
   constructor(
             private apiService: ApiService,
             private router: Router,
+            private hereMap: HereMapService,
             private spinner: NgxSpinnerService,
             private toastr: ToastrService) {}
 
   ngOnInit() {
     this.fetchDrivers();
+    this.fetchAddress();
+    this.fetchAllStatesIDs();
 
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
+  }
+
+
+  fetchAddress() {
+    this.apiService.getData('addresses')
+      .subscribe((result: any) => {
+        console.log('address', result);
+      });
+  }
+
+
+  jsTree() {
+    $('.treeCheckbox').jstree({
+      core : {
+        themes : {
+          responsive: false
+        }
+      },
+      types : {
+        default : {
+          icon : 'fas fa-folder'
+        },
+        file : {
+          icon : 'fas fa-file'
+        }
+      },
+      plugins: ['types', 'checkbox']
+    });
+    
+  }
+
+  export() {
+    $('.buttons-excel').trigger('click');
   }
 
   getSuggestions(value) {
@@ -69,7 +111,7 @@ export class DriverListComponent implements OnInit {
 
         this.drivers = result.Items;
         console.log('drivers', this.drivers);
-        this.spinner.hide(); // loader hide
+
 
         // this.drivers = result.Items;
         for (let i = 0; i < result.Items.length; i++) {
@@ -78,12 +120,20 @@ export class DriverListComponent implements OnInit {
             this.drivers.push(result.Items[i]);
           }
         }
-        console.log('drivers',this.drivers)
+
       //  this.spinner.hide(); // loader hide
 
       },
     });
   }
+
+  fetchAllStatesIDs() {
+    this.apiService.getData('states/get/list')
+      .subscribe((result: any) => {
+        console.log('states', result);
+      });
+  }
+
   checkboxCount = () => {
     this.driverCheckCount = 0;
     this.drivers.forEach(item => {
@@ -102,6 +152,20 @@ export class DriverListComponent implements OnInit {
       this.toastr.error('Please select only one asset!');
     }
   }
+
+  mapShow() {
+    this.mapView = true;
+    this.listView = false;
+    setTimeout(() => {
+      this.jsTree();
+      this.hereMap.mapInit();
+    }, 200);
+  }
+
+  valuechange() {
+    this.visible = !this.visible;
+  }
+
   deleteDriver() {
     //  /******** Clear DataTable ************/
     //  if ($.fn.DataTable.isDataTable('#datatable-default')) {
@@ -125,7 +189,7 @@ export class DriverListComponent implements OnInit {
     }
   }
 
-  deactivateAsset(value, driverID) {
+  deactivateDriver(value, driverID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
       .getData(`drivers/isDeleted/${driverID}/${value}`)
@@ -167,6 +231,7 @@ export class DriverListComponent implements OnInit {
       },
       buttons: [
         'colvis',
+        'excel',
       ],
     };
   }
