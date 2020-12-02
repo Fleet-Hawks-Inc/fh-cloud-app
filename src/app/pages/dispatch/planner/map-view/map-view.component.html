@@ -26,7 +26,7 @@
             <header class="page-header pr-5">
                 <form class="form-horizontal" method="get">
                     <div class="row px-4" style="padding-top:10px;">
-                        <div class="col-md-2 col-lg-2">
+                        <!-- <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
                                 <input type="text" placeholder="Search" class="form-control" name="">
                             </div>
@@ -47,8 +47,10 @@
                         </div>
                         <div class="col-md-1  col-lg-1">
                             <button type="submit" class="btn btn-sm btn-success">Search</button>
-                        </div>
-
+                        </div> -->
+                        <div class="col-md-6 col-lg-6" style="font-size: 16px;">
+                            Planner
+                         </div>
                         <div class="col-md-6  col-lg-6 text-right">
                             <a href="javascript:;" routerLink="/dispatch/planner/calendar-view" class="btn btn-default btn-sm">Calendar View</a>
                             <a href="javascript:;" routerLink="/dispatch/trips/add-trip" class="btn btn-success btn-sm mx-2" style="color:white;"><i
@@ -77,13 +79,13 @@
                             <div class="col-3">
                                 <div id="external-trips">
                                     <div class="schedule-trips">
-                                        <select class="form-control">
+                                        <!-- <select class="form-control">
                                             <option data-select2-id="260">Search Trip</option>
                                             <option value="1">#787, Regular</option>
                                             <option value="2">#788, Outsourced</option>
                                             <option value="2">#789, Outsourced</option>
                                             <option value="2">#790, Regular</option>
-                                        </select>
+                                        </select> -->
                                         <!-- <div class="mt-2 text-right"><span id="show-drivers">Show Drivers</span></div> -->
                                         <ul class="m-0 p-0 mt-4">
                                             <li class=" mb-2 border" *ngFor="let trip of tempTrips">
@@ -104,7 +106,7 @@
                                                    <p class="m-0"><i class="fas fa-clock border-top"></i> {{ trip.date }}  {{ trip.time }}</p>
                                                 </div>
                                              </li>
-                                        </ul>
+                                        </ul> 
                                     </div>
                                 </div>
                             </div>
@@ -214,7 +216,7 @@
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of drivers">
-                                                <td class="driverClass" id="drivr_{{ driver.userName }}" (click)="driverChange(driver,'driver','click')">
+                                                <td class="driverClass" id="drivr_{{ driver.driverID }}" (click)="driverChange(driver,'driver','click')">
                                                     <div class="">
                                                         <p class="mb-1 text-4 font-weight-semibold text-dark"><span
                                                                 class="offduty pull-right">OFF</span> {{ driver.fullName }}</p>
@@ -229,14 +231,13 @@
                                                 </td>
                                             </tr>
                                         </tbody>
-                                        
                                     </table>
                                 </td>
                                 <td>
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of codrivers">
-                                                <td class="codriverClass" id="codrivr_{{ driver.userName }}" (click)="driverChange(driver,'codriver','click')">
+                                                <td class="codriverClass" id="codrivr_{{ driver.driverID }}" (click)="driverChange(driver,'codriver','click')">
                                                      {{ driver.fullName }} <span class="offduty pull-right">OFF</span>
                                                     <span class="driverstatus"><i class="fas fa-clock"></i> <span
                                                             class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30 mins</span>

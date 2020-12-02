@@ -20,7 +20,7 @@ import { NgSelect2Module } from 'ng-select2';
 import { GenerateQuarterlyReportComponent } from './ifta/generate-quarterly-report/generate-quarterly-report.component';
 import { IftaReportHistoryComponent } from './ifta/ifta-report-history/ifta-report-history.component';
 import { IftaReturnDetailsComponent } from './ifta/ifta-return-details/ifta-return-details.component';
-
+import {MatExpansionModule} from '@angular/material/expansion';
 @NgModule({
   imports: [CommonModule,
     ComplianceRoutingModule,
@@ -29,6 +29,7 @@ import { IftaReturnDetailsComponent } from './ifta/ifta-return-details/ifta-retu
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
     NgSelect2Module,
+    MatExpansionModule,
     NgbModule],
   declarations: [
     LogsComponent,

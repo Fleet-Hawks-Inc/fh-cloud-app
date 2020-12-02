@@ -840,13 +840,12 @@
     box-shadow: -5px -5px 10px 5px #aaa;
   }
   
-  /* Sidebar Classes */
+  /* Sidebar Classes */ 
   html.sidebar-light:not(.dark) ul.nav-main > li.nav-active > a {
     color: #fff;
-   background-color:#999896 !important;
-  
+   background-color:#aaa !important;  
   }
-  
+
   /* Datatable Pagination Style */
   /* .dataTables_wrapper .dataTables_paginate .paginate_button{
     padding: 0px!important;

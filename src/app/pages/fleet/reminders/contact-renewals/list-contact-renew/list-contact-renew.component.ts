@@ -3,7 +3,7 @@ import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 declare var $: any;
-
+import * as moment from 'moment';
 @Component({
   selector: 'app-list-contact-renew',
   templateUrl: './list-contact-renew.component.html',
@@ -11,74 +11,108 @@ declare var $: any;
 })
 export class ListContactRenewComponent implements OnInit {
   public remindersData = [];
-  public contacts = [];
+  contacts: [];
+  contactList: any = {};
   allRemindersData = [];
   subcribersArray = [];
-  groups = [];
+  groups: any = {};
+  dtOptions: any = {};
+  currentDate = moment();
+  newData = [];
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.fetchRenewals();
-    this.fetchContacts();
     this.fetchGroups();
+    this.fetchContactList();
+    $(document).ready(() => {
+      setTimeout(() => {
+        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      }, 1800);
+    });
   }
   fetchGroups() {
-    this.apiService.getData('groups').subscribe((result: any) => {
-      this.groups = result.Items;
-      //   console.log('Groups Data', this.groups);
+    this.apiService.getData('groups/get/list').subscribe((result: any) => {
+      this.groups = result;
     });
   }
-  fetchContacts() {
-    this.apiService.getData('contacts').subscribe((result: any) => {
-      this.contacts = result.Items;
-      console.log('Contacts', this.contacts);
+  fetchContactList() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.contactList = result;
     });
   }
-  fetchRenewals = () => {
-    this.apiService.getData('reminders').subscribe({
-      complete: () => { },
+  fetchRenewals = async () => {
+    this.apiService.getData(`reminders`).subscribe({
+      complete: () => {this.initDataTable(); },
       error: () => { },
       next: (result: any) => {
         this.allRemindersData = result.Items;
-        for (let i = 0; i < this.allRemindersData.length; i++) {
-          if (this.allRemindersData[i].reminderType === 'contact') {
-            this.remindersData.push(this.allRemindersData[i]);
+        for(let j=0; j < this.allRemindersData.length; j++) {
+          if (this.allRemindersData[j].reminderType === 'contact') {
+            const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate,'DD-MM-YYYY');
+            const remainingDays = convertedDate.diff(this.currentDate, 'days');
+            console.log('remaining days', remainingDays);
+            const data = {
+              reminderID: this.allRemindersData[j].reminderID,
+              reminderIdentification: this.allRemindersData[j].reminderIdentification,
+              reminderTasks: {
+                task: this.allRemindersData[j].reminderTasks.task,
+                remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
+                remainingDays: remainingDays,
+                dueDate: this.allRemindersData[j].reminderTasks.dueDate,
+              },
+              subscribers : this.allRemindersData[j].subscribers,
+             };
+             this.remindersData.push(data); 
           }
+        
         }
-        console.log('Contact renewal array', this.remindersData);
+        console.log('new data', this.remindersData);
       },
     });
   }
-  getSubscribers(arr: any[]) {
-    this.subcribersArray = [];
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].subscriberType === 'user') {
-        this.subcribersArray.push(arr[i].subscriberIdentification);
-      }
-      else {
-        let test = this.groups.filter((g: any) => g.groupID === arr[i].subscriberIdentification);
-        this.subcribersArray.push(test[0].groupName);
-      }
-    }
-    return this.subcribersArray;
-  }
-  getContactName(ID): string {
-    let contact = [];
-    contact = this.contacts.filter((c: any) => c.contactID === ID);
-    let cName = (contact[0].contactName);
-    return cName;
-  }
+ 
   deleteRenewal(entryID) {
-    /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable('#datatable-default')) {
-      $('#datatable-default').DataTable().clear().destroy();
-    }
-    /******************************/
     this.apiService
       .deleteData('reminders/' + entryID)
       .subscribe((result: any) => {
-        this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
         this.fetchRenewals();
+        this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
+       
       });
+  }
+  initDataTable() {
+    this.dtOptions = {
+      dom: 'Bfrtip', // lrtip to hide search field
+      processing: true,
+      columnDefs: [
+          {
+              targets: 0,
+              className: 'noVis'
+          },
+          {
+              targets: 1,
+              className: 'noVis'
+          },
+          {
+              targets: 2,
+              className: 'noVis'
+          },
+          {
+              targets: 3,
+              className: 'noVis'
+          },
+          {
+              targets: 4,
+              className: 'noVis'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      buttons: [
+        'colvis',
+      ],
+    };
   }
 }

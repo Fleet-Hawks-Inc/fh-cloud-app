@@ -402,6 +402,14 @@
                     <a [routerLink]="" (click)="updateInventory()" class="btn btn-success">Submit</a>
                   </div>
                 </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
+                    <p class="text text-success" *ngIf="hasSuccess">
+                      {{ Success }}
+                    </p>
+                  </div>
+                </div>
               </form>
             </div>
           </div>

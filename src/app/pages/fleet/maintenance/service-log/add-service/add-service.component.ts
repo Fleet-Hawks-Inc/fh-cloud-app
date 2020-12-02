@@ -16,7 +16,8 @@ import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bo
 export class AddServiceComponent implements OnInit {
   private groups;
   private vendors;
-  private vehicles;
+  vehicles;
+  assets;
   private reminders;
   private issues;
   private inventory = [];
@@ -40,11 +41,14 @@ export class AddServiceComponent implements OnInit {
   Success: string = '';
 
   serviceData = {
-    allServiceTasks: [],
+    unitType: 'vehicle',
+    allServiceTasks: {
+      serviceTaskList : []
+    },
     allServiceParts: [],
     uploadedDocuments : [],
     uploadedPhotos: []
-  }
+  };
   totalLabors = 0;
   totalTasksAmount: any = '';
   totalPartsAmount: any = '';
@@ -80,6 +84,7 @@ export class AddServiceComponent implements OnInit {
     this.fetchVehicles();
     this.fetchVendors();
     this.fetchInventory();
+    this.fetchAssets();
   }
 
   /*
@@ -161,6 +166,16 @@ export class AddServiceComponent implements OnInit {
     });
   }
 
+  /*
+   * Get all assets from api
+   */
+  fetchAssets() {
+    this.apiService.getData('assets').subscribe((result: any) => {
+      this.assets = result.Items;
+      console.log('assets', this.assets)
+    });
+  }
+
   fetchInventory() {
     this.apiService.getData('items').subscribe((result: any) => {
       result = result.Items;
@@ -173,12 +188,21 @@ export class AddServiceComponent implements OnInit {
   }
   
 
-  getIssues(id) {
+  getVehicleIssues(id) {
     const vehicleID = id;
     this.getReminders(vehicleID);
     this.apiService.getData(`issues/vehicle/${vehicleID}`).subscribe((result: any) => {
       this.issues = result.Items;
       console.log('this.issues', this.issues);
+    });
+  }
+
+  getAssetIssues(id) {
+    const assetID = id;
+    console.log('assetID', assetID);
+    this.apiService.getData(`issues/asset/${assetID}`).subscribe((result: any) => {
+      this.issues = result.Items;
+      console.log('asset issues', this.issues);
     });
   }
 
@@ -225,9 +249,11 @@ export class AddServiceComponent implements OnInit {
 
   addTasks() {
     console.log('value', this.selectedTasks);
+    // console.log('this.reminders', this.reminders);
     for(var i = 0; i < this.reminders.length; i++) {
       if (this.reminders[i].reminderTasks.task === this.selectedTasks[this.selectedTasks.length - 1]) {
-        this.serviceData.allServiceTasks.push({
+        this.serviceData.allServiceTasks.serviceTaskList.push({
+          reminderID: this.reminders[i].reminderID,
           task: this.selectedTasks[this.selectedTasks.length - 1],
           description: `Every ${this.reminders[i].reminderTasks.odometer} Miles`,
           labor: '',
@@ -235,7 +261,8 @@ export class AddServiceComponent implements OnInit {
         this.removeTask = true;
         break;
       } else {
-        this.serviceData.allServiceTasks.push({
+        this.serviceData.allServiceTasks.serviceTaskList.push({
+          reminderID: '',
           task: this.selectedTasks[this.selectedTasks.length - 1],
           description: '',
           labor: '',
@@ -246,8 +273,8 @@ export class AddServiceComponent implements OnInit {
   
   }
   remove(arr, i) {
-    if(arr === 'tasks') {
-      this.serviceData.allServiceTasks.splice(i, 1);
+    if (arr === 'tasks') {
+      this.serviceData.allServiceTasks.serviceTaskList.splice(i, 1);
     } else {
       this.serviceData.allServiceParts.splice(i, 1);
     }
@@ -256,7 +283,7 @@ export class AddServiceComponent implements OnInit {
 
   clearTaks(arr) {
     if (arr === 'tasks') {
-      this.serviceData.allServiceTasks = [];
+      this.serviceData.allServiceTasks.serviceTaskList = [];
     } else {
       this.serviceData.allServiceParts = [];
     }
@@ -264,9 +291,9 @@ export class AddServiceComponent implements OnInit {
   }
 
   removeTasks(item) {
-    this.serviceData.allServiceTasks.filter(s => {if (s.task === item.value) {
-      let index = this.serviceData.allServiceTasks.indexOf(s);
-      this.serviceData.allServiceTasks.splice(index, 1);
+    this.serviceData.allServiceTasks.serviceTaskList.filter(s => {if (s.task === item.value) {
+      let index = this.serviceData.allServiceTasks.serviceTaskList.indexOf(s);
+      this.serviceData.allServiceTasks.serviceTaskList.splice(index, 1);
     }});
     console.log('allServiceTasks', this.serviceData.allServiceTasks);
   }
@@ -318,7 +345,7 @@ export class AddServiceComponent implements OnInit {
         this.serviceData['vehicleGroup'] = result.vehicleGroup;
         this.serviceData['vehicle'] = result.vehicle;
 
-        this.getIssues(result.vehicle);
+        this.getVehicleIssues(result.vehicle);
         this.serviceData['odometer'] = result.odometer;
         this.serviceData['completionDate'] = result.completionDate;
         this.serviceData['vendor'] = result.vendor;
@@ -339,12 +366,16 @@ export class AddServiceComponent implements OnInit {
         }
         
         for (var i = 0; i < result.selectedIssues.length; i++) {
-          this.getIssues(result.vehicle);
+          this.getVehicleIssues(result.vehicle);
         }
-        this.serviceData.allServiceTasks = newTasks;
+        this.serviceData.allServiceTasks.serviceTaskList = newTasks;
         console.log('this.serviceData.allServiceTasks', this.serviceData.allServiceTasks);
         this.spinner.hide(); // hide loader
       });
+  }
+
+  onChangeUnitType(value: any) {
+    this.serviceData['unitType'] = value;
   }
 
    /*

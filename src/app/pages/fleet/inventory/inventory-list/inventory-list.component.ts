@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { from } from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -10,14 +12,22 @@ declare var $: any;
 })
 export class InventoryListComponent implements OnInit {
 
+  items = [];
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
+    this.fetchItems();
   }
 
 
   openTransferModal(){
-    $('#transferModal').show();
+    $('#transferModal').modal('show');
+  }
+
+  fetchItems(){
+    this.apiService.getData('items').subscribe((result) => {
+      this.items = result.Items;
+    })
   }
 
 }

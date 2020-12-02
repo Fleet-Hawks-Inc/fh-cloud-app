@@ -199,7 +199,7 @@
                   <div class="card-body">
                      <div class="tab-content p-0" id="myTabContent">
                         <div class="tab-pane show active" id="allassets" role="tabpanel" aria-labelledby="all-tab">
-                           <table datatable [dtOptions]="allOptions" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="allData.length > 0">
+                           <table datatable [dtOptions]="allOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="allData.length > 0">
                               <thead>
                                  <tr>
                                     <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->

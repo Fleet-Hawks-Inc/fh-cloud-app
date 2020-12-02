@@ -37,6 +37,10 @@ import { QuotesListComponent } from './quotes/quotes-list/quotes-list.component'
 import { AddQuotesComponent } from './quotes/add-quotes/add-quotes.component';
 import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
 
+import { EManifestsComponent } from './cross-border/e-manifests/e-manifests.component';
+import { AceDetailsComponent } from './cross-border/ace-documents/ace-details/ace-details.component';
+import { AciDetailsComponent } from './cross-border/aci-documents/aci-details/aci-details.component';
+
 import { RouteDetailComponent } from './permanent-routing/route-detail/route-detail.component';
 import { TripListComponent } from './trips/trip-list/trip-list.component';
 import { AddTripComponent } from './trips/add-trip/add-trip.component';
@@ -45,6 +49,8 @@ import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
 
 import { CalendarViewComponent } from './planner/calendar-view/calendar-view.component';
 import { MapViewComponent } from './planner/map-view/map-view.component';
+
+import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
 
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
@@ -77,15 +83,20 @@ const routes: Routes = [
   {
     path: 'cross-border',
     children: [
-      {path: 'ACE-eManifest',component: AceManifestComponent},
-      {path: 'ACE-new-eManifest',component: NewAceManifestComponent},
-      {path: 'ACE-shipment',component: AceShipmentComponent},
-      {path: 'ACE-commodity',component: AceCommodityComponent},
+      {path: 'eManifests', component: EManifestsComponent},
+      {path: 'ACE-eManifest', component: AceManifestComponent},
+      {path: 'ACE-new-eManifest', component: NewAceManifestComponent},
+      {path: 'ACE-edit-eManifest/:entryID', component: NewAceManifestComponent},
+      {path: 'ACE-details/:entryID', component: AceDetailsComponent},
+      {path: 'ACE-shipment', component: AceShipmentComponent},
+      {path: 'ACE-commodity', component: AceCommodityComponent},
 
-      {path: 'ACI-eManifest',component: AciEmanifestComponent},
-      {path: 'ACI-new-eManifest',component: NewAciManifestComponent},
-      {path: 'ACI-shipment',component: AciShipmentComponent},
-      {path: 'ACI-commodity',component: AciCommodityComponent}
+      {path: 'ACI-eManifest', component: AciEmanifestComponent},
+      {path: 'ACI-new-eManifest', component: NewAciManifestComponent},
+      {path: 'ACI-edit-eManifest/:entryID', component: NewAciManifestComponent},
+      {path: 'ACI-details/:entryID', component: AciDetailsComponent},
+      {path: 'ACI-shipment', component: AciShipmentComponent},
+      {path: 'ACI-commodity', component: AciCommodityComponent}
     ]
   },
   {
@@ -132,12 +143,12 @@ const routes: Routes = [
     children: [
       { path: 'route-list', component: RouteListComponent},
       { path: 'add-route', component: AddRouteComponent },
-      { path:'edit-route/:routeID', component:EditRouteComponent},
-      { path:'route-detail/:routeID', component:RouteDetailComponent},
+      { path: 'edit-route/:routeID', component: EditRouteComponent},
+      { path: 'route-detail/:routeID', component: RouteDetailComponent},
     ]
   },
   {
-    path: "trips",
+    path: 'trips',
     children: [
       { path: 'trip-list', component: TripListComponent},
       { path: 'add-trip', component: AddTripComponent},
@@ -147,10 +158,16 @@ const routes: Routes = [
     ]
   },
   {
-    path: "planner",
+    path: 'planner',
     children: [
       { path: 'calendar-view', component: CalendarViewComponent},
       { path: 'map-view', component: MapViewComponent},
+    ]
+  },
+  {
+    path: "home",
+    children: [
+      { path: 'routing-dispatch-overview', component: DispatchOverviewComponent}
     ]
   },
 ];

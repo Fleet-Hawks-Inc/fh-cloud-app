@@ -28,7 +28,26 @@
                              <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service Details</label>
                           </div>
                           <div class="col-lg-5 offset-lg-1">
-                             <div class="row">
+                           <div class="row">
+                              <div class="col-lg-12">
+                                 <div class="row">
+                                    <div class="col-lg-3">
+                                       <label class="control-label font-weight-bold text-lg-right"
+                                          >Unit Type:</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="btn-group-toggle" data-toggle="buttons">
+                                        <label class="btn btn-outline btn-fleet mr-2" [class.active]="serviceData.unitType === 'vehicle'" style="width:110px;" (click) = "onChangeUnitType('vehicle')">
+                                          <input type="radio" [(ngModel)]="serviceData.unitType" name="unitType" checked hidden value="vehicle" > Vehicle </label>
+                                        <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="serviceData.unitType === 'asset'" (click) = "onChangeUnitType('asset')">
+                                          <input type="radio" [(ngModel)]="serviceData.unitType" name="unitType"
+                                               hidden value="asset" > Asset </label>
+                                      </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                             <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Group of Vehicle</label>
                                    <ng-select [(ngModel)]="serviceData.vehicleGroup" name="vehicleGroup" style="width: 100%;" class="form-control populate">
@@ -36,15 +55,23 @@
                                    </ng-select>
                                 </div>
                              </div>
-                             <div class="row">
+                             <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Vehicle ID</label>
-                                   <ng-select (change)="getIssues($event)" [(ngModel)]="serviceData.vehicle" name="vehicle" style="width: 100%;">
+                                   <ng-select (change)="getVehicleIssues($event)" [(ngModel)]="serviceData.vehicleID" name="vehicleID" style="width: 100%;">
                                        <ng-option *ngFor="let vehicle of vehicles;" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                    </ng-select>
                                 </div>
                              </div>
-                             <div class="row pt-2">
+                             <div class="row" *ngIf="serviceData.unitType === 'asset'">
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Asset ID</label>
+                                 <ng-select (change)="getAssetIssues($event)" [(ngModel)]="serviceData.assetID" name="assetID" style="width: 100%;">
+                                     <ng-option *ngFor="let asset of assets;" value="{{asset.assetID}}">{{asset.assetIdentification}}</ng-option>
+                                 </ng-select>
+                              </div>
+                           </div>
+                             <div class="row pt-2" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer</label>
                                    <input [(ngModel)]="serviceData.odometer" name="odometer" type="text" class="form-control">
@@ -99,7 +126,7 @@
                           <div class="col-lg-10 offset-lg-1">
                              <div class="row">
                                 <div class="col-lg-12 mb-2 text-right">
-                                   <a href="add-issue.php" class="btn btn-sm btn-success"><i class="fas fa-plus"></i>Add Issue</a>
+                                   <a routerLink="/fleet/maintenance/issues/add" class="btn btn-sm btn-success"><i class="fas fa-plus"></i>Add Issue</a>
                                 </div>
                                 <table class="table table-bordered table-responsive-lg table-striped mb-0" id="openIssueTable">
                                    <thead>
@@ -115,12 +142,15 @@
                                          <td>{{issue.issueName}}</td>
                                          <td>{{issue.assignedTo}}</td>
                                       </tr>
+                                      <tr *ngIf="!issues?.length > 0">
+                                          <td colspan="3">No Issue Found</td>
+                                      </tr>
                                    </tbody>
                                 </table>
                              </div>
                           </div>
                        </div>
-                       <div class="form-group row" *ngIf="reminders">
+                       <div class="form-group row" *ngIf="reminders && serviceData.unitType !== 'asset'">
                           <div class="col-lg-12">
                              <label class="control-label font-weight-bold text-lg-right text-dark text-4  pt-2">Service Tasks</label>
                           </div>
@@ -400,8 +430,8 @@
                                          <th width="20%">Parts Number</th>
                                          <th width="35%">Description</th>
                                          <th width="10%">Quantity</th>
+                                         <th width="10%">Rate</th>
                                          <th width="10%">Amount</th>
-                                         <th width="10%">Subtotal</th>
                                          <th width="5%">Action</th>
                                       </tr>
                                    </thead>
@@ -467,9 +497,9 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault1">Attach Photo</label>
                                    <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" multiple  type="file" class="form-control p-0" id="inputDefault1">
                                 </div>
-                                <div class="col-lg-2  mar-top-37">
+                                <!-- <div class="col-lg-2  mar-top-37">
                                    <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
-                                </div>
+                                </div> -->
                              </div>
                           </div>
                           <div class="col-lg-5 offset-lg-1">
@@ -478,9 +508,9 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Attach Document</label>
                                    <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocuments" multiple type="file" class="form-control p-0" id="inputDefault">
                                 </div>
-                                <div class="col-lg-2  mar-top-37">
+                                <!-- <div class="col-lg-2  mar-top-37">
                                    <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
-                                </div>
+                                </div> -->
                              </div>
                           </div>
                        </div>
@@ -513,35 +543,26 @@
            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i></button>
         </div>
         <div class="modal-body">
-           <form>
-              <div class="form-row">
-                 <div class="form-group col-md-12">
-                    <table class="table">
-                       <tbody>
-                          <tr *ngFor="let reminder of reminders;">
-                             <td width="80%">
-                                <span class="text-dark text-4 font-weight-bold">{{reminder.reminderTasks.task}}</span><br>
-                                <span class="font-size-12">{{reminder.reminderTasks.remindByDays}} days or {{reminder.reminderTasks.odometer}} miles</span><br>
-                                <!-- <span class="text-warning">Due: 3 months from now · 467 mi from now</span> -->
-                             </td>
-                             <td width="20%" class="text-right">
-                                <a href="javascript:;" *ngIf="!removeTask" class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Add</a>
-                                <a href="javascript:;" *ngIf="removeTask" class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Remove</a>
-                             </td>
-                          </tr>
-                          <!-- <tr>
-                             <td width="90%">
-                                <span class="text-warning">Engine Oil &amp; Filter Replacement</span><br>
-                                <span class="font-size-12">Every 6 month(s) or 10,000 miles</span><br>
-                                <span class="text-warning">Due: 3 months from now · 467 mi from now</span>
-                             </td>
-                             <td width="10%"><button class="btn btn-danger btn-xs">Remove</button></td>
-                          </tr> -->
-                       </tbody>
-                    </table>
-                 </div>
-              </div>
-           </form>
+           
+            <table class="table">
+               <tbody>
+                  <tr *ngFor="let reminder of reminders;">
+                     <td width="80%">
+                        <span class="text-dark text-4 font-weight-bold">{{reminder.reminderTasks.task}}</span><br>
+                        <span class="font-size-12">{{reminder.reminderTasks.remindByDays}} days or {{reminder.reminderTasks.odometer}} miles</span><br>
+                        <!-- <span class="text-warning">Due: 3 months from now · 467 mi from now</span> -->
+                     </td>
+                     <td width="20%" class="text-right">
+                        <a href="javascript:;" *ngIf="!removeTask" (click)="addListedTasks()" class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Add</a>
+                        <a href="javascript:;" *ngIf="removeTask" (click)="removeListedTasks()" class="btn btn-danger btn-xs"><i class="fas fa-plus text-white"></i> Remove</a>
+                     </td>
+                  </tr>
+                  <tr *ngIf="!reminders?.length > 0">
+                     <td colspan="2">No Reminders Found</td>
+                  </tr>
+               </tbody>
+            </table>
+                 
         </div>
         <div class="modal-footer">
            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -600,5 +621,3 @@
       </footer>
    </section>
 </div>
-
-

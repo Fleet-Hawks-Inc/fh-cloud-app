@@ -1,0 +1,438 @@
+[
+	{
+		"number": "0817",
+		"name": "ABBOTSFORD-HUNTINGDON"
+	},
+	{
+		"number": "0318",
+		"name": "ABERCORN"
+	},
+	{
+		"number": "0706",
+		"name": "ADEN"
+	},
+	{
+		"number": "0841",
+		"name": "ALDERGROVE"
+	},
+	{
+		"number": "0214",
+		"name": "ANDOVER"
+	},
+	{
+		"number": "0329",
+		"name": "ARMSTRONG"
+	},
+	{
+		"number": "0892",
+		"name": "BEAVER CREEK"
+	},
+	{
+		"number": "0614",
+		"name": "BIG BEAVER"
+	},
+	{
+		"number": "0507",
+		"name": "BOISSEVAIN"
+	},
+	{
+		"number": "0815",
+		"name": "BOUNDARY BAY"
+	},
+	{
+		"number": "0225",
+		"name": "CAMPOBELLO"
+	},
+	{
+		"number": "0612",
+		"name": "CARIEVALE"
+	},
+	{
+		"number": "0834",
+		"name": "CARSON"
+	},
+	{
+		"number": "0521",
+		"name": "CARTWRIGHT"
+	},
+	{
+		"number": "0707",
+		"name": "CARWAY"
+	},
+	{
+		"number": "0816",
+		"name": "CASCADE"
+	},
+	{
+		"number": "0215",
+		"name": "CENTREVILLE"
+	},
+	{
+		"number": "0365",
+		"name": "CHARTIERVILLE"
+	},
+	{
+		"number": "0709",
+		"name": "CHIEF MOUNTAIN"
+	},
+	{
+		"number": "0836",
+		"name": "CHOPAKA"
+	},
+	{
+		"number": "0216",
+		"name": "CLAIR"
+	},
+	{
+		"number": "0337",
+		"name": "CLARENCEVILLE"
+	},
+	{
+		"number": "0619",
+		"name": "CLIMAX"
+	},
+	{
+		"number": "0409",
+		"name": "CORNWALL"
+	},
+	{
+		"number": "0615",
+		"name": "CORONACH"
+	},
+	{
+		"number": "0524",
+		"name": "COULTER"
+	},
+	{
+		"number": "0705",
+		"name": "COUTTS"
+	},
+	{
+		"number": "0311",
+		"name": "COVEY HILL"
+	},
+	{
+		"number": "0520",
+		"name": "CRYSTAL CITY"
+	},
+	{
+		"number": "0708",
+		"name": "DEL BONITA"
+	},
+	{
+		"number": "0330",
+		"name": "DUNDEE"
+	},
+	{
+		"number": "0362",
+		"name": "EAST HEREFORD"
+	},
+	{
+		"number": "0369",
+		"name": "EAST PINNACLE"
+	},
+	{
+		"number": "0213",
+		"name": "EDMUNSTON"
+	},
+	{
+		"number": "0502",
+		"name": "EMERSON"
+	},
+	{
+		"number": "0610",
+		"name": "ESTEVAN HIGHWAY"
+	},
+	{
+		"number": "0410",
+		"name": "FORT ERIE"
+	},
+	{
+		"number": "0478",
+		"name": "FORT FRANCES BRIDGE"
+	},
+	{
+		"number": "0893",
+		"name": "FRASER"
+	},
+	{
+		"number": "0332",
+		"name": "FRELIGHSBURG"
+	},
+	{
+		"number": "0219",
+		"name": "GILLESPIE PORTAGE"
+	},
+	{
+		"number": "0370",
+		"name": "GLEN SUTTON"
+	},
+	{
+		"number": "0508",
+		"name": "GOODLANDS"
+	},
+	{
+		"number": "0217",
+		"name": "GRAND FALLS"
+	},
+	{
+		"number": "0503",
+		"name": "GRETNA"
+	},
+	{
+		"number": "0333",
+		"name": "HEMMINGFORD"
+	},
+	{
+		"number": "0302",
+		"name": "HERDMAN"
+	},
+	{
+		"number": "0366",
+		"name": "HEREFORD ROAD"
+	},
+	{
+		"number": "0334",
+		"name": "HIGHWATER"
+	},
+	{
+		"number": "0818",
+		"name": "KINGSGATE"
+	},
+	{
+		"number": "0420",
+		"name": "KINGSTON"
+	},
+	{
+		"number": "0351",
+		"name": "LACOLLE - ST BERNARD DE LACOLLE"
+	},
+	{
+		"number": "0456",
+		"name": "LANSDOWNE - THOUSAND ISLANDS BRIDGE"
+	},
+	{
+		"number": "0522",
+		"name": "LENA"
+	},
+	{
+		"number": "0523",
+		"name": "LYLETON"
+	},
+	{
+		"number": "0835",
+		"name": "MIDWAY"
+	},
+	{
+		"number": "0620",
+		"name": "MONCHY"
+	},
+	{
+		"number": "0367",
+		"name": "MORSES LINE"
+	},
+	{
+		"number": "0828",
+		"name": "NELWAY"
+	},
+	{
+		"number": "0427",
+		"name": "NIAGARA FALLS - QUEENSTON LEWISTON BRIDGE"
+	},
+	{
+		"number": "0613",
+		"name": "NORTHGATE"
+	},
+	{
+		"number": "0602",
+		"name": "NORTH PORTAL"
+	},
+	{
+		"number": "0368",
+		"name": "NOYAN"
+	},
+	{
+		"number": "0819",
+		"name": "OSOYOOS"
+	},
+	{
+		"number": "0616",
+		"name": "OUNGRE"
+	},
+	{
+		"number": "0813",
+		"name": "PACIFIC HIGHWAY"
+	},
+	{
+		"number": "0832",
+		"name": "PATERSON"
+	},
+	{
+		"number": "0475",
+		"name": "PIGEON RIVER"
+	},
+	{
+		"number": "0517",
+		"name": "PINEY"
+	},
+	{
+		"number": "0891",
+		"name": "PLEASANT CAMP"
+	},
+	{
+		"number": "0331",
+		"name": "POHENEGAMOOK"
+	},
+	{
+		"number": "0439",
+		"name": "PRESCOTT"
+	},
+	{
+		"number": "0488",
+		"name": "RAINY RIVER"
+	},
+	{
+		"number": "0607",
+		"name": "REGWAY"
+	},
+	{
+		"number": "0824",
+		"name": "ROOSVILLE"
+	},
+	{
+		"number": "0324",
+		"name": "ROUTE 221: LACOLLE"
+	},
+	{
+		"number": "0341",
+		"name": "ROUTE 223: LACOLLE"
+	},
+	{
+		"number": "0822",
+		"name": "RYKERTS"
+	},
+	{
+		"number": "0440",
+		"name": "SARNIA"
+	},
+	{
+		"number": "0441",
+		"name": "SAULT STE. MARIE"
+	},
+	{
+		"number": "0509",
+		"name": "SNOWFLAKE"
+	},
+	{
+		"number": "0506",
+		"name": "SOUTH JUNCTION"
+	},
+	{
+		"number": "0505",
+		"name": "SPRAGUE"
+	},
+	{
+		"number": "0354",
+		"name": "STANHOPE"
+	},
+	{
+		"number": "0314",
+		"name": "STANSTEAD 55"
+	},
+	{
+		"number": "0376",
+		"name": "STANSTEAD BEEBE"
+	},
+	{
+		"number": "0375",
+		"name": "STANSTEAD RTE 143"
+	},
+	{
+		"number": "0328",
+		"name": "ST ARMAND/PHILIPSBURG"
+	},
+	{
+		"number": "0205",
+		"name": "ST. CROIX"
+	},
+	{
+		"number": "0339",
+		"name": "Ste Aurelie"
+	},
+	{
+		"number": "0336",
+		"name": "ST-JUST DE BRETENIERES"
+	},
+	{
+		"number": "0218",
+		"name": "ST. LEONARD"
+	},
+	{
+		"number": "0335",
+		"name": "ST PAMPHILE"
+	},
+	{
+		"number": "0231",
+		"name": "ST. STEPHEN 3RD BRIDGE"
+	},
+	{
+		"number": "0516",
+		"name": "TOLSTOI"
+	},
+	{
+		"number": "0617",
+		"name": "TORQUAY"
+	},
+	{
+		"number": "0307",
+		"name": "TROUT RIVER"
+	},
+	{
+		"number": "0811",
+		"name": "VICTORIA"
+	},
+	{
+		"number": "0833",
+		"name": "WANETA"
+	},
+	{
+		"number": "0618",
+		"name": "WEST POPLAR RIVER"
+	},
+	{
+		"number": "0711",
+		"name": "WILD HORSE"
+	},
+	{
+		"number": "0621",
+		"name": "WILLOW CREEK"
+	},
+	{
+		"number": "0453",
+		"name": "WINDSOR AMBASSADOR BRIDGE"
+	},
+	{
+		"number": "0452",
+		"name": "WINDSOR TUNNEL"
+	},
+	{
+		"number": "0519",
+		"name": "WINDYGATES"
+	},
+	{
+		"number": "0518",
+		"name": "WINKLER"
+	},
+	{
+		"number": "0308",
+		"name": "WOBURN"
+	},
+	{
+		"number": "0212",
+		"name": "WOODSTOCK"
+	},
+	{
+		"number": "0025",
+		"name": "YARMOUTH"
+	}
+]
