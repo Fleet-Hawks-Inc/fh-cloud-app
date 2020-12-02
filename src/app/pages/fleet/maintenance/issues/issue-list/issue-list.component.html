@@ -11,7 +11,7 @@
     <section role="main" class="content-body pt-0 pr-0 pl-0">
       <header class="page-header">
         <div class="row px-4" style="padding-top: 10px">
-          <div class="col-md-2 col-lg-2">
+          <div class="col-md-2 col-lg-2 pr-0 pl-0">
             <div class="input-group input-group-sm mb-3">
               <input
                 autocomplete="off"
@@ -20,7 +20,7 @@
                 [(ngModel)]="unitName"
                 class="form-control"
                 (input)="getSuggestions($event.target.value)"
-                placeholder="Search Issues by Vehicle"
+                placeholder="Search Issues by Unit"
               />
             </div>
             <div
@@ -30,86 +30,53 @@
             >
               {{ suggestedUnit.unitName }}
             </div>
+            <!-- <ng-select placeholder="Search By Vehicle" name="unitID" [(ngModel)]="unitID">
+              <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleID">{{vehicle.vehicleIdentification}}
+              </ng-option>
+              <ng-option *ngFor="let asset of assets" [value]="asset.assetID">{{asset.assetIdentification}}</ng-option>
+            </ng-select> -->
           </div>
-          <div class="col-md-2 col-lg-2">
+          <div class="col-md-2 col-lg-2 pr-0 pl-2">
             <div class="input-group input-group-sm mb-3">
-              <input
-                type="text"
-                name="issueName"
-                [(ngModel)]="issueName"
-                class="form-control"
-                placeholder="Search Issue by Name"
-              />
+              <input type="text" name="issueName" [(ngModel)]="issueName" class="form-control"
+                placeholder="Search Issue by Name" />
             </div>
           </div>
-          <div class="col-md-1 col-lg-1">
-            <button
-              type="submit"
-              (click)="fetchIssues()"
-              class="btn btn-sm btn-success"
-            >
+          <div class="col-md-1 col-lg-1 pl-2">
+            <button type="submit" (click)="fetchIssues()" class="btn btn-sm btn-success">
               Search
             </button>
           </div>
-          <div class="col-md-7 col-lg-7 text-right pr-5">
+          <div class="col-md-7 col-lg-7 text-right pr-5 page-buttons">
             <div class="btn-group flex-wrap">
-              <button
-                type="button"
-                class="btn btn-success btn-sm dropdown-toggle"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
+              <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                aria-expanded="false">
                 Actions<span class="caret"></span>
               </button>
-              <div
-                class="dropdown-menu"
-                role="menu"
-                x-placement="bottom-start"
-                style="
+              <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
                   position: absolute;
                   will-change: transform;
                   top: 0px;
                   left: 0px;
                   transform: translate3d(0px, 38px, 0px);
-                "
-              >
+                ">
                 <a class="dropdown-item text-1" href="">Import</a>
                 <a class="dropdown-item text-1" href="">Export</a>
               </div>
             </div>
-            <a
-              [routerLink]="['/fleet', 'maintenance', 'issues', 'add']"
-              class="btn btn-success btn-sm mx-2"
-              style="color: white"
-              ><i class="fas fa-plus"></i> Add Issue</a
-            >
+            <a [routerLink]="['/fleet', 'maintenance', 'issues', 'add']" class="btn btn-success btn-sm ml-2"
+              style="color: white"><i class="fas fa-plus"></i> Add Issue</a>
           </div>
         </div>
       </header>
-      <!-- <section class="card">
-           <div class="row">
-              <div class="col-lg-8">
-                 <div class="wtopnav">
-                    <ul>
-                       <li><a routerLink="/fleet/maintenance/issues/list"  class="active">Issues</a></li>
-                       <li><a routerLink="/fleet/maintenance/service-log/list" >Services </a></li>
-                    </ul>
-                 </div>
-              </div>
-              <div class="col-lg-4 pt-1 text-right">
-              </div>
-           </div>
-        </section> -->
       <div class="row">
         <div class="col pr-0">
           <section class="card">
             <div class="card-body">
-              <table
-                class="table table-responsive-lg table-bordered table-striped mb-0"
-              >
+              <table class="table table-responsive-lg table-bordered table-striped mb-0" datatable
+                [dtOptions]="dtOptions"  *ngIf="issues.length > 0" >
                 <thead>
                   <tr>
-                    <!-- <th><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
                     <th>Unit Type</th>
                     <th>Vehicle/Assets</th>
                     <th>Issue</th>
@@ -121,82 +88,55 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let issue of issues">
-                    <td
-                      routerLink="/fleet/maintenance/issues/detail/{{
+                  <tr *ngFor="let issue of issues" style="cursor: pointer;">
+                    <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
-                      }}"
-                    >
+                      }}">
                       {{ issue.unitType }}
                     </td>
-                    <td
-                      routerLink="/fleet/maintenance/issues/detail/{{
+                    <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
-                      }}"
-                    >
-                      <span class="font-weight-bold line-height-lg">{{
-                        <!-- getUnitName(issue.unitID, issue.unitType) -->
-                      }}</span>
+                      }}">
+                      <span *ngIf= "issue.unitType === 'asset'">{{assetList[issue.unitID]}}</span>
+                                             <span *ngIf= "issue.unitType === 'vehicle'">{{vehicleList[issue.unitID]}}</span>
                     </td>
-                    <td
-                      routerLink="/fleet/maintenance/issues/detail/{{
+                    <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
-                      }}"
-                    >
+                      }}">
                       {{ issue.issueName }}
                     </td>
-                    <td
-                      routerLink="/fleet/maintenance/issues/detail/{{
+                    <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
-                      }}"
-                    >
-                      {{ issue.reportedDate }}
+                      }}">
+                      {{issue.reportedDate}}
                     </td>
-                    <td
-                      routerLink="/fleet/maintenance/issues/detail/{{
+                    <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
-                      }}"
-                    >
-                      {{ getContactName(issue.reportedBy) }}
+                      }}">
+                      {{contactList[issue.reportedBy]}}
                     </td>
-                    <td
-                      routerLink="/fleet/maintenance/issues/detail/{{
+                    <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
-                      }}"
-                    >
+                      }}">
                       {{ issue.assignedTo }}
                     </td>
-                    <td
-                      routerLink="/fleet/maintenance/issues/detail/{{
+                    <td routerLink="/fleet/maintenance/issues/detail/{{
                         issue.issueID
-                      }}"
-                    >
+                      }}">
                       <span class="badge badge-dark p-1">{{
-                        issue.status | uppercase
+                        issue.currentStatus | uppercase
                       }}</span>
                     </td>
                     <td>
                       <div class="btn-group flex-wrap">
-                        <button
-                          type="button"
-                          class="mb-1 mt-1 mr-1 btn"
-                          data-toggle="dropdown"
-                        >
+                        <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown">
                           <i class="fas fa-ellipsis-v"></i>
                         </button>
                         <div class="dropdown-menu" role="menu">
-                          <a
-                            routerLink="/fleet/maintenance/issues/edit/{{
+                          <a routerLink="/fleet/maintenance/issues/edit/{{
                               issue.issueID
-                            }}"
-                            class="dropdown-item text-1"
-                            >Edit</a
-                          >
-                          <button
-                            type="button"
-                            class="dropdown-item text-1"
-                            (click)="deleteIssue(issue.issueID)"
-                          >
+                            }}" class="dropdown-item text-1">Edit</a>
+                          <button type="button" class="dropdown-item text-1" (click)="deleteIssue(issue.issueID)">
                             Delete
                           </button>
                         </div>
@@ -205,6 +145,10 @@
                   </tr>
                 </tbody>
               </table>
+              <div *ngIf="!issues.length > 0" class="alert alert-info m-0 text-center" role="alert">
+                No records found
+                
+               </div>
             </div>
           </section>
         </div>

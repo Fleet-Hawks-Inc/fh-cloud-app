@@ -1,0 +1,13 @@
+.newbgifta {
+    background: #767676 !important;
+}
+.btnifta {
+    background: #464646 !important;
+    border: none !important;
+}
+.btnround40 {
+    border-radius: 40px;
+}
+.btnifta:hover {
+    background: #161616 !important;
+}

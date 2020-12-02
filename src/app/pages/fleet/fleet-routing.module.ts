@@ -36,7 +36,8 @@ import {
 
   AddInventoryComponent,
   EditInventoryComponent,
-  InventoryListComponent
+  InventoryListComponent,
+  InventoryDetailComponent
 
 } from './index';
 
@@ -77,8 +78,8 @@ const COMPONENTS = [
 
   AddInventoryComponent,
   EditInventoryComponent,
-  InventoryListComponent
-
+  InventoryListComponent,
+  InventoryDetailComponent
 ];
 
 const routes: Routes = [
@@ -227,6 +228,7 @@ const routes: Routes = [
       { path: 'add', component: AddInventoryComponent },
       { path: 'edit/:itemID', component: EditInventoryComponent },
       { path: 'list', component: InventoryListComponent },
+      { path: 'detail/:itemID', component: InventoryDetailComponent },
     ],
   },
 ];

@@ -1,0 +1,26 @@
+[
+	{
+		"code": "01",
+		"name": "Courier Low Value Shipment (LVS)"
+	},
+	{
+		"code": "02",
+		"name": "Instrument of International Trade (IIT)"
+	},
+	{
+		"code": "03",
+		"name": "Postal"
+	},
+	{
+		"code": "04",
+		"name": "Flying Truck"
+	},
+	{
+		"code": "05",
+		"name": "Emergency Repairs"
+	},
+	{
+		"code": "08",
+		"name": "In-Transit"
+	}
+]

@@ -5,6 +5,7 @@ import {concatMap, map, mergeAll, toArray} from 'rxjs/operators';
 import {from, of} from 'rxjs';
 import {AwsUploadService} from '../../../../services';
 import { v4 as uuidv4 } from 'uuid';
+import { HttpClient } from '@angular/common/http';
 declare var $: any;
 
 @Component({
@@ -15,7 +16,7 @@ declare var $: any;
 export class AddVehicleNewComponent implements OnInit {
   title = 'Add Vehicles';
 
-  activeTab = 'details';
+  activeTab = 1;
   /**
    * Quantum prop
    */
@@ -27,9 +28,11 @@ export class AddVehicleNewComponent implements OnInit {
   /**
    * Vehicle Prop
    */
+  vehicleTypeList: any = [];
   vehicleIdentification = '';
   vehicleType = '';
   VIN = '';
+  DOT = '';
   year = '';
   manufacturerID = '';
   modelID = '';
@@ -88,6 +91,9 @@ export class AddVehicleNewComponent implements OnInit {
     vendorID: '',
     dateOfExpiry: '',
     remiderEvery: '',
+    policyNumber: '',
+    amount: 0,
+    amountCurrency: ''
   };
   fluid = {
     fuelType: '',
@@ -174,6 +180,7 @@ export class AddVehicleNewComponent implements OnInit {
   countries = [];
   states = [];
   groups = [];
+  drivers = [];
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedPhotos = [];
@@ -198,7 +205,7 @@ export class AddVehicleNewComponent implements OnInit {
     autoplaySpeed: 1500,
   };
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private router: Router) {
+  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private router: Router, private httpClient: HttpClient,) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       this.vehicleForm = $('#vehicleForm').validate();
@@ -210,12 +217,17 @@ export class AddVehicleNewComponent implements OnInit {
     this.fetchInspectionForms();
     this.fetchManufacturers();
     this.fetchCountries();
+    this.fetchStates();
     this.fetchGroups();
+    this.fetchDrivers();
 
     this.apiService.getData('devices').subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
-
+    this.httpClient.get('assets/vehicleType.json').subscribe(data => {
+      console.log('Vehicle Type', data);
+      this.vehicleTypeList = data;
+    });
     this.settings.hardBreakingParams = 6;
     this.settings.hardAccelrationParams = 6;
     this.settings.turningParams = 6;
@@ -226,6 +238,12 @@ export class AddVehicleNewComponent implements OnInit {
 
 
 
+  }
+
+  fetchDrivers(){
+    this.apiService.getData('drivers').subscribe((result: any) => {
+      this.drivers = result.Items;
+    });
   }
 
   fetchServicePrograms() {
@@ -260,6 +278,15 @@ export class AddVehicleNewComponent implements OnInit {
       });
   }
 
+  fetchStates() {
+    this.apiService
+      .getData('states')
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
+
+
   getModels() {
     this.apiService
       .getData(`vehicleModels/manufacturer/${this.manufacturerID}`)
@@ -284,6 +311,7 @@ export class AddVehicleNewComponent implements OnInit {
       vehicleIdentification: this.vehicleIdentification,
       vehicleType: this.vehicleType,
       VIN: this.VIN,
+      DOT: this.DOT,
       year: this.year,
       manufacturerID: this.manufacturerID,
       modelID: this.modelID,
@@ -342,6 +370,9 @@ export class AddVehicleNewComponent implements OnInit {
         vendorID: this.insurance.vendorID,
         dateOfExpiry: this.insurance.dateOfExpiry,
         remiderEvery: this.insurance.remiderEvery,
+        policyNumber: this.insurance.policyNumber,
+        amount: this.insurance.amount,
+        amountCurrency: this.insurance.amountCurrency
       },
       fluid: {
         fuelType: this.fluid.fuelType,
@@ -539,5 +570,17 @@ export class AddVehicleNewComponent implements OnInit {
   onChange(newValue) {
     this.quantum = newValue;
     this.quantumSelected = newValue;
+  }
+
+  next(){
+    this.activeTab++;
+  }
+
+  previous(){
+    this.activeTab--;
+  }
+
+  changeTab(value){
+    this.activeTab = value;
   }
 }
