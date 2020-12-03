@@ -58,7 +58,16 @@
 											   <label class="control-label font-weight-bold text-lg-right"
 												  >Driver Type:</label>
 											</div>
-											<div class="col-lg-2 px-0">
+											<div class="col-lg-6">
+												<div class="btn-group-toggle" data-toggle="buttons">
+													<label class="btn btn-outline btn-fleet mr-2" [class.active]="driverData.driverType === 'employee'" style="width:110px;" (click) = "onChangeUnitType('employee')">
+													  <input type="radio" [(ngModel)]="driverData.driverType" name="driverType" checked hidden value="employee" > employee </label>
+													<label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="driverData.driverType === 'contractor'" (click) = "onChangeUnitType('contractor')">
+													  <input type="radio" [(ngModel)]="driverData.driverType" name="driverType"
+														   hidden value="contractor" > contractor </label>
+												  </div>
+											</div>
+											<!-- <div class="col-lg-2 px-0">
 											   <div class="radio">
 												  <label>
 												  <input [(ngModel)]="driverData.driverType" name="driverType" type="radio" value="employee">
@@ -73,7 +82,7 @@
 												  Contractor
 												  </label>
 											   </div>
-											</div>
+											</div> -->
 										 </div>
 									  </div>
 
@@ -215,7 +224,7 @@
 								   >Address Details</label>
 							 </div>
 						   </div>
-						  <div *ngFor="let item of driverData.address; let i = index;">
+						  <div *ngFor="let item of driverData.address; let i = index;" class="address-item">
 							 <div class="form-group row">
 								<div class="col-lg-4 offset-lg-1">
 								   <div class="row">
@@ -243,7 +252,7 @@
 										class="form-control"
 									   	placeholder="Type Address">
 									<div class="checkbox-custom pt-2">
-									   <input (change)="manAddress($event, i)" [(ngModel)]="manualAddress" name="manualAddress{{i}}" type="checkbox" >
+									   <input (change)="manAddress($event, i)" type="checkbox" >
 									   <label for="man_address">Type Manually</label>
 									</div>
 									<div class="map-search__results bg-white">
@@ -262,63 +271,66 @@
 									   ><i class="fa fa-minus fa-fw"></i></a>
 								 </div>
 							</div>
-							<div class="row mb-3" *ngIf="addressField === i">
+							<div class="address-inner">
+								<div class="row mb-3 border-bottom pb-4">
 
-								<div class="col-lg-5 offset-lg-1 pt-3">
-									<div class="row">
-										<div class="col-lg-5">
-											<label class="control-label font-weight-bold text-lg-right pt-2"
-											   >Select Country</label>
-											<select
-													[(ngModel)]="item.countryID"
-												 name="item.countryID{{i}}" data-plugin-selectTwo
-												 (change)="getStates($event.target.value)"
-												 class="form-control populate">
-											   <optgroup label="Select Country">
-												 <option class="text-capitalize" *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
-											   </optgroup>
-											</select>
-										 </div>
-									   <div class="col-lg-5">
-										  <label class="control-label font-weight-bold text-lg-right pt-2"
-											 >Select State</label>
-										  <select (change)="getCities($event.target.value)" [(ngModel)]="item.stateID" name="item.stateID{{i}}" data-plugin-selectTwo class="form-control populate">
-											 <optgroup label="Select State">
-												<option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
-											</optgroup>
-										  </select>
-									   </div>
-									   <div class="col-lg-5">
-										  <label class="control-label font-weight-bold text-lg-right pt-2"
-											 >Select City</label>
-										  <select [(ngModel)]="item.cityID" name="item.cityID{{i}}" data-plugin-selectTwo class="form-control populate">
-											 <optgroup label="Select City">
-												<option class="text-capitalize" *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
-											 </optgroup>
-										  </select>
-									   </div>
-									   <div class="col-lg-5">
-										  <label class="control-label font-weight-bold text-lg-right pt-2"
-											 >Zip Code</label>
-										  <input [(ngModel)]="item.zipCode" name="item.zipCode{{i}}" type="text" class="form-control" >
-									   </div>
-									</div>
-								 </div>
-								 <div class="col-lg-5 offset-lg-1 pt-4">
-									<div class="row">
-									   <div class="col-lg-10">
-										  <label class="control-label font-weight-bold text-lg-right"
-											 >Address 1</label>
-										  <input [(ngModel)]="item.address1" name="item.address1{{i}}" type="text" class="form-control" >
-									   </div>
-									   <div class="col-lg-10">
-										  <label class="control-label font-weight-bold text-lg-right pt-2"
-											 >Address 2</label>
-										  <input [(ngModel)]="item.address2" name="item.address2{{i}}" type="text" class="form-control" >
-									   </div>
-									</div>
-								 </div>
+									<div class="col-lg-4 offset-lg-1 pt-3">
+										<div class="row">
+											<div class="col-lg-5">
+												<label class="control-label font-weight-bold text-lg-right pt-2"
+												   >Select Country</label>
+												<select
+														[(ngModel)]="item.countryID"
+													 name="item.countryID{{i}}" data-plugin-selectTwo
+													 (change)="getStates($event.target.value)"
+													 class="form-control populate">
+												   <optgroup label="Select Country">
+													 <option class="text-capitalize" *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
+												   </optgroup>
+												</select>
+											 </div>
+										   <div class="col-lg-5">
+											  <label class="control-label font-weight-bold text-lg-right pt-2"
+												 >Select State</label>
+											  <select (change)="getCities($event.target.value)" [(ngModel)]="item.stateID" name="item.stateID{{i}}" data-plugin-selectTwo class="form-control populate">
+												 <optgroup label="Select State">
+													<option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
+												</optgroup>
+											  </select>
+										   </div>
+										   <div class="col-lg-5">
+											  <label class="control-label font-weight-bold text-lg-right pt-2"
+												 >Select City</label>
+											  <select [(ngModel)]="item.cityID" name="item.cityID{{i}}" data-plugin-selectTwo class="form-control populate">
+												 <optgroup label="Select City">
+													<option class="text-capitalize" *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
+												 </optgroup>
+											  </select>
+										   </div>
+										   <div class="col-lg-5">
+											  <label class="control-label font-weight-bold text-lg-right pt-2"
+												 >Zip Code</label>
+											  <input [(ngModel)]="item.zipCode" name="item.zipCode{{i}}" type="text" class="form-control" >
+										   </div>
+										</div>
+									 </div>
+									 <div class="col-lg-5 pt-4">
+										<div class="row">
+										   <div class="col-lg-10">
+											  <label class="control-label font-weight-bold text-lg-right"
+												 >Address 1</label>
+											  <input [(ngModel)]="item.address1" name="item.address1{{i}}" type="text" class="form-control" >
+										   </div>
+										   <div class="col-lg-10">
+											  <label class="control-label font-weight-bold text-lg-right pt-2"
+												 >Address 2</label>
+											  <input [(ngModel)]="item.address2" name="item.address2{{i}}" type="text" class="form-control" >
+										   </div>
+										</div>
+									 </div>
+								</div>
 							</div>
+							
 						  </div>
 					   </div>
 					   <!-- Travel -->

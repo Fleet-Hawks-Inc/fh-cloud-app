@@ -47,6 +47,7 @@ export class AddDriverComponent implements OnInit {
     address: [],
   };
   driverData = {
+    driverType: 'employee',
     address: [{
       addressType: '',
       countryID: '',
@@ -192,10 +193,14 @@ export class AddDriverComponent implements OnInit {
   }
   manAddress(event, i) {
     if (event.target.checked) {
-      this.addressField = i;
+      $(event.target).closest('.address-item').addClass('open');
     } else {
-      this.addressField = -1;
+      $(event.target).closest('.address-item').removeClass('open');
     }
+  }
+
+  onChangeUnitType(value: any) {
+    this.driverData['driverType'] = value;
   }
 
   addAddress() {
