@@ -18,6 +18,7 @@ export class AddIncidentComponent implements OnInit {
   errors = {};
     event = {
         eventDate: '',
+        filterDate: '',
         eventTime: '',
         location: '',
         username: '',
@@ -127,6 +128,9 @@ export class AddIncidentComponent implements OnInit {
     addEvent() {
         this.spinner.show();
         this.hideErrors();
+        let fdate = this.event.eventDate.split('-');
+        this.event.filterDate = fdate[2]+fdate[1]+fdate[0];
+
         this.apiService.postData('safety/eventLogs', this.event).subscribe({
             complete: () => {},
             error: (err: any) => {
