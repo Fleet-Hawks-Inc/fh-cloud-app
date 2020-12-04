@@ -70,12 +70,12 @@ export class AssetListComponent implements OnInit {
   ngOnInit() {
       this.dataTableOptions();
       this.fetchAssets();
-      $(document).ready(() => {
-        setTimeout(() => {
-          $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
-        }, 2000);
+      // $(document).ready(() => {
+      //   setTimeout(() => {
+      //     $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      //   }, 2000);
 
-      });
+      // });
   }
 
   ngOnDestroy = (): void => {
@@ -142,8 +142,14 @@ export class AssetListComponent implements OnInit {
         {
             targets: 8,
             className: 'noVis'
-        }
+        },
+        
     ],
+    "fnDrawCallback": function(oSettings) {
+        if ($('.dataTables_wrapper tbody tr').length <= 10) {
+            $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
+        }
+    }
     };
 
     this.reeferOptions = { // Reefer list options
@@ -186,7 +192,11 @@ export class AssetListComponent implements OnInit {
             className: 'noVis'
         }
     ],
-
+    "fnDrawCallback": function(oSettings) {
+        if ($('.dataTables_wrapper tbody tr').length <= 10) {
+            $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
+        }
+    }
     };
 
     this.dryboxOptions = this.flatbedOptions = this.curtainOptions = { // Reefer list options
@@ -225,12 +235,28 @@ export class AssetListComponent implements OnInit {
               className: 'noVis'
           }
       ],
-
+      "fnDrawCallback": function(oSettings) {
+        if ($('.dataTables_wrapper tbody tr').length <= 10) {
+            $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
+        }
+    }
     };
   }
 
   fetchAssets = () => {
-    this.allData = this.refers = this.drybox = this.flatbed = this.curtainSlide = this.autoHauler = this.dumpTipper = this.interModal = this.liveStock = this.lowboy = this.stake = this.stepDeck = this.tanker = [];
+    this.allData = [];
+    this.refers = [];
+    this.drybox = [];
+    this.flatbed = [];
+    this.curtainSlide = [];
+    this.autoHauler = [];
+    this.dumpTipper = [];
+    this.interModal = [];
+    this.liveStock = [];
+    this.lowboy = [];
+    this.stake = [];
+    this.stepDeck = [];
+    this.tanker = [];
     this.spinner.show(); // loader init
     this.apiService.getData(`assets?assetID=${this.assetID}&status=${this.currentStatus}`).subscribe({
       complete: () => {},
@@ -241,31 +267,34 @@ export class AssetListComponent implements OnInit {
         for (let i = 0; i < result.Items.length; i++) {
           if (result.Items[i].isDeleted === 0) {
             this.allData.push(result.Items[i]);
+            console.log('allData', this.allData);
             if (result.Items[i].assetDetails.assetType === 'Reefer') {
               this.refers.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Drybox') {
-              this.drybox.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Flatbed') {
-              this.flatbed.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Curtain Side') {
-              this.curtainSlide.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Auto Hauler') {
-              this.autoHauler.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Dump/Tipper') {
-              this.dumpTipper.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Intermodal Chassis') {
-              this.interModal.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Livestock') {
-              this.liveStock.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Lowboy') {
-              this.lowboy.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Stake') {
-              this.stake.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Step Deck') {
-              this.stepDeck.push(result.Items[i]);
-            } else {
-              this.tanker.push(result.Items[i]);
-            }
+              console.log('refers', this.refers);
+            } 
+            // else if (result.Items[i].assetDetails.assetType === 'Drybox') {
+            //   this.drybox.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'Flatbed') {
+            //   this.flatbed.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'Curtain Side') {
+            //   this.curtainSlide.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'Auto Hauler') {
+            //   this.autoHauler.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'Dump/Tipper') {
+            //   this.dumpTipper.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'Intermodal Chassis') {
+            //   this.interModal.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'Livestock') {
+            //   this.liveStock.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'Lowboy') {
+            //   this.lowboy.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'Stake') {
+            //   this.stake.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'Step Deck') {
+            //   this.stepDeck.push(result.Items[i]);
+            // } else {
+            //   this.tanker.push(result.Items[i]);
+            // }
           }
         }
       },
@@ -283,40 +312,6 @@ export class AssetListComponent implements OnInit {
     }
   }
 
-  deleteAsset() {
-    this.hasError = false;
-    this.hasSuccess = false;
-    // this.apiService.putData('assets', this.assetsData).subscribe({
-    //   complete: () => { },
-    //   error: (err) => {
-    //     from(err.error)
-    //       .pipe(
-    //         map((val: any) => {
-    //           const path = val.path;
-    //           // We Can Use This Method
-    //           const key = val.message.match(/'([^']+)'/)[1];
-    //           console.log(key);
-    //           val.message = val.message.replace(/'.*'/, 'This Field');
-    //           // this.errors[key] = val.message;
-    //         })
-    //       )
-    //       .subscribe({
-    //         complete: () => {
-    //           // this.throwErrors();
-    //         },
-    //         error: () => { },
-    //         next: () => { },
-    //       });
-    //   },
-    //   next: (res) => {
-    //     this.response = res;
-    //     this.hasSuccess = true;
-    //     this.toastr.success('Asset updated successfully');
-    //     this.router.navigateByUrl('/fleet/assets/Assets-List');
-    //     this.Success = '';
-    //   },
-    // });
-  }
 
   editAsset = () => {
     if (this.assetCheckCount === 1) {

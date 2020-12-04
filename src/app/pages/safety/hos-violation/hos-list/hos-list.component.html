@@ -15,7 +15,11 @@
                     <h2 class="pull-left line-height-xl">Violations</h2>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input type="text" class="form-control" placeholder="Search driver name" [(ngModel)]="filterData.searchValue" name="searchValue">
+                            <input type="text" class="form-control" [(ngModel)]="filterData.driverName" name="searchedDriverName"
+                            (input)="getSuggestions($event.target.value)" placeholder="Search by driver name or driver ID">
+                        </div>
+                        <div *ngFor="let data of suggestions" style="cursor: pointer" (click)="searchSelectedDriver(data)">
+                            {{ data.name }}
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
@@ -42,9 +46,12 @@
                             <input type="date" placeholder="To date" class="form-control" name="endDate" [(ngModel)]="filterData.endDate">
                         </div>
                     </div>
-                    <div class="col-md-2 col-lg-2">
+                    <div class="col-md-3 col-lg-3">
                         <a href="javascript:;" (click)="filterSearch()"
                             class="btn btn-success btn-sm mr-2" style="color:white;"> Search
+                        </a>
+                        <a href="javascript:;" (click)="resetFilter()"
+                            class="btn btn-success btn-sm" style="color:white;"> Reset Filter
                         </a>
                     </div>
                 </div>

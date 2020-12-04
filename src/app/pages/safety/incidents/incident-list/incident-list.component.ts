@@ -52,6 +52,13 @@ export class IncidentListComponent implements OnInit {
   vehicles  = [];
   vehicleID = '';
   serviceUrl = '';
+  filterValue = {
+    date: '',
+    driverID: '',
+    filterDate: '',
+    driverName: ''
+  };
+  suggestions = [];
   
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -142,21 +149,6 @@ export class IncidentListComponent implements OnInit {
       this.serviceUrl = "safety/eventLogs/fetch/incident-records?tab=" + tabType + "&recLimit="+this.totalRecords+"&lastEvaluatedValue1=";
     }
 
-    if(filters === 'yes') {
-      let startDatee:any = '';
-      let endDatee:any = '';
-      // if(this.tripsFiltr.startDate !== ''){
-      //   startDatee = new Date(this.tripsFiltr.startDate).getTime();
-      // }
-      
-      // if(this.tripsFiltr.endDate !== ''){
-      //   endDatee = new Date(this.tripsFiltr.endDate+" 00:00:00").getTime();
-      // }
-      // this.tripsFiltr.category = 'tripNo';
-      // this.serviceUrl = this.serviceUrl+'&filter=true&searchValue='+this.tripsFiltr.searchValue+"&startDate="+startDatee+"&endDate="+endDatee+"&category="+this.tripsFiltr.category+"&value1=";
-    }
-    // console.log(this.serviceUrl);
-
     if (check !== '') {
       current.rerender();
     }
@@ -169,10 +161,7 @@ export class IncidentListComponent implements OnInit {
       processing: true,
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        // current.apiService.getDatatablePostData('safety/eventLogs/fetch/incident-records?lastEvaluatedValue1='+this.lastEvaluated.value1+'&lastEvaluatedValue2='+this.lastEvaluated.value2+'&search=&vehicle='+this.vehicleID, dataTablesParameters).subscribe(resp => {
-          current.apiService.getDatatablePostData(this.serviceUrl+this.lastEvaluated.value1+'&lastEvaluatedValue2='+this.lastEvaluated.value2+'&search=&vehicle='+this.vehicleID, dataTablesParameters).subscribe(resp => {
-          console.log('------------');
-          console.log(resp)
+          current.apiService.getDatatablePostData(this.serviceUrl+this.lastEvaluated.value1+"&driver="+this.filterValue.driverID+"&date="+this.filterValue.filterDate, dataTablesParameters).subscribe(resp => {
           current.getEventDetail(resp['Items']);
           if(resp['LastEvaluatedKey'] !== undefined){
             this.lastEvaluated = {
@@ -235,11 +224,13 @@ export class IncidentListComponent implements OnInit {
     })
   }
 
-  searchFilter(event, vehicleID) {
-    this.vehicleID = vehicleID;
+  searchFilter(event) {
+    if(this.filterValue.date !== '') {
+      this.filterValue.filterDate = this.filterValue.date.split("-").reverse().join("-");
+    }
     this.rerender();
-    $("#searchVehicle").text(event.target.innerText);
   }
+
 
   fetchevents() {
     this.apiService.getData('safety/eventLogs/fetch?event=incident')
@@ -276,5 +267,52 @@ export class IncidentListComponent implements OnInit {
       value2: ''
     }
     current.initDataTable(tabType, 'reload');
+  }
+
+  getSuggestions(searchvalue='') {
+    if(searchvalue !== '') {
+      this.apiService.getData('drivers/get/suggestions/'+searchvalue).subscribe({
+        complete: () => {},
+        error: () => { },
+        next: (result: any) => {
+          this.suggestions = [];
+          for (let i = 0; i < result.Items.length; i++) {
+            const element = result.Items[i];
+  
+            let obj = {
+              userName: element.userName,
+              name: element.firstName + ' ' + element.lastName
+            };
+            this.suggestions.push(obj)
+          }
+        }
+      })
+    }    
+  }
+
+  searchSelectedDriver(data) {
+    this.filterValue.driverID = data.userName;
+    this.filterValue.driverName = data.name;
+    this.suggestions = [];
+
+    this.rerender();
+  }
+
+  resetFilter() {
+    if(this.filterValue.date !== '' || this.filterValue.driverName !== '') {
+      this.spinner.show();
+      this.filterValue = {
+        date: '',
+        driverID: '',
+        filterDate: '',
+        driverName: ''
+      };
+      this.suggestions = [];
+      this.rerender();
+      this.spinner.hide();
+    } else {
+      return false;
+    }
+    
   }
 }

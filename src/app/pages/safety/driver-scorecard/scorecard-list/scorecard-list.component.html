@@ -17,23 +17,30 @@
                     </div>
                     <div class="col-lg-1 col-md-1 pl-0">
                         <div class="input-group input-group-sm mb-3">
-                            <input type="text" class="form-control" placeholder="From">
+                            <input type="number" class="form-control" min="0" placeholder="From" name="from" [(ngModel)]="filterData.fromDistance">
                         </div>
                     </div>
                     <div class="col-lg-1 col-md-1">
                         <div class="input-group input-group-sm mb-3">
-                            <input type="text" class="form-control" placeholder="To">
+                            <input type="number" class="form-control" min="0" placeholder="To" name="to" [(ngModel)]="filterData.toDistance">
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input type="text" class="form-control" placeholder="Search Driver">
+                            <input type="text" class="form-control" [(ngModel)]="filterData.driverName" name="searchedDriverName"
+                            (change)="getSuggestions($event.target.value)" placeholder="Search Driver Name Or driver ID">
+                        </div>
+                        <div *ngIf="suggestions.length>0">
+                            <div *ngFor="let data of suggestions" style="cursor: pointer" (click)="searchSelectedDriver(data)">
+                                {{ data.name }}
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-2">
-                        <button class="btn btn-sm btn-success">Search</button>
+                    <div class="col-lg-4 col-md-4">
+                        <button class="btn btn-sm btn-success" (click)="searchFilter()">Search</button>
+                        <button class="btn btn-sm btn-success ml-3" (click)="resetFilter()">Reset Filters</button>
                     </div>
-                    <div class="col-md-7  col-lg-7 text-right pr-5">
+                    <div class="col-md-7 col-lg-7 text-right pr-5">
 
                     </div>
                 </div>
@@ -61,8 +68,7 @@
                                             <th>Time</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <!-- <tr routerLink="/safety/drivers-scorecard/details/1"> -->
+                                    <tbody *ngIf="eventData.length > 0">
                                         <tr *ngFor="let data of eventData; let i=index;" routerLink="/safety/drivers-scorecard/details/{{data.driverID}}/{{i+1}}">
                                             <td>{{ i+1 }}</td>
                                             <td>{{ data.driverName }}</td>
@@ -77,6 +83,11 @@
                                             <td>{{ data.overSpeeding }}</td>
                                             <td>{{ data.distance }} mi</td>
                                             <td>{{ data.time }}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr *ngIf="!eventData.length > 0" style="text-align: center;">
+                                            <td colspan="13">No record found</td>
                                         </tr>
                                     </tbody>
                                 </table>

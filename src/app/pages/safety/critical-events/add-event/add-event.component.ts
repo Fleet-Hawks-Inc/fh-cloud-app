@@ -20,6 +20,7 @@ export class AddEventComponent implements OnInit {
     errors = {};
     event = {
         eventDate: '',
+        filterDate: '',
         eventTime: '',
         location: '',
         username: '',
@@ -48,9 +49,25 @@ export class AddEventComponent implements OnInit {
             name: 'Harsh Acceleration'
         },
         {
-            value: 'overSpeeding',
-            name: 'Over Speeding'
+            value: 'overSpeedingStart',
+            name: 'Over Speeding Start'
         },
+        {
+            value: 'overSpeedingEnd',
+            name: 'Over Speeding End'
+        },
+        {
+            value: 'harshTurn',
+            name: 'Harsh Turn'
+        },
+        {
+            value: 'crash',
+            name: 'Crash'
+        },
+        {
+            value: 'rollingStop',
+            name: 'Rolling Stop'
+        }
     ];
 
     severity = [
@@ -130,6 +147,9 @@ export class AddEventComponent implements OnInit {
     addEvent() {
         this.spinner.show();
         this.hideErrors();
+
+        let fdate = this.event.eventDate.split('-');
+        this.event.filterDate = fdate[2]+fdate[1]+fdate[0];
         this.apiService.postData('safety/eventLogs', this.event).subscribe({
             complete: () => {},
             error: (err: any) => {
