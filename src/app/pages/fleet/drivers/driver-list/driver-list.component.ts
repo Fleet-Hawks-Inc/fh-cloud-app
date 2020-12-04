@@ -249,7 +249,7 @@ export class DriverListComponent implements OnInit {
 
   initDataTable() {
     this.dtOptions = {
-      searching:false,
+      searching: false,
       dom: 'Bfrtip', // lrtip to hide search field
       processing: true,
       columnDefs: [
@@ -274,13 +274,15 @@ export class DriverListComponent implements OnInit {
               className: 'noVis'
           }
       ],
-      colReorder: {
-        fixedColumnsLeft: 0
-      },
       buttons: [
         'colvis',
         'excel',
       ],
+      "fnDrawCallback": function(oSettings) {
+        if ($('.dataTables_wrapper tbody tr').length < 10) {
+              $('.dataTables_paginate').hide();
+          }
+      }
     };
   }
 }
