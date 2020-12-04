@@ -125,8 +125,8 @@ getSuggestions(value) {
     this.apiService
       .deleteData('reminders/' + entryID)
       .subscribe((result: any) => {
-        this.fetchReminders();
         this.toastr.success('Service Reminder Deleted Successfully!');
+        this.fetchReminders();
       });
   }
   resolveReminder(ID) {

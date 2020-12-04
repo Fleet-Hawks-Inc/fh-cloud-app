@@ -195,6 +195,7 @@ hideErrors() {
       }
     }
     console.log('uploaded photos', this.uploadedPhotos);
+    console.log('selected files names', this.selectedFileNames);
   }
   /*
    * Uploading files which selected

@@ -4,6 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {AwsUploadService} from '../../../../../services';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
+import { from } from 'rxjs';
+import {  map } from 'rxjs/operators';
 @Component({
   selector: 'app-issue-detail',
   templateUrl: './issue-detail.component.html',
@@ -101,17 +103,17 @@ export class IssueDetailComponent implements OnInit {
       (this.carrierID, this.uploadedPhotos[i]));
       this.issueImages.push(this.image);
     }
-    console.log('fetched images', this.issueImages);
   }
   deleteImage(i: number) {
     this.carrierID =  this.apiService.getCarrierID();
     this.awsUS.deleteFile(this.carrierID, this.uploadedPhotos[i]);
     this.uploadedPhotos.splice(i, 1);
     this.issueImages.splice(i, 1);
-    console.log('new array',this.uploadedPhotos);
-    this.apiService.getData(`issues/updatePhotos?issueID=${this.issueID}&uploadedPhotos=${this.uploadedPhotos}`).subscribe((result: any) => {
-      this.toastr.success('Image Deleted Successfully!');
-    });
+    this.updateIssue();
+    this.toastr.success('Image Deleted Successfully!');
+    // this.apiService.getData(`issues/updatePhotos?issueID=${this.issueID}&uploadedPhotos=${this.uploadedPhotos}`).subscribe((result: any) => {
+    //   this.toastr.success('Image Deleted Successfully!');
+    // });
   }
   getDocuments = async () => {
     this.carrierID = await this.apiService.getCarrierID();
@@ -120,14 +122,14 @@ export class IssueDetailComponent implements OnInit {
               await this.awsUS.getFiles(this.carrierID, this.uploadedDocs[i]));
       this.issueDocs.push(this.docs);
     }
-    console.log('docs', this.issueDocs);
   }
   deleteDoc(i: number) {
     this.carrierID =  this.apiService.getCarrierID();
     this.awsUS.deleteFile(this.carrierID, this.uploadedDocs[i]);
     this.uploadedDocs.splice(i, 1);
     this.issueDocs.splice(i, 1);
-    console.log('new array', this.uploadedDocs);
+    this.updateIssue();
+    this.toastr.success('Document Deleted Successfully!');
     // this.apiService.getData(`issues/updateDocs?issueID=${this.issueID}&uploadedDocs=${this.uploadedDocs}`).subscribe((result: any) => {
     //   this.toastr.success('Document Deleted Successfully!');
     // });
@@ -141,10 +143,10 @@ export class IssueDetailComponent implements OnInit {
       });
   }
   setStatus(issueID) {
-    const issueStatus = 'CLOSE';
+    const issueStatus = 'CLOSED';
     this.apiService.getData('issues/setStatus/' + issueID + '/' + issueStatus).subscribe((result: any) => {
       this.toastr.success('Issue Status Updated Successfully!');
-      this.currentStatus = 'CLOSE';
+      this.currentStatus = 'CLOSED';
     });
   }
   resolveIssue() {
@@ -152,7 +154,30 @@ export class IssueDetailComponent implements OnInit {
     this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
   }
   setPDFSrc(val) {
+    this.pdfSrc = '';
     this.pdfSrc = val;
     console.log('pdf', this.pdfSrc);
+  }
+  updateIssue() {
+    const data = {
+      issueID: this.issueID,
+      issueName: this.issueName,
+      unitID: this.unitID,
+      unitType: this.unitType,
+      currentStatus: this.currentStatus,
+      reportedDate: this.reportedDate,
+      description: this.description,
+      odometer: this.odometer,
+      reportedBy: this.reportedBy,
+      assignedTo: this.assignedTo,
+      uploadedPhotos: this.uploadedPhotos,
+      uploadedDocs: this.uploadedDocs
+    };
+    console.log('Issue data on console', data);
+    this.apiService.putData('issues/', data).
+  subscribe({
+    complete : () => {
+    }
+  });
   }
 }

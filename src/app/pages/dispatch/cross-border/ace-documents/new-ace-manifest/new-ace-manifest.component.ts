@@ -138,7 +138,7 @@ export class NewAceManifestComponent implements OnInit {
   tags = [];
   ETA: string;
   estimatedArrivalDate: string;
-  // time: NgbTimeStruct;
+  estimatedArrivalTime: string;
   assetArray = [];
   assetSeals = [];
   trailerSeals: any = [];
@@ -146,7 +146,7 @@ export class NewAceManifestComponent implements OnInit {
   assetId = [];
   driverIdArray = [];
   driverArray = [];
-  estimatedArrivalTime: string;
+  
   errors = {};
   form;
   response: any = '';
@@ -169,6 +169,7 @@ export class NewAceManifestComponent implements OnInit {
   countries: any = [];
   packagingUnitsList: any = [];
   addTrailerBtn = true;
+  truckSeals = [];
   assetsArray = [
     {
       assetId: '',
@@ -269,6 +270,43 @@ export class NewAceManifestComponent implements OnInit {
       autoSend: false
     }
   ];
+  ngOnInit() {
+    this.entryID = this.route.snapshot.params[`entryID`];
+    if (this.entryID) {
+      this.title = 'Edit ACE e-Manifest';
+      this.fetchACEEntry();
+    } else {
+      this.title = 'Add ACE e-Manifest';
+    }
+    this.fetchVehicles();
+    this.fetchAssets();
+    this.fetchTrips();
+    this.fetchDrivers();
+    this.fetchCountries();
+    this.getStates();
+    this.httpClient.get('assets/USports.json').subscribe(data => {
+      // console.log('Data', data);
+      this.USports = data;
+    });
+    this.httpClient.get('assets/manifestETA.json').subscribe(data => {
+      this.timeList = data;
+    });
+    this.httpClient.get('assets/ACEShipmentType.json').subscribe(data => {
+      // console.log('Shipment Data', data);
+      this.shipmentTypeList = data;
+    });
+    this.httpClient.get('assets/packagingUnit.json').subscribe(data => {
+      // console.log('Packaging Data', data);
+      this.packagingUnitsList = data;
+    });
+    this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
+      // console.log('Document  Data', data);
+      this.documentTypeList = data;
+    });
+    $(document).ready(() => {
+      this.form = $('#form_').validate();
+    });
+  }
   addShipment() {
     this.shipments.push({
       data: 'ACE_SHIPMENT',
@@ -340,43 +378,7 @@ export class NewAceManifestComponent implements OnInit {
     config.spinners = true;
   }
 
-  ngOnInit() {
-    this.entryID = this.route.snapshot.params['entryID'];
-    if (this.entryID) {
-      this.title = 'Edit ACE e-Manifest';
-      this.fetchACEEntry();
-    } else {
-      this.title = 'Add ACE e-Manifest';
-    }
-    this.fetchVehicles();
-    this.fetchAssets();
-    this.fetchTrips();
-    this.fetchDrivers();
-    this.fetchCountries();
-    this.getStates();
-    this.httpClient.get('assets/USports.json').subscribe(data => {
-      // console.log('Data', data);
-      this.USports = data;
-    });
-    this.httpClient.get('assets/manifestETA.json').subscribe(data => {
-      this.timeList = data;
-    });
-    this.httpClient.get('assets/ACEShipmentType.json').subscribe(data => {
-      // console.log('Shipment Data', data);
-      this.shipmentTypeList = data;
-    });
-    this.httpClient.get('assets/packagingUnit.json').subscribe(data => {
-      // console.log('Packaging Data', data);
-      this.packagingUnitsList = data;
-    });
-    this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
-      // console.log('Document  Data', data);
-      this.documentTypeList = data;
-    });
-    $(document).ready(() => {
-      this.form = $('#form_').validate();
-    });
-  }
+  
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -656,7 +658,7 @@ export class NewAceManifestComponent implements OnInit {
       autoSend: false,
       currentStatus: 'DRAFT'
     };
-    console.log('Added Data', data);
+    console.log('Added Data', data); return;
     this.apiService.postData('ACEeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {

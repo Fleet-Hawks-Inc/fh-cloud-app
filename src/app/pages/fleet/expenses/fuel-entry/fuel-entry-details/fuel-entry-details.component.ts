@@ -55,6 +55,12 @@ export class FuelEntryDetailsComponent implements OnInit {
     description: '',
     uploadedPhotos: [],
   };
+  fuel = {
+    totalLitres: 0,
+    totalGallons: 0,
+    costPerLitre: 0,
+    costPerGallon: 0
+  };
   timeCreated: '';
   /******************/
   entryID = '';
@@ -153,6 +159,12 @@ export class FuelEntryDetailsComponent implements OnInit {
             description: result.additionalDetails.description,
             uploadedPhotos: result.additionalDetails.uploadedPhotos,
           },
+          this.fuel = {
+            totalLitres: result.fuel.totalLitres,
+            totalGallons: result.fuel.totalGallons,
+            costPerLitre: result.fuel.costPerLitre,
+            costPerGallon: result.fuel.costPerGallon
+          }
           this.getImages();
       });
     this.fetchVendors(this.vendorID);
@@ -169,7 +181,9 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.carrierID =  this.apiService.getCarrierID();
     this.awsUS.deleteFile(this.carrierID, this.additionalDetails.uploadedPhotos[i]);
     this.additionalDetails.uploadedPhotos.splice(i, 1);
-    console.log('new array',this.additionalDetails.uploadedPhotos);
+    this.fuelEntryImages.splice(i, 1);
+    this.updateFuelEntry();
+    this.toastr.success('Image Deleted Successfully!');
     // this.apiService.getData('fuelEntries//updatePhotos/' + this.entryID + '/' + this.additionalDetails.uploadedPhotos).subscribe((result: any) => {
     //   this.toastr.success('Image Deleted Successfully!');
     // });
@@ -181,5 +195,48 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.toastr.success('Fuel Entry Deleted Successfully!');
         this.router.navigateByUrl('/fleet/expenses/fuel/list');
       });
+  }
+  updateFuelEntry() {
+    const data = {
+      entryID: this.entryID,
+      unitType: this.unitType,
+      unitID: this.unitID,
+      fuelQty: this.fuelQty,
+      fuelQtyUnit: this.fuelQtyUnit,
+      fuelQtyAmt: this.fuelQtyAmt,
+      DEFFuelQty: this.DEFFuelQty,
+      DEFFuelQtyAmt: this.DEFFuelQtyAmt,
+      discount: this.discount,
+      totalAmount: this.totalAmount,
+      costPerUnit: this.costPerUnit,
+      amountPaid: this.amountPaid,
+      currency: this.currency,
+      fuelDate: this.fuelDate,
+      fuelType: this.fuelType,
+      paidBy: this.paidBy,
+      paymentMode: this.paymentMode,
+      reference: this.reference,
+      reimburseToDriver: this.reimburseToDriver,
+      deductFromPay: this.deductFromPay,
+      vendorID: this.vendorID,
+      countryID: this.countryID,
+      stateID: this.stateID,
+      cityID: this.cityID,
+      tripID: this.tripID,
+      additionalDetails: {
+        avgGVW: this.additionalDetails.avgGVW,
+        odometer: this.additionalDetails.odometer,
+        description: this.additionalDetails.description,
+        uploadedPhotos: this.additionalDetails.uploadedPhotos,
+      },
+      fuel: {
+        totalLitres: this.fuel.totalLitres,
+        totalGallons: this.fuel.totalGallons,
+        costPerLitre: this.fuel.costPerLitre,
+        costPerGallon: this.fuel.costPerGallon
+      },
+    };
+    //  console.log(data);
+    this.apiService.putData('fuelEntries', data).subscribe();
   }
 }
