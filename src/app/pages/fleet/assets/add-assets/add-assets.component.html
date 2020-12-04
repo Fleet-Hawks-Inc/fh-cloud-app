@@ -13,7 +13,7 @@
 			<header class="page-header">
 				<div class="row pr-5 " style="padding-top:10px;">
 					<div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}} </div>
-					<div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="/fleet/assets/Assets-List"
+					<div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="/fleet/assets/list"
 							class="btn btn-default btn-sm"><i class="fas fa-list"></i> Assets List</a> </div>
 				</div>
 			</header>
@@ -60,22 +60,8 @@
 												Type</label>
 											<select data-plugin-selectTwo [(ngModel)]="assetsData.assetDetails.assetType" name="assetDetails.assetType" class="form-control populate" id="assetType" >
 												<optgroup label="">
-                          <option value="Reefer">Reefer</option>
-                          <option value="Drybox">Drybox</option>
-                          <option value="Flatbed">Flatbed</option>
-													<option value="Curtain Side">Curtain Side</option>
-													
-													<option value="Dump/Tipper">Dump/Tipper</option>
-													<option value="Auto Hauler">Auto Hauler</option>
-													<option value="Intermodel Chassis">Intermodel Chassis</option>
-													<option value="Livestock">Livestock</option>
-													<option value="Lowboy">Lowboy</option>
-													
-													<option value="Stake">Stake</option>
-													<option value="Step Deck">Step Deck</option>
-													<option value="Tanker">Tanker</option>
-													<option value="Other">Other</option>
-												</optgroup>
+                          <option *ngFor="let type of allAssetTypes;" value="{{type.code}}">{{type.description}}</option>
+                        </optgroup>
 											</select>
 										</div>
 										<div class="col-lg-5">
