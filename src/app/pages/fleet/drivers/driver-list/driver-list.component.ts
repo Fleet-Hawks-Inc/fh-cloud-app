@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
-import { forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, from, Observable, of } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
 declare var $: any;
 
@@ -25,6 +25,8 @@ export class DriverListComponent implements OnInit {
   dtOptions: any = {};
 
   statesObject: any = {};
+  countriesObject: any = {};
+  citiesObject: any = {};
   vehiclesObject: any = {};
   cyclesObject: any = {};
 
@@ -46,6 +48,8 @@ export class DriverListComponent implements OnInit {
     this.fetchAllStatesIDs();
     this.fetchAllVehiclesIDs();
     this.fetchAllCyclesIDs();
+    this.fetchAllCitiesIDs();
+    this.fetchAllCountriesIDs();
 
     $(document).ready(() => {
       setTimeout(() => {
@@ -55,12 +59,6 @@ export class DriverListComponent implements OnInit {
   }
 
 
-  fetchAddress() {
-    this.apiService.getData('addresses')
-      .subscribe((result: any) => {
-        console.log('address', result);
-      });
-  }
 
 
   jsTree() {
@@ -105,70 +103,88 @@ export class DriverListComponent implements OnInit {
     this.suggestedDrivers = [];
   }
 
+  
+  fetchAddress() {
+    this.apiService.getData('addresses')
+      .subscribe((result: any) => {
+        console.log('address', result);
+      });
+  }
+
   fetchDrivers() {
    // this.spinner.show(); // loader init
-    // let character = this.apiService.getData('drivers');
-    // let characterHomeworld = this.apiService.getData('addresses');
+    let driversList = this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`);
+    let addressList = this.apiService.getData('addresses');
 
-    // forkJoin([character, characterHomeworld]).subscribe(results => {
-    //   console.log("results", results);
-    // });
-
-  //  this.apiService.getData('drivers')
-  //     .pipe(mergeMap(character => this.apiService.getData('addresses'))).subscribe( res => {
-  //       console.log('homeworld', this.homeworld);
-  //     });
-  //   console.log('homeworld', this.homeworld);
-    // this.apiService.getData(`drivers`).pipe(
-    //   mergeMap(resp => {
-    //     console.log("resp", resp);
-    //     return this.apiService.getData(`addresses`).pipe(
-    //       map(countResp => {
-    //         console.log("countResp", countResp);
-    //       })
-    //     )
-    //   })
-    // ).subscribe(res => {
-    //   console.log("drivers", res);
-    // })
-    this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`).subscribe({
-      complete: () => {
-        this.initDataTable();
-      },
-      error: () => {},
-      next: (result: any) => {
-
-        for (const iterator of result.Items) {
-          if (iterator.isDeleted === 0) {
-            this.drivers.push(iterator);
+    forkJoin([driversList, addressList]).subscribe(results => {
+      console.log("results", results);
+      let newArr = [];
+      // tslint:disable-next-line: prefer-for-of
+      for (let i = 0; i < results[1].Items.length; i++) {
+        // tslint:disable-next-line: prefer-for-of
+        for (let j = 0; j < results[0].Items.length; j++) {
+          if (results[1].Items[i].entityID === results[0].Items[j].driverID) {
+            results[0].Items[j].addressDetails = {
+              address1: results[1].Items[i].address1,
+              address2: results[1].Items[i].address2,
+              addressID: results[1].Items[i].addressID,
+              addressType: results[1].Items[i].addressType,
+              cityID: results[1].Items[i].cityID,
+              countryID: results[1].Items[i].countryID,
+              geoCords: results[1].Items[i].geoCords,
+              stateID: results[1].Items[i].stateID,
+              zipCode: results[1].Items[i].zipCode,
+            };
           }
         }
-
-        console.log(result);
-
-        this.drivers = result.Items;
-
-        console.log('drivers', this.drivers);
-
-
-        // this.drivers = result.Items;
-        for (let i = 0; i < result.Items.length; i++) {
-          // console.log(result.Items[i].isDeleted);
-          if (result.Items[i].isDeleted === 0) {
-            this.drivers.push(result.Items[i]);
-          }
+      }
+      for (const iterator of results[0].Items) {
+        if (iterator.isDeleted === 0) {
+          this.drivers.push(iterator);
         }
-
-      //  this.spinner.hide(); // loader hide
-
-      },
+      }
+      console.log("results[0].Items", this.drivers);
     });
+
+    
+    // let driverList = this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`);
+    // from(driverList).pipe(
+    //   mergeMap(resp => this.apiService.getData(`addresses`))
+    // ).subscribe(res => console.log('resnew', res));
+    
+    // this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`).subscribe({
+    //   complete: () => {
+    //     this.initDataTable();
+    //   },
+    //   error: () => {},
+    //   next: (result: any) => {
+    //     for (const iterator of result.Items) {
+    //       if (iterator.isDeleted === 0) {
+    //         this.drivers.push(iterator);
+    //       }
+    //     }
+    //   },
+    // });
   }
 
   fetchAllStatesIDs() {
     this.apiService.getData('states/get/list')
       .subscribe((result: any) => {
         this.statesObject = result;
+      });
+  }
+  
+  fetchAllCountriesIDs() {
+    this.apiService.getData('countries/get/list')
+      .subscribe((result: any) => {
+        this.countriesObject = result;
+      });
+  }
+
+  fetchAllCitiesIDs() {
+    this.apiService.getData('cities/get/list')
+      .subscribe((result: any) => {
+        this.citiesObject = result;
       });
   }
 
