@@ -22,7 +22,7 @@ export class AddTripComponent implements OnInit {
     constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
         private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) { }
 
-    errors: {};
+    errors = {};
     trips = [];
     vehicles = [];
     assets = [];
@@ -34,7 +34,7 @@ export class AddTripComponent implements OnInit {
         orderId: {},
         tripPlanning: [],
         notifications: {},
-        tripStatus: 'pending'
+        tripStatus: 'planned'
     };
     ltlOrders = [
         {
@@ -311,12 +311,12 @@ export class AddTripComponent implements OnInit {
             let dataCheck = this.trips.map(function(v){ return v.vehicleID; });
 
             if(dataCheck.length > 0){
-                this.tripData.tripStatus = 'planned';
+                this.tripData.tripStatus = 'dispatched';
             } else{
-                this.tripData.tripStatus = 'pending';
+                this.tripData.tripStatus = 'planned';
             }
         } else {
-            this.tripData.tripStatus = 'pending';
+            this.tripData.tripStatus = 'planned';
         }
     }
 
@@ -731,6 +731,8 @@ export class AddTripComponent implements OnInit {
     }
 
     async driverChange($event, type, eventType) {
+        console.log('$event')
+        console.log($event)
         if ($event === undefined) {
             if (type === 'driver') {
                 $(".driverClass").removeClass('td_border');
@@ -756,7 +758,7 @@ export class AddTripComponent implements OnInit {
                     this.assetDataDriverUsername = $event.userName;
                 }
                 $(".driverClass").removeClass('td_border');
-                $("#drivr_" + $event.userName).addClass('td_border');
+                $("#drivr_" + $event.driverID).addClass('td_border');
 
                 await this.spinner.hide();
 
@@ -767,7 +769,7 @@ export class AddTripComponent implements OnInit {
                     this.assetDataCoDriverUsername = $event.userName;
                 }
                 $(".codriverClass").removeClass('td_border');
-                $("#codrivr_" + $event.userName).addClass('td_border');
+                $("#codrivr_" + $event.driverID).addClass('td_border');
             }
         }
     }
@@ -842,8 +844,8 @@ export class AddTripComponent implements OnInit {
         if (this.tempLocation.type === 'add') {
             this.textFieldValues.location = this.tempLocation;
             this.textFieldValues.locationName = this.tempLocation.locationName;
-            console.log('this.textFieldValues in location');
-            console.log(this.textFieldValues);
+            // console.log('this.textFieldValues in location');
+            // console.log(this.textFieldValues);
             $("#locationModal").modal('hide');
 
         } else if (this.tempLocation.type === 'edit') {
@@ -874,8 +876,9 @@ export class AddTripComponent implements OnInit {
     }
 
     createTrip() {
-        console.log('start tripData');
-        console.log(this.tripData);
+        // console.log('start tripData');
+        // console.log(this.tripData);
+        this.hideErrors();
         if (this.tripData.reeferTemperature != '') {
             this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
         } else {
@@ -979,13 +982,8 @@ export class AddTripComponent implements OnInit {
                 from(err.error)
                     .pipe(
                         map((val: any) => {
-                            const path = val.path;
-                            // We Can Use This Method
-                            const key = val.message.match(/"([^']+)"/)[1];
-                            // console.log(key);
                             val.message = val.message.replace(/".*"/, 'This Field');
-                            this.errors[key] = val.message;
-                            this.spinner.hide();
+                            this.errors[val.context.key] = val.message;
                         })
                     )
                     .subscribe({
@@ -1008,9 +1006,31 @@ export class AddTripComponent implements OnInit {
         });
     }
 
+    // throwErrors() {
+    //     console.log(this.errors);
+    //     this.form.showErrors(this.errors);
+    //     this.spinner.hide();
+    // }
+
     throwErrors() {
         console.log(this.errors);
-        this.form.showErrors(this.errors);
-        this.spinner.hide();
+        from(Object.keys(this.errors))
+          .subscribe((v) => {
+            $('[name="' + v + '"]')
+              .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+              .addClass('error')
+          });
     }
+
+    hideErrors() {
+        from(Object.keys(this.errors))
+          .subscribe((v) => {
+            $('[name="' + v + '"]')
+              .removeClass('error')
+              .next()
+              .remove('label')
+          });
+        this.errors = {};
+    }
+    
 }

@@ -1,0 +1,50 @@
+[
+	{
+		"code": "PAPS",
+		"description": "PAPS"
+	},
+	{
+		"code": "IN_BOND",
+		"description": "Ace In-Bond"
+	},
+	{
+		"code": "QP_IN_BOND",
+		"description": "QP In-Bond"
+	},
+	{
+		"code": "SECTION_321",
+		"description": "Section 321"
+	},
+	{
+		"code": "SECTION_321_FDA",
+		"description": "Section 321 with FDA Considerations"
+	},
+	{
+		"code": "BRASS",
+		"description": "BRASS C4 Line Release"
+	},
+	{
+		"code": "BRASS_MULTIPLE",
+		"description": "BRASS Multiple C4 Line Releases"
+	},
+	{
+		"code": "GOODS_ASTRAY",
+		"description": "Goods Astray"
+	},
+	{
+		"code": "INTANGIBLES",
+		"description": "Intangibles"
+	},
+	{
+		"code": "ATTACHED_CF7523",
+		"description": "Free of Duty (Customs Form 7523)"
+	},
+	{
+		"code": "ATTACHED_CF3311",
+		"description": "Returned American Products (Customs Form 3311)"
+	},
+	{
+		"code": "ATTACHED_CF3299",
+		"description": "Personal Shipment (Customs Form 3299)"
+	}
+]

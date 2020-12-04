@@ -1,0 +1,105 @@
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body pt-0 pr-0 pl-0">
+            <header class="page-header">
+                <div class="row px-3" style="padding-top:10px;">
+                    <div class="col-lg-1 col-md-1 pr-0 pt-1">
+                        <label class="control-label font-weight-bold text-dark">Distance</label>
+                    </div>
+                    <div class="col-lg-1 col-md-1 pl-0">
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="number" class="form-control" min="0" placeholder="From" name="from" [(ngModel)]="filterData.fromDistance">
+                        </div>
+                    </div>
+                    <div class="col-lg-1 col-md-1">
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="number" class="form-control" min="0" placeholder="To" name="to" [(ngModel)]="filterData.toDistance">
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" [(ngModel)]="filterData.driverName" name="searchedDriverName"
+                            (change)="getSuggestions($event.target.value)" placeholder="Search Driver Name Or driver ID">
+                        </div>
+                        <div *ngIf="suggestions.length>0">
+                            <div *ngFor="let data of suggestions" style="cursor: pointer" (click)="searchSelectedDriver(data)">
+                                {{ data.name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <button class="btn btn-sm btn-success" (click)="searchFilter()">Search</button>
+                        <button class="btn btn-sm btn-success ml-3" (click)="resetFilter()">Reset Filters</button>
+                    </div>
+                    <div class="col-md-7 col-lg-7 text-right pr-5">
+
+                    </div>
+                </div>
+            </header>
+            <div class="row p-0">
+                <div class="col-lg-12 pr-0">
+                    <section class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped mb-0 safety-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Rank</th>
+                                            <th>Driver Name</th>
+                                            <th>Compliance</th>
+                                            <th>Safety Score</th>
+                                            <th>Fuel Idling</th>
+                                            <th>Harsh Brake</th>
+                                            <th>Harsh Acceleration</th>
+                                            <th>Harsh Turn</th>
+                                            <th>Rolling Stop</th>
+                                            <th>Crashes</th>
+                                            <th>Over Speeding</th>
+                                            <th>Distance</th>
+                                            <th>Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="eventData.length > 0">
+                                        <tr *ngFor="let data of eventData; let i=index;" routerLink="/safety/drivers-scorecard/details/{{data.driverID}}/{{i+1}}">
+                                            <td>{{ i+1 }}</td>
+                                            <td>{{ data.driverName }}</td>
+                                            <td>{{ data.compliance }}</td>
+                                            <td>{{ data.safetyScore }}</td> <!-- in percent -->
+                                            <td>{{ data.fuelIdling }}</td>
+                                            <td>{{ data.harshBrake }}</td>
+                                            <td>{{ data.harshAcceleration }}</td>
+                                            <td>{{ data.harshTurn }}</td>
+                                            <td>{{ data.rollingStop }}</td>
+                                            <td>{{ data.crashes }}</td>
+                                            <td>{{ data.overSpeeding }}</td>
+                                            <td>{{ data.distance }} mi</td>
+                                            <td>{{ data.time }}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr *ngIf="!eventData.length > 0" style="text-align: center;">
+                                            <td colspan="13">No record found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </div>
+</section>

@@ -95,12 +95,8 @@
                     transform: translate3d(0px, 38px, 0px);
                   "
                 >
-                  <a class="dropdown-item text-1" href="edit-vehicle.php"
-                    >Edit</a
-                  >
-                  <a class="dropdown-item text-1" href="">Delete</a>
-                  <a class="dropdown-item text-1" href="">Import</a>
-                  <a class="dropdown-item text-1" href="">Export</a>
+                  <a class="dropdown-item text-1" [routerLink]="">Import</a>
+                  <a class="dropdown-item text-1" [routerLink]="">Export</a>
                 </div>
               </div>
               <a
@@ -166,14 +162,14 @@
                           vehicle.vehicleID
                         }}"
                       >
-                        Ford
+                        {{vehicle.manufacturerID}}
                       </td>
                       <td
                         routerLink="/fleet/vehicles/detail/{{
                           vehicle.vehicleID
                         }}"
                       >
-                        Fh-450
+                      {{vehicle.modelID}}
                       </td>
                       <td
                         routerLink="/fleet/vehicles/detail/{{
@@ -194,35 +190,35 @@
                           vehicle.vehicleID
                         }}"
                       >
-                        VH-1230
+                        {{vehicle.plateNumber}}
                       </td>
                       <td
                         routerLink="/fleet/vehicles/detail/{{
                           vehicle.vehicleID
                         }}"
                       >
-                        Diesel
+                        {{vehicle.fluid.fuelType}}
                       </td>
                       <td
                         routerLink="/fleet/vehicles/detail/{{
                           vehicle.vehicleID
                         }}"
                       >
-                        Active
+                        {{vehicle.currentStatus}}
                       </td>
                       <td
                         routerLink="/fleet/vehicles/detail/{{
                           vehicle.vehicleID
                         }}"
                       >
-                        Short Haul
+                        {{vehicle.groupID}}
                       </td>
                       <td
                         routerLink="/fleet/vehicles/detail/{{
                           vehicle.vehicleID
                         }}"
                       >
-                        Rented
+                        {{vehicle.ownership}}
                       </td>
                       <td>
                         <div class="dropdown dropright">

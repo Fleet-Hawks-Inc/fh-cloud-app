@@ -1,0 +1,107 @@
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body">
+            <header class="page-header">
+                <div class="row px-2 pt-2">
+                    <h2 class="pull-left line-height-xl">Violations</h2>
+                    <div class="col-md-2 col-lg-2">
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" [(ngModel)]="filterData.driverName" name="searchedDriverName"
+                            (input)="getSuggestions($event.target.value)" placeholder="Search by driver name or driver ID">
+                        </div>
+                        <div *ngFor="let data of suggestions" style="cursor: pointer" (click)="searchSelectedDriver(data)">
+                            {{ data.name }}
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                        <div class="input-group input-group-md mb-3">
+                            <select class="form-control" name="severity" [(ngModel)]="filterData.severity">
+                                <option value="">Select severity</option>
+                                <option value="high">High severity</option>
+                                <option value="medium">Medium severity</option>
+                                <option value="low">Low severity</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3">
+                        <div class="input-daterange input-group" data-plugin-datepicker="">
+                            <span class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </span>
+                            <input type="date" placeholder="From date" class="form-control" name="startDate" [(ngModel)]="filterData.startDate">
+                            <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                to
+                            </span>
+                            <input type="date" placeholder="To date" class="form-control" name="endDate" [(ngModel)]="filterData.endDate">
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3">
+                        <a href="javascript:;" (click)="filterSearch()"
+                            class="btn btn-success btn-sm mr-2" style="color:white;"> Search
+                        </a>
+                        <a href="javascript:;" (click)="resetFilter()"
+                            class="btn btn-success btn-sm" style="color:white;"> Reset Filter
+                        </a>
+                    </div>
+                </div>
+            </header>
+            <div class="row">
+                <div class="col-lg-12">
+                    <section class="card">
+                        <div class="card-body" style="display: block;">
+                            <div class="table-responsive">
+                                <div id="DataTables_Table_16_wrapper"
+                                    class="dataTables_wrapper dt-bootstrap4 no-footer">                                    
+                                    <div class="table-responsive">
+                                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0 ">
+                                            <thead>
+                                                <tr>
+                                                    <th>Driver ID</th>
+                                                    <th>Driver Name</th>
+                                                    <th>Date &amp; Time</th>
+                                                    <th>Location</th>
+                                                    <th>Severity</th>
+                                                    <th>Violation Type</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let data of events">
+                                                    <td routerLink="/safety/hos-violations/details/{{data.eventID}}">{{ data.driverID }}</td>
+                                                    <td>{{ data.driverName }}</td>
+                                                    <td>{{ data.eventDate }}, {{ data.eventTime }}</td>
+                                                    <td>{{ data.location }}</td>
+                                                    <td>{{ data.severity }}</td>
+                                                    <td>{{ data.violationType }}</td>
+                                                    <td>
+                                                        <select class="form-control" name="coachingStatus"
+                                                            [(ngModel)]="data.coachingStatus"
+                                                            (change)="changeCoachingStatus($event, data.eventID)">
+                                                            <option *ngFor="let stat of coachingStatus"
+                                                                value="{{ stat.value }}">{{ stat.name }}</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>

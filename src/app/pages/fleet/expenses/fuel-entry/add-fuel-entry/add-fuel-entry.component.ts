@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 declare var jquery: any;
 declare var $: any;
@@ -20,12 +21,11 @@ declare var $: any;
 })
 export class AddFuelEntryComponent implements OnInit {
   title = 'Add Fuel Entry';
-  imageError = '';
-  fileName = '';
   public entryID;
   /********** Form Fields ***********/
 
   unitType = 'vehicle';
+  unitID: string;
   currency = 'USD';
   vehicleID = '';
   fuelQtyAmt = 0;
@@ -39,7 +39,7 @@ export class AddFuelEntryComponent implements OnInit {
   totalAmount = 0;
   costPerUnit = 0;
   amountPaid = 0;
-  date: NgbDateStruct;
+  fuelDate: NgbDateStruct;
   fuelType = '';
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
@@ -80,25 +80,27 @@ export class AddFuelEntryComponent implements OnInit {
   assets = [];
   reeferArray = [];
   trips = [];
+  fuelEntryImages = [];
+  image;
   /******************/
 
   errors = {};
-  form;
+  fuelForm;
   response: any = '';
-  hasError = false;
-  hasSuccess = false;
-  Error = '';
-  Success = '';
+  hasError: boolean = false;
+  hasSuccess: boolean = false;
+  Error: string = '';
+  Success: string = '';
 
 
 
   constructor(private apiService: ApiService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private spinner: NgxSpinnerService,
-              private location: Location,
-              private awsUS: AwsUploadService, private toaster: ToastrService,
-              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
+    private router: Router,
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,private domSanitizer: DomSanitizer,
+    private location: Location,
+    private awsUS: AwsUploadService, private toaster: ToastrService,
+    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
     this.selectedFileNames = new Map<any, any>();
   }
   get today() {
@@ -119,7 +121,7 @@ export class AddFuelEntryComponent implements OnInit {
       this.title = 'Add Fuel Entry';
     }
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      this.fuelForm = $('#fuelForm').validate();
     });
   }
   cancel() {
@@ -151,7 +153,6 @@ export class AddFuelEntryComponent implements OnInit {
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
-      console.log('asets', this.assets);
       for (let i = 0; i < result.Items.length; i++) {
         if (result.Items[i].assetDetails.assetType === 'Reefer') {
           this.reeferArray.push(this.assets[i]);
@@ -171,30 +172,16 @@ export class AddFuelEntryComponent implements OnInit {
   }
   calculateGalLit(totalUnits, amountPaid) {
     if (this.fuelQtyUnit === 'litre') {
-      console.log('hello litre');
-      console.log('amount paid', amountPaid);
-      console.log('total units', totalUnits);
       this.fuel.totalGallons = +((totalUnits / 3.785).toFixed(2));
       this.fuel.costPerGallon = +((amountPaid / this.fuel.totalGallons).toFixed(2));
       this.fuel.totalLitres = totalUnits;
       this.fuel.costPerLitre = +((amountPaid / totalUnits).toFixed(2));
-      console.log('total gallons', this.fuel.totalGallons);
-      console.log('total littres', this.fuel.totalLitres);
-      console.log('cost per gallon', this.fuel.costPerGallon);
-      console.log('cost per litre', this.fuel.costPerLitre);
     }
     if (this.fuelQtyUnit === 'gallon') {
-      console.log('hello gallon');
-      console.log('amount paid', amountPaid);
-      console.log('total units', totalUnits);
       this.fuel.totalLitres = +((totalUnits * 3.785).toFixed(2));
       this.fuel.costPerLitre = +((amountPaid / this.fuel.totalLitres).toFixed(2));
       this.fuel.totalGallons = totalUnits;
       this.fuel.costPerGallon = +((amountPaid / totalUnits).toFixed(2));
-      console.log('total littres', this.fuel.totalLitres);
-      console.log('cost per litre', this.fuel.costPerLitre);
-      console.log('total gallons', this.fuel.totalGallons);
-      console.log('cost per gallon', this.fuel.costPerGallon);
     }
   }
   fillCountry() {
@@ -217,17 +204,13 @@ export class AddFuelEntryComponent implements OnInit {
     //   this.imageError = 'Please Choose Image To Upload';
     //   return;
     // }
-
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    this.hideErrors();
     const data = {
       unitType: this.unitType,
-      vehicleID: this.vehicleID,
+      unitID: this.unitID,
       fuelQty: this.fuelQty,
       fuelQtyUnit: this.fuelQtyUnit,
       fuelQtyAmt: this.fuelQtyAmt,
-      reeferID: this.reeferID,
       DEFFuelQty: this.DEFFuelQty,
       DEFFuelQtyAmt: this.DEFFuelQtyAmt,
       discount: this.discount,
@@ -235,7 +218,7 @@ export class AddFuelEntryComponent implements OnInit {
       costPerUnit: this.costPerUnit,
       amountPaid: this.amountPaid,
       currency: this.currency,
-      date: this.date,
+      fuelDate: this.fuelDate,
       fuelType: this.fuelType,
       paidBy: this.paidBy,
       paymentMode: this.paymentMode,
@@ -260,25 +243,20 @@ export class AddFuelEntryComponent implements OnInit {
         costPerGallon: this.fuel.costPerGallon
       },
     };
-    console.log('filed data', data);
+    console.log('filled data', data);
     this.apiService.postData('fuelEntries', data).subscribe({
       complete: () => { },
-      error: (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
+              this.errors[val.context.key] = val.message;
             })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
-              this.Success = '';
             },
             error: () => { },
             next: () => { },
@@ -294,14 +272,32 @@ export class AddFuelEntryComponent implements OnInit {
   }
 
   throwErrors() {
-    this.form.showErrors(this.errors);
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label');
+      });
+    this.errors = {};
   }
   /*
   * Selecting files before uploading
   */
   selectDocuments(event, obj) {
     this.selectedFiles = event.target.files;
-    console.log('selected files', this.selectedFiles[0].name);
+    //  console.log('selected files', this.selectedFiles[0].name);
     if (obj === 'uploadedPhotos') {
       for (let i = 0; i <= this.selectedFiles.item.length; i++) {
         const randomFileGenerate = this.selectedFiles[i].name.split('.');
@@ -334,50 +330,68 @@ export class AddFuelEntryComponent implements OnInit {
         this.entryID = this.entryID;
         this.currency = result.currency,
           this.unitType = result.unitType;
-        this.vehicleID = result.vehicleID,
-          this.reeferID = result.reeferID,
-          this.fuelQty = result.fuelQty,
-          this.fuelQtyUnit = result.fuelQtyUnit,
-          this.fuelQtyAmt = +result.fuelQtyAmt,
-          this.DEFFuelQty = +result.DEFFuelQty,
-          this.DEFFuelQtyUnit = result.fuelQtyUnit,
-          this.DEFFuelQtyAmt = +result.DEFFuelQtyAmt,
-          this.discount = +result.discount,
-          this.totalAmount = result.totalAmount,
-          this.costPerUnit = +result.costPerUnit,
-          this.amountPaid = result.amountPaid,
-          this.date = result.date,
-          this.fuelType = result.fuelType,
+        this.unitID = result.unitID;
+        // this.vehicleID = result.vehicleID;
+        // this.reeferID = result.reeferID;
+        this.fuelQty = result.fuelQty;
+        this.fuelQtyUnit = result.fuelQtyUnit;
+        this.fuelQtyAmt = +result.fuelQtyAmt;
+        this.DEFFuelQty = +result.DEFFuelQty;
+        this.DEFFuelQtyUnit = result.fuelQtyUnit;
+        this.DEFFuelQtyAmt = +result.DEFFuelQtyAmt;
+        this.discount = +result.discount;
+        this.totalAmount = result.totalAmount;
+        this.costPerUnit = +result.costPerUnit;
+        this.amountPaid = result.amountPaid;
+        this.fuelDate = result.fuelDate;
+        this.fuelType = result.fuelType;
 
-          this.paidBy = result.paidBy,
-          this.paymentMode = result.paymentMode,
-          this.reference = result.reference,
-          this.reimburseToDriver = result.reimburseToDriver,
-          this.deductFromPay = result.deductFromPay,
+        this.paidBy = result.paidBy;
+        this.paymentMode = result.paymentMode;
+        this.reference = result.reference;
+        this.reimburseToDriver = result.reimburseToDriver;
+        this.deductFromPay = result.deductFromPay;
 
 
-          this.vendorID = result.vendorID,
-          this.countryID = result.countryID,
-          this.stateID = result.stateID,
-          this.cityID = result.cityID,
-          this.tripID = result.tripID,
+        this.vendorID = result.vendorID;
+        this.countryID = result.countryID;
+        this.stateID = result.stateID;
+        this.cityID = result.cityID;
+        this.tripID = result.tripID;
 
-          this.additionalDetails = {
-            avgGVW: result.additionalDetails.avgGVW,
-            odometer: result.additionalDetails.odometer,
-            description: result.additionalDetails.description,
-            uploadedPhotos: result.additionalDetails.uploadedPhotos,
-          },
-          this.fuel = {
-            costPerGallon: result.fuel.costPerGallon,
-            costPerLitre: result.fuel.costPerLitre,
-            totalGallons: result.fuel.totalGallons,
-            totalLitres: result.fuel.totalLitres
-          },
-          setTimeout(() => {
-            this.fillCountry();
-          }, 2000);
+        this.additionalDetails = {
+          avgGVW: result.additionalDetails.avgGVW,
+          odometer: result.additionalDetails.odometer,
+          description: result.additionalDetails.description,
+          uploadedPhotos: result.additionalDetails.uploadedPhotos,
+        };
+        this.fuel = {
+          costPerGallon: result.fuel.costPerGallon,
+          costPerLitre: result.fuel.costPerLitre,
+          totalGallons: result.fuel.totalGallons,
+          totalLitres: result.fuel.totalLitres
+        };
+        setTimeout(() => {
+          this.fillCountry();
+        }, 2000);
       });
+  }
+  getImages = async () => {
+    this.carrierID = await this.apiService.getCarrierID();
+    for (let i = 0; i < this.additionalDetails.uploadedPhotos.length; i++) {
+      this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles
+        (this.carrierID, this.additionalDetails.uploadedPhotos[i]));
+      this.fuelEntryImages.push(this.image);
+    }
+  }
+  deleteImage(i: number) {
+    this.carrierID =  this.apiService.getCarrierID();
+    this.awsUS.deleteFile(this.carrierID, this.additionalDetails.uploadedPhotos[i]);
+    this.additionalDetails.uploadedPhotos.splice(i, 1);
+    console.log('new array',this.additionalDetails.uploadedPhotos);
+    // this.apiService.getData('fuelEntries//updatePhotos/' + this.entryID + '/' + this.additionalDetails.uploadedPhotos).subscribe((result: any) => {
+    //   this.toastr.success('Image Deleted Successfully!');
+    // });
   }
   updateFuelEntry() {
 
@@ -386,17 +400,16 @@ export class AddFuelEntryComponent implements OnInit {
     //   return;
     // }
 
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    this.hideErrors();
     const data = {
       entryID: this.entryID,
       unitType: this.unitType,
-      vehicleID: this.vehicleID,
+      unitID: this.unitID,
+      // vehicleID: this.vehicleID,
       fuelQty: this.fuelQty,
       fuelQtyUnit: this.fuelQtyUnit,
       fuelQtyAmt: this.fuelQtyAmt,
-      reeferID: this.reeferID,
+      // reeferID: this.reeferID,
       DEFFuelQty: this.DEFFuelQty,
       DEFFuelQtyAmt: this.DEFFuelQtyAmt,
       discount: this.discount,
@@ -404,7 +417,7 @@ export class AddFuelEntryComponent implements OnInit {
       costPerUnit: this.costPerUnit,
       amountPaid: this.amountPaid,
       currency: this.currency,
-      date: this.date,
+      fuelDate: this.fuelDate,
       fuelType: this.fuelType,
       paidBy: this.paidBy,
       paymentMode: this.paymentMode,
@@ -429,18 +442,15 @@ export class AddFuelEntryComponent implements OnInit {
         costPerGallon: this.fuel.costPerGallon
       },
     };
-    console.log(data);
+    //  console.log(data);
     this.apiService.putData('fuelEntries', data).subscribe({
       complete: () => { },
-      error: (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/'([^']+)'/)[1];
-              val.message = val.message.replace(/'.*'/, 'This Field');
-              this.errors[key] = val.message;
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
             })
           )
           .subscribe({

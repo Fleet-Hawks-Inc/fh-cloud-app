@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AwsUploadService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { HttpClient } from '@angular/common/http';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -115,7 +116,7 @@ export class AddDriverComponent implements OnInit {
   yardID = '';
 
 
-
+  documentTypeList: any = [];
   driverLicenseCountry = '';
   groups = [];
   countries = [];
@@ -132,17 +133,20 @@ export class AddDriverComponent implements OnInit {
   Success: string = '';
   visibleIndex = 0;
   constructor(private apiService: ApiService,
-    private toastr: ToastrService,
-    private awsUS: AwsUploadService,
-    private route: ActivatedRoute,
-    private spinner: NgxSpinnerService,
-    private HereMap: HereMapService,
-    private ngbCalendar: NgbCalendar,
-    private domSanitizer: DomSanitizer,
-    private dateAdapter: NgbDateAdapter<string>,
-    private router: Router) {
-    this.selectedFileNames = new Map<any, any>();
-  }
+
+              private httpClient: HttpClient,
+              private toastr: ToastrService,
+              private awsUS: AwsUploadService,
+              private route: ActivatedRoute,
+              private spinner: NgxSpinnerService,
+              private HereMap: HereMapService,
+              private ngbCalendar: NgbCalendar,
+              private domSanitizer: DomSanitizer,
+              private dateAdapter: NgbDateAdapter<string>,
+              private router: Router) {
+      this.selectedFileNames = new Map<any, any>();
+    }
+
 
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
@@ -168,6 +172,7 @@ export class AddDriverComponent implements OnInit {
     this.fetchAllCountriesIDs(); // fetch all countries Ids with name
     this.fetchAllStatesIDs(); // fetch all states Ids with name
     this.fetchAllCitiesIDs(); // fetch all cities Ids with name
+
 
     $(document).ready(() => {
       this.form = $('#driverForm, #groupForm').validate();
@@ -308,7 +313,7 @@ export class AddDriverComponent implements OnInit {
   }
 
   getToday(): string {
-    return new Date().toISOString().split('T')[0]
+    return new Date().toISOString().split('T')[0];
   }
 
   uploadDriverImg(elem, event): void {

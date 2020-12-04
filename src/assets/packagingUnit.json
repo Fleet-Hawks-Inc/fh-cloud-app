@@ -1,0 +1,210 @@
+[
+	{
+		"code": "BAG",
+		"name": "Bag"
+	},
+	{
+		"code": "BLE",
+		"name": "Bale"
+	},
+	{
+		"code": "BBL",
+		"name": "Barrel"
+	},
+	{
+		"code": "BSK",
+		"name": "Basket"
+	},
+	{
+		"code": "BIN",
+		"name": "Bin"
+	},
+	{
+		"code": "BIC",
+		"name": "Bing Chest"
+	},
+	{
+		"code": "BOX",
+		"name": "Box"
+	},
+	{
+		"code": "BKT",
+		"name": "Bucket"
+	},
+	{
+		"code": "BDL",
+		"name": "Bundle"
+	},
+	{
+		"code": "CAN",
+		"name": "Can"
+	},
+	{
+		"code": "CCS",
+		"name": "Can Case"
+	},
+	{
+		"code": "CBY",
+		"name": "Carboy"
+	},
+	{
+		"code": "CAR",
+		"name": "Carcass"
+	},
+	{
+		"code": "CTN",
+		"name": "Carton"
+	},
+	{
+		"code": "CAS",
+		"name": "Case"
+	},
+	{
+		"code": "CSK",
+		"name": "Cask"
+	},
+	{
+		"code": "CHS",
+		"name": "Chest"
+	},
+	{
+		"code": "COL",
+		"name": "Coil"
+	},
+	{
+		"code": "CBC",
+		"name": "Container Bulk Cargo"
+	},
+	{
+		"code": "COR",
+		"name": "Cord"
+	},
+	{
+		"code": "CRT",
+		"name": "Crate"
+	},
+	{
+		"code": "CYL",
+		"name": "Cylinder"
+	},
+	{
+		"code": "DRM",
+		"name": "Drum"
+	},
+	{
+		"code": "DBK",
+		"name": "Dry Bulk"
+	},
+	{
+		"code": "GAL",
+		"name": "Gallon"
+	},
+	{
+		"code": "HMP",
+		"name": "Hamper"
+	},
+	{
+		"code": "HED",
+		"name": "Heads of Beef"
+	},
+	{
+		"code": "KEG",
+		"name": "Keg"
+	},
+	{
+		"code": "LVN",
+		"name": "Lift Van"
+	},
+	{
+		"code": "LBK",
+		"name": "Liquid Bulk"
+	},
+	{
+		"code": "LOG",
+		"name": "Logs"
+	},
+	{
+		"code": "LUG",
+		"name": "Lugs"
+	},
+	{
+		"code": "PKG",
+		"name": "Package"
+	},
+	{
+		"code": "PAL",
+		"name": "Pail"
+	},
+	{
+		"code": "PCL",
+		"name": "Parcel"
+	},
+	{
+		"code": "PCS",
+		"name": "Pieces"
+	},
+	{
+		"code": "POV",
+		"name": "Private Vehicle"
+	},
+	{
+		"code": "QTR",
+		"name": "Quarters of Beef"
+	},
+	{
+		"code": "REL",
+		"name": "Reel"
+	},
+	{
+		"code": "ROL",
+		"name": "Roll"
+	},
+	{
+		"code": "SAK",
+		"name": "Sack"
+	},
+	{
+		"code": "SHT",
+		"name": "Sheet"
+	},
+	{
+		"code": "SID",
+		"name": "Sides of Beef"
+	},
+	{
+		"code": "SKD",
+		"name": "Skid"
+	},
+	{
+		"code": "TNK",
+		"name": "Tank"
+	},
+	{
+		"code": "TIN",
+		"name": "Tin"
+	},
+	{
+		"code": "TBN",
+		"name": "Tote Bin"
+	},
+	{
+		"code": "TBE",
+		"name": "Tube"
+	},
+	{
+		"code": "UNT",
+		"name": "Unit"
+	},
+	{
+		"code": "VPK",
+		"name": "Van Pack"
+	},
+	{
+		"code": "VEH",
+		"name": "Vehicle"
+	},
+	{
+		"code": "WDC",
+		"name": "Wooden Case"
+	}
+]

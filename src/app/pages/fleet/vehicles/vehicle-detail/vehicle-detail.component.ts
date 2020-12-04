@@ -85,7 +85,7 @@ export class VehicleDetailComponent implements OnInit {
   };
   wheelsAndTyres = {
     numberOfTyres: '',
-    driverType: '',
+    driveType: '',
     brakeSystem: '',
     wheelbase: '',
     rearAxle: '',
@@ -153,11 +153,51 @@ export class VehicleDetailComponent implements OnInit {
     measurmentUnit: '',
   };
 
+
+  issues = [];
+  reminders = [];
+  inspectionForms = [];
+  fuelEntries = [];
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.vehicleID = this.route.snapshot.params['vehicleID'];
     this.getVehicle();
+    this.fetchIssues();
+    this.fetchReminders();
+    this.fetchInspectionForms();
+    this.fetchFuel();
+  }
+
+  fetchInspectionForms(){
+    this.apiService.getData(`inspectionForms/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.inspectionForms = result.Items;
+    })
+  }
+
+  
+  fetchFuel(){
+    this.apiService.getData(`fuelEntries/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.fuelEntries = result.Items;
+    })
+  }
+
+  closeIssue(issueID){
+    this.apiService.getData(`issues/setStatus/${issueID}/CLOSE`).subscribe((result) => {
+      this.fetchIssues();
+    })
+  }
+
+  fetchReminders(){
+    this.apiService.getData(`reminders/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.reminders = result.Items;
+    })
+  }
+
+  fetchIssues(){
+    this.apiService.getData(`issues/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.issues = result.Items;
+    })
   }
 
   getVehicle() {
@@ -239,7 +279,7 @@ export class VehicleDetailComponent implements OnInit {
         };
         this.wheelsAndTyres = {
           numberOfTyres: result.wheelsAndTyres.numberOfTyres,
-          driverType: result.wheelsAndTyres.driverType,
+          driveType: result.wheelsAndTyres.driveType,
           brakeSystem: result.wheelsAndTyres.brakeSystem,
           wheelbase: result.wheelsAndTyres.wheelbase,
           rearAxle: result.wheelsAndTyres.rearAxle,
