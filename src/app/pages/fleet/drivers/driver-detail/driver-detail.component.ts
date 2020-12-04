@@ -54,7 +54,7 @@ export class DriverDetailComponent implements OnInit {
           this.getCycleByID(this.driverData.hosDetails.hosCycle);
           this.fetchYardByID(this.driverData.hosDetails.homeTerminal);
           this.workEmail = this.driverData.workEmail;
-          this.workPhone = this.driverData.workPhone;
+          this.workPhone = this.driverData.workPhone; 
           this.CDL = this.driverData.licenceDetails.CDL_Number;
           this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
           

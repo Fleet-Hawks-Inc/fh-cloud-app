@@ -548,6 +548,6 @@ html.fixed .content-body {
 .custom-dt-buttons .buttons-excel {
     display: none;
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    
+.dataTables_filter {
+    display: none;
 }

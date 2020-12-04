@@ -91,6 +91,7 @@ export class AssetDetailComponent implements OnInit {
         if (result) {
           this.assetData = result['Items'];
           console.log(this.assetData)
+          
           this.getImages();
           this.spinner.hide(); // loader hide
         }
