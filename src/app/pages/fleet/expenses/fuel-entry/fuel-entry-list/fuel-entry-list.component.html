@@ -119,7 +119,7 @@
 					</tr>
 				  </thead>
 				  <tbody>
-					<tr *ngFor="let fuelEntry of fuelList">					 
+					<tr *ngFor="let fuelEntry of fuelList" style="cursor: pointer;">					 
 					    <td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{ fuelEntry.fuelDate }}</td>
 						<td>Time</td>
 						<td >Card Number</td>

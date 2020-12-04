@@ -14,12 +14,13 @@ import { MapDashboardComponent } from './entry/map-dashboard/map-dashboard.compo
 import {ChartsModule} from 'ng2-charts';
 import {PreLoadStrategy} from './preload/PreLoadStrategy';
 import { PdfAutomationComponent } from './pages/automation/pdf-automation/pdf-automation.component';
-
+import { AddAccountComponent  } from './pages/onboard/add-account/add-account.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: 'Login', component: LoginComponent },
+    { path: 'onboard', component: AddAccountComponent },
   {
     path: 'Dashboard',
     component: DashboardComponent,

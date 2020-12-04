@@ -95,8 +95,9 @@
                                     </div>
                                     <hr class="solid mt-2">
                                     <div class="row" *ngFor="let doc of issueDocs;let d= index">
-                                       <div class="col-lg-9" (click)="setPDFSrc(doc)" data-toggle="modal" data-target="#viewDocModal">Document {{d+1}}</div> 
+                                       <div class="col-lg-9">Document {{d+1}}</div> 
                                        <div class="col-lg-3 text-right">
+                                          <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc)" data-toggle="modal" data-target="#viewDocModal"></i>
                                           <a href="javascript:;" (click)="deleteDoc(i)" class="modal-with-form"><i
                                                 class="fas fa-times text-danger"></i></a>
                                        </div>
@@ -156,7 +157,7 @@
                                                          style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
 
                                                          <a class="modal-with-form dropdown-item text-1"
-                                                            href="#editPhoto">Edit</a>
+                                                         routerLink="/fleet/maintenance/issues/edit/{{issueID }}" href="javascript:;">Edit</a>
                                                          <a class="modal-with-form dropdown-item text-1"
                                                             href="javascript:;" (click)="deleteImage(i)">Delete</a>
                                                       </div>
