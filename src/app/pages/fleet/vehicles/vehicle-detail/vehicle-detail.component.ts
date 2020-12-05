@@ -158,6 +158,8 @@ export class VehicleDetailComponent implements OnInit {
   reminders = [];
   inspectionForms = [];
   fuelEntries = [];
+  documents = [];
+  recalls = [];
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {

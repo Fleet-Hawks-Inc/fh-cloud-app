@@ -13,10 +13,28 @@ declare var $: any;
 export class InventoryListComponent implements OnInit {
 
   items = [];
+  vendors = [];
+  itemGroups = [];
+  warehouses = [];
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
     this.fetchItems();
+    this.fetchVendors();
+    this.fetchItemGroups();
+  }
+
+
+  fetchVendors(){
+    this.apiService.getData(`vendors`).subscribe((result) => {
+      this.vendors = result.Items;
+    })
+  }
+
+  fetchItemGroups(){
+    this.apiService.getData(`itemGroups`).subscribe((result) => {
+      this.itemGroups = result.Items;
+    })
   }
 
 
