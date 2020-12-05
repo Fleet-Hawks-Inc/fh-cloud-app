@@ -36,13 +36,32 @@ export class InventoryDetailComponent implements OnInit {
   photos = [];
   documents = [];
 
+  vendors = [];
+  itemGroups = [];
+  warehouses = [];
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.itemID = this.route.snapshot.params['itemID'];
     this.getInventory();
+    this.fetchVendors();
+    this.fetchItemGroups();
   }
 
+  fetchVendors(){
+    this.apiService.getData(`vendors`).subscribe((result) => {
+      this.vendors = result.Items;
+    })
+  }
+
+  fetchItemGroups(){
+    this.apiService.getData(`itemGroups`).subscribe((result) => {
+      this.itemGroups = result.Items;
+    })
+  }
+
+
+  
   getInventory() {
     this.apiService.getData('items/' + this.itemID).subscribe((result: any) => {
       result = result.Items[0];
