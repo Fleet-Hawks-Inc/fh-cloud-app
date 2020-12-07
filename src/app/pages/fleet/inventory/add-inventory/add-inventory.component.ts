@@ -60,6 +60,14 @@ export class AddInventoryComponent implements OnInit {
     this.fetchItemGroups();
   }
 
+  showWarehoseModal(){
+    $('#warehouseModal').modal('show');
+  }
+
+  showCategoryModal(){
+    $('#categoryModal').modal('show');
+  }
+
   fetchVendors(){
     this.apiService.getData(`vendors`).subscribe((result) => {
       this.vendors = result.Items;
