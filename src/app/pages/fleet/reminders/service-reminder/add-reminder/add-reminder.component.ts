@@ -27,10 +27,12 @@ export class AddReminderComponent implements OnInit {
   numberOfDays: number;
   time = 1;
   timeType = 'Day(s)';
+  serviceTask = {};
   vehicles = [];
   users = [];
   groups = [];
   finalSubscribers = [];
+  serviceTasks = [];
   serviceForm;
   errors = {};
   Error: string = '';
@@ -44,10 +46,11 @@ export class AddReminderComponent implements OnInit {
     private location: Location) { }
 
   ngOnInit() {
-    this.reminderID = this.route.snapshot.params['reminderID'];
+    this.reminderID = this.route.snapshot.params[`reminderID`];
     this.fetchVehicles();
     this.fetchUsers();
     this.fetchGroups();
+    this.fetchServiceTaks();
     if (this.reminderID) {
       this.pageTitle = 'Edit Service Reminder';
       this.fetchReminderByID();
@@ -59,6 +62,11 @@ export class AddReminderComponent implements OnInit {
 
     $(document).ready(() => {
       this.serviceForm = $('#serviceForm').validate();
+    });
+  }
+  fetchServiceTaks() {
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      this.serviceTasks = result.Items;
     });
   }
   fetchVehicles() {
@@ -268,5 +276,37 @@ export class AddReminderComponent implements OnInit {
     else {
       this.toastr.warning('Time Must Be Positive Value');
     }
+  }
+
+
+  // SERVICE TASK
+  addServiceTask(){
+    console.log('servcie task data', this.serviceTask);
+    this.apiService.postData('tasks', this.serviceTask).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        $('#addServiceTasks').modal('toggle');
+        this.toastr.success('Service Task Added Successfully');
+        this.fetchServiceTaks();
+        this.router.navigateByUrl('/fleet/reminders/service-reminder/add');
+      },
+    });
   }
 }

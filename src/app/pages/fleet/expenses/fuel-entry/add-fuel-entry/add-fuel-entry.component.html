@@ -154,14 +154,15 @@
                     </div>
                     <div class="col-lg-5 offset-lg-1">
                        <div class="row">
-                          <div class="col-lg-10">
+                          <div class="col-lg-5">
                              <label class="control-label font-weight-bold font-bold text-lg-right">Fuel Date</label> 
                               <input
-                                class="form-control"
-                                placeholder="dd-mm-yyyy"
-                                name="fuelDate" [(ngModel)]="fuelDate"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
-                              />
+                                class="form-control" placeholder="dd-mm-yyyy" name="fuelDate" [(ngModel)]="fuelDate"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"/>
                            
+                          </div>
+                          <div class="col-lg-5">
+                           <label class="control-label font-weight-bold font-bold text-lg-right">Fuel Time</label> 
+                           <input type="time" class="form-control"  name="fuelTime" [(ngModel)]="fuelTime">
                           </div>
                        </div>
                        <div class="row">

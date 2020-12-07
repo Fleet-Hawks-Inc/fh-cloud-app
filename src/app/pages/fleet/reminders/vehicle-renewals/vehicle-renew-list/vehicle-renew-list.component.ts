@@ -24,9 +24,11 @@ export class VehicleRenewListComponent implements OnInit {
   vehicleIdentification = '';
   currentDate = moment();
   newData = [];
-  suggestedUnits = [];
+  suggestedVehicles = [];
+  vehicleID = '';
   unitID = '';
   unitName = '';
+  searchServiceTask = '';
   constructor(private apiService: ApiService, private router: Router,private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -64,22 +66,34 @@ export class VehicleRenewListComponent implements OnInit {
   } 
  
   fetchRenewals = async () => {
-    this.apiService.getData(`reminders`).subscribe({
+    this.remindersData = [];
+    this.apiService.getData(`reminders?reminderIdentification=${this.vehicleID}&serviceTask=${this.searchServiceTask}`).subscribe({
       complete: () => {this.initDataTable(); },
       error: () => { },
       next: (result: any) => {
         this.allRemindersData = result.Items;
         console.log(this.allRemindersData);
         for(let j=0; j < this.allRemindersData.length; j++) {
+          let reminderStatus;
           if (this.allRemindersData[j].reminderType === 'vehicle') {
             const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate,'DD-MM-YYYY');
             const remainingDays = convertedDate.diff(this.currentDate, 'days');
+            if (remainingDays > this.allRemindersData[j].reminderTasks.remindByDays) {
+              reminderStatus = '';
+            }
+            else if( remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays &&  remainingDays >= 0) {
+              reminderStatus = 'DUE SOON';
+            }
+            else{
+              reminderStatus = 'OVERDUE';
+            }
             const data = {
               reminderID: this.allRemindersData[j].reminderID,
               reminderIdentification: this.allRemindersData[j].reminderIdentification,
               reminderTasks: {
                 task: this.allRemindersData[j].reminderTasks.task,
                 remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
+                reminderStatus: reminderStatus,
                 remainingDays: remainingDays,
                 dueDate: this.allRemindersData[j].reminderTasks.dueDate,
               },
@@ -87,7 +101,6 @@ export class VehicleRenewListComponent implements OnInit {
              };
              this.remindersData.push(data); 
           }
-        
         }
         console.log('new data', this.remindersData);
       },
@@ -102,27 +115,22 @@ export class VehicleRenewListComponent implements OnInit {
                
       });
   }
-  setUnit(unitID, unitName) {
-    this.unitName = unitName;
-    this.unitID = unitID;
-  
-    this.suggestedUnits = [];
+  setVehicle(vehicleID, vehicleIdentification) {
+    this.vehicleIdentification = vehicleIdentification;
+    this.vehicleID = vehicleID;
+    this.suggestedVehicles = [];
   }
   getSuggestions(value) {
-    this.suggestedUnits = [];
     this.apiService
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
-        result = result.Items;
-  
-        for(let i = 0; i < result.length; i++){
-          this.suggestedUnits.push({
-            unitID: result[i].vehicleID,
-            unitName: result[i].vehicleIdentification
-          });
+        this.suggestedVehicles = result.Items;
+        if (this.suggestedVehicles.length === 0) {
+          this.vehicleID = '';
         }
       });
   }
+   
   initDataTable() {
     this.dtOptions = {
       dom: 'Bfrtip', // lrtip to hide search field

@@ -79,176 +79,17 @@
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                     Service Tasks</label>
-                                 <ng-select [(ngModel)]="reminderData.reminderTasks.task"
-                                    name="task">
-                                    <ng-option value="A/C Compressor Replacement">A/C Compressor Replacement</ng-option>
-                                    <ng-option value="A/C Condenser Replacemen">A/C Condenser Replacement</ng-option>
-                                    <ng-option value="A/C Diagnosis">A/C Diagnosis</ng-option>
-                                    <ng-option value="A/C Evaporator Replacement">A/C Evaporator Replacement</ng-option>
-                                    <ng-option value="A/C Inspection">A/C Inspection</ng-option>
-                                    <ng-option value="A/C Recharge">A/C Recharge</ng-option>
-                                    <ng-option value="Air Brake System Valve Inspection">Air Brake System Valve
-                                       Inspection</ng-option>
-                                    <ng-option value="Air Cleaner Inspection">Air Cleaner Inspection</ng-option>
-                                    <ng-option value="Air Compressor Inspection">Air Compressor Inspection</ng-option>
-                                    <ng-option value="Air Dryer Desiccant Replacement">Air Dryer Desiccant Replacement
-                                    </ng-option>
-                                    <ng-option value="Air Dryer Inspection">Air Dryer Inspection</ng-option>
-                                    <ng-option value="Air Filter Replacement">Air Filter Replacement</ng-option>
-
-                                    <ng-option value="Alcohol Evaporator Cleaning">Alcohol Evaporator Cleaning
-                                    </ng-option>
-                                    <ng-option value="Alternator Replacement">Alternator Replacement</ng-option>
-                                    <ng-option value="Automatic Drain Valve Inspection">Automatic Drain Valve Inspection
-                                    </ng-option>
-                                    <ng-option value="Axle Lubricant and Filter Replacement">Axle Lubricant and Filter
-                                       Replacement</ng-option>
-                                    <ng-option value="Ball Joint Replacement">Ball Joint Replacement</ng-option>
-                                    <ng-option value="Battery Inspection">Battery Inspection</ng-option>
-                                    <ng-option value="Battery-Powered HVAC System Inspection">Battery-Powered HVAC
-                                       System Inspection</ng-option>
-                                    <ng-option value="Battery Replacement">Battery Replacement</ng-option>
-                                    <ng-option value="Brake Caliper Replacement">Brake Caliper Replacement</ng-option>
-                                    <ng-option value="Brake Camshaft Bracket Lubrication">Brake Camshaft Bracket
-                                       Lubrication</ng-option>
-                                    <ng-option value="Brake Inspection">Brake Inspection</ng-option>
-                                    <ng-option value="Brake Pad(s) Replacement">Brake Pad(s) Replacement</ng-option>
-
-                                    <ng-option value="Brake Rotor Replacement">Brake Rotor Replacement</ng-option>
-                                    <ng-option value="Brake Slack Adjuster Lubrication">Brake Slack Adjuster Lubrication
-                                    </ng-option>
-                                    <ng-option value="Cabin Air FIlter Replacement">Cabin Air FIlter Replacement
-                                    </ng-option>
-                                    <ng-option value="Cab Shock Absorber Bracket Torque Check">Cab Shock Absorber
-                                       Bracket Torque Check</ng-option>
-                                    <ng-option value="Car Wash">Car Wash</ng-option>
-                                    <ng-option value="Catalytic Converter Replacement">Catalytic Converter Replacement
-                                    </ng-option>
-                                    <ng-option value="Charging and Starting System Inspection">Charging and Starting
-                                       System Inspection</ng-option>
-                                    <ng-option value="Charging System Diagnosis">Charging System Diagnosis</ng-option>
-                                    <ng-option value="Clutch Hydraulic Fluid Level Check"> Clutch Hydraulic Fluid Level
-                                       Check</ng-option>
-                                    <ng-option value="Clutch Hydraulic Fluid Replacement">Clutch Hydraulic Fluid
-                                       Replacement</ng-option>
-                                    <ng-option value="Clutch Release Bearing Lubrication">Clutch Release Bearing
-                                       Lubrication</ng-option>
-                                    <ng-option value="Coolant Flush">Coolant Flush</ng-option>
-
-                                    <ng-option value="Cooling System Fluid Level Inspection">Cooling System Fluid Level
-                                       Inspection</ng-option>
-                                    <ng-option value="Clutch Hydraulic Fluid Replacement">Clutch Hydraulic Fluid
-                                       Replacement</ng-option>
-                                    <ng-option value="Door Window Motor/Regulator Replacement">Door Window
-                                       Motor/Regulator Replacement</ng-option>
-                                    <ng-option value="Drag Link Inspection">Drag Link Inspection</ng-option>
-                                    <ng-option value="Drive Axle Assembly Fluid Replacement">Drive Axle Assembly Fluid
-                                       Replacement</ng-option>
-                                    <ng-option value="Driveline Inspection">Driveline Inspection</ng-option>
-                                    <ng-option value="Driveline Lubrication">Driveline Lubrication</ng-option>
-                                    <ng-option value="Engine Air Filter Replacement">Engine Air Filter Replacement
-                                    </ng-option>
-                                    <ng-option value="Engine Belt Inspection">Engine Belt Inspection</ng-option>
-                                    <ng-option value="Engine Coolant Drain & Refill">Engine Coolant Drain & Refill
-                                    </ng-option>
-                                    <ng-option value="Engine Coolant Replacement">Engine Coolant Replacement</ng-option>
-                                    <ng-option value="Engine/Drive Belt(s) Inspection">Engine/Drive Belt(s) Inspection
-                                    </ng-option>
-
-
-                                    <ng-option value="Engine/Drive Belt(s) Replacement">Engine/Drive Belt(s) Replacement
-                                    </ng-option>
-                                    <ng-option value="Engine Oil & Filter Replacement">Engine Oil & Filter Replacement
-                                    </ng-option>
-                                    <ng-option value="Exhaust Manifold Replacement">Exhaust Manifold Replacement
-                                    </ng-option>
-                                    <ng-option value="Exhaust System Inspection">Exhaust System Inspection</ng-option>
-                                    <ng-option value="Factory Scheduled Maintenance">Factory Scheduled Maintenance
-                                    </ng-option>
-                                    <ng-option value="Fan Clutch Inspection">Fan Clutch Inspection</ng-option>
-                                    <ng-option value="Fifth Wheel Inspection">Fifth Wheel Inspection</ng-option>
-                                    <ng-option value="Fifth Wheel Lubrication">Fifth Wheel Lubrication</ng-option>
-                                    <ng-option value="Fuel Filter Replacement">Fuel Filter Replacement</ng-option>
-                                    <ng-option value="Fuel Injector Replacement">Fuel Injector Replacement</ng-option>
-                                    <ng-option value="Fuel Pump Replacement">Fuel Pump Replacement</ng-option>
-                                    <ng-option value="Fuel/Water Separator Filter Replacement"> Fuel/Water Separator
-                                       Filter Replacement</ng-option>
-
-                                    <ng-option value="Head Gasket(s) Replacement">Head Gasket(s) Replacement</ng-option>
-                                    <ng-option value="Heater Blower Motor Replacement">Heater Blower Motor Replacement
-                                    </ng-option>
-                                    <ng-option value="Heater Control Valve Replacement">Heater Control Valve Replacement
-                                    </ng-option>
-                                    <ng-option value="Heater Core Replacement">Heater Core Replacement</ng-option>
-                                    <ng-option value="Heater Hose Replacement">Heater Hose Replacement</ng-option>
-                                    <ng-option value="Ignition Coil Replacement">Ignition Coil Replacement</ng-option>
-                                    <ng-option value="Intake Manifold Gasket Replacement">Intake Manifold Gasket
-                                       Replacement</ng-option>
-                                    <ng-option value="Knuckle Pin Lubrication">Knuckle Pin Lubrication</ng-option>
-                                    <ng-option value="Mirror Folding Check">Mirror Folding Check</ng-option>
-                                    <ng-option value="Oil Change">Oil Change</ng-option>
-                                    <ng-option value="Oil & Filter Change">Oil & Filter Change</ng-option>
-                                    <ng-option value=" Oil Pump Replacement"> Oil Pump Replacement</ng-option>
-
-                                    <ng-option value="Other Maintenance">Other Maintenance</ng-option>
-                                    <ng-option value="Oxygen Sensor Replacement">Oxygen Sensor Replacement</ng-option>
-                                    <ng-option value="Power Steering Fluid and Filter Replacement">Power Steering Fluid
-                                       and Filter Replacement</ng-option>
-                                    <ng-option value="Power Steering Fluid Level Inspection">Power Steering Fluid Level
-                                       Inspection</ng-option>
-                                    <ng-option value="Power Steering Gear Lubrication">Power Steering Gear Lubrication
-                                    </ng-option>
-                                    <ng-option value="Power Steering Hose Replacement">Power Steering Hose Replacement
-                                    </ng-option>
-                                    <ng-option value="Power Steering Pump Replacement">Power Steering Pump Replacement
-                                    </ng-option>
-                                    <ng-option value="Pressure Relief Cap Inspection">Pressure Relief Cap Inspection
-                                    </ng-option>
-                                    <ng-option value="Radiator Repair">Radiator Repair</ng-option>
-                                    <ng-option value="Resurface Rotors">Resurface Rotors</ng-option>
-                                    <ng-option value="Rotate Tires"> Rotate Tires</ng-option>
-                                    <ng-option value="Rotor Replacement">Rotor Replacement</ng-option>
-
-                                    <ng-option value="Spark Plug Replacement">Spark Plug Replacement</ng-option>
-                                    <ng-option value="Spark Plugs Replacement">Spark Plugs Replacement</ng-option>
-                                    <ng-option value="Starter Replacement">Starter Replacement</ng-option>
-                                    <ng-option value="Steer Axle Hub Cap Vent Plug Inspection">Steer Axle Hub Cap Vent
-                                       Plug Inspection</ng-option>
-                                    <ng-option value="Suspension Inspection">Suspension Inspection</ng-option>
-                                    <ng-option value="Suspension U-Bolt Torque Check">Suspension U-Bolt Torque Check
-                                    </ng-option>
-                                    <ng-option value="Thermostat Replacement">Thermostat Replacement</ng-option>
-                                    <ng-option value="Tie Rod End Replacement">Tie Rod End Replacement</ng-option>
-                                    <ng-option value="Tie Rod Inspection">Tie Rod Inspection</ng-option>
-                                    <ng-option value="Tire Check">Tire Check</ng-option>
-                                    <ng-option value="Tire Replacement">Tire Replacement</ng-option>
-                                    <ng-option value="Tire Rotation">Tire Rotation</ng-option>
-
-                                    <ng-option value="Tire Service">Tire Service</ng-option>
-                                    <ng-option value="Trailer Cable Inspection">Trailer Cable Inspection</ng-option>
-                                    <ng-option value="Transfer Case Fluid Replacement">Transfer Case Fluid Replacement
-                                    </ng-option>
-                                    <ng-option value="Transmission Filter Replacement">Transmission Filter Replacement
-                                    </ng-option>
-                                    <ng-option value="Transmission Fluid Drain & Refill">Transmission Fluid Drain &
-                                       Refill</ng-option>
-                                    <ng-option value="Transmission Fluid Level Inspection">Transmission Fluid Level
-                                       Inspection</ng-option>
-                                    <ng-option value="Transmission Fluid Replacement">Transmission Fluid Replacement
-                                    </ng-option>
-                                    <ng-option value="Transmission Replacement"> Transmission Replacement</ng-option>
-                                    <ng-option value="Water Pump Replacement">Water Pump Replacement</ng-option>
-                                    <ng-option value="Wheel Alignment">Wheel Alignment</ng-option>
-                                    <ng-option value="Wheel Bearing Replacement"> Wheel Bearing Replacement</ng-option>
-                                    <ng-option value="Wheel Nut Check">Wheel Nut Check</ng-option>
-                                    <ng-option value="Windshield Wiper(s) Replacement">Windshield Wiper(s) Replacement
-                                    </ng-option>
-
+                                    <ng-select [(ngModel)]="reminderData.reminderTasks.task"
+                                    name="task" style="width: 100%;">
+                                    <optgroup label="Select Service Task">
+                                       <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
+                                       </ng-option>
+                                    </optgroup>
                                  </ng-select>
                               </div>
                               <div class="col-lg-1 pl-0" style="margin-top: 38px !important;">
-                                 <a href="#addServiceTaskModal" class="modal-with-form btn btn-sm btn-success"><i
-                                       class="fas fa-plus"></i></a>
+                                 <button type="button" data-toggle="modal" data-target="#addServiceTasks" class="modal-with-form btn btn-sm btn-success"><i
+                                       class="fas fa-plus"></i></button>
                               </div>
                            </div>
                            <div class="row pt-2">
@@ -277,7 +118,7 @@
                                     <div class="col-lg-6">
                                        <label
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer
-                                          Miles<span id="primary_meter">miles</span></label>
+                                          Miles</label>
                                        <input [(ngModel)]="reminderData.reminderTasks.odometer"
                                           name="odometer" type="text" class="form-control">
                                     </div>
@@ -360,6 +201,44 @@
          <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary">Save changes</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<div class="modal fade" id="addServiceTasks" tabindex="-1" role="dialog" aria-labelledby="serviceTaskModalTitle"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="serviceTaskModalTitle">Add Service Task</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+           <form id="serviceTaskForm" name="serviceTaskForm" class="form-horizontal form-bordered" method="get">
+             <div class="row">
+                <div class="col-lg-12">
+                  <label
+                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Service Task Name</label>
+               <input [(ngModel)]="serviceTask.taskName"
+                  name="taskName" type="text" class="form-control">
+                </div>
+             </div>
+             <div class="row mt-2">
+               <div class="col-lg-12">
+                 <label
+                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Service Task Description</label>              
+                 <textarea class="form-control" rows="3" [(ngModel)]="serviceTask.description" name="description"></textarea>
+               </div>
+            </div>
+           </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" (click)="addServiceTask()">Save</button>
          </div>
       </div>
    </div>

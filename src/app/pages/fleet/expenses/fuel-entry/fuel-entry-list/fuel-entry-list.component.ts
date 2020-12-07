@@ -38,9 +38,10 @@ export class FuelEntryListComponent implements OnInit {
   formattedToDate: any = '';
   fuelList;
   dtOptions: any = {};
-
+  suggestedVehicles = [];
+  vehicleID = '';
   amount = '';
-
+  vehicleIdentification = '';
 
   constructor(
     private apiService: ApiService,
@@ -60,7 +61,21 @@ export class FuelEntryListComponent implements OnInit {
       }, 1800);
     });
   }
-
+  setVehicle(vehicleID, vehicleIdentification) {
+    this.vehicleIdentification = vehicleIdentification;
+    this.vehicleID = vehicleID;
+    this.suggestedVehicles = [];
+  }
+  getSuggestions(value) {
+    this.apiService
+      .getData(`vehicles/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedVehicles = result.Items;
+        if (this.suggestedVehicles.length === 0) {
+          this.vehicleID = '';
+        }
+      });
+  }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
@@ -86,10 +101,9 @@ export class FuelEntryListComponent implements OnInit {
       next: (result: any) => {
         console.log(result);
         this.fuelList = result.Items;
-        console.log('Fuel data',this.fuelList);
+        console.log('Fuel data', this.fuelList);
       },
     });
-
   }
   getVehicleName(ID) {
     const vehicleName: any = this.vehicles.filter( (el) => {

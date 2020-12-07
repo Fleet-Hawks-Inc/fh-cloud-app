@@ -19,6 +19,11 @@ export class ListContactRenewComponent implements OnInit {
   dtOptions: any = {};
   currentDate = moment();
   newData = [];
+  filterStatus = 'OVERDUE';
+  contactID = '';
+  firstName = '';
+  searchServiceTask = '';
+  suggestedContacts = [];
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -41,17 +46,49 @@ export class ListContactRenewComponent implements OnInit {
       this.contactList = result;
     });
   }
+  setFilterStatus(val){
+  this.filterStatus = val;
+  console.log('filter', this.filterStatus);
+  }
+  setContact(contactID, firstName) {
+    this.firstName = firstName;
+    this.contactID = contactID;
+    this.suggestedContacts = [];
+  }
+  getSuggestions(value) {
+    this.apiService
+      .getData(`contacts/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedContacts = result.Items;
+        if (this.suggestedContacts.length === 0) {
+          this.contactID = '';
+        }
+      });
+      console.log('suggested contacts', this.suggestedContacts);
+  }
   fetchRenewals = async () => {
-    this.apiService.getData(`reminders`).subscribe({
+      this.remindersData = [];
+    // this.apiService.getData(`reminders`).subscribe({
+      this.apiService.getData(`reminders?reminderIdentification=${this.contactID}&serviceTask=${this.searchServiceTask}`).subscribe({
       complete: () => {this.initDataTable(); },
       error: () => { },
       next: (result: any) => {
         this.allRemindersData = result.Items;
         for(let j=0; j < this.allRemindersData.length; j++) {
+          let reminderStatus;
           if (this.allRemindersData[j].reminderType === 'contact') {
             const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate,'DD-MM-YYYY');
             const remainingDays = convertedDate.diff(this.currentDate, 'days');
             console.log('remaining days', remainingDays);
+            if (remainingDays < 0) {
+              reminderStatus = 'OVERDUE';
+            }
+            else if( remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays &&  remainingDays >= 0) {
+              reminderStatus = 'DUE SOON';
+            }
+            else{
+              reminderStatus = '';
+            }
             const data = {
               reminderID: this.allRemindersData[j].reminderID,
               reminderIdentification: this.allRemindersData[j].reminderIdentification,
@@ -59,13 +96,13 @@ export class ListContactRenewComponent implements OnInit {
                 task: this.allRemindersData[j].reminderTasks.task,
                 remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
                 remainingDays: remainingDays,
+                reminderStatus: reminderStatus,
                 dueDate: this.allRemindersData[j].reminderTasks.dueDate,
               },
               subscribers : this.allRemindersData[j].subscribers,
              };
              this.remindersData.push(data); 
           }
-        
         }
         console.log('new data', this.remindersData);
       },

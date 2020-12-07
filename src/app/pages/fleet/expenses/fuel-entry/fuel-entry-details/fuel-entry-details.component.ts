@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AwsUploadService } from '../../../../../services';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
-
+import * as _ from 'lodash';
 @Component({
   selector: 'app-fuel-entry-details',
   templateUrl: './fuel-entry-details.component.html',
@@ -31,6 +31,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   amountPaid: number;
   currency: string;
   fuelDate: string;
+  fuelTime: string;
   fuelType = '';
   carrierID;
   vehicleList: any = {};
@@ -55,6 +56,8 @@ export class FuelEntryDetailsComponent implements OnInit {
     description: '',
     uploadedPhotos: [],
   };
+  MPG = '';
+  costPerMile = '';
   fuel = {
     totalLitres: 0,
     totalGallons: 0,
@@ -76,6 +79,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   vendorName = '';
   assetName = '';
   form;
+  vehicleData = [];
   unit: boolean;
   response: any = '';
   hasError = false;
@@ -91,10 +95,11 @@ export class FuelEntryDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.entryID = this.route.snapshot.params['entryID'];
+    this.entryID = this.route.snapshot.params[`entryID`];
     this.fetchFuelEntry();
     this.fetchAssetList();
     this.fetchTripList();
+    
     this.carrierID = this.apiService.getCarrierID();
     this.fetchVehicleList();
   }
@@ -118,7 +123,19 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.apiService.getData('trips/get/list').subscribe((result: any) => {
       this.tripList = result;
     });
-  } 
+  }
+  fetchAllVehicles() {
+    this.apiService.getData(`fuelEntries/vehicle/` + this.unitID).subscribe((result: any) => {
+      this.vehicleData = result.Items;
+      console.log('Vehicle data', this.vehicleData);
+    });
+    setTimeout(() => {
+      const sortedArray = _.sortBy(this.vehicleData, ['fuelDate']);
+      sortedArray.shift();
+      console.log('sorted arry', sortedArray);
+      const miles = this.additionalDetails.odometer;
+    }, 3000);
+  }
   fetchFuelEntry() {
     this.apiService
       .getData('fuelEntries/' + this.entryID)
@@ -139,6 +156,7 @@ export class FuelEntryDetailsComponent implements OnInit {
           this.costPerUnit = result.costPerUnit,
           this.amountPaid = result.amountPaid,
           this.fuelDate = result.fuelDate,
+          this.fuelTime = result.fuelTime,
           this.fuelType = result.fuelType,
 
           this.paidBy = result.paidBy,
@@ -164,8 +182,9 @@ export class FuelEntryDetailsComponent implements OnInit {
             totalGallons: result.fuel.totalGallons,
             costPerLitre: result.fuel.costPerLitre,
             costPerGallon: result.fuel.costPerGallon
-          }
+          },
           this.getImages();
+          this.fetchAllVehicles();
       });
     this.fetchVendors(this.vendorID);
   }
@@ -184,9 +203,9 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.fuelEntryImages.splice(i, 1);
     this.updateFuelEntry();
     this.toastr.success('Image Deleted Successfully!');
-    // this.apiService.getData('fuelEntries//updatePhotos/' + this.entryID + '/' + this.additionalDetails.uploadedPhotos).subscribe((result: any) => {
-    //   this.toastr.success('Image Deleted Successfully!');
-    // });
+   // this.apiService.getData('fuelEntries//updatePhotos/' + this.entryID + '/' + this.additionalDetails.uploadedPhotos).subscribe((result: any) => {
+   //   this.toastr.success('Image Deleted Successfully!');
+   // });
   }
   deleteFuelEntry(entryID) {
     this.apiService
@@ -212,6 +231,7 @@ export class FuelEntryDetailsComponent implements OnInit {
       amountPaid: this.amountPaid,
       currency: this.currency,
       fuelDate: this.fuelDate,
+      fuelTime: this.fuelTime,
       fuelType: this.fuelType,
       paidBy: this.paidBy,
       paymentMode: this.paymentMode,
