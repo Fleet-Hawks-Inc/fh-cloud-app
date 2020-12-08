@@ -439,12 +439,12 @@
                                 >
                                   Open Issues
                                   <a
-                                    href="maintenance1.php"
+                                    routerLink="/fleet/maintenance/issues/list"
                                     class="btn btn-xs btn-dark pull-right ml-3"
                                     >View All</a
                                   >
                                   <a
-                                    href="add-issue.php"
+                                    routerLink="/fleet/maintenance/issues/add"
                                     class="btn btn-xs btn-default pull-right"
                                     ><i class="fas fa-plus"></i>Add Issue</a
                                   >
@@ -454,7 +454,7 @@
                                 <div
                                   class="col-lg-6 p-3 font-weight-bold text-4"
                                 >
-                                  <a href="#"
+                                  <a [routerLink]=""
                                     ><span class="text-6 text-warning">1</span
                                     ><br />Open</a
                                   >
@@ -462,7 +462,7 @@
                                 <div
                                   class="col-lg-6 p-3 font-weight-bold text-4"
                                 >
-                                  <a href="#"
+                                  <a [routerLink]=""
                                     ><span class="text-6 text-danger">1</span
                                     ><br />Overdue</a
                                   >
@@ -483,43 +483,7 @@
                                     ><br />Reported 3days ago by Mr.Singh<br />Passenger
                                     Side brake light is out
                                   </div>
-                                  <div class="col-lg-6 p-2 text-right">
-                                    <div class="btn-group flex-wrap">
-                                      <button
-                                        type="button"
-                                        class="mb-1 btn btn-default btn-sm dropdown-toggle"
-                                        data-toggle="dropdown"
-                                        aria-expanded="false"
-                                      >
-                                        <span class="caret"></span>
-                                      </button>
-                                      <div
-                                        class="dropdown-menu"
-                                        role="menu"
-                                        x-placement="bottom-start"
-                                        style="
-                                          position: absolute;
-                                          will-change: transform;
-                                          top: 0px;
-                                          left: 0px;
-                                          transform: translate3d(0px, 38px, 0px);
-                                        "
-                                      >
-                                        <a class="dropdown-item text-1" [routerLink]=""
-                                          >Resolve Via Service Entry</a
-                                        >
-                                        <a class="dropdown-item text-1" [routerLink]="" (click)="closeIssue(issue.issueID)"
-                                          >Close Issue</a
-                                        >
-                                        <a class="dropdown-item text-1" routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}"
-                                          >Edit</a
-                                        >
-                                        <a class="dropdown-item text-1" [routerLink]=""
-                                          >Delete</a
-                                        >
-                                      </div>
-                                    </div>
-                                  </div>
+                                  
                                 </div>
                               </ng-container>
                             
@@ -537,12 +501,12 @@
                                 >
                                   Service Reminders
                                   <a
-                                    href="service-reminders.php"
+                                    routerLink="/fleet/reminders/service-reminder/list"
                                     class="btn btn-xs btn-dark pull-right ml-3"
                                     >View All</a
                                   >
                                   <a
-                                    href="add-service-reminder.php"
+                                    routerLink="/fleet/reminders/service-reminder/add"
                                     class="btn btn-xs btn-default pull-right"
                                     ><i class="fas fa-plus"></i>Add Service
                                     Reminders</a
@@ -553,7 +517,7 @@
                                 <div
                                   class="col-lg-6 p-3 font-weight-bold text-4"
                                 >
-                                  <a href="#"
+                                  <a [routerLink]=""
                                     ><span class="text-6 text-default">0</span
                                     ><br />Overdue</a
                                   >
@@ -561,7 +525,7 @@
                                 <div
                                   class="col-lg-6 p-3 font-weight-bold text-4"
                                 >
-                                  <a href="#"
+                                  <a [routerLink]=""
                                     ><span class="text-6 text-warning">1</span
                                     ><br />Due Soon</a
                                   >
@@ -585,43 +549,6 @@
                                       now</span
                                     >
                                   </div>
-                                  <div class="col-lg-2 p-2 text-right">
-                                    <div class="btn-group flex-wrap">
-                                      <button
-                                        type="button"
-                                        class="mb-1 btn btn-default btn-sm dropdown-toggle"
-                                        data-toggle="dropdown"
-                                        aria-expanded="false"
-                                      >
-                                        <span class="caret"></span>
-                                      </button>
-                                      <div
-                                        class="dropdown-menu"
-                                        role="menu"
-                                        x-placement="bottom-start"
-                                        style="
-                                          position: absolute;
-                                          will-change: transform;
-                                          top: 0px;
-                                          left: 0px;
-                                          transform: translate3d(0px, 38px, 0px);
-                                        "
-                                      >
-                                        <a class="dropdown-item text-1" [routerLink]=""
-                                          >Enter Service</a
-                                        >
-                                        <a class="dropdown-item text-1" [routerLink]=""
-                                          >Send Notifications</a
-                                        >
-                                        <a class="dropdown-item text-1" routerLink="/fleet/reminders/service-reminder/edit/{{reminder.reminderID}}"
-                                          >Edit</a
-                                        >
-                                        <a class="dropdown-item text-1" [routerLink]=""
-                                          >Delete</a
-                                        >
-                                      </div>
-                                    </div>
-                                  </div>
                                 </div>
                               </ng-container>
                               
@@ -637,12 +564,12 @@
                             <div class="col-lg-12 p-2 font-weight-bold text-4">
                               Renewal Reminders
                               <a
-                                href="vehicle-renewals.php"
+                                routerLink="/fleet/reminders/vehicle-renewals/list"
                                 class="btn btn-xs btn-dark pull-right ml-3"
                                 >View All</a
                               >
                               <a
-                                href="add-vehicle-renewal-reminder.php"
+                                routerLink="/fleet/reminders/vehicle-renewals/add"
                                 class="btn btn-xs btn-default pull-right"
                                 ><i class="fas fa-plus"></i>Add Renewal
                                 Reminders</a
@@ -651,13 +578,13 @@
                           </div>
                           <div class="row text-center m-0">
                             <div class="col-lg-6 p-3 font-weight-bold text-4">
-                              <a href="#"
+                              <a [routerLink]=""
                                 ><span class="text-6 text-default">0</span
                                 ><br />Overdue</a
                               >
                             </div>
                             <div class="col-lg-6 p-3 font-weight-bold text-4">
-                              <a href="#"
+                              <a [routerLink]=""
                                 ><span class="text-6 text-warning">1</span
                                 ><br />Due Soon</a
                               >
@@ -676,40 +603,6 @@
                                   ></a
                                 ><br />Due:{{reminder.reminderTasks.dueDate}}
                               </div>
-                              <div class="col-lg-6 p-2 text-right">
-                                <div class="btn-group flex-wrap">
-                                  <button
-                                    type="button"
-                                    class="mb-1 btn btn-default btn-sm dropdown-toggle"
-                                    data-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <span class="caret"></span>
-                                  </button>
-                                  <div
-                                    class="dropdown-menu"
-                                    role="menu"
-                                    x-placement="bottom-start"
-                                    style="
-                                      position: absolute;
-                                      will-change: transform;
-                                      top: 0px;
-                                      left: 0px;
-                                      transform: translate3d(0px, 38px, 0px);
-                                    "
-                                  >
-                                    <a class="dropdown-item text-1" [routerLink]=""
-                                      >Send Notifications</a
-                                    >
-                                    <a class="dropdown-item text-1" routerLink="/fleet/reminders/service-reminder/edit/{{reminder.reminderID}}"
-                                      >Edit</a
-                                    >
-                                    <a class="dropdown-item text-1" [routerLink]=""
-                                      >Delete</a
-                                    >
-                                  </div>
-                                </div>
-                              </div>
                             </div>
                           </ng-container>
                         </div>
@@ -727,7 +620,7 @@
                           </div>
                           <div class="row text-center m-0">
                             <div class="col-lg-12 p-3 text-4">
-                              <a href="#">No Critical Faults</a>
+                              <a [routerLink]="">No Critical Faults</a>
                             </div>
                           </div>
                         </div>
@@ -740,100 +633,9 @@
                               Documents
                             </div>
                           </div>
-                          <div class="row mt-3">
-                            <div class="col-lg-1">
-                              <div class="btn-group flex-wrap mx-2">
-                                <button
-                                  type="button"
-                                  class="btn btn-default btn-sm dropdown-toggle"
-                                  data-toggle="dropdown"
-                                  aria-expanded="false"
-                                >
-                                  Show <span class="caret"></span>
-                                </button>
-                                <div
-                                  class="dropdown-menu"
-                                  role="menu"
-                                  x-placement="bottom-start"
-                                  style="
-                                    position: absolute;
-                                    will-change: transform;
-                                    top: 0px;
-                                    left: 0px;
-                                    transform: translate3d(0px, 38px, 0px);
-                                  "
-                                >
-                                  <a class="dropdown-item text-1" href=""
-                                    >All Documents</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Vehicle Documents</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Service Entry Documents</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Fuel Entry Documents</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Issue Documents</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Work Order Documents</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Expense Entry Documents</a
-                                  >
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-lg-2">
-                              <!-- <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Document</button> -->
-                            </div>
-                            <div class="col-lg-9 text-right">
-                              <div class="btn-group flex-wrap mx-2">
-                                <button
-                                  type="button"
-                                  class="btn btn-default btn-sm dropdown-toggle"
-                                  data-toggle="dropdown"
-                                  aria-expanded="false"
-                                >
-                                  Sort By <span class="caret"></span>
-                                </button>
-                                <div
-                                  class="dropdown-menu"
-                                  role="menu"
-                                  x-placement="bottom-start"
-                                  style="
-                                    position: absolute;
-                                    will-change: transform;
-                                    top: 0px;
-                                    left: 0px;
-                                    transform: translate3d(0px, 38px, 0px);
-                                  "
-                                >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Newset - First</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Oldest- First</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Document Name</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >File Name</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >File Size</a
-                                  >
-                                </div>
-                              </div>
-                            </div>
-                          </div>
                           <table class="table table-responsive-lg mt-3 mb-0">
                             <tbody>
-                              <tr>
+                              <tr *ngFor="let document of documents">
                                 <td width="85%">
                                   Document Name.pdf
                                   <span class="font-size-12"
@@ -885,58 +687,6 @@
                                   </div>
                                 </td>
                               </tr>
-                              <tr>
-                                <td>
-                                  Document Name.jpg
-                                  <span class="font-size-12"
-                                    ><br /><span
-                                      class="text-info font-weight-bold"
-                                      >Vehicle</span
-                                    >
-                                    34.6KB - Jun 5,2019</span
-                                  >
-                                </td>
-                                <td>
-                                  <button class="btn btn-deafault btn-xs">
-                                    <i class="fas fa-eye"></i>
-                                  </button>
-                                  <button class="btn btn-deafault btn-xs">
-                                    <i class="fas fa-download"></i>
-                                  </button>
-                                  <div class="btn-group flex-wrap mx-2">
-                                    <button
-                                      type="button"
-                                      class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >View Vehicle</a
-                                      >
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
                             </tbody>
                           </table>
                         </div>
@@ -944,13 +694,13 @@
                         <div class="vehicle-common-box mt-4">
                           <div class="row m-0 pt-1 pb-1 back-color-gray">
                             <div class="col-lg-3 font-weight-bold text-4">
-                              Inspection Forms (1)
+                              Inspection Forms
                             </div>
                             <div class="col-lg-5">
                               <!-- <a href="#" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Start Inspection</a> -->
                             </div>
                             <div class="col-lg-4 text-right">
-                              <a href="#" class="text-info">View Submissions</a>
+                              <a [routerLink]="" class="text-info">View Submissions</a>
                             </div>
                           </div>
                           <table class="table table-responsive-lg mt-3">
@@ -1003,47 +753,6 @@
                                   </div>
                                 </td>
                               </tr>
-                              <tr>
-                                <td>Driver Vehicle Inspection Report</td>
-                                <td>
-                                  off <br />
-                                  Last Inspected: Jun 5
-                                </td>
-                                <td>
-                                  <div class="btn-group flex-wrap mx-2">
-                                    <button
-                                      type="button"
-                                      class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Start Inspection</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
                             </tbody>
                           </table>
                         </div>
@@ -1053,100 +762,22 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <div class="vehicle-common-box mt-4">
-                          <div class="row m-0">
-                            <div
-                              class="col-lg-12 p-2 back-color-gray mb-2 font-weight-bold text-4"
-                            >
-                              Recalls
-                            </div>
-                          </div>
-                          <table class="table table-responsive-lg mt-3 mb-0">
-                            <thead>
-                              <tr>
-                                <th width="5%"><input type="checkbox" /></th>
-                                <th width="60%">Summary</th>
-                                <th width="10%">Issued</th>
-                                <th width="10%">Status</th>
-                                <th width="15%">Actions</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td><input type="checkbox" /></td>
-                                <td>
-                                  <span class="font-size-12"
-                                    >2018 TOYOTA PRIUS · ELECTRICAL
-                                    SYSTEM:WIRING</span
-                                  ><br /><span
-                                    class="text-dark font-weight-bold"
-                                    >There is problem in the heater.</span
-                                  ><br /><span class="font-size-12"
-                                    >456466 - JOT</span
-                                  >
-                                </td>
-                                <td>Sep 5,2019</td>
-                                <td>
-                                  <span class="text-info">Needs Action</span>
-                                </td>
-                                <td>
-                                  <a href="#" class="text-info">Acknowledge</a
-                                  >&nbsp;&nbsp;<a href="#" class="text-info"
-                                    >Create Issue</a
-                                  >
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-
-                      <div class="col-lg-6">
-                        <div class="vehicle-common-box mt-4">
-                          <div class="row m-0">
-                            <div
-                              class="col-lg-12 p-2 back-color-gray mb-2 font-weight-bold text-4"
-                            >
+                          <div class="row m-0 back-color-gray">
+                            <div class="col-lg-12 p-2 font-weight-bold text-4">
                               Service Programs
+                              <a
+                                routerLink="/fleet/maintenance/service-program/service-program-list"
+                                class="btn btn-xs btn-dark pull-right ml-3"
+                                >View All</a
+                              >
+                              <a
+                                routerLink="/fleet/maintenance/service-program/Add-Service-Program"
+                                class="btn btn-xs btn-default pull-right"
+                                ><i class="fas fa-plus"></i>Add Service
+                                Program</a
+                              >
                             </div>
                           </div>
-
-                          <div class="row m-0">
-                            <div class="col-lg-6">
-                              <!-- <a href="#" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Service Program</a> -->
-                            </div>
-                            <div class="col-lg-6 text-right">
-                              <div class="btn-group flex-wrap mx-2">
-                                <button
-                                  type="button"
-                                  class="btn btn-default btn-sm dropdown-toggle"
-                                  data-toggle="dropdown"
-                                  aria-expanded="false"
-                                >
-                                  Actions <span class="caret"></span>
-                                </button>
-                                <div
-                                  class="dropdown-menu"
-                                  role="menu"
-                                  x-placement="bottom-start"
-                                  style="
-                                    position: absolute;
-                                    will-change: transform;
-                                    top: 0px;
-                                    left: 0px;
-                                    transform: translate3d(0px, 38px, 0px);
-                                  "
-                                >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Go to Service Program</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Remove Service Program</a
-                                  >
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
                           <table class="table table-responsive-lg mt-3 mb-0">
                             <thead>
                               <tr>
@@ -1156,7 +787,7 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
+                              <tr *ngFor = "let serviceProgram of servicePrograms">
                                 <td>Service Program 1</td>
                                 <td>Every 10,000 miles</td>
                                 <td>
@@ -1179,122 +810,37 @@
 
                       <div class="col-lg-6">
                         <div class="vehicle-common-box">
-                          <div class="row m-0">
-                            <div
-                              class="col-lg-12 p-2 back-color-gray mb-2 font-weight-bold text-4"
-                            >
+                          <div class="row m-0 back-color-gray">
+                            <div class="col-lg-12 p-2 font-weight-bold text-4">
                               Service History
+                              <a
+                                routerLink="/fleet/maintenance/service-log/list"
+                                class="btn btn-xs btn-dark pull-right ml-3"
+                                >View All</a
+                              >
+                              <a
+                                routerLink="/fleet/maintenance/service-log/add-service"
+                                class="btn btn-xs btn-default pull-right"
+                                ><i class="fas fa-plus"></i>Add Service
+                                Program</a
+                              >
                             </div>
                           </div>
-
-                          <div class="row m-0">
-                            <div class="col-lg-6">
-                              <div class="btn-group flex-wrap">
-                                <button
-                                  type="button"
-                                  class="btn btn-default btn-sm dropdown-toggle"
-                                  data-toggle="dropdown"
-                                  aria-expanded="false"
-                                >
-                                  Sort By <span class="caret"></span>
-                                </button>
-                                <div
-                                  class="dropdown-menu"
-                                  role="menu"
-                                  x-placement="bottom-start"
-                                  style="
-                                    position: absolute;
-                                    will-change: transform;
-                                    top: 0px;
-                                    left: 0px;
-                                    transform: translate3d(0px, 38px, 0px);
-                                  "
-                                >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Date-Newest first</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Date-Oldest first</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Duration-Longest first</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Duration-Shortest first</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Total-Highest first</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Total-Lowest first</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Odometer Reading-Highest first</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Odometer Reading-Lowest first</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Secondary Meter Reading-Highest first</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Secondary Meter Reading-Lowest first</a
-                                  >
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-lg-6 text-right">
-                              <!-- <a href="#" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Service Entry</a> -->
-                            </div>
-                          </div>
-
                           <table class="table table-responsive-lg mt-3 mb-0">
                             <thead>
                               <tr>
                                 <th width="25%" class="">Comp. Date</th>
                                 <th width="50%">Details</th>
                                 <th width="15%">Total</th>
-                                <th width="10%"></th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
+                              <tr *ngFor="let history of serviceHistory">
                                 <td>Mar 15, 2020</td>
                                 <td>
                                   Oil Change - Brakes Replace - Tires Replace
                                 </td>
                                 <td>$67.78</td>
-                                <td>
-                                  <div class="btn-group flex-wrap mx-2">
-                                    <button
-                                      type="button"
-                                      class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
-                                    </div>
-                                  </div>
-                                </td>
                               </tr>
                               <tr>
                                 <td>Mar 15, 2020</td>
@@ -1302,37 +848,6 @@
                                   Oil Change - Brakes Replace - Tires Replace
                                 </td>
                                 <td>$67.78</td>
-                                <td>
-                                  <div class="btn-group flex-wrap mx-2">
-                                    <button
-                                      type="button"
-                                      class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
-                                    </div>
-                                  </div>
-                                </td>
                               </tr>
                             </tbody>
                           </table>
@@ -1341,49 +856,20 @@
 
                       <div class="col-lg-6">
                         <div class="vehicle-common-box">
-                          <div class="row m-0">
-                            <div
-                              class="col-lg-12 p-2 back-color-gray mb-2 font-weight-bold text-4"
-                            >
+                          <div class="row m-0 back-color-gray">
+                            <div class="col-lg-12 p-2 font-weight-bold text-4">
                               Fuel History
-                            </div>
-                          </div>
-
-                          <div class="row m-0">
-                            <div class="col-lg-6">
-                              <div class="btn-group flex-wrap">
-                                <button
-                                  type="button"
-                                  class="btn btn-default btn-sm dropdown-toggle"
-                                  data-toggle="dropdown"
-                                  aria-expanded="false"
-                                >
-                                  Recalculate All Fuel Entries
-                                  <span class="caret"></span>
-                                </button>
-                                <div
-                                  class="dropdown-menu"
-                                  role="menu"
-                                  x-placement="bottom-start"
-                                  style="
-                                    position: absolute;
-                                    will-change: transform;
-                                    top: 0px;
-                                    left: 0px;
-                                    transform: translate3d(0px, 38px, 0px);
-                                  "
-                                >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Recalculate Only</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Validate and Recalculate</a
-                                  >
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-lg-6 text-right">
-                              <!-- <a href="#" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Fuel Entry</a> -->
+                              <a
+                                routerLink="/fleet/expenses/fuel/list"
+                                class="btn btn-xs btn-dark pull-right ml-3"
+                                >View All</a
+                              >
+                              <a
+                                routerLink="/fleet/expenses/fuel/add"
+                                class="btn btn-xs btn-default pull-right"
+                                ><i class="fas fa-plus"></i>Add Fuel
+                                Entry</a
+                              >
                             </div>
                           </div>
 
@@ -1476,7 +962,6 @@
                                 <th width="20%">Vendor</th>
                                 <th width="20%">Source</th>
                                 <th width="10%">Amount</th>
-                                <th width="10%"></th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1490,40 +975,6 @@
                                 <td>Mr. X</td>
                                 <td>Manually Entered</td>
                                 <td>56 USD</td>
-                                <td>
-                                  <div class="btn-group flex-wrap mx-2">
-                                    <button
-                                      type="button"
-                                      class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >View Full History</a
-                                      >
-                                    </div>
-                                  </div>
-                                </td>
                               </tr>
                               <tr>
                                 <td>Mar 6,2019</td>
@@ -1535,40 +986,6 @@
                                 <td>Mr. Y</td>
                                 <td>Manually Entered</td>
                                 <td>578 USD</td>
-                                <td>
-                                  <div class="btn-group flex-wrap mx-2">
-                                    <button
-                                      type="button"
-                                      class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >View Full History</a
-                                      >
-                                    </div>
-                                  </div>
-                                </td>
                               </tr>
                             </tbody>
                           </table>
@@ -1584,45 +1001,6 @@
                               Assignment History
                             </div>
                           </div>
-
-                          <div class="row m-0">
-                            <div class="col-lg-6">
-                              <div class="btn-group flex-wrap">
-                                <button
-                                  type="button"
-                                  class="btn btn-default btn-sm dropdown-toggle"
-                                  data-toggle="dropdown"
-                                  aria-expanded="false"
-                                >
-                                  Recalculate All Fuel Entries
-                                  <span class="caret"></span>
-                                </button>
-                                <div
-                                  class="dropdown-menu"
-                                  role="menu"
-                                  x-placement="bottom-start"
-                                  style="
-                                    position: absolute;
-                                    will-change: transform;
-                                    top: 0px;
-                                    left: 0px;
-                                    transform: translate3d(0px, 38px, 0px);
-                                  "
-                                >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Recalculate Only</a
-                                  >
-                                  <a class="dropdown-item text-1" href=""
-                                    >Validate and Recalculate</a
-                                  >
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-lg-6 text-right">
-                              <!-- <a href="#" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Fuel Entry</a> -->
-                            </div>
-                          </div>
-
                           <table class="table table-responsive-lg mt-3 mb-0">
                             <thead>
                               <tr>
@@ -1637,7 +1015,6 @@
                                   End Date<br />
                                   Odometer Reading
                                 </th>
-                                <th width="5%"></th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1652,37 +1029,6 @@
                                 <td>Jun 30,2020</td>
                                 <td>340000</td>
                                 <td></td>
-                                <td>
-                                  <div class="btn-group flex-wrap mx-2">
-                                    <button
-                                      type="button"
-                                      class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
-                                    </div>
-                                  </div>
-                                </td>
                               </tr>
                               <tr>
                                 <td>Elon Musk</td>
@@ -1690,37 +1036,6 @@
                                 <td>Jun 15,2020</td>
                                 <td>340000</td>
                                 <td>500000</td>
-                                <td>
-                                  <div class="btn-group flex-wrap mx-2">
-                                    <button
-                                      type="button"
-                                      class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
-                                    </div>
-                                  </div>
-                                </td>
                               </tr>
                             </tbody>
                           </table>
@@ -5828,7 +5143,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr *ngFor="let device of devices">
                       <td onclick="window.location='devices-details.php';">
                         <span
                           class="badge badge-success text-3 fotn-weight-bold"

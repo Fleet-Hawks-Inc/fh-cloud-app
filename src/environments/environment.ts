@@ -5,8 +5,11 @@
 export const environment = {
   production: false,
 
-  // BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
-  BaseUrl: 'http://localhost:3000/api/v1/',
+
+ BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
+ // BaseUrl: 'http://localhost:3000/api/v1/',
+
+
   temp: 'search',
   LoginUrl: 'users/login',
   ApiKey: '',
@@ -25,8 +28,8 @@ export const environment = {
   },
   awsBucket: {
     bucketName: 'fh-cloud-service-uploads',
-    accessKeyId: 'changeMe',
-    secretAccessKey: 'changeMe',
+    accessKeyId: 'change',
+    secretAccessKey: 'change',
     region: 'us-east-1'
   },
   HOSTNAME: 'myhome.anterbox.com',

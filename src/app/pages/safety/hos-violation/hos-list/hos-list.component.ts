@@ -23,7 +23,6 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
   events = [];
   lastEvaluated = {
     value1: '',
-    value2: ''
   };
   totalRecords = 10;
 
@@ -59,8 +58,11 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
     startDate: '',
     endDate: '',
     start: '',
-    end: ''
+    end: '',
+    driverID: '',
+    driverName: ''
   }
+  suggestions = [];
 
   ngOnInit(): void {
     this.fetchevents();
@@ -94,19 +96,18 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('safety/eventLogs/fetch/hosViolation-records?lastEvaluatedValue1='+this.lastEvaluated.value1+'&search='+current.filterData.searchValue+'&severity='+current.filterData.severity+'&startDate='+current.filterData.start+'&endDate='+current.filterData.end, dataTablesParameters).subscribe(resp => {
+        current.apiService.getDatatablePostData('safety/eventLogs/fetch/hosViolation-records?lastEvaluatedValue1='+this.lastEvaluated.value1
+        +"&driver="+this.filterData.driverID+'&severity='+current.filterData.severity+'&startDate='+current.filterData.start+'&endDate='+current.filterData.end, dataTablesParameters).subscribe(resp => {
           // console.log('------------');
           // console.log(resp)
           current.getEventDetail(resp['Items']);
           if(resp['LastEvaluatedKey'] !== undefined){
             this.lastEvaluated = {
               value1 : resp['LastEvaluatedKey'].eventID,
-              value2:''
             }
           } else {
             this.lastEvaluated = {
               value1 : '',
-              value2 : ''
             }
           }
           callback({
@@ -164,33 +165,90 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
   fetchevents() {
     this.apiService.getData('safety/eventLogs/fetch?event=hosViolation')
       .subscribe((result: any) => {
-        // console.log(result);
         this.totalRecords = result.Count;
       })
   }
 
   filterSearch() {
-    // alert('1')
-    if(this.filterData.searchValue == '' && this.filterData.severity == '' && this.filterData.startDate == '' && this.filterData.endDate == '') {
+    if(this.filterData.driverName == '' && this.filterData.severity == '' && this.filterData.startDate == '' && this.filterData.endDate == '') {
       this.toastr.error('Please select atleast one filter');
       return false;
     }
 
     let start = this.filterData.startDate;
     let end = this.filterData.endDate;
+    let startD = <any> '';
+    let endD = <any> '';
 
     if(this.filterData.startDate !== '') {
-      start = start.split("-").reverse().join("-");
+      // start = start.split("-").reverse().join("-");
+      startD = start.split("-");
+      start = startD[0]+startD[1]+startD[2];
     }
 
     if(this.filterData.endDate !== '') {
-      end = end.split("-").reverse().join("-");
+      // end = end.split("-").reverse().join("-");
+      endD = end.split("-");
+      end = endD[0]+endD[1]+endD[2];
     }
 
     this.filterData.start = start;
     this.filterData.end = end;
 
     this.rerender();
-    console.log(this.filterData);
+  }
+
+  getSuggestions(searchvalue='') {
+    if(searchvalue !== '') {
+      this.apiService.getData('drivers/get/suggestions/'+searchvalue).subscribe({
+        complete: () => {},
+        error: () => { },
+        next: (result: any) => {
+          this.suggestions = [];
+          for (let i = 0; i < result.Items.length; i++) {
+            const element = result.Items[i];
+  
+            let obj = {
+              userName: element.userName,
+              name: element.firstName + ' ' + element.lastName
+            };
+            if(this.filterData.driverName !== '' ) { 
+              this.suggestions.push(obj)
+            }
+          }
+        }
+      })
+    } else {
+      this.suggestions = [];
+    }
+  }
+
+  searchSelectedDriver(data) {
+    this.filterData.driverID = data.userName;
+    this.filterData.driverName = data.name;
+    this.suggestions = [];
+  }
+
+  resetFilter() {
+    if(this.filterData.searchValue !== '' ||  this.filterData.severity !== '' ||  this.filterData.startDate !== ''
+    ||  this.filterData.endDate !== '' ||  this.filterData.driverName !== '') {
+      this.spinner.show();
+      this.filterData = {
+        searchValue: '',
+        severity: '',
+        startDate: '',
+        endDate: '',
+        start: '',
+        end: '',
+        driverID: '',
+        driverName: ''
+      }
+      this.suggestions = [];
+      this.rerender();
+      this.spinner.hide();
+    } else {
+      return false;
+    }
+    
   }
 }

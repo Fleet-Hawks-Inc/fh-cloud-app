@@ -61,7 +61,7 @@
                                            <section class="card">
                                             
                                               <div class="card-body p-0">
-                                                 <table class="table table-responsive-lg table-bordered table-striped mb-0">
+                                                 <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0">
                                                     <thead>
                                                        <tr>
                                                           <th width="25%">Service Program Name</th>
@@ -80,13 +80,15 @@
                                                                 </button>
                                                                 <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                                    <a class="dropdown-item" routerLink="/fleet/maintenance/service-program/edit/{{program.programID}}">Edit</a>
-                                                                   <a class="dropdown-item" href="javascript:;">Activate</a>
+                                                                   <a class="dropdown-item" href="javascript:;" (click)="deleteProgram(program.programID)">Delete</a>
                                                                 </div>
                                                               </div>
                                                           </td>
                                                        </tr>
                                                        <tr *ngIf="!programs?.length > 0">
                                                             <td colspan="3">No Data Found</td>
+                                                            <td style="display: none;"></td>
+                                                            <td style="display: none;"></td>
                                                        </tr>
                                                     </tbody>
                                                  </table>

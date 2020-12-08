@@ -19,6 +19,7 @@ export class EditIncidentComponent implements OnInit {
     event = {
         eventID: '',
         eventDate: '',
+        filterDate: '',
         eventTime: '',
         location: '',
         username: '',
@@ -133,6 +134,9 @@ export class EditIncidentComponent implements OnInit {
     updateEvent() {
         this.spinner.show();
         this.hideErrors();
+        let fdate = this.event.eventDate.split('-');
+        this.event.filterDate = fdate[2]+fdate[1]+fdate[0];
+
         this.apiService.putData('safety/eventLogs', this.event).subscribe({
             complete: () => { },
             error: (err: any) => {

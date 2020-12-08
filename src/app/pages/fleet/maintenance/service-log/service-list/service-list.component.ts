@@ -12,6 +12,7 @@ declare var $: any;
 })
 export class ServiceListComponent implements OnInit {
   title = 'Service Logs';
+  dtOptions: any = {};
   logs = [];
 
   suggestedVehicles = [];
@@ -73,23 +74,29 @@ export class ServiceListComponent implements OnInit {
   }
 
   deleteProgram(logId) {
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.apiService
+      .deleteData('servicePrograms/' + logId)
+      .subscribe((result: any) => {
+        this.fetchLogs();
+      });
+    }
     /******** Clear DataTable ************/
     if ($.fn.DataTable.isDataTable('#datatable-default')) {
       $('#datatable-default').DataTable().clear().destroy();
     }
     /******************************/
 
-    this.apiService
-      .deleteData('servicePrograms/' + logId)
-      .subscribe((result: any) => {
-        this.fetchLogs();
-      });
+    
   }
 
   initDataTable() {
-    timer(200).subscribe(() => {
-      $('#datatable-default').DataTable();
-    });
+    // timer(200).subscribe(() => {
+    //   $('#datatable-default').DataTable();
+    // });
+    this.dtOptions = {
+      
+    };
   }
 
 }

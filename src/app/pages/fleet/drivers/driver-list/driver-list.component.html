@@ -326,13 +326,13 @@
                                  <span class="font-weight-bold line-height-lg">{{driver.firstName}} {{driver.lastName}}</span>
                               </td>
                               <td>Live Status</td>
-                              <td></td>
+                              <td>{{driver.addressDetails.address1}} {{driver.addressDetails.address2}} {{citiesObject[driver.addressDetails.cityID]}} {{statesObject[driver.addressDetails.stateID]}} {{countriesObject[driver.addressDetails.countryID]}} {{driver.addressDetails.zipCode}}</td>
                               <td>{{cyclesObject[driver.hosDetails.hosCycle]}}</td>
                               <td>{{vehiclesObject[driver.assignedVehicle]}}</td>
                               <td>Live Status</td>
-                              <td><span class="font-weight-bold">Phone:</span>{{driver.workPhone}} <br> <span class="font-weight-bold">E-mail:</span>{{driver.workEmail}}</td>
-                              <td><span class="font-weight-bold">DL#:</span>{{driver.licenceDetails.CDL_Number}} <br><span class="font-weight-bold">DL State:</span> {{statesObject[driver.licenceDetails.issuedState]}}</td>
-                              <td><span class="font-weight-bold">Type#:</span>{{driver.documentDetails[0].documentType}} <br><span class="font-weight-bold">Issue State:</span>{{statesObject[driver.documentDetails[0].issuingState]}}</td>
+                              <td><span class="font-weight-bold">Phone: </span>{{driver.workPhone}} <br> <span class="font-weight-bold">E-mail: </span>{{driver.workEmail}}</td>
+                              <td><span class="font-weight-bold">DL#: </span>{{driver.licenceDetails.CDL_Number}} <br><span class="font-weight-bold">DL State: </span>{{statesObject[driver.licenceDetails.issuedState]}}</td>
+                              <td><span class="font-weight-bold">Type#: </span>{{driver.documentDetails[0].documentType}} <br><span class="font-weight-bold">Issue State: </span>{{statesObject[driver.documentDetails[0].issuingState]}}</td>
                               
                               <td>{{driver.driverStatus}}</td>
                               <td class="border-0">
@@ -357,97 +357,5 @@
       </div>
    </section>
    
-    <!-- <section role="main" class="content-body">
-      <header class="page-header">
-        <h2>{{ title }}</h2>
-
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a routerLink="">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li>
-              <span>{{ title }}</span>
-            </li>
-          </ol>
-        </div>
-      </header>
-
-      <section class="card mb-4">
-        <div class="card-body">
-          <h2 class="card-title mt-3 pull-left">{{ title }}</h2>
-          <div class="pull-right">
-            <div class="btn-group flex-wrap">
-              <button
-                type="button"
-                class="mb-1 mt-1 mr-1 btn btn-default dropdown-toggle"
-                data-toggle="dropdown"
-              >
-                <i class="fas fa-ellipsis-v"></i> Action
-                <span class="caret"></span>
-              </button>
-              <div class="dropdown-menu" role="menu">
-                <a class="dropdown-item text-1" href="#">Action</a>
-                <a class="dropdown-item text-1" href="#">Another action</a>
-                <a class="dropdown-item text-1" href="#">Something else here</a>
-                <a class="dropdown-item text-1" href="#">Separated link</a>
-              </div>
-            </div>
-
-            <a routerLink="/fleet/drivers/Add-Driver" class="mb-1 mt-1 mr-1 btn btn-success"
-              ><i class="fas fa-plus"></i> Add Driver</a
-            >
-          </div>
-        </div>
-      </section>
-
-      <div class="row">
-        <div class="col">
-          <section class="card">
-            <header class="card-header">
-              <h2 class="card-title">{{ title }}</h2>
-            </header>
-            <div class="card-body">
-              <table
-                class="table table-bordered table-striped mb-0"
-                #FhDataTable id="datatable-default"
-              >
-                <thead>
-                  <tr>
-                    <th>User Name</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Address</th>
-                    <th>Type</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let user of users">
-                    <td>{{ user.userName }}</td>
-                    <td>{{ user.firstName }}</td>
-                    <td>{{ user.lastName }}</td>
-                    <td>{{ user.address }}</td>
-                    <td>{{ user.userType }}</td>
-
-                    <td>
-                      <a routerLink="/fleet/drivers/Edit-Driver/{{ user.userName }}">Edit</a>
-                    </td>
-                    <td>
-                      <a [routerLink]="" (click)="deleteUser(user.userName)"
-                        >Delete</a
-                      >
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </div>
-      </div>
-    </section> -->
   </div>
 </section>

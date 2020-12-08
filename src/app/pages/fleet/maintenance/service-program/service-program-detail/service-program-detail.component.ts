@@ -69,6 +69,7 @@ export class ServiceProgramDetailComponent implements OnInit {
       if (confirm('Are you sure you want to delete?') === true) {
         this.vehicles.splice(i, 1);
         this.updateServiceProgram();
+        this.fetchAllVehicles();
       }
     }
   }
@@ -77,11 +78,11 @@ export class ServiceProgramDetailComponent implements OnInit {
    * Update Service Program
   */
   updateServiceProgram() {
-      console.log('this.programs', this.programs);
+      // console.log('this.programs', this.programs);
       let newProgram = Object.assign({}, ...this.programs);
       delete newProgram.carrierID;
       delete newProgram.timeModified;
-      console.log('newProgram', newProgram);
+      // console.log('newProgram', newProgram);
       
       this.apiService.putData('servicePrograms', newProgram).subscribe({
         complete: () => { },
@@ -160,32 +161,37 @@ export class ServiceProgramDetailComponent implements OnInit {
   fetchAllVehicles() {
     this.apiService.getData('vehicles')
       .subscribe((result: any) => {
-        this.allVehicles = result.Items;
-        console.log('allVehicle', this.allVehicles);
+        this.allVehicles = [];
+        this.updateVehicles(result.Items, this.programs[0].vehicles);
+        // console.log('allVehicle', this.allVehicles);
       });
   }
 
+  updateVehicles(vehiclesArr, serviceArr) {
+    vehiclesArr.filter(element => {
+      if (!serviceArr.includes(element.vehicleID)) {
+        // console.log('not includes');
+        this.allVehicles.push(element);
+      }
+    });
+  }
   addServiceProgram() {
-    console.log('prog', this.programData);
+    // console.log('prog', this.programData);
     this.programs[0].serviceScheduleDetails.push(this.programData);
     this.updateServiceProgram();
     $('#editServiceScheduleModal').modal('hide');
   }
 
   addVehicle() {
-    console.log('scotia', this.programs[0].vehicles);
-    const intersection = this.vehicleData.filter(element => {
+    this.vehicleData.filter(element => {
       if (!this.programs[0].vehicles.includes(element)) {
+        // console.log('element', element);
         this.programs[0].vehicles.push(element);
-      } else {
-        console.log('includes');
-      }
+        $('#addVehicleModal').modal('hide');
+        this.fetchAllVehicles();
+      };
     });
+    this.vehicleData = [];
     this.updateServiceProgram();
-    
-    // this.vehicleData.forEach(element => {
-    //   this.programs[0].vehicles.push(element);
-    // });
-    // this.updateServiceProgram();
   }
 }

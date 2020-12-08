@@ -21,6 +21,28 @@ export class AssetDetailComponent implements OnInit {
   public deviceData: any;
   carrierID;
 
+  assetIdentification: string;
+  VIN: string;
+  assetType: string;
+  licencePlateNumber: string;
+  licenceStateID: string;
+  year: string;
+  manufacturer: string;
+  model: string;
+  length: string;
+  axle: string;
+  GAWR: string;
+  GVWR: string;
+  ownerShip: string;
+  remarks: string;
+
+  dateOfIssue: string;
+  dateOfExpiry: string;
+  premiumAmount: string;
+  reminderBefore: string;
+  vendor: string;
+
+  statesObject: any = {};
   // Charts
   public chartOptions = {
     scaleShowVerticalLines: false,
@@ -78,6 +100,7 @@ export class AssetDetailComponent implements OnInit {
     this.assetID = this.route.snapshot.params['assetID']; // get asset Id from URL
     this.fetchAsset();
     this.fetchDeviceInfo();
+    this.fetchAllStatesIDs()
   }
 
   /**
@@ -89,9 +112,31 @@ export class AssetDetailComponent implements OnInit {
       .getData(`assets/${this.assetID}`)
       .subscribe((result: any) => {
         if (result) {
-          this.assetData = result['Items'];
+          this.assetData = result.Items[0];
           console.log(this.assetData)
-          this.getImages();
+          this.assetIdentification = this.assetData.assetIdentification;
+          this.VIN = this.assetData.VIN;
+          this.assetType =  this.assetData.assetDetails.assetType;
+          this.licencePlateNumber =  this.assetData.assetDetails.licencePlateNumber;
+          this.licenceStateID =  this.assetData.assetDetails.licenceStateID;
+          this.year =  this.assetData.assetDetails.year;
+          this.manufacturer =  this.assetData.assetDetails.manufacturer;
+          this.model =  this.assetData.assetDetails.model;
+          this.length =  this.assetData.assetDetails.length + ' ' + this.assetData.assetDetails.lengthUnit;
+          this.axle =  this.assetData.assetDetails.axle;
+          this.GAWR =  this.assetData.assetDetails.GAWR + ' ' + this.assetData.assetDetails.GAWR_Unit;
+          this.GVWR =  this.assetData.assetDetails.GVWR + ' ' + this.assetData.assetDetails.GVWR_Unit;
+          this.ownerShip =  this.assetData.assetDetails.ownerShip;
+          this.remarks =  this.assetData.assetDetails.remarks;
+
+          this.dateOfIssue =  this.assetData.insuranceDetails.dateOfIssue;
+          this.dateOfExpiry =  this.assetData.insuranceDetails.dateOfExpiry;
+          this.premiumAmount =  this.assetData.insuranceDetails.premiumAmount + ' ' + this.assetData.insuranceDetails.premiumCurrency;
+          this.reminderBefore =  this.assetData.insuranceDetails.reminderBefore + ' ' + 
+                                      this.assetData.insuranceDetails.reminderBeforeUnit;
+          this.vendor = this.assetData.insuranceDetails.vendor;
+          
+          // this.getImages();
           this.spinner.hide(); // loader hide
         }
       }, (err) => {
@@ -108,6 +153,13 @@ export class AssetDetailComponent implements OnInit {
         }
       }, (err) => {
         console.log('asset detail', err);
+      });
+  }
+
+  fetchAllStatesIDs() {
+    this.apiService.getData('states/get/list')
+      .subscribe((result: any) => {
+        this.statesObject = result;
       });
   }
 
