@@ -68,7 +68,7 @@ export class DriverListComponent implements OnInit {
     });
 
 
-    $(document).ready(() => {
+   $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
