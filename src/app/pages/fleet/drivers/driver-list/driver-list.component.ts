@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
-import { forkJoin, Observable, of } from 'rxjs';
-import { mergeMap, map } from 'rxjs/operators';
+import { forkJoin, Observable, of, Subject } from 'rxjs';
+import { mergeMap, map, takeUntil } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
@@ -13,7 +13,7 @@ declare var $: any;
   templateUrl: './driver-list.component.html',
   styleUrls: ['./driver-list.component.css'],
 })
-export class DriverListComponent implements OnInit {
+export class DriverListComponent implements OnInit, OnDestroy {
   title = 'Driver List';
   mapView = false;
   listView = true;
@@ -33,6 +33,7 @@ export class DriverListComponent implements OnInit {
   dutyStatus = '';
   suggestedDrivers = [];
   homeworld: Observable<{}>;
+  private destroy$ = new Subject();
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -54,21 +55,23 @@ export class DriverListComponent implements OnInit {
       this.fetchAllStatesIDs(),
       this.fetchAllVehiclesIDs(),
       this.fetchAllCyclesIDs()
-    ]).subscribe(([
-      drivers,
-      addresses,
-      statesIds,
-      vehcilesIds,
-      cycleIds
-    ]) => {
-      this.drivers = drivers.Items;
-      this.statesObject = statesIds;
-      this.vehiclesObject = vehcilesIds;
-      this.cyclesObject = cycleIds;
-    });
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([
+        drivers,
+        addresses,
+        statesIds,
+        vehcilesIds,
+        cycleIds
+      ]) => {
+        this.drivers = drivers.Items;
+        this.statesObject = statesIds;
+        this.vehiclesObject = vehcilesIds;
+        this.cyclesObject = cycleIds;
+      });
 
 
-   $(document).ready(() => {
+    $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
@@ -292,5 +295,10 @@ export class DriverListComponent implements OnInit {
         'excel',
       ],
     };
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
