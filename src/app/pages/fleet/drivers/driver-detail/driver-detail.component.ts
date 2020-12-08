@@ -24,10 +24,8 @@ export class DriverDetailComponent implements OnInit {
   carrierID;
   public driverImages = [];
   cdl;
-  homeTerminal;
   phone;
   email;
-  cycle;
 
   constructor(
         private hereMap: HereMapService,

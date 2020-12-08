@@ -87,20 +87,20 @@ export class AddFuelEntryComponent implements OnInit {
   errors = {};
   fuelForm;
   response: any = '';
-  hasError: boolean = false;
-  hasSuccess: boolean = false;
-  Error: string = '';
-  Success: string = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
 
 
 
   constructor(private apiService: ApiService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private spinner: NgxSpinnerService,private domSanitizer: DomSanitizer,
-    private location: Location,
-    private awsUS: AwsUploadService, private toaster: ToastrService,
-    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
+              private router: Router,
+              private route: ActivatedRoute,
+              private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer,
+              private location: Location,
+              private awsUS: AwsUploadService, private toaster: ToastrService,
+              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
     this.selectedFileNames = new Map<any, any>();
   }
   get today() {
@@ -329,10 +329,8 @@ export class AddFuelEntryComponent implements OnInit {
         console.log('Fetched Data', result);
         this.entryID = this.entryID;
         this.currency = result.currency,
-          this.unitType = result.unitType;
+        this.unitType = result.unitType;
         this.unitID = result.unitID;
-        // this.vehicleID = result.vehicleID;
-        // this.reeferID = result.reeferID;
         this.fuelQty = result.fuelQty;
         this.fuelQtyUnit = result.fuelQtyUnit;
         this.fuelQtyAmt = +result.fuelQtyAmt;
@@ -388,7 +386,8 @@ export class AddFuelEntryComponent implements OnInit {
     this.carrierID =  this.apiService.getCarrierID();
     this.awsUS.deleteFile(this.carrierID, this.additionalDetails.uploadedPhotos[i]);
     this.additionalDetails.uploadedPhotos.splice(i, 1);
-    console.log('new array',this.additionalDetails.uploadedPhotos);
+    this.fuelEntryImages.splice(i, 1);
+    console.log('new array', this.additionalDetails.uploadedPhotos);
     // this.apiService.getData('fuelEntries//updatePhotos/' + this.entryID + '/' + this.additionalDetails.uploadedPhotos).subscribe((result: any) => {
     //   this.toastr.success('Image Deleted Successfully!');
     // });
@@ -478,8 +477,7 @@ export class AddFuelEntryComponent implements OnInit {
   changeFuelUnit() {
     if (this.fuelQtyUnit === 'gallon') {
       this.DEFFuelQtyUnit = 'gallon';
-    }
-    else {
+    } else {
       this.DEFFuelQtyUnit = 'litre';
     }
   }
@@ -490,7 +488,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.totalAmount = Number(this.fuelQtyAmt) + Number(this.DEFFuelQtyAmt);
     const units = Number(this.fuelQty) + Number(this.DEFFuelQty);
     this.amountPaid = this.totalAmount - this.discount;
-    let test = (this.amountPaid / units);
+    const test = (this.amountPaid / units);
     this.costPerUnit = +(test.toFixed(2));
     this.calculateGalLit(units, this.amountPaid);
   }

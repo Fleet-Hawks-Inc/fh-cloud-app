@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { v4 as uuidv4 } from 'uuid';
 import * as moment from "moment";
 
 @Component({
@@ -18,6 +15,15 @@ export class ScorecardListComponent implements OnInit {
 
   drivers = [];
   eventData = [];
+  tempEventData = [];
+  filterData = {
+    fromDistance: <any> '',
+    toDistance: <any> '',
+    driverID: '',
+    driverName: ''
+  }
+  suggestions = [];
+
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private toastr: ToastrService,
     private spinner: NgxSpinnerService, private router: Router) { }
 
@@ -25,7 +31,9 @@ export class ScorecardListComponent implements OnInit {
     this.fetchDrivers();
   }
 
-  fetchDrivers() {
+  fetchDrivers(filter='') {
+    this.eventData = [];
+    this.spinner.show();
     this.apiService.getData('drivers')
       .subscribe((result: any) => {
         result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
@@ -80,7 +88,9 @@ export class ScorecardListComponent implements OnInit {
                       obj.overSpeeding = obj.overSpeeding + 1;
                     }
 
-                    obj.distance = obj.distance + parseFloat(element1.odometerReading);
+                    if(element1.odometerReading !== undefined) {
+                      obj.distance = obj.distance + parseFloat(element1.odometerReading);
+                    }
                     //subtract end time from start time
                     var d = moment.duration(element1.evenEndTime).subtract(moment.duration(element1.eventStartTime))
                     let newTime = moment.utc(d.as('milliseconds')).format("HH:mm:ss")
@@ -96,10 +106,101 @@ export class ScorecardListComponent implements OnInit {
                 this.eventData.sort(function(a, b) {
                   return b.rank - a.rank;
                 });
+                this.tempEventData = this.eventData;
               })
+              this.spinner.hide();
           }
         }
       })
+  }
+
+  searchFilter () {
+    
+    if(this.filterData.driverID == '' && this.filterData.fromDistance == '' && this.filterData.toDistance == '') {
+      this.toastr.error('Please select atleast one filter');
+      return false;
+    }
+
+    if(this.filterData.fromDistance !== '' || this.filterData.toDistance !== '') { 
+      if(this.filterData.fromDistance > this.filterData.toDistance) {
+        this.toastr.error('Please enter valid from and to distance values');
+        return false;
+      }
+    }
+
+    this.eventData = [];
+    let driversData = [];
+
+    if(this.filterData.driverID !== '' ) {
+      for (let i = 0; i < this.tempEventData.length; i++) {
+        const element = this.tempEventData[i];
+        if(element.driverID === this.filterData.driverID) {
+          driversData.push(element);
+        }
+      }
+    } else {
+      driversData = this.tempEventData;
+
+    }
+
+    if(this.filterData.fromDistance !== '' && this.filterData.toDistance !== '') {
+      for (let i = 0; i < driversData.length; i++) {
+        const element = driversData[i];
+        if(element.distance >= this.filterData.fromDistance && element.distance <= this.filterData.toDistance) {
+          this.eventData.push(element);
+        }
+      }
+    } else {
+      this.eventData = driversData;
+    }
+    
+  }
+
+  getSuggestions(searchvalue='') {
+    this.suggestions = [];
+    if(searchvalue !== '') {
+      this.apiService.getData('drivers/get/suggestions/'+searchvalue).subscribe({
+        complete: () => {},
+        error: () => { },
+        next: (result: any) => {
+          this.suggestions = [];
+          for (let i = 0; i < result.Items.length; i++) {
+            const element = result.Items[i];
+  
+            let obj = {
+              id: element.driverID,
+              name: element.firstName + ' ' + element.lastName
+            };
+
+            if(this.filterData.driverName !== '' ) {
+              this.suggestions.push(obj)
+            }
+          }
+        }
+      })
+    } 
+  }
+
+  searchSelectedDriver(data) {
+    this.filterData.driverID = data.id;
+    this.filterData.driverName = data.name;
+    this.suggestions = [];
+  }
+
+  resetFilter() {
+    if(this.filterData.fromDistance !== '' ||  this.filterData.toDistance !== '' ||  this.filterData.driverName !== '') {
+      this.filterData = {
+        fromDistance:'',
+        toDistance:'',
+        driverID: '',
+        driverName: ''
+      }
+      this.suggestions = [];
+      this.fetchDrivers();
+    } else {
+      return false;
+    }
+    
   }
 
 }

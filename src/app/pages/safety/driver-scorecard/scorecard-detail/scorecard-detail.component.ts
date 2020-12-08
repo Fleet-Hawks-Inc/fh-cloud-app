@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import * as moment from "moment";
+declare var $: any;
 
 @Component({
   selector: 'app-scorecard-detail',
@@ -42,6 +43,8 @@ export class ScorecardDetailComponent implements OnInit {
   };
   driverID: '';
   rank: '';
+  driverUsername = '';
+  totalEvents = [];
 
   // graph
   chartOptions = {};
@@ -85,6 +88,7 @@ export class ScorecardDetailComponent implements OnInit {
         // console.log(result.Items)
         // for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[0];
+          this.driverUsername = element.userName;
           if (element.isDeleted === 0) {
             
             this.eventData.driver = element;
@@ -179,7 +183,7 @@ export class ScorecardDetailComponent implements OnInit {
           }
       },
     };
-    this.chartLabels = ['21 Aug 2020', '22 Aug 2020', '23 Aug 2020', '24 Aug 2020', '25 Aug 2020', '26 Aug 2020', '27 Aug 2020', '28 Aug 2020'],
+    this.chartLabels = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
     this.chartType = 'line';
     this.chartLegend = true;
     this.chartData = [
@@ -378,5 +382,28 @@ export class ScorecardDetailComponent implements OnInit {
         ],
      },
     ];
+  }
+
+  openModal(type) {
+    this.totalEvents = [];
+    if(type === 'harshBrake') {
+      $('#modaltitle').text('Harsh Brake Events');
+    } else if(type === 'harshAcceleration') {
+      $('#modaltitle').text('Harsh Acceleration Events');
+    } else if(type === 'overSpeedingStart') {
+      $('#modaltitle').text('Over Speeding Events');
+    } else if(type === 'harshTurn') {
+      $('#modaltitle').text('Harsh Turn Events');
+    } else if(type === 'crashes') {
+      $('#modaltitle').text('Crash Events');
+    }
+
+    this.apiService.getData('safety/eventLogs/fetch/driver/eventData/'+this.driverUsername+'?type='+type)
+      .subscribe((result: any) => {
+        // console.log(result)
+        this.totalEvents = result.Items;
+    })
+
+    $("#eventModal").modal('show');
   }
 }

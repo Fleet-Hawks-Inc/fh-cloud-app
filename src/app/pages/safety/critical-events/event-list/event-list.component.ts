@@ -23,7 +23,6 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
   events = [];
   lastEvaluated = {
     value1: '',
-    value2: ''
   };
   totalRecords = 10;
   coachingStatus = [
@@ -50,6 +49,14 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
   ];
   vehicles  = [];
   vehicleID = '';
+  filterValue = {
+    date: '',
+    driverID: '',
+    filterDate: '',
+    vehicleID: '',
+    driverName: ''
+  };
+  suggestions = [];
   
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -130,21 +137,29 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
       pageLength: 10,
       serverSide: true,
       processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0],"orderable": false},
+        {"targets": [1],"orderable": false},
+        {"targets": [2],"orderable": false},
+        {"targets": [3],"orderable": false},
+        {"targets": [4],"orderable": false},
+        {"targets": [5],"orderable": false},
+        {"targets": [6],"orderable": false},
+      ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('safety/eventLogs/fetch-records?lastEvaluatedValue1='+this.lastEvaluated.value1+'&lastEvaluatedValue2='+this.lastEvaluated.value2+'&search=&vehicle='+this.vehicleID+"&event=critical", dataTablesParameters).subscribe(resp => {
-          // console.log('------------');
-          // console.log(resp)
+        current.apiService.getDatatablePostData('safety/eventLogs/fetch-records?lastEvaluatedValue1='+this.lastEvaluated.value1
+        +'&vehicle='+this.filterValue.vehicleID+"&driver="+this.filterValue.driverID+"&date="+this.filterValue.filterDate+"&event=critical", dataTablesParameters).subscribe(resp => {
+          
           current.getEventDetail(resp['Items']);
           if(resp['LastEvaluatedKey'] !== undefined){
             this.lastEvaluated = {
               value1 : resp['LastEvaluatedKey'].eventID,
-              value2:''
             }
           } else {
             this.lastEvaluated = {
               value1 : '',
-              value2 : ''
             }
           }
           callback({
@@ -197,17 +212,72 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
     })
   }
 
-  searchFilter(event, vehicleID) {
-    this.vehicleID = vehicleID;
+  searchFilter(event, type, vehicleID) {
+    if(type === 'vehicle') {
+      this.filterValue.vehicleID = vehicleID;
+      
+      $("#searchVehicle").text(event.target.innerText);
+    } else if(type === 'date') {
+      if(this.filterValue.date !== '') {
+        this.filterValue.filterDate = this.filterValue.date.split("-").reverse().join("-");
+      }
+    }
     this.rerender();
-    $("#searchVehicle").text(event.target.innerText);
   }
 
   fetchevents() {
     this.apiService.getData('safety/eventLogs/fetch?event=critical')
       .subscribe((result: any) => {
-        // console.log(result);
         this.totalRecords = result.Count;
       })
+  }
+
+  getSuggestions(searchvalue='') {
+    if(searchvalue !== '') {
+      this.apiService.getData('drivers/get/suggestions/'+searchvalue).subscribe({
+        complete: () => {},
+        error: () => { },
+        next: (result: any) => {
+          this.suggestions = [];
+          for (let i = 0; i < result.Items.length; i++) {
+            const element = result.Items[i];
+  
+            let obj = {
+              userName: element.userName,
+              name: element.firstName + ' ' + element.lastName
+            };
+            this.suggestions.push(obj)
+          }
+        }
+      })
+    }    
+  }
+
+  searchSelectedDriver(data) {
+    this.filterValue.driverID = data.userName;
+    this.filterValue.driverName = data.name;
+    this.suggestions = [];
+
+    this.rerender();
+  }
+
+  resetFilter() {
+    if(this.filterValue.date !== '' || this.filterValue.driverName !== '' || this.filterValue.vehicleID !== '') {
+      this.spinner.show();
+      this.filterValue = {
+        date: '',
+        driverID: '',
+        filterDate: '',
+        vehicleID: '',
+        driverName: ''
+      };
+      this.suggestions = [];
+      $("#searchVehicle").text('Search by vehicle');
+      this.rerender();
+      this.spinner.hide();
+    } else {
+      return false;
+    }
+    
   }
 }

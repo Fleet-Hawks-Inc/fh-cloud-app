@@ -14,31 +14,28 @@
                 <div class="row px-4" style="padding-top:10px;">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input type="text" class="form-control" placeholder="Search Drivers by Name or ID">
+                            <input type="text" class="form-control" [(ngModel)]="filterValue.driverName" name="searchedDriverName"
+                            (input)="getSuggestions($event.target.value)" placeholder="Search Driver Name">
+                        </div>
+                        <div *ngFor="let data of suggestions" style="cursor: pointer" (click)="searchSelectedDriver(data)">
+                            {{ data.name }}
                         </div>
                     </div>
                     <div class="col-md-2  col-lg-2">
-                        <div class="btn-group flex-wrap">
-                            <button type="button" class="mb-1 mr-1 btn btn-default btn-sm dropdown-toggle"
-                                data-toggle="dropdown">Search by Location <span class="caret"></span></button>
-                            <div class="dropdown-menu" role="menu">
-                                <a class="dropdown-item text-1" href="#">lorem</a>
-                                <a class="dropdown-item text-1" href="#">lorem</a>
-                                <a class="dropdown-item text-1" href="#">lorem</a>
-                                <a class="dropdown-item text-1" href="#">lorem</a>
-                                <a class="dropdown-item text-1" href="#">lorem</a>
-                            </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="date" class="form-control" placeholder="Search By Date" (change)="searchFilter($event)" [(ngModel)]="filterValue.date">
                         </div>
                     </div>
-                    <div class="col-md-8  col-lg-8 text-right">
-                        <div class="d-inline-flex flex-wrap align-items-center">
-                            <button type="button" class="mr-1 btn btn-sm btn-default px-2 py-1"><i
-                                    class="fas fa-chevron-left"></i></button>
-                            <p class="b-0 mx-2 my-0">June 24, 2020</p>
-                            <button type="button" class="ml-1 btn btn-sm btn-default px-2 py-1"><i
-                                    class="fas fa-chevron-right"></i></button>
 
+                    <div class="col-md-2  col-lg-2">
+                        <div class="input-group input-group-sm mb-3">
+                            <a href="javascript:;" (click)="resetFilter()"
+                            class="btn btn-success btn-sm" style="color:white;"> Reset Filter
+                        </a>
                         </div>
+                    </div>
+                    
+                    <div class="col-md-6  col-lg-6 text-right">
                         <a href="javascript:;" routerLink="/safety/incidents/add-incident"
                             class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add
                             Incident</a>
@@ -48,8 +45,6 @@
                                 aria-expanded="false">Actions<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a class="dropdown-item text-1" href="">Edit</a>
-                                <a class="dropdown-item text-1" href="">Delete</a>
                                 <a class="dropdown-item text-1" href="">Import</a>
                                 <a class="dropdown-item text-1" href="">Export</a>
                             </div>

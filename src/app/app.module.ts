@@ -44,10 +44,10 @@ import {DataTablesModule} from 'angular-datatables';
 import {PreLoadStrategy} from './preload/PreLoadStrategy';
 import { SharedModalComponent } from './shared/shared-modal/shared-modal.component';
 import {DynamicModalDirective} from './directives/dynamic-modal.directive';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxTagsInputModule } from 'ngx-tags-input';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-
+import { AddAccountComponent  } from './pages/onboard/add-account/add-account.component';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -65,10 +65,9 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MapDashboardComponent,
     NavOpenedDirective,
     SharedModalComponent,
-
+    AddAccountComponent,
     PdfAutomationComponent,
-    DynamicModalDirective
-
+    DynamicModalDirective,
   ],
   imports: [
     AmplifyAngularModule,
@@ -92,7 +91,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NgxSpinnerModule,
     NgSelect2Module,
     DataTablesModule,
-    NgxTagsInputModule
+    NgxTagsInputModule,
+    NgSelectModule
   ],
   providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy],
   bootstrap: [AppComponent],

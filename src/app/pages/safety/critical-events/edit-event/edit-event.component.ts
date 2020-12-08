@@ -19,6 +19,7 @@ export class EditEventComponent implements OnInit {
   event = {
     eventID: '',
     eventDate: '',
+    filterDate: '',
     eventTime: '',
     location: '',
     username: '',
@@ -47,9 +48,25 @@ export class EditEventComponent implements OnInit {
       name: 'Harsh Acceleration'
     },
     {
-      value: 'overSpeeding',
-      name: 'Over Speeding'
+      value: 'overSpeedingStart',
+      name: 'Over Speeding Start'
     },
+    {
+        value: 'overSpeedingEnd',
+        name: 'Over Speeding End'
+    },
+    {
+      value: 'harshTurn',
+      name: 'Harsh Turn'
+    },
+    {
+      value: 'crash',
+      name: 'Crash'
+    },
+    {
+      value: 'rollingStop',
+      name: 'Rolling Stop'
+    }
   ];
 
   severity = [
@@ -135,6 +152,8 @@ export class EditEventComponent implements OnInit {
     console.log(this.event)
     this.spinner.show();
     this.hideErrors();
+    let fdate = this.event.eventDate.split('-');
+    this.event.filterDate = fdate[2]+fdate[1]+fdate[0];
     this.apiService.putData('safety/eventLogs', this.event).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -151,7 +170,7 @@ export class EditEventComponent implements OnInit {
               this.throwErrors();
             },
             error: () => {
-            }, 
+            },
             next: () => {
             },
           });
@@ -225,9 +244,9 @@ export class EditEventComponent implements OnInit {
         this.event.severity = result.Items[0].severity;
         this.event.tripID = result.Items[0].tripID;
         this.event.remarks = result.Items[0].remarks;
-        this.event.criticalityType = result.Items[0].criticalityType;  
-        this.event.documentID = result.Items[0].documentID;  
-        this.event.incidentVideodocumentID = result.Items[0].incidentVideodocumentID; 
+        this.event.criticalityType = result.Items[0].criticalityType;
+        this.event.documentID = result.Items[0].documentID;
+        this.event.incidentVideodocumentID = result.Items[0].incidentVideodocumentID;
         this.event.coachingStatus = result.Items[0].coachingStatus;
         // this.event.timeCreated = result.Items[0].timeCreated;
 

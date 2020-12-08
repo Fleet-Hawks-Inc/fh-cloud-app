@@ -123,33 +123,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Mark</td>
-                  <td>Cambridge</td>
-                  <td>CAD 3567</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Mark</td>
-                  <td>Cambridge</td>
-                  <td>CAD 3567</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Mark</td>
-                  <td>Cambridge</td>
-                  <td>CAD 3567</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Mark</td>
-                  <td>Cambridge</td>
-                  <td>CAD 3567</td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Mark</td>
+                <tr *ngFor = "let vendor of vendors; let i = index">
+                  <td>{{i+1}}</td>
+                  <td>{{vendor.vendorName}}</td>
                   <td>Cambridge</td>
                   <td>CAD 3567</td>
                 </tr>
@@ -206,7 +182,6 @@
                     >
                       <thead>
                         <tr>
-                          <th width="5%"><input type="checkbox" /></th>
                           <th width="5%">Part#</th>
                           <th width="20%">Name</th>
                           <th width="10%">Category</th>
@@ -218,10 +193,9 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let item of items" routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                          <td><input type="checkbox" /></td>
+                        <tr *ngFor="let item of items; let i = index" routerLink="/fleet/inventory/detail/{{item.itemID}}">
                           <td>
-                            01
+                            {{i + 1}}
                           </td>
                           <td>
                             {{item.name}}
@@ -261,7 +235,6 @@
                     >
                       <thead>
                         <tr>
-                          <th width="5%"><input type="checkbox" /></th>
                           <th width="5%">Part#</th>
                           <th width="20%">Name</th>
                           <th width="10%">Category</th>
@@ -274,137 +247,134 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td><input type="checkbox" /></td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             01
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             10-30wt Oil
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Oil
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Warren CAT
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             15
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             234
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             $ 2.34
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Warehouse Location 1
                           </td>
                         </tr>
                         <tr>
-                          <td><input type="checkbox" /></td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             01
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             10-30wt Oil
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Oil
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Warren CAT
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             3
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             234
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             $ 2.34
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Warehouse Detail 1
                           </td>
                         </tr>
                         <tr>
-                          <td><input type="checkbox" /></td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             01
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             10-30wt Oil
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Oil
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Warren CAT
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             4
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             234
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             $ 2.34
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Warehouse Location 2
                           </td>
                         </tr>
                         <tr>
                           <td><input type="checkbox" /></td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             01
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             10-30wt Oil
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Oil
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Warren CAT
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             11
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             234
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             $ 2.34
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Warehouse Location 3
                           </td>
                         </tr>
                         <tr>
                           <td><input type="checkbox" /></td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             01
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             10-30wt Oil
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Oil
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Warren CAT
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             6
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             234
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             $ 2.34
                           </td>
-                          <td onclick="window.location='inventory-details.php'">
+                          <td>
                             Warehouse Location 4
                           </td>
                         </tr>
@@ -421,78 +391,111 @@
   </div>
 </section>
 
-<!--Transfer Modal-->
-<div id="transferModal" class="modal-block modal-block-primary mfp-hide">
-  <section class="card">
-        <header class="card-header">
-           <h2 class="card-title">Transfer Inventory</h2>
-        </header>
-        <div class="card-body text-dark">
-           <form>
-              <div class="form-row">
-                 <div class="form-group col-lg-12">
-                    
-                  <div class="row">
-                          <div class="col-lg-6">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part Number</label>
-                             <input type="text" class="form-control">
-                          </div>
-                          <div class="col-lg-6">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part Details</label>
-                             <input type="text" class="form-control">
-                          </div>
-                    </div>
 
-                    <div class="row">
-                          <div class="col-lg-6">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
-                             <input type="text" class="form-control">
-                          </div>
-                          <div class="col-lg-6">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Date/Time</label>
-                             <input type="text" data-plugin-datepicker="" class="form-control">
-                          </div>
-                    </div>
+  <div
+  class="modal fade"
+  id="transferModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="transferModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Transfer Inventory</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
+          </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <form>
+          <div class="form-row">
+             <div class="form-group col-lg-12">
+                
+              <div class="row">
+                      <div class="col-lg-6">
+                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part Number</label>
+                         <input type="text" class="form-control"  name="partNumber"
+                         [(ngModel)]="partNumber">
+                      </div>
+                      <div class="col-lg-6">
+                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part Details</label>
+                         <input type="text" class="form-control"  name="partDetails"
+                         [(ngModel)]="partDetails">
+                      </div>
+                </div>
+
+                <div class="row">
+                      <div class="col-lg-6">
+                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
+                         <input type="text" class="form-control"  name="quantity"
+                         [(ngModel)]="quantity">
+                      </div>
+                      <div class="col-lg-6">
+                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Date/Time</label>
+                         <input type="date" data-plugin-datepicker="" class="form-control"  name="date"
+                         [(ngModel)]="date">
+                      </div>
+                </div>
 
 
-                    <div class="row">
-                       <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-lg-right pt-2" >From Warehouse</label>
-                          <select data-plugin-selectTwo class="form-control populate">
-                             <optgroup label="Select Country">
-                                <option value="1">Calgary</option>
-                                <option value="2">Toronto</option>
-                                <option value="2">New York</option>
-                                <option value="2">Brampton</option>
-                             </optgroup>
-                          </select>
-                       </div>
+                <div class="row">
+                   <div class="col-lg-6">
+                      <label class="control-label font-weight-bold text-lg-right pt-2">From Warehouse</label>
+                      <select
+                      data-plugin-selectTwo
+                      class="form-control populate"
+                      name="warehouseID1"
+                      [(ngModel)]="warehouseID1"
+                    >
+                      <optgroup label="Select Warehouse">
+                        <option *ngFor="let warehouse of warehouses" value="{{warehouse.warehouseID}}">{{warehouse.warehouseName}}</option>
+    
+                      </optgroup>
+                    </select>
+                   </div>
 
-                       <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-lg-right pt-2" >To Warehouse</label>
-                          <select data-plugin-selectTwo class="form-control populate">
-                             <optgroup label="Select Country">
-                                <option value="1">Calgary</option>
-                                <option value="2">Toronto</option>
-                                <option value="2">New York</option>
-                                <option value="2">Brampton</option>
-                             </optgroup>
-                          </select>
-                       </div>
-                    </div>
-
-                   
+                   <div class="col-lg-6">
+                    <label class="control-label font-weight-bold text-lg-right pt-2">To Warehouse</label>
+                    <select
+                    data-plugin-selectTwo
+                    class="form-control populate"
+                    name="warehouseID2"
+                    [(ngModel)]="warehouseID2"
+                  >
+                    <optgroup label="Select Warehouse">
+                      <option *ngFor="let warehouse of warehouses" value="{{warehouse.warehouseID}}">{{warehouse.warehouseName}}</option>
+  
+                    </optgroup>
+                  </select>
                  </div>
-              </div>
-           </form>
-        </div>
-        <footer class="card-footer">
-           <div class="row">
-              <div class="col-md-12 text-right">
-                 <button class="btn btn-success modal-confirm">Transfer</button>
-                 <button class="btn btn-default modal-dismiss">Cancel</button>
-              </div>
-           </div>
-        </footer>
-     </section>
+                </div>
+
+               
+             </div>
+          </div>
+       </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          [routerLink]=""
+          (click)="addGroup()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
   </div>
+</div>
