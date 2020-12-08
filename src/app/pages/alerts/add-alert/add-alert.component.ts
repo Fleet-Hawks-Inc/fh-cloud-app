@@ -15,6 +15,9 @@ export class AddAlertComponent implements OnInit {
   vehicles = [];
   groups = [];
   assets = [];
+  users  = [];
+  geofences = [];
+  drivers = [];
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
               private location: Location) { }
 
@@ -22,6 +25,9 @@ export class AddAlertComponent implements OnInit {
     this.fetchVehicles();
     this.fetchGroups();
     this.fetchAssets();
+    this.fetchUsers();
+    this.fetchGeofences();
+    this.fetchDrivers();
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
@@ -36,6 +42,21 @@ export class AddAlertComponent implements OnInit {
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
+    });
+  }
+  fetchDrivers() {
+    this.apiService.getData('drivers').subscribe((result: any) => {
+      this.drivers = result.Items;
+    });
+  }
+  fetchUsers() {
+    this.apiService.getData('users').subscribe((result: any) => {
+      this.users = result.Items;
+    });
+  }
+  fetchGeofences() {
+    this.apiService.getData('geofences').subscribe((result: any) => {
+      this.geofences = result.Items;
     });
   }
   addAlert() {

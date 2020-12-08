@@ -19,7 +19,7 @@ export class ListContactRenewComponent implements OnInit {
   dtOptions: any = {};
   currentDate = moment();
   newData = [];
-  filterStatus = 'OVERDUE';
+  filterStatus = 'ALL';
   contactID = '';
   firstName = '';
   searchServiceTask = '';
@@ -46,9 +46,13 @@ export class ListContactRenewComponent implements OnInit {
       this.contactList = result;
     });
   }
-  setFilterStatus(val){
-  this.filterStatus = val;
-  console.log('filter', this.filterStatus);
+  setFilterStatus(val) {
+    if(val === 'ALL') {
+      this.fetchRenewals();
+    }
+    else {
+      this.filterStatus = val;
+    }
   }
   setContact(contactID, firstName) {
     this.firstName = firstName;
@@ -75,7 +79,7 @@ export class ListContactRenewComponent implements OnInit {
       next: (result: any) => {
         this.allRemindersData = result.Items;
         for(let j=0; j < this.allRemindersData.length; j++) {
-          let reminderStatus;
+          let reminderStatus = '';
           if (this.allRemindersData[j].reminderType === 'contact') {
             const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate,'DD-MM-YYYY');
             const remainingDays = convertedDate.diff(this.currentDate, 'days');
@@ -86,9 +90,9 @@ export class ListContactRenewComponent implements OnInit {
             else if( remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays &&  remainingDays >= 0) {
               reminderStatus = 'DUE SOON';
             }
-            else{
-              reminderStatus = '';
-            }
+            // else{
+            //   reminderStatus = 'NoStatus';
+            // }
             const data = {
               reminderID: this.allRemindersData[j].reminderID,
               reminderIdentification: this.allRemindersData[j].reminderIdentification,

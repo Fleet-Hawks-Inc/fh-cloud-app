@@ -42,52 +42,52 @@
                                    <tbody>
                                     <tr>
                                        <td width="40%" class="back-color-gray font-weight-bold">
-                                          {{unitType | titlecase}}</td>
-                                       <td width="60%"><a routerLink="/fleet/assets/detail/{{unitID}}"  class="text-info">
-                                          <span *ngIf= "unitType === 'reefer'">{{assetList[unitID]}}</span></a>
-                                          <a routerLink="/fleet/vehicles/detail/{{unitID}}" class="text-info">
-                                              <span *ngIf= "unitType === 'vehicle'">{{vehicleList[unitID]}}</span></a>
+                                          {{fuelData.unitType | titlecase}}</td>
+                                       <td width="60%"><a routerLink="/fleet/assets/detail/{{fuelData.unitID}}"  class="text-info">
+                                          <span *ngIf= "fuelData.unitType === 'reefer'">{{assetList[fuelData.unitID]}}</span></a>
+                                          <a routerLink="/fleet/vehicles/detail/{{fuelData.unitID}}" class="text-info">
+                                              <span *ngIf= "fuelData.unitType === 'vehicle'">{{vehicleList[fuelData.unitID]}}</span></a>
                                        </td>
                                     </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Trip Number</td>
-                                         <td><a routerLink="/dispatch/trips/trip-details/{{tripID }}" class="text-info">{{tripList[tripID]}}</a></td>
+                                         <td><a routerLink="/dispatch/trips/trip-details/{{fuelData.tripID }}" class="text-info">{{tripList[fuelData.tripID]}}</a></td>
                                       </tr>
                                       <tr>
-                                         <td class="back-color-gray font-weight-bold">Date</td>
-                                         <td>{{fuelDate}},{{fuelTime}}</td>
+                                         <td class="back-color-gray font-weight-bold">Date/Time</td>
+                                         <td>{{fuelData.fuelDate}},{{fuelData.fuelTime}}</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Odometer</td>
-                                         <td>{{additionalDetails.odometer}} mi</td>
+                                         <td>{{fuelData.additionalDetails.odometer}} mi</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">{{unitType | titlecase}} Fuel Quantity</td>
-                                         <td>{{fuelQty}} {{fuelQtyUnit | titlecase}}</td>
+                                         <td>{{fuelData.fuelQty}} Gallon</td>
                                       </tr>
                                       <tr>
                                        <td class="back-color-gray font-weight-bold">{{unitType | titlecase}} Fuel Amount</td>
-                                       <td>{{fuelQtyAmt}} {{currency}}</td>
+                                       <td>{{fuelData.fuelQtyAmt}} {{fuelData.currency}}</td>
                                     </tr>
                                       <tr>
                                        <td class="back-color-gray font-weight-bold">DEF Fuel Quantity</td>
-                                       <td>{{DEFFuelQty}} {{fuelQtyUnit | titlecase}}</td>
+                                       <td>{{fuelData.DEFFuelQty}} {{fuelQtyUnit | titlecase}}</td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">DEF Fuel Amount</td>
-                                       <td>{{DEFFuelQtyAmt}} {{currency}} </td>
+                                       <td>{{fuelData.DEFFuelQtyAmt}} {{fuelData.currency}} </td>
                                     </tr>
                                       <tr>
-                                         <td class="back-color-gray font-weight-bold">Price/{{fuelQtyUnit | titlecase}}</td>
-                                         <td>{{costPerUnit}} {{currency}}</td>
+                                         <td class="back-color-gray font-weight-bold">Price/Gallon</td>
+                                         <td>{{fuelData.costPerGallon}} {{fuelData.currency}}</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Total Amount Paid</td>
-                                         <td>{{amountPaid}} {{currency}}  &nbsp;&nbsp; (Disocunt {{discount}} {{currency}})</td>
+                                         <td>{{fuelData.amountPaid}} {{fuelData.currency}}  &nbsp;&nbsp; (Disocunt {{fuelData.discount}} {{fuelData.currency}})</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Fuel Type</td>
-                                         <td>{{fuelType}}</td>
+                                         <td>{{fuelData.fuelType}}</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Vendor</td>
@@ -95,19 +95,19 @@
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Reference</td>
-                                         <td>{{reference}}</td>
+                                         <td>{{fuelData.reference}}</td>
                                       </tr>
-                                      <tr>
+                                      <!-- <tr>
                                          <td class="back-color-gray font-weight-bold">Miles</td>
-                                         <td>257.0 <span class="font-size-12">since previous fuel entry</span></td>
-                                      </tr>
+                                         <td>{{miles}} <span class="font-size-12">since previous fuel entry</span></td>
+                                      </tr> -->
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">MPG (US)</td>
-                                         <td>13.6</td>
+                                         <td>{{MPG}}</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Cost/Mile</td>
-                                         <td>$0.18</td>
+                                         <td> {{costPerMile}} {{fuelData.currency}}</td>
                                       </tr>
                                    </tbody>
                                 </table>
@@ -115,8 +115,7 @@
                           </div>
                         
                        </div>
-                       <div class="col-lg-6">
-                         
+                       <div class="col-lg-6">                         
                           <!-- MAP -->
                           <div class="row">
                              <div class="col-lg-12">

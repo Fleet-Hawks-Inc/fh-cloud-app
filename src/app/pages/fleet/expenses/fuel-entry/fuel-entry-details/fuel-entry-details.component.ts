@@ -15,55 +15,37 @@ export class FuelEntryDetailsComponent implements OnInit {
   title = 'Fuel Entry';
   fuelList;
   /********** Form Fields ***********/
-  unitType = '';
-  unitID: string;
-  unitName: string;
-  fuelQtyAmt: number;
-  fuelQty: number;
-  tripNumber: string;
-  fuelQtyUnit = 'gallon';
-  DEFFuelQty: number;
-  DEFFuelQtyAmt: number;
-  DEFFuelQtyUnit = 'gallon';
-  discount: number;
-  totalAmount: number;
-  costPerUnit: number;
-  amountPaid: number;
-  currency: string;
-  fuelDate: string;
-  fuelTime: string;
-  fuelType = '';
+  fuelData = {
+    unitType : 'vehicle',
+    currency: 'USD',
+    fuelQtyAmt: 0,
+    fuelQty: 0,
+    DEFFuelQty: 0,
+    DEFFuelQtyAmt: 0,
+    totalAmount: 0,
+    discount: 0,
+    amountPaid: 0,
+    costPerGallon: 0,
+    totalGallons: 0,
+        countryID: '',
+       stateID: '',
+       reimburseToDriver: false,
+       deductFromPay: false,
+    additionalDetails: {
+          avgGVW: '',
+          odometer: '',
+          description: '',
+          uploadedPhotos: [],
+        }
+   };
   carrierID;
   vehicleList: any = {};
   assetList: any = {};
   tripList: any = {};
-  paidBy = '';
-  paymentMode = '';
-  reference = '';
-  reimburseToDriver = false;
-  deductFromPay = false;
-
-  vendorID = '';
-  countryID = '';
-  stateID = '';
-  cityID = '';
+ 
   public fuelEntryImages = [];
   tripID = '';
   image;
-  additionalDetails = {
-    avgGVW: '',
-    odometer: '',
-    description: '',
-    uploadedPhotos: [],
-  };
-  MPG = '';
-  costPerMile = '';
-  fuel = {
-    totalLitres: 0,
-    totalGallons: 0,
-    costPerLitre: 0,
-    costPerGallon: 0
-  };
   timeCreated: '';
   /******************/
   entryID = '';
@@ -75,12 +57,12 @@ export class FuelEntryDetailsComponent implements OnInit {
   states = [];
   cities = [];
   errors = {};
-  vehicleName = '';
   vendorName = '';
-  assetName = '';
   form;
   vehicleData = [];
   unit: boolean;
+  MPG: number;
+  costPerMile: number;
   response: any = '';
   hasError = false;
   hasSuccess = false;
@@ -124,84 +106,93 @@ export class FuelEntryDetailsComponent implements OnInit {
       this.tripList = result;
     });
   }
-  fetchAllVehicles() {
-    this.apiService.getData(`fuelEntries/vehicle/` + this.unitID).subscribe((result: any) => {
+  fetchAllVehicles(ID) {
+    let sortedArray: any = [];
+    let totalCalculatedGallons = 0;
+    let sumCostPerGallon = 0;
+    this.apiService.getData(`fuelEntries/vehicle/` + ID).subscribe((result: any) => {
       this.vehicleData = result.Items;
       console.log('Vehicle data', this.vehicleData);
     });
     setTimeout(() => {
-      const sortedArray = _.sortBy(this.vehicleData, ['fuelDate']);
-      sortedArray.shift();
-      console.log('sorted arry', sortedArray);
-      const miles = this.additionalDetails.odometer;
-    }, 3000);
+      sortedArray = _.orderBy(this.vehicleData, ['additionalDetails.odometer'], ['asc']);
+      console.log('sorted array', sortedArray);
+      for (let i = 1; i < sortedArray.length; i++) {
+        totalCalculatedGallons = totalCalculatedGallons + sortedArray[i].totalGallons;
+        sumCostPerGallon = sumCostPerGallon + sortedArray[i].costPerGallon;
+   }
+   let avgCostPerGallon = +((sumCostPerGallon/sortedArray.length).toFixed(2));
+   console.log('total gallons', totalCalculatedGallons);
+      const firstEntry = sortedArray.pop();
+      console.log('first entry', firstEntry);
+      const lastEntry = sortedArray.shift();
+      console.log('last entry', lastEntry);
+      const miles = firstEntry.additionalDetails.odometer - lastEntry.additionalDetails.odometer;
+      console.log('miles', miles);
+      this.MPG = +((miles / totalCalculatedGallons).toFixed(2));
+      this.costPerMile = +((avgCostPerGallon / this.MPG).toFixed(2));
+    }, 4500);
   }
   fetchFuelEntry() {
     this.apiService
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.entryID = this.entryID;
-        this.currency = result.currency,
-          this.unitType = result.unitType;
-        this.unitID = result.unitID;
-        this.fuelQty = result.fuelQty,
-          this.fuelQtyUnit = result.fuelQtyUnit,
-          this.fuelQtyAmt = +result.fuelQtyAmt,
-          this.DEFFuelQty = +result.DEFFuelQty,
-          this.DEFFuelQtyUnit = result.fuelQtyUnit,
-          this.DEFFuelQtyAmt = +result.DEFFuelQtyAmt,
-          this.discount = +result.discount,
-          this.totalAmount = result.totalAmount,
-          this.costPerUnit = result.costPerUnit,
-          this.amountPaid = result.amountPaid,
-          this.fuelDate = result.fuelDate,
-          this.fuelTime = result.fuelTime,
-          this.fuelType = result.fuelType,
+        console.log('Fetched Data', result);
+        this.fetchAllVehicles(result.unitID);
+        this.fuelData[`entryID`] = this.entryID;
+        this.fuelData[`currency`] = result.currency,
+        this.fuelData[`unitType`] = result.unitType;
+        this.fuelData[`unitID`] = result.unitID;
+        this.fuelData[`fuelQty`] = result.fuelQty;
+        this.fuelData[`fuelQtyAmt`] = +result.fuelQtyAmt;
+        this.fuelData[`DEFFuelQty`] = +result.DEFFuelQty;
+        this.fuelData[`DEFFuelQtyUnit`] = result.fuelQtyUnit;
+        this.fuelData[`DEFFuelQtyAmt`] = result.DEFFuelQtyAmt;
+        this.fuelData[`discount`] = result.discount;
+        this.fuelData[`totalAmount`] = result.totalAmount;
+        this.fuelData[`costPerGallon`] = result.costPerGallon;
+        this.fuelData[`totalGallons`] = result.totalGallons;
+        this.fuelData[`amountPaid`] = result.amountPaid;
+        this.fuelData[`fuelDate`] = result.fuelDate;
+        this.fuelData[`fuelTime`] = result.fuelTime;
+        this.fuelData[`fuelType`] = result.fuelType;
 
-          this.paidBy = result.paidBy,
-          this.paymentMode = result.paymentMode,
-          this.reference = result.reference,
-          this.reimburseToDriver = result.reimburseToDriver,
-          this.deductFromPay = result.deductFromPay,
+        this.fuelData[`paidBy`] = result.paidBy;
+        this.fuelData[`paymentMode`] = result.paymentMode;
+        this.fuelData[`reference`] = result.reference;
+        this.fuelData[`reimburseToDriver`] = result.reimburseToDriver;
+        this.fuelData[`deductFromPay`] = result.deductFromPay;
 
 
-          this.vendorID = result.vendorID,
-          this.countryID = result.countryID,
-          this.stateID = result.stateID,
-          this.cityID = result.cityID,
-          this.tripID = result.tripID,
-          this.additionalDetails = {
-            avgGVW: result.additionalDetails.avgGVW,
-            odometer: result.additionalDetails.odometer,
-            description: result.additionalDetails.description,
-            uploadedPhotos: result.additionalDetails.uploadedPhotos,
-          },
-          this.fuel = {
-            totalLitres: result.fuel.totalLitres,
-            totalGallons: result.fuel.totalGallons,
-            costPerLitre: result.fuel.costPerLitre,
-            costPerGallon: result.fuel.costPerGallon
-          },
-          this.getImages();
-          this.fetchAllVehicles();
+        this.fuelData[`vendorID`] = result.vendorID;
+        this.fuelData[`countryID`] = result.countryID;
+        this.fuelData[`stateID`] = result.stateID;
+        this.fuelData[`cityID`] = result.cityID;
+        this.fuelData[`tripID`] = result.tripID;
+
+        this.fuelData[`additionalDetails`][`avgGVW`] =  result.additionalDetails.avgGVW;
+        this.fuelData[`additionalDetails`][`odometer`] = result.additionalDetails.odometer;
+        this.fuelData[`additionalDetails`][`description`] = result.additionalDetails.description;
+        this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
+        this.getImages();
+        this.fetchVendors(result.vendorID);
       });
-    this.fetchVendors(this.vendorID);
   }
   getImages = async () => {
     this.carrierID = await this.apiService.getCarrierID();
-    for (let i = 0; i < this.additionalDetails.uploadedPhotos.length; i++) {
+    for (let i = 0; i < this.fuelData.additionalDetails.uploadedPhotos.length; i++) {
       this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles
-        (this.carrierID, this.additionalDetails.uploadedPhotos[i]));
+        (this.carrierID, this.fuelData.additionalDetails.uploadedPhotos[i]));
       this.fuelEntryImages.push(this.image);
     }
   }
   deleteImage(i: number) {
     this.carrierID =  this.apiService.getCarrierID();
-    this.awsUS.deleteFile(this.carrierID, this.additionalDetails.uploadedPhotos[i]);
-    this.additionalDetails.uploadedPhotos.splice(i, 1);
+    this.awsUS.deleteFile(this.carrierID, this.fuelData.additionalDetails.uploadedPhotos[i]);
+    this.fuelData.additionalDetails.uploadedPhotos.splice(i, 1);
     this.fuelEntryImages.splice(i, 1);
-    this.updateFuelEntry();
+   // this.updateFuelEntry();
     this.toastr.success('Image Deleted Successfully!');
    // this.apiService.getData('fuelEntries//updatePhotos/' + this.entryID + '/' + this.additionalDetails.uploadedPhotos).subscribe((result: any) => {
    //   this.toastr.success('Image Deleted Successfully!');
@@ -216,47 +207,7 @@ export class FuelEntryDetailsComponent implements OnInit {
       });
   }
   updateFuelEntry() {
-    const data = {
-      entryID: this.entryID,
-      unitType: this.unitType,
-      unitID: this.unitID,
-      fuelQty: this.fuelQty,
-      fuelQtyUnit: this.fuelQtyUnit,
-      fuelQtyAmt: this.fuelQtyAmt,
-      DEFFuelQty: this.DEFFuelQty,
-      DEFFuelQtyAmt: this.DEFFuelQtyAmt,
-      discount: this.discount,
-      totalAmount: this.totalAmount,
-      costPerUnit: this.costPerUnit,
-      amountPaid: this.amountPaid,
-      currency: this.currency,
-      fuelDate: this.fuelDate,
-      fuelTime: this.fuelTime,
-      fuelType: this.fuelType,
-      paidBy: this.paidBy,
-      paymentMode: this.paymentMode,
-      reference: this.reference,
-      reimburseToDriver: this.reimburseToDriver,
-      deductFromPay: this.deductFromPay,
-      vendorID: this.vendorID,
-      countryID: this.countryID,
-      stateID: this.stateID,
-      cityID: this.cityID,
-      tripID: this.tripID,
-      additionalDetails: {
-        avgGVW: this.additionalDetails.avgGVW,
-        odometer: this.additionalDetails.odometer,
-        description: this.additionalDetails.description,
-        uploadedPhotos: this.additionalDetails.uploadedPhotos,
-      },
-      fuel: {
-        totalLitres: this.fuel.totalLitres,
-        totalGallons: this.fuel.totalGallons,
-        costPerLitre: this.fuel.costPerLitre,
-        costPerGallon: this.fuel.costPerGallon
-      },
-    };
-    //  console.log(data);
-    this.apiService.putData('fuelEntries', data).subscribe();
+    console.log('Updated data', this.fuelData);
+    this.apiService.putData('fuelEntries', this.fuelData).subscribe();
   }
 }
