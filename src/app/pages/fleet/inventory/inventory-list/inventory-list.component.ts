@@ -16,6 +16,15 @@ export class InventoryListComponent implements OnInit {
   vendors = [];
   itemGroups = [];
   warehouses = [];
+
+
+  partNumber = '';
+  partDetails = '';
+  quantity = '';
+  date = '';
+  warehouseID1 = '';
+  warehouseID2 = '';
+
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
@@ -47,5 +56,12 @@ export class InventoryListComponent implements OnInit {
       this.items = result.Items;
     })
   }
+
+  fetchWarehouses(){
+    this.apiService.getData('warehouses').subscribe((result: any) => {
+      this.warehouses = result.Items;
+    });
+  }
+
 
 }
