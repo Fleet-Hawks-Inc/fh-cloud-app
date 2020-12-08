@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../../../../services';
+import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -15,8 +15,8 @@ declare var $: any;
 })
 export class DriverListComponent implements OnInit {
   title = 'Driver List';
-  mapView: boolean = false;
-  listView: boolean = true;
+  mapView = false;
+  listView = true;
   visible = true;
 
   driverCheckCount;
@@ -34,18 +34,39 @@ export class DriverListComponent implements OnInit {
   suggestedDrivers = [];
   homeworld: Observable<{}>;
   constructor(
-            private apiService: ApiService,
-            private router: Router,
-            private hereMap: HereMapService,
-            private spinner: NgxSpinnerService,
-            private toastr: ToastrService) {}
+    private apiService: ApiService,
+    private router: Router,
+    private hereMap: HereMapService,
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.fetchDrivers();
-    this.fetchAddress();
-    this.fetchAllStatesIDs();
-    this.fetchAllVehiclesIDs();
-    this.fetchAllCyclesIDs();
+    // this.fetchDrivers();
+    // this.fetchAddress();
+    // this.fetchAllStatesIDs();
+    // this.fetchAllVehiclesIDs();
+    // this.fetchAllCyclesIDs();
+
+
+    forkJoin([
+      this.fetchDrivers(),
+      this.fetchAddress(),
+      this.fetchAllStatesIDs(),
+      this.fetchAllVehiclesIDs(),
+      this.fetchAllCyclesIDs()
+    ]).subscribe(([
+      drivers,
+      addresses,
+      statesIds,
+      vehcilesIds,
+      cycleIds
+    ]) => {
+      this.drivers = drivers.Items;
+      this.statesObject = statesIds;
+      this.vehiclesObject = vehcilesIds;
+      this.cyclesObject = cycleIds;
+    });
+
 
     $(document).ready(() => {
       setTimeout(() => {
@@ -56,31 +77,31 @@ export class DriverListComponent implements OnInit {
 
 
   fetchAddress() {
-    this.apiService.getData('addresses')
-      .subscribe((result: any) => {
-        console.log('address', result);
-      });
+    return this.apiService.getData('addresses');
+    // .subscribe((result: any) => {
+    //   console.log('address', result);
+    // });
   }
 
 
   jsTree() {
     $('.treeCheckbox').jstree({
-      core : {
-        themes : {
+      core: {
+        themes: {
           responsive: false
         }
       },
-      types : {
-        default : {
-          icon : 'fas fa-folder'
+      types: {
+        default: {
+          icon: 'fas fa-folder'
         },
-        file : {
-          icon : 'fas fa-file'
+        file: {
+          icon: 'fas fa-file'
         }
       },
       plugins: ['types', 'checkbox']
     });
-    
+
   }
 
   export() {
@@ -92,7 +113,7 @@ export class DriverListComponent implements OnInit {
       .getData(`drivers/suggestion/${value}`)
       .subscribe((result) => {
         this.suggestedDrivers = result.Items;
-        if(this.suggestedDrivers.length == 0){
+        if (this.suggestedDrivers.length === 0) {
           this.driverID = '';
         }
       });
@@ -106,7 +127,7 @@ export class DriverListComponent implements OnInit {
   }
 
   fetchDrivers() {
-   // this.spinner.show(); // loader init
+    // this.spinner.show(); // loader init
     // let character = this.apiService.getData('drivers');
     // let characterHomeworld = this.apiService.getData('addresses');
 
@@ -114,11 +135,11 @@ export class DriverListComponent implements OnInit {
     //   console.log("results", results);
     // });
 
-  //  this.apiService.getData('drivers')
-  //     .pipe(mergeMap(character => this.apiService.getData('addresses'))).subscribe( res => {
-  //       console.log('homeworld', this.homeworld);
-  //     });
-  //   console.log('homeworld', this.homeworld);
+    //  this.apiService.getData('drivers')
+    //     .pipe(mergeMap(character => this.apiService.getData('addresses'))).subscribe( res => {
+    //       console.log('homeworld', this.homeworld);
+    //     });
+    //   console.log('homeworld', this.homeworld);
     // this.apiService.getData(`drivers`).pipe(
     //   mergeMap(resp => {
     //     console.log("resp", resp);
@@ -131,59 +152,64 @@ export class DriverListComponent implements OnInit {
     // ).subscribe(res => {
     //   console.log("drivers", res);
     // })
-    this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`).subscribe({
-      complete: () => {
-        this.initDataTable();
-      },
-      error: () => {},
-      next: (result: any) => {
+    return this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`);
+    // .subscribe({
+    //   complete: () => {
+    //     this.initDataTable();
+    //   },
+    //   error: () => { },
+    //   next: (result: any) => {
+    //     // console.log(result);
+    //     // console.log(result.Items);
 
-        for (const iterator of result.Items) {
-          if (iterator.isDeleted === 0) {
-            this.drivers.push(iterator);
-          }
-        }
+    //     for (const iterator of result.Items) {
+    //       if (iterator.isDeleted === 0) {
+    //         this.drivers.push(iterator);
+    //       }
+    //     }
 
-        console.log(result);
+    //     // console.log(result);
 
-        this.drivers = result.Items;
+    //     this.drivers = result.Items;
 
-        console.log('drivers', this.drivers);
+    //     //  console.log('drivers', this.drivers);
 
 
-        // this.drivers = result.Items;
-        for (let i = 0; i < result.Items.length; i++) {
-          // console.log(result.Items[i].isDeleted);
-          if (result.Items[i].isDeleted === 0) {
-            this.drivers.push(result.Items[i]);
-          }
-        }
+    //     // this.drivers = result.Items;
 
-      //  this.spinner.hide(); // loader hide
 
-      },
-    });
+    //     // for (let i = 0; i < result.Items.length; i++) {
+    //     //   // console.log(result.Items[i].isDeleted);
+    //     //   if (result.Items[i].isDeleted === 0) {
+    //     //     this.drivers.push(result.Items[i]);
+    //     //   }
+    //     // }
+
+    //     //  this.spinner.hide(); // loader hide
+
+    //   },
+    // });
   }
 
   fetchAllStatesIDs() {
-    this.apiService.getData('states/get/list')
-      .subscribe((result: any) => {
-        this.statesObject = result;
-      });
+    return this.apiService.getData('states/get/list');
+    // .subscribe((result: any) => {
+    //   this.statesObject = result;
+    // });
   }
 
-   fetchAllVehiclesIDs() {
-    this.apiService.getData('vehicles/get/list')
-      .subscribe((result: any) => {
-        this.vehiclesObject = result;
-      });
+  fetchAllVehiclesIDs() {
+    return this.apiService.getData('vehicles/get/list');
+    // .subscribe((result: any) => {
+    //   this.vehiclesObject = result;
+    // });
   }
 
   fetchAllCyclesIDs() {
-    this.apiService.getData('cycles/get/list')
-      .subscribe((result: any) => {
-        this.cyclesObject = result;
-      });
+    return this.apiService.getData('cycles/get/list');
+    // .subscribe((result: any) => {
+    //   this.cyclesObject = result;
+    // });
   }
 
   checkboxCount = () => {
@@ -218,45 +244,45 @@ export class DriverListComponent implements OnInit {
     this.visible = !this.visible;
   }
 
-  
+
   deactivateDriver(value, driverID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .getData(`drivers/isDeleted/${driverID}/${value}`)
-      .subscribe((result: any) => {
-        console.log('result', result);
-      }, err => {
-        console.log('driver delete', err);
-      });
+        .getData(`drivers/isDeleted/${driverID}/${value}`)
+        .subscribe((result: any) => {
+          console.log('result', result);
+        }, err => {
+          console.log('driver delete', err);
+        });
     }
   }
 
   initDataTable() {
     this.dtOptions = {
-      searching:false,
+      searching: false,
       dom: 'Bfrtip', // lrtip to hide search field
       processing: true,
       columnDefs: [
-          {
-              targets: 0,
-              className: 'noVis'
-          },
-          {
-              targets: 1,
-              className: 'noVis'
-          },
-          {
-              targets: 2,
-              className: 'noVis'
-          },
-          {
-              targets: 3,
-              className: 'noVis'
-          },
-          {
-              targets: 4,
-              className: 'noVis'
-          }
+        {
+          targets: 0,
+          className: 'noVis'
+        },
+        {
+          targets: 1,
+          className: 'noVis'
+        },
+        {
+          targets: 2,
+          className: 'noVis'
+        },
+        {
+          targets: 3,
+          className: 'noVis'
+        },
+        {
+          targets: 4,
+          className: 'noVis'
+        }
       ],
       colReorder: {
         fixedColumnsLeft: 0
