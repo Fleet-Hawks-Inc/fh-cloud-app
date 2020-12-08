@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../../../../services';
+import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
-import { forkJoin, from, Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
 declare var $: any;
 
@@ -15,8 +15,8 @@ declare var $: any;
 })
 export class DriverListComponent implements OnInit {
   title = 'Driver List';
-  mapView: boolean = false;
-  listView: boolean = true;
+  mapView = false;
+  listView = true;
   visible = true;
 
   driverCheckCount;
@@ -25,8 +25,6 @@ export class DriverListComponent implements OnInit {
   dtOptions: any = {};
 
   statesObject: any = {};
-  countriesObject: any = {};
-  citiesObject: any = {};
   vehiclesObject: any = {};
   cyclesObject: any = {};
 
@@ -36,20 +34,39 @@ export class DriverListComponent implements OnInit {
   suggestedDrivers = [];
   homeworld: Observable<{}>;
   constructor(
-            private apiService: ApiService,
-            private router: Router,
-            private hereMap: HereMapService,
-            private spinner: NgxSpinnerService,
-            private toastr: ToastrService) {}
+    private apiService: ApiService,
+    private router: Router,
+    private hereMap: HereMapService,
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.fetchDrivers();
-    this.fetchAddress();
-    this.fetchAllStatesIDs();
-    this.fetchAllVehiclesIDs();
-    this.fetchAllCyclesIDs();
-    this.fetchAllCitiesIDs();
-    this.fetchAllCountriesIDs();
+    // this.fetchDrivers();
+    // this.fetchAddress();
+    // this.fetchAllStatesIDs();
+    // this.fetchAllVehiclesIDs();
+    // this.fetchAllCyclesIDs();
+
+
+    forkJoin([
+      this.fetchDrivers(),
+      this.fetchAddress(),
+      this.fetchAllStatesIDs(),
+      this.fetchAllVehiclesIDs(),
+      this.fetchAllCyclesIDs()
+    ]).subscribe(([
+      drivers,
+      addresses,
+      statesIds,
+      vehcilesIds,
+      cycleIds
+    ]) => {
+      this.drivers = drivers.Items;
+      this.statesObject = statesIds;
+      this.vehiclesObject = vehcilesIds;
+      this.cyclesObject = cycleIds;
+    });
+
 
     $(document).ready(() => {
       setTimeout(() => {
@@ -59,26 +76,32 @@ export class DriverListComponent implements OnInit {
   }
 
 
+  fetchAddress() {
+    return this.apiService.getData('addresses');
+    // .subscribe((result: any) => {
+    //   console.log('address', result);
+    // });
+  }
 
 
   jsTree() {
     $('.treeCheckbox').jstree({
-      core : {
-        themes : {
+      core: {
+        themes: {
           responsive: false
         }
       },
-      types : {
-        default : {
-          icon : 'fas fa-folder'
+      types: {
+        default: {
+          icon: 'fas fa-folder'
         },
-        file : {
-          icon : 'fas fa-file'
+        file: {
+          icon: 'fas fa-file'
         }
       },
       plugins: ['types', 'checkbox']
     });
-    
+
   }
 
   export() {
@@ -90,7 +113,7 @@ export class DriverListComponent implements OnInit {
       .getData(`drivers/suggestion/${value}`)
       .subscribe((result) => {
         this.suggestedDrivers = result.Items;
-        if(this.suggestedDrivers.length == 0){
+        if (this.suggestedDrivers.length === 0) {
           this.driverID = '';
         }
       });
@@ -103,103 +126,90 @@ export class DriverListComponent implements OnInit {
     this.suggestedDrivers = [];
   }
 
-  
-  fetchAddress() {
-    this.apiService.getData('addresses')
-      .subscribe((result: any) => {
-        console.log('address', result);
-      });
-  }
-
   fetchDrivers() {
-   // this.spinner.show(); // loader init
-    let driversList = this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`);
-    let addressList = this.apiService.getData('addresses');
+    // this.spinner.show(); // loader init
+    // let character = this.apiService.getData('drivers');
+    // let characterHomeworld = this.apiService.getData('addresses');
 
-    forkJoin([driversList, addressList]).subscribe(results => {
-      console.log("results", results);
-      let newArr = [];
-      // tslint:disable-next-line: prefer-for-of
-      for (let i = 0; i < results[1].Items.length; i++) {
-        // tslint:disable-next-line: prefer-for-of
-        for (let j = 0; j < results[0].Items.length; j++) {
-          if (results[1].Items[i].entityID === results[0].Items[j].driverID) {
-            results[0].Items[j].addressDetails = {
-              address1: results[1].Items[i].address1,
-              address2: results[1].Items[i].address2,
-              addressID: results[1].Items[i].addressID,
-              addressType: results[1].Items[i].addressType,
-              cityID: results[1].Items[i].cityID,
-              countryID: results[1].Items[i].countryID,
-              geoCords: results[1].Items[i].geoCords,
-              stateID: results[1].Items[i].stateID,
-              zipCode: results[1].Items[i].zipCode,
-            };
-          }
-        }
-      }
-      for (const iterator of results[0].Items) {
-        if (iterator.isDeleted === 0) {
-          this.drivers.push(iterator);
-        }
-      }
-      console.log("results[0].Items", this.drivers);
-    });
+    // forkJoin([character, characterHomeworld]).subscribe(results => {
+    //   console.log("results", results);
+    // });
 
-    
-    // let driverList = this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`);
-    // from(driverList).pipe(
-    //   mergeMap(resp => this.apiService.getData(`addresses`))
-    // ).subscribe(res => console.log('resnew', res));
-    
-    // this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`).subscribe({
+    //  this.apiService.getData('drivers')
+    //     .pipe(mergeMap(character => this.apiService.getData('addresses'))).subscribe( res => {
+    //       console.log('homeworld', this.homeworld);
+    //     });
+    //   console.log('homeworld', this.homeworld);
+    // this.apiService.getData(`drivers`).pipe(
+    //   mergeMap(resp => {
+    //     console.log("resp", resp);
+    //     return this.apiService.getData(`addresses`).pipe(
+    //       map(countResp => {
+    //         console.log("countResp", countResp);
+    //       })
+    //     )
+    //   })
+    // ).subscribe(res => {
+    //   console.log("drivers", res);
+    // })
+    return this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`);
+    // .subscribe({
     //   complete: () => {
     //     this.initDataTable();
     //   },
-    //   error: () => {},
+    //   error: () => { },
     //   next: (result: any) => {
+    //     // console.log(result);
+    //     // console.log(result.Items);
+
     //     for (const iterator of result.Items) {
     //       if (iterator.isDeleted === 0) {
     //         this.drivers.push(iterator);
     //       }
     //     }
+
+    //     // console.log(result);
+
+    //     this.drivers = result.Items;
+
+    //     //  console.log('drivers', this.drivers);
+
+
+    //     // this.drivers = result.Items;
+
+
+    //     // for (let i = 0; i < result.Items.length; i++) {
+    //     //   // console.log(result.Items[i].isDeleted);
+    //     //   if (result.Items[i].isDeleted === 0) {
+    //     //     this.drivers.push(result.Items[i]);
+    //     //   }
+    //     // }
+
+    //     //  this.spinner.hide(); // loader hide
+
     //   },
     // });
   }
 
   fetchAllStatesIDs() {
-    this.apiService.getData('states/get/list')
-      .subscribe((result: any) => {
-        this.statesObject = result;
-      });
-  }
-  
-  fetchAllCountriesIDs() {
-    this.apiService.getData('countries/get/list')
-      .subscribe((result: any) => {
-        this.countriesObject = result;
-      });
+    return this.apiService.getData('states/get/list');
+    // .subscribe((result: any) => {
+    //   this.statesObject = result;
+    // });
   }
 
-  fetchAllCitiesIDs() {
-    this.apiService.getData('cities/get/list')
-      .subscribe((result: any) => {
-        this.citiesObject = result;
-      });
-  }
-
-   fetchAllVehiclesIDs() {
-    this.apiService.getData('vehicles/get/list')
-      .subscribe((result: any) => {
-        this.vehiclesObject = result;
-      });
+  fetchAllVehiclesIDs() {
+    return this.apiService.getData('vehicles/get/list');
+    // .subscribe((result: any) => {
+    //   this.vehiclesObject = result;
+    // });
   }
 
   fetchAllCyclesIDs() {
-    this.apiService.getData('cycles/get/list')
-      .subscribe((result: any) => {
-        this.cyclesObject = result;
-      });
+    return this.apiService.getData('cycles/get/list');
+    // .subscribe((result: any) => {
+    //   this.cyclesObject = result;
+    // });
   }
 
   checkboxCount = () => {
@@ -234,16 +244,16 @@ export class DriverListComponent implements OnInit {
     this.visible = !this.visible;
   }
 
-  
+
   deactivateDriver(value, driverID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .getData(`drivers/isDeleted/${driverID}/${value}`)
-      .subscribe((result: any) => {
-        console.log('result', result);
-      }, err => {
-        console.log('driver delete', err);
-      });
+        .getData(`drivers/isDeleted/${driverID}/${value}`)
+        .subscribe((result: any) => {
+          console.log('result', result);
+        }, err => {
+          console.log('driver delete', err);
+        });
     }
   }
 
@@ -253,36 +263,34 @@ export class DriverListComponent implements OnInit {
       dom: 'Bfrtip', // lrtip to hide search field
       processing: true,
       columnDefs: [
-          {
-              targets: 0,
-              className: 'noVis'
-          },
-          {
-              targets: 1,
-              className: 'noVis'
-          },
-          {
-              targets: 2,
-              className: 'noVis'
-          },
-          {
-              targets: 3,
-              className: 'noVis'
-          },
-          {
-              targets: 4,
-              className: 'noVis'
-          }
+        {
+          targets: 0,
+          className: 'noVis'
+        },
+        {
+          targets: 1,
+          className: 'noVis'
+        },
+        {
+          targets: 2,
+          className: 'noVis'
+        },
+        {
+          targets: 3,
+          className: 'noVis'
+        },
+        {
+          targets: 4,
+          className: 'noVis'
+        }
       ],
+      colReorder: {
+        fixedColumnsLeft: 0
+      },
       buttons: [
         'colvis',
         'excel',
       ],
-      "fnDrawCallback": function(oSettings) {
-        if ($('.dataTables_wrapper tbody tr').length < 10) {
-              $('.dataTables_paginate').hide();
-          }
-      }
     };
   }
 }
