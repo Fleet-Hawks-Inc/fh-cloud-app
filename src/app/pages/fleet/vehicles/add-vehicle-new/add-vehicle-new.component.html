@@ -227,7 +227,7 @@
                                           </div>
                                           <div class="col-lg-6">
                                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer <span id="primary_meter">miles</span></label>
-                                             <input type="text" class="form-control" name="reapeatbyOdometerMiles" [(ngModel)]="reapeatbyOdometerMiles">
+                                             <input type="number" class="form-control" name="reapeatbyOdometerMiles" [(ngModel)]="reapeatbyOdometerMiles">
                                           </div>
                                        </div>
                                     </div>
@@ -322,7 +322,7 @@
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">MSRP <span class="font-size-12"> (Manufacturer Suggested Retail Price)</span></label>
-                                       <input type="text" class="form-control" name="msrp" [(ngModel)]="msrp">
+                                       <input type="number" class="form-control" name="msrp" [(ngModel)]="msrp">
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Add Document</label>
@@ -401,7 +401,7 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">In-Service Odometer</label>
-                                       <input type="text" class="form-control" name="lifeCycle.inServiceOdometer" [(ngModel)]="lifeCycle.inServiceOdometer">
+                                       <input type="number" class="form-control" name="lifeCycle.inServiceOdometer" [(ngModel)]="lifeCycle.inServiceOdometer">
                                     </div>
                                  </div>
                               </div>
@@ -414,11 +414,11 @@
                                  <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Service Life in Months</label>
-                                       <input type="text" class="form-control" name="lifeCycle.estimatedServiceMonths" [(ngModel)]="lifeCycle.estimatedServiceMonths">
+                                       <input type="number" class="form-control" name="lifeCycle.estimatedServiceMonths" [(ngModel)]="lifeCycle.estimatedServiceMonths">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Service Life in Miles</label>
-                                       <input type="text" class="form-control" name="lifeCycle.estimatedServiceMiles" [(ngModel)]="lifeCycle.estimatedServiceMiles">
+                                       <input type="number" class="form-control" name="lifeCycle.estimatedServiceMiles" [(ngModel)]="lifeCycle.estimatedServiceMiles">
                                     </div>
                                  </div>
                               </div>
@@ -426,7 +426,7 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Resale Value</label>
-                                       <input type="text" class="form-control" name="lifeCycle.estimatedResaleValue" [(ngModel)]="lifeCycle.estimatedResaleValue">
+                                       <input type="number" class="form-control" name="lifeCycle.estimatedResaleValue" [(ngModel)]="lifeCycle.estimatedResaleValue">
                                     </div>
                                  </div>
                               </div>
@@ -447,7 +447,7 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Out-of-Service Odometer</label>
-                                       <input type="text" class="form-control" name="lifeCycle.outOfServiceOdometer" [(ngModel)]="lifeCycle.outOfServiceOdometer">
+                                       <input type="number" class="form-control" name="lifeCycle.outOfServiceOdometer" [(ngModel)]="lifeCycle.outOfServiceOdometer">
                                     </div>
                                  </div>
                               </div>
@@ -467,7 +467,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Height</label>
                                        <div class="row">
                                           <div class="col-lg-6">
-                                             <input type="text" class="form-control" name="specifications.height" [(ngModel)]="specifications.height">
+                                             <input type="number" class="form-control" name="specifications.height" [(ngModel)]="specifications.height">
                                           </div>
                                           <div class="col-lg-6">
                                              <select class="form-control populate" name="specifications.heightUnit" [(ngModel)]="specifications.heightUnit">
@@ -483,7 +483,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Length</label>
                                        <div class="row">
                                           <div class="col-lg-6">
-                                             <input type="text" class="form-control" name="specifications.length" [(ngModel)]="specifications.length">
+                                             <input type="number" class="form-control" name="specifications.length" [(ngModel)]="specifications.length">
                                           </div>
                                           <div class="col-lg-6">
                                              <select class="form-control populate" name="specifications.lengthUnit" [(ngModel)]="specifications.lengthUnit">
@@ -499,7 +499,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Ground Clearance</label>
                                        <div class="row">
                                           <div class="col-lg-6">
-                                             <input type="text" class="form-control" name="specifications.groundClearnce" [(ngModel)]="specifications.groundClearnce">
+                                             <input type="number" class="form-control" name="specifications.groundClearnce" [(ngModel)]="specifications.groundClearnce">
                                           </div>
                                           <div class="col-lg-6">
                                              <select class="form-control populate" name="specifications.groundClearnceUnit" [(ngModel)]="specifications.groundClearnceUnit">
@@ -515,7 +515,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Bed Length</label>
                                        <div class="row">
                                           <div class="col-lg-6">
-                                             <input type="text" class="form-control" name="specifications.badLength" [(ngModel)]="specifications.badLength">
+                                             <input type="number" class="form-control" name="specifications.badLength" [(ngModel)]="specifications.badLength">
                                           </div>
                                           <div class="col-lg-6">
                                              <select class="form-control populate" name="specifications.badLengthUnit" [(ngModel)]="specifications.badLengthUnit">
@@ -533,15 +533,15 @@
                                  <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Interior Volume</label>
-                                       <input type="text" class="form-control" name="specifications.interiorVolume" [(ngModel)]="specifications.interiorVolume">
+                                       <input type="number" class="form-control" name="specifications.interiorVolume" [(ngModel)]="specifications.interiorVolume">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Passenger Volume</label>
-                                       <input type="text" class="form-control" name="specifications.passangerVolume" [(ngModel)]="specifications.passangerVolume">
+                                       <input type="number" class="form-control" name="specifications.passangerVolume" [(ngModel)]="specifications.passangerVolume">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Volume</label>
-                                       <input type="text" class="form-control" name="specifications.cargoVolume" [(ngModel)]="specifications.cargoVolume">
+                                       <input type="number" class="form-control" name="specifications.cargoVolume" [(ngModel)]="specifications.cargoVolume">
                                     </div>
                                  </div>
                               </div>
@@ -554,7 +554,7 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Curb Weight</label>
-                                       <input type="text" class="form-control" name="specifications.curbWeight" [(ngModel)]="specifications.curbWeight">
+                                       <input type="number" class="form-control" name="specifications.curbWeight" [(ngModel)]="specifications.curbWeight">
                                     </div>
                                  </div>
                                  <div class="checkbox mt-4">
@@ -568,7 +568,7 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Gross Vehicle Weight Rating</label>
-                                       <input type="text" class="form-control" name="specifications.grossVehicleWeightRating" [(ngModel)]="specifications.grossVehicleWeightRating">
+                                       <input type="number" class="form-control" name="specifications.grossVehicleWeightRating" [(ngModel)]="specifications.grossVehicleWeightRating">
                                     </div>
                                  </div>
                               </div>
@@ -581,7 +581,7 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Towing Capacity</label>
-                                       <input type="text" class="form-control" name="specifications.towingCapacity" [(ngModel)]="specifications.towingCapacity">
+                                       <input type="number" class="form-control" name="specifications.towingCapacity" [(ngModel)]="specifications.towingCapacity">
                                     </div>
                                  </div>
                               </div>
@@ -589,7 +589,7 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Max Payload</label>
-                                       <input type="text" class="form-control" name="specifications.maxPayload" [(ngModel)]="specifications.maxPayload">
+                                       <input type="number" class="form-control" name="specifications.maxPayload" [(ngModel)]="specifications.maxPayload">
                                     </div>
                                  </div>
                               </div>
