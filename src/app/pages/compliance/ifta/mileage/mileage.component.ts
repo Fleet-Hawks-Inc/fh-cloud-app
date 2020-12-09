@@ -16,7 +16,7 @@ export class MileageComponent implements OnInit {
   form;
   fuelList;
   unitType = '';
-  modalStateName = '';
+  modalStateID = '';
   baseState: string;
   baseCountry: string;
   accountNumber: string;
@@ -26,12 +26,20 @@ export class MileageComponent implements OnInit {
   data = [];
   stateList = [];
   unitList = [];
+  vehicleList = [];
+  assetList = [];
+  tripList = [];
+  stateNameList = [];
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
     this. fetchCountries();
     this.fuelEntries();
     this.fetchStateData();
+    this.fetchVehicleList();
+    this.fetchAssetList();
+    this.fetchTripList();
+    this.fetchStateList();
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
@@ -66,7 +74,7 @@ export class MileageComponent implements OnInit {
       next: (result: any) => {
         // console.log(result);
         this.fuelList = result;
-     //   console.log('fuel data', this.fuelList);
+        console.log('fuel data', this.fuelList);
       },
     });
   }
@@ -92,18 +100,18 @@ export class MileageComponent implements OnInit {
       $('#datatable-default').DataTable();
     });
   }
-  getFuelDetails(ID, type, state){
+  getFuelDetails(ID, type, state) {
     if(type === 'vehicle'){
       this. fetchFuelDetailVehicle(ID, state);
     }
-    else{
+    else {
       this. fetchFuelDetailReefer(ID, state);
     }
   }
   fetchFuelDetailVehicle(ID, state) {
     const vehicleID = ID;
     const stateID = state;
-    this.modalStateName = state;
+    this.modalStateID = state;
     this.unitType = 'Vehicle';
     this.apiService.getData('fuelEntries/vehicle/' + vehicleID)
       .subscribe((result: any) => {
@@ -117,7 +125,7 @@ export class MileageComponent implements OnInit {
     const reeferID = ID;
     const stateID = state;
     this.unitType = 'Reefer';
-    this.modalStateName = state;
+    this.modalStateID = state;
     this.apiService.getData('fuelEntries/reefer/' + reeferID)
       .subscribe((result: any) => {
         this.data = result.Items;
@@ -125,5 +133,26 @@ export class MileageComponent implements OnInit {
         this.unitList =  this.data.filter(r => r.stateID === stateID);
       //  console.log('reefer list', this.unitList, 'state id', stateID);
       });
+  }
+  fetchVehicleList() {
+    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+      this.vehicleList = result;
+    });
+  }
+  fetchAssetList() {
+    this.apiService.getData('assets/get/list').subscribe((result: any) => {
+      this.assetList = result;
+      console.log('asset list', this.assetList);
+    });
+  }
+  fetchTripList() {
+    this.apiService.getData('trips/get/list').subscribe((result: any) => {
+      this.tripList = result;
+    });
+  }
+  fetchStateList() {
+    this.apiService.getData('states/get/list').subscribe((result: any) => {
+      this.stateNameList = result;
+    });
   }
 }

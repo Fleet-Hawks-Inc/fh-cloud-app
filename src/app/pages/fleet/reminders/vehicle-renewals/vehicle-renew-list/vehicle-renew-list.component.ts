@@ -17,6 +17,7 @@ export class VehicleRenewListComponent implements OnInit {
   vehicles = [];
   vehicleName: string;
   vehicleList: any = {};
+  tasksList: any  = {};
   groups; any = {};
   group: string;
   subcribersArray = [];
@@ -24,16 +25,23 @@ export class VehicleRenewListComponent implements OnInit {
   vehicleIdentification = '';
   currentDate = moment();
   newData = [];
-  suggestedUnits = [];
+  suggestedVehicles = [];
+  vehicleID = '';
   unitID = '';
   unitName = '';
+  searchServiceTask = '';
+  serviceTasks = [];
+  filterStatus: string;
   constructor(private apiService: ApiService, private router: Router,private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
   ngOnInit() {
+    this.fetchServiceTaks();
     this.fetchRenewals();
     this.fetchVehicles();
     this.fetchGroups();
     this.fetchVehicleList();
+    this.fetchTasksList();
+    
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -46,12 +54,21 @@ export class VehicleRenewListComponent implements OnInit {
       //   console.log('Groups Data', this.groups);
     });
   }
-  // fetchVehicles(ID) {
-  //   this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
-  //   this.vehicles = result.Items;
-  //   this.vehicleIdentification = this.vehicles[0].vehicleIdentification;
-  //   });
-  // }
+  
+  fetchServiceTaks() {
+    let test = [];
+    let taskType = 'vehicle';
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
+      test = result.Items;
+      this.serviceTasks = test.filter((s: any) => s.taskType === 'vehicle');
+    });    
+  }
+  fetchTasksList() {
+    this.apiService.getData('tasks/get/list').subscribe((result: any) => {
+      this.tasksList = result;
+    });
+  }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
@@ -62,24 +79,35 @@ export class VehicleRenewListComponent implements OnInit {
       this.vehicleList = result;
     });
   } 
- 
+  setFilterStatus(val) {
+    this.filterStatus = val;
+  }
   fetchRenewals = async () => {
-    this.apiService.getData(`reminders`).subscribe({
+    this.remindersData = [];
+    this.apiService.getData(`reminders?reminderIdentification=${this.vehicleID}&serviceTask=${this.searchServiceTask}`).subscribe({
       complete: () => {this.initDataTable(); },
       error: () => { },
       next: (result: any) => {
         this.allRemindersData = result.Items;
         console.log(this.allRemindersData);
         for(let j=0; j < this.allRemindersData.length; j++) {
+          let reminderStatus: string;
           if (this.allRemindersData[j].reminderType === 'vehicle') {
             const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate,'DD-MM-YYYY');
             const remainingDays = convertedDate.diff(this.currentDate, 'days');
+            if (remainingDays < 0 ) {
+              reminderStatus = 'OVERDUE';
+            }
+            else if( remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays &&  remainingDays >= 0) {
+              reminderStatus = 'DUE SOON';
+            }
             const data = {
               reminderID: this.allRemindersData[j].reminderID,
               reminderIdentification: this.allRemindersData[j].reminderIdentification,
               reminderTasks: {
                 task: this.allRemindersData[j].reminderTasks.task,
                 remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
+                reminderStatus: reminderStatus,
                 remainingDays: remainingDays,
                 dueDate: this.allRemindersData[j].reminderTasks.dueDate,
               },
@@ -87,9 +115,17 @@ export class VehicleRenewListComponent implements OnInit {
              };
              this.remindersData.push(data); 
           }
-        
         }
         console.log('new data', this.remindersData);
+        if (this.filterStatus === 'OVERDUE') {
+          this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === 'OVERDUE');
+        }
+        else if (this.filterStatus === 'DUE SOON') {
+          this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === 'DUE SOON');
+        }
+        else {
+          this.remindersData = this.remindersData;
+        }
       },
     });
   }
@@ -102,27 +138,22 @@ export class VehicleRenewListComponent implements OnInit {
                
       });
   }
-  setUnit(unitID, unitName) {
-    this.unitName = unitName;
-    this.unitID = unitID;
-  
-    this.suggestedUnits = [];
+  setVehicle(vehicleID, vehicleIdentification) {
+    this.vehicleIdentification = vehicleIdentification;
+    this.vehicleID = vehicleID;
+    this.suggestedVehicles = [];
   }
   getSuggestions(value) {
-    this.suggestedUnits = [];
     this.apiService
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
-        result = result.Items;
-  
-        for(let i = 0; i < result.length; i++){
-          this.suggestedUnits.push({
-            unitID: result[i].vehicleID,
-            unitName: result[i].vehicleIdentification
-          });
+        this.suggestedVehicles = result.Items;
+        if (this.suggestedVehicles.length === 0) {
+          this.vehicleID = '';
         }
       });
   }
+   
   initDataTable() {
     this.dtOptions = {
       dom: 'Bfrtip', // lrtip to hide search field

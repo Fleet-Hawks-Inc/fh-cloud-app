@@ -11,34 +11,49 @@
         <section role="main" class="content-body pl-0 pt-0">
             <header class="page-header">
                 <div class="row pr-5 pl-1" style="padding-top:10px;">
+                  
                     <div class="col-md-2 col-lg-2 pr-0">
-                        <ng-select placeholder="Search By Contact">
-                                       
-                            <ng-option *ngFor="let contact of contacts" value="{{contact.contactID}}">{{contact.firstName}}</ng-option>
-                          
-                      </ng-select>
-                    </div>
+                        <div class="input-group input-group-md mb-3">
+                          <input
+                            type="text"
+                            autocomplete="off"
+                            name="firstName"
+                            [(ngModel)]="firstName"
+                            class="form-control"
+                            (input)="getSuggestions($event.target.value)"
+                          />
+                        </div>
+                        <div
+                          *ngFor="let suggestedContact of suggestedContacts"
+                          style="cursor: pointer"
+                          (click)="
+                            setContact(
+                              suggestedContact.contactID,
+                              suggestedContact.firstName
+                            )
+                          "
+                        >
+                          {{ suggestedContact.firstName}}  {{ suggestedContact.lastName}}
+                        </div>
+                      </div>
                     <div class="col-lg-2 col-md-2 pl-1 pr-0">
-                        <ng-select placeholder="Search By Renewal Type">
-                                       
-                            <ng-option value="Licence">Licence</ng-option>
-                            <ng-option value="Certification">Certification</ng-option>
-                         
-                      </ng-select>
+                      <ng-select placeholder="Search By Renewal Type"  [(ngModel)]="searchServiceTask"  name="searchServiceTask" style="width: 100%;">                     
+                         <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
+                         </ng-option>                    
+                   </ng-select>
                     </div>
                     <div class="col-md-2 col-lg-2 pl-1 pr-0">
-                        <div class="btn-group flex-wrap" style="width:100%;">
-                            <button type="button" class="btn btn-default btn-md dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Search Renewals<span class="caret"></span></button>
-                            <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
-                                <a class="dropdown-item text-1" href="">All Renewals</a>
-                                <a class="dropdown-item text-1" href="">Overdue Only</a>
-                                <a class="dropdown-item text-1" href="">Overdue + Due Soon</a>
-                                <a class="dropdown-item text-1" href="">Due Soon Only</a>
-                            </div>
-                        </div>
+                        <ng-select [(ngModel)]="filterStatus"
+                        name="filterStatus" style="width: 100%;" placeholder="Select Reminder Status"  (change)="setFilterStatus($event)">
+                        <optgroup label="Select Reminder Status">
+                           <ng-option  value="ALL">ALL</ng-option>
+                           <ng-option  value="OVERDUE">OVERDUE</ng-option>
+                           <ng-option  value="DUE SOON">DUE SOON</ng-option>
+                        </optgroup>
+                     </ng-select>
                         </div>
                     <div class="col-md-1  col-lg-1 pl-1">
-                        <button type="submit"  class="btn btn-sm btn-success">Search</button>
+                        <button type="submit"  (click)="fetchRenewals()" class="btn btn-sm btn-success">Search</button>
                      </div>                 
 
                     <div class="col-md-5  col-lg-5 text-right page-buttons">
@@ -53,9 +68,7 @@
                         </div>
                         <a routerLink="/fleet/reminders/contact-renewals/add" class="btn btn-sm btn-success mr-1"><i
                                 class="fas fa-plus"></i> Add
-                            Contact Renewal Reminder</a>
-
-                        
+                            Contact Renewal Reminder</a>                        
                     </div>
                 </div>
             </header>
@@ -85,31 +98,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of remindersData;"  style="cursor: pointer;">                                       
-                                        <td >{{contactList[item.reminderIdentification]}}</td>
-                                        <td>
-                                            <span class="text-danger font-weight-bold font-size-12" *ngIf ="item.reminderTasks.remainingDays === 0 ||  0 > item.reminderTasks.remainingDays">Overdue<br></span>
-                                            <span class="text-warning font-weight-bold font-size-12" *ngIf = "5 > item.reminderTasks.remainingDays && item.reminderTasks.remainingDays > 0">Due Soon<br></span>
-                                            <span
-                                                class="font-weight-bold" title="Task">{{item.reminderTasks.task}}</span></td>
-                                        <td><span
-                                                class="font-size-12">{{item.reminderTasks.remindByDays}} Days Before</span></td>
-                                        <td ><span class="font-size-12">{{item.reminderTasks.dueDate}}</span></td>
-                                        <td><span *ngFor="let s of item.subscribers">
-                                            <span *ngIf="s.subscriberType === 'user'">{{s.subscriberIdentification}},</span>
-                                            <span *ngIf="s.subscriberType === 'group'">{{groups[s.subscriberIdentification]}},</span>
-                                        </span></td>
-                                        <td>
-                                            <div class="btn-group flex-wrap">
-                                                <button type="button" class="btn p-0" data-toggle="dropdown"><i
-                                                        class="fas fa-ellipsis-v"></i></button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="dropdown-item text-1" href="#">Send Notifications</a>
-                                                    <a routerLink="/fleet/reminders/contact-renewals/edit/{{item.reminderID }}" class="dropdown-item text-1" >Edit</a>
-                                                    <a href="javascript:;" class="dropdown-item text-1" (click)="deleteRenewal(item.reminderID)">Delete</a>
+                                    <tr *ngFor="let item of remindersData;"  style="cursor: pointer;">    
+                                            <td >{{contactList[item.reminderIdentification]}}</td>
+                                            <td>  <span class="text-warning font-weight-bold font-size-12" *ngIf="item.reminderTasks.reminderStatus === 'DUE SOON'">{{item.reminderTasks.reminderStatus}}<br></span>
+                                                <span class="text-danger font-weight-bold font-size-12" *ngIf="item.reminderTasks.reminderStatus === 'OVERDUE'">{{item.reminderTasks.reminderStatus}}<br></span>
+                                                <span
+                                                    class="font-weight-bold" title="Task">{{tasksList[item.reminderTasks.task]}}</span></td>
+                                            <td><span
+                                                    class="font-size-12">{{item.reminderTasks.remindByDays}} Days Before</span></td>
+                                            <td ><span class="font-size-12">{{item.reminderTasks.dueDate}}</span></td>
+                                            <td><span *ngFor="let s of item.subscribers">
+                                                <span *ngIf="s.subscriberType === 'user'">{{s.subscriberIdentification}},</span>
+                                                <span *ngIf="s.subscriberType === 'group'">{{groups[s.subscriberIdentification]}},</span>
+                                            </span></td>
+                                            <td>
+                                                <div class="btn-group flex-wrap">
+                                                    <button type="button" class="btn p-0" data-toggle="dropdown"><i
+                                                            class="fas fa-ellipsis-v"></i></button>
+                                                    <div class="dropdown-menu" role="menu">
+                                                        <a class="dropdown-item text-1" href="#">Send Notifications</a>
+                                                        <a routerLink="/fleet/reminders/contact-renewals/edit/{{item.reminderID }}" class="dropdown-item text-1" >Edit</a>
+                                                        <a href="javascript:;" class="dropdown-item text-1" (click)="deleteRenewal(item.reminderID)">Delete</a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
                                     </tr>
                                 </tbody>
                             </table>

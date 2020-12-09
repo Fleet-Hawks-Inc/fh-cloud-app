@@ -1,4 +1,4 @@
-<form class="form form-horizontal form-bordered" method="get" name="form">
+<form class="form form-horizontal form-bordered" method="get" name="form" #accountForm="ngForm" (ngSubmit)="showValue(accountForm)">
 <section class="body" style="background:white;" *ngIf = "!addInfo">
     <div class="">
 
@@ -116,37 +116,40 @@
                                             <div class="col-lg-11 offset-lg-2">
                                                 <label class="control-label text-lg-right text-dark text-5 pt-2">Set
                                                     password</label>
-                                            </div>
-                                            <div class="col-lg-4 offset-lg-2">
+                                            </div>                                          
+                                        </div>
+                                        <div class="row">
+                                          <div class="col-lg-4 offset-lg-2">
                                                 <div class=" row">
-                                                    <div class="col-lg-10 form-group">
-                                                        <label
+                                                   <div class="col-lg-10 form-group">
+                                                      <label
                                                             class="control-label  font-weight-bold text-lg-right pt-2">Password</label>
-                                                        <input type="password" #password="ngModel" class="form-control"  [(ngModel)]="accountData.basic.password" name="password">
-                                                    </div>
+                                                      <input type="password"  class="form-control" #passwordControl=ngModel  [(ngModel)]="accountData.basic.password" name="password">
+                                                   </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-4">
+                                          </div>
+                                          <div class="col-lg-4">
                                                 <div class=" row">
-                                                    <div class="col-lg-2"></div>
-                                                    <div class="col-lg-10 form-group">
-                                                        <label
+                                                   <div class="col-lg-2"></div>
+                                                   <div class="col-lg-10 form-group">
+                                                      <label
                                                             class="control-label  font-weight-bold text-lg-right pt-2">Confirm
                                                             Password</label>
-                                                        <input type="password" class="form-control" name="confirmPassword"  [(ngModel)]="confirmPassword">
-                                                        
-                                                    </div>
+                                                      <input type="password"  class="form-control" name="confirmPassword" appConfirmEqualValidator="password" #confirmPasswordControl=ngModel [(ngModel)]="confirmPassword">
+                                                      <span class="text-danger"  *ngIf="confirmPasswordControl.touched && confirmPasswordControl.errors?.notEqual">
+                                                          Passwords Do not match!
+                                                      </span>
+                                                   </div>
                                                 </div>
-                                               
-                                            </div>
-                                        </div>
+                                             
+                                          </div>
+                                       </div>
                                         <div class=" row mt-4">
                                             <div class="col-md-10 col-lg-10 text-right">
                                                 <button type="reset" class="btn btn-default mr-1">Reset</button>
                                                 <a href="javascript:;" class="btn btn-success" (click)="displayInfo()">Save</a>
                                             </div>
                                         </div>
-                                    
                                 </div>
                             </div>
                         </div>

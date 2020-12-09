@@ -12,49 +12,48 @@
             <header class="page-header">
                 <div class="row pr-5 pl-1" style="padding-top:10px;">
                     <div class="col-md-2 col-lg-2 pr-0">
-                        <div class="input-group input-group-sm mb-3">
-                            <input
-                              autocomplete="off"
-                              type="text"
-                              name="unitName"
-                              [(ngModel)]="unitName"
-                              class="form-control"
-                              (input)="getSuggestions($event.target.value)"
-                              placeholder="Search by Unit"
-                            />
-                          </div>
-                          <div
-                            *ngFor="let suggestedUnit of suggestedUnits"
-                            style="cursor: pointer"
-                            (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)"
-                          >
-                            {{ suggestedUnit.unitName }}
-                          </div>
-                    </div>
+                        <div class="input-group input-group-md mb-3">
+                          <input
+                            type="text"
+                            autocomplete="off"
+                            name="vehicleIdentification"
+                            [(ngModel)]="vehicleIdentification"
+                            class="form-control"
+                            (input)="getSuggestions($event.target.value)"
+                          />
+                        </div>
+                        <div
+                          *ngFor="let suggestedVehicle of suggestedVehicles"
+                          style="cursor: pointer"
+                          (click)="
+                            setVehicle(
+                              suggestedVehicle.vehicleID,
+                              suggestedVehicle.vehicleIdentification
+                            )
+                          "
+                        >
+                          {{ suggestedVehicle.vehicleIdentification }}
+                        </div>
+                      </div>
 
-                    <div class="col-lg-2 col-md-2 pl-1 pr-0">
-                        <ng-select  placeholder="Select Renewal Type">
-                           
-                               <ng-option value="Emission Test">Emission Test</ng-option>
-                               <ng-option value="Inspection">Inspection</ng-option>
-                               <ng-option value="Insurance">Insurance</ng-option>
-                               <ng-option value="Registration (Plate Expire)">Registration (Plate Expire)</ng-option>
-                          
-                         </ng-select>
+                    <div class="col-lg-2 col-md-2 pl-1 pr-0" >
+                        <ng-select placeholder="Search By Renewal Type"  [(ngModel)]="searchServiceTask"  name="searchServiceTask" style="width: 100%;">                     
+                            <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
+                            </ng-option>                    
+                      </ng-select>
                     </div>
                     <div class="col-md-2 col-lg-2 pl-1 pr-0">
-                        <div class="btn-group flex-wrap" style="width:100%;">
-                            <button type="button" class="btn btn-default btn-md dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Search Renewals<span class="caret"></span></button>
-                            <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
-                                <a class="dropdown-item text-1" href="">All Renewals</a>
-                                <a class="dropdown-item text-1" href="">Overdue Only</a>
-                                <a class="dropdown-item text-1" href="">Overdue + Due Soon</a>
-                                <a class="dropdown-item text-1" href="">Due Soon Only</a>
-                            </div>
-                        </div>
+                        <ng-select [(ngModel)]="filterStatus"
+                        name="filterStatus" style="width: 100%;" placeholder="Select Reminder Status"  (change)="setFilterStatus($event)">
+                        <optgroup label="Select Reminder Status">
+                           <ng-option  value="ALL">ALL</ng-option>
+                           <ng-option  value="OVERDUE">OVERDUE</ng-option>
+                           <ng-option  value="DUE SOON">DUE SOON</ng-option>
+                        </optgroup>
+                     </ng-select>
                         </div>
                     <div class="col-md-1  col-lg-1 pl-1">
-                        <button type="submit"  class="btn btn-sm btn-success">Search</button>
+                        <button type="submit" (click)="fetchRenewals()"  class="btn btn-sm btn-success">Search</button>
                      </div>
                     <div class="col-md-5  col-lg-5 text-right page-buttons">
                         <div class="btn-group flex-wrap mr-1">
@@ -87,8 +86,7 @@
                         <div class="card-body">
                             <table class="table table-bordered table-responsive-lg table-striped mb-0" datatable [dtOptions]="dtOptions"  *ngIf="remindersData.length > 0">
                                 <thead>
-                                    <tr>
-                                        
+                                    <tr>                                        
                                         <th width="30%">Vehicle</th>
                                         <th width="15%">Vehicle Renewal Type</th>
                                         <th width="15%">Due Date</th>
@@ -101,10 +99,10 @@
                                     <tr *ngFor="let item of remindersData;"  style="cursor: pointer;">
                                         <td >{{ vehicleList[item.reminderIdentification]}}</td>
                                         <td>
-                                            <span class="text-danger font-weight-bold font-size-12" *ngIf ="item.reminderTasks.remainingDays === 0 ||  0 > item.reminderTasks.remainingDays">Overdue<br></span>
-                                            <span class="text-warning font-weight-bold font-size-12" *ngIf = "5 > item.reminderTasks.remainingDays && item.reminderTasks.remainingDays > 0">Due Soon<br></span>
-                                            <span
-                                                class="font-weight-bold" title="Task">{{item.reminderTasks.task}}</span></td>
+                                             <span class="text-warning font-weight-bold font-size-12" *ngIf="item.reminderTasks.reminderStatus === 'DUE SOON'">{{item.reminderTasks.reminderStatus}}<br></span>
+                                             <span class="text-danger font-weight-bold font-size-12" *ngIf="item.reminderTasks.reminderStatus === 'OVERDUE'">{{item.reminderTasks.reminderStatus}}<br></span>
+
+                                            <span class="font-weight-bold" title="Task">{{tasksList[item.reminderTasks.task]}}</span></td>
                                         <td>{{item.reminderTasks.dueDate}}</td>
                                         <td>{{item.reminderTasks.remindByDays}} Day(s) Before</td>
                                         <td><span *ngFor="let s of item.subscribers">

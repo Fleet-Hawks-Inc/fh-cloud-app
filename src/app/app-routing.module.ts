@@ -16,17 +16,21 @@ import {PreLoadStrategy} from './preload/PreLoadStrategy';
 import { PdfAutomationComponent } from './pages/automation/pdf-automation/pdf-automation.component';
 import { AddAccountComponent  } from './pages/onboard/add-account/add-account.component';
 
-
+import { AddAlertComponent } from './pages/alerts/add-alert/add-alert.component';
+import { AlertDetailComponent } from './pages/alerts/alert-detail/alert-detail.component';
+import { AlertListComponent } from './pages/alerts/alert-list/alert-list.component';
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: 'Login', component: LoginComponent },
-    { path: 'onboard', component: AddAccountComponent },
+  { path: 'onboard', component: AddAccountComponent },
   {
     path: 'Dashboard',
     component: DashboardComponent,
     canActivate: [AuthService],
   },
-
+  { path: 'add-alert', component: AddAlertComponent },
+  { path: 'alert-detail', component: AlertDetailComponent },
+  { path: 'alert-list', component: AlertListComponent },
   {
     path: 'Map-Dashboard',
     component: MapDashboardComponent,

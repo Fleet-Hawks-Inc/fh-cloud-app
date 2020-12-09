@@ -48,6 +48,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxTagsInputModule } from 'ngx-tags-input';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AddAccountComponent  } from './pages/onboard/add-account/add-account.component';
+import { ConfirmEqualValidatorDirective } from './directives/confirm-equal-validator.directive';
+import { AddAlertComponent } from './pages/alerts/add-alert/add-alert.component';
+import { AlertDetailComponent } from './pages/alerts/alert-detail/alert-detail.component';
+import { AlertListComponent } from './pages/alerts/alert-list/alert-list.component';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -68,6 +72,10 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AddAccountComponent,
     PdfAutomationComponent,
     DynamicModalDirective,
+    ConfirmEqualValidatorDirective,
+    AddAlertComponent,
+    AlertDetailComponent,
+    AlertListComponent
   ],
   imports: [
     AmplifyAngularModule,

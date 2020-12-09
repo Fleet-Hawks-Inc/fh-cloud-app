@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import {AwsUploadService} from '../../../services';
+import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-add-account',
   templateUrl: './add-account.component.html',
@@ -96,9 +97,12 @@ export class AddAccountComponent implements OnInit {
   showAddressControls(){
     this.showAddress = !this.showAddress;
   }
+   showValue(accountForm: NgForm){
+     console.log(accountForm);
+   }
 addAccount() {
 this.hideErrors();
-console.log('account data', this.accountData);
+console.log('account data', this.accountData);return;
 this.apiService.postData('carriers', this.accountData).subscribe({
   complete: () => { },
   error: (err: any) => {

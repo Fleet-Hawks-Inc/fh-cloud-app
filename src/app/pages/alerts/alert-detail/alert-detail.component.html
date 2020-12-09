@@ -1,0 +1,131 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+ 
+    <div class="inner-wrapper">
+       <!-- start: sidebar -->
+       <app-sidebar></app-sidebar>
+       <!-- end: sidebar -->
+ 
+     <section role="main" class="content-body pl-0 pt-0">
+            <header class="page-header">
+                <form class="form-horizontal" method="get">
+                    <div class="row px-4" style="padding-top:10px;">
+                        <div class="col-lg-2 col-md-2">
+                            <input type="date" class="form-control"> </div>
+                        <div class="col-md-2 col-lg-2">
+                            <div class="input-group input-group-md mb-3">
+                                <select data-plugin-selectTwo class="form-control populate">
+                                    <optgroup label="">
+                                        <option value="1">Vehicle 1</option>
+                                        <option value="2">Vehicle 2</option>
+                                        <option value="2">Vehicle 3</option>
+                                        <option value="2">Vehicle 4</option>
+                                        <option value="2">Vehicle 5</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <div class="input-group input-group-md mb-3">
+                                <select data-plugin-selectTwo class="form-control populate">
+                                    <optgroup label="">
+                                        <option value="1">Asset 1</option>
+                                        <option value="2">Asset 2</option>
+                                        <option value="2">Asset 3</option>
+                                        <option value="2">Asset 4</option>
+                                        <option value="2">Asset 5</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <div class="input-group input-group-md mb-3">
+                                <select data-plugin-selectTwo class="form-control populate">
+                                    <optgroup label="">
+                                        <option value="1">Driver 1</option>
+                                        <option value="2">Driver 2</option>
+                                        <option value="2">Driver 3</option>
+                                        <option value="2">Driver 4</option>
+                                        <option value="2">Driver 5</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4  col-lg-4 text-right pr-5"> <a href="all-alerts.php" class="btn btn-default btn-sm "><i class="fas fa-list"></i> All Alerts </a>
+                            <div class="btn-group flex-wrap">
+                                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);"> <a class=" dropdown-item text-1" href="#">Delete</a> <a class="dropdown-item text-1" href="">Import</a> <a class="dropdown-item text-1" href="">Export</a> </div>
+                            </div> <a href="add-alert.php" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Add Alert </a> </div>
+                    </div>
+                </form>
+            </header>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                                <h3 class="text-dark">Harsh Braking </h3>
+                                <table class="table table-bordered table-striped mb-0 simple-table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox">
+                                            </th>
+                                            <th>Date & Time</th>
+                                            <th>Vehicle ID</th>
+                                            <th>Asset ID</th>
+                                            <th>Driver Name</th>
+                                            <th>Location</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr onclick="window.location='harsh-brake-alert-detail.php'">
+                                            <td>
+                                                <input type="checkbox">
+                                            </td>
+                                            <td>June 23, 2020 12:00 PM</td>
+                                            <td>V-6236</td>
+                                            <td></td>
+                                            <td>John Smith</td>
+                                            <td>100 street,King Town,Ontario</td>
+                                        </tr>
+                                        <tr onclick="window.location='harsh-brake-alert-detail.php'">
+                                            <td>
+                                                <input type="checkbox">
+                                            </td>
+                                            <td>June 23, 2020 12:00 PM</td>
+                                            <td></td>
+                                            <td>A-656</td>
+                                            <td></td>
+                                            <td>100 street,King Town,Ontario</td>
+                                        </tr>
+                                        <tr onclick="window.location='harsh-brake-alert-detail.php'">
+                                            <td>
+                                                <input type="checkbox">
+                                            </td>
+                                            <td>June 23, 2020 12:00 PM</td>
+                                            <td>V-656</td>
+                                            <td></td>
+                                            <td>John Smith</td>
+                                            <td>100 street,King Town,Ontario</td>
+                                        </tr>
+                                        <tr onclick="window.location='harsh-brake-alert-detail.php'">
+                                            <td>
+                                                <input type="checkbox">
+                                            </td>
+                                            <td>June 13, 2020 10:00 PM</td>
+                                            <td></td>
+                                            <td>A-7856</td>
+                                            <td></td>
+                                            <td>100 street,King Town,Ontario</td>
+                                        </tr>
+                                    </tbody>
+                                </table>                     
+                        </div>
+                    </div>
+                </div>
+            </div>  
+     </section>    
+    </div>
+ </section>

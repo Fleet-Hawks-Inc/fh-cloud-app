@@ -29,23 +29,35 @@ export class ListingComponent implements OnInit {
   currentOdometer = 12500;
   taskName: string;
   newData = [];
+  suggestedVehicles = [];
+  vehicleID = '';
+  serviceTasks = [];
+  tasksList = [];
+  searchServiceTask = '';
+  filterStatus = 'OVERDUE';
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.fetchServiceLogs();
     this.fetchReminders();
     this.fetchGroups();
+    this.fetchTasksList();
     this.fetchVehicleList();
+    this.fetchServiceTaks();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
-
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
+    });
+  }
+  fetchTasksList() {
+    this.apiService.getData('tasks/get/list').subscribe((result: any) => {
+      this.tasksList = result;
     });
   }
   fetchGroups() {
@@ -58,10 +70,21 @@ export class ListingComponent implements OnInit {
       this.serviceLogs = result.Items;
     });
   }
- 
+  fetchServiceTaks() {
+    let test = [];
+    let taskType = 'service';
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
+      test = result.Items;
+      this.serviceTasks = test.filter((s: any) => s.taskType === 'service');
+    });    
+  }
 fetchReminders = async () => {
-   //this.apiService.getData(`reminders?reminderIdentification=${this.unitID}&taskName=${this.taskName}`).subscribe({
-    this.apiService.getData(`reminders`).subscribe({
+   console.log('serach service task', this.searchServiceTask);
+   this.allRemindersData = [];
+   this.remindersData = [];
+   this.apiService.getData(`reminders?reminderIdentification=${this.vehicleID}&serviceTask=${this.searchServiceTask}`).subscribe({
+    // this.apiService.getData(`reminders`).subscribe({
     complete: () => {this.initDataTable(); },
     error: () => { },
     next: (result: any) => {
@@ -69,14 +92,16 @@ fetchReminders = async () => {
       for(let j=0; j < this.allRemindersData.length; j++) {
         if (this.allRemindersData[j].reminderType === 'service') {
           // USE BELOW LOGIC TO FETCH REMINDERS INSTEAD OF ISSUES
-          const issueId = 'b81aba00-1066-11eb-a5d6-113a0b66f655';
-          const selectedIssues: any = this.serviceLogs.filter( (s: any) =>  s.selectedIssues.some((issue: any) => issue === issueId));
-          console.log('selected issues', selectedIssues);
-          const lastCompleted = selectedIssues[0].completionDate;
+          // const issueId = 'b81aba00-1066-11eb-a5d6-113a0b66f655';
+          // const selectedIssues: any = this.serviceLogs.filter( (s: any) =>  s.selectedIssues.some((issue: any) => issue === issueId));
+          // console.log('selected issues', selectedIssues);
+          // const lastCompleted = selectedIssues[0].completionDate;
+          const lastCompleted = '18-11-2020';
           console.log('last completed', lastCompleted);
-          const serviceOdometer = +selectedIssues[0].odometer;
+          // const serviceOdometer = +selectedIssues[0].odometer;
+          const serviceOdometer = 3400;
           console.log('service odometer', serviceOdometer);
-          let convertedDate = moment(lastCompleted, 'DD/MM/YYYY').add(this.allRemindersData[j].reminderTasks.remindByDays,'days');
+          const convertedDate = moment(lastCompleted, 'DD/MM/YYYY').add(this.allRemindersData[j].reminderTasks.remindByDays,'days');
           const remainingDays = convertedDate.diff(this.currentDate, 'days');
           const remainingMiles = (serviceOdometer + (+this.allRemindersData[j].reminderTasks.odometer)) - this.currentOdometer;
           console.log('odometer', remainingMiles);
@@ -91,33 +116,27 @@ fetchReminders = async () => {
               remainingMiles: remainingMiles
             },
             subscribers : this.allRemindersData[j].subscribers,
-            lastCompleted: lastCompleted
+            lastCompleted: lastCompleted,
           };
-        this.remindersData.push(data);
+          this.remindersData.push(data);
         }
       }
       console.log('new data', this.remindersData);
     },
   });
 }
-setUnit(unitID, unitName) {
-  this.unitName = unitName;
-  this.unitID = unitID;
-
-  this.suggestedUnits = [];
+setVehicle(vehicleID, vehicleIdentification) {
+  this.vehicleIdentification = vehicleIdentification;
+  this.vehicleID = vehicleID;
+  this.suggestedVehicles = [];
 }
 getSuggestions(value) {
-  this.suggestedUnits = [];
   this.apiService
     .getData(`vehicles/suggestion/${value}`)
     .subscribe((result) => {
-      result = result.Items;
-
-      for(let i = 0; i < result.length; i++){
-        this.suggestedUnits.push({
-          unitID: result[i].vehicleID,
-          unitName: result[i].vehicleIdentification
-        });
+      this.suggestedVehicles = result.Items;
+      if (this.suggestedVehicles.length === 0) {
+        this.vehicleID = '';
       }
     });
 }
@@ -135,7 +154,7 @@ getSuggestions(value) {
   }
   initDataTable() {
     this.dtOptions = {
-      dom: 'Bfrtip', // lrtip to hide search field
+      dom: 'lrtip', // lrtip to hide search field
       processing: true,
       columnDefs: [
           {

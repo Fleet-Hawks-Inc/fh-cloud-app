@@ -1,0 +1,177 @@
+<section class="body">
+   <!-- start: header -->
+   <app-header></app-header>
+   <!-- end: header -->
+
+   <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->
+
+      <section role="main" class="content-body pr-0 pl-0 pt-0">
+         <header class="page-header">
+            <div class="row pr-5 " style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark pl-4"> {{title}} </div>
+               <div class="col-md-8  col-lg-8 text-right pr-4"> <a [routerLink]="['/alert-list']"
+                     class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Alerts</a> </div>
+            </div>
+         </header>
+         <div class="add-incident__main">
+            <div class="card pr-0">
+               <div class="card-body text-dark">
+                  <div class="row">
+                     <div class="col pr-0">
+                        <form class="form-horizontal form-bordered" method="get"  id="alertForm" name="alertForm">
+                           <div class=" row">
+                              <div class="col-lg-12">
+                                 <label
+                                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Basic
+                                    Details</label>
+                              </div>
+                              <div class="col-lg-5 offset-lg-1">
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Alert
+                                          Name</label>
+                                       <input type="text" class="form-control" [(ngModel)]="alert.alertName" name="alertName">
+                                    </div>
+                                 </div>
+                                 <div class="row pt-2">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Alert
+                                          Type</label>
+                                       <ng-select class="form-control" [(ngModel)]="alert.alertType" name="alertType">
+                                          <ng-option value="Geofence Entry">Geofence Entry</ng-option>
+                                          <ng-option value="Geofence Exit">Geofence Exit</ng-option>
+                                          <ng-option value="HOS Violations">HOS Violations</ng-option>
+                                          <ng-option value="Harsh Braking">Harsh Braking</ng-option>
+                                          <ng-option value="Harsh Acceleration">Harsh Acceleration</ng-option>
+                                          <ng-option value="Unidentified Driving">Unidentified Driving </ng-option>
+                                          <ng-option value="Unidentified Vehicle Motion">Unidentified Vehicle Motion
+                                          </ng-option>
+                                          <ng-option value="Speeding">Speeding</ng-option>
+                                       </ng-select>
+                                    </div>
+                                 </div>
+                                 <div class="row pt-2"
+                                    *ngIf="((alert.alertType === 'Geofence Entry') || (alert.alertType === 'Geofence Exit'))">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Geofence
+                                          Name</label>
+                                       <ng-select [(ngModel)]="alert.geofenceID" name="geofenceID">
+                                          <ng-option *ngFor="let item of geofences" value="{{item.geofenceID}}">
+                                             {{item.geofenceName}}</ng-option>
+
+                                       </ng-select>
+                                    </div>
+                                    <div class="col-lg-1 mar-top-37">
+                                       <a href="#addGeofenceModal" class="modal-with-form btn btn-sm btn-success"><i
+                                             class="fas fa-plus"></i></a>
+                                    </div>
+                                 </div>
+                                 <div class="row pt-2" *ngIf="alert.alertType === 'Speeding'">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Speed
+                                          <small>more than specified speed limit</small></label>
+                                       <div class="row">
+                                          <div class="col-lg-3"><input type="number" class="form-control" value=""
+                                                [(ngModel)]="alert.speedLimit" name="speedLimit"></div>
+                                          <div class="col-lg-6"><label
+                                                class="control-label font-weight-bold">mph</label></div>
+                                       </div>
+                                    </div>
+                                 </div>
+
+                              </div>
+                              <div class="col-lg-5 offset-lg-1">
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                          Vehicle(s)</label>
+                                       <ng-select [(ngModel)]="alert.vehicles" [multiple]=true name="vehicles">
+                                          <ng-option *ngFor="let item of vehicles" value="{{item.vehicleID}}">
+                                             {{item.vehicleIdentification}}</ng-option>
+                                       </ng-select>
+                                    </div>
+                                 </div>
+                                 <div class="row pt-2">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                          Driver(s)</label>
+                                       <ng-select [(ngModel)]="alert.drivers" [multiple]=true name="drivers">
+                                          <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">
+                                             {{driver.firstName}} {{driver.lastName}}</ng-option>
+                                       </ng-select>
+                                    </div>
+                                 </div>
+                                 <div class="row pt-2">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                          Asset(s)</label>
+
+                                       <ng-select [(ngModel)]="alert.assets" [multiple]=true name="assets">
+                                          <ng-option *ngFor="let item of assets" value="{{item.assetID}}">
+                                             {{item.assetIdentification}}</ng-option>
+
+                                       </ng-select>
+
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row pt-2">
+                              <div class="col-lg-12">
+                                 <label
+                                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Alert
+                                    Recipients</label>
+                              </div>
+                              <div class="col-lg-5 offset-lg-1">
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                          Group(s)</label>
+                                       <ng-select [(ngModel)]="alert.groups" [multiple]=true name="groups">
+                                          <ng-option *ngFor="let item of groups" value="{{item.groupID}}">
+                                             {{item.groupName}}</ng-option>
+
+                                       </ng-select>
+                                    </div>
+                                 </div>
+                                 <div class="row pt-2">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                          User(s)</label>
+                                       <ng-select [(ngModel)]="alert.users" [multiple]=true name="users">
+                                          <ng-option *ngFor="let user of users" value="{{user.userName}}">
+                                             {{user.userName}}</ng-option>
+
+                                       </ng-select>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-5 offset-lg-1">
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Enter Email(s)
+                                          <small>Separate Email Address By Comma</small></label>
+                                       <textarea class="form-control" rows="4" [(ngModel)]="alert.otherEmails" name="otherEmails"></textarea>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-lg-11 text-right pr-0">
+                                 <button type="button" class="btn btn-default mt-4 mr-2"
+                                    onclick="goBack()">Cancel</button>
+                                 <button type="button" class="btn btn-success mt-4 " (click)="addAlert()">Save</button>
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+   </div>
+</section>

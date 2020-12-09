@@ -24,15 +24,20 @@ export class VehicleRenewAddComponent implements OnInit {
     },
     subscribers: []
   };
+  serviceTask = {
+    taskType: 'vehicle'
+  };
   test = [];
   midArray = [];
   numberOfDays: number;
+  groupData = {};
   time = 1;
   timeType = 'Day(s)';
   finalSubscribers = [];
   vehicles = [];
   users = [];
   groups = [];
+  serviceTasks = [];
   vehicleRenewalForm;
   errors = {};
   Error = '';
@@ -47,22 +52,29 @@ export class VehicleRenewAddComponent implements OnInit {
   }
   ngOnInit() {
     this.reminderID = this.route.snapshot.params[`reminderID`];
+    this.fetchServiceTaks();
+    this.fetchVehicles();
+    this.fetchUsers();
+    this.fetchGroups();
     if (this.reminderID) {
       this.pageTitle = 'Edit Vehicle Renewal Reminder';
       this.fetchReminderByID();
-      this.fetchVehicles();
-      this.fetchUsers();
-      this.fetchGroups();
     } else {
-      this.pageTitle = 'Add Vehicle Renewal Reminder';
-      this.fetchVehicles();
-      this.fetchUsers();
-      this.fetchGroups();
+      this.pageTitle = 'Add Vehicle Renewal Reminder'; 
     }
 
     $(document).ready(() => {
       this.vehicleRenewalForm = $('#vehicleRenewalForm').validate();
     });
+  }
+  fetchServiceTaks() {
+    let test = [];
+    let taskType = 'vehicle';
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
+      test = result.Items;
+      this.serviceTasks = test.filter((s: any) => s.taskType === 'vehicle');
+    });    
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
@@ -250,5 +262,67 @@ export class VehicleRenewAddComponent implements OnInit {
     else {
       this.toastr.warning('Time Must Be Positive Value');
     }
+  }
+
+    // SERVICE TASK
+    addServiceTask(){
+      console.log('servcie task data', this.serviceTask);
+      this.apiService.postData('tasks', this.serviceTask).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          $('#addServiceTasks').modal('toggle');
+          this.toastr.success('Renewal Type Added Successfully');
+          this.fetchServiceTaks();
+          this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/add');
+        },
+      });
+    }
+     // GROUP MODAL
+  addGroup() {
+    this.apiService.postData('groups', this.groupData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.fetchGroups();
+        this.toastr.success('Group added successfully');
+        $('#addGroupModal').modal('hide');
+
+
+      },
+    });
   }
 }
