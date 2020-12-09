@@ -5,6 +5,10 @@ import {ApiService} from '../../../../services';
 import {AwsUploadService} from '../../../../services';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { map } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+declare var $: any;
 
 @Component({
   selector: 'app-asset-detail',
@@ -18,7 +22,7 @@ export class AssetDetailComponent implements OnInit {
   public assetsDocs = [];
   public assetID;
   public assetData: any;
-  public deviceData: any;
+  public deviceData;
   carrierID;
 
   assetIdentification: string;
@@ -41,8 +45,15 @@ export class AssetDetailComponent implements OnInit {
   premiumAmount: string;
   reminderBefore: string;
   vendor: string;
+  
+  devices;
+  allDevices = [];
+
+  errors = {};
 
   statesObject: any = {};
+
+  messageStatus: boolean = true;
   // Charts
   public chartOptions = {
     scaleShowVerticalLines: false,
@@ -92,7 +103,8 @@ export class AssetDetailComponent implements OnInit {
       borderWidth: 1,
     }
   ];
-  constructor(public hereMap: HereMapService, private domSanitizer: DomSanitizer, private awsUS: AwsUploadService,
+  constructor(public hereMap: HereMapService, private toastr: ToastrService,
+              private domSanitizer: DomSanitizer, private awsUS: AwsUploadService,
               private apiService: ApiService, private route: ActivatedRoute, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
@@ -100,20 +112,24 @@ export class AssetDetailComponent implements OnInit {
     this.assetID = this.route.snapshot.params['assetID']; // get asset Id from URL
     this.fetchAsset();
     this.fetchDeviceInfo();
-    this.fetchAllStatesIDs()
+    this.fetchAllStatesIDs();
   }
 
   /**
    * fetch Asset data
    */
-  fetchAsset() {
+  async fetchAsset() {
     this.spinner.show(); // loader init
     this.apiService
       .getData(`assets/${this.assetID}`)
       .subscribe((result: any) => {
         if (result) {
           this.assetData = result.Items[0];
-          console.log(this.assetData)
+          // console.log(this.assetData)
+          if (!this.assetData.hasOwnProperty('devices')) {
+            this.assetData['devices'] = [];
+          }
+          this.fetchDevicesByID();
           this.assetIdentification = this.assetData.assetIdentification;
           this.VIN = this.assetData.VIN;
           this.assetType =  this.assetData.assetDetails.assetType;
@@ -150,6 +166,7 @@ export class AssetDetailComponent implements OnInit {
       .subscribe((result: any) => {
         if (result) {
           this.deviceData = result['Items'];
+          console.log('deviceData', this.deviceData);
         }
       }, (err) => {
         console.log('asset detail', err);
@@ -163,6 +180,17 @@ export class AssetDetailComponent implements OnInit {
       });
   }
 
+  fetchDevicesByID() {
+    this.allDevices = [];
+    if (this.assetData.devices) {
+      this.assetData.devices.forEach( async element => {
+        let result = await this.apiService.getData('devices/' + element).toPromise();
+        this.allDevices.push(result.Items[0]);
+      });
+      console.log('allDevices', this.allDevices);
+    }
+  }
+
   getImages = async () => {
     this.carrierID = await this.apiService.getCarrierID();
     for (let i = 0; i <= this.assetData.length; i++) {
@@ -173,6 +201,82 @@ export class AssetDetailComponent implements OnInit {
       this.assetsImages.push(this.image);
     }
 
+  }
+  
+  removeDevices(i) {
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.assetData.devices.splice(i, 1);
+      this.allDevices.splice(i, 1);
+      this.messageStatus = false;
+      this.addDevice();
+      // this.fetchAsset();
+    }
+    
+  }
+  addDevicesIDs() {
+    if (!this.assetData.devices.includes(this.devices)) {
+      this.assetData.devices.push(this.devices);
+    } else {
+      this.toastr.error("Device already selected");
+    }
+    this.fetchDevicesByID();
+    // console.log('assetData', this.assetData);
+  }
+
+  addDevice() {
+    delete this.assetData.carrierID;
+    delete this.assetData.timeModified;
+    console.log('assetData', this.assetData);
+    this.apiService.postData('assets/' + this.assetID, this.assetData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/'.*'/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.spinner.hide(); // loader hide
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        if (this.messageStatus) {
+          this.toastr.success('Device added successfully');
+        } else {
+          this.toastr.success('Device updated successfully');
+        }
+        $('#attachDeviceModal').modal('hide');
+      },
+    });
+  }
+
+  throwErrors() {
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label');
+      });
+    this.errors = {};
   }
 
 }

@@ -20,6 +20,9 @@ export class ServiceListComponent implements OnInit {
   currentStatus = '';
   vehicleIdentification = '';
   vehiclesObject: any = {};
+  vendorsObject: any = {};
+  issuesObject: any = {};
+  assetsObject: any = {};
 
   constructor(
       private apiService: ApiService,
@@ -30,6 +33,9 @@ export class ServiceListComponent implements OnInit {
   ngOnInit() {
     this.fetchLogs();
     this.fetchAllVehiclesIDs();
+    this.fetchAllVendorsIDs();
+    this.fetchAllIssuesIDs();
+    this.fetchAllAssetsIDs();
   }
 
   getSuggestions(value) {
@@ -37,7 +43,7 @@ export class ServiceListComponent implements OnInit {
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
         this.suggestedVehicles = result.Items;
-        if(this.suggestedVehicles.length == 0){
+        if (this.suggestedVehicles.length === 0) {
           this.vehicleID = '';
         }
       });
@@ -56,6 +62,31 @@ export class ServiceListComponent implements OnInit {
         this.vehiclesObject = result;
       });
   }
+
+  fetchAllVendorsIDs() {
+    this.apiService.getData('vendors/get/list')
+      .subscribe((result: any) => {
+        this.vendorsObject = result;
+        console.log('vendorsObject', this.vendorsObject);
+      });
+  }
+
+  fetchAllIssuesIDs() {
+    this.apiService.getData('issues/get/list')
+      .subscribe((result: any) => {
+        this.issuesObject = result;
+        console.log('issuesObject', this.issuesObject);
+      });
+  }
+
+  fetchAllAssetsIDs() {
+    this.apiService.getData('assets/get/list')
+      .subscribe((result: any) => {
+        this.assetsObject = result;
+      });
+  }
+
+  
 
 
   fetchLogs() {
@@ -76,7 +107,7 @@ export class ServiceListComponent implements OnInit {
   deleteProgram(logId) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .deleteData('servicePrograms/' + logId)
+      .deleteData('serviceLogs/' + logId)
       .subscribe((result: any) => {
         this.fetchLogs();
       });
@@ -98,5 +129,6 @@ export class ServiceListComponent implements OnInit {
       
     };
   }
+  
 
 }

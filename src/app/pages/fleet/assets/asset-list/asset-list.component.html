@@ -29,10 +29,9 @@
                      [(ngModel)]="currentStatus" 
                      name="currentStatus"
                      class="form-control populate">
-                     <optgroup label="Select Status">
-                         <option value="">All</option>
-                         <option value="active">Active</option>
-                         <option value="inActive">Inactive</option>
+                     <optgroup label="Select Type">
+                        <option *ngFor="let item of allAssetTypes;" value="{{item.description}}">{{item.description}}</option>
+                         
                      </optgroup>
                   </select>
                </div>
@@ -169,7 +168,7 @@
                <tbody>
                   <tr *ngFor="let item of allData;let i = index">
                      <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
-                     <td>{{allAssetTypes[item.assetDetails.assetType]}}</td>                                          
+                     <td>{{assetTypesObects[item.assetDetails.assetType]}}</td>                                          
                      <td>{{item.assetDetails.licencePlateNumber}}</td>
                      <td >Live Location</td>
                      <td >{{item.assetDetails.year}}</td>

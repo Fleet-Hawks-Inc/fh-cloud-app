@@ -336,9 +336,9 @@
 												<div class="col-lg-6 pl-0">
 													<select [(ngModel)]="assetsData.insuranceDetails.reminderBeforeUnit" name="insuranceDetails.reminderBeforeUnit" data-plugin-selectTwo class="form-control populate">
 														<optgroup label="">
-															<option value="1">Day(s)</option>
-															<option value="2">Week(s)</option>
-															<option value="2">Month(s)</option>
+															<option value="Day(s)">Day(s)</option>
+															<option value="Week(s)">Week(s)</option>
+															<option value="Month(s)">Month(s)</option>
 														</optgroup>
 													</select>
 												</div>
@@ -1230,31 +1230,3 @@
     </section> -->
 	</div>
 </section>
-
-<div id="modalAnim" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">
-					&times;
-				</button>
-				<!--<h4 class="modal-title">Assign Quantum</h4>-->
-			</div>
-			<div class="modal-body">
-				<h4 class="modal-title">Assign Quantum</h4>
-				<select data-plugin-selectTwo class="form-control populate" [(ngModel)]="quantumSelected"
-					name="quantum info" (ngModelChange)="onChange($event)">
-					<option *ngFor="let q of quantumsList" value="{{ q.deviceID }}">{{
-            q.sNo
-          }}</option>
-				</select>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					Close
-				</button>
-			</div>
-		</div>
-	</div>
-</div>
