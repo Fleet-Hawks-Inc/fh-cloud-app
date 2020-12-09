@@ -316,6 +316,7 @@ export class AddFuelEntryComponent implements OnInit {
         this.fuelData[`discount`] = result.discount;
         this.fuelData[`totalAmount`] = result.totalAmount;
         this.fuelData[`costPerGallon`] = result.costPerGallon;
+        this.costPerUnit = result.costPerGallon;
         this.fuelData[`totalGallons`] = result.totalGallons;
         this.fuelData[`amountPaid`] = result.amountPaid;
         this.fuelData[`fuelDate`] = result.fuelDate;

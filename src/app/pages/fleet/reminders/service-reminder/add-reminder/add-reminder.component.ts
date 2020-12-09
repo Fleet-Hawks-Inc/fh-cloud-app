@@ -27,10 +27,13 @@ export class AddReminderComponent implements OnInit {
   numberOfDays: number;
   time = 1;
   timeType = 'Day(s)';
-  serviceTask = {};
+  serviceTask = {
+    taskType: 'service'
+  };
   vehicles = [];
   users = [];
   groups = [];
+  groupData = {};
   finalSubscribers = [];
   serviceTasks = [];
   serviceForm;
@@ -65,9 +68,13 @@ export class AddReminderComponent implements OnInit {
     });
   }
   fetchServiceTaks() {
+    let test = [];
+    let taskType = 'service';
     this.apiService.getData('tasks').subscribe((result: any) => {
-      this.serviceTasks = result.Items;
-    });
+      // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
+      test = result.Items;
+      this.serviceTasks = test.filter((s: any) => s.taskType === 'service');
+    });    
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
@@ -306,6 +313,37 @@ export class AddReminderComponent implements OnInit {
         this.toastr.success('Service Task Added Successfully');
         this.fetchServiceTaks();
         this.router.navigateByUrl('/fleet/reminders/service-reminder/add');
+      },
+    });
+  }
+  // GROUP MODAL
+  addGroup() {
+    this.apiService.postData('groups', this.groupData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.fetchGroups();
+        this.toastr.success('Group added successfully');
+        $('#addGroupModal').modal('hide');
+
+
       },
     });
   }

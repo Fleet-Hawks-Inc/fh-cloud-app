@@ -22,6 +22,9 @@ export class AddContactRenewComponent implements OnInit {
     },
     subscribers: []
   };
+  serviceTask = {
+    taskType: 'contact'
+  };
   contactRenewalForm;
   numberOfDays: number;
   time = 1;
@@ -31,7 +34,9 @@ export class AddContactRenewComponent implements OnInit {
   users = [];
   test = [];
   groups = [];
+  groupData = {};
   finalSubscribers = [];
+  serviceTasks = [];
   form;
   errors = {};
   Error: string;
@@ -51,6 +56,7 @@ export class AddContactRenewComponent implements OnInit {
     this.fetchUsers();
     this.fetchGroups();
     this.fetchContacts();
+    this. fetchServiceTaks();
     $(document).ready(() => {
       this.contactRenewalForm = $('#contactRenewalForm').validate();
     });
@@ -60,6 +66,15 @@ export class AddContactRenewComponent implements OnInit {
     } else {
       this.pageTitle = ' Add Contact Renewal Reminder';
     }
+  }
+  fetchServiceTaks() {
+    let test = [];
+    let taskType = 'contact';
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
+      test = result.Items;
+      this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
+    });    
   }
   fetchUsers() {
     this.apiService.getData('users').subscribe((result: any) => {
@@ -249,5 +264,67 @@ export class AddContactRenewComponent implements OnInit {
     } else {
       this.toastr.warning('Time Must Be Positive Value');
     }
+  }
+
+   // SERVICE TASK
+   addServiceTask(){
+    console.log('servcie task data', this.serviceTask);
+    this.apiService.postData('tasks', this.serviceTask).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        $('#addServiceTasks').modal('toggle');
+        this.toastr.success('Renewal Type Added Successfully');
+        this.fetchServiceTaks();
+        this.router.navigateByUrl('/fleet/reminders/contact-renewals/add');
+      },
+    });
+  }
+  // GROUP MODAL
+  addGroup() {
+    this.apiService.postData('groups', this.groupData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.fetchGroups();
+        this.toastr.success('Group added successfully');
+        $('#addGroupModal').modal('hide');
+
+
+      },
+    });
   }
 }

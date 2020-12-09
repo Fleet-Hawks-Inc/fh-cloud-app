@@ -65,9 +65,9 @@
 
                               </div> 
                              <div class="col-lg-1 pl-0" style="margin-top: 39px !important">
-                                 <a data-toggle="modal" data-target="#addsubsuser"
-                                    class="modal-with-form btn btn-sm btn-success text-light"><i
-                                       class="fas fa-plus"></i></a>
+                              <button type="button" data-toggle="modal" data-target="#addGroupModal"
+                              class="modal-with-form btn btn-sm btn-success text-light"><i
+                                 class="fas fa-plus"></i></button>
                               </div> 
 
                            </div>
@@ -77,10 +77,17 @@
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                     Renewal Type</label>
-                                 <ng-select [(ngModel)]="reminderData.reminderTasks.task" name="task">
-                                    <ng-option value="Licence">Licence</ng-option>
-                                    <ng-option value="Certification">Certification</ng-option>
+                                    <ng-select [(ngModel)]="reminderData.reminderTasks.task"
+                                    name="task" style="width: 100%;">
+                                    <optgroup label="Select Service Task">
+                                       <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
+                                       </ng-option>
+                                    </optgroup>
                                  </ng-select>
+                              </div>
+                              <div class="col-lg-1 pl-0" style="margin-top: 38px !important;">
+                                 <button type="button" data-toggle="modal" data-target="#addServiceTasks" class="modal-with-form btn btn-sm btn-success"><i
+                                       class="fas fa-plus"></i></button>
                               </div>
                            </div>
                            <div class="row pt-2">
@@ -128,3 +135,86 @@
       </section>
    </div>
 </section>
+
+<!-- ADD TASK MODAL -->
+<div class="modal fade" id="addServiceTasks" tabindex="-1" role="dialog" aria-labelledby="serviceTaskModalTitle"
+   aria-hidden="true">
+   <div class="modal-dialog" style="max-width: 600px;" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="serviceTaskModalTitle">Add Renewal Type</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+           </button>
+         </div>
+         <div class="modal-body text-dark">
+           <form id="serviceTaskForm" name="serviceTaskForm" class="form-horizontal form-bordered" method="get">
+             <div class="row">
+                <div class="col-lg-12">
+                  <label
+                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Name</label>
+               <input [(ngModel)]="serviceTask.taskName"
+                  name="taskName" type="text" class="form-control">
+                </div>
+             </div>
+             <div class="row mt-2">
+               <div class="col-lg-12">
+                 <label
+                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Type Description</label>              
+                 <textarea class="form-control" rows="3" [(ngModel)]="serviceTask.description" name="description"></textarea>
+               </div>
+            </div>
+           </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" (click)="addServiceTask()">Save</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- GROUP MODAL -->
+<div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal" aria-hidden="true">
+   <div class="modal-dialog" style="max-width: 600px;" role="document">
+     <div class="modal-content">
+      <div class="modal-header">
+         <h5 class="modal-title">Add Group</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+             </button>
+      </div>
+      <div class="modal-body text-dark">
+             <div class="card-body p-0">
+            <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
+               <div class="form-row">
+                 <div class="form-group col-lg-6">
+                   <label class="control-label font-weight-bold">Group Name</label>
+                   <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"> 
+                 </div>
+                 <div class="form-group col-lg-6">
+                   <label class="control-label font-weight-bold">Group Type</label>
+                   <input [(ngModel)]="groupData.groupType" name="groupType" type="text" class="form-control"> 
+                 </div>
+               </div>
+               <div class="form-row">
+                 <div class="form-group col-lg-12">
+                   <div class="row">
+                     <div class="col-lg-12">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Description</label>
+                        <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment"></textarea>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+            </form>
+          </div>
+      </div>
+      <div class="modal-footer text-right">
+         
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         <button type="button" class="btn btn-success" (click)="addGroup()">Save</button>
+      </div>
+   </div>
+</div>
+</div>

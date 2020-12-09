@@ -71,9 +71,13 @@ export class ListingComponent implements OnInit {
     });
   }
   fetchServiceTaks() {
+    let test = [];
+    let taskType = 'service';
     this.apiService.getData('tasks').subscribe((result: any) => {
-      this.serviceTasks = result.Items;
-    });
+      // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
+      test = result.Items;
+      this.serviceTasks = test.filter((s: any) => s.taskType === 'service');
+    });    
   }
 fetchReminders = async () => {
    console.log('serach service task', this.searchServiceTask);

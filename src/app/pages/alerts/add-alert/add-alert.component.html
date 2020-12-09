@@ -11,17 +11,17 @@
       <section role="main" class="content-body pr-0 pl-0 pt-0">
          <header class="page-header">
             <div class="row pr-5 " style="padding-top:10px;">
-               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark pl-4"> Add Alert </div>
-               <div class="col-md-8  col-lg-8 text-right pr-4"> <a [routerLink]="['alert-list']"
+               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark pl-4"> {{title}} </div>
+               <div class="col-md-8  col-lg-8 text-right pr-4"> <a [routerLink]="['/alert-list']"
                      class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Alerts</a> </div>
             </div>
          </header>
          <div class="add-incident__main">
             <div class="card pr-0">
-               <div class="card-body">
+               <div class="card-body text-dark">
                   <div class="row">
                      <div class="col pr-0">
-                        <form class="form-horizontal form-bordered text-dark">
+                        <form class="form-horizontal form-bordered" method="get"  id="alertForm" name="alertForm">
                            <div class=" row">
                               <div class="col-lg-12">
                                  <label
@@ -33,7 +33,7 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Alert
                                           Name</label>
-                                       <input type="text" class="form-control">
+                                       <input type="text" class="form-control" [(ngModel)]="alert.alertName" name="alertName">
                                     </div>
                                  </div>
                                  <div class="row pt-2">
@@ -142,8 +142,8 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                           User(s)</label>
                                        <ng-select [(ngModel)]="alert.users" [multiple]=true name="users">
-                                          <ng-option *ngFor="let item of users" value="{{item.userID}}">
-                                             {{item.userName}}</ng-option>
+                                          <ng-option *ngFor="let user of users" value="{{user.userName}}">
+                                             {{user.userName}}</ng-option>
 
                                        </ng-select>
                                     </div>
@@ -154,7 +154,7 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Enter Email(s)
                                           <small>Separate Email Address By Comma</small></label>
-                                       <textarea class="form-control" rows="4"></textarea>
+                                       <textarea class="form-control" rows="4" [(ngModel)]="alert.otherEmails" name="otherEmails"></textarea>
                                     </div>
                                  </div>
                               </div>

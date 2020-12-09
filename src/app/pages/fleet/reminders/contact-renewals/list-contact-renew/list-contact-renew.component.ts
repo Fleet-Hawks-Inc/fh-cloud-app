@@ -10,30 +10,49 @@ import * as moment from 'moment';
   styleUrls: ['./list-contact-renew.component.css']
 })
 export class ListContactRenewComponent implements OnInit {
-  public remindersData = [];
+  public remindersData: any = [];
   contacts: [];
   contactList: any = {};
+  tasksList: any = {};
   allRemindersData = [];
   subcribersArray = [];
   groups: any = {};
   dtOptions: any = {};
   currentDate = moment();
   newData = [];
-  filterStatus = 'ALL';
+  filterStatus: string;
   contactID = '';
   firstName = '';
+  serviceTasks = [];
   searchServiceTask = '';
   suggestedContacts = [];
+  filterValue = "item.reminderTasks.reminderStatus == 'OVERDUE' || item.reminderTasks.reminderStatus == 'DUE SOON'";
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
+    this.fetchServiceTaks();
     this.fetchRenewals();
     this.fetchGroups();
     this.fetchContactList();
+    this.fetchTasksList();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
+    });
+  }
+  fetchTasksList() {
+    this.apiService.getData('tasks/get/list').subscribe((result: any) => {
+      this.tasksList = result;
+    });
+  }
+  fetchServiceTaks() {
+    let test = [];
+    let taskType = 'contact';
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
+      test = result.Items;
+      this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
     });
   }
   fetchGroups() {
@@ -47,12 +66,7 @@ export class ListContactRenewComponent implements OnInit {
     });
   }
   setFilterStatus(val) {
-    if(val === 'ALL') {
-      this.fetchRenewals();
-    }
-    else {
-      this.filterStatus = val;
-    }
+    this.filterStatus = val;
   }
   setContact(contactID, firstName) {
     this.firstName = firstName;
@@ -68,31 +82,27 @@ export class ListContactRenewComponent implements OnInit {
           this.contactID = '';
         }
       });
-      console.log('suggested contacts', this.suggestedContacts);
+    console.log('suggested contacts', this.suggestedContacts);
   }
   fetchRenewals = async () => {
-      this.remindersData = [];
-    // this.apiService.getData(`reminders`).subscribe({
-      this.apiService.getData(`reminders?reminderIdentification=${this.contactID}&serviceTask=${this.searchServiceTask}`).subscribe({
-      complete: () => {this.initDataTable(); },
+    this.remindersData = [];
+    this.apiService.getData(`reminders?reminderIdentification=${this.contactID}&serviceTask=${this.searchServiceTask}`).subscribe({
+      complete: () => { this.initDataTable(); },
       error: () => { },
       next: (result: any) => {
         this.allRemindersData = result.Items;
-        for(let j=0; j < this.allRemindersData.length; j++) {
-          let reminderStatus = '';
+        for (let j = 0; j < this.allRemindersData.length; j++) {
+          let reminderStatus: string;
           if (this.allRemindersData[j].reminderType === 'contact') {
-            const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate,'DD-MM-YYYY');
+            const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate, 'DD-MM-YYYY');
             const remainingDays = convertedDate.diff(this.currentDate, 'days');
             console.log('remaining days', remainingDays);
             if (remainingDays < 0) {
               reminderStatus = 'OVERDUE';
             }
-            else if( remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays &&  remainingDays >= 0) {
+            else if (remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays && remainingDays >= 0) {
               reminderStatus = 'DUE SOON';
             }
-            // else{
-            //   reminderStatus = 'NoStatus';
-            // }
             const data = {
               reminderID: this.allRemindersData[j].reminderID,
               reminderIdentification: this.allRemindersData[j].reminderIdentification,
@@ -103,23 +113,34 @@ export class ListContactRenewComponent implements OnInit {
                 reminderStatus: reminderStatus,
                 dueDate: this.allRemindersData[j].reminderTasks.dueDate,
               },
-              subscribers : this.allRemindersData[j].subscribers,
-             };
-             this.remindersData.push(data); 
+              subscribers: this.allRemindersData[j].subscribers,
+            };
+            this.remindersData.push(data);
           }
         }
-        console.log('new data', this.remindersData);
+        // console.log('new data', this.remindersData);
+        // console.log('filter status', this.filterStatus);
+        if (this.filterStatus === 'OVERDUE') {
+          this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === 'OVERDUE');
+        }
+        else if (this.filterStatus === 'DUE SOON') {
+          this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === 'DUE SOON');
+        }
+        else {
+          this.remindersData = this.remindersData;
+        }
       },
     });
+
   }
- 
+
   deleteRenewal(entryID) {
     this.apiService
       .deleteData('reminders/' + entryID)
       .subscribe((result: any) => {
         this.fetchRenewals();
         this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
-       
+
       });
   }
   initDataTable() {
@@ -127,26 +148,26 @@ export class ListContactRenewComponent implements OnInit {
       dom: 'Bfrtip', // lrtip to hide search field
       processing: true,
       columnDefs: [
-          {
-              targets: 0,
-              className: 'noVis'
-          },
-          {
-              targets: 1,
-              className: 'noVis'
-          },
-          {
-              targets: 2,
-              className: 'noVis'
-          },
-          {
-              targets: 3,
-              className: 'noVis'
-          },
-          {
-              targets: 4,
-              className: 'noVis'
-          }
+        {
+          targets: 0,
+          className: 'noVis'
+        },
+        {
+          targets: 1,
+          className: 'noVis'
+        },
+        {
+          targets: 2,
+          className: 'noVis'
+        },
+        {
+          targets: 3,
+          className: 'noVis'
+        },
+        {
+          targets: 4,
+          className: 'noVis'
+        }
       ],
       colReorder: {
         fixedColumnsLeft: 1
