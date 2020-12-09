@@ -37,8 +37,8 @@
                                 Routing & Dispatch
                             </a>
                         </li> -->
-                        <li class="">
-                            <a class="nav-link" [routerLink]="['/dispatch', 'home', 'routing-dispatch-overview']" (click)="onNavSelected('dispatch')">
+                        <li class="" [class.active]="navSelected === 'dispatch'">
+                            <a class="nav-link" [routerLink]="" (click)="onNavSelected('dispatch')">
                                 Routing & Dispatch 
                             </a>
                         </li>

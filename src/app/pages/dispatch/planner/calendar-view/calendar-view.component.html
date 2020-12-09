@@ -95,8 +95,8 @@
                                              </div>
                                              <a href="javascript:;" (click)="showAssignModal(trip.tripID)" class="pull-right modal-with-form btn btn-success btn-sm">Assign</a>
                                           </h5>
-                                          <p class="mb-1"><b>P/L:</b> {{ trip.pickupLocation }}, {{ trip.pickupCity }}, {{ trip.pickupState }}, {{ trip.pickupCountry }}</p>
-                                          <p class="mb-1" *ngIf="trip.deliveryLocation != '' else locBlock "><b>D/L:</b> {{ trip.deliveryLocation }}, {{ trip.deliveryCity }}, {{ trip.deliveryState }}, {{ trip.deliveryCountry }}</p>
+                                          <p class="mb-1"><b>P/L:</b> {{ trip.pickupLocation }}, {{ citiesObject[trip.pickupCityID] }}, {{ statesObject[trip.pickupStateID] }}, {{ countriesObject[trip.pickupCountryID] }}</p>
+                                          <p class="mb-1" *ngIf="trip.deliveryLocation != '' else locBlock "><b>D/L:</b> {{ trip.deliveryLocation }}, {{ citiesObject[trip.dropCityID] }}, {{ statesObject[trip.dropStateID] }}, {{ countriesObject[trip.dropCountryID] }}</p>
                                           <ng-template #locBlock>
                                             <p class="mb-1"><b>D/L:</b>- </p>
                                           </ng-template>

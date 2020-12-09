@@ -321,7 +321,9 @@
                                                             <option value="">Select Carrier </option>
                                                             <option *ngFor="let carrier of carriers"
                                                                 value="{{ carrier.carrierID }}">
-                                                                {{ carrier.businessDetail.carrierName }}</option>
+                                                                {{ carrier.carrierName }}
+                                                                <!-- {{ carrier.businessDetail.carrierName }} -->
+                                                            </option>
                                                         </select>
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
@@ -415,7 +417,9 @@
                                                             <option value="">Select Carrier </option>
                                                             <option *ngFor="let carrier of carriers"
                                                                 value="{{ carrier.carrierID }}">
-                                                                {{ carrier.businessDetail.carrierName }}</option>
+                                                                {{ carrier.carrierName }}
+                                                                <!-- {{ carrier.businessDetail.carrierName }} -->
+                                                            </option>
                                                         </select>
                                                     </td>
                                                     <td>
@@ -585,11 +589,11 @@
                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="loadFTL-tab" data-toggle="tab" href="#loadFTL" role="tab"
-                                    aria-controls="loadFTL" aria-selected="true">FTL</a>
+                                    aria-controls="loadFTL" aria-selected="true" (click)="changeOrderTab('FTL')">FTL</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="loadLTL-tab" data-toggle="tab" href="#loadLTL" role="tab"
-                                    aria-controls="loadLTL" aria-selected="false">LTL</a>
+                                    aria-controls="loadLTL" aria-selected="false" (click)="changeOrderTab('LTL')">LTL</a>
                             </li>
                         </ul>
                     </div>
@@ -605,8 +609,7 @@
                                                     class="table table-bordered table-striped mb-0 dataTable no-footer">
                                                     <thead>
                                                         <tr class="" role="row">
-                                                            <th><input type="checkbox" name="checkUncheckftl"
-                                                                    (change)="checkUncheckAll('ftl')"></th>
+                                                            <th></th>
                                                             <th class="text-2">Order#</th>
                                                             <th class="text-2">Customer</th>
                                                             <th class="text-2">P/L</th>
@@ -619,7 +622,7 @@
                                                         <tr class="ui-sortable-handle odd" role="row"
                                                             *ngFor="let order of ftlOrders">
                                                             <td class="sorting_1">
-                                                                <input type="checkbox" value="{{ order.orderNumber }}"
+                                                                <input type="radio" value="{{ order.orderNumber }}"
                                                                     name="ftlOrderIds" (change)="selectOrderIDS('ftl')">
                                                             </td>
                                                             <td class="loadid"><span class="FTLload">FTL</span><br>
@@ -685,7 +688,7 @@
                     <div class="col-md-12 text-right">
                         <a class="btn btn-success modal-confirm mr-3" href="javascript:;"
                             (click)="saveSelectOrderIDS()">Select</a>
-                        <button class="btn btn-default modal-dismiss">Cancel</button>
+                        <button class="btn btn-default modal-dismiss" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </form>

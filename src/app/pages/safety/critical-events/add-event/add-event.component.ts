@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
+import * as moment from "moment";
 
 declare var $: any;
 
@@ -20,7 +21,7 @@ export class AddEventComponent implements OnInit {
     errors = {};
     event = {
         eventDate: '',
-        filterDate: '',
+        date: <any>'',
         eventTime: '',
         location: '',
         username: '',
@@ -148,8 +149,12 @@ export class AddEventComponent implements OnInit {
         this.spinner.show();
         this.hideErrors();
 
+        let timestamp;
         let fdate = this.event.eventDate.split('-');
-        this.event.filterDate = fdate[2]+fdate[1]+fdate[0];
+        let date = fdate[2]+'-'+fdate[1]+'-'+fdate[0];
+        timestamp = moment(date+' '+ this.event.eventTime).format("X");
+        this.event.date = timestamp*1000;
+
         this.apiService.postData('safety/eventLogs', this.event).subscribe({
             complete: () => {},
             error: (err: any) => {
@@ -188,18 +193,18 @@ export class AddEventComponent implements OnInit {
               .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
               .addClass('error')
           });
-    }
-
+      }
+    
     hideErrors() {
         from(Object.keys(this.errors))
-        .subscribe((v) => {
-        $('[name="' + v + '"]')
-            .removeClass('error')
-            .next()
-            .remove('label')
-        });
+          .subscribe((v) => {
+            $('[name="' + v + '"]')
+              .removeClass('error')
+              .next()
+              .remove('label')
+          });
         this.errors = {};
-    }
+      }
     
     uploadFiles = async () => {
         this.carrierID = await this.apiService.getCarrierID();
