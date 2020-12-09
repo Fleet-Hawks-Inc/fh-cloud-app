@@ -16,7 +16,8 @@ declare var $: any;
 })
 export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   pageTitle: string;
-  private vehicles;
+  vehicles: any;
+  tasks = [];
   private programID;
   serviceData = {
     serviceScheduleDetails: [{
@@ -27,7 +28,9 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     }]
   };
 
-  taskData = {};
+  taskData = {
+    taskType: 'service',
+  };
 
   errors = {};
   form;
@@ -65,6 +68,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       this.pageTitle = 'New Service Program';
     }
     this.fetchVehicles();
+    this.fetchTasks();
     $(document).ready(() => {
       this.form = $('#form_, #form1_').validate();
     });
@@ -167,7 +171,8 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
           // this.Success = 'Service Program Added successfully';
           this.toastr.success('Service Task added successfully');
           $('#addServiceTaskModal').modal('hide');
-          this.taskData = {};
+          this.taskData['taskName'] = '';
+          this.taskData['description'] = '';
         }
       });
   }
@@ -178,6 +183,21 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       next: (result: any) => {
         console.log(result);
         this.vehicles = result.Items;
+      },
+    });
+  }
+
+  fetchTasks() {
+    this.apiService.getData('tasks').subscribe({
+      error: () => {},
+      next: (result: any) => {
+       // this.tasks = result.Items;
+       result.Items.forEach(element => {
+        if (element.taskType === 'service') {
+          this.tasks.push(element);
+        }
+       });
+       console.log('this.tasks', this.tasks);
       },
     });
   }

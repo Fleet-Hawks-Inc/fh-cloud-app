@@ -16,6 +16,7 @@ declare var $: any;
 })
 export class AssetListComponent implements OnInit {
   allAssetTypes: any;
+  assetTypesObects: any = {};
   title = 'Assets List';
   mapView: boolean = false ;
   listView: boolean = true;
@@ -247,25 +248,25 @@ export class AssetListComponent implements OnInit {
   }
 
   fetchAssets = () => {
-    this.allData = [];
-    this.autoCarrier = [];
-    this.beverageRack = [];
-    this.flatbed = [];
-    this.controlledTemp = [];
-    this.gondola = [];
-    this.hopper = [];
-    this.horseTrailer = [];
-    this.liveStock = [];
-    this.lowboy = [];
-    this.stake = [];
-    this.stepDeck = [];
-    this.tanker = [];
+    // this.allData = [];
+    // this.autoCarrier = [];
+    // this.beverageRack = [];
+    // this.flatbed = [];
+    // this.controlledTemp = [];
+    // this.gondola = [];
+    // this.hopper = [];
+    // this.horseTrailer = [];
+    // this.liveStock = [];
+    // this.lowboy = [];
+    // this.stake = [];
+    // this.stepDeck = [];
+    // this.tanker = [];
     this.spinner.show(); // loader init
     this.apiService.getData(`assets?assetID=${this.assetID}&status=${this.currentStatus}`).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        console.log(result)
+        console.log(result);
         this.spinner.hide(); // loader hide
         for (let i = 0; i < result.Items.length; i++) {
           if (result.Items[i].isDeleted === 0) {
@@ -309,7 +310,8 @@ export class AssetListComponent implements OnInit {
 
   fetchAllAssetTypes() {
     this.httpClient.get("assets/trailers.json").subscribe((data: any) =>{
-      this.allAssetTypes =  data.reduce( (a: any, b: any) => {
+      this.allAssetTypes = data;
+      this.assetTypesObects =  data.reduce( (a: any, b: any) => {
         return a[b['code']] = b['description'], a;
     }, {});
       console.log('trailers', this.allAssetTypes);

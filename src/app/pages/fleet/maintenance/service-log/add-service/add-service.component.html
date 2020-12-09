@@ -87,7 +87,7 @@
                              <div class="row">
                                 <div class="col-lg-10" data-select2-id="118">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor ID</label>
-                                   <ng-select [(ngModel)]="serviceData.vendor" name="vendor" style="width: 100%;">
+                                   <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;">
                                        <ng-option *ngFor="let vendor of vendors;" value="{{vendor.vendorID}}">{{vendor.vendorName}}</ng-option>
                                           
                                    </ng-select>
@@ -150,7 +150,7 @@
                              </div>
                           </div>
                        </div>
-                       <div class="form-group row" *ngIf="reminders && serviceData.unitType !== 'asset'">
+                       <div class="form-group row" *ngIf="issues">
                           <div class="col-lg-12">
                              <label class="control-label font-weight-bold text-lg-right text-dark text-4  pt-2">Service Tasks</label>
                           </div>
@@ -160,18 +160,14 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Task</label>
                                     <ng-select [items]="tasks" [(ngModel)]="selectedTasks" name="selectedTasks" bindLabel="taskName" 
                                          (add)="addTasks()"  [multiple]=true style="width: 100%;" (clear)="clearTaks('tasks')" (remove)="removeTasks($event)"
-                                    >
-                                    {{tasks}}
-                                       <!-- <ng-option *ngFor="let task of tasks;" value="{{task.taskName}}" [attr.data-id]="{{task.taskID}}" >{{task.taskName}}</ng-option> -->
-                                       
-                                    </ng-select>
+                                    ></ng-select>
                                 </div>
                              </div>
                           </div>
-                          <div class="col-lg-5 offset-lg-1"> 
+                          <div class="col-lg-5 offset-lg-1" *ngIf="serviceData.unitType !== 'asset'"> 
                              <div class="row pt-2">
                                 <div class="col-lg-10 text-right">
-                                   <a href="javascript:;" data-toggle="modal" data-target="#serviceReminderModal"><label class="btn btn-dark text-3 pt-2">Service Reminders<span class="text-danger font-weight-bold"> {{reminders.length}}</span></label></a>
+                                   <a href="javascript:;" (click)="openReminders()"><label class="btn btn-dark text-3 pt-2">Service Reminders<span class="text-danger font-weight-bold"> {{reminders.length}}</span></label></a>
                                 </div>
                              </div>
                           </div>
@@ -191,9 +187,9 @@
                                       <tr *ngFor="let item of serviceData.allServiceTasks.serviceTaskList; let i = index;">
                                          <td>{{item.taskName}}</td>
                                          <td>{{item.schedule}}</td>
-                                         <td><input type="text" value="" name="laborCost{{i}}}" [(ngModel)]="item.laborCost" (blur)="addLabors($event)" class="form-control"></td>
+                                         <td><input type="text" value="0.00" name="laborCost{{i}}}" [(ngModel)]="item.laborCost" (blur)="calculateTasks()" class="form-control"></td>
                                          <!-- <td><input type="text" value="0.00" name="{{item.labor}}" class="form-control"></td> -->
-                                         <td><i (click)="remove('tasks', i)" class="far fa-trash-alt"></i></td>
+                                         <td><i (click)="remove('tasks', item, i)" class="far fa-trash-alt"></i></td>
                                       </tr>
                                    </tbody>
                                 </table>
@@ -216,7 +212,7 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Discount(%)</label>                                           
                                 </div>
                                 <div class="col-lg-1">
-                                   <input [(ngModel)]="serviceData.allServiceTasks.discountPercent" name="discountPercent" type="text" value="0.00" (keyup)="discount('tasks', $event)" class="form-control" id="inputDefault">
+                                   <input [(ngModel)]="serviceData.allServiceTasks.discountPercent" name="discountPercent" type="text" value="0.00" (blur)="calculateTasks()" class="form-control" id="inputDefault">
                                 </div>
                              </div>
                              <div class="row">
@@ -224,7 +220,7 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Tax(%)</label>                                           
                                 </div>
                                 <div class="col-lg-1">
-                                   <input [(ngModel)]="serviceData.allServiceTasks.taxPercent" name="taxPercent" type="text" value="0.00" class="form-control" id="inputDefault">
+                                   <input [(ngModel)]="serviceData.allServiceTasks.taxPercent" name="taxPercent" type="text" value="0.00" class="form-control" (blur)="calculateTasks()">
                                 </div>
                              </div>
                              <div class="row">
@@ -237,7 +233,7 @@
                              </div>
                           </div>
                        </div>
-                       <div class="form-group row" *ngIf="reminders">
+                       <div class="form-group row" *ngIf="issues">
                           <div class="col-lg-12">
                              <label class="control-label font-weight-bold text-lg-right text-dark text-4  pt-2">Service Parts</label>
                           </div>
@@ -245,57 +241,8 @@
                              <div class="row pt-2">
                                 <div class="col-lg-10" data-select2-id="14">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Parts</label>
-                                   <ng-select [(ngModel)]="selectedParts" name="selectedParts" bindLabel="selectedParts" 
-                                   (add)="addParts()" [multiple]=true (clear)="clearTaks('parts')" style="width: 100%;">
-                                       <ng-option *ngFor="let item of inventory; let i = index;" value="{{item.name}}">{{item.name}}</ng-option>
-                                         <!-- <ng-option value="" data-select2-id="21">A/C Condenser Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="22">A/C Diagnosis</ng-option>
-                                         <ng-option value="" data-select2-id="23">A/C Evaporator Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="24">A/C Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="25">A/C Recharge</ng-option>
-                                         <ng-option value="" data-select2-id="26">Air Brake System Valve Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="27">Air Cleaner Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="28">Air Compressor Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="29">Air Dryer Desiccant Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="30">Air Dryer Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="31">Air Filter Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="32">Alcohol Evaporator Cleaning</ng-option>
-                                         <ng-option value="" data-select2-id="33">Alternator Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="34">Automatic Drain Valve Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="35">Axle Lubricant and Filter Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="36">Ball Joint Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="37">Battery Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="38">Battery-Powered HVAC System Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="39">Battery Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="40">Brake Caliper Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="41">Brake Camshaft Bracket Lubrication</ng-option>
-                                         <ng-option value="" data-select2-id="42">Brake Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="43">Brake Pad(s) Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="44">Brake Rotor Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="45">Brake Slack Adjuster Lubrication</ng-option>
-                                         <ng-option value="" data-select2-id="46">Cabin Air FIlter Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="47">Cab Shock Absorber Bracket Torque Check</ng-option>
-                                         <ng-option value="" data-select2-id="48">Car Wash</ng-option>
-                                         <ng-option value="" data-select2-id="49">Catalytic Converter Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="50">Charging and Starting System Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="51">Charging System Diagnosis</ng-option>
-                                         <ng-option value="" data-select2-id="52">	Clutch Hydraulic Fluid Level Check</ng-option>
-                                         <ng-option value="" data-select2-id="53">Clutch Hydraulic Fluid Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="54">Clutch Release Bearing Lubrication</ng-option>
-                                         <ng-option value="" data-select2-id="55">Coolant Flush</ng-option>
-                                         <ng-option value="" data-select2-id="56">Cooling System Fluid Level Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="57">Clutch Hydraulic Fluid Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="58">Door Window Motor/Regulator Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="59">Drag Link Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="60">Drive Axle Assembly Fluid Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="61">Driveline Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="62">Driveline Lubrication</ng-option>
-                                         <ng-option value="" data-select2-id="63">Engine Air Filter Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="64">Engine Belt Inspection</ng-option>
-                                         <ng-option value="" data-select2-id="65">Engine Coolant Drain &amp; Refill</ng-option>
-                                         <ng-option value="" data-select2-id="66">Engine Coolant Replacement</ng-option>
-                                         <ng-option value="" data-select2-id="67">Engine/Drive Belt(s) Inspection</ng-option> -->
-                                     </ng-select>
+                                   <ng-select [items]="inventory" [(ngModel)]="selectedParts" name="selectedParts" bindLabel="name" 
+                                   (add)="addParts()" [multiple]=true (clear)="clearTaks('parts')" style="width: 100%;"></ng-select>
                                    
                                 </div>
                              </div>
@@ -321,13 +268,13 @@
                                       </tr>
                                    </thead>
                                    <tbody>
-                                      <tr *ngFor="let item of serviceData.allServiceParts.servicePartsList; let i = index;">
-                                         <td>{{item.name}}</td>
-                                         <td>{{item.description}}</td>
-                                         <td><input type="text" value="0.00" class="form-control"></td>
-                                         <td><input type="text" value="0.00" class="form-control"></td>
-                                         <td><input type="text" value="0.00" class="form-control"></td>
-                                         <td><i (click)="remove('parts', i)" class="far fa-trash-alt"></i></td>
+                                      <tr *ngFor="let part of serviceData.allServiceParts.servicePartsList; let j = index;">
+                                         <td>{{part.partNumber}}</td>
+                                         <td>{{part.description}}</td>
+                                         <td><input type="text" [(ngModel)]="part.quantity" name="quantity{{j}}" (blur)="calculateParts()" value="0.00" class="form-control"></td>
+                                         <td><input type="text" [(ngModel)]="part.rate" name="rate{{j}}" value="0.00" (blur)="calculateParts()" class="form-control"></td>
+                                         <td><input type="text" [(ngModel)]="part.partCost" name="partCost{{j}}" value="0.00" class="form-control"></td>
+                                         <td><i (click)="remove('parts', j)" class="far fa-trash-alt"></i></td>
                                       </tr>
                                    </tbody>
                                 </table>
@@ -338,9 +285,9 @@
                                       <tr>
                                          <td width="20%"></td>
                                          <td width="35%" class="text-right"></td>
-                                         <td width="10%"><label class="control-label font-weight-bold text-5">0</label></td>
-                                         <td width="10%"><label class="control-label font-weight-bold text-5">$ 0.00</label></td>
-                                         <td width="10%"><label class="control-label font-weight-bold text-5">$ 0.00</label></td>
+                                         <td width="10%"><label [innerHtml]="totalQuantity" class="control-label font-weight-bold text-5">0</label></td>
+                                         <td width="10%"></td>
+                                         <td width="10%"><label [innerHtml]="totalPartsPrice"  class="control-label font-weight-bold text-5">$ 0.00</label></td>
                                          <td width="5%"></td>
                                       </tr>
                                    </tbody>
@@ -351,7 +298,7 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Discount(%)</label>                                           
                                 </div>
                                 <div class="col-lg-1">
-                                   <input [(ngModel)]="serviceData.allServiceParts.discountPercent" name="discountPercent" type="text" value="0.00" (keyup)="discount('parts', $event)" class="form-control" id="inputDefault">
+                                   <input [(ngModel)]="serviceData.allServiceParts.discountPercent" name="parts-discountPercent" type="text" value="0.00" (blur)="calculateParts()" class="form-control" id="inputDefault">
                                 </div>
                              </div>
                              <div class="row">
@@ -359,7 +306,7 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Tax(%)</label>                                           
                                 </div>
                                 <div class="col-lg-1">
-                                   <input [(ngModel)]="serviceData.allServiceParts.taxPercent" name="taxPercent" type="text" value="0.00" class="form-control" id="inputDefault">
+                                   <input [(ngModel)]="serviceData.allServiceParts.taxPercent" name="parts-taxPercent" type="text" (blur)="calculateParts()" value="0.00" class="form-control" id="inputDefault">
                                 </div>
                              </div>
                              <div class="row">
@@ -367,7 +314,7 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" for="inputDefault">Total</label>                                           
                                 </div>
                                 <div class="col-lg-1">
-                                   <input [(ngModel)]="serviceData.allServiceParts.total" name="total" type="text" [value]="totalPartsAmount" class="form-control" id="inputDefault">
+                                   <input [(ngModel)]="serviceData.allServiceParts.total" name="parts-total" type="text" class="form-control" id="inputDefault">
                                 </div>
                              </div>
                           </div>
@@ -403,7 +350,7 @@
                        </div>
                        <div class="form-group row">
                           <div class="col-lg-11 text-right">
-                             <a href="" class="btn btn-default" id="">Cancel</a>
+                             <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default" id="">Cancel</a>
                              <a *ngIf="!logID" (click)="addService()" class="btn btn-success" id="nextBtn">Save</a>
                              <a *ngIf="logID" (click)="updateService()" class="btn btn-success">Update</a>
                           </div>
@@ -433,13 +380,13 @@
                <tbody>
                   <tr *ngFor="let reminder of reminders;">
                      <td width="80%">
-                        <span class="text-dark text-4 font-weight-bold">{{reminder.reminderTasks.task}}</span><br>
+                        <span class="text-dark text-4 font-weight-bold">{{tasksObject[reminder.reminderTasks.task]}}</span><br>
                         <span class="font-size-12">{{reminder.reminderTasks.remindByDays}} days or {{reminder.reminderTasks.odometer}} miles</span><br>
                         <!-- <span class="text-warning">Due: 3 months from now · 467 mi from now</span> -->
                      </td>
                      <td width="20%" class="text-right">
-                        <a href="javascript:;" *ngIf="!removeTask" (click)="addListedTasks()" class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Add</a>
-                        <a href="javascript:;" *ngIf="removeTask" (click)="removeListedTasks()" class="btn btn-danger btn-xs"><i class="fas fa-plus text-white"></i> Remove</a>
+                        <a href="javascript:;" *ngIf="!reminder.buttonShow" (click)="addListedTasks()" class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Add</a>
+                        <a href="javascript:;" *ngIf="reminder.buttonShow" (click)="removeListedTasks()" class="btn btn-danger btn-xs"><i class="fas fa-plus text-white"></i> Remove</a>
                      </td>
                   </tr>
                   <tr *ngIf="!reminders?.length > 0">

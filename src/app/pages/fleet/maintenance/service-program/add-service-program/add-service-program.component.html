@@ -72,9 +72,9 @@
 
                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                           Service Tasks</label>
-                                       <ng-select [(ngModel)]="task.serviceTask"
+                                       <ng-select [items]="tasks" bindLabel="taskName" [(ngModel)]="task.serviceTask"
                                           name="task.serviceTask{{i}}" style="width: 100%;">
-                                          <ng-option value="A/C Compressor Replacement">A/C Compressor Replacement
+                                          <!-- <ng-option value="A/C Compressor Replacement">A/C Compressor Replacement
                                           </ng-option>
                                           <ng-option value="A/C Condenser Replacement">A/C Condenser Replacement
                                           </ng-option>
@@ -251,7 +251,7 @@
                                           </ng-option>
                                           <ng-option value="Wheel Nut Check">Wheel Nut Check</ng-option>
                                           <ng-option value="Windshield Wiper(s) Replacement">Windshield Wiper(s)
-                                             Replacement</ng-option>
+                                             Replacement</ng-option> -->
                                        </ng-select>
                                     </div>
                                     <div class="col-lg-2  mar-top-37" *ngIf="i == 0">
