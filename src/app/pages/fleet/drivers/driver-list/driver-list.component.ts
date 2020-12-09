@@ -24,7 +24,10 @@ export class DriverListComponent implements OnInit, OnDestroy {
   drivers = [];
   dtOptions: any = {};
 
+
   statesObject: any = {};
+  countriesObject: any = {};
+  citiesObject: any = {};
   vehiclesObject: any = {};
   cyclesObject: any = {};
 
@@ -54,20 +57,57 @@ export class DriverListComponent implements OnInit, OnDestroy {
       this.fetchAddress(),
       this.fetchAllStatesIDs(),
       this.fetchAllVehiclesIDs(),
-      this.fetchAllCyclesIDs()
+      this.fetchAllCyclesIDs(),
+      this.fetchAllCountriesIDs(),
+      this.fetchAllCitiesIDs()
     ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([
-        drivers,
-        addresses,
-        statesIds,
-        vehcilesIds,
-        cycleIds
-      ]) => {
-        this.drivers = drivers.Items;
-        this.statesObject = statesIds;
-        this.vehiclesObject = vehcilesIds;
-        this.cyclesObject = cycleIds;
+      .subscribe({
+        complete: () => {
+          this.initDataTable();
+        },
+        error: () => { },
+        next: ([
+          drivers,
+          addresses,
+          statesIds,
+          vehcilesIds,
+          cycleIds,
+          countryIds,
+          citiesIds
+        ]: any) => {
+          let newArr = [];
+          // tslint:disable-next-line: prefer-for-of
+          for (let i = 0; i < addresses.Items.length; i++) {
+            // tslint:disable-next-line: prefer-for-of
+            for (let j = 0; j < drivers.Items.length; j++) {
+              if (addresses.Items[i].entityID === drivers.Items[j].driverID) {
+                drivers.Items[j].addressDetails = {
+                  address1: addresses.Items[i].address1,
+                  address2: addresses.Items[i].address2,
+                  addressID: addresses.Items[i].addressID,
+                  addressType: addresses.Items[i].addressType,
+                  cityID: addresses.Items[i].cityID,
+                  countryID: addresses.Items[i].countryID,
+                  geoCords: addresses.Items[i].geoCords,
+                  stateID: addresses.Items[i].stateID,
+                  zipCode: addresses.Items[i].zipCode,
+                };
+              }
+            }
+          }
+          for (const iterator of drivers.Items) {
+            if (iterator.isDeleted === 0) {
+              this.drivers.push(iterator);
+            }
+          }
+
+          this.statesObject = statesIds;
+          this.vehiclesObject = vehcilesIds;
+          this.cyclesObject = cycleIds;
+          this.countriesObject = countryIds;
+          this.citiesObject = citiesIds;
+        }
       });
 
 
@@ -198,6 +238,21 @@ export class DriverListComponent implements OnInit, OnDestroy {
     return this.apiService.getData('states/get/list');
     // .subscribe((result: any) => {
     //   this.statesObject = result;
+    // });
+  }
+
+
+  fetchAllCountriesIDs() {
+    return this.apiService.getData('countries/get/list');
+    // .subscribe((result: any) => {
+    //   this.countriesObject = result;
+    // });
+  }
+
+  fetchAllCitiesIDs() {
+    return this.apiService.getData('cities/get/list');
+    // .subscribe((result: any) => {
+    //   this.citiesObject = result;
     // });
   }
 
