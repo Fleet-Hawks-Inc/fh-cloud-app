@@ -68,6 +68,7 @@ export class ListingComponent implements OnInit {
   fetchServiceLogs() {
     this.apiService.getData('serviceLogs').subscribe((result: any) => {
       this.serviceLogs = result.Items;
+      console.log('service log', this.serviceLogs);
     });
   }
   fetchServiceTaks() {

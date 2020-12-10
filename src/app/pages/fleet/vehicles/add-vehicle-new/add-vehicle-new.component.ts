@@ -6,6 +6,8 @@ import {from, of} from 'rxjs';
 import {AwsUploadService} from '../../../../services';
 import { v4 as uuidv4 } from 'uuid';
 import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 
 @Component({
@@ -24,7 +26,10 @@ export class AddVehicleNewComponent implements OnInit {
   quantum = '';
   quantumSelected = '';
   quantumcurrentStatus = '';
-
+/**
+ *Group Properties
+*/
+groupData = {};
   /**
    * Vehicle Prop
    */
@@ -205,11 +210,12 @@ export class AddVehicleNewComponent implements OnInit {
     autoplaySpeed: 1500,
   };
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private router: Router, private httpClient: HttpClient,) {
+  constructor(private apiService: ApiService, private awsUS: AwsUploadService,private toastr: ToastrService, private router: Router, private httpClient: HttpClient,) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       this.vehicleForm = $('#vehicleForm').validate();
     });
+  
   }
 
   ngOnInit() {
@@ -263,13 +269,6 @@ export class AddVehicleNewComponent implements OnInit {
       this.countries = result.Items;
     });
   }
-
-  fetchGroups() {
-    this.apiService.getData('groups').subscribe((result: any) => {
-      this.groups = result.Items;
-    });
-  }
-
   getStates() {
     this.apiService
       .getData('states/country/' + this.countryID)
@@ -286,7 +285,12 @@ export class AddVehicleNewComponent implements OnInit {
       });
   }
 
-
+  fetchGroups() {
+    this.apiService.getData('groups').subscribe((result: any) => {
+      this.groups = result.Items;
+      // console.log('groups', this.groups)
+    });
+  }
   getModels() {
     this.apiService
       .getData(`vehicleModels/manufacturer/${this.manufacturerID}`)
@@ -582,5 +586,36 @@ export class AddVehicleNewComponent implements OnInit {
 
   changeTab(value){
     this.activeTab = value;
+  }
+   // GROUP MODAL
+   addGroup() {
+    this.apiService.postData('groups', this.groupData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.fetchGroups();
+        this.toastr.success('Group added successfully');
+        $('#addGroupModal').modal('hide');
+
+
+      },
+    });
   }
 }

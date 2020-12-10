@@ -5,6 +5,7 @@ import { AwsUploadService } from '../../../../../services';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
+import { escapeLeadingUnderscores } from 'typescript';
 @Component({
   selector: 'app-fuel-entry-details',
   templateUrl: './fuel-entry-details.component.html',
@@ -115,22 +116,33 @@ export class FuelEntryDetailsComponent implements OnInit {
       console.log('Vehicle data', this.vehicleData);
     });
     setTimeout(() => {
-      sortedArray = _.orderBy(this.vehicleData, ['additionalDetails.odometer'], ['asc']);
+      sortedArray = _.orderBy(this.vehicleData, ['additionalDetails.odometer'], ['desc']);
       console.log('sorted array', sortedArray);
-      for (let i = 1; i < sortedArray.length; i++) {
-        totalCalculatedGallons = totalCalculatedGallons + sortedArray[i].totalGallons;
-        sumCostPerGallon = sumCostPerGallon + sortedArray[i].costPerGallon;
-   }
-   let avgCostPerGallon = +((sumCostPerGallon/sortedArray.length).toFixed(2));
-   console.log('total gallons', totalCalculatedGallons);
-      const firstEntry = sortedArray.pop();
-      console.log('first entry', firstEntry);
-      const lastEntry = sortedArray.shift();
-      console.log('last entry', lastEntry);
-      const miles = firstEntry.additionalDetails.odometer - lastEntry.additionalDetails.odometer;
-      console.log('miles', miles);
-      this.MPG = +((miles / totalCalculatedGallons).toFixed(2));
-      this.costPerMile = +((avgCostPerGallon / this.MPG).toFixed(2));
+      if(sortedArray.length < 3){
+        this.MPG = 0;
+        this.costPerMile = 0;
+      }
+      else{
+        for (let i = 1; i < sortedArray.length; i++) {
+          console.log('sortedArray.length',sortedArray.length);
+          totalCalculatedGallons = totalCalculatedGallons + sortedArray[i].totalGallons;
+          sumCostPerGallon = sumCostPerGallon + sortedArray[i].costPerGallon;
+            }
+     let avgCostPerGallon = +((sumCostPerGallon/(sortedArray.length-1)).toFixed(2));
+     console.log('avgCostPerGallon', avgCostPerGallon);
+     console.log('total gallons', totalCalculatedGallons);
+        const firstEntry = sortedArray.pop(); //First entry means when vehicle got fuel for first time
+        console.log('First Entry', firstEntry);
+        const latestEntry = sortedArray.shift(); //Latest entry means the last ododmter reading 
+        console.log('Latest entry', latestEntry); 
+        const miles = latestEntry.additionalDetails.odometer - firstEntry.additionalDetails.odometer;
+        console.log('miles', miles);
+        this.MPG = +((miles / totalCalculatedGallons).toFixed(2));
+        console.log('MPG', this.MPG);
+        this.costPerMile = +((avgCostPerGallon / this.MPG).toFixed(2));
+        console.log('cost per mile', this.costPerMile);
+      }
+    
     }, 4500);
   }
   fetchFuelEntry() {

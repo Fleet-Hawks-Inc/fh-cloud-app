@@ -154,16 +154,16 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Enter Email(s)
                                           <small>Separate Email Address By Comma</small></label>
-                                       <textarea class="form-control" rows="4" [(ngModel)]="alert.otherEmails" name="otherEmails"></textarea>
+                                       <textarea class="form-control" rows="4" [(ngModel)]="otherEmails" name="otherEmails"></textarea>
                                     </div>
                                  </div>
                               </div>
                            </div>
                            <div class="row">
                               <div class="col-lg-11 text-right pr-0">
-                                 <button type="button" class="btn btn-default mt-4 mr-2"
-                                    onclick="goBack()">Cancel</button>
-                                 <button type="button" class="btn btn-success mt-4 " (click)="addAlert()">Save</button>
+                                 <button type="button" class="btn btn-defaultmr-2 mt-4"  (click)="cancel()">Cancel</button>
+                                 <button type="button" *ngIf="!alertID" class="btn btn-success mt-4" (click)="addAlert()">Save</button>
+                                 <button type="button" *ngIf="alertID" class="btn btn-success mt-4" (click)="updateAlert()">Update</button>
                               </div>
                            </div>
                         </form>
