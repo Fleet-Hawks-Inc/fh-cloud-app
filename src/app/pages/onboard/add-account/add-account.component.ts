@@ -13,7 +13,7 @@ import { NgForm } from '@angular/forms';
 })
 export class AddAccountComponent implements OnInit {
   carrierID: string;
-  addInfo = false;
+  activeTab = 1;
   accountData = {
     basic: {
       password: '',
@@ -36,7 +36,7 @@ export class AddAccountComponent implements OnInit {
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedDocs = [];
-  showAddress = true;
+  showAddress = false;
   contractNumber: number;
   contractType: string;
   countries = [];
@@ -87,10 +87,8 @@ export class AddAccountComponent implements OnInit {
       .subscribe((result: any) => {
         this.cities = result.Items;
       });
-  }
-  displayInfo() {
-    this.addInfo = !this.addInfo;
-  }
+    }
+
   setCarrierContractPeriod() {
   this.accountData.basic.contractPeriod = this.contractNumber + this.contractType;
   }
@@ -102,7 +100,7 @@ export class AddAccountComponent implements OnInit {
    }
 addAccount() {
 this.hideErrors();
-console.log('account data', this.accountData);return;
+console.log('account data', this.accountData);
 this.apiService.postData('carriers', this.accountData).subscribe({
   complete: () => { },
   error: (err: any) => {
@@ -179,5 +177,21 @@ uploadFiles = async () => {
   this.selectedFileNames.forEach((fileData: any, fileName: string) => {
     this.awsUS.uploadFile(this.carrierID, fileName, fileData);
   });
+}
+
+
+next(){
+  this.activeTab++;
+  console.log('active tab',this.activeTab);
+}
+
+previous(){
+  this.activeTab--;
+  console.log('active tab',this.activeTab);
+}
+
+changeTab(value){
+  this.activeTab = value;
+  console.log('active tab',this.activeTab);
 }
 }

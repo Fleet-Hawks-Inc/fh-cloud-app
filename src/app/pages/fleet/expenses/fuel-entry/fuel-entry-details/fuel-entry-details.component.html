@@ -101,11 +101,11 @@
                                          <td class="back-color-gray font-weight-bold">Miles</td>
                                          <td>{{miles}} <span class="font-size-12">since previous fuel entry</span></td>
                                       </tr> -->
-                                      <tr>
+                                      <tr *ngIf ="MPG != 0">
                                          <td class="back-color-gray font-weight-bold">MPG (US)</td>
                                          <td>{{MPG}}</td>
                                       </tr>
-                                      <tr>
+                                      <tr *ngIf ="costPerMile != 0">
                                          <td class="back-color-gray font-weight-bold">Cost/Mile</td>
                                          <td> {{costPerMile}} {{fuelData.currency}}</td>
                                       </tr>
