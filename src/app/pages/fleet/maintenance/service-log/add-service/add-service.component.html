@@ -378,15 +378,15 @@
            
             <table class="table">
                <tbody>
-                  <tr *ngFor="let reminder of reminders;">
+                  <tr *ngFor="let reminder of reminders;let i = index;">
                      <td width="80%">
                         <span class="text-dark text-4 font-weight-bold">{{tasksObject[reminder.reminderTasks.task]}}</span><br>
                         <span class="font-size-12">{{reminder.reminderTasks.remindByDays}} days or {{reminder.reminderTasks.odometer}} miles</span><br>
                         <!-- <span class="text-warning">Due: 3 months from now · 467 mi from now</span> -->
                      </td>
                      <td width="20%" class="text-right">
-                        <a href="javascript:;" *ngIf="!reminder.buttonShow" (click)="addListedTasks()" class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Add</a>
-                        <a href="javascript:;" *ngIf="reminder.buttonShow" (click)="removeListedTasks()" class="btn btn-danger btn-xs"><i class="fas fa-plus text-white"></i> Remove</a>
+                        <a href="javascript:;" *ngIf="!reminder.buttonShow" (click)="addListedTasks(reminder)" class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Add</a>
+                        <a href="javascript:;" *ngIf="reminder.buttonShow" (click)="removeListedTasks(reminder)" class="btn btn-danger btn-xs"><i class="fas fa-plus text-white"></i> Remove</a>
                      </td>
                   </tr>
                   <tr *ngIf="!reminders?.length > 0">

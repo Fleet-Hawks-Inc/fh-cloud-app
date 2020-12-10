@@ -249,6 +249,14 @@ export class AddServiceComponent implements OnInit {
   }
 
   /*
+   * Get a task by id
+   */
+  fetchTaskbyID(taskID) {
+    let result = this.apiService.getData('tasks/' + taskID).toPromise();
+    return result;
+  }
+
+  /*
    * Get all stocks from api
    */
   fetchInventory() {
@@ -352,11 +360,41 @@ export class AddServiceComponent implements OnInit {
       reminderID: remindID,
       schedule: newSchedule,
     });
-    
+  }
+
+  async addListedTasks(data) {
+    // console.log('data', data);
+    data.buttonShow = !data.buttonShow;
+    let result = await this.fetchTaskbyID(data.reminderTasks.task);
+    console.log('task', result);
+    let task = result.Items[0].taskName;
+    let ID = result.Items[0].taskID;
+    this.selectedTasks.push(task);
+    this.serviceData.allServiceTasks.serviceTaskList.push({
+      taskName: task,
+      taskID: ID,
+      reminderID: data.reminderID,
+      schedule: `Every ${data.reminderTasks.odometer} Miles`,
+    });
+    console.log('this.serviceData.allServiceTasks.serviceTaskList', this.serviceData.allServiceTasks.serviceTaskList);
+  }
+
+  removeListedTasks(data) {
+    console.log('data', data);
+    data.buttonShow = !data.buttonShow;
+    let taskList = this.serviceData.allServiceTasks.serviceTaskList;
+    let index = taskList.findIndex(item => item.taskID === data.reminderTasks.task);
+    taskList.splice(index, 1);
   }
 
   remove(arr, data, i) {
+    console.log('remove', data, i);
     if (arr === 'tasks') {
+      let remindersList = this.reminders;
+      remindersList.findIndex(item => {
+        if (item.reminderTasks.task === data.taskID) {
+          item.buttonShow = !item.buttonShow;
+        }});
       this.serviceData.allServiceTasks.serviceTaskList.splice(i, 1);
       this.totalLabors -= data.laborCost;
     } else {

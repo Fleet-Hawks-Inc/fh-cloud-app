@@ -67,7 +67,6 @@ export class ServiceListComponent implements OnInit {
     this.apiService.getData('vendors/get/list')
       .subscribe((result: any) => {
         this.vendorsObject = result;
-        console.log('vendorsObject', this.vendorsObject);
       });
   }
 
@@ -75,7 +74,6 @@ export class ServiceListComponent implements OnInit {
     this.apiService.getData('issues/get/list')
       .subscribe((result: any) => {
         this.issuesObject = result;
-        console.log('issuesObject', this.issuesObject);
       });
   }
 
@@ -98,7 +96,6 @@ export class ServiceListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.logs = result.Items;
-        console.log('this.logs', this.logs);
         this.spinner.hide(); // loader hide
       },
     });
