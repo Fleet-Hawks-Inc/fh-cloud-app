@@ -96,12 +96,12 @@
                                                 <tr *ngFor="let data of events; let i= index">
                                                     <td
                                                         routerLink="/safety/incidents/incident-details/{{data.eventID}}">
-                                                        {{ data.driverName }}</td>
-                                                    <td>{{ data.eventDate }}, {{ data.eventTime }}</td>
+                                                        {{ driversObject[data.driverUsername] }}</td>
+                                                    <td>{{ data.date  | date: 'dd-MM-yyyy HH:mm' }}</td>
                                                     <td>{{ data.location }}</td>
-                                                    <td>{{ data.vehicleName }}</td>
+                                                    <td>{{ vehiclesObject[data.vehicleID] }}</td>
                                                     <td>{{ data.severity }}</td>
-                                                    <td>{{ data.AsigneeName }}</td>
+                                                    <td>{{ usersObject[data.username] }}</td>
                                                     <td>
                                                         <select class="form-control" name="coachingStatus"
                                                             [(ngModel)]="data.coachingStatus"

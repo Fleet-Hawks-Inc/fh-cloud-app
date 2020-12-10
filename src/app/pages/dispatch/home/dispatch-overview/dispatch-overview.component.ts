@@ -22,6 +22,8 @@ export class DispatchOverviewComponent implements OnInit {
   tomorrowsPickCount = 0;
   availableDriversCount = 0;
   availableVehiclesCount = 0;
+  aceManifestCount = 0;
+  aciManifestCount = 0;
   activities = [];
   errors: {};
   form;
@@ -67,6 +69,8 @@ export class DispatchOverviewComponent implements OnInit {
     this.fetchAllCustomers();
     this.fetchAlldrivers();
     this.fetchAllVehicles();
+    this.fetchAceManifest();
+    this.fetchAciManifest();
   }
 
   async dispatchData(){ 
@@ -229,6 +233,26 @@ export class DispatchOverviewComponent implements OnInit {
         result = result.Items[0];
         // this.activities[index].typeValue   = result.routeNo;
         callback(result.routeNo)
+      })
+  }
+
+  fetchAceManifest() {
+    this.spinner.show();
+    this.apiService.getData('ACIeManifest').
+      subscribe((result: any) => {
+        // result = result.Items[0];
+        this.aceManifestCount = result.Count;
+        this.spinner.hide();
+      })
+  }
+
+  fetchAciManifest() {
+    this.spinner.show();
+    this.apiService.getData('ACEeManifest').
+      subscribe((result: any) => {
+        // result = result.Items[0];
+        this.aciManifestCount = result.Count;
+        this.spinner.hide();
       })
   }
 

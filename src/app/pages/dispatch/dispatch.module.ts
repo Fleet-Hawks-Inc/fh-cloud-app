@@ -100,30 +100,28 @@ import { CalendarViewComponent } from './planner/calendar-view/calendar-view.com
 import { MapViewComponent } from './planner/map-view/map-view.component';
 import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
 
-
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
 @Injectable()
 export class CustomAdapter extends NgbDateAdapter<string> {
-  readonly DELIMITER = "-";
+
+  readonly DELIMITER = '-';
 
   fromModel(value: string | null): NgbDateStruct | null {
     if (value) {
-      const date = value.split(this.DELIMITER);
+      let date = value.split(this.DELIMITER);
       return {
-        day: parseInt(date[0], 10),
-        month: parseInt(date[1], 10),
-        year: parseInt(date[2], 10),
+        day : parseInt(date[0], 10),
+        month : parseInt(date[1], 10),
+        year : parseInt(date[2], 10)
       };
     }
     return null;
   }
 
   toModel(date: NgbDateStruct | null): string | null {
-    return date
-      ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year
-      : null;
+    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : null;
   }
 }
 
@@ -133,39 +131,22 @@ export class CustomAdapter extends NgbDateAdapter<string> {
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
-  readonly DELIMITER = ',';
-
+  readonly DELIMITER = '-';
 
   parse(value: string): NgbDateStruct | null {
     if (value) {
-      const date = value.split(this.DELIMITER);
+      let date = value.split(this.DELIMITER);
       return {
-        day: parseInt(date[0], 10),
-        month: parseInt(date[1], 10),
-        year: parseInt(date[2], 10),
+        day : parseInt(date[0], 10),
+        month : parseInt(date[1], 10),
+        year : parseInt(date[2], 10)
       };
     }
     return null;
   }
 
   format(date: NgbDateStruct | null): string {
-    // return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
-    let MonthList = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'April',
-      'May',
-      'Jun',
-      'July',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ]
-    return date ? MonthList[date.month - 1] + ' ' + date.day + this.DELIMITER + date.year : '';
-
+    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
   }
 }
 

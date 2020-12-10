@@ -22,7 +22,10 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
-  onNavSelected(nav: string) {
+  onNavSelected(nav: string) { 
+    if(nav === 'dispatch') {
+      this.router.navigate(['/dispatch/overview']);
+    }
     this.navClicked.emit(nav);
     this.sharedService.activeParentNav.next(nav);
   }

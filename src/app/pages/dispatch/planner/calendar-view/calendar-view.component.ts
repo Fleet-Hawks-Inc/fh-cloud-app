@@ -47,7 +47,15 @@ export class CalendarViewComponent implements OnInit {
   assetDataCoDriverUsername = '';
   informationAsset = [];
 
+  statesObject: any = {};
+  countriesObject: any = {};
+  citiesObject: any = {};
+
   ngOnInit() {
+    this.fetchAllCitiesIDs();
+    this.fetchAllCountriesIDs();
+    this.fetchAllStatesIDs();
+
     this.fetchTrips();
     this.fetchVehicles();
     this.fetchAssets();
@@ -182,7 +190,7 @@ export class CalendarViewComponent implements OnInit {
       if (type === 'change') {
         console.log('asset change $event');
         this.tempTextFieldValues.trailer = [];
-        console.log(this.informationAsset);
+        // console.log(this.informationAsset);
 
         $(".assetClass").removeClass('td_border');
         let arayy = [];
@@ -322,13 +330,19 @@ export class CalendarViewComponent implements OnInit {
               assetName: 'Imperial trucking Co.',
               assetShortName: "IT",
               pickupLocation: '',
-              pickupCity: '',
-              pickupState: '',
-              pickupCountry: '',
+              pickupCityID: '',
+              pickupStateID: '',
+              pickupCountryID: '',
+              // pickupCity: '',
+              // pickupState: '',
+              // pickupCountry: '',
               deliveryLocation: '',
-              deliveryCountry: '',
-              deliveryState: '',
-              deliveryCity: '',
+              deliveryCountryID: '',
+              deliveryStateID: '',
+              deliveryCityID: '',
+              // deliveryCountry: '',
+              // deliveryState: '',
+              // deliveryCity: '',
               tripID: element.tripID,
               tripNo: element.tripNo,
               date: '-',
@@ -356,9 +370,14 @@ export class CalendarViewComponent implements OnInit {
 
       if (element.tripPlan.length > 0) {
         pickup = element.tripPlan[0].location;
-        this.fetchCountryName(pickup.countryID, i, 'pickup');
-        this.fetchStateDetail(pickup.stateID, i, 'pickup');
-        this.fetchCityDetail(pickup.cityID, i, 'pickup');
+
+        element.pickupCityID = pickup.cityID;
+        element.pickupStateID = pickup.stateID;
+        element.pickupCountryID = pickup.countryID;
+
+        // this.fetchCountryName(pickup.countryID, i, 'pickup');
+        // this.fetchStateDetail(pickup.stateID, i, 'pickup');
+        // this.fetchCityDetail(pickup.cityID, i, 'pickup');
         element.pickupLocation = pickup.address1 + ', ' + pickup.address2 + ', ' + pickup.zipcode;
         element.date = element.tripPlan[0].date;
         element.time = element.tripPlan[0].time;
@@ -370,59 +389,21 @@ export class CalendarViewComponent implements OnInit {
         };
         this.events.push(eventObj);
 
-
         if (element.tripPlan.length >= 2) {
           let lastloc = element.tripPlan.length - 1
           drop = element.tripPlan[lastloc].location;
-          this.fetchCountryName(drop.countryID, i, 'drop');
-          this.fetchStateDetail(drop.stateID, i, 'drop');
-          this.fetchCityDetail(drop.cityID, i, 'drop');
+
+          element.dropCityID = drop.cityID;
+          element.dropStateID = drop.stateID;
+          element.dropCountryID = drop.countryID;
+          
+          // this.fetchCountryName(drop.countryID, i, 'drop');
+          // this.fetchStateDetail(drop.stateID, i, 'drop');
+          // this.fetchCityDetail(drop.cityID, i, 'drop');
           element.deliveryLocation = drop.address1 + ', ' + drop.address2 + ', ' + drop.zipcode;
         }
       }
     }
-  }
-
-  fetchCountryName(countryID, index, type) {
-    this.apiService.getData('countries/' + countryID)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].countryName != undefined) {
-          if (type === 'pickup') {
-            this.tempTrips[index].pickupCountry = result.Items[0].countryName;
-          } else {
-            this.tempTrips[index].deliveryCountry = result.Items[0].countryName;
-          }
-        }
-      })
-  }
-
-  fetchStateDetail(stateID, index, type) {
-    this.apiService.getData('states/' + stateID)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].stateName != undefined) {
-          if (type === 'pickup') {
-            this.tempTrips[index].pickupState = result.Items[0].stateName;
-          } else {
-            this.tempTrips[index].deliveryState = result.Items[0].stateName;
-          }
-        }
-      })
-  }
-
-  fetchCityDetail(cityID, index, type) {
-    this.apiService.getData('cities/' + cityID)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].cityName != undefined) {
-          if (type === 'pickup') {
-            this.tempTrips[index].pickupCity = result.Items[0].cityName;
-          } else {
-            this.tempTrips[index].deliveryCity = result.Items[0].cityName;
-          }
-        }
-      })
   }
 
   updateTripStatus(tripId) {
@@ -459,5 +440,26 @@ export class CalendarViewComponent implements OnInit {
         this.toastr.success('Assignment done successfully');
       },
     });
+  }
+
+  fetchAllStatesIDs() {
+    this.apiService.getData('states/get/list')
+      .subscribe((result: any) => {
+        this.statesObject = result;
+      });
+  }
+
+  fetchAllCountriesIDs() {
+    this.apiService.getData('countries/get/list')
+      .subscribe((result: any) => {
+        this.countriesObject = result;
+      });
+  }
+
+  fetchAllCitiesIDs() {
+    this.apiService.getData('cities/get/list')
+      .subscribe((result: any) => {
+        this.citiesObject = result;
+      });
   }
 }

@@ -165,9 +165,9 @@ const routes: Routes = [
     ]
   },
   {
-    path: "home",
+    path: "overview",
     children: [
-      { path: 'routing-dispatch-overview', component: DispatchOverviewComponent}
+      { path: '', component: DispatchOverviewComponent}
     ]
   },
 ];
