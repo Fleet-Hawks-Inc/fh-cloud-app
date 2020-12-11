@@ -142,10 +142,11 @@ export class AddFuelEntryComponent implements OnInit {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
       for (let i = 0; i < result.Items.length; i++) {
-        if (result.Items[i].assetDetails.assetType === 'Reefer') {
+        if (result.Items[i].assetDetails.assetType === 'CZ') {
           this.reeferArray.push(this.assets[i]);
         }
       }
+      console.log('assets', this.assets);
     });
   }
   fetchTrips() {

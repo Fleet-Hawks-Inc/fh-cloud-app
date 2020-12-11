@@ -39,6 +39,7 @@ export class VehicleRenewAddComponent implements OnInit {
   groups = [];
   serviceTasks = [];
   vehicleRenewalForm;
+  serviceTaskForm;
   errors = {};
   Error = '';
   Success = '';
@@ -65,6 +66,7 @@ export class VehicleRenewAddComponent implements OnInit {
 
     $(document).ready(() => {
       this.vehicleRenewalForm = $('#vehicleRenewalForm').validate();
+      this.serviceTaskForm = $('#serviceTaskForm').validate();
     });
   }
   fetchServiceTaks() {
