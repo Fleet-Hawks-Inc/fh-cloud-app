@@ -13,43 +13,50 @@ declare var $: any;
 export class AddressBookComponent implements OnInit {
   form;
   countries;
+  countries1;
   states;
   cities;
   public customerProfileSrc: any = 'assets/img/driver/driver.png';
   public customers = [];
   userLocation;
   manualAddress: boolean;
+  manualAddress1: boolean;
   wsib: false;
 
   // Customer Object
   customerData = {
-    contactType: 'customer',
-    additionalData: {
-      customerAdditionalData: {
-        address: [{
-          addressType: '',
-          countryID: '',
-          stateID: '',
-          cityID: '',
-          addressZip: '',
-          address1: '',
-          address2: '',
-          saveAsLocation: '',
-        }],
-        additionalContact: {}
+    address: [{
+      addressType: '',
+      countryID: '',
+      stateID: '',
+      cityID: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    },
+    }],
+    additionalContact: {}
   };
   
   // Broker Object
   brokerData = {
-    contactType: 'broker',
-    additionalData: {
-      brokerAdditionalData: {
-        address: {},
-        additionalContact: {}
+    address: [{
+      addressType: '',
+      countryID: '',
+      stateID: '',
+      cityID: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    },
+    }],
+    additionalContact: {}
   };
 
   // Vendor Object
@@ -134,7 +141,7 @@ export class AddressBookComponent implements OnInit {
     this.fetchContacts();
     this.fetchCountries();
     this.searchLocation();
-
+    this.fetchAddress();
     $(document).ready(() => {
       this.form = $('#customerForm, #brokerForm, #vendorForm, #carrierForm, #consigneeForm').validate();
     });
@@ -144,75 +151,92 @@ export class AddressBookComponent implements OnInit {
     this.HereMap.geoCode(value);
   }
 
-  async userAddress(address) {
-    let label = address.label;
-    this.userLocation = address.label;
-
-    if (label) {
-      this.customerData.additionalData.customerAdditionalData.address['address1'] = '';
-      this.customerData.additionalData.customerAdditionalData.address['stateID'] = '';
-      this.customerData.additionalData.customerAdditionalData.address['cityID'] = '';
-      this.customerData.additionalData.customerAdditionalData.address['addressZip'] = '';
-      // $('.address_country, .address_state, .address_city, .address_zip, .address_one').val('');
-      let result = await this.HereMap.geoCode(label);
-      result = result.items[0];
-      console.log('result', result);
-      // tslint:disable-next-line: max-line-length
-      if (result.title !== undefined || result.address.street !== undefined || result.address.houseNumber !== undefined || result.address.countryName !== undefined || result.addess.postalCode) {
-        this.customerData.additionalData.customerAdditionalData.address['address1'] =
-                                                  `${result.title} ${result.address.houseNumber} ${result.address.street}`;
-        console.log('this.countries', this.countries);
-        this.countries.filter(country => {
-          console.log('country', country);
-          if (country.countryName === result.address.countryName) {
-            console.log('result.address.countryName', result.address.countryName);
-            this.customerData.additionalData.customerAdditionalData.address['countryID'] = country.countryID;
-          }
-        });
-        // this.getStates();
-
-        if (this.states) {
-          this.states.filter(state => {
-            if (state.stateName === result.address.state) {
-              this.customerData.additionalData.customerAdditionalData.address['stateID'] = state.stateID;
-            }
-          });
-        }
-        // this.getCities();
-        if (this.cities) {
-          this.cities.filter(city => {
-            if (city.cityName === result.address.city) {
-              this.customerData.additionalData.customerAdditionalData.address['cityID'] = city.cityID;
-            }
-          });
-        }
-        
-        this.customerData.additionalData.customerAdditionalData.address['addressZip'] = result.address.postalCode;
-      }
-
-    }
-    this.searchResults = false;
+  removeUserLocation(data) {
+    data.forEach(element => {
+        delete element.userLocation;
+    });
   }
 
-  addAddress(item) {
-    console.log("itesm", item);
-    this.customerData.additionalData.customerAdditionalData.address.push({
-      addressType: item.addressType,
-      countryID: item.countryID,
-      stateID: item.stateID,
-      cityID: item.cityID,
-      addressZip: item.address_zip,
-      address1: item.address1,
-      address2: item.address2,
-      saveAsLocation: item.saveAsLocation,
+  remove(data, i) {
+    data.address.splice(i, 1);
+  }
+
+  async userAddress(data: any, i: number, item: any) {
+    console.log('obj', data, i, item);
+    let result = await this.HereMap.geoCode(item.address.label);
+    result = result.items[0];
+    console.log('result', result);
+    console.log('data.address[i]', data.address[i]);
+    $('div').removeClass('show-search__result');
+
+    data.address[i].userLocation = result.address.label;
+    data.address[i].geoCords.lat = result.position.lat;
+    data.address[i].geoCords.lng = result.position.lng;
+
+    let countryID = await this.fetchCountriesByName(result.address.countryName);
+    data.address[i].countryID = countryID;
+    
+    let stateID = await this.fetchStatesByName(result.address.state);
+    data.address[i].stateID = stateID;
+
+    let cityID = await this.fetchCitiesByName(result.address.city);
+    data.address[i].cityID = cityID;
+    
+    data.address[i].zipCode = result.address.postalCode;
+    data.address[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;
+    
+    
+  }
+
+  async fetchCountriesByName(name: string) {
+    let result = await this.apiService.getData(`countries/get/${name}`)
+      .toPromise();
+    if (result.Items.length > 0) {
+      this.getStates(result.Items[0].countryID);
+      return result.Items[0].countryID;
+    }
+    return '';
+  }
+
+  async fetchStatesByName(name: string) {
+    let result = await this.apiService.getData(`states/get/${name}`)
+      .toPromise();
+    if (result.Items.length > 0) {
+      this.getCities(result.Items[0].stateID);
+      return result.Items[0].stateID;
+    }
+    return '';
+  }
+
+  async fetchCitiesByName(name: string) {
+    let result = await this.apiService.getData(`cities/get/${name}`)
+      .toPromise();
+      console.log('cities', result);
+    if (result.Items.length > 0) {
+      return result.Items[0].cityID;
+    }
+    return '';
+  }
+
+  addAddress(data) {
+    data.address.push({
+      addressType: '',
+      countryID: '',
+      stateID: '',
+      cityID: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { lat: '', lng: '' }
     });
-    console.log("address", this.customerData.additionalData.customerAdditionalData.address);
   }
 
   public searchLocation() {
     let target;
     this.searchTerm.pipe(
       map((e: any) => {
+        $('.map-search__results').hide();
+        $(e.target).closest('div').addClass('show-search__result');
         target = e;
         return e.target.value;
       }),
@@ -234,9 +258,10 @@ export class AddressBookComponent implements OnInit {
 
   // Add Customer
   addCustomer() {
-    console.log('this.this.documentData', this.customerData);
+    console.log('customers', this.customerData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.customerData).
+    this.removeUserLocation(this.customerData.address)
+    this.apiService.postData('customers', this.customerData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -268,6 +293,7 @@ export class AddressBookComponent implements OnInit {
   addBroker() {
     console.log('brokerData', this.brokerData);
     this.hideErrors();
+    return;
     this.apiService.postData('contacts', this.brokerData).
       subscribe({
         complete: () => { },
@@ -533,24 +559,23 @@ export class AddressBookComponent implements OnInit {
   fetchCountries() {
     this.apiService.getData('countries').subscribe((result: any) => {
       this.countries = result.Items;
+      this.countries1 = result.Items;
       // console.log('countries', this.countries);
     });
   }
 
-  getStates(event) {
+  getStates(id) {
     // const countryID = event.target.value;
-    const countryID = this.customerData.additionalData.customerAdditionalData.address['countryID'];
-    this.apiService.getData('states/country/' + countryID)
+    // const countryID = this.customerData.address['countryID'];
+    this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
         this.states = result.Items;
         console.log('this.states', this.states)
       });
   }
 
-  getCities(event) {
-    // const stateID = event.target.value;
-    const stateID = this.customerData.additionalData.customerAdditionalData.address['stateID'];
-    this.apiService.getData('cities/state/' + stateID)
+  getCities(id) {
+    this.apiService.getData('cities/state/' + id)
       .subscribe((result: any) => {
         this.cities = result.Items;
         console.log('this.cities', this.cities)
@@ -566,6 +591,14 @@ export class AddressBookComponent implements OnInit {
 
       reader.readAsDataURL(file);
     }
+  }
+
+
+  fetchAddress() {
+    this.apiService.getData('addresses')
+      .subscribe((result: any) => {
+        console.log('address', result);
+      });
   }
 
 }

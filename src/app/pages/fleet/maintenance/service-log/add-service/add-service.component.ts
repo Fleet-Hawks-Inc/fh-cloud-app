@@ -22,7 +22,7 @@ export class AddServiceComponent implements OnInit {
   assets;
   tasks = [];
   newTaskResp;
-  private reminders;
+  reminders = [];
   private issues;
   private inventory = [];
   private selectedTasks = [];
@@ -295,11 +295,14 @@ export class AddServiceComponent implements OnInit {
   getReminders(id) {
     const vehicleID = id;
     this.apiService.getData(`reminders/vehicle/${vehicleID}`).subscribe(async (result: any) => {
-      this.reminders = await result.Items;
-      console.log("reminder", this.reminders);
-      this.reminders.forEach(element => {
-          element.buttonShow = false;
+      let response = await result.Items;
+      response.forEach(element => {
+          if(element.reminderType === 'service') {
+            this.reminders.push(element);
+            element.buttonShow = false;
+          }
       });
+      console.log("reminder", this.reminders);
     });
   }
 
