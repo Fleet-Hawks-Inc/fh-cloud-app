@@ -12,8 +12,8 @@
            <header class="page-header pr-5">
               <h2>Routing &amp; Dispatch Overview</h2>
               <div class="right-wrapper text-right mt-2 pr-2">
-                 <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Estimate</a>
-                 <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Order</a>
+                 <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" routerLink="/dispatch/quotes/add"><i class="fas fa-plus"></i> Estimate</a>
+                 <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" routerLink="/dispatch/orders/add"><i class="fas fa-plus"></i> Order</a>
                  <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" routerLink="/dispatch/trips/add-trip"><i class="fas fa-plus"></i> Trip</a>
                  <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" routerLink="/dispatch/routes/add-route"><i class="fas fa-plus"></i> Permanent Route</a>
               </div>
@@ -155,13 +155,13 @@
                           <div class="col-6 pr-1">
                              <div class="grey-bg py-2 p-3 d-flex justify-content-between align-items-center text-dark">
                                 <h4 class="m-0 font-weight-bold">ACE</h4>
-                                <h4 class="m-0">65</h4>
+                                <h4 class="m-0">{{ aceManifestCount }}</h4>
                              </div>
                           </div>
                           <div class="col-6 pl-1">
                              <div class="grey-bg py-2 p-3 d-flex justify-content-between align-items-center text-dark">
                                 <h4 class="m-0  font-weight-bold">ACI</h4>
-                                <h4 class="m-0">20</h4>
+                                <h4 class="m-0">{{ aciManifestCount }}</h4>
                              </div>
                           </div>
                        </div>

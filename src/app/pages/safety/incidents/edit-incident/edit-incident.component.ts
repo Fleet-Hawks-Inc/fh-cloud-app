@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
+import * as moment from "moment";
 
 @Component({
     selector: 'app-edit-incident',
@@ -18,8 +19,8 @@ export class EditIncidentComponent implements OnInit {
     errors = {};
     event = {
         eventID: '',
+        date: <any>'',
         eventDate: '',
-        filterDate: '',
         eventTime: '',
         location: '',
         username: '',
@@ -134,8 +135,12 @@ export class EditIncidentComponent implements OnInit {
     updateEvent() {
         this.spinner.show();
         this.hideErrors();
+
+        let timestamp;
         let fdate = this.event.eventDate.split('-');
-        this.event.filterDate = fdate[2]+fdate[1]+fdate[0];
+        let date = fdate[2]+'-'+fdate[1]+'-'+fdate[0];
+        timestamp = moment(date+' '+ this.event.eventTime).format("X");
+        this.event.date = timestamp*1000;
 
         this.apiService.putData('safety/eventLogs', this.event).subscribe({
             complete: () => { },
@@ -219,8 +224,8 @@ export class EditIncidentComponent implements OnInit {
             .subscribe((result: any) => {
                 console.log(result.Items)
                 this.event.eventID = result.Items[0].eventID;
-                this.event.eventDate = result.Items[0].eventDate;
-                this.event.eventTime = result.Items[0].eventTime;
+                this.event.eventDate = moment(result.Items[0].date).format("DD-MM-YYYY");
+                this.event.eventTime = moment(result.Items[0].date).format("HH:mm");
                 this.event.location = result.Items[0].location;
                 this.event.username = result.Items[0].username;
                 this.event.driverUsername = result.Items[0].driverUsername;

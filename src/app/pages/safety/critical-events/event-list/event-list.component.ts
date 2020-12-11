@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-event-list',
@@ -52,11 +53,14 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
   filterValue = {
     date: '',
     driverID: '',
-    filterDate: '',
+    filterDateStart: <any> '',
+    filterDateEnd: <any> '',
     vehicleID: '',
     driverName: ''
   };
   suggestions = [];
+  vehiclesObject: any = {};
+  driversObject: any = {};
   
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -65,6 +69,9 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.fetchevents();
     this.fetchVehicles();
     this.initDataTable();
+
+    this.fetchAllVehiclesIDs();
+    this.fetchAllDriverIDs()
   }
 
   ngAfterViewInit(): void {
@@ -85,26 +92,6 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  fetchVehicleDetail(vehicleID, tripArr) {
-    this.apiService.getData('vehicles/' + vehicleID)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].vehicleIdentification != undefined) {
-          tripArr.vehicleName = result.Items[0].vehicleIdentification
-        }
-      })
-  }
-
-  fetchDriverDetail(driverUserName, tripArr) {
-    this.apiService.getData('drivers/userName/' + driverUserName)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].firstName != undefined) {
-          tripArr.driverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
-        }
-      })
-  }
-
   getEventDetail(arrValues) {
     this.events = [];
     for (let i = 0; i < arrValues.length; i++) {
@@ -123,8 +110,6 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
       } else if(element.criticalityType == 'overSpeedingEnd') {
         element.criticalityType = 'Over Speeding End';
       }
-      this.fetchVehicleDetail(element.vehicleID, element);
-      this.fetchDriverDetail(element.driverUsername, element);
       this.events.push(element);
     }
   }
@@ -150,7 +135,7 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('safety/eventLogs/fetch-records?lastEvaluatedValue1='+this.lastEvaluated.value1
-        +'&vehicle='+this.filterValue.vehicleID+"&driver="+this.filterValue.driverID+"&date="+this.filterValue.filterDate+"&event=critical", dataTablesParameters).subscribe(resp => {
+        +'&vehicle='+this.filterValue.vehicleID+"&driver="+this.filterValue.driverID+"&from="+this.filterValue.filterDateStart+"&to="+this.filterValue.filterDateEnd+"&event=critical", dataTablesParameters).subscribe(resp => {
           
           current.getEventDetail(resp['Items']);
           if(resp['LastEvaluatedKey'] !== undefined){
@@ -219,7 +204,14 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
       $("#searchVehicle").text(event.target.innerText);
     } else if(type === 'date') {
       if(this.filterValue.date !== '') {
-        this.filterValue.filterDate = this.filterValue.date.split("-").reverse().join("-");
+        this.filterValue.filterDateStart = moment(this.filterValue.date+' 00:00:01').format("X");
+        this.filterValue.filterDateEnd = moment(this.filterValue.date+' 23:59:59').format("X");
+        console.log('this.filterValue')
+        console.log(this.filterValue)
+
+        this.filterValue.filterDateStart = this.filterValue.filterDateStart*1000;
+        this.filterValue.filterDateEnd = this.filterValue.filterDateEnd*1000;
+
       }
     }
     this.rerender();
@@ -267,7 +259,8 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.filterValue = {
         date: '',
         driverID: '',
-        filterDate: '',
+        filterDateStart: '',
+        filterDateEnd: '',
         vehicleID: '',
         driverName: ''
       };
@@ -279,5 +272,19 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
       return false;
     }
     
+  }
+
+  fetchAllVehiclesIDs() {
+    this.apiService.getData('vehicles/get/list')
+      .subscribe((result: any) => {
+        this.vehiclesObject = result;
+      });
+  }
+
+  fetchAllDriverIDs() {
+    this.apiService.getData('drivers/get/list')
+      .subscribe((result: any) => {
+        this.driversObject = result;
+      });
   }
 }

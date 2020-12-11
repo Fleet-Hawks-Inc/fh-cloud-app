@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var jquery: any;
 declare var $: any;
 @Component({
@@ -14,14 +15,17 @@ declare var $: any;
 })
 export class AddAlertComponent implements OnInit {
   title = 'Add Alert';
-  alert = {};
+  alertID: string;
+  alert = {
+    otherEmails: []
+  };
   vehicles = [];
   groups = [];
   assets = [];
   users  = [];
   geofences = [];
   drivers = [];
-
+  otherEmails: string;
   errors = {};
   alertForm;
   response: any = '';
@@ -30,7 +34,7 @@ export class AddAlertComponent implements OnInit {
   Error = '';
   Success = '';
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
-              private location: Location) { }
+              private location: Location, private spinner: NgxSpinnerService,) { }
 
   ngOnInit() {
     this.fetchVehicles();
@@ -39,6 +43,14 @@ export class AddAlertComponent implements OnInit {
     this.fetchUsers();
     this.fetchGeofences();
     this.fetchDrivers();
+    this.alertID = this.route.snapshot.params['alertID'];
+    if (this.alertID) {
+      console.log('alert id', this.alertID);
+      this.title = 'Edit Alert';
+      this.fetchAlertByID();
+    } else {
+      this.title = 'Add Alert';
+    }
     $(document).ready(() => {
       this.alertForm = $('#alertForm').validate();
     });
@@ -73,9 +85,14 @@ export class AddAlertComponent implements OnInit {
       this.geofences = result.Items;
     });
   }
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   addAlert() {
-  console.log('alert data', this.alert);
-
+    if(this.otherEmails){
+      this.alert.otherEmails = this.otherEmails.split(',');  
+    }     
+   console.log('alert data', this.alert);
     // if (this.fileName === '') {
     //   this.imageError = 'Please Choose Image To Upload';
     //   return;
@@ -129,4 +146,59 @@ export class AddAlertComponent implements OnInit {
     this.errors = {};
   }
 
+  fetchAlertByID() {
+    this.spinner.show(); // loader init
+    this.apiService
+      .getData('alerts/' + this.alertID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+        console.log('result', result);
+        this.alert[`alertID`] = result.alertID;
+        this.alert[`alertName`] = result.alertName;
+        this.alert[`alertType`] = result.alertType;
+        this.alert[`assets`] = result.assets;
+        this.alert[`vehicles`] = result.vehicles;
+        this.alert[`drivers`] = result.drivers;
+        this.alert[`groups`] = result.groups;
+        this.alert[`users`] = result.users;
+        this.otherEmails = result.otherEmails.toString();
+      });
+    this.spinner.hide();
+  }
+
+  updateAlert() {
+    if(this.otherEmails){
+      this.alert.otherEmails = this.otherEmails.split(',');  
+    }     
+   console.log('Updated alert data', this.alert);
+    // if (this.fileName === '') {
+    //   this.imageError = 'Please Choose Image To Upload';
+    //   return;
+    // }
+    this.hideErrors(); 
+    this.apiService.putData('alerts/', this.alert).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.toastr.success('Alert Updated successfully');
+        this.router.navigateByUrl('/alert-list');
+      },
+    });
+  }
 }

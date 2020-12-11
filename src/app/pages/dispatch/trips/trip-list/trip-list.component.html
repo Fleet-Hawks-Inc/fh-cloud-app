@@ -30,11 +30,23 @@
                                         <i class="fas fa-calendar-alt"></i>
                                     </span>
                                 </span>
-                                <input type="date" data-plugin-datepicker="" class="form-control" name="startDate" [(ngModel)]="tripsFiltr.startDate">
+                                <input 
+                                [(ngModel)]="tripsFiltr.startDate" name="fromDate" 
+                                type="text" 
+                                placeholder="DD-MM-YYYY"
+                                (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                class="form-control" autocomplete="off"> 
+                                <!-- <input type="date" data-plugin-datepicker="" class="form-control" name="startDate" [(ngModel)]="tripsFiltr.startDate"> -->
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
-                                <input type="date" data-plugin-datepicker="" class="form-control" name="endDate" [(ngModel)]="tripsFiltr.endDate">
+                                <!-- <input type="date" data-plugin-datepicker="" class="form-control" name="endDate" [(ngModel)]="tripsFiltr.endDate"> -->
+                                <input 
+                                [(ngModel)]="tripsFiltr.endDate" name="toDate" 
+                                type="text" 
+                                placeholder="DD-MM-YYYY"
+                                (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                                class="form-control" autocomplete="off"> 
                             </div>
                         </div>
                         <div class="col-md-2 col-lg-2">
@@ -64,8 +76,6 @@
                                         class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" href="">Edit</a>
-                                    <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
                                     <a class="dropdown-item text-1" href="">Import</a>
                                     <a class="dropdown-item text-1" href="">Export</a>
                                 </div>
@@ -141,21 +151,29 @@
                                     <tr *ngFor="let trip of trips; let i= index">
                                         <!-- <td><input type="checkbox"></td> -->
                                         <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
-                                            <a href="javascript:;"> {{ trip.tripNo }}</a>
+                                            {{ trip.tripNo }}
                                         </td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>{{ trip.pickupLocation }}, {{ trip.pickupCity }}, {{ trip.pickupState }}, {{ trip.pickupCountry }}</td>
+                                        <td>{{ trip.orderType }}</td>
                                         <td>
-                                            {{ trip.dropLocation }}, {{ trip.dropCity }}, {{ trip.dropState }}, {{ trip.dropCountry }}
+                                            <span *ngFor="let ordr of trip.orderId">
+                                                {{ ordersObject[ordr] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                        <td>{{ trip.pickupLocation }}, {{ citiesObject[trip.pickupCity] }}, {{ statesObject[trip.pickupState] }}, {{ countriesObject[trip.pickupCountry] }}</td>
+                                        <td>
+                                            {{ trip.dropLocation }}, {{ citiesObject[trip.dropCity] }}, {{ statesObject[trip.dropState] }}, {{ countriesObject[trip.dropCountry] }}
                                         </td>
                                         <td>{{ trip.pickupTime }}</td>
                                         <td>{{ trip.dropTime }}</td>
-                                        <td>{{ trip.driverName }}</td>
-                                        <td>{{ trip.vehicleName }}</td>
-                                        <td>{{ trip.assetName }}</td>
-                                        <td>{{ trip.carrierName }}</td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
+                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
+                                        <td>
+                                            <span *ngFor="let asst of trip.assetId">
+                                                {{ assetsObject[asst] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ carriersObject[trip.carrierId] }}</td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
                                             <div class="dropdown dropright">

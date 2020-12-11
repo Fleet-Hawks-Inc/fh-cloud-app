@@ -19,6 +19,7 @@ import { AddAccountComponent  } from './pages/onboard/add-account/add-account.co
 import { AddAlertComponent } from './pages/alerts/add-alert/add-alert.component';
 import { AlertDetailComponent } from './pages/alerts/alert-detail/alert-detail.component';
 import { AlertListComponent } from './pages/alerts/alert-list/alert-list.component';
+import { AlertTypeDetailComponent } from './pages/alerts/alert-type-detail/alert-type-detail.component';
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: 'Login', component: LoginComponent },
@@ -29,8 +30,10 @@ const routes: Routes = [
     canActivate: [AuthService],
   },
   { path: 'add-alert', component: AddAlertComponent },
-  { path: 'alert-detail', component: AlertDetailComponent },
+  { path: 'edit-alert/:alertID', component: AddAlertComponent },
+  { path: 'alert-detail/:alertID', component: AlertDetailComponent },
   { path: 'alert-list', component: AlertListComponent },
+  { path: 'alert-type-detail', component: AlertTypeDetailComponent },
   {
     path: 'Map-Dashboard',
     component: MapDashboardComponent,

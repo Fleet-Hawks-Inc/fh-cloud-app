@@ -191,7 +191,7 @@
                             *ngFor="let warehouse of warehouses"
                             value="{{ warehouse.warehouseID }}"
                           >
-                            {{ warehouse.wareHouseName }}
+                            {{ warehouse.warehouseName }}
                           </option>
                         </optgroup>
                       </select>
@@ -482,12 +482,8 @@
                   >
                     Cancel
                   </button>
-                  <a
-                    [routerLink]=""
-                    (click)="addInventory()"
-                    class="btn btn-success"
-                    >Submit</a
-                  >
+                  <a href="javascript:;" *ngIf="!itemID" (click)="addInventory()" class="btn btn-success">Submit</a>
+                  <a href="javascript:;" *ngIf="itemID" (click)="updateInventory()" class="btn btn-success">Update</a>
                 </div>
               </div>
               <div class="form-group row">
