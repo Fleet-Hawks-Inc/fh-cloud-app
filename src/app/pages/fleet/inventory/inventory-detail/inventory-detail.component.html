@@ -16,7 +16,7 @@
             Inventory Details
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-4">
-            <a href="inventory1.php" class="btn btn-sm btn-default"
+            <a routerLink="/fleet/inventory/list" class="btn btn-sm btn-default"
               ><i class="fas fa-list"></i> Inventory List</a
             >
 
@@ -55,13 +55,13 @@
                             <td class="back-color-gray font-weight-bold">
                               Category
                             </td>
-                            <td>{{categoryID}}</td>
+                            <td>{{itemGroups[categoryID]}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Vendor
                             </td>
-                            <td><a href="#">{{preferredVendorID}}</a></td>
+                            <td><a href="#">{{vendors[preferredVendorID]}}</a></td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -220,7 +220,7 @@
                             <td class="back-color-gray font-weight-bold">
                               Preferred Vendor
                             </td>
-                            <td>{{preferredVendorID}}</td>
+                            <td>{{vendors[preferredVendorID]}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -273,17 +273,17 @@
                                         transform: translate3d(0px, 38px, 0px);
                                       "
                                     >
-                                      <a class="dropdown-item text-1" href=""
+                                      <a class="dropdown-item text-1" [routerLink]=""
                                         >Crop/Rotate Image</a
                                       >
                                       <a
                                         class="modal-with-form dropdown-item text-1"
-                                        href="#editPhoto"
+                                        [routerLink]=""
                                         >Edit</a
                                       >
                                       <a
                                         class="modal-with-form dropdown-item text-1"
-                                        href="#deleteModal"
+                                        [routerLink]=""
                                         >Delete</a
                                       >
                                     </div>
@@ -324,15 +324,15 @@
                                         transform: translate3d(0px, 38px, 0px);
                                       "
                                     >
-                                      <a class="dropdown-item text-1" href=""
+                                      <a class="dropdown-item text-1" [routerLink]=""
                                         >Crop/Rotate Image</a
                                       >
-                                      <a class="dropdown-item text-1" href=""
+                                      <a class="dropdown-item text-1" [routerLink]=""
                                         >Edit</a
                                       >
                                       <a
                                         class="modal-with-form dropdown-item text-1"
-                                        href="#deleteModal"
+                                        [routerLink]=""
                                         >Delete</a
                                       >
                                     </div>
@@ -383,7 +383,7 @@
                               >
                                 <a
                                   class="modal-with-form dropdown-item text-1"
-                                  href="#deleteModal"
+                                  [routerLink]=""
                                   >Delete</a
                                 >
                               </div>

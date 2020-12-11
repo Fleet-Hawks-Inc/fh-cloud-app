@@ -36,9 +36,9 @@ export class InventoryDetailComponent implements OnInit {
   photos = [];
   documents = [];
 
-  vendors = [];
-  itemGroups = [];
-  warehouses = [];
+  vendors = {};
+  itemGroups = {};
+  warehouses = {};
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -49,16 +49,23 @@ export class InventoryDetailComponent implements OnInit {
   }
 
   fetchVendors(){
-    this.apiService.getData(`vendors`).subscribe((result) => {
-      this.vendors = result.Items;
+    this.apiService.getData(`vendors/get/list`).subscribe((result) => {
+      this.vendors = result;
     })
   }
 
   fetchItemGroups(){
-    this.apiService.getData(`itemGroups`).subscribe((result) => {
-      this.itemGroups = result.Items;
+    this.apiService.getData(`itemGroups/get/list`).subscribe((result) => {
+      this.itemGroups = result;
     })
   }
+
+  fetchWarehouses(){
+    this.apiService.getData('warehouses/get/list').subscribe((result: any) => {
+      this.warehouses = result;
+    });
+  }
+
 
 
   
