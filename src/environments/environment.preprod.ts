@@ -17,6 +17,12 @@ export const environment = {
     REGION: 'us-east-2',
     APP_CLIENT_ID: '76l88g289vcgrd8jf54pbedgqq'
   },
+  awsBucket: {
+    bucketName: 'fh-dashboard-assets',
+    accessKeyId: 'REMOVE_ME',
+    secretAccessKey: 'REMOVE_ME',
+    region: 'ap-south-1'
+  },
   HOSTNAME: 'myhome.anterbox.com',
   PORT : 9001,
   MQTTPATH : '/',
