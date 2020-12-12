@@ -33,7 +33,9 @@ export class AddReminderComponent implements OnInit {
   vehicles = [];
   users = [];
   groups = [];
-  groupData = {};
+  groupData = {
+    groupType : 'users'
+  };
   finalSubscribers = [];
   serviceTasks = [];
   serviceForm;
@@ -87,9 +89,8 @@ export class AddReminderComponent implements OnInit {
     });
   }
   fetchGroups() {
-    this.apiService.getData('groups').subscribe((result: any) => {
+    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
-      // console.log('Groups Data', this.groups);
     });
   }
 
@@ -342,7 +343,7 @@ export class AddReminderComponent implements OnInit {
         this.fetchGroups();
         this.toastr.success('Group added successfully');
         $('#addGroupModal').modal('hide');
-
+      this.fetchGroups();
 
       },
     });

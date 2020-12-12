@@ -31,7 +31,7 @@ export class AlertListComponent implements OnInit {
     this.fetchAssetList();
     this.fetchVehicleList();
     this.fetchGroupList();
-    this.fetchDriverList();
+    this.fetchDriversList();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -53,7 +53,7 @@ export class AlertListComponent implements OnInit {
       this.groupsList = result;
     });
   }
-  fetchDriverList() {
+  fetchDriversList() {
     this.apiService.getData('drivers/get/list').subscribe((result: any) => {
       this.driversList = result;
     });

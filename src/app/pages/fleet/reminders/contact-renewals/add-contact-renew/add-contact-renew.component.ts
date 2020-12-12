@@ -34,7 +34,9 @@ export class AddContactRenewComponent implements OnInit {
   users = [];
   test = [];
   groups = [];
-  groupData = {};
+  groupData = {
+    groupType : 'users'
+  };
   finalSubscribers = [];
   serviceTasks = [];
   form;
@@ -87,7 +89,7 @@ export class AddContactRenewComponent implements OnInit {
     });
   }
   fetchGroups() {
-    this.apiService.getData('groups').subscribe((result: any) => {
+    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
@@ -322,8 +324,7 @@ export class AddContactRenewComponent implements OnInit {
         this.fetchGroups();
         this.toastr.success('Group added successfully');
         $('#addGroupModal').modal('hide');
-
-
+        this.fetchGroups();
       },
     });
   }

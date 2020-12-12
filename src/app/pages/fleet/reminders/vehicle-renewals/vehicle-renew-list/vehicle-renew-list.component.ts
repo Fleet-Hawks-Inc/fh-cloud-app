@@ -38,7 +38,7 @@ export class VehicleRenewListComponent implements OnInit {
     this.fetchServiceTaks();
     this.fetchRenewals();
     this.fetchVehicles();
-    this.fetchGroups();
+    this.fetchGroupsList();
     this.fetchVehicleList();
     this.fetchTasksList();
     
@@ -48,7 +48,7 @@ export class VehicleRenewListComponent implements OnInit {
       }, 1800);
     });
   }
-  fetchGroups() {
+  fetchGroupsList() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groups = result;
       //   console.log('Groups Data', this.groups);
@@ -156,7 +156,7 @@ export class VehicleRenewListComponent implements OnInit {
    
   initDataTable() {
     this.dtOptions = {
-      dom: 'Bfrtip', // lrtip to hide search field
+      dom: 'lrtip', // lrtip to hide search field
       processing: true,
       columnDefs: [
           {

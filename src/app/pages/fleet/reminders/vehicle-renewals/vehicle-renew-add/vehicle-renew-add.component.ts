@@ -30,7 +30,9 @@ export class VehicleRenewAddComponent implements OnInit {
   test = [];
   midArray = [];
   numberOfDays: number;
-  groupData = {};
+  groupData = {
+    groupType : 'users'
+  };
   time = 1;
   timeType = 'Day(s)';
   finalSubscribers = [];
@@ -89,7 +91,7 @@ export class VehicleRenewAddComponent implements OnInit {
     });
   }
   fetchGroups() {
-    this.apiService.getData('groups').subscribe((result: any) => {
+    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
@@ -322,7 +324,7 @@ export class VehicleRenewAddComponent implements OnInit {
         this.fetchGroups();
         this.toastr.success('Group added successfully');
         $('#addGroupModal').modal('hide');
-
+  this.fetchGroups();
 
       },
     });

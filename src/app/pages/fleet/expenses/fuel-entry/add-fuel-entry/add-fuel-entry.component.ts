@@ -181,6 +181,9 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.fuelQtyAmt = 0;
     this.fuelData.fuelQty = 0;
     this.calculate();
+    if(isNaN(this.costPerUnit)){
+      this.costPerUnit = 0;
+    }
   }
   changeFuelUnit() {
     if (this.fuelQtyUnit === 'gallon') {
@@ -197,7 +200,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.costPerUnit = 0;
     this.fuelData.totalAmount = Number(this.fuelData.fuelQtyAmt) + Number(this.fuelData.DEFFuelQtyAmt);
     let units = Number(this.fuelData.fuelQty) + Number(this.fuelData.DEFFuelQty);
-    console.log('total units', units);
+    //console.log('total units', units);
     this.fuelData.amountPaid = this.fuelData.totalAmount - this.fuelData.discount;
     const test = (this.fuelData.amountPaid / units);
     this.costPerUnit = +(test.toFixed(2));

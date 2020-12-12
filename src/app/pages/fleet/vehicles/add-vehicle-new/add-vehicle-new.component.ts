@@ -31,7 +31,10 @@ export class AddVehicleNewComponent implements OnInit {
 /**
  *Group Properties
 */
-groupData = {};
+groupData = {
+  groupType : 'vehicles'
+};
+vehicles= [];
   /**
    * Vehicle Prop
    */
@@ -241,6 +244,7 @@ groupData = {};
     this.fetchStates();
     this.fetchGroups();
     this.fetchDrivers();
+    this.fetchVehicles();
     this.apiService.getData('devices').subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
@@ -303,9 +307,8 @@ groupData = {};
     this.location.back(); // <-- go back to previous location on cancel
   }
   fetchGroups() {
-    this.apiService.getData('groups').subscribe((result: any) => {
+    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
-      // console.log('groups', this.groups)
     });
   }
   getModels() {
@@ -936,33 +939,40 @@ groupData = {};
   changeTab(value){
     this.activeTab = value;
   }
-   // GROUP MODAL
-   addGroup() {
-    this.apiService.postData('groups', this.groupData).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
-        this.fetchGroups();
-        this.toastr.success('Group added successfully');
-        $('#addGroupModal').modal('hide');
-      },
+  fetchVehicles() {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
+      this.vehicles = result.Items;
     });
   }
+       // GROUP MODAL
+       addGroup() {
+        this.apiService.postData('groups', this.groupData).subscribe({
+          complete: () => { },
+          error: (err: any) => {
+            from(err.error)
+              .pipe(
+                map((val: any) => {
+                  val.message = val.message.replace(/".*"/, 'This Field');
+                  this.errors[val.context.key] = val.message;
+                })
+              )
+              .subscribe({
+                complete: () => {
+                  this.throwErrors();
+                },
+                error: () => { },
+                next: () => { },
+              });
+          },
+          next: (res) => {
+            this.response = res;
+            this.hasSuccess = true;
+            this.fetchGroups();
+            this.toastr.success('Group added successfully');
+            $('#addGroupModal').modal('hide');
+      this.fetchGroups();
+    
+          },
+        });
+      }
 }
