@@ -47,7 +47,6 @@ export class EditRouteComponent implements OnInit {
   driverUserName = '';
   coDriverUserName = '';
   sourceInformation = {
-    // sourceLocationID: '',
     sourceAddress:'',
     sourceCountry: '',
     sourceState:'',
@@ -68,7 +67,6 @@ export class EditRouteComponent implements OnInit {
 
   }
   destinationInformation = {
-    // destinationLocationID: '',
     destinationAddress: '',
     destinationCountry: '',
     destinationState:'',
@@ -82,7 +80,6 @@ export class EditRouteComponent implements OnInit {
   assets = [];
   drivers = [];
   coDrivers = [];
-  // locations = [];
   countries = [];
   sourceStates = [];
   destinationStates = [];
@@ -106,7 +103,6 @@ export class EditRouteComponent implements OnInit {
   Error: string = '';
   Success: string = '';
   newCoords = [];
-  // searchResults;
 
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
     private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar, 
@@ -141,11 +137,6 @@ export class EditRouteComponent implements OnInit {
       }
     });
 
-    $("#addStop").on('click', function(){
-      // alert('2');
-    })
-
-    // $(".reccRoute").on('click', function(){
     $(document).on('click','.reccRoute', function(){
       // alert('redd');
       $('.reccRoute').removeClass('selRecc');
@@ -175,7 +166,6 @@ export class EditRouteComponent implements OnInit {
       var stateType = curr.closest('select').attr('type');
       thiss.getCities(stateId, stateType);
     })
-
     
   }
 
@@ -183,7 +173,6 @@ export class EditRouteComponent implements OnInit {
     this.apiService.getData('countries')
       .subscribe((result: any) => {
         this.countries = result.Items;
-        // console.log(this.countries)
       });
   }
 
@@ -191,8 +180,6 @@ export class EditRouteComponent implements OnInit {
     this.apiService.getData('vehicles')
       .subscribe((result: any) =>{
         this.vehicles = result.Items;
-        // console.log('vehicles');
-        // console.log(this.vehicles);
     })
   }
 
@@ -200,7 +187,6 @@ export class EditRouteComponent implements OnInit {
     this.apiService.getData('assets')
       .subscribe((result: any)=>{
         this.assets = result.Items;
-        // console.log(this.assets);
       })
   }
 
@@ -208,7 +194,6 @@ export class EditRouteComponent implements OnInit {
     this.apiService.getData('drivers')
       .subscribe((result: any)=>{
         this.drivers = result.Items;
-        // console.log(this.drivers);
       })
   }
 
@@ -222,7 +207,6 @@ export class EditRouteComponent implements OnInit {
           this.destinationStates = result.Items;
         }
         this.spinner.hide();
-        // console.log('this.states', result.Items)
       });
   }
 
@@ -236,7 +220,6 @@ export class EditRouteComponent implements OnInit {
           this.destinationCities = result.Items;
         }
         this.spinner.hide();
-        // console.log('this.states', result.Items)
       });
   }
 
@@ -248,7 +231,6 @@ export class EditRouteComponent implements OnInit {
         result = result.Items[0];
 
         this.routeNo   = result.routeNo;
-        // console.log(result);
         this.routeName = result.routeName;
         this.notes     = result.notes;
         this.VehicleID = result.VehicleID;
@@ -256,7 +238,6 @@ export class EditRouteComponent implements OnInit {
         this.driverUserName = result.driverUserName;
         this.coDriverUserName = result.coDriverUserName;
         this.sourceInformation = {
-          // sourceLocationID: result.sourceInformation.sourceLocationID,
           sourceAddress:result.sourceInformation.sourceAddress,
           sourceCountry: result.sourceInformation.sourceCountry,
           sourceState:result.sourceInformation.sourceState,
@@ -276,7 +257,6 @@ export class EditRouteComponent implements OnInit {
           saturday: result.recurring.saturday
         }
         this.destinationInformation = {
-          // destinationLocationID: result.destinationInformation.destinationLocationID,
           destinationAddress: result.destinationInformation.destinationAddress,
           destinationCountry: result.destinationInformation.destinationCountry,
           destinationState:result.destinationInformation.destinationState,
@@ -284,16 +264,13 @@ export class EditRouteComponent implements OnInit {
           destinationZipCode:result.destinationInformation.destinationZipCode,
         };
         this.stop = result.stops;
-        // console.log(this.recurring);
         if(result.recurring.recurringRoute === true){
           $("#recurringRadioDiv").css('display','block');
           $("#recurringDate").css('display','block');
         }
-        // if(result.stop.destinationStop == true){
           this.destinationStop = true;
           $('#routeMapDiv').css('display', 'flex');
           this.mapShow()
-        // }
 
         if(result.recurring.recurringType == 'daily'){
           this.dailyClass = 'selRecc';
@@ -313,9 +290,6 @@ export class EditRouteComponent implements OnInit {
           this.getCoords(this.stop);
         }
 
-        // console.log('this.sourceInformation')
-        // console.log(this.sourceInformation)
-
         this.spinner.hide();
       })
   }
@@ -323,8 +297,6 @@ export class EditRouteComponent implements OnInit {
   updateRoute() {
     this.hasError = false;
     this.hasSuccess = false;
-    // console.log('updatedd')
-    // console.log(this.sourceInformation);
     if (this.recurring.recurringRoute === true) {
       if(this.recurring.recurringType == '') {
         this.toastr.error('Please select recurring type');
@@ -360,7 +332,6 @@ export class EditRouteComponent implements OnInit {
       driverUserName : this.driverUserName,
       coDriverUserName : this.coDriverUserName,
       sourceInformation : {
-        // sourceLocation: this.sourceInformation.sourceLocationID,
         sourceAddress:this.sourceInformation.sourceAddress,
         sourceCountry: this.sourceInformation.sourceCountry,
         sourceState:this.sourceInformation.sourceState,
@@ -380,7 +351,6 @@ export class EditRouteComponent implements OnInit {
         saturday: this.recurring.saturday
       },
       destinationInformation : {
-        // destinationLocationID: this.destinationInformation.destinationLocationID,
         destinationAddress: this.destinationInformation.destinationAddress,
         destinationCountry: this.destinationInformation.destinationCountry,
         destinationState:this.destinationInformation.destinationState,
@@ -388,10 +358,6 @@ export class EditRouteComponent implements OnInit {
         destinationZipCode:this.destinationInformation.destinationZipCode,
       },
       stops : this.stop,
-      // stop:{
-      //   stopLocation: this.stop.stopLocation,
-      //   stopNotes: this.stop.stopNotes
-      // }
     };
     console.log('data', data)
 
@@ -402,7 +368,6 @@ export class EditRouteComponent implements OnInit {
           .pipe(
             map((val: any) => {
               const path = val.path;
-              // We Can Use This Method
               const key = val.message.match(/'([^']+)'/)[1];
 
               val.message = val.message.replace(/'.*'/, 'This Field');
@@ -448,9 +413,6 @@ export class EditRouteComponent implements OnInit {
       stopNotes: ''
     };
     if (elem === 'source') {
-
-      // this.routeData.sourceInformation['sourceAddress'] =
-      //   `${labelResult.title} ${labelResult.address.houseNumber} ${labelResult.address.street}`;
       this.routeData.sourceInformation['sourceAddress'] = '';
       this.routeData.sourceInformation['sourceCountry'] = '';
       this.routeData.sourceInformation['sourceState'] = '';
@@ -490,9 +452,6 @@ export class EditRouteComponent implements OnInit {
       this.routeData.destinationInformation['destinationCity'] = '';
       this.routeData.destinationInformation['destinationZipCode'] = '';
 
-      // this.routeData.destinationInformation['destinationAddress'] =
-      //   `${labelResult.title} ${labelResult.address.houseNumber} ${labelResult.address.street}`;
-
       this.routeData.destinationInformation['destinationAddress'] = `${labelResult.title}`;
 
       if(labelResult.address.houseNumber !== undefined) {
@@ -522,7 +481,6 @@ export class EditRouteComponent implements OnInit {
       this.stop.splice(1, 1);
       this.stop.splice(1, 0, item);
     }
-    // console.log('this.stopsData', this.routeData.stops);
     this.searchResults = false;
     $('div').removeClass('show-search__result');
 
