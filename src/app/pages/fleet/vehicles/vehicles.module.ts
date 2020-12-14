@@ -11,9 +11,13 @@ import {VehicleListComponent} from './vehicle-list/vehicle-list.component';
 import {SlickCarouselModule} from 'ngx-slick-carousel';
 import { VehicleDetailComponent } from './vehicle-detail/vehicle-detail.component';
 
+// DataTable
+import { DataTablesModule } from 'angular-datatables';
+
+import { NgSelectModule } from '@ng-select/ng-select';
 const routes: Routes = [
   { path: 'add', component: AddVehicleNewComponent },
-  { path: 'edit/:vehicleID', component: EditVehicleNewComponent },
+  { path: 'edit/:vehicleID', component: AddVehicleNewComponent },
   { path: 'list', component: VehicleListComponent },
   { path: 'detail/:vehicleID', component: VehicleDetailComponent },
 ];
@@ -31,7 +35,9 @@ const routes: Routes = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    SlickCarouselModule
+    SlickCarouselModule,
+    NgSelectModule,
+    DataTablesModule,
   ],
 
 })

@@ -11,36 +11,32 @@
 	  <section role="main" class="content-body pl-0">
 		<header class="page-header">
 		  <form class="form-horizontal" method="get" name="form" id="form_">
-			 <div class="row pr-4 pl-2" style="padding-top:10px;">
-				<!-- <div class="col-md-2 col-lg-2 pr-0">
-                    <div class="input-group input-group-md mb-3">
-                      <input
-                        type="text"
-                        autocomplete="off"
-                        name="vehicleIdentification"
-                        [(ngModel)]="vehicleIdentification"
-                        class="form-control"
-                        (input)="getSuggestions($event.target.value)"
-                      />
-                    </div>
-                    <div
-                      *ngFor="let suggestedVehicle of suggestedVehicles"
-                      style="cursor: pointer"
-                      (click)="
-                        setVehicle(
-                          suggestedVehicle.vehicleID,
-                          suggestedVehicle.vehicleIdentification
-                        )
-                      "
-                    >
-                      {{ suggestedVehicle.vehicleIdentification }}
-                    </div>
-                  </div> -->
-				<div class="col-md-2 col-lg-2 pr-0 pl-1">
+			 <div class="row pr-4 pl-4" style="padding-top:10px;">
+				<div class="col-md-2 col-lg-2 pr-0 pl-0">
+					<div class="input-group input-group-sm mb-3">
+					  <input
+						autocomplete="off"
+						type="text"
+						name="unitName"
+						[(ngModel)]="unitName"
+						class="form-control"
+						(input)="getSuggestions($event.target.value)"
+						placeholder="Search Fuel Entry by Unit"
+					  />
+					</div>
+					<div
+					  *ngFor="let suggestedUnit of suggestedUnits"
+					  style="cursor: pointer"
+					  (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)"
+					>
+					  {{ suggestedUnit.unitName }}
+					</div>
+				  </div>
+				<!-- <div class="col-md-2 col-lg-2 pr-0 pl-1">
 				   <div class="input-group input-group-md mb-3">
 					<input class="form-control" name="amount" [(ngModel)]="amount" >
 				   </div>
-				</div>
+				</div> -->
 				<div class="col-lg-2 col-md-2 pl-2 pr-0">              
 				  <div class="form-group">
 					<div class="input-group">
@@ -95,7 +91,7 @@
 			 <section class="card">
 				<div class="card-body">
 				   <table
-				  class="table table-bordered table-responsive table-hover table-striped mb-0"  datatable [dtOptions]="dtOptions"  *ngIf="fuelList.length > 0">
+				  class="table table-bordered table-responsive table-hover table-striped mb-0"  datatable [dtOptions]="dtOptions" >
 				  <thead>
 					<tr>
 						<th style="min-width: 50px !important;">Date</th>
@@ -194,12 +190,16 @@
 						</div>
 					 </div></td>	
 					</tr>
+					<tr *ngIf="!fuelList.length > 0">
+						<td colspan="10">
+						   <div  class="alert alert-info m-0 text-center" role="alert">
+							  No records found
+							  
+						   </div>
+						</td>
+					 </tr>
 				  </tbody>
 				</table>
-				<div *ngIf="!fuelList.length > 0" class="alert alert-info m-0 text-center" role="alert">
-					No records found
-					
-				 </div>
 				</div>
 			 </section>
 			

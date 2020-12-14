@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 declare var $: any;
@@ -15,6 +15,8 @@ export class AddInventoryComponent implements OnInit {
   /**
    * form props
    */
+  pageTitle = '';
+  itemID = '';
   partNumber = '';
   cost = '';
   costUnit = '';
@@ -77,11 +79,47 @@ export class AddInventoryComponent implements OnInit {
   Error: string = '';
   Success: string = '';
 
-  constructor(private apiService: ApiService, private router: Router) {
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router) {
+    this.itemID = this.route.snapshot.params['itemID'];
+      console.log(this.itemID)
+      if (this.itemID) {
+        this.pageTitle = 'Edit Driver';
+        this.getInventory();
+      } else {
+        this.pageTitle = 'Add Driver';
+      }
+
     $(document).ready(() => {
       this.form = $('#form').validate();
       this.groupForm = $('#groupForm').validate();
       this.warehoseForm = $('#warehoseForm').validate();
+    });
+  }
+
+  getInventory() {
+    this.apiService.getData('items/' + this.itemID).subscribe((result: any) => {
+      result = result.Items[0];
+
+      this.partNumber = result.partNumber;
+      this.cost = result.cost;
+      this.costUnit = result.costUnit;
+      this.quantity = result.quantity;
+      this.name = result.name;
+      this.description = result.description;
+      this.categoryID = result.categoryID;
+      this.warehouseID = result.warehouseID;
+      this.aisle = result.aisle;
+      this.row = result.row;
+      this.bin = result.bin;
+      this.warehouseVendorID = result.warehouseVendorID;
+      this.trackingQuantity = result.trackingQuantity;
+      this.reorderPoint = result.reorderPoint;
+      this.reorderQuality = result.reorderQuality;
+      this.leadTime = result.leadTime;
+      this.preferredVendorID = result.preferredVendorID;
+      this.days = result.days;
+      this.time = result.time;
+      this.notes = result.notes;
     });
   }
 
@@ -191,6 +229,26 @@ export class AddInventoryComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+        this.partNumber = '';
+        this.cost = '';
+        this.costUnit = '';
+        this.quantity = '';
+        this.name = '';
+        this.description = '';
+        this.categoryID = '';
+        this.warehouseID = '';
+        this.aisle = '';
+        this.row = '';
+        this.bin = '';
+        this.warehouseVendorID = '';
+        this.trackingQuantity = '';
+        this.reorderPoint = '';
+        this.reorderQuality = '';
+        this.leadTime = '';
+        this.preferredVendorID = '';
+        this.days = '';
+        this.time = '';
+        this.notes = '';
         this.Success = 'Inventory Added successfully';
       },
     });
@@ -251,54 +309,55 @@ export class AddInventoryComponent implements OnInit {
         this.groupSuccess = 'Group Added successfully';
         this.groupName = '';
         this.groupDescription = '';
+        this.fetchItemGroups()
       },
     });
   }
 
-  addWarehouse() {
-    this.hasWarehouseSuccess = false;
+  updateInventory() {
+    this.hasError = false;
+    this.hasSuccess = false;
     this.hideErrors();
 
     const data = {
-      warehouseName: this.warehouseName,
-      countryID: this.countryID,
-      stateID: this.stateID,
-      cityID: this.cityID,
-      zipCode: this.zipCode,
-      address: this.address,
+      itemID: this.itemID,
+      partNumber: this.partNumber,
+      cost: this.cost,
+      costUnit: this.costUnit,
+      quantity: this.quantity,
+      name: this.name,
+      description: this.description,
+      categoryID: this.categoryID,
+      warehouseID: this.warehouseID,
+      aisle: this.aisle,
+      row: this.row,
+      bin: this.bin,
+      warehouseVendorID: this.warehouseVendorID,
+      trackingQuantity: this.trackingQuantity,
+      reorderPoint: this.reorderPoint,
+      reorderQuality: this.reorderQuality,
+      leadTime: this.leadTime,
+      preferredVendorID: this.preferredVendorID,
+      days: this.days,
+      time: this.time,
+      notes: this.notes,
     };
 
-    this.apiService.postData('warehouses', data).subscribe({
+    // console.log(data);return false;
+    this.apiService.putData('items', data).subscribe({
       complete: () => {},
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
-          });
+      error: (err) => {
+        this.hasError = true;
+        this.Error = err.error;
       },
       next: (res) => {
         this.response = res;
-        this.hasWarehouseSuccess = true;
-        this.warehouseSuccess = 'Warehouse Added successfully';
-        this.warehouseName = '';
-        this.countryID = '';
-        this.stateID = '';
-        this.cityID = '';
-        this.zipCode = '';
-        this.address = '';
+        this.hasSuccess = true;
+        this.Success = 'Inventory updated successfully';
       },
     });
   }
+  
 }
 
 

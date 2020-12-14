@@ -6,7 +6,7 @@ import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+declare var $: any;
 @Component({
   selector: 'app-alert-list',
   templateUrl: './alert-list.component.html',
@@ -15,6 +15,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class AlertListComponent implements OnInit {
   dtOptions: any = {};
   alertsList = [];
+  assetsList: any ={};
+  vehiclesList: any = {};
+  groupsList: any = {};
+  driversList: any = {};
   constructor(
     private apiService: ApiService,
     private route: Router,
@@ -24,24 +28,55 @@ export class AlertListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchAlerts();
+    this.fetchAssetList();
+    this.fetchVehicleList();
+    this.fetchGroupList();
+    this.fetchDriversList();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
   }
+  fetchAssetList() {
+    this.apiService.getData('assets/get/list').subscribe((result: any) => {
+      this.assetsList = result;
+    });
+  }
+  fetchVehicleList() {
+    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+      this.vehiclesList = result;
+    });
+  }
+  fetchGroupList() {
+    this.apiService.getData('groups/get/list').subscribe((result: any) => {
+      this.groupsList = result;
+    });
+  }
+  fetchDriversList() {
+    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+      this.driversList = result;
+    });
+  }
   fetchAlerts() {
+    this.alertsList = [];
     this.apiService.getData('alerts').subscribe({
       complete: () => {
         this.initDataTable();
       },
       error: () => { },
-      next: (result: any) => {
-        console.log(result);
+      next: (result: any) => {     
         this.alertsList = result.Items;
-        console.log('alert data', this.alertsList);
       },
     });
+  }
+  deleteAlert(alertID) {
+    this.apiService
+      .deleteData('alerts/' + alertID)
+      .subscribe((result: any) => {
+        this.toastr.success('Alert Deleted Successfully!');
+        this. fetchAlerts();
+      });
   }
   initDataTable() {
     this.dtOptions = {

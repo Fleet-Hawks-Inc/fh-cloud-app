@@ -45,7 +45,9 @@ export class AddServiceComponent implements OnInit {
   Success: string = '';
 
   serviceData = {
-    unitType: 'vehicle',
+    unitType: '',
+    vehicleID: '',
+    assetID: '',
     allServiceTasks: {
       serviceTaskList : []
     },
@@ -53,7 +55,8 @@ export class AddServiceComponent implements OnInit {
       servicePartsList : []
     },
     uploadedDocuments : [],
-    uploadedPhotos: []
+    uploadedPhotos: [],
+    selectedIssues: []
   };
   totalLabors = 0;
   totalQuantity = 0;
@@ -61,9 +64,9 @@ export class AddServiceComponent implements OnInit {
   totalTasksAmount: any = '';
   totalPartsAmount: any = '';
   logID;
-
+  fetchedLocalData: any;
   tasksObject: any = {};
-
+  localReminderUnitID: any;
   constructor(
     private apiService: ApiService,
     private awsUS: AwsUploadService,
@@ -96,7 +99,30 @@ export class AddServiceComponent implements OnInit {
     this.fetchInventory();
     this.fetchAssets();
     this.fetchTasks();
-    this.fetchAllTasksIDs();
+    this.fetchAllTasksIDs();    
+    this.fetchedLocalData = JSON.parse(window.localStorage.getItem('unit'));
+    if(this.fetchedLocalData){
+      if(this.fetchedLocalData.unitType === 'vehicle'){   
+        this.serviceData.vehicleID =   this.fetchedLocalData.unitID;
+        this.getVehicleIssues(this.fetchedLocalData.unitID);
+        this.serviceData.unitType = 'vehicle';
+        window.localStorage.removeItem('unit');
+      }
+      else{
+       this.serviceData.unitType = 'asset';
+       this.serviceData.assetID =   this.fetchedLocalData.unitID;
+       this.getAssetIssues(this.fetchedLocalData.unitID);      
+       window.localStorage.removeItem('unit');
+      }
+    }     
+     this.localReminderUnitID = JSON.parse(window.localStorage.getItem('reminderUnitID'));
+     if(this.localReminderUnitID) {
+       console.log('this.localReminderUnitID.unitID',this.localReminderUnitID.unitID);
+      this.serviceData.vehicleID =   this.localReminderUnitID.unitID;
+      this.getVehicleIssues(this.localReminderUnitID.unitID);
+      this.serviceData.unitType = 'vehicle';
+      window.localStorage.removeItem('reminderUnitID');
+     }
   }
 
   /*
@@ -108,6 +134,7 @@ export class AddServiceComponent implements OnInit {
     this.hasSuccess = false;
     this.hideErrors();
     console.log('this.serviceLogs', this.serviceData);
+    
     this.apiService.postData('serviceLogs', this.serviceData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -134,6 +161,11 @@ export class AddServiceComponent implements OnInit {
         this.router.navigateByUrl('/fleet/maintenance/service-log/list');
       },
     });
+    if(this.serviceData.selectedIssues.length > 0){
+      for(let i=0; i < this.serviceData.selectedIssues.length; i++){
+        this.setIssueStatus(this.serviceData.selectedIssues[i]);
+       }
+    } 
   }
 
   
@@ -169,8 +201,13 @@ export class AddServiceComponent implements OnInit {
     }
     this.serviceData['selectedIssues'] = this.selectedIssues;
   }
-  
-
+  /**
+   * to set status of issue to resolved 
+   */
+  setIssueStatus(issueID) {
+    const issueStatus = 'RESOLVED';
+    this.apiService.getData('issues/setStatus/' + issueID + '/' + issueStatus).subscribe((result: any) => {});
+  }
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
       this.groups = result.Items;
@@ -246,6 +283,14 @@ export class AddServiceComponent implements OnInit {
       });
       
     });
+  }
+
+  /*
+   * Get a task by id
+   */
+  fetchTaskbyID(taskID) {
+    let result = this.apiService.getData('tasks/' + taskID).toPromise();
+    return result;
   }
 
   /*
@@ -352,11 +397,41 @@ export class AddServiceComponent implements OnInit {
       reminderID: remindID,
       schedule: newSchedule,
     });
-    
+  }
+
+  async addListedTasks(data) {
+    // console.log('data', data);
+    data.buttonShow = !data.buttonShow;
+    let result = await this.fetchTaskbyID(data.reminderTasks.task);
+    console.log('task', result);
+    let task = result.Items[0].taskName;
+    let ID = result.Items[0].taskID;
+    this.selectedTasks.push(task);
+    this.serviceData.allServiceTasks.serviceTaskList.push({
+      taskName: task,
+      taskID: ID,
+      reminderID: data.reminderID,
+      schedule: `Every ${data.reminderTasks.odometer} Miles`,
+    });
+    console.log('this.serviceData.allServiceTasks.serviceTaskList', this.serviceData.allServiceTasks.serviceTaskList);
+  }
+
+  removeListedTasks(data) {
+    console.log('data', data);
+    data.buttonShow = !data.buttonShow;
+    let taskList = this.serviceData.allServiceTasks.serviceTaskList;
+    let index = taskList.findIndex(item => item.taskID === data.reminderTasks.task);
+    taskList.splice(index, 1);
   }
 
   remove(arr, data, i) {
+    console.log('remove', data, i);
     if (arr === 'tasks') {
+      let remindersList = this.reminders;
+      remindersList.findIndex(item => {
+        if (item.reminderTasks.task === data.taskID) {
+          item.buttonShow = !item.buttonShow;
+        }});
       this.serviceData.allServiceTasks.serviceTaskList.splice(i, 1);
       this.totalLabors -= data.laborCost;
     } else {

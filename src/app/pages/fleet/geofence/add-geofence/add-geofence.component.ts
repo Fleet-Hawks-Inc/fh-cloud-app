@@ -22,6 +22,8 @@ export class AddGeofenceComponent implements OnInit {
       cords: []
     }
   };
+  geofenceTypes;
+  geofenceTypeData = {};
   getGeofenceID;
   public marker;
   public map;
@@ -73,15 +75,14 @@ export class AddGeofenceComponent implements OnInit {
       this.fetchGeofenceByID();
     } else {
       this.pageTitle = 'Add Geofence';
-
     }
     // here maps initialization
     this.map = this.LeafletMap.initGeoFenceMap();
     this.mapControls(this.map);
     this.searchLocation();
-
+    this.fetchGeofenceTypes();
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      this.form = $('#form_, #geofenceTypeForm').validate();
     });
   }
 
@@ -140,14 +141,32 @@ export class AddGeofenceComponent implements OnInit {
   }
 
 
-  addCategory() {
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
-    const data1 = {
-      geofenceNewCategory: this.geofenceNewCategory
-    };
-    console.log(data1);
+  addGeofenceType() {
+    this.apiService.postData('geofenceTypes', this.geofenceTypeData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.toastr.success('Type Added successfully');
+
+      },
+    });
   }
   addGeofence() {
     this.errors = {};
@@ -189,7 +208,25 @@ export class AddGeofenceComponent implements OnInit {
   }
 
   throwErrors() {
-    this.form.showErrors(this.errors);
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
   }
 
   createGeofenceTypeModal() {
@@ -197,6 +234,8 @@ export class AddGeofenceComponent implements OnInit {
       $('#addGeofenceCategoryModal').modal('show');
     });
   }
+
+
 
   fetchGeofenceByID() {
     this.spinner.show();
@@ -313,6 +352,14 @@ export class AddGeofenceComponent implements OnInit {
       this.searchResults = res;
 
     });
+  }
+
+  fetchGeofenceTypes() {
+    this.apiService.getData('geofenceTypes')
+      .subscribe((result: any) => {
+        this.geofenceTypes = result.Items;
+        console.log('this.geofenceTypes', this.geofenceTypes);
+      });
   }
 
   searchDestination(loc, lat, lng) {

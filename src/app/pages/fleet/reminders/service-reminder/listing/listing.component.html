@@ -48,11 +48,13 @@
                
                  <div class="col-md-2 col-lg-2 pl-1 pr-0">
                     <ng-select [(ngModel)]="filterStatus"
-                    name="filterStatus" style="width: 100%;" placeholder="Select Reminder Status">
-                    <optgroup label="Select Reminder Status">
-                       <ng-option  value="OVERDUE">OVERDUE</ng-option>
-                    </optgroup>
-                 </ng-select>
+                        name="filterStatus" style="width: 100%;" placeholder="Select Reminder Status"  (change)="setFilterStatus($event)">
+                        <optgroup label="Select Reminder Status">
+                           <ng-option  value="ALL">ALL</ng-option>
+                           <ng-option  value="OVERDUE">OVERDUE</ng-option>
+                           <ng-option  value="DUE SOON">DUE SOON</ng-option>
+                        </optgroup>
+                     </ng-select>
                     </div>
                     <div class="col-md-1  col-lg-1 pl-1">
                         <button type="submit" (click)="fetchReminders()"  class="btn btn-sm btn-success">Search</button>
@@ -100,11 +102,12 @@
                             <tbody>
                                 <tr *ngFor="let item of remindersData" style="cursor: pointer;">
                                         <td>{{vehicleList[item.reminderIdentification]}}</td>                                    
-                                        <td><span class="text-danger font-weight-bold font-size-12" *ngIf = "item.reminderTasks.remainingDays === 0 ||  0 > item.reminderTasks.remainingDays">Overdue<br></span>
-                                            <span class="text-warning font-weight-bold font-size-12" *ngIf = "5 > item.reminderTasks.remainingDays && item.reminderTasks.remainingDays > 0">Due Soon<br></span>
+                                        <td><span class="text-warning font-weight-bold font-size-12" *ngIf="item.reminderTasks.reminderStatus === 'DUE SOON'">{{item.reminderTasks.reminderStatus}}<br></span>
+                                            <span class="text-danger font-weight-bold font-size-12" *ngIf="item.reminderTasks.reminderStatus === 'OVERDUE'">{{item.reminderTasks.reminderStatus}}<br></span>
                                             <span class="font-weight-bold" title="Service Task">{{tasksList[item.reminderTasks.task]}}</span>
                                             <br><span class="font-size-12">Every {{item.reminderTasks.remindByDays}} Day(s) or {{item.reminderTasks.odometer}} miles</span></td>
-                                        <td><span>{{item.reminderTasks.remainingDays}} Days from now</span><br> {{item.reminderTasks.remainingMiles}} miles from now</td>
+                                        <td>
+                                            <span>{{item.reminderTasks.remainingDays}} Days from now</span><br> {{item.reminderTasks.remainingMiles}} miles from now</td>
                                         <td>{{item.lastCompleted}}</td>                                  
                                         <td><span *ngFor="let s of item.subscribers">
                                             <span *ngIf="s.subscriberType === 'user'">

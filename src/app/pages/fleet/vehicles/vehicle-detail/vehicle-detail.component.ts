@@ -12,6 +12,11 @@ export class VehicleDetailComponent implements OnInit {
   /**
    * Vehicle Prop
    */
+  driversList: any = {};
+  vehicleModelList:any = {};
+  vehicleManufacturersList: any  = {};
+  groupsList: any = {};
+  statesList : any = {};
   vehicleID = '';
   vehicleIdentification = '';
   vehicleType = '';
@@ -162,6 +167,7 @@ export class VehicleDetailComponent implements OnInit {
   servicePrograms = [];
   serviceHistory = [];
   devices = [];
+  
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -173,8 +179,38 @@ export class VehicleDetailComponent implements OnInit {
     this.fetchFuel();
     this.fetchServiceProgams();
     this.fetchServiceHistory();
-  }
+    this. fetchDriversList();
+    this.fetchStatesList();
+    this.fetchVehicleModelList();
+    this.fetchVehicleManufacturerList();
+    this.fetchGroupsList();
 
+  }
+  fetchGroupsList() {
+    this.apiService.getData('groups/get/list').subscribe((result: any) => {
+      this.groupsList = result;
+    });
+  }
+  fetchDriversList() {
+    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+      this.driversList = result;
+    });
+  }
+  fetchStatesList() {
+    this.apiService.getData('states/get/list').subscribe((result: any) => {
+      this.statesList = result;
+    });
+  }
+  fetchVehicleModelList() {
+    this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
+      this.vehicleModelList = result;
+    });
+  }
+  fetchVehicleManufacturerList() {
+    this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
+      this.vehicleManufacturersList = result;
+    });
+  }
   fetchServiceProgams(){
     this.apiService.getData(`serviceLogs/vehicle/${this.vehicleID}`).subscribe((result) => {
       this.serviceHistory = result.Items;
@@ -224,7 +260,6 @@ export class VehicleDetailComponent implements OnInit {
       .getData('vehicles/' + this.vehicleID)
       .subscribe((result: any) => {
         result = result.Items[0];
-
         this.vehicleIdentification = result.vehicleIdentification;
         this.vehicleType = result.vehicleType;
         this.VIN = result.VIN;

@@ -13,9 +13,9 @@ declare var $: any;
 export class InventoryListComponent implements OnInit {
 
   items = [];
-  vendors = [];
-  itemGroups = [];
-  warehouses = [];
+  itemGroups = {};
+  vendors = {};
+  warehouses = {};
 
 
   partNumber = '';
@@ -31,18 +31,19 @@ export class InventoryListComponent implements OnInit {
     this.fetchItems();
     this.fetchVendors();
     this.fetchItemGroups();
+    this.fetchWarehouses();
   }
 
 
   fetchVendors(){
-    this.apiService.getData(`vendors`).subscribe((result) => {
-      this.vendors = result.Items;
+    this.apiService.getData(`vendors/get/list`).subscribe((result) => {
+      this.vendors = result;
     })
   }
 
   fetchItemGroups(){
-    this.apiService.getData(`itemGroups`).subscribe((result) => {
-      this.itemGroups = result.Items;
+    this.apiService.getData(`itemGroups/get/list`).subscribe((result) => {
+      this.itemGroups = result;
     })
   }
 
@@ -58,8 +59,8 @@ export class InventoryListComponent implements OnInit {
   }
 
   fetchWarehouses(){
-    this.apiService.getData('warehouses').subscribe((result: any) => {
-      this.warehouses = result.Items;
+    this.apiService.getData('warehouses/get/list').subscribe((result: any) => {
+      this.warehouses = result;
     });
   }
 
