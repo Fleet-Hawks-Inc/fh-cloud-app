@@ -189,7 +189,6 @@ export class VehicleDetailComponent implements OnInit {
   fetchGroupsList() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groupsList = result;
-      //   console.log('Groups Data', this.groups);
     });
   }
   fetchDriversList() {
@@ -261,7 +260,6 @@ export class VehicleDetailComponent implements OnInit {
       .getData('vehicles/' + this.vehicleID)
       .subscribe((result: any) => {
         result = result.Items[0];
-console.log('result', result);
         this.vehicleIdentification = result.vehicleIdentification;
         this.vehicleType = result.vehicleType;
         this.VIN = result.VIN;
