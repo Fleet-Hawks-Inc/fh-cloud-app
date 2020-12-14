@@ -112,12 +112,7 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
     this.allOptions = { // All list options
       pageLength: 10,
       processing: true,
-      // select: {
-      //     style:    'multi',
-      //     selector: 'td:first-child'
-      // },
       dom: 'Bfrtip',
-      // Configure the buttons
       buttons: [
          {
               extend: 'colvis',
@@ -160,7 +155,6 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
           )
           .subscribe({
             complete: () => {
-              // this.spinner.hide(); // loader hide
               this.throwErrors();
             },
             error: () => { },
@@ -295,13 +289,6 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
     let current = this;
     
     this.serviceUrl = "documents/fetch-records?value1=";
-
-    // if (filters === 'yes') {
-    //   this.filterValues.category = 'tripNo';
-    //   this.serviceUrl = this.serviceUrl + '&searchValue=' + this.filterValues.searchValue + "&startDate=" + this.filterValues.startDate + "&endDate=" + this.filterValues.endDate + "&category=" + this.filterValues.category + "&value1=";
-    // }
-    // console.log(this.serviceUrl);
-
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
       pageLength: current.pageLength,
