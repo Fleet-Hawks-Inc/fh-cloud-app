@@ -114,34 +114,30 @@ export class FuelEntryDetailsComponent implements OnInit {
     let sumCostPerGallon = 0;
     this.apiService.getData(`fuelEntries/unit/` + ID).subscribe((result: any) => {
       this.vehicleData = result.Items;
-    //  console.log('Vehicle data', this.vehicleData);
     });
     setTimeout(() => {
       sortedArray = _.orderBy(this.vehicleData, ['additionalDetails.odometer'], ['desc']);
-    //  console.log('sorted array', sortedArray);
+    
       if(sortedArray.length < 3){
         this.MPG = 0;
         this.costPerMile = 0;
       }
       else{
         for (let i = 1; i < sortedArray.length; i++) {
-        //  console.log('sortedArray.length',sortedArray.length);
           totalCalculatedGallons = totalCalculatedGallons + sortedArray[i].totalGallons;
           sumCostPerGallon = sumCostPerGallon + sortedArray[i].costPerGallon;
             }
      let avgCostPerGallon = +((sumCostPerGallon/(sortedArray.length-1)).toFixed(2));
-  //   console.log('avgCostPerGallon', avgCostPerGallon);
- //    console.log('total gallons', totalCalculatedGallons);
         const firstEntry = sortedArray.pop(); //First entry means when vehicle got fuel for first time
-      //  console.log('First Entry', firstEntry);
+   
         const latestEntry = sortedArray.shift(); //Latest entry means the last ododmter reading 
-     //   console.log('Latest entry', latestEntry); 
+ 
         const miles = latestEntry.additionalDetails.odometer - firstEntry.additionalDetails.odometer;
-     //   console.log('miles', miles);
+   
         this.MPG = +((miles / totalCalculatedGallons).toFixed(2));
-      //  console.log('MPG', this.MPG);
+   
         this.costPerMile = +((avgCostPerGallon / this.MPG).toFixed(2));
-       // console.log('cost per mile', this.costPerMile);
+     
       }
     
     }, 4500);
@@ -155,34 +151,33 @@ export class FuelEntryDetailsComponent implements OnInit {
     let sumCostPerGallon = 0;
     this.apiService.getData(`fuelEntries/unit/` + ID).subscribe((result: any) => {
       this.ReeferData = result.Items;
-    //  console.log('Reefer Data', this.ReeferData);
+  
     });
     setTimeout(() => {
       sortedArray = _.orderBy(this.ReeferData, ['additionalDetails.odometer'], ['desc']);
-    //  console.log('sorted array', sortedArray);
+  
       if(sortedArray.length < 2){
         this.MPG = 0;
         this.costPerMile = 0;
       }
       else{
         for (let i = 1; i < sortedArray.length; i++) {
-         // console.log('sortedArray.length',sortedArray.length);
+        
           totalCalculatedGallons = totalCalculatedGallons + sortedArray[i].totalGallons;
           sumCostPerGallon = sumCostPerGallon + sortedArray[i].costPerGallon;
             }
      let avgCostPerGallon = +((sumCostPerGallon/(sortedArray.length-1)).toFixed(2));
-    // console.log('avgCostPerGallon', avgCostPerGallon);
-   //  console.log('total gallons', totalCalculatedGallons);
+ 
         const firstEntry = sortedArray.pop(); //First entry means when vehicle got fuel for first time
-      //  console.log('First Entry', firstEntry);
+     
         const latestEntry = sortedArray.shift(); //Latest entry means the last ododmter reading 
-      //  console.log('Latest entry', latestEntry); 
+    
         const miles = latestEntry.additionalDetails.odometer - firstEntry.additionalDetails.odometer;
-      //  console.log('miles', miles);
+     
         this.MPG = +((miles / totalCalculatedGallons).toFixed(2));
-      //  console.log('MPG', this.MPG);
+ 
         this.costPerMile = +((avgCostPerGallon / this.MPG).toFixed(2));
-      //  console.log('cost per mile', this.costPerMile);
+    
       }
     
     }, 4500);
@@ -267,7 +262,6 @@ export class FuelEntryDetailsComponent implements OnInit {
       });
   }
   updateFuelEntry() {
-    console.log('Updated data', this.fuelData);
     this.apiService.putData('fuelEntries', this.fuelData).subscribe();
   }
 }
