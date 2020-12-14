@@ -125,32 +125,17 @@ export class AddRouteComponent implements OnInit {
 
 
     var thiss = this;
-    // $('.countrySelect').on('change', function () {
-    //   var curr = $(this);
-    //   var countryId = curr.val();
-    //   var countryType = curr.closest('select').attr('type');
-    //   thiss.getStates(countryId, countryType);
-    // })
 
     $('#routeCheckBtn').on('click', function () {
       if (this.checked == true) {
         $('#routeMapDiv').css('display', 'flex');
         thiss.mapShow();
-        //this.getCoords(this.routeData.stops);
       } else {
         $('#routeMapDiv').css('display', 'none');
       }
     })
 
-    // $('.stateSelect').on('change', function () {
-    //   let curr = $(this);
-    //   let stateId = curr.val();
-    //   let stateType = curr.closest('select').attr('type');
-    //   thiss.getCities(stateId, stateType);
-    // })
-
     $('.reccRoute').on('click', function () {
-      // alert('redd');
       $('.reccRoute').removeClass('selRecc');
       $(this).addClass('selRecc');
     })
@@ -209,14 +194,6 @@ export class AddRouteComponent implements OnInit {
     this.newCoords = [];
   }
 
-  // fetchCountries() {
-  //   this.apiService.getData('countries')
-  //     .subscribe((result: any) => {
-  //       this.countries = result.Items;
-  //       // console.log(this.countries)
-  //     });
-  // }
-
   fetchVehicles() {
     this.apiService.getData('vehicles')
       .subscribe((result: any) => {
@@ -259,8 +236,6 @@ export class AddRouteComponent implements OnInit {
 
 
   addRoute() {
-    // console.log(this.routeData);
-
     if (this.routeData.recurring.recurringRoute === true) {
       if(this.routeData.recurring.recurringType == '') {
         this.toastr.error('Please select recurring type');
@@ -298,7 +273,6 @@ export class AddRouteComponent implements OnInit {
           .pipe(
             map((val: any) => {
               const path = val.path;
-              // We Can Use This Method
               const key = val.message.match(/"([^']+)"/)[1];
               console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
@@ -340,9 +314,6 @@ export class AddRouteComponent implements OnInit {
       stopNotes: ''
     };
     if (elem === 'source') {
-
-      // this.routeData.sourceInformation['sourceAddress'] =
-      //   `${labelResult.title} ${labelResult.address.houseNumber} ${labelResult.address.street}`;
       this.routeData.sourceInformation['sourceAddress'] = '';
       this.routeData.sourceInformation['sourceCountry'] = '';
       this.routeData.sourceInformation['sourceState'] = '';
@@ -382,9 +353,6 @@ export class AddRouteComponent implements OnInit {
       this.routeData.destinationInformation['destinationCity'] = '';
       this.routeData.destinationInformation['destinationZipCode'] = '';
 
-      // this.routeData.destinationInformation['destinationAddress'] =
-      //   `${labelResult.title} ${labelResult.address.houseNumber} ${labelResult.address.street}`;
-
       this.routeData.destinationInformation['destinationAddress'] = `${labelResult.title}`;
 
       if(labelResult.address.houseNumber !== undefined) {
@@ -414,7 +382,6 @@ export class AddRouteComponent implements OnInit {
       this.routeData.stops.splice(1, 1);
       this.routeData.stops.splice(1, 0, item);
     }
-    // console.log('this.stopsData', this.routeData.stops);
     this.searchResults = false;
     $('div').removeClass('show-search__result');
 
