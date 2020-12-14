@@ -3,6 +3,7 @@ import { ApiService } from '../../../services/api.service';
 import { from, Subject, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { HereMapService } from '../../../services';
+import { ToastrService } from 'ngx-toastr';
 
 declare var $: any;
 @Component({
@@ -13,7 +14,6 @@ declare var $: any;
 export class AddressBookComponent implements OnInit {
   form;
   countries;
-  countries1;
   states;
   cities;
   public customerProfileSrc: any = 'assets/img/driver/driver.png';
@@ -22,14 +22,17 @@ export class AddressBookComponent implements OnInit {
   manualAddress: boolean;
   manualAddress1: boolean;
   wsib: false;
-
+  addresses = [];
   // Customer Object
   customerData = {
     address: [{
       addressType: '',
       countryID: '',
+      countryName: '',
       stateID: '',
+      stateName: '',
       cityID: '',
+      cityName: '',
       zipCode: '',
       address1: '',
       address2: '',
@@ -46,8 +49,11 @@ export class AddressBookComponent implements OnInit {
     address: [{
       addressType: '',
       countryID: '',
+      countryName: '',
       stateID: '',
+      stateName: '',
       cityID: '',
+      cityName: '',
       zipCode: '',
       address1: '',
       address2: '',
@@ -61,66 +67,131 @@ export class AddressBookComponent implements OnInit {
 
   // Vendor Object
   vendorData = {
-    contactType: 'vendor',
-    additionalData: {
-      vendorAdditionalData: {
-        address: {}
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    }
+    }], 
   };
 
   // Carrier Object
   carrierData = {
-    contactType: 'carrier',
-    additionalData: {
-      carrierAdditionalData: {
-        address: {},
-        additionalContact: {}
+    paymentDetails: {},
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    }
+    }],
+    additionalContact: {}
+      
   };
 
   // Shipper Object
   shipperData = {
-    contactType: 'shipper',
-    additionalData: {
-      shipperAdditionalData: {
-        address: {},
-        additionalContact: {}
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    }
+    }],
+    additionalContact: {}
   };
 
   // Consignee Object
   consigneeData = {
-    contactType: 'consignee',
-    additionalData: {
-      consigneeAdditionalData: {
-        address: {},
-        additionalContact: {}
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    }
+    }],
+    additionalContact: {}
   };
 
   // fcCompany Object
   fcCompanyData = {
-    contactType: 'factoring',
-    additionalData: {
-      factoringAdditionalData: {
-        address: {},
-        fcDetails: {}
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    }
+    }],
+    fcDetails: {}
   };
 
    // Staff Object
    staffData = {
-    contactType: 'staff',
-    additionalData: {
-      staffAdditionalData: {
-        address: {},
+    paymentDetails: {},
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    }
+    }],
+    userAccount: {},
+    additionalContact: {}
   };
 
   public searchTerm = new Subject<string>();
@@ -134,6 +205,7 @@ export class AddressBookComponent implements OnInit {
   errors = {};
   constructor(
             private apiService: ApiService,
+            private toastr: ToastrService,
             private HereMap: HereMapService)
   { }
 
@@ -175,17 +247,25 @@ export class AddressBookComponent implements OnInit {
 
     let countryID = await this.fetchCountriesByName(result.address.countryName);
     data.address[i].countryID = countryID;
-    
+    data.address[i].countryName = result.address.countryName;
+
     let stateID = await this.fetchStatesByName(result.address.state);
     data.address[i].stateID = stateID;
+    data.address[i].stateName = result.address.state;
 
     let cityID = await this.fetchCitiesByName(result.address.city);
     data.address[i].cityID = cityID;
-    
+    data.address[i].cityName = result.address.city;
+    if (result.address.houseNumber === undefined) {
+      result.address.houseNumber = '';
+    }
+    if (result.address.street === undefined) {
+      result.address.street = '';
+    }
     data.address[i].zipCode = result.address.postalCode;
     data.address[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;
-    
-    
+    console.log('data', data.address);
+
   }
 
   async fetchCountriesByName(name: string) {
@@ -236,6 +316,7 @@ export class AddressBookComponent implements OnInit {
     this.searchTerm.pipe(
       map((e: any) => {
         $('.map-search__results').hide();
+        $('div').removeClass('show-search__result');
         $(e.target).closest('div').addClass('show-search__result');
         target = e;
         return e.target.value;
@@ -284,17 +365,28 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addCustomerModal').modal('hide');
-          this.Success = 'Customer Added Successfully';
+          this.toastr.success('Customer Added Successfully');
         }
       });
   }
 
+  async checkUserExist(phone: number, email: string){
+    this.addresses.forEach(element => {
+      if( element.email === email || element.phone === phone) {
+        console.log('exists');
+      } else {
+        console.log('not exists');
+      }
+    });
+  }
+
   // Add Broker
-  addBroker() {
+  async addBroker() {
     console.log('brokerData', this.brokerData);
     this.hideErrors();
-    return;
-    this.apiService.postData('contacts', this.brokerData).
+    this.removeUserLocation(this.brokerData.address);
+    let result = await this.checkUserExist(this.brokerData['workPhone'], this.brokerData['workEmail'])
+    this.apiService.postData('brokers', this.brokerData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -316,8 +408,8 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Broker Added Successfully';
+          $('#addBrokerModal').modal('hide');
+          this.toastr.success('Customer Added Successfully');
         }
       });
   }
@@ -326,7 +418,8 @@ export class AddressBookComponent implements OnInit {
   addVendor() {
     console.log('vendorData', this.vendorData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.vendorData).
+    this.removeUserLocation(this.vendorData.address);
+    this.apiService.postData('vendors', this.vendorData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -348,8 +441,11 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Vendor Added Successfully';
+          this.vendorData = {
+            address: []
+          };
+          $('#addVendorModal').modal('hide');
+          this.toastr.success('Vendor Added Successfully');
         }
       });
   }
@@ -358,7 +454,8 @@ export class AddressBookComponent implements OnInit {
   addCarrier() {
     console.log('carrierData', this.carrierData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.carrierData).
+    this.removeUserLocation(this.carrierData.address);
+    this.apiService.postData('carriers', this.carrierData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -380,8 +477,8 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Carrier Added Successfully';
+          $('#addCarrierModal').modal('hide');
+          this.toastr.success('Carrier Added Successfully');
         }
       });
   }
@@ -391,7 +488,8 @@ export class AddressBookComponent implements OnInit {
   addShipper() {
     console.log('shipperData', this.shipperData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.shipperData).
+     this.removeUserLocation(this.shipperData.address);
+    this.apiService.postData('shippers', this.shipperData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -413,8 +511,8 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Shipper Added Successfully';
+          $('#addShipperModal').modal('hide');
+          this.toastr.success('Shipper Added Successfully');
         }
       });
   }
@@ -423,7 +521,8 @@ export class AddressBookComponent implements OnInit {
   addConsignee() {
     console.log('consigneeData', this.consigneeData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.consigneeData).
+    this.removeUserLocation(this.consigneeData.address);
+    this.apiService.postData('receivers', this.consigneeData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -445,8 +544,8 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Consignee Added Successfully';
+          $('#addConsigneeModal').modal('hide');
+          this.toastr.success('Consignee Added Successfully');
         }
       });
   }
@@ -455,7 +554,8 @@ export class AddressBookComponent implements OnInit {
   addFCompany() {
     console.log('fcCompanyData', this.fcCompanyData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.fcCompanyData).
+    this.removeUserLocation(this.fcCompanyData.address);
+    this.apiService.postData('factoringCompanies', this.fcCompanyData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -477,8 +577,8 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Company Added Successfully';
+          $('#addFCModal').modal('hide');
+          this.toastr.success('Company Added Successfully');
         }
       });
   }
@@ -487,7 +587,8 @@ export class AddressBookComponent implements OnInit {
   addStaff() {
     console.log('staffData', this.staffData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.staffData).
+    this.removeUserLocation(this.staffData.address);
+    this.apiService.postData('staffs', this.staffData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -509,8 +610,8 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Staff Added Successfully';
+          $('#addStaffModal').modal('hide');
+          this.toastr.success('Staff Added Successfully');
         }
       });
   }
@@ -559,7 +660,6 @@ export class AddressBookComponent implements OnInit {
   fetchCountries() {
     this.apiService.getData('countries').subscribe((result: any) => {
       this.countries = result.Items;
-      this.countries1 = result.Items;
       // console.log('countries', this.countries);
     });
   }
@@ -597,8 +697,15 @@ export class AddressBookComponent implements OnInit {
   fetchAddress() {
     this.apiService.getData('addresses')
       .subscribe((result: any) => {
+        this.addresses = result.Items;
         console.log('address', result);
       });
   }
 
+  carrierWSIB(value) {
+    if (value !== true) {
+      delete this.carrierData['paymentDetails']['wsibAccountNumber'];
+      delete this.carrierData['paymentDetails']['wsibExpiry'];
+    }
+  }
 }

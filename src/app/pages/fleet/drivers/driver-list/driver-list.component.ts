@@ -330,13 +330,15 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
 
-  deactivateDriver(value, driverID) {
+  deactivateDriver(item, driverID) {
+    console.log('item', item);
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-        .getData(`drivers/isDeleted/${driverID}/${value}`)
+        .getData(`drivers/isDeleted/${driverID}/${item.isDeleted}`)
         .subscribe((result: any) => {
-          this.rerender();
-          console.log('result', result);
+          this.toastr.success('Driver deleted successfully!');
+          this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
+          this.fetchDrivers();
         }, err => {
           console.log('driver delete', err);
         });
