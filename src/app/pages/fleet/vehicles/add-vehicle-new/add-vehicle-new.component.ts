@@ -248,7 +248,7 @@ vehicles= [];
     this.apiService.getData('devices').subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
-    this.httpClient.get('assets/vehicleType.json').subscribe(data => { 
+    this.httpClient.get('assets/vehicleType.json').subscribe(data => {
       this.vehicleTypeList = data;
     });
     this.settings.hardBreakingParams = 6;

@@ -49,35 +49,52 @@
                           <th width="10%">On Hand</th>
                           <th width="10%">Unit Cost</th>
                           <th width="15%">Warehouse Details</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let item of items; let i = index"
+
                           routerLink="/fleet/inventory/detail/{{item.itemID}}">
                           <td>
+
+                         
+                          <td>
+
                             {{i + 1}}
                           </td>
-                          <td>
+                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
                             {{item.name}}
                           </td>
-                          <td>
-                            {{item.categoryID}}
+                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                            {{itemGroups[item.categoryID]}}
                           </td>
-                          <td>
-                            {{item.preferredVendorID}}
+                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                            {{vendors[item.preferredVendorID]}}
                           </td>
-                          <td>
+                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
                             {{item.quantity}}
                           </td>
-                          <td>
+                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
                             234
                           </td>
-                          <td>
+                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
                             $ {{item.costUnit}}
                           </td>
-                          <td>
-                            {{item.warehouseID}}
+                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                            {{warehouses[item.warehouseID]}}
                           </td>
+                          <td class="border-0">
+                            <div class="dropdown dropright">
+                               <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fas fa-ellipsis-v"></i>
+                               </button>
+                               <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                  <a class="dropdown-item" routerLink="/fleet/inventory/edit/{{item.itemID}}">Edit</a>
+                                  <a href="javascript:;" class="dropdown-item" (click)="deactivateAsset(item.isDeleted, item.itemID)">Delete</a>
+                               </div>
+                             </div>
+                         </td>
                         </tr>
                       </tbody>
                     </table>
@@ -306,7 +323,6 @@
                   </select>
                 </div>
               </div>
-
 
             </div>
           </div>
