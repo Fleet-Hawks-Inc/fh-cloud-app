@@ -243,7 +243,7 @@ export class AddGeofenceComponent implements OnInit {
       .getData('geofences/' + this.getGeofenceID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        // console.log('result', result);
+        console.log('result', result);
         this.geofenceData['geofenceID'] = this.getGeofenceID;
         this.geofenceData['geofenceName'] = result.geofenceName;
         this.geofenceData['location'] = result.location;

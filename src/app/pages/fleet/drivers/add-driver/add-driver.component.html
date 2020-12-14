@@ -834,7 +834,7 @@
 					<div class="col-lg-12 text-right pb-4 pr-5">
 					   <button type="button" (click)="prevStep()" class="btn btn-default btnPrevious">Cancel</button>
 					   <a href="javascript:;" (click)="nextStep()"  *ngIf="currentTab != 7" class="btn btn-success btnNext">Next</a>
-					   <a href="javascript:;" (click)="addDriver()" class="btn btn-success">Submit</a>
+					   <a href="javascript:;" *ngIf="currentTab == 7 && !driverID" (click)="addDriver()" class="btn btn-success">Submit</a>
 					   <a href="javascript:;" *ngIf="currentTab == 7 && driverID" (click)="updateDriver()" class="btn btn-success">Update</a>
 					</div>
 				 </div>

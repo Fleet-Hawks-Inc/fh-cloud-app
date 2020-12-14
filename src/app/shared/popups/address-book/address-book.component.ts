@@ -4,6 +4,8 @@ import { from, Subject, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { HereMapService } from '../../../services';
 import { ToastrService } from 'ngx-toastr';
+import { mergeMap, takeUntil } from 'rxjs/operators';
+import { forkJoin, Observable, of } from 'rxjs';
 
 declare var $: any;
 @Component({
@@ -12,15 +14,24 @@ declare var $: any;
   styleUrls: ['./address-book.component.css']
 })
 export class AddressBookComponent implements OnInit {
+  customers: any;
+  drivers: any;
+  brokers: any;
+  vendors: any;
+  carriers: any;
+  shippers: any;
+  receivers: any;
+  staffs: any;
+  fcCompanies: any;
   form;
   countries;
   states;
   cities;
   public customerProfileSrc: any = 'assets/img/driver/driver.png';
-  public customers = [];
   userLocation;
   manualAddress: boolean;
   manualAddress1: boolean;
+  dtOptions: DataTables.Settings = {};
   wsib: false;
   addresses = [];
   // Customer Object
@@ -202,6 +213,7 @@ export class AddressBookComponent implements OnInit {
   hasSuccess: boolean = false;
   Error: string = '';
   Success: string = '';
+  private destroy$ = new Subject();
   errors = {};
   constructor(
             private apiService: ApiService,
@@ -210,10 +222,54 @@ export class AddressBookComponent implements OnInit {
   { }
 
   ngOnInit() {
-    this.fetchContacts();
-    this.fetchCountries();
+    forkJoin([
+      this.fetchCustomers(),
+      this.fetchDrivers(),
+      this.fetchBrokers(),
+      this.fetchVendors(),
+      this.fetchCarriers(),
+      this.fetchShippers(),
+      this.fetchConsignee(),
+      this.fetchStaffs(),
+      this.fetchFcCompanies(),
+      this.fetchCountries(),
+      this.fetchAddress(),
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        complete: () => {
+          this.initDataTable();
+        },
+        error: () => { },
+        next: ([
+          customers,
+          drivers,
+          brokers,
+          vendors,
+          carriers,
+          shippers,
+          receivers,
+          staffs,
+          fcCompanies,
+          countries,
+          addresses
+        ]: any) => {
+          this.customers = customers.Items;
+          this.drivers = drivers.Items;
+          this.brokers = brokers.Items,
+          this.vendors = vendors.Items,
+          this.carriers = carriers.Items,
+          this.shippers = shippers.Items,
+          this.receivers = receivers.Items,
+          this.staffs = staffs.Items,
+          this.fcCompanies = fcCompanies.Items,
+          
+          this.countries = countries;
+          this.addresses = addresses;
+        }
+      });
     this.searchLocation();
-    this.fetchAddress();
+    
     $(document).ready(() => {
       this.form = $('#customerForm, #brokerForm, #vendorForm, #carrierForm, #consigneeForm').validate();
     });
@@ -234,11 +290,8 @@ export class AddressBookComponent implements OnInit {
   }
 
   async userAddress(data: any, i: number, item: any) {
-    console.log('obj', data, i, item);
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
-    console.log('result', result);
-    console.log('data.address[i]', data.address[i]);
     $('div').removeClass('show-search__result');
 
     data.address[i].userLocation = result.address.label;
@@ -264,8 +317,6 @@ export class AddressBookComponent implements OnInit {
     }
     data.address[i].zipCode = result.address.postalCode;
     data.address[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;
-    console.log('data', data.address);
-
   }
 
   async fetchCountriesByName(name: string) {
@@ -291,7 +342,6 @@ export class AddressBookComponent implements OnInit {
   async fetchCitiesByName(name: string) {
     let result = await this.apiService.getData(`cities/get/${name}`)
       .toPromise();
-      console.log('cities', result);
     if (result.Items.length > 0) {
       return result.Items[0].cityID;
     }
@@ -331,7 +381,6 @@ export class AddressBookComponent implements OnInit {
       }),
     ).subscribe(res => {
       if (res) {
-        console.log('res', res);
         this.searchResults = res;
       }
     });
@@ -339,7 +388,6 @@ export class AddressBookComponent implements OnInit {
 
   // Add Customer
   addCustomer() {
-    console.log('customers', this.customerData);
     this.hideErrors();
     this.removeUserLocation(this.customerData.address)
     this.apiService.postData('customers', this.customerData).
@@ -416,7 +464,6 @@ export class AddressBookComponent implements OnInit {
 
   // Add Vendor
   addVendor() {
-    console.log('vendorData', this.vendorData);
     this.hideErrors();
     this.removeUserLocation(this.vendorData.address);
     this.apiService.postData('vendors', this.vendorData).
@@ -452,7 +499,6 @@ export class AddressBookComponent implements OnInit {
 
   // Add Carrier
   addCarrier() {
-    console.log('carrierData', this.carrierData);
     this.hideErrors();
     this.removeUserLocation(this.carrierData.address);
     this.apiService.postData('carriers', this.carrierData).
@@ -486,9 +532,8 @@ export class AddressBookComponent implements OnInit {
   
   // Add Shipper
   addShipper() {
-    console.log('shipperData', this.shipperData);
     this.hideErrors();
-     this.removeUserLocation(this.shipperData.address);
+    this.removeUserLocation(this.shipperData.address);
     this.apiService.postData('shippers', this.shipperData).
       subscribe({
         complete: () => { },
@@ -519,7 +564,6 @@ export class AddressBookComponent implements OnInit {
 
   // Add Consignee
   addConsignee() {
-    console.log('consigneeData', this.consigneeData);
     this.hideErrors();
     this.removeUserLocation(this.consigneeData.address);
     this.apiService.postData('receivers', this.consigneeData).
@@ -552,7 +596,6 @@ export class AddressBookComponent implements OnInit {
 
   // Add FC Company
   addFCompany() {
-    console.log('fcCompanyData', this.fcCompanyData);
     this.hideErrors();
     this.removeUserLocation(this.fcCompanyData.address);
     this.apiService.postData('factoringCompanies', this.fcCompanyData).
@@ -585,7 +628,6 @@ export class AddressBookComponent implements OnInit {
 
   // Add addStaff
   addStaff() {
-    console.log('staffData', this.staffData);
     this.hideErrors();
     this.removeUserLocation(this.staffData.address);
     this.apiService.postData('staffs', this.staffData).
@@ -639,38 +681,17 @@ export class AddressBookComponent implements OnInit {
     this.errors = {};
   }
 
-  fetchContacts() {
-    this.apiService.getData('contacts').subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        for (let i = 0; i < result.Items.length; i++) {
-          if (result.Items[i].isDeleted === 0) {
-            this.customers.push(result.Items[i]);
-          }
-        }
-        // console.log('this.fetchContacts', this.customers);
-      }
-    });
-  }
-
   /*
    * Get all countries from api
    */
   fetchCountries() {
-    this.apiService.getData('countries').subscribe((result: any) => {
-      this.countries = result.Items;
-      // console.log('countries', this.countries);
-    });
+    return this.apiService.getData('countries');
   }
 
   getStates(id) {
-    // const countryID = event.target.value;
-    // const countryID = this.customerData.address['countryID'];
     this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
         this.states = result.Items;
-        console.log('this.states', this.states)
       });
   }
 
@@ -678,7 +699,6 @@ export class AddressBookComponent implements OnInit {
     this.apiService.getData('cities/state/' + id)
       .subscribe((result: any) => {
         this.cities = result.Items;
-        console.log('this.cities', this.cities)
       });
   }
 
@@ -695,12 +715,45 @@ export class AddressBookComponent implements OnInit {
 
 
   fetchAddress() {
-    this.apiService.getData('addresses')
-      .subscribe((result: any) => {
-        this.addresses = result.Items;
-        console.log('address', result);
-      });
+    return this.apiService.getData('addresses');
   }
+  
+  fetchCustomers() {
+    return this.apiService.getData('customers');
+  }
+
+  fetchDrivers() {
+    return this.apiService.getData('drivers');
+  }
+  
+  fetchBrokers() {
+    return this.apiService.getData('brokers');
+  }
+
+  fetchVendors() {
+    return this.apiService.getData('vendors');
+  }
+
+  fetchCarriers() {
+    return this.apiService.getData('carriers');
+  }
+  
+  fetchShippers() {
+    return this.apiService.getData('shippers');
+  }
+  
+  fetchConsignee() {
+    return this.apiService.getData('receivers');
+  }
+
+  fetchStaffs() {
+    return this.apiService.getData('staffs');
+  }
+
+  fetchFcCompanies() {
+    return this.apiService.getData('factoringCompanies');
+  }
+
 
   carrierWSIB(value) {
     if (value !== true) {
@@ -708,4 +761,15 @@ export class AddressBookComponent implements OnInit {
       delete this.carrierData['paymentDetails']['wsibExpiry'];
     }
   }
+
+  initDataTable() {
+    this.dtOptions = {
+      searching: false,
+      dom: 'Bfrtip', // lrtip to hide search field
+      processing: true,
+      
+     
+    };
+  }
+
 }
