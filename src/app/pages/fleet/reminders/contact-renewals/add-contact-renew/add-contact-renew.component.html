@@ -67,7 +67,7 @@
                              <div class="col-lg-1 pl-0" style="margin-top: 39px !important">
                               <button type="button" data-toggle="modal" data-target="#addGroupModal"
                               class="modal-with-form btn btn-sm btn-success text-light"><i
-                                 class="fas fa-plus"></i></button>
+                                 class="fas fa-plus"></i> Add Group</button>
                               </div> 
 
                            </div>
@@ -188,15 +188,21 @@
              <div class="card-body p-0">
             <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
                <div class="form-row">
-                 <div class="form-group col-lg-6">
+                 <div class="form-group col-lg-12">
                    <label class="control-label font-weight-bold">Group Name</label>
                    <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"> 
                  </div>
-                 <div class="form-group col-lg-6">
-                   <label class="control-label font-weight-bold">Group Type</label>
-                   <input [(ngModel)]="groupData.groupType" name="groupType" type="text" class="form-control"> 
-                 </div>
                </div>
+               <div class="form-row">
+                  <div class="form-group col-lg-12">
+                    <label class="control-label font-weight-bold">Group Members</label>
+                    <ng-select [multiple]="true" [(ngModel)]="groupMembers" name="groupMembers"
+                    style="width: 100%;">
+                    <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}
+                    </ng-option>
+                 </ng-select>
+                  </div>
+                </div>
                <div class="form-row">
                  <div class="form-group col-lg-12">
                    <div class="row">

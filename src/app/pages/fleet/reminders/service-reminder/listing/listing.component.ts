@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { timer } from 'rxjs';
 import * as moment from 'moment';
+import * as _ from 'lodash';
+import Constants from '../../../constants'
 declare var $: any;
 @Component({
   selector: 'app-listing',
@@ -19,14 +21,14 @@ export class ListingComponent implements OnInit {
   task: string;
   vehicleList: any = {};
   groups: any = {};
-  serviceLogs: [];
+  serviceLogs:any = [];
   allRemindersData = [];
   vehicleIdentification = '';
   unitID = '';
   unitName = '';
   suggestedUnits = [];
   currentDate = moment();
-  currentOdometer = 12500;
+  currentOdometer = 1500;
   taskName: string;
   newData = [];
   suggestedVehicles = [];
@@ -34,12 +36,12 @@ export class ListingComponent implements OnInit {
   serviceTasks = [];
   tasksList = [];
   searchServiceTask = '';
-  filterStatus = 'OVERDUE';
+  filterStatus: string;
+  inServiceOdometer: string;
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.fetchServiceLogs();
-    this.fetchReminders();
     this.fetchGroups();
     this.fetchTasksList();
     this.fetchVehicleList();
@@ -65,12 +67,18 @@ export class ListingComponent implements OnInit {
       this.groups = result;
     });
   }
-  fetchServiceLogs() {
-    this.apiService.getData('serviceLogs').subscribe((result: any) => {
-      this.serviceLogs = result.Items;
-      console.log('service log', this.serviceLogs);
+  fetchServiceLogs() {   
+    this.apiService.getData('serviceLogs').subscribe({
+      complete: () => { this.fetchReminders(); },
+      next: (result:any) => {
+        this.serviceLogs = result.Items;
+      }   
     });
-  }
+    
+      }
+      setFilterStatus(val) {
+        this.filterStatus = val;
+      }
   fetchServiceTaks() {
     let test = [];
     let taskType = 'service';
@@ -80,32 +88,63 @@ export class ListingComponent implements OnInit {
       this.serviceTasks = test.filter((s: any) => s.taskType === 'service');
     });    
   }
+  getVehicle(vehicleID) {
+    this.apiService
+      .getData('vehicles/' + vehicleID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+          this.inServiceOdometer = result.lifeCycle.inServiceOdometer;  
+          return result.lifeCycle.inServiceOdometer;   
+      });
+  }
+  resolveReminder(unitID) {  
+    let unitType = 'vehicle';
+    const unit = {
+      unitID:  unitID,
+      unitType: unitType,
+  }
+  
+  window.localStorage.setItem('reminderUnitID', JSON.stringify(unit));
+  this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
+  }
 fetchReminders = async () => {
-   console.log('serach service task', this.searchServiceTask);
    this.allRemindersData = [];
    this.remindersData = [];
-   this.apiService.getData(`reminders?reminderIdentification=${this.vehicleID}&serviceTask=${this.searchServiceTask}`).subscribe({
-    // this.apiService.getData(`reminders`).subscribe({
+   let lastCompleted;
+   let serviceOdometer = 0;
+   this.apiService.getData(`reminders?reminderIdentification=${this.vehicleID}&serviceTask=${this.searchServiceTask}`).subscribe({  
     complete: () => {this.initDataTable(); },
     error: () => { },
     next: (result: any) => {
       this.allRemindersData = result.Items;
-      for(let j=0; j < this.allRemindersData.length; j++) {
-        if (this.allRemindersData[j].reminderType === 'service') {
-          // USE BELOW LOGIC TO FETCH REMINDERS INSTEAD OF ISSUES
-          // const issueId = 'b81aba00-1066-11eb-a5d6-113a0b66f655';
-          // const selectedIssues: any = this.serviceLogs.filter( (s: any) =>  s.selectedIssues.some((issue: any) => issue === issueId));
-          // console.log('selected issues', selectedIssues);
-          // const lastCompleted = selectedIssues[0].completionDate;
-          const lastCompleted = '18-11-2020';
-          console.log('last completed', lastCompleted);
-          // const serviceOdometer = +selectedIssues[0].odometer;
-          const serviceOdometer = 3400;
-          console.log('service odometer', serviceOdometer);
+        for(let j=0; j < this.allRemindersData.length; j++) {
+          let reminderStatus: string;
+        if (this.allRemindersData[j].reminderType === 'service') {    
+          for(let i = 0; i < this.serviceLogs.length; i++){
+            for( let s=0; s < this.serviceLogs[i].allServiceTasks.serviceTaskList.length; s++) {
+              // console.log('service task data', this.serviceLogs[i].allServiceTasks.serviceTaskList[s].reminderID);
+               if(this.serviceLogs[i].allServiceTasks.serviceTaskList[s].reminderID === this.allRemindersData[j].reminderID){
+                       
+                lastCompleted = this.serviceLogs[i].completionDate;
+                serviceOdometer = +this.serviceLogs[i].odometer;
+               }
+               else {
+                // serviceOdometer = this.getVehicle(this.allRemindersData[j].reminderIdentification);               
+                lastCompleted = moment().subtract(7,'d').format('DD/MM/YYYY');
+                serviceOdometer = this.allRemindersData[j].reminderTasks.odometer; 
+               }              
+            }
+          }
           const convertedDate = moment(lastCompleted, 'DD/MM/YYYY').add(this.allRemindersData[j].reminderTasks.remindByDays,'days');
           const remainingDays = convertedDate.diff(this.currentDate, 'days');
-          const remainingMiles = (serviceOdometer + (+this.allRemindersData[j].reminderTasks.odometer)) - this.currentOdometer;
-          console.log('odometer', remainingMiles);
+           const remainingMiles = (serviceOdometer + (this.allRemindersData[j].reminderTasks.odometer)) - this.currentOdometer;
+       
+        if (remainingDays < 0) {
+          reminderStatus = 'OVERDUE';
+        }
+        else if (remainingDays <= 7 && remainingDays >= 0) {
+          reminderStatus = 'DUE SOON';
+        }
           const data = {
             reminderID: this.allRemindersData[j].reminderID,
             reminderIdentification: this.allRemindersData[j].reminderIdentification,
@@ -114,7 +153,8 @@ fetchReminders = async () => {
               remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
               remainingDays: remainingDays,
               odometer: this.allRemindersData[j].reminderTasks.odometer,
-              remainingMiles: remainingMiles
+              remainingMiles: remainingMiles,
+              reminderStatus: reminderStatus,
             },
             subscribers : this.allRemindersData[j].subscribers,
             lastCompleted: lastCompleted,
@@ -122,7 +162,15 @@ fetchReminders = async () => {
           this.remindersData.push(data);
         }
       }
-      console.log('new data', this.remindersData);
+      if (this.filterStatus === Constants.OVERDUE) {
+        this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
+      }
+      else if (this.filterStatus === Constants.DUE_SOON) {
+        this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
+      }
+      else {
+        this.remindersData = this.remindersData;
+      }
     },
   });
 }
@@ -149,10 +197,7 @@ getSuggestions(value) {
         this.fetchReminders();
       });
   }
-  resolveReminder(ID) {
-    window.localStorage.setItem('reminderVehicleLocalID', ID);
-    this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
-  }
+
   initDataTable() {
     this.dtOptions = {
       dom: 'lrtip', // lrtip to hide search field

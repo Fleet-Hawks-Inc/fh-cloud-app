@@ -4,8 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {AwsUploadService} from '../../../../../services';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
-import { from } from 'rxjs';
-import {  map } from 'rxjs/operators';
 @Component({
   selector: 'app-issue-detail',
   templateUrl: './issue-detail.component.html',
@@ -151,7 +149,14 @@ export class IssueDetailComponent implements OnInit {
   }
   resolveIssue() {
     window.localStorage.setItem('vehicleLocalID', this.unitID);
-    this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
+  
+    const unit = {
+      unitID: this.unitID,
+      unitType: this.unitType,
+  }
+  
+  window.localStorage.setItem('unit', JSON.stringify(unit));
+  this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
   }
   setPDFSrc(val) {
     this.pdfSrc = '';

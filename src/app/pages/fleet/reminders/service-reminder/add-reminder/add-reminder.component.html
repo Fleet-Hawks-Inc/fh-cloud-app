@@ -69,7 +69,7 @@
                               <div class="col-lg-1 pl-0" style="margin-top: 39px !important">
                                  <button type="button" data-toggle="modal" data-target="#addGroupModal"
                                     class="modal-with-form btn btn-sm btn-success text-light"><i
-                                       class="fas fa-plus"></i></button>
+                                       class="fas fa-plus"></i> Add Group</button>
                               </div>
 
                            </div>
@@ -120,7 +120,7 @@
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer
                                           Miles</label>
                                        <input [(ngModel)]="reminderData.reminderTasks.odometer"
-                                          name="odometer" type="text" class="form-control">
+                                          name="odometer" type="number" class="form-control">
                                     </div>
                                  </div>
                               </div>
@@ -145,7 +145,7 @@
    </div>
 </section>
 
-
+<!-- GROUP MODAL -->
 <div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal" aria-hidden="true">
    <div class="modal-dialog" style="max-width: 600px;" role="document">
      <div class="modal-content">
@@ -159,15 +159,21 @@
              <div class="card-body p-0">
             <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
                <div class="form-row">
-                 <div class="form-group col-lg-6">
+                 <div class="form-group col-lg-12">
                    <label class="control-label font-weight-bold">Group Name</label>
                    <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"> 
                  </div>
-                 <div class="form-group col-lg-6">
-                   <label class="control-label font-weight-bold">Group Type</label>
-                   <input [(ngModel)]="groupData.groupType" name="groupType" type="text" class="form-control"> 
-                 </div>
                </div>
+               <div class="form-row">
+                  <div class="form-group col-lg-12">
+                    <label class="control-label font-weight-bold">Group Members</label>
+                    <ng-select [multiple]="true" [(ngModel)]="groupMembers" name="groupMembers"
+                    style="width: 100%;">
+                    <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}
+                    </ng-option>
+                 </ng-select>
+                  </div>
+                </div>
                <div class="form-row">
                  <div class="form-group col-lg-12">
                    <div class="row">
@@ -188,28 +194,6 @@
       </div>
    </div>
 </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="addsubsuser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-   aria-hidden="true">
-   <div class="modal-dialog" role="document">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-               <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         <div class="modal-body">
-            ...
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-         </div>
-      </div>
-   </div>
 </div>
 
 
