@@ -140,7 +140,7 @@ export class AddContactRenewComponent implements OnInit {
       }
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
-      console.log('contact renewal data', this.reminderData);
+
       this.apiService.postData('reminders', this.reminderData).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -171,7 +171,6 @@ export class AddContactRenewComponent implements OnInit {
     }
   }
   throwErrors() {
-    console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
@@ -199,7 +198,6 @@ export class AddContactRenewComponent implements OnInit {
       .getData('reminders/' + this.reminderID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('Contact renewal FETCHED  data', result);
         for (let i = 0; i < result.subscribers.length; i++) {
           this.test.push(result.subscribers[i].subscriberIdentification);
         }
@@ -240,7 +238,7 @@ export class AddContactRenewComponent implements OnInit {
       }
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
-      console.log('updated data', this.reminderData);
+      
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -270,7 +268,6 @@ export class AddContactRenewComponent implements OnInit {
 
    // SERVICE TASK
    addServiceTask(){
-    console.log('servcie task data', this.serviceTask);
     this.apiService.postData('tasks', this.serviceTask).subscribe({
       complete: () => { },
       error: (err: any) => {

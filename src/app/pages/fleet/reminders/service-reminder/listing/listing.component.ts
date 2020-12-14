@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { timer } from 'rxjs';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import Constants from '../../../constants'
 declare var $: any;
 @Component({
   selector: 'app-listing',
@@ -71,7 +72,6 @@ export class ListingComponent implements OnInit {
       complete: () => { this.fetchReminders(); },
       next: (result:any) => {
         this.serviceLogs = result.Items;
-        console.log('servcie log', this.serviceLogs);
       }   
     });
     
@@ -112,8 +112,7 @@ fetchReminders = async () => {
    this.remindersData = [];
    let lastCompleted;
    let serviceOdometer = 0;
-   this.apiService.getData(`reminders?reminderIdentification=${this.vehicleID}&serviceTask=${this.searchServiceTask}`).subscribe({
-    // this.apiService.getData(`reminders`).subscribe({
+   this.apiService.getData(`reminders?reminderIdentification=${this.vehicleID}&serviceTask=${this.searchServiceTask}`).subscribe({  
     complete: () => {this.initDataTable(); },
     error: () => { },
     next: (result: any) => {
@@ -125,7 +124,7 @@ fetchReminders = async () => {
             for( let s=0; s < this.serviceLogs[i].allServiceTasks.serviceTaskList.length; s++) {
               // console.log('service task data', this.serviceLogs[i].allServiceTasks.serviceTaskList[s].reminderID);
                if(this.serviceLogs[i].allServiceTasks.serviceTaskList[s].reminderID === this.allRemindersData[j].reminderID){
-                 console.log('got reminder id');           
+                       
                 lastCompleted = this.serviceLogs[i].completionDate;
                 serviceOdometer = +this.serviceLogs[i].odometer;
                }
@@ -163,12 +162,11 @@ fetchReminders = async () => {
           this.remindersData.push(data);
         }
       }
-      console.log('new data', this.remindersData);
-      if (this.filterStatus === 'OVERDUE') {
-        this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === 'OVERDUE');
+      if (this.filterStatus === Constants.OVERDUE) {
+        this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
       }
-      else if (this.filterStatus === 'DUE SOON') {
-        this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === 'DUE SOON');
+      else if (this.filterStatus === Constants.DUE_SOON) {
+        this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
       }
       else {
         this.remindersData = this.remindersData;

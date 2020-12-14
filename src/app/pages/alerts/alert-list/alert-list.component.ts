@@ -65,10 +65,8 @@ export class AlertListComponent implements OnInit {
         this.initDataTable();
       },
       error: () => { },
-      next: (result: any) => {
-        console.log(result);
+      next: (result: any) => {     
         this.alertsList = result.Items;
-        console.log('alert data', this.alertsList);
       },
     });
   }

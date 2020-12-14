@@ -102,11 +102,9 @@ export class AddReminderComponent implements OnInit {
       .getData('reminders/' + this.reminderID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('Fetched data', result);
         for (let i = 0; i < result.subscribers.length; i++) {
           this.test.push(result.subscribers[i].subscriberIdentification);
         }
-        // console.log('Check in fetched', this.test);
         this.reminderData[`reminderID`] = this.reminderID;
         this.reminderData[`reminderType`] = result.reminderType;
         this.reminderData[`reminderIdentification`] = result.reminderIdentification;
@@ -170,8 +168,7 @@ export class AddReminderComponent implements OnInit {
       }
       
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
-      console.log('Filled Reminder Data', this.reminderData);
+      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);    
       this.apiService.postData('reminders', this.reminderData).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -203,7 +200,6 @@ export class AddReminderComponent implements OnInit {
   }
 
   throwErrors() {
-    console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
@@ -254,7 +250,7 @@ export class AddReminderComponent implements OnInit {
 
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
-      console.log('updated data', this.reminderData);
+ 
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -289,7 +285,6 @@ export class AddReminderComponent implements OnInit {
 
   // SERVICE TASK
   addServiceTask(){
-    console.log('servcie task data', this.serviceTask);
     this.apiService.postData('tasks', this.serviceTask).subscribe({
       complete: () => { },
       error: (err: any) => {

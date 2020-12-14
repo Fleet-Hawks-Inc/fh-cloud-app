@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import  Constants  from '../../constants'
 declare var $: any;
 
 @Component({
@@ -32,7 +33,7 @@ export class AddVehicleNewComponent implements OnInit {
  *Group Properties
 */
 groupData = {
-  groupType : 'vehicles'
+  groupType : Constants.GROUP_VEHICLES 
 };
 vehicles= [];
   /**
@@ -230,7 +231,6 @@ vehicles= [];
 
   ngOnInit() {
     this.vehicleID = this.route.snapshot.params['vehicleID'];
-    console.log('vehicle ID', this.vehicleID);
     if (this.vehicleID) {
       this.title = 'Edit Vehicle';
       this.fetchVehicleByID();
@@ -248,8 +248,7 @@ vehicles= [];
     this.apiService.getData('devices').subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
-    this.httpClient.get('assets/vehicleType.json').subscribe(data => {
-      console.log('Vehicle Type', data);
+    this.httpClient.get('assets/vehicleType.json').subscribe(data => { 
       this.vehicleTypeList = data;
     });
     this.settings.hardBreakingParams = 6;
@@ -279,7 +278,6 @@ vehicles= [];
   fetchManufacturers() {
     this.apiService.getData('manufacturers').subscribe((result: any) => {
       this.manufacturers = result.Items;
-      console.log('manufactureres', this.manufacturers);
     });
   }
 
@@ -316,7 +314,6 @@ vehicles= [];
       .getData(`vehicleModels/manufacturer/${this.manufacturerID}`)
       .subscribe((result: any) => {
         this.models = result.Items;
-        console.log('models', this.models);
       });
   }
 
@@ -531,7 +528,6 @@ vehicles= [];
    */
   selectDocuments(event, obj) {
     this.selectedFiles = event.target.files;
-    console.log('selected files', this.selectedFiles[0].name);
     if (obj === 'uploadedDocs') {
       for (let i = 0; i <= this.selectedFiles.item.length; i++) {
         const randomFileGenerate = this.selectedFiles[i].name.split('.');
@@ -873,7 +869,6 @@ vehicles= [];
       }
   };
 
-    console.log('updated field',data);
     this.apiService.putData('vehicles', data).
     subscribe({
       complete : () => {},

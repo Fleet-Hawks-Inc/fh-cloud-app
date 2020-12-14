@@ -121,7 +121,6 @@ export class VehicleRenewAddComponent implements OnInit {
       switch (this.timeType) {
         case 'Day(s)': {
           this.numberOfDays = this.time * 1;
-          console.log('days in switch', this.timeType);
           break;
         }
         case 'Month(s)': {
@@ -135,7 +134,7 @@ export class VehicleRenewAddComponent implements OnInit {
       }
       this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      console.log('data', this.reminderData);
+    
       this.apiService.postData('reminders', this.reminderData).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -173,7 +172,6 @@ export class VehicleRenewAddComponent implements OnInit {
       .getData('reminders/' + this.reminderID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('vehicle renewal fetched  data', result);
         for (let i = 0; i < result.subscribers.length; i++) {
           this.test.push(result.subscribers[i].subscriberIdentification);
         }
@@ -192,7 +190,7 @@ export class VehicleRenewAddComponent implements OnInit {
     this.location.back(); // <-- go back to previous location on cancel
   }
   throwErrors() {
-    console.log(this.errors);
+   // console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
@@ -222,7 +220,6 @@ export class VehicleRenewAddComponent implements OnInit {
       switch (this.timeType) {
         case 'Day(s)': {
           this.numberOfDays = this.time * 1;
-          console.log('days in switch', this.timeType);
           break;
         }
         case 'Month(s)': {
@@ -236,7 +233,6 @@ export class VehicleRenewAddComponent implements OnInit {
       }
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
-      console.log('updated data', this.reminderData);
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -270,7 +266,6 @@ export class VehicleRenewAddComponent implements OnInit {
 
     // SERVICE TASK
     addServiceTask(){
-      console.log('servcie task data', this.serviceTask);
       this.apiService.postData('tasks', this.serviceTask).subscribe({
         complete: () => { },
         error: (err: any) => {

@@ -97,7 +97,6 @@ export class FuelEntryListComponent implements OnInit {
           });
         }
       });
-    //  console.log(this.suggestedUnits);
       if(this.suggestedUnits.length == 0){
         this.unitID = '';
       }
@@ -125,10 +124,9 @@ export class FuelEntryListComponent implements OnInit {
       },
       error: () => { },
       next: (result: any) => {
-      //console.log(result);
+     
         this.spinner.hide(); // loader hide
         this.fuelList = result.Items;
-     //   console.log('Fuel data', this.fuelList);
       },
     });
     this.unitID = '';
@@ -150,7 +148,6 @@ export class FuelEntryListComponent implements OnInit {
       fromDate: this.fromDate,
       toDate: this.toDate
     };
-    console.log(this.formattedToDate);
     return;
   }
   deleteFuelEntry(entryID) {
