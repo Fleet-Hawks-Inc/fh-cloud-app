@@ -71,7 +71,6 @@ export class ListingComponent implements OnInit {
       complete: () => { this.fetchReminders(); },
       next: (result:any) => {
         this.serviceLogs = result.Items;
-        console.log('servcie log', this.serviceLogs);
       }   
     });
     
@@ -113,7 +112,7 @@ fetchReminders = async () => {
    let lastCompleted;
    let serviceOdometer = 0;
    this.apiService.getData(`reminders?reminderIdentification=${this.vehicleID}&serviceTask=${this.searchServiceTask}`).subscribe({
-    // this.apiService.getData(`reminders`).subscribe({
+   
     complete: () => {this.initDataTable(); },
     error: () => { },
     next: (result: any) => {
@@ -163,7 +162,6 @@ fetchReminders = async () => {
           this.remindersData.push(data);
         }
       }
-      console.log('new data', this.remindersData);
       if (this.filterStatus === 'OVERDUE') {
         this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === 'OVERDUE');
       }
