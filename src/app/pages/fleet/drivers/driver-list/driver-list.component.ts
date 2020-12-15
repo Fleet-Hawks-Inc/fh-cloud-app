@@ -8,6 +8,7 @@ import { HereMapService } from '../../../../services/here-map.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { mergeMap, map, takeUntil } from 'rxjs/operators';
 import { DataTableDirective } from 'angular-datatables';
+import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 
@@ -22,6 +23,9 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
+
+  allDocumentsTypes: any;
+  documentsTypesObects: any = {};
 
   title = 'Driver List';
   mapView = false;
@@ -51,16 +55,13 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     private apiService: ApiService,
     private router: Router,
     private hereMap: HereMapService,
+    private httpClient: HttpClient,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    // this.fetchDrivers();
-    // this.fetchAddress();
-    // this.fetchAllStatesIDs();
-    // this.fetchAllVehiclesIDs();
-    // this.fetchAllCyclesIDs();
-
+    
+    this.fetchAllDocumentsTypes();
 
     forkJoin([
       this.fetchDrivers(),
@@ -111,7 +112,6 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
               this.drivers.push(iterator);
             }
           }
-          console.log('driver', drivers);
           this.statesObject = statesIds;
           this.vehiclesObject = vehcilesIds;
           this.cyclesObject = cycleIds;
@@ -148,11 +148,16 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   fetchAddress() {
     return this.apiService.getData('addresses');
-    // .subscribe((result: any) => {
-    //   console.log('address', result);
-    // });
   }
 
+  fetchAllDocumentsTypes() {
+    this.httpClient.get("assets/travelDocumentType.json").subscribe((data: any) =>{
+      this.allDocumentsTypes = data;
+      this.documentsTypesObects =  data.reduce( (a: any, b: any) => {
+        return a[b['code']] = b['description'], a;
+    }, {});
+    })
+  }
 
   jsTree() {
     $('.treeCheckbox').jstree({
@@ -300,7 +305,6 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   checkboxCount = () => {
     this.driverCheckCount = 0;
     this.drivers.forEach(item => {
-      console.log('item', item);
       if (item.checked) {
         this.selectedDriverID = item.driverID;
         this.driverCheckCount = this.driverCheckCount + 1;
@@ -331,7 +335,6 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
 
   deactivateDriver(item, driverID) {
-    console.log('item', item);
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
         .getData(`drivers/isDeleted/${driverID}/${item.isDeleted}`)

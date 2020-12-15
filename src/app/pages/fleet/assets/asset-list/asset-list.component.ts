@@ -266,7 +266,6 @@ export class AssetListComponent implements OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        console.log(result);
         this.spinner.hide(); // loader hide
         for (let i = 0; i < result.Items.length; i++) {
           if (result.Items[i].isDeleted === 0) {
@@ -314,7 +313,6 @@ export class AssetListComponent implements OnInit {
       this.assetTypesObects =  data.reduce( (a: any, b: any) => {
         return a[b['code']] = b['description'], a;
     }, {});
-      console.log('trailers', this.allAssetTypes);
     })
   }
 
@@ -323,7 +321,6 @@ export class AssetListComponent implements OnInit {
       this.apiService
       .getData(`assets/isDeleted/${assetID}/${value}`)
       .subscribe((result: any) => {
-        console.log('result', result);
         this.fetchAssets();
       });
     }
@@ -364,7 +361,6 @@ export class AssetListComponent implements OnInit {
   }
 
   uncheckCheckbox = (data, tableID) => {
-    // console.log(tableID, data.length )
     if (data.length > 0) {
       if (tableID === '#DataTables_Table_0_wrapper') {
         console.log('if');
@@ -372,7 +368,6 @@ export class AssetListComponent implements OnInit {
           $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons').show();
         }, 2000);
       } else {
-        console.log('else');
         setTimeout(() => {
           // $('.page-buttons').find('.dt-buttons').hide();
           $(tableID).find('.dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons').show();

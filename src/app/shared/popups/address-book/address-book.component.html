@@ -63,11 +63,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let customer of customers;">
+                                    <tr *ngFor="let item of allData;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Customer">CU</span></td>
-                                        <td>{{customer.firstName}} {{customer.firstName}}</td>
-                                        <td>{{customer.workEmail}}</td>
-                                        <td>{{customer.workPhone}}</td>
+                                        <td>{{item.firstName}} {{item.firstName}}</td>
+                                        <td>{{item.workEmail}}</td>
+                                        <td>{{item.workPhone}}</td>
                                         <td>100 street, King town,34E4R5,Canada</td>
                                         <td>
                                             <div class="dropdown dropright">
@@ -197,7 +197,7 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="vendor" role="tabpanel" aria-labelledby="vendor-tab">
-                            <table class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
                                         <th width="10%">Type</th>
@@ -234,7 +234,7 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="carrier" role="tabpanel" aria-labelledby="carrier-tab">
-                            <table class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
                                         <th width="10%">Type</th>
@@ -270,7 +270,7 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="shipper" role="tabpanel" aria-labelledby="shipper-tab">
-                            <table class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
                                         <th width="10%">Type</th>
@@ -306,7 +306,7 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="consignee" role="tabpanel" aria-labelledby="consignee-tab">
-                            <table class="table table-responsive-lg table-bordered table-striped mb-0 simple-table" >
+                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table" >
                                 <thead>
                                     <tr>
                                         <th width="10%">Type</th>
@@ -342,7 +342,7 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="staff" role="tabpanel" aria-labelledby="staff-tab">
-                            <table class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
                                         <th width="5%">Type</th>
@@ -384,7 +384,7 @@
                         </div>
                         <!-- factoring Company Table -->
                         <div class="tab-pane fade" id="fc" role="tabpanel" aria-labelledby="fc-tab">
-                            <table class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
                                         <th width="5%">Type</th>
@@ -473,13 +473,13 @@
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                <input [(ngModel)]="vendorData.email"
-                                                name="email" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="vendorData.workEmail"
+                                                name="workEmail" type="text" class="form-control"> </div>
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                <input [(ngModel)]="vendorData.phone"
-                                                name="phone" type="text" class="form-control">
+                                                <input [(ngModel)]="vendorData.workPhone"
+                                                name="workPhone" type="text" class="form-control">
                                                 
                                             </div>
                                             <div class="col-lg-12 pt-2">
@@ -991,22 +991,6 @@
     </div>
 </div>
 
-<!-- Add Broker MODAL -->
-<div class="modal fade" id="addVendorModal" tabindex="-1" role="dialog" aria-labelledby="addVendorModal"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 1200px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Vendor</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-                </button>
-            </div>
-            <div class="modal-body text-dark">
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Add Broker MODAL -->
 <div class="modal fade" id="addBrokerModal" tabindex="-1" role="dialog" aria-labelledby="addBrokerModal"
@@ -1368,8 +1352,8 @@
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                        <input  [(ngModel)]="carrierData.phone"
-                                                        name="phone" type="text" class="form-control">
+                                                        <input  [(ngModel)]="carrierData.workPhone"
+                                                        name="workPhone" type="text" class="form-control">
                                                         <!-- <span class="far fa-plus-square"></span>
                                    <i data-toggle="" class="far fa-plus-square text-dark h5 m-0" style="cursor: pointer;">
                                    </i> -->
@@ -1377,8 +1361,8 @@
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                        <input [(ngModel)]="carrierData.email"
-                                                        name="email" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="carrierData.workEmail"
+                                                        name="workEmail" type="text" class="form-control"> </div>
                                                     <div class="col-lg-12 d-flex justify-content-between mt-2">
                                                         <div class="checkbox-custom pt-2">
                                                             <input [(ngModel)]="carrierData.csa"
@@ -1786,13 +1770,13 @@
                                             <div class="col-lg-12 pt-1 mt-2">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                <input [(ngModel)]="shipperData.phone"
-                                                name="phone" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="shipperData.workPhone"
+                                                name="workPhone" type="text" class="form-control"> </div>
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                <input [(ngModel)]="shipperData.email"
-                                                name="email" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="shipperData.workEmail"
+                                                name="workEmail" type="text" class="form-control"> </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1923,19 +1907,19 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                     Name</label>
-                                                <input [(ngModel)]="shipperData.firstName"
+                                                <input [(ngModel)]="shipperData.additionalContact.firstName"
                                                 name="firstName1" type="text" class="form-control"> 
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                     Name</label>
-                                                <input [(ngModel)]="shipperData.lastName"
+                                                <input [(ngModel)]="shipperData.additionalContact.lastName"
                                                 name="lastName" type="text" class="form-control"> 
                                             </div>
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
-                                                <input [(ngModel)]="shipperData.designation"
+                                                <input [(ngModel)]="shipperData.additionalContact.designation"
                                                 name="designation" type="text" class="form-control">
                                             </div>
                                         </div>
@@ -1945,17 +1929,17 @@
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                <input [(ngModel)]="shipperData.phone"
+                                                <input [(ngModel)]="shipperData.additionalContact.phone"
                                                 name="phone1" type="text" class="form-control"> </div>
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                <input [(ngModel)]="shipperData.email"
+                                                <input [(ngModel)]="shipperData.additionalContact.email"
                                                 name="email1" type="text" class="form-control"> </div>
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
-                                                <input [(ngModel)]="shipperData.fax"
+                                                <input [(ngModel)]="shipperData.additionalContact.fax"
                                                 name="fax" type="text" class="form-control"> </div>
                                         </div>
                                     </div>
@@ -2054,13 +2038,13 @@
                                             <div class="col-lg-12 pt-1 mt-2">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                <input [(ngModel)]="consigneeData.phone"
-                                                name="phone" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="consigneeData.workPhone"
+                                                name="workPhone" type="text" class="form-control"> </div>
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                <input [(ngModel)]="consigneeData.email"
-                                                name="email" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="consigneeData.workEmail"
+                                                name="workEmail" type="text" class="form-control"> </div>
                                         </div>
                                     </div>
                                 </div>
@@ -2191,19 +2175,19 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                     Name</label>
-                                                <input [(ngModel)]="consigneeData.firstName"
+                                                <input [(ngModel)]="consigneeData.additionalContact.firstName"
                                                 name="firstName1" type="text" class="form-control"> 
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                     Name</label>
-                                                <input [(ngModel)]="consigneeData.lastName"
+                                                <input [(ngModel)]="consigneeData.additionalContact.lastName"
                                                 name="lastName1" type="text" class="form-control"> 
                                             </div>
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
-                                                <input [(ngModel)]="consigneeData.designation"
+                                                <input [(ngModel)]="consigneeData.additionalContact.designation"
                                                 name="designation" type="text" class="form-control">
                                             </div>
                                         </div>
@@ -2213,17 +2197,17 @@
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                <input [(ngModel)]="consigneeData.phone"
+                                                <input [(ngModel)]="consigneeData.additionalContact.phone"
                                                 name="phone1" type="text" class="form-control"> </div>
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                <input [(ngModel)]="consigneeData.email"
+                                                <input [(ngModel)]="consigneeData.additionalContact.email"
                                                 name="email1" type="text" class="form-control"> </div>
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
-                                                <input [(ngModel)]="consigneeData.fax"
+                                                <input [(ngModel)]="consigneeData.additionalContact.fax"
                                                 name="fax" type="text" class="form-control"> </div>
                                         </div>
                                     </div>
@@ -2310,8 +2294,8 @@
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                        <input [(ngModel)]="fcCompanyData.phone"
-                                                        name="phone" type="text" class="form-control">
+                                                        <input [(ngModel)]="fcCompanyData.workPhone"
+                                                        name="workPhone" type="text" class="form-control">
                                                         <!-- <span class="far fa-plus-square"></span>
                                             <i data-toggle="" class="far fa-plus-square text-dark h5 m-0" style="cursor: pointer;">
                                             </i> -->
@@ -2319,8 +2303,8 @@
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                        <input [(ngModel)]="fcCompanyData.email"
-                                                        name="email" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="fcCompanyData.workEmail"
+                                                        name="workEmail" type="text" class="form-control"> </div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-5">

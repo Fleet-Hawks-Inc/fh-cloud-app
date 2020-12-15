@@ -13,12 +13,12 @@
                 <nav>
                     <ul class="nav">
                         <li class="" [class.active]="navSelected === 'fleet'">
-                            <a class="nav-link" [routerLink]="" (click)="onNavSelected('fleet')" >
+                            <a class="nav-link" [routerLink]="['/Map-Dashboard']" (click)="onNavSelected('fleet')" >
                                 Fleet
                             </a>
                         </li>
                         <li class="" [class.active]="navSelected === 'compliance'">
-                            <a class="nav-link" [routerLink]="" (click)="onNavSelected('compliance')">
+                            <a class="nav-link" [routerLink]="['/compliance', 'hos', 'summary']" (click)="onNavSelected('compliance')">
                                 Compliance
                             </a>
                         </li>
@@ -37,7 +37,7 @@
                                 Routing & Dispatch
                             </a>
                         </li> -->
-                        <li class="">
+                        <li class="" [class.active]="navSelected === 'dispatch'">
                             <a class="nav-link" [routerLink]="['/dispatch', 'home', 'routing-dispatch-overview']" (click)="onNavSelected('dispatch')">
                                 Routing & Dispatch 
                             </a>
