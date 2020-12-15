@@ -1844,3 +1844,66 @@ html.fixed .reports-wrapper {
 .no-data-available {
   text-align: center;
 }
+
+
+
+
+.table-scroll-y {
+  display: block;
+}
+
+.table-scrollplan {
+  position: relative;
+  height: 650px;
+  overflow: auto;
+}
+
+
+.notespr {
+width: 90%;
+height: 50px;
+overflow: auto;
+}
+
+
+/* new IFTA look page */
+
+.newbgifta{background:#767676 !important;}
+.btnround40{border-radius:40px;}
+.btnifta{background:#464646 !important; border: none !important;}
+.btnifta:hover{background:#161616 !important;}
+
+
+
+
+
+/* new classes update after tester rashmi testing */
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover
+{
+border: 1px solid #e9ecef !important;
+border-radius: 0.25rem !important;
+background: #e9ecef !important;
+}
+
+.dutystatwd{min-width: 11.5rem !important;}
+
+
+
+table.dataTable thead th, table.dataTable thead td {
+  padding: 10px 10px !important;
+}
+
+/*top padding should be equal of vehicle table between numbering and count*/
+.dataTables_wrapper .dataTables_info{padding-top: 1.5em !important;}
+
+
+.dropdown-menu{z-index:1010 !important;}
+
+.checkboxalign{vertical-align: middle !important;}
+
+/*drop down icon for common pages*/
+.togglecolor::after{color:#999;}
+
+/*drop down icon on asset page*/
+.toggleright::after{margin-top: 8px !important; float: right !important; color:#999;}
