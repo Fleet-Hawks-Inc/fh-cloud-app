@@ -6,6 +6,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 import { escapeLeadingUnderscores } from 'typescript';
+import Constants from '../../../constants';
 @Component({
   selector: 'app-fuel-entry-details',
   templateUrl: './fuel-entry-details.component.html',
@@ -61,6 +62,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   vendorName = '';
   form;
   vehicleData = [];
+  ReeferData = [];
   unit: boolean;
   MPG: number;
   costPerMile: number;
@@ -111,36 +113,73 @@ export class FuelEntryDetailsComponent implements OnInit {
     let sortedArray: any = [];
     let totalCalculatedGallons = 0;
     let sumCostPerGallon = 0;
-    this.apiService.getData(`fuelEntries/vehicle/` + ID).subscribe((result: any) => {
+    this.apiService.getData(`fuelEntries/unit/` + ID).subscribe((result: any) => {
       this.vehicleData = result.Items;
-      console.log('Vehicle data', this.vehicleData);
+
     });
     setTimeout(() => {
       sortedArray = _.orderBy(this.vehicleData, ['additionalDetails.odometer'], ['desc']);
-      console.log('sorted array', sortedArray);
+
       if(sortedArray.length < 3){
         this.MPG = 0;
         this.costPerMile = 0;
       }
       else{
         for (let i = 1; i < sortedArray.length; i++) {
-          console.log('sortedArray.length',sortedArray.length);
+     
           totalCalculatedGallons = totalCalculatedGallons + sortedArray[i].totalGallons;
           sumCostPerGallon = sumCostPerGallon + sortedArray[i].costPerGallon;
             }
      let avgCostPerGallon = +((sumCostPerGallon/(sortedArray.length-1)).toFixed(2));
-     console.log('avgCostPerGallon', avgCostPerGallon);
-     console.log('total gallons', totalCalculatedGallons);
+
         const firstEntry = sortedArray.pop(); //First entry means when vehicle got fuel for first time
-        console.log('First Entry', firstEntry);
+    
         const latestEntry = sortedArray.shift(); //Latest entry means the last ododmter reading 
-        console.log('Latest entry', latestEntry); 
+    
         const miles = latestEntry.additionalDetails.odometer - firstEntry.additionalDetails.odometer;
-        console.log('miles', miles);
+ 
         this.MPG = +((miles / totalCalculatedGallons).toFixed(2));
-        console.log('MPG', this.MPG);
+     
         this.costPerMile = +((avgCostPerGallon / this.MPG).toFixed(2));
-        console.log('cost per mile', this.costPerMile);
+    
+      }
+    
+    }, 4500);
+  }
+  /**
+   * Reefer MPG Calculations
+   */
+  fetchAllReefers(ID) {
+    let sortedArray: any = [];
+    let totalCalculatedGallons = 0;
+    let sumCostPerGallon = 0;
+    this.apiService.getData(`fuelEntries/unit/` + ID).subscribe((result: any) => {
+      this.ReeferData = result.Items;
+    });
+    setTimeout(() => {
+      sortedArray = _.orderBy(this.ReeferData, ['additionalDetails.odometer'], ['desc']);
+
+      if(sortedArray.length < 2){
+        this.MPG = 0;
+        this.costPerMile = 0;
+      }
+      else{
+        for (let i = 1; i < sortedArray.length; i++) {
+          totalCalculatedGallons = totalCalculatedGallons + sortedArray[i].totalGallons;
+          sumCostPerGallon = sumCostPerGallon + sortedArray[i].costPerGallon;
+            }
+     let avgCostPerGallon = +((sumCostPerGallon/(sortedArray.length-1)).toFixed(2));
+ 
+        const firstEntry = sortedArray.pop(); //First entry means when vehicle got fuel for first time
+  
+        const latestEntry = sortedArray.shift(); //Latest entry means the last ododmter reading 
+ 
+        const miles = latestEntry.additionalDetails.odometer - firstEntry.additionalDetails.odometer;
+    
+        this.MPG = +((miles / totalCalculatedGallons).toFixed(2));
+ 
+        this.costPerMile = +((avgCostPerGallon / this.MPG).toFixed(2));
+   
       }
     
     }, 4500);
@@ -149,9 +188,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.apiService
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
-        result = result.Items[0];
-        console.log('Fetched Data', result);
-        this.fetchAllVehicles(result.unitID);
+        result = result.Items[0];      
         this.fuelData[`entryID`] = this.entryID;
         this.fuelData[`currency`] = result.currency,
         this.fuelData[`unitType`] = result.unitType;
@@ -189,7 +226,14 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
         this.getImages();
         this.fetchVendors(result.vendorID);
+        if(result.unitType === Constants.VEHICLE){
+          this.fetchAllVehicles(result.unitID);
+        }
+        else if(result.unitType === Constants.REEFER){
+          this.fetchAllReefers(result.unitID);
+        }
       });
+     
   }
   getImages = async () => {
     this.carrierID = await this.apiService.getCarrierID();
@@ -219,7 +263,6 @@ export class FuelEntryDetailsComponent implements OnInit {
       });
   }
   updateFuelEntry() {
-    console.log('Updated data', this.fuelData);
     this.apiService.putData('fuelEntries', this.fuelData).subscribe();
   }
 }

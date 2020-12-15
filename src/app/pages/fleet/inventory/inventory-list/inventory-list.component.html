@@ -54,8 +54,13 @@
                       </thead>
                       <tbody>
                         <tr *ngFor="let item of items; let i = index"
-                         >
-                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
+
+                          routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                          <td>
+
+                         
+                          <td>
+
                             {{i + 1}}
                           </td>
                           <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
@@ -318,7 +323,6 @@
                   </select>
                 </div>
               </div>
-
 
             </div>
           </div>
