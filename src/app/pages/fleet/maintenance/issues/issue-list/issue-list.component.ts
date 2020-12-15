@@ -45,7 +45,6 @@ export class IssueListComponent implements OnInit {
   setUnit(unitID, unitName) {
     this.unitName = unitName;
     this.unitID = unitID;
-
     this.suggestedUnits = [];
   }
 
@@ -78,7 +77,6 @@ export class IssueListComponent implements OnInit {
           });
         }
       });
-      console.log(this.suggestedUnits);
       if(this.suggestedUnits.length == 0){
         this.unitID = '';
       }
@@ -91,7 +89,6 @@ export class IssueListComponent implements OnInit {
   fetchContactList() {
     this.apiService.getData('contacts/get/list').subscribe((result: any) => {
       this.contactList = result;
-      console.log('fetched contacts', this.contactList);
     });
   }
   fetchAssetList() {
