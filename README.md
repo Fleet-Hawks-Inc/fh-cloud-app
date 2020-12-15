@@ -3,7 +3,7 @@
 [![Known Vulnerabilities](https://snyk.io/package/npm/snyk/badge.svg)](https://snyk.io/package/npm/snyk)
 
 
-# FleethawksDashboard
+# Fleethawks Dashboard
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.23.
 
