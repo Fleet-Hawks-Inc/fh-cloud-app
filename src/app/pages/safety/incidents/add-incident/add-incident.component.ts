@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-add-incident',
@@ -15,10 +16,11 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class AddIncidentComponent implements OnInit {
 
-  errors = {};
+    errors = {};
     event = {
         eventDate: '',
-        filterDate: '',
+        date: <any>'',
+        // filterDate: '',
         eventTime: '',
         location: '',
         username: '',
@@ -128,8 +130,12 @@ export class AddIncidentComponent implements OnInit {
     addEvent() {
         this.spinner.show();
         this.hideErrors();
+
+        let timestamp;
         let fdate = this.event.eventDate.split('-');
-        this.event.filterDate = fdate[2]+fdate[1]+fdate[0];
+        let date = fdate[2]+'-'+fdate[1]+'-'+fdate[0];
+        timestamp = moment(date+' '+ this.event.eventTime).format("X");
+        this.event.date = timestamp*1000;
 
         this.apiService.postData('safety/eventLogs', this.event).subscribe({
             complete: () => {},

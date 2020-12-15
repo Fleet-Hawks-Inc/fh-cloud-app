@@ -1,5 +1,5 @@
 <form class="form form-horizontal form-bordered" method="get" name="form" #accountForm="ngForm" (ngSubmit)="showValue(accountForm)">
-<section class="body" style="background:white;" *ngIf = "!addInfo">
+<section class="body" style="background:white;" [ngClass]="{'showDiv':  activeTab == 1, 'hideDiv':  activeTab != 1 }">
     <div class="">
 
         <section role="main" class="account-body m-0">
@@ -88,7 +88,7 @@
                                                         <label
                                                             class="control-label  font-weight-bold text-lg-right pt-2">Business
                                                             Name</label>
-                                                        <input type="text" class="form-control"  [(ngModel)]="accountData.basic.businessName" name="businessName">
+                                                        <input type="text" class="form-control"  [(ngModel)]="accountData.basic.carrierName" name="carrierName">
                                                     </div>
                                                     <div class="col-lg-2"></div>
                                                     <div class="col-lg-10">
@@ -147,7 +147,7 @@
                                         <div class=" row mt-4">
                                             <div class="col-md-10 col-lg-10 text-right">
                                                 <button type="reset" class="btn btn-default mr-1">Reset</button>
-                                                <a href="javascript:;" class="btn btn-success" (click)="displayInfo()">Save</a>
+                                                <button type="button" class="btn btn-success" (click)="next()">Next</button>
                                             </div>
                                         </div>
                                 </div>
@@ -160,7 +160,7 @@
     </div>
 </section>
 
-<section class="body" style="background:white;" *ngIf = "addInfo">
+<section class="body" style="background:white;"  [ngClass]="{'showDiv':  activeTab != 1 , 'hideDiv':  activeTab === 1}">
     <div class="pt-5">
        <section role="main" class="account-body">
           <div class="row text-dark">
@@ -181,25 +181,23 @@
                             <div class="col-lg-10 offset-lg-1">
                                <div class="m-2">
                                   <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                                     <li class="nav-item">
+                                     <!-- <li class="nav-item">
                                         <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Details</a>
-                                     </li>
-                                     <li class="nav-item">
+                                     </li> -->
+                                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(2)" [ngClass]="{'active': activeTab == 2}">Basic Details</a> </li>
+                                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(3)" [ngClass]="{'active': activeTab == 3}">Address</a> </li>
+                                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(4)" [ngClass]="{'active': activeTab == 4}">Bank Details</a> </li>
+
+                                     <!-- <li class="nav-item">
                                         <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="false">Address</a>
                                      </li>
                                      <li class="nav-item">
                                         <a class="nav-link" id="bankDetails-tab" data-toggle="tab" href="#bankDetails" role="tab" aria-controls="bankDetails" aria-selected="false">Bank Details</a>
-                                     </li>
-                                     <!-- <li class="nav-item">
-                                        <a class="nav-link" id="contactDetails-tab" data-toggle="tab" href="#contactDetails" role="tab" aria-controls="contactDetails" aria-selected="false">Contact Details</a>
-                                     </li> -->
-                                     <!-- <li class="nav-item">
-                                        <a class="nav-link" id="carrierDetails-tab" data-toggle="tab" href="#carrierDetails" role="tab" aria-controls="carrierDetails" aria-selected="false">Carrier Details</a>
                                      </li> -->
                                   </ul>
                                </div>
                                <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-                                  <div class="tab-pane show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">                                   
+                                  <div class="tab-pane" [ngClass]="{'show active': activeTab == 2}" id="basic" role="tabpanel" aria-labelledby="basic-tab">                                   
                                          <div class="row">
                                            <div class="col-lg-10">
                                               <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2"
@@ -219,34 +217,42 @@
                                                  </div>
                                               </div>
                                               <div class="row">
-                                                 <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Trucks</label>
-                                                    <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.trucks" name="trucks">
+                                                 <div class="col-lg-10">
+                                                    <div class="row">
+                                                      <div class="col-lg-4">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Truck(s)</label>
+                                                         <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.trucks" name="trucks">
+                                                      </div>
+                                                      <div class="col-lg-4">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Trailer(s)</label>
+                                                         <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.trailers" name="trailers">
+                                                      </div>
+                                                      <div class="col-lg-4">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Reefer(s)</label>
+                                                         <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.reefers" name="reefers">
+                                                      </div>
+                                                    </div>
                                                  </div>
-                                                 <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Trailers</label>
-                                                    <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.trailers" name="trailers">
-                                                 </div>
+                                               
                                               </div>
                                               <div class="row">
-                                                 <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Reefer(s)</label>
-                                                    <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.reefers" name="reefers">
-                                                 </div>
-                                                 <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Dry Van(s)</label>
-                                                    <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.dryVans" name="dryVans">
-                                                 </div>
-                                              </div>
-                                              <div class="row">
-                                                 <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Flatbed(s)</label>
-                                                    <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.flatbed" name="flatbed">
-                                                 </div>
-                                                 <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Curtain Side(s)</label>
-                                                    <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.curtainSide" name="curtainSide">
-                                                 </div>
+                                                <div class="col-lg-10">
+                                                   <div class="row">
+                                                      <div class="col-lg-4">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Dry Van(s)</label>
+                                                         <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.dryVans" name="dryVans">
+                                                      </div>
+                                                      <div class="col-lg-4">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Flatbed(s)</label>
+                                                         <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.flatbed" name="flatbed">
+                                                      </div>
+                                                      <div class="col-lg-4">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >CurtainSide(s)</label>
+                                                         <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.curtainSide" name="curtainSide">
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                                
                                               </div>
                                               <div class="row">
                                                 <div class="col-lg-10">
@@ -267,7 +273,24 @@
                                                    </div>
                                                 </div>
                                              </div>   
-                                            
+                                             <div class="row">
+                                                <div class="col-lg-10">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2" >Pay Period</label>
+                                                   <select data-plugin-selectTwo class="form-control populate"  [(ngModel)]="accountData.basic.carrierPayPeriod" name="carrierPayPeriod">
+                                                      <optgroup>
+                                                         <option value="Weekly(52 pay periods a year)">Weekly(52 pay periods a year)</option>
+                                                         <option value="Weekly(53 pay periods a year)">Weekly(53 pay periods a year)</option>
+                                                         <option value="Biweekly(26 pay periods a year)">Biweekly(26 pay periods a year)</option>
+                                                         <option value="Biweekly(27 pay periods a year)">Biweekly(27 pay periods a year)</option>
+                                                         <option value="Semi-monthly(24 pay periods a year)">Semi-monthly(24 pay periods a year)</option>
+                                                         <option value="Monthly(12 pay periods a year)">Monthly(12 pay periods a year)</option>
+                                                         <option value="Quaterly(4 pay periods a year)">Quaterly(4 pay periods a year)</option>
+                                                         <option value="Semi-annually(2 pay periods a year)">Semi-annually(2 pay periods a year)</option>
+                                                         <option value="Annually(1 pay period a year)">Annually(1 pay period a year)</option>
+                                                      </optgroup>
+                                                   </select>
+                                                </div>
+                                             </div>
                                               <div class="row">
                                                  <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2" >Attach Logo</label>
@@ -317,24 +340,7 @@
                                                     <input type="text" class="form-control"  [(ngModel)]="accountData.basic.cargoInsurance" name="cargoInsurance">                                                              
                                                  </div>
                                                </div>   
-                                               <div class="row">
-                                                <div class="col-lg-10">
-                                                   <label class="control-label font-weight-bold text-lg-right pt-2" >Pay Period</label>
-                                                   <select data-plugin-selectTwo class="form-control populate"  [(ngModel)]="accountData.basic.carrierPayPeriod" name="carrierPayPeriod">
-                                                      <optgroup>
-                                                         <option value="Weekly(52 pay periods a year)">Weekly(52 pay periods a year)</option>
-                                                         <option value="Weekly(53 pay periods a year)">Weekly(53 pay periods a year)</option>
-                                                         <option value="Biweekly(26 pay periods a year)">Biweekly(26 pay periods a year)</option>
-                                                         <option value="Biweekly(27 pay periods a year)">Biweekly(27 pay periods a year)</option>
-                                                         <option value="Semi-monthly(24 pay periods a year)">Semi-monthly(24 pay periods a year)</option>
-                                                         <option value="Monthly(12 pay periods a year)">Monthly(12 pay periods a year)</option>
-                                                         <option value="Quaterly(4 pay periods a year)">Quaterly(4 pay periods a year)</option>
-                                                         <option value="Semi-annually(2 pay periods a year)">Semi-annually(2 pay periods a year)</option>
-                                                         <option value="Annually(1 pay period a year)">Annually(1 pay period a year)</option>
-                                                      </optgroup>
-                                                   </select>
-                                                </div>
-                                             </div>
+                                            
                                              <div class="row">
                                                 <div class="col-lg-10">
                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Payment Type</label>
@@ -348,7 +354,7 @@
                                                 </div>
                                              </div>
                                              <div class="row">
-                                                <div class="col-lg-10" *ngIf = "accountData.basic.carrierPaymentType === 'payPerMile'">
+                                                <div class="col-lg-10 pt-2" *ngIf = "accountData.basic.carrierPaymentType === 'payPerMile'">
                                                    <div class="row">
                                                       <div class="col-lg-6">
                                                          <label class="control-label font-weight-bold text-lg-right pt-2" >Loaded Miles Rate</label>
@@ -360,7 +366,7 @@
                                                       </div>
                                                    </div>
                                                 </div>
-                                                <div class="col-lg-10"  *ngIf = "accountData.basic.carrierPaymentType === 'payPerHour'">
+                                                <div class="col-lg-10 pt-2"  *ngIf = "accountData.basic.carrierPaymentType === 'payPerHour'">
                                                    <div class="row">
                                                       <div class="col-lg-6">
                                                          <label class="control-label font-weight-bold text-lg-right pt-2" >Rate Per Hour</label>
@@ -368,7 +374,7 @@
                                                       </div>
                                                    </div>
                                                 </div>
-                                                <div class="col-lg-10" *ngIf = "accountData.basic.carrierPaymentType === 'payPercentage'">
+                                                <div class="col-lg-10 pt-2" *ngIf = "accountData.basic.carrierPaymentType === 'payPercentage'">
                                                    <div class="row">
                                                       <div class="col-lg-6">
                                                          <label class="control-label font-weight-bold text-lg-right pt-2" >Percentage</label>
@@ -376,7 +382,7 @@
                                                       </div>
                                                    </div>
                                                 </div>
-                                                <div class="col-lg-10" *ngIf = "accountData.basic.carrierPaymentType === 'payFlat'">
+                                                <div class="col-lg-10 pt-2" *ngIf = "accountData.basic.carrierPaymentType === 'payFlat'">
                                                    <div class="row">
                                                       <div class="col-lg-6">
                                                          <label class="control-label font-weight-bold text-lg-right pt-2" >Flat Rate</label>
@@ -390,7 +396,7 @@
                                   
                                   </div>
                                   <!-- ADDRESS -->
-                                  <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+                                  <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 3}" id="address" role="tabpanel" aria-labelledby="address-tab">
                                      <div>
                                         <div class="row">
                                            <div class="col-lg-10">
@@ -411,7 +417,7 @@
                                               <input type="text" class="form-control" 
                                                  placeholder="Type Address">
                                               <div class="checkbox-custom pt-2">
-                                                 <input type="checkbox" name="terms" id="w1-terms" (click)="showAddressControls()">
+                                                 <input type="checkbox" name="terms" id="w1-terms" (click)="showAddressControls()" [(ngModel)]="showAddress" name="showAddress">
                                                  <label for="w1-terms">Type Manually</label>
                                               </div>
                                            </div>
@@ -424,21 +430,21 @@
                                                  <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
                                                        >Select State</label>
-                                                    <ng-select placeholder="Select State" [(ngModel)]="accountData.address.stateID" name="stateID" (change)="getCities()" [disabled]="showAddress">                                                     
+                                                    <ng-select placeholder="Select State" [(ngModel)]="accountData.address.stateID" name="stateID" (change)="getCities()" [disabled]="!showAddress">                                                     
                                                        <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>                                                     
                                                     </ng-select>
                                                  </div>
                                                  <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
                                                        >Select City</label>
-                                                    <ng-select  placeholder="Select City" name="cityID" [(ngModel)]="accountData.address.cityID" [disabled]="showAddress">
+                                                    <ng-select  placeholder="Select City" name="cityID" [(ngModel)]="accountData.address.cityID" [disabled]="!showAddress">
                                                        <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>                                                     
                                                     </ng-select>
                                                  </div>
                                                  <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
                                                        >Zip Code</label>
-                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.address.zipCode" name="zipCode" [disabled]="showAddress">
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.address.zipCode" name="zipCode" [disabled]="!showAddress">
                                                  </div>
                                               </div>
                                            </div>
@@ -447,12 +453,12 @@
                                                  <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
                                                        >Address 1</label>
-                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.address.address1" name="address1" [disabled]="showAddress">
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.address.address1" name="address1" [disabled]="!showAddress">
                                                  </div>
                                                  <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
                                                        >Address 2</label>
-                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.address.address2" name="address2" [disabled]="showAddress">
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.address.address2" name="address2" [disabled]="!showAddress">
                                                  </div>
                                               </div>
                                            </div>
@@ -460,7 +466,7 @@
                                      </div>
                                   </div>
                                   <!-- Bank Details -->
-                                  <div class="tab-pane fade" id="bankDetails" role="tabpanel" aria-labelledby="bankDetails-tab">
+                                  <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 4}" id="bankDetails" role="tabpanel" aria-labelledby="bankDetails-tab">
                                      <div class="row">
                                         <div class="col-lg-10">
                                            <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2"
@@ -541,190 +547,15 @@
                                            </div>
                                         </div>
                                      </div>
-                                  </div>
-                                  <!-- <div class="tab-pane fade" id="carrierDetails" role="tabpanel" aria-labelledby="carrierDetails-tab">
-                                     <div >
-                                        <div class="row">
-                                           <div class="col-lg-10">
-                                              <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2"
-                                                 >Carrier Details</label>
-                                           </div>
-                                           <div class="col-lg-5 offset-lg-1">
-                                              <div class="row">
-                                              <div class="col-lg-10">
-                                                       <label class="control-label font-weight-bold text-lg-right pt-2" >Select Carrier</label>
-                                                       <select data-plugin-selectTwo class="form-control populate"  [(ngModel)]="accountData.carrier" name="carrier">
-                                                          <optgroup label="Select Carrier">
-                                                             <option value="Carrier 1"> Carrier 1</option>
-                                                             <option value="Carrier 2"> Carrier 2</option>
-                                                             <option value="Carrier 3"> Carrier 3</option>
-                                                             <option value="Carrier 4"> Carrier 4</option>
-                                                          </optgroup>
-                                                       </select>
-                                                    </div>
-                                                    <div class="col-lg-1">
-                                                       <a href="#addCarrierModal" class="btn btn-success btn-sm modal-with-form mar-top-37"><i class="fas fa-plus"></i></a>
-                                                    </div>
-                                              </div>
-                                           </div>
-                                           <div class="col-lg-5 offset-lg-1">
-                                           <div class="row">
-                                                 <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >SCAC</label>											
-                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.carrierSCAC" name="carrierSCAC">
-                                                 </div>
-                                                 <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >CCC</label>											
-                                                    <input type="text" class="form-control" [(ngModel)]="accountData.carrierCCC" name="carrierCCC">
-                                                 </div>
-                                              </div>
-                                           </div>
-                                        </div>
-                                        <div id="leasedCarrierDiv">
-                                           <div class="row">
-                                              <div class="col-lg-5 offset-lg-1">
-                                                 <div class="row">
-                                                 <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >MC Number</label>											
-                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.carrierMC" name="carrierMC">
-                                                 </div>
-                                                 <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >DOT Number</label>											
-                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.carrierDOT" name="carrierDOT">
-                                                 </div>
-                                                    
-                                                 </div>
-                                                 <div class="row">
-                                                    <div class="col-lg-10">
-                                                       <label class="control-label font-weight-bold text-lg-right pt-2" >Email</label>											
-                                                       <input type="text" class="form-control"  [(ngModel)]="accountData.carrierEmail" name="carrierEmail">
-                                                    </div>
-                                                 </div>
-                                                 <div class="row">
-                                                    <div class="col-lg-10">
-                                                       <label class="control-label font-weight-bold text-lg-right pt-2" >Pay Period</label>
-                                                       <select data-plugin-selectTwo class="form-control populate"  [(ngModel)]="accountData.carrierPayPeriod" name="carrierPayPeriod">
-                                                          <optgroup>
-                                                             <option value="Weekly(52 pay periods a year)">Weekly(52 pay periods a year)</option>
-                                                             <option value="Weekly(53 pay periods a year)">Weekly(53 pay periods a year)</option>
-                                                             <option value="Biweekly(26 pay periods a year)">Biweekly(26 pay periods a year)</option>
-                                                             <option value="Biweekly(27 pay periods a year)">Biweekly(27 pay periods a year)</option>
-                                                             <option value="Semi-monthly(24 pay periods a year)">Semi-monthly(24 pay periods a year)</option>
-                                                             <option value="Monthly(12 pay periods a year)">Monthly(12 pay periods a year)</option>
-                                                             <option value="Quaterly(4 pay periods a year)">Quaterly(4 pay periods a year)</option>
-                                                             <option value="Semi-annually(2 pay periods a year)">Semi-annually(2 pay periods a year)</option>
-                                                             <option value="Annually(1 pay period a year)">Annually(1 pay period a year)</option>
-                                                          </optgroup>
-                                                       </select>
-                                                    </div>
-                                                 </div>
-                                                 <div class="row">
-                                                    <div class="col-lg-10">
-                                                       <label class="control-label font-weight-bold text-lg-right pt-2" >Payment Type</label>
-                                                       <ng-select data-plugin-selectTwo class="form-control populate" [(ngModel)]="accountData.carrierPaymentType" name="carrierPaymentType">                                                         
-                                                             <ng-option value="">Select Payment Type</ng-option>
-                                                             <ng-option value="payPerMile">Pay Per Mile</ng-option>
-                                                             <ng-option value="payPerHour">Pay Per Hour</ng-option>
-                                                             <ng-option value="payPercentage">Percentage</ng-option>
-                                                             <ng-option value="payFlat">Flat</ng-option>                                                         
-                                                       </ng-select>
-                                                    </div>
-                                                 </div>
-                                                 <div class="row">
-                                                    <div class="col-lg-10" *ngIf = "accountData.carrierPaymentType === 'payPerMile'">
-                                                       <div class="row">
-                                                          <div class="col-lg-6">
-                                                             <label class="control-label font-weight-bold text-lg-right pt-2" >Loaded Miles Rate</label>
-                                                             <input type="text" class="form-control"  [(ngModel)]="accountData.carrierLoadedMilesRate" name="carrierLoadedMilesRate">
-                                                          </div>
-                                                          <div class="col-lg-6">
-                                                             <label class="control-label font-weight-bold text-lg-right pt-2" >Empty Miles Rate</label>
-                                                             <input type="text" class="form-control"  [(ngModel)]="accountData.carrierEmptyMilesRate" name="carrierEmptyMilesRate">
-                                                          </div>
-                                                       </div>
-                                                    </div>
-                                                    <div class="col-lg-10"  *ngIf = "accountData.carrierPaymentType === 'payPerHour'">
-                                                       <div class="row">
-                                                          <div class="col-lg-6">
-                                                             <label class="control-label font-weight-bold text-lg-right pt-2" >Rate Per Hour</label>
-                                                             <input type="text" class="form-control"  [(ngModel)]="accountData.carrierPerHourRate" name="carrierPerHourRate">
-                                                          </div>
-                                                       </div>
-                                                    </div>
-                                                    <div class="col-lg-10" *ngIf = "accountData.carrierPaymentType === 'payPercentage'">
-                                                       <div class="row">
-                                                          <div class="col-lg-6">
-                                                             <label class="control-label font-weight-bold text-lg-right pt-2" >Percentage</label>
-                                                             <input type="text" class="form-control"  [(ngModel)]="accountData.carrierPercentageRate" name="carrierPercentageRate">
-                                                          </div>
-                                                       </div>
-                                                    </div>
-                                                    <div class="col-lg-10" *ngIf = "accountData.carrierPaymentType === 'payFlat'">
-                                                       <div class="row">
-                                                          <div class="col-lg-6">
-                                                             <label class="control-label font-weight-bold text-lg-right pt-2" >Flat Rate</label>
-                                                             <input type="text" class="form-control"  [(ngModel)]="accountData.carrierFlatRate" name="carrierFlatRate">
-                                                          </div>
-                                                       </div>
-                                                    </div>
-                                                 </div>
-                                              </div>
-                                              <div class="col-lg-5 offset-lg-1">
-                                                
-                                              <div class="row">
-                                                 <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Liability Insurance#</label>											
-                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.carrierLiabilityInsurance" name="carrierLiabilityInsurance">
-                                                 </div>
-                                                 <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Cargo Insurance#</label>											
-                                                    <input type="text" class="form-control" [(ngModel)]="accountData.carrierCargoInsurance" name="carrierCargoInsurance">
-                                                 </div>
-                                              </div>
-                                                 <div class="row">
-                                                    <div class="col-lg-10">
-                                                       <label class="control-label font-weight-bold text-lg-right pt-2" >Contract Period</label>
-                                                       <div class="row">
-                                                          <div class="col-lg-4">
-                                                             <input type="number" class="form-control" (change)="setCarrierContractPeriod()" [(ngModel)]="contractNumber" name="contractNumber">
-                                                          </div>
-                                                          <div class="col-lg-8">
-                                                             <select data-plugin-selectTwo class="form-control populate"  (change)="setCarrierContractPeriod()" [(ngModel)]="contractType" name="contractType">
-                                                                <optgroup label="Select">
-                                                                   <option value="month(s)">Month(s)</option>
-                                                                   <option value="day(s)">Day(s)</option>
-                                                                   <option value="year(s)">Year(s)</option>
-                                                                </optgroup>
-                                                             </select>
-                                                          </div>
-                                                       </div>
-                                                    </div>
-                                                 </div>
-                                                 <div class="row">
-                                                    <div class="col-lg-10">
-                                                       <label class="control-label font-weight-bold text-lg-right pt-2" >Fax</label>											
-                                                       <input type="text" class="form-control"  [(ngModel)]="accountData.carrierFax" name="carrierFax">
-                                                    </div>
-                                                 </div>
-                                                 <div class="row">
-                                                    <div class="col-lg-10">
-                                                       <label class="control-label font-weight-bold text-lg-right pt-2" >Phone</label>											
-                                                       <input type="text" class="form-control"  [(ngModel)]="accountData.carrierPhone" name="carrierPhone">
-                                                    </div>
-                                                 </div>
-                                                
-                                              </div>
-                                           </div>
-                                        </div>
-                                     </div>
-                                  </div> -->
+                                  </div>                             
                                </div>
                             </div>
                          </div>
                          <div class="row mt-4">
                             <div class="col-lg-10 text-right">
-                               <button type="button" class="btn btn-default mr-1" (click)="displayInfo()">Cancel</button>
-                               <button type="button" class="btn btn-success" (click)="addAccount()">Save</button>
+                               <button type="button" (click)="previous()" class="btn btn-default mr-2">Previous</button>
+                               <a *ngIf="activeTab != 4" [routerLink]="" (click)="next()" class="btn btn-success">Next</a>
+                                <a *ngIf="activeTab == 4" [routerLink]="" (click)="addAccount()" class="btn btn-success">Submit</a>
                             </div>
                          </div>
                       

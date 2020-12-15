@@ -57,7 +57,6 @@ import {
 
 
   AddInventoryComponent,
-  EditInventoryComponent,
   InventoryListComponent
 
 } from './index';
@@ -95,7 +94,6 @@ const COMPONENTS = [
   GraphComponent,
   DashboardDriverComponent,
   AddInventoryComponent,
-  EditInventoryComponent,
   InventoryListComponent
 ];
 

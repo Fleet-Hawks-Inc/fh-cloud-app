@@ -4,9 +4,10 @@ import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
+import * as moment from "moment";
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-event',
@@ -18,8 +19,8 @@ export class EditEventComponent implements OnInit {
   errors = {};
   event = {
     eventID: '',
+    date: <any>'',
     eventDate: '',
-    filterDate: '',
     eventTime: '',
     location: '',
     username: '',
@@ -35,6 +36,8 @@ export class EditEventComponent implements OnInit {
     modeOfOrign: 'manual',
     coachingStatus: '',
   };
+  eventDate = '';
+  eventTime = '';
   carrierID = '';
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
@@ -148,12 +151,17 @@ export class EditEventComponent implements OnInit {
   }
 
   updateEvent() {
-    console.log('this.event')
-    console.log(this.event)
+    // console.log('this.event')
+    // console.log(this.event)
     this.spinner.show();
     this.hideErrors();
+
+    let timestamp;
     let fdate = this.event.eventDate.split('-');
-    this.event.filterDate = fdate[2]+fdate[1]+fdate[0];
+    let date = fdate[2]+'-'+fdate[1]+'-'+fdate[0];
+    timestamp = moment(date+' '+ this.event.eventTime).format("X");
+    this.event.date = timestamp*1000;
+
     this.apiService.putData('safety/eventLogs', this.event).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -234,9 +242,11 @@ export class EditEventComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('safety/eventLogs/details/' + this.eventID)
       .subscribe((result: any) => {
+        // let date = moment(result.Items[0].date).format("DD MMM YYYY hh:mm a")
+
         this.event.eventID = result.Items[0].eventID;
-        this.event.eventDate = result.Items[0].eventDate;
-        this.event.eventTime = result.Items[0].eventTime;
+        this.event.eventDate = moment(result.Items[0].date).format("DD-MM-YYYY");
+        this.event.eventTime = moment(result.Items[0].date).format("HH:mm");
         this.event.location = result.Items[0].location;
         this.event.username = result.Items[0].username;
         this.event.driverUsername = result.Items[0].driverUsername;

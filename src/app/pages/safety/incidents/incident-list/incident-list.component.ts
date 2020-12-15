@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
+import * as moment from "moment";
 
 
 @Component({
@@ -56,9 +57,14 @@ export class IncidentListComponent implements OnInit {
     date: '',
     driverID: '',
     filterDate: '',
-    driverName: ''
+    driverName: '',
+    filterDateStart: <any> '',
+    filterDateEnd: <any> '',
   };
   suggestions = [];
+  vehiclesObject: any = {};
+  driversObject: any = {};
+  usersObject: any = {};
   
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -67,6 +73,10 @@ export class IncidentListComponent implements OnInit {
     this.fetchevents();
     this.fetchVehicles();
     this.initDataTable('all');
+
+    this.fetchAllVehiclesIDs();
+    this.fetchAllDriverIDs();
+    this.fetchAllUsersIDs();
   }
 
   ngAfterViewInit(): void {
@@ -87,36 +97,6 @@ export class IncidentListComponent implements OnInit {
     });
   }
 
-  fetchVehicleDetail(vehicleID, tripArr) {
-    this.apiService.getData('vehicles/' + vehicleID)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].vehicleIdentification != undefined) {
-          tripArr.vehicleName = result.Items[0].vehicleIdentification
-        }
-      })
-  }
-
-  fetchDriverDetail(driverUserName, tripArr) {
-    this.apiService.getData('drivers/userName/' + driverUserName)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].firstName != undefined) {
-          tripArr.driverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
-        }
-      })
-  }
-
-  fetchUserDetail(userName, tripArr) {
-    this.apiService.getData('users/' + userName)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].firstName != undefined) {
-          tripArr.AsigneeName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
-        }
-      })
-  }
-
   getEventDetail(arrValues) {
     this.events = [];
     for (let i = 0; i < arrValues.length; i++) {
@@ -132,9 +112,6 @@ export class IncidentListComponent implements OnInit {
       } else if(element.criticalityType == 'overSpeeding') {
         element.criticalityType = 'Over Speeding';
       }
-      this.fetchVehicleDetail(element.vehicleID, element);
-      this.fetchDriverDetail(element.driverUsername, element);
-      this.fetchUserDetail(element.username, element);
       this.events.push(element);
     }
   }
@@ -159,9 +136,20 @@ export class IncidentListComponent implements OnInit {
       pageLength: 10,
       serverSide: true,
       processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0],"orderable": false},
+        {"targets": [1],"orderable": false},
+        {"targets": [2],"orderable": false},
+        {"targets": [3],"orderable": false},
+        {"targets": [4],"orderable": false},
+        {"targets": [5],"orderable": false},
+        {"targets": [6],"orderable": false},
+        {"targets": [7],"orderable": false},
+      ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-          current.apiService.getDatatablePostData(this.serviceUrl+this.lastEvaluated.value1+"&driver="+this.filterValue.driverID+"&date="+this.filterValue.filterDate, dataTablesParameters).subscribe(resp => {
+          current.apiService.getDatatablePostData(this.serviceUrl+this.lastEvaluated.value1+"&driver="+this.filterValue.driverID+"&from="+this.filterValue.filterDateStart+"&to="+this.filterValue.filterDateEnd , dataTablesParameters).subscribe(resp => {
           current.getEventDetail(resp['Items']);
           if(resp['LastEvaluatedKey'] !== undefined){
             this.lastEvaluated = {
@@ -226,11 +214,17 @@ export class IncidentListComponent implements OnInit {
 
   searchFilter(event) {
     if(this.filterValue.date !== '') {
-      this.filterValue.filterDate = this.filterValue.date.split("-").reverse().join("-");
+      // this.filterValue.filterDate = this.filterValue.date.split("-").reverse().join("-");
+      this.filterValue.filterDateStart = moment(this.filterValue.date+' 00:00:01').format("X");
+      this.filterValue.filterDateEnd = moment(this.filterValue.date+' 23:59:59').format("X");
+      this.filterValue.filterDateStart = this.filterValue.filterDateStart*1000;
+      this.filterValue.filterDateEnd = this.filterValue.filterDateEnd*1000;
+
+      $(".navtabs").removeClass('active');
+      $("#allSafetyIncidents-tab").addClass('active');
     }
     this.rerender();
   }
-
 
   fetchevents() {
     this.apiService.getData('safety/eventLogs/fetch?event=incident')
@@ -303,6 +297,8 @@ export class IncidentListComponent implements OnInit {
       this.spinner.show();
       this.filterValue = {
         date: '',
+        filterDateStart: '',
+        filterDateEnd: '',
         driverID: '',
         filterDate: '',
         driverName: ''
@@ -312,7 +308,27 @@ export class IncidentListComponent implements OnInit {
       this.spinner.hide();
     } else {
       return false;
-    }
-    
+    } 
+  }
+
+  fetchAllVehiclesIDs() {
+    this.apiService.getData('vehicles/get/list')
+      .subscribe((result: any) => {
+        this.vehiclesObject = result;
+      });
+  }
+
+  fetchAllDriverIDs() {
+    this.apiService.getData('drivers/get/list')
+      .subscribe((result: any) => {
+        this.driversObject = result;
+      });
+  }
+
+  fetchAllUsersIDs() {
+    this.apiService.getData('users/get/list')
+      .subscribe((result: any) => {
+        this.usersObject = result;
+      });
   }
 }

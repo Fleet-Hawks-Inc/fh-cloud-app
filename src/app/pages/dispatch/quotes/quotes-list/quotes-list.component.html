@@ -26,24 +26,34 @@
                            </div>
                        </div>
 
-                       <div class="col-lg-5 col-md-5">
-                           <div class="input-daterange input-group" data-plugin-datepicker>
+                       <div class="col-lg-4 col-md-4">
+                           <div class="input-daterange input-group">
                                <span class="input-group-prepend">
                                    <span class="input-group-text">
                                        <i class="fas fa-calendar-alt"></i>
                                    </span>
                                </span>
-                               <input type="text" class="form-control" name="startDate" [(ngModel)]="quoteSearch.startDate">
+                               <input 
+                                [(ngModel)]="quoteSearch.startDate" name="fromDate" 
+                                type="text" 
+                                placeholder="DD-MM-YYYY"
+                                (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                class="form-control" autocomplete="off"> 
                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                    to
                                </span>
-                               <input type="text" class="form-control" name="endDate" [(ngModel)]="quoteSearch.endDate">
+                               <input 
+                                [(ngModel)]="quoteSearch.endDate" name="toDate" 
+                                type="text" 
+                                placeholder="DD-MM-YYYY"
+                                (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                                class="form-control" autocomplete="off"> 
                            </div>
                        </div>
 
-
-                       <div class="col-md-1  col-lg-1">
-                           <button type="submit" class="btn btn-sm btn-success" (click)="filterSearch()">Search</button>
+                       <div class="col-md-2 col-lg-2">
+                           <button type="button" class="btn btn-sm btn-success" (click)="filterSearch()">Search</button>
+                           <button type="button" class="btn btn-sm btn-success ml-4" (click)="resetFilter()">Reset</button>
                        </div>
                        <div class="col-md-4 col-lg-4 text-right pr-5">
 
@@ -53,8 +63,6 @@
                                        class="caret"></span></button>
                                <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                   <a class="dropdown-item text-1" href="">Edit</a>
-                                   <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
                                    <a class="dropdown-item text-1" href="">Import</a>
                                    <a class="dropdown-item text-1" href="">Export</a>
                                </div>
@@ -90,7 +98,8 @@
                            <tr *ngFor="let quote of quotes;let i = index;">
                                <td routerLink="/dispatch/quotes/detail/{{quote.quoteID}}">{{quote.quoteNumber}}</td>
 
-                               <td>{{quote.creationDate}}</td>
+                               <!-- save creationDate in Y-m-d format -->
+                               <td>{{quote.creationDate | date: 'dd-MM-yyyy'}}</td> 
                                <td>{{quote.reference}}</td>
                                <td>{{quote.expiryDate}} </td>
                                <td>{{quote.customerID}}</td>
