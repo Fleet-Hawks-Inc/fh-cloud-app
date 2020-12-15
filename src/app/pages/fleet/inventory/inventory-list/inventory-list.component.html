@@ -79,7 +79,7 @@
                             234
                           </td>
                           <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                            $ {{item.costUnit}}
+                            $ {{item.cost}}
                           </td>
                           <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
                             {{warehouses[item.warehouseID]}}
@@ -91,7 +91,7 @@
                                </button>
                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                   <a class="dropdown-item" routerLink="/fleet/inventory/edit/{{item.itemID}}">Edit</a>
-                                  <a href="javascript:;" class="dropdown-item" (click)="deactivateAsset(item.isDeleted, item.itemID)">Delete</a>
+                                  <a href="javascript:;" class="dropdown-item" (click)="deleteItem(item.itemID)">Delete</a>
                                </div>
                              </div>
                          </td>
