@@ -22,13 +22,13 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
   quotes;
   lastEvaluated = {
     value1: '',
-    value2: ''
   };
   quoteSearch = {
     searchValue: '',
     startDate: '',
     endDate: '',
-    category: ''
+    start: '',
+    end: ''
   };
   totalRecords = 20;
   pageLength = 10;
@@ -40,7 +40,7 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
               private toastr: ToastrService) { }
 
   ngOnInit() {
-    // this.fetchQuotes();
+    this.fetchQuotes();
     this.initDataTable('all')
   }
 
@@ -50,8 +50,9 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        this.quotes = result.Items;
-        console.log("quotes", this.quotes);
+        // this.quotes = result.Items;
+        // console.log("quotes", this.quotes);
+        this.totalRecords = result.Count;
         }
       });
   };
@@ -61,6 +62,7 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
       .deleteData('quotes/' + quoteID)
       .subscribe((result: any) => {
         this.toastr.success('Quote Deleted Successfully!');
+        this.rerender();
         this.fetchQuotes();
       });
   }
@@ -70,18 +72,18 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
     
     this.serviceUrl = 'quotes/fetch-records'+ "?value1=";
 
-    if(filters === 'yes') {
-      let startDatee:any = '';
-      let endDatee:any = '';
-      // if(this.tripsFiltr.startDate !== ''){
-      //   startDatee = new Date(this.tripsFiltr.startDate).getTime();
-      // }
-      // if(this.tripsFiltr.endDate !== ''){
-      //   endDatee = new Date(this.tripsFiltr.endDate+" 00:00:00").getTime();
-      // }
-      this.quoteSearch.category = 'orderNumber';
-      this.serviceUrl = this.serviceUrl+'&filter=true&searchValue='+this.quoteSearch.searchValue+"&startDate="+startDatee+"&endDate="+endDatee;
-    }
+    // if(filters === 'yes') {
+    //   let startDatee:any = '';
+    //   let endDatee:any = '';
+    //   // if(this.tripsFiltr.startDate !== ''){
+    //   //   startDatee = new Date(this.tripsFiltr.startDate).getTime();
+    //   // }
+    //   // if(this.tripsFiltr.endDate !== ''){
+    //   //   endDatee = new Date(this.tripsFiltr.endDate+" 00:00:00").getTime();
+    //   // }
+    //   // this.quoteSearch.category = 'orderNumber';
+    //   this.serviceUrl = this.serviceUrl+'&filter=true&searchValue='+this.quoteSearch.searchValue+"&startDate="+startDatee+"&endDate="+endDatee;
+    // }
     // console.log(this.serviceUrl);
 
     this.dtOptions = { // All list options
@@ -90,29 +92,36 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
       serverSide: true,
       processing: true,
       dom: 'lrtip',
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0],"orderable": false},
+        {"targets": [1],"orderable": false},
+        {"targets": [2],"orderable": false},
+        {"targets": [3],"orderable": false},
+        {"targets": [4],"orderable": false},
+        {"targets": [5],"orderable": false},
+        {"targets": [6],"orderable": false},
+        {"targets": [7],"orderable": false},
+        {"targets": [8],"orderable": false},
+        {"targets": [9],"orderable": false},
+        {"targets": [10],"orderable": false},
+        {"targets": [11],"orderable": false},
+      ],
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData(this.serviceUrl +current.lastEvaluated.value1 + 
-        '&value2=' + current.lastEvaluated.value2, dataTablesParameters).subscribe(resp => {
+        current.apiService.getDatatablePostData(this.serviceUrl +current.lastEvaluated.value1 +'&searchValue='+this.quoteSearch.searchValue+
+        "&startDate="+this.quoteSearch.start+"&endDate="+this.quoteSearch.end , dataTablesParameters).subscribe(resp => {
           this.quotes = resp['Items'];
-          console.log('resp')
-          console.log(resp)
+          // console.log('resp')
+          // console.log(resp)
           if (resp['LastEvaluatedKey'] !== undefined) {
-            if (resp['LastEvaluatedKey'].carrierID !== undefined) {
-              current.lastEvaluated = {
-                value1: resp['LastEvaluatedKey'].quoteID,
-                value2: resp['LastEvaluatedKey'].carrierID
-              }
-            } else {
-              current.lastEvaluated = {
-                value1: resp['LastEvaluatedKey'].quoteID,
-                value2: ''
-              }
+            
+            current.lastEvaluated = {
+              value1: resp['LastEvaluatedKey'].quoteID,
             }
 
           } else {
             current.lastEvaluated = {
               value1: '',
-              value2: ''
             }
           }
 
@@ -144,8 +153,44 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   filterSearch() {
-    this.rerender();
-    this.initDataTable('yes');
+    if(this.quoteSearch.startDate !== '' || this.quoteSearch.endDate !== '' || this.quoteSearch.searchValue !== '' ) {
+      if(this.quoteSearch.startDate !== '') {
+        let startDate:any = {};
+        startDate[0] = '';
+        startDate = this.quoteSearch.startDate.split('-');
+        if(startDate[0] < 10) {
+          if(startDate[0].charAt(0) !== '0'){
+            startDate[0] = '0'+startDate[0]
+          }
+        }
+        this.quoteSearch.start = startDate[2]+'-'+startDate[1]+'-'+startDate[0];
+      }
+      if(this.quoteSearch.endDate !== '') {
+        let endDate:any = {};
+        endDate[0] = '';
+
+        endDate = this.quoteSearch.endDate.split('-');
+        if(endDate[0] < 10) {
+          if(endDate[0].charAt(0) !== '0'){
+            endDate[0] = '0'+endDate[0]
+          }
+        }
+        this.quoteSearch.end = endDate[2]+'-'+endDate[1]+'-'+endDate[1];
+      }
+      
+      this.rerender();
+    } else {
+      return false;
+    }
   }
 
+  resetFilter() {
+    if(this.quoteSearch.startDate !== '' || this.quoteSearch.endDate !== '' || this.quoteSearch.searchValue !== '' ) {
+      this.quoteSearch.startDate = '';
+      this.quoteSearch.endDate = '';
+      this.quoteSearch.searchValue = '';
+      this.rerender();
+    }
+    return false;
+  }
 }

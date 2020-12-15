@@ -75,6 +75,7 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
           const element = result.Items[i];
           if(element.isDeleted === '0') {
             this.allordersCount = this.allordersCount+1;
+            this.totalRecords = this.allordersCount; 
             if(element.orderStatus == 'confirmed') {
               this.confirmedOrdersCount = this.confirmedOrdersCount+1;
             } else if(element.orderStatus == 'dispatched') {
@@ -185,6 +186,17 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       serverSide: true,
       processing: true,
       dom: 'lrtip',
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0],"orderable": false},
+        {"targets": [1],"orderable": false},
+        {"targets": [2],"orderable": false},
+        {"targets": [3],"orderable": false},
+        {"targets": [4],"orderable": false},
+        {"targets": [5],"orderable": false},
+        {"targets": [6],"orderable": false},
+        {"targets": [7],"orderable": false},
+      ],
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData(this.serviceUrl +current.lastEvaluated.value1 + 
         '&value2=' + current.lastEvaluated.value2, dataTablesParameters).subscribe(resp => {

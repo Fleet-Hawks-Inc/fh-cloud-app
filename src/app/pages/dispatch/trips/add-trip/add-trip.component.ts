@@ -32,9 +32,11 @@ export class AddTripComponent implements OnInit {
         reeferTemperature: '',
         reeferTemperatureUnit: '',
         orderId: {},
+        orderType: 'FTL',
         tripPlanning: [],
         notifications: {},
-        tripStatus: 'planned'
+        tripStatus: 'planned',
+        dateCreated: <any> ''
     };
     ltlOrders = [
         {
@@ -876,8 +878,6 @@ export class AddTripComponent implements OnInit {
     }
 
     createTrip() {
-        // console.log('start tripData');
-        // console.log(this.tripData);
         this.hideErrors();
         if (this.tripData.reeferTemperature != '') {
             this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
@@ -885,6 +885,14 @@ export class AddTripComponent implements OnInit {
             this.tripData.reeferTemperature = '';
         }
 
+        //trip creation date
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+        // this.tripData.dateCreated = yyyy + '-' + mm + '-' + dd;
+        this.tripData.dateCreated = dd + '-' + mm + '-' + yyyy;
+        
         delete this.tripData.reeferTemperatureUnit;
         this.tripData.orderId = this.OrderIDs;
         this.tripData.tripPlanning = [];
@@ -926,7 +934,7 @@ export class AddTripComponent implements OnInit {
                     pickupTime: '',
                     dropTime: '',
                     actualPickupTime: '',
-                    actualDropTime: ''
+                    actualDropTime: '',
                 };
                 const element = planData[i];
 
@@ -1031,6 +1039,10 @@ export class AddTripComponent implements OnInit {
               .remove('label')
           });
         this.errors = {};
+    }
+
+    changeOrderTab(tabType) {
+        this.tripData.orderType = tabType;
     }
     
 }
