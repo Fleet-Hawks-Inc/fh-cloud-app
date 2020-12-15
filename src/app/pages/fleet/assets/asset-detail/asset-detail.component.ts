@@ -250,7 +250,7 @@ export class AssetDetailComponent implements OnInit {
         if (this.messageStatus) {
           this.toastr.success('Device added successfully');
         } else {
-          this.toastr.success('Device updated successfully');
+          this.toastr.success('Device removed successfully');
         }
         $('#attachDeviceModal').modal('hide');
       },
