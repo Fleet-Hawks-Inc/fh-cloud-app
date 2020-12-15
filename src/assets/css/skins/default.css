@@ -352,7 +352,7 @@ html.no-overflowscrolling .nano > .nano-pane > .nano-slider {
 }
 
 .body-sign .card-sign .card-body {
-	border-top-color: #0088cc;
+	border-top-color: #000000;
 }
 
 .body-locked .current-user .user-image {
@@ -432,15 +432,15 @@ body .btn-primary.dropdown-toggle {
 }
 
 html .btn-primary {
-	background-color: #0088cc;
-	border-color: #0088cc #0088cc #006699;
+	background-color: #343434;
+	border-color: #343434 #343434 #343434;
 	color: #ffffff;
 }
 
 html .btn-primary:hover,
 html .btn-primary.hover {
-	background-color: #00a1f2;
-	border-color: #00aaff #00aaff #0088cc;
+	background-color: #2ecc71;
+	border-color: #2ecc71 #2ecc71 #2ecc71;
 	color: #ffffff;
 }
 
