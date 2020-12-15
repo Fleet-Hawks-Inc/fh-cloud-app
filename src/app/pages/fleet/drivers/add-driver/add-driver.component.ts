@@ -423,6 +423,7 @@ export class AddDriverComponent implements OnInit {
     this.hideErrors();
     // Add geoCords when selecting manual address
     // tslint:disable-next-line: prefer-for-of
+    console.log('driver', this.driverData);
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
       let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]} 
@@ -485,6 +486,12 @@ export class AddDriverComponent implements OnInit {
     this.driverData.address[i].cityID = cityID;
     
     this.driverData.address[i].zipCode = result.address.postalCode;
+    if (result.address.houseNumber === undefined) {
+      result.address.houseNumber = '';
+    }
+    if (result.address.street === undefined) {
+      result.address.street = '';
+    }
     this.driverData.address[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;
 
     $('div').removeClass('show-search__result');

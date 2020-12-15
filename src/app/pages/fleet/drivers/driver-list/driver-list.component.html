@@ -372,13 +372,11 @@
                <div class="col">
                   <section class="card">
                      <div class="card-body">
-                        <table datatable [dtOptions]="dtOptions"
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
                            class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable"
-                           *ngIf="drivers.length > 0">
+                           >
                            <thead>
                               <tr>
-                                 <!-- <th><input type="checkbox"></th> -->
-
                                  <th>Name</th>
                                  <th>Duty Status</th>
                                  <th>Location</th>
@@ -434,6 +432,14 @@
                                        </div>
                                     </div>
                                  </td>
+                              </tr>
+                              <tr *ngIf="!drivers.length > 0">
+                                 <td colspan="11">
+                                    No records found
+                                 </td>
+                                 <td style="display: none;"></td>
+                                 <td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td>
+                                 <td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td>
                               </tr>
                            </tbody>
                         </table>

@@ -158,7 +158,7 @@
                              <div class="row pt-2">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Task</label>
-                                    <ng-select [items]="tasks" [(ngModel)]="selectedTasks" name="selectedTasks" bindLabel="taskName" 
+                                    <ng-select [items]="tasks" bindLabel="taskName" [(ngModel)]="selectedTasks" name="selectedTasks"
                                          (add)="addTasks()"  [multiple]=true style="width: 100%;" (clear)="clearTaks('tasks')" (remove)="removeTasks($event)"
                                     ></ng-select>
                                 </div>
