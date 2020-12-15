@@ -45,7 +45,6 @@ export class AddAlertComponent implements OnInit {
     this.fetchDrivers();
     this.alertID = this.route.snapshot.params['alertID'];
     if (this.alertID) {
-      console.log('alert id', this.alertID);
       this.title = 'Edit Alert';
       this.fetchAlertByID();
     } else {
@@ -92,7 +91,6 @@ export class AddAlertComponent implements OnInit {
     if(this.otherEmails){
       this.alert.otherEmails = this.otherEmails.split(',');  
     }     
-   console.log('alert data', this.alert);
     // if (this.fileName === '') {
     //   this.imageError = 'Please Choose Image To Upload';
     //   return;
@@ -125,7 +123,6 @@ export class AddAlertComponent implements OnInit {
   }
 
   throwErrors() {
-    console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
@@ -152,7 +149,6 @@ export class AddAlertComponent implements OnInit {
       .getData('alerts/' + this.alertID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('result', result);
         this.alert[`alertID`] = result.alertID;
         this.alert[`alertName`] = result.alertName;
         this.alert[`alertType`] = result.alertType;
@@ -170,7 +166,6 @@ export class AddAlertComponent implements OnInit {
     if(this.otherEmails){
       this.alert.otherEmails = this.otherEmails.split(',');  
     }     
-   console.log('Updated alert data', this.alert);
     // if (this.fileName === '') {
     //   this.imageError = 'Please Choose Image To Upload';
     //   return;

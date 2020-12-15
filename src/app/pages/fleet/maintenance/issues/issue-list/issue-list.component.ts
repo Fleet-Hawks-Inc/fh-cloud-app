@@ -121,29 +121,29 @@ export class IssueListComponent implements OnInit {
   }
   initDataTable() {
     this.dtOptions = {
-      dom: 'lrtip', // lrtip to hide search field
+      dom: 'Bfrtip', // lrtip to hide search field
       processing: true,
       columnDefs: [
-          {
-              targets: 0,
-              className: 'noVis'
-          },
-          {
-              targets: 1,
-              className: 'noVis'
-          },
-          {
-              targets: 2,
-              className: 'noVis'
-          },
-          {
-              targets: 3,
-              className: 'noVis'
-          },
-          {
-              targets: 4,
-              className: 'noVis'
-          }
+        {
+          targets: 0,
+          className: 'noVis'
+        },
+        {
+          targets: 1,
+          className: 'noVis'
+        },
+        {
+          targets: 2,
+          className: 'noVis'
+        },
+        {
+          targets: 3,
+          className: 'noVis'
+        },
+        {
+          targets: 4,
+          className: 'noVis'
+        }
       ],
       colReorder: {
         fixedColumnsLeft: 1

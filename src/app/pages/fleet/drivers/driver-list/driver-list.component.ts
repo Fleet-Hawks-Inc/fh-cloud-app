@@ -3,9 +3,14 @@ import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AfterViewInit, ViewChild } from '@angular/core';
 import { HereMapService } from '../../../../services/here-map.service';
-import { forkJoin, Observable, of, Subject } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { mergeMap, map, takeUntil } from 'rxjs/operators';
+import { DataTableDirective } from 'angular-datatables';
+
+import { Subject } from 'rxjs';
+
 declare var $: any;
 
 @Component({
@@ -13,7 +18,11 @@ declare var $: any;
   templateUrl: './driver-list.component.html',
   styleUrls: ['./driver-list.component.css'],
 })
-export class DriverListComponent implements OnInit, OnDestroy {
+export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
+
+  @ViewChild(DataTableDirective, { static: false })
+  dtElement: DataTableDirective;
+
   title = 'Driver List';
   mapView = false;
   listView = true;
@@ -22,7 +31,8 @@ export class DriverListComponent implements OnInit, OnDestroy {
   driverCheckCount;
   selectedDriverID;
   drivers = [];
-  dtOptions: any = {};
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
 
 
   statesObject: any = {};
@@ -44,7 +54,7 @@ export class DriverListComponent implements OnInit, OnDestroy {
     private spinner: NgxSpinnerService,
     private toastr: ToastrService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // this.fetchDrivers();
     // this.fetchAddress();
     // this.fetchAllStatesIDs();
@@ -101,7 +111,7 @@ export class DriverListComponent implements OnInit, OnDestroy {
               this.drivers.push(iterator);
             }
           }
-
+          console.log('driver', drivers);
           this.statesObject = statesIds;
           this.vehiclesObject = vehcilesIds;
           this.cyclesObject = cycleIds;
@@ -118,6 +128,23 @@ export class DriverListComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+
+  rerender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
 
   fetchAddress() {
     return this.apiService.getData('addresses');
@@ -308,6 +335,7 @@ export class DriverListComponent implements OnInit, OnDestroy {
       this.apiService
         .getData(`drivers/isDeleted/${driverID}/${value}`)
         .subscribe((result: any) => {
+          this.rerender();
           console.log('result', result);
         }, err => {
           console.log('driver delete', err);
@@ -320,40 +348,9 @@ export class DriverListComponent implements OnInit, OnDestroy {
       searching: false,
       dom: 'Bfrtip', // lrtip to hide search field
       processing: true,
-      columnDefs: [
-        {
-          targets: 0,
-          className: 'noVis'
-        },
-        {
-          targets: 1,
-          className: 'noVis'
-        },
-        {
-          targets: 2,
-          className: 'noVis'
-        },
-        {
-          targets: 3,
-          className: 'noVis'
-        },
-        {
-          targets: 4,
-          className: 'noVis'
-        }
-      ],
-      colReorder: {
-        fixedColumnsLeft: 0
-      },
-      buttons: [
-        'colvis',
-        'excel',
-      ],
+      
+     
     };
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 }

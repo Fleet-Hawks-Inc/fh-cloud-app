@@ -22,7 +22,7 @@ export class AddServiceComponent implements OnInit {
   assets;
   tasks = [];
   newTaskResp;
-  private reminders;
+  reminders = [];
   private issues;
   private inventory = [];
   private selectedTasks = [];
@@ -45,7 +45,9 @@ export class AddServiceComponent implements OnInit {
   Success: string = '';
 
   serviceData = {
-    unitType: 'vehicle',
+    unitType: '',
+    vehicleID: '',
+    assetID: '',
     allServiceTasks: {
       serviceTaskList : []
     },
@@ -53,7 +55,8 @@ export class AddServiceComponent implements OnInit {
       servicePartsList : []
     },
     uploadedDocuments : [],
-    uploadedPhotos: []
+    uploadedPhotos: [],
+    selectedIssues: []
   };
   totalLabors = 0;
   totalQuantity = 0;
@@ -61,9 +64,9 @@ export class AddServiceComponent implements OnInit {
   totalTasksAmount: any = '';
   totalPartsAmount: any = '';
   logID;
-
+  fetchedLocalData: any;
   tasksObject: any = {};
-
+  localReminderUnitID: any;
   constructor(
     private apiService: ApiService,
     private awsUS: AwsUploadService,
@@ -96,7 +99,30 @@ export class AddServiceComponent implements OnInit {
     this.fetchInventory();
     this.fetchAssets();
     this.fetchTasks();
-    this.fetchAllTasksIDs();
+    this.fetchAllTasksIDs();    
+    this.fetchedLocalData = JSON.parse(window.localStorage.getItem('unit'));
+    if(this.fetchedLocalData){
+      if(this.fetchedLocalData.unitType === 'vehicle'){   
+        this.serviceData.vehicleID =   this.fetchedLocalData.unitID;
+        this.getVehicleIssues(this.fetchedLocalData.unitID);
+        this.serviceData.unitType = 'vehicle';
+        window.localStorage.removeItem('unit');
+      }
+      else{
+       this.serviceData.unitType = 'asset';
+       this.serviceData.assetID =   this.fetchedLocalData.unitID;
+       this.getAssetIssues(this.fetchedLocalData.unitID);      
+       window.localStorage.removeItem('unit');
+      }
+    }     
+     this.localReminderUnitID = JSON.parse(window.localStorage.getItem('reminderUnitID'));
+     if(this.localReminderUnitID) {
+       console.log('this.localReminderUnitID.unitID',this.localReminderUnitID.unitID);
+      this.serviceData.vehicleID =   this.localReminderUnitID.unitID;
+      this.getVehicleIssues(this.localReminderUnitID.unitID);
+      this.serviceData.unitType = 'vehicle';
+      window.localStorage.removeItem('reminderUnitID');
+     }
   }
 
   /*
@@ -108,6 +134,7 @@ export class AddServiceComponent implements OnInit {
     this.hasSuccess = false;
     this.hideErrors();
     console.log('this.serviceLogs', this.serviceData);
+    
     this.apiService.postData('serviceLogs', this.serviceData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -134,6 +161,11 @@ export class AddServiceComponent implements OnInit {
         this.router.navigateByUrl('/fleet/maintenance/service-log/list');
       },
     });
+    if(this.serviceData.selectedIssues.length > 0){
+      for(let i=0; i < this.serviceData.selectedIssues.length; i++){
+        this.setIssueStatus(this.serviceData.selectedIssues[i]);
+       }
+    } 
   }
 
   
@@ -169,8 +201,13 @@ export class AddServiceComponent implements OnInit {
     }
     this.serviceData['selectedIssues'] = this.selectedIssues;
   }
-  
-
+  /**
+   * to set status of issue to resolved 
+   */
+  setIssueStatus(issueID) {
+    const issueStatus = 'RESOLVED';
+    this.apiService.getData('issues/setStatus/' + issueID + '/' + issueStatus).subscribe((result: any) => {});
+  }
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
       this.groups = result.Items;
@@ -295,11 +332,14 @@ export class AddServiceComponent implements OnInit {
   getReminders(id) {
     const vehicleID = id;
     this.apiService.getData(`reminders/vehicle/${vehicleID}`).subscribe(async (result: any) => {
-      this.reminders = await result.Items;
-      console.log("reminder", this.reminders);
-      this.reminders.forEach(element => {
-          element.buttonShow = false;
+      let response = await result.Items;
+      response.forEach(element => {
+          if(element.reminderType === 'service') {
+            this.reminders.push(element);
+            element.buttonShow = false;
+          }
       });
+      console.log("reminder", this.reminders);
     });
   }
 
