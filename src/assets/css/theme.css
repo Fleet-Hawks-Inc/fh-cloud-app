@@ -236,7 +236,7 @@ a:active {
 
 	/* Layout Fixed - Page header */
 	html.fixed .page-header {
-		left: 270px;
+		left: 270px; padding-left:10px;
 		margin: 0;
 		position: fixed;
 		right: 0;
@@ -6322,8 +6322,8 @@ html:not(.sidebar-left-collapsed).boxed .call-to-action .call-to-action-btn > sp
 
 .card-body {
 	background: #fff;
-	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-	        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.0);
+	        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.0);
 	border-radius: 5px;
 }
 
@@ -14374,7 +14374,7 @@ p.drop-caps.drop-caps-style-2:first-letter {
 
 .userbox.show .dropdown-menu a {
 	border-radius: 2px;
-	color: #7d7d7d;
+	color: #000000;
 	display: block;
 	line-height: 20.8px;
 	line-height: 1.3rem;
