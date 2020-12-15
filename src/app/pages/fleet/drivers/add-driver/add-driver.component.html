@@ -61,10 +61,10 @@
 											<div class="col-lg-6">
 												<div class="btn-group-toggle" data-toggle="buttons">
 													<label class="btn btn-outline btn-fleet mr-2" [class.active]="driverData.driverType === 'employee'" style="width:110px;" (click) = "onChangeUnitType('employee')">
-													  <input type="radio" [(ngModel)]="driverData.driverType" name="driverType" checked hidden value="employee" > employee </label>
+													  <input type="radio" [(ngModel)]="driverData.driverType" name="driverType" checked hidden value="employee" > Employee </label>
 													<label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="driverData.driverType === 'contractor'" (click) = "onChangeUnitType('contractor')">
 													  <input type="radio" [(ngModel)]="driverData.driverType" name="driverType"
-														   hidden value="contractor" > contractor </label>
+														   hidden value="contractor" > Contractor </label>
 												  </div>
 											</div>
 											<!-- <div class="col-lg-2 px-0">
@@ -436,101 +436,7 @@
 									</div>
 								</div>
 							 </div>
-							 <!-- <div class="form-group row" id="document-two" style="display: none;">
-								<div class="col-lg-5 offset-lg-1">
-								   <div class="row">
-									  <div class="col-lg-10">
-										 <label class="control-label font-weight-bold text-lg-right pt-2">
-										 Document Type</label>
-										 <select class="form-control populate" data-plugin-selecttwo>
-											<optgroup label="Select Document Type">
-											   <option value="1">Birth Certificate</option>
-											   <option value="2">Certificate of Naturalization</option>
-											   <option value="2">Citizenship Document Number (Citizenship Card)</option>
-											   <option value="2">DHS Refusee travel Document</option>
-											   <option value="2">Enhanced Driver</option>
-											   <option value="2">DHS Refusee travel Document</option>
-											   <option value="2">DHS Refusee travel Document</option>
-											</optgroup>
-										 </select>
-									  </div>
-								   </div>
-								</div>
-								<div class="col-lg-5 offset-lg-1">
-								   <div>
-									  <div class="row">
-										 <div class="col-lg-5">
-											<label class="control-label font-weight-bold text-lg-right pt-2">#Document</label>
-											<input type="text" class="form-control" >
-										 </div>
-										 <div class="col-lg-5">
-											<label class="control-label font-weight-bold text-lg-right pt-2"
-											   >Issuing Authority</label>
-											<input type="text" class="form-control" >
-										 </div>
-									  </div>
-								   </div>
-								</div>
-								<div class="col-lg-5 offset-lg-1">
-								   <div class="row">
-									  <div class="col-lg-5">
-										 <label class="control-label font-weight-bold text-lg-right pt-2">
-										 Issuing Country</label>
-										 <select class="form-control populate" data-plugin-selecttwo>
-											<optgroup label="Select Country">
-											   <option>Afghanistan</option>
-											   <option>Albania</option>
-											   <option>Algeria</option>
-											   <option>Andorra</option>
-											   <option>Angola</option>
-											   <option>Antigua and Barbuda</option>
-											   <option>Argentina</option>
-											   <option>Armenia</option>
-											   <option> Australia</option>
-											   <option>Barbados</option>
-											   <option>Belarus</option>
-											   <option>Bulgaria</option>
-											   <option> Canada</option>
-											   <option> China</option>
-											   <option>Guinea</option>
-											</optgroup>
-										 </select>
-									  </div>
-									  <div class="col-lg-5">
-										 <label class="control-label font-weight-bold text-lg-right pt-2">
-										 Issuing State </label>
-										 <select class="form-control populate" data-plugin-selecttwo>
-											<optgroup label="Select State">
-											   <option value="2">Alberta</option>
-											   <option value="2">British Columbia</option>
-											   <option value="1">Ontario</option>
-											   <option value="2">Quebec</option>
-											   <option value="2">Manitoba</option>
-											   <option value="2">Nova Scotia</option>
-											   <option value="2">New Brunswick</option>
-											   <option value="2">Yukon</option>
-											   <option value="2">Ottawa</option>
-											   <option value="2">Vancouver</option>
-											   <option value="2">Winnipeg</option>
-											</optgroup>
-										 </select>
-									  </div>
-								   </div>
-								</div>
-								<div class="col-lg-5 offset-lg-1">
-								   <div class="row">
-									  <div class="col-5">
-										 <label class="control-label font-weight-bold text-lg-right pt-2">
-										 Issue Date</label>
-										 <input type="text" data-plugin-datepicker="" class="form-control" >
-									  </div>
-									  <div class="col-5">
-										 <label class="control-label font-weight-bold text-lg-right pt-2" >Expiry Date</label>
-										 <input type="text" data-plugin-datepicker="" class="form-control" >
-									  </div>
-								   </div>
-								</div>
-							 </div> -->
+							 
 						  </div>
 					   </div>
 					   <!--    CROSS BORDER -->
@@ -922,7 +828,7 @@
 					<div class="col-lg-12 text-right pb-4 pr-5">
 					   <button type="button" (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Cancel</button>
 					   <a href="javascript:;" (click)="nextStep()"  *ngIf="currentTab != 7" class="btn btn-success btnNext">Next</a>
-					   <a href="javascript:;" *ngIf="currentTab == 7 && !driverID" (click)="addDriver()" class="btn btn-success">Submit</a>
+					   <a href="javascript:;" (click)="addDriver()" class="btn btn-success">Submit</a>
 					   <a href="javascript:;" *ngIf="currentTab == 7 && driverID" (click)="updateDriver()" class="btn btn-success">Update</a>
 					</div>
 				 </div>

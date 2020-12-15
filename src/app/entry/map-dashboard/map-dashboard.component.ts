@@ -164,7 +164,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
     }
     );
-    this.HereMap.calculateRoute(['51.06739365305408,-114.08167471488684', '50.469846991997564,-104.61146016696867'])
+    // this.HereMap.calculateRoute(['51.06739365305408,-114.08167471488684', '50.469846991997564,-104.61146016696867'])
 
 
   }

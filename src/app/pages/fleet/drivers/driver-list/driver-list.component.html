@@ -369,6 +369,7 @@
                <div class="col">
                   <section class="card">
                      <div class="card-body">
+
                         <table datatable [dtOptions]="dtOptions"
                            class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="drivers.length > 0">
                            <thead>
@@ -378,6 +379,7 @@
                                  <th width="8%">Name</th>
                                  <th width="8%">Duty Status</th>
                                  <th width="14%">Location</th>
+
                                  <th>Cur. Cycle</th>
                                  <th>Cur. Vehicle</th>
                                  <th>Assets</th>
@@ -430,6 +432,14 @@
                                        </div>
                                     </div>
                                  </td>
+                              </tr>
+                              <tr *ngIf="!drivers.length > 0">
+                                 <td colspan="11">
+                                    No records found
+                                 </td>
+                                 <td style="display: none;"></td>
+                                 <td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td>
+                                 <td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td>
                               </tr>
                            </tbody>
                         </table>
