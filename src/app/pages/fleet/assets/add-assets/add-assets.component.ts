@@ -32,9 +32,17 @@ export class AddAssetsComponent implements OnInit {
     uploadedPhotos: [],
     uploadedDocs: []
   };
+  
+  allAssets = [];
+  groupData = {
+    groupType : 'assets'
+  };
+
   vendors = [];
   manufacturers = [];
   models = [];
+  groups = [];
+
   response: any = '';
   hasError = false;
   hasSuccess = false;
@@ -62,6 +70,8 @@ export class AddAssetsComponent implements OnInit {
     this.fetchVendors();
     this.fetchCountries(); // fetch countries
     this.fetchAllAssetTypes();
+    this.fetchGroups();
+    this.fetchAssets();
 
     this.assetID = this.route.snapshot.params['assetID'];
     if (this.assetID) {
@@ -186,6 +196,7 @@ export class AddAssetsComponent implements OnInit {
         result = result.Items[0];
         this.assetsData['assetID'] = this.assetID;
         this.assetsData['assetIdentification'] = result.assetIdentification;
+        this.assetsData['groupID'] = result.groupID;
         this.assetsData['VIN'] = result.VIN;
         this.assetsData['assetDetails']['assetType'] = result.assetDetails.assetType;
         this.assetsData['assetDetails']['year'] = result.assetDetails.year;
@@ -304,6 +315,51 @@ export class AddAssetsComponent implements OnInit {
       });
   }
 
+  
+  fetchGroups() {
+    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
+      this.groups = result.Items;
+    });
+  }
+
+  
+  fetchAssets() {
+    this.apiService.getData('assets')
+      .subscribe((result: any) => {
+        this.allAssets = result.Items;
+      });
+  }
+  
+  addGroup() {
+    this.apiService.postData('groups', this.groupData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.fetchGroups();
+        this.toastr.success('Group added successfully');
+        $('#addGroupModal').modal('hide');
+
+
+      },
+    });
+  }
 
   getStates() {
     this.spinner.show(); // loader init

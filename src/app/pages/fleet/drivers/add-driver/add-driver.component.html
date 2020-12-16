@@ -369,6 +369,7 @@
 											<input [(ngModel)]="document.issuingAuthority" name="document.issuingAuthority{{i}}" type="text" class="form-control" >
 										 </div>
 										 <div class="col-lg-1">
+											<a href="javascript:;" *ngIf="i === 0;" (click)="addDocument()" id="add-document" class="btn btn-success"><i class="fa fa-plus"></i></a>
 											<a href="javascript:;" *ngIf="i != 0;" (click)="remove('document', i)" class="btn btn-success"><i class="fa fa-minus"></i></a>
 										 </div>
 										</div>
@@ -435,13 +436,13 @@
 								</div>
 								<div class="col-lg-5 offset-lg-1"></div>
 							</div>
-							<div class="col-lg-5 offset-lg-1">
+							<!-- <div class="col-lg-5 offset-lg-1">
 								<div class="row mt-3">
 								   <div class="col-5">
 									  <a href="javascript:;" (click)="addDocument()" id="add-document" class="btn btn-success"><i class="fa fa-plus"></i> Add more document</a>
 									</div>
 								</div>
-							 </div>
+							 </div> -->
 							 
 						  </div>
 					   </div>
@@ -856,14 +857,16 @@
                 <div class="card-body p-0">
 					<form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
 					   <div class="form-row">
-						  <div class="form-group col-lg-6">
+						  <div class="form-group col-lg-12 mb-0">
 							 <label class="control-label font-weight-bold">Group Name</label>
 							 <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"> 
 						  </div>
-						  <div class="form-group col-lg-6">
-							 <label class="control-label font-weight-bold">Group Type</label>
-							 <input [(ngModel)]="groupData.groupType" name="groupType" type="text" class="form-control"> 
-						  </div>
+						  <div class="form-group col-lg-12">
+							 <label class="control-label font-weight-bold">Group Members</label>
+							<ng-select [multiple]=true [(ngModel)]="groupData.groupMembers" name="groupMembers" style="width: 100%;">
+								<ng-option *ngFor="let item of allDrivers;" value={{item.driverID}}>{{item.firstName}} {{item.lastname}}</ng-option>
+							</ng-select>
+						</div>
 					   </div>
 					   <div class="form-row">
 						  <div class="form-group col-lg-12">

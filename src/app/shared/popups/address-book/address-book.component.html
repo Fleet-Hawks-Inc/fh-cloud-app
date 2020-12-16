@@ -63,9 +63,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of allData;">
+                                    <tr *ngFor="let item of allData;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Customer">CU</span></td>
-                                        <td>{{item.firstName}} {{item.firstName}}</td>
+                                        <td>{{item.firstName}} {{item.lastName}}</td>
                                         <td>{{item.workEmail}}</td>
                                         <td>{{item.workPhone}}</td>
                                         <td>100 street, King town,34E4R5,Canada</td>
@@ -100,9 +100,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let customer of customers;">
+                                    <tr *ngFor="let customer of customers;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Customer">CU</span></td>
-                                        <td>{{customer.firstName}} {{customer.firstName}}</td>
+                                        <td (click)="openDetail(content, customer)">{{customer.firstName}} {{customer.lastName}}</td>
                                         <td>{{customer.workEmail}}</td>
                                         <td>{{customer.workPhone}}</td>
                                         <td>100 street, King town,34E4R5,Canada</td>
@@ -136,9 +136,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let driver of drivers;">
+                                    <tr *ngFor="let driver of drivers;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Driver">DR</span></td>
-                                        <td>{{driver.firstName}} {{driver.firstName}}</td>
+                                        <td>{{driver.firstName}} {{driver.lastName}}</td>
                                         <td>{{driver.workEmail}}</td>
                                         <td>{{driver.workPhone}}</td>
                                         <td>100 street, King town,34E4R5,Canada</td>
@@ -173,9 +173,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let broker of brokers;">
+                                    <tr *ngFor="let broker of brokers;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Broker">BR</span></td>
-                                        <td>{{broker.firstName}} {{broker.lastName}}</td>
+                                        <td (click)="openDetail(content, broker)">{{broker.firstName}} {{broker.lastName}}</td>
                                         <td>{{broker.workEmail}}</td>
                                         <td>{{broker.workPhone}}</td>
                                         <td>100 street, King town,34E4R5,Canada</td>
@@ -209,9 +209,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let vendor of vendors;">
+                                    <tr *ngFor="let vendor of vendors;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Vendor">VN</span></td>
-                                        <td>{{vendor.firstName}} {{vendor.lastName}}</td>
+                                        <td (click)="openDetail(content, vendor)">{{vendor.firstName}} {{vendor.lastName}}</td>
                                         <td>{{vendor.email}}</td>
                                         <td>{{vendor.phone}}</td>
                                         <td>100 street, King town,34E4R5,Canada</td>
@@ -246,9 +246,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let carrier of carriers;">
+                                    <tr *ngFor="let carrier of carriers;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Carrier">CR</span></td>
-                                        <td>{{carrier.firstName}} {{carrier.lastName}}</td>
+                                        <td (click)="openDetail(content, carrier)">{{carrier.firstName}} {{carrier.lastName}}</td>
                                         <td>{{carrier.email}}</td>
                                         <td>{{carrier.phone}}</td>
                                         <td>100 street, King town,34E4R5,Canada</td>
@@ -282,7 +282,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let shipper of shippers;">
+                                    <tr *ngFor="let shipper of shippers;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Shipper">SH</span></td>
                                         <td>{{shipper.firstName}} {{shipper.lastName}}</td>
                                         <td>{{shipper.email}}</td>
@@ -318,7 +318,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let receiver of receivers;">
+                                    <tr *ngFor="let receiver of receivers;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Consignee">CO</span></td>
                                         <td>{{receiver.firstName}} {{receiver.lastName}}</td>
                                         <td>{{receiver.email}}</td>
@@ -356,7 +356,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let staff of staffs;">
+                                    <tr *ngFor="let staff of staffs;let i = index;">
                                         <td><span class="badge badge-pill badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="Staff">ST</span></td>
                                         <td>{{staff.firstName}} {{staff.lastName}}</td>
                                         <td>{{staff.userAccount.department}}</td>
@@ -396,7 +396,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let company of fcCompanies;">
+                                    <tr *ngFor="let company of fcCompanies;let i = index;">
                                         <td><span class="badge badge-pill badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="Factoring Company">FC</span></td>
                                         <td>{{company.companyName}}</td>
                                         <td>{{company.firstName}} {{company.lastName}}</td>
@@ -933,14 +933,14 @@
                                                             class="control-label font-weight-bold text-lg-right pt-2">First
                                                             Name</label>
                                                         <input [(ngModel)]="customerData.additionalContact.firstName"
-                                                        name="firstName" type="text" class="form-control"> 
+                                                        name="firstName1" type="text" class="form-control"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Last
                                                             Name</label>
                                                         <input [(ngModel)]="customerData.additionalContact.lastName"
-                                                        name="lastName" type="text" class="form-control"> 
+                                                        name="lastName1" type="text" class="form-control"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -974,7 +974,7 @@
                                             </div>
                                         </div> 
                                     </div>
-                                    <div class="col-lg-12 text-right pb-4 pr-5">
+                                    <div class="col-lg-12 text-right pb-4 pr-5 mt-3">
                                         <button type="button" class="btn btn-default">Cancel</button>
                                         <a href="javascript:;" (click)="addCustomer()" class="btn btn-success">Submit</a>                            
                                      </div>
@@ -1059,8 +1059,8 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">DBA
                                                             Name</label>
-                                                        <input [(ngModel)]="brokerData.dba"
-                                                        name="dba" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.dbaName"
+                                                        name="dbaName" type="text" class="form-control"> </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name</label>
@@ -1154,7 +1154,7 @@
                                                     <label for="w1-terms1">Type Manually</label>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4 mar-top-37">
+                                            <div class="col-lg-3 mar-top-37">
                                                 <a href="javascript:;" class="btn btn-dark">Clear</a>
                                                 <a *ngIf="i == 0;" (click)="addAddress(brokerData);" class="btn btn-success" href="javascript:;"><i
                                                         class="fa fa-plus fa-fw"></i></a>
@@ -1337,8 +1337,8 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Carrier
                                                             Name</label>
-                                                        <input [(ngModel)]="carrierData.carrierName"
-                                                        name="carrierName" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="carrierData.companyName"
+                                                        name="companyName" type="text" class="form-control"> </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name</label>
@@ -2827,5 +2827,250 @@
 
 
 
-
+<ng-template #content let-modal>
+            <div class="modal-header">
+                <h5 class="modal-title">{{userDetailTitle}}'s Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="card-body text-dark">
+                    <ul class="nav top-tabs nav-tabs wizard-steps">
+                       <li class="nav-item active"> <a href="#customerBasicDetails" data-toggle="tab" class="nav-link text-center active">
+                          Basic Details
+                          </a> 
+                       </li>
+                       <li class="nav-item"> <a href="#customerAddressDetails" data-toggle="tab" class="nav-link text-center">
+                          Address
+                          </a> 
+                       </li>
+                       <li class="nav-item" *ngIf="userDetailData.paymentDetails"> <a href="#customPaymentDetails" data-toggle="tab" class="nav-link text-center">
+                                Payment
+                            </a> 
+                        </li>
+                       <li class="nav-item" *ngIf="userDetailData.additionalContact"> <a href="#customerAdditionalContact" data-toggle="tab" class="nav-link text-center">
+                          Additional Contact
+                          </a> 
+                       </li>
+                       
+                       
+                    </ul>
+                    <div class="tab-content">
+                       <div id="customerBasicDetails" class="tab-pane active">
+                          <div class="row">
+                             <div class="col-lg-12">
+                                <div class="thumb-info text-center mb-3"> <img src="img/pp.jpg" class="rounded img-fluid" alt="John Doe" style="max-width: 200px;"> </div>
+                             </div>
+                             <div class="col-lg-6">
+                                <table class="table table-bordered m-0">
+                                   <tbody>
+                                       <tr *ngIf="userDetailData.brokerType">
+                                            <th width="40%" class="back-color-gray">Broker Type:</th>
+                                            <td>{{userDetailData.brokerType}}</td>
+                                       </tr>
+                                      <tr>
+                                         <th width="40%" class="back-color-gray">Company Name:</th>
+                                         <td>{{userDetailData.companyName}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.dbaName">
+                                         <th width="40%" class="back-color-gray">DBA Name:</th>
+                                         <td>{{userDetailData.dbaName}}</td>
+                                      </tr>
+                                      <tr>
+                                         <th width="40%" class="back-color-gray">Contact Name:</th>
+                                         <td>{{userDetailData.firstName}} {{userDetailData.lastName}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.mc">
+                                         <th width="40%" class="back-color-gray">MC:</th>
+                                         <td>{{userDetailData.mc}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.dot">
+                                         <th width="40%" class="back-color-gray">DOT:</th>
+                                         <td>{{userDetailData.dot}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.ein">
+                                         <th width="40%" class="back-color-gray">EIN:</th>
+                                         <td>{{userDetailData.ein}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.fast">
+                                         <th width="40%" class="back-color-gray">Fast:</th>
+                                         <td>{{userDetailData.fast}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.fastExpiry">
+                                         <th width="40%" class="back-color-gray">Fast Expiry:</th>
+                                         <td>{{userDetailData.fastExpiry}}</td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                             </div>
+                             <div class="col-lg-6">
+                                <table class="table table-bordered m-0">
+                                   <tbody>
+                                      <tr *ngIf="userDetailData.fastExpiry">
+                                         <th width="40%" class="back-color-gray">Account Number:</th>
+                                         <td>{{userDetailData.accountNumber}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.trailerPreference">
+                                         <th width="40%" class="back-color-gray">Trailer Preference:</th>
+                                         <td>{{userDetailData.trailerPreference}}</td>
+                                      </tr>
+                                      <tr>
+                                         <th width="40%" class="back-color-gray">Work Phone:</th>
+                                         <td>{{userDetailData.workPhone}}</td>
+                                      </tr>
+                                      <tr>
+                                         <th width="40%" class="back-color-gray">Work Email:</th>
+                                         <td>{{userDetailData.workEmail}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.csa">
+                                         <th width="40%" class="back-color-gray">CSA:</th>
+                                         <td>{{userDetailData.csa}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.ctpat">
+                                         <th width="40%" class="back-color-gray">CTPAT:</th>
+                                         <td>{{userDetailData.ctpat}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.pip">
+                                         <th width="40%" class="back-color-gray">PIP:</th>
+                                         <td>{{userDetailData.pip}}</td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                             </div>
+                          </div>
+                       </div>
+                       <div id="customerAddressDetails" class="tab-pane ">
+                          <table style="float: left;" [style.width]="userDetailData.address.length > 1 ? '50%' : '100%'" class="table table-bordered mb-2" *ngFor="let item of userDetailData.address">
+                             <tbody>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Address Type:</th>
+                                   <td>{{item.addressType}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray"> Country:</th>
+                                   <td>{{item.countryName}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">State:</th>
+                                   <td>{{item.stateName}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray"> City:</th>
+                                   <td>{{item.cityName}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Zip Code:</th>
+                                   <td>{{item.zipCode}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Address:</th>
+                                   <td>{{item.address1}} {{item.address2}}</td>
+                                </tr>
+                             </tbody>
+                          </table>
+                       </div>
+                       <div id="customerAdditionalContact" class="tab-pane" *ngIf="userDetailData.additionalContact">
+                          <table class="table table-bordered m-0">
+                             <tbody>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Name:</th>
+                                   <td>
+                                       {{userDetailData.additionalContact.firstName ? userDetailData.additionalContact.firstName : '-'}} 
+                                       {{userDetailData.additionalContact.lastName ? userDetailData.additionalContact.lastName : ''}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Designation:</th>
+                                   <td>{{userDetailData.additionalContact.designation ? userDetailData.additionalContact.designation : '-'}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Phone:</th>
+                                   <td>{{userDetailData.additionalContact.phone ? userDetailData.additionalContact.phone : '-'}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Email:</th>
+                                   <td>{{userDetailData.additionalContact.email ? userDetailData.additionalContact.email : '-' }}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Fax:</th>
+                                   <td>{{userDetailData.additionalContact.fax ? userDetailData.additionalContact.fax : '-'}}</td>
+                                </tr>
+                             </tbody>
+                          </table>
+                       </div>
+                       <div id="customPaymentDetails" class="tab-pane" *ngIf="userDetailData.paymentDetails">
+                        <table class="table table-bordered m-0">
+                            <table class="table table-bordered m-0">
+                                <tbody>
+                                   <tr>
+                                      <th width="40%" class="back-color-gray">In-Bonded Carrier:</th>
+                                      <td>{{userDetailData.paymentDetails.inBonded}}</td>
+                                   </tr>
+                                   <tr>
+                                      <th width="40%" class="back-color-gray">MC:</th>
+                                      <td>{{userDetailData.paymentDetails.mc}}</td>
+                                   </tr>
+                                   <tr>
+                                      <th width="40%" class="back-color-gray">DOT:</th>
+                                      <td>{{userDetailData.paymentDetails.dot}}</td>
+                                   </tr>
+                                   <tr>
+                                      <th width="40%" class="back-color-gray">Fast:</th>
+                                      <td>{{userDetailData.paymentDetails.fast}}</td>
+                                   </tr>
+                                   <tr>
+                                      <th width="40%" class="back-color-gray">Fast Expiry:</th>
+                                      <td>{{userDetailData.paymentDetails.fastExpiry}}</td>
+                                   </tr>
+                                   <tr>
+                                      <th width="40%" class="back-color-gray">CCC:</th>
+                                      <td>{{userDetailData.paymentDetails.ccc}}</td>
+                                   </tr>
+                                   <tr>
+                                      <th width="40%" class="back-color-gray">SCAC:</th>
+                                      <td>{{userDetailData.paymentDetails.scac}}</td>
+                                   </tr>
+                                   <tr>
+                                      <th width="40%" class="back-color-gray">CVOR:</th>
+                                      <td>{{userDetailData.paymentDetails.cvor}}</td>
+                                   </tr>
+                                   
+                                    <tr>
+                                       <th width="40%" class="back-color-gray">Payroll Type:</th>
+                                       <td>{{userDetailData.paymentDetails.payrollType}}</td>
+                                    </tr>
+                                    <tr>
+                                       <th width="40%" class="back-color-gray">Payroll Rate:</th>
+                                       <td>{{userDetailData.paymentDetails.payrollRate}}</td>
+                                    </tr>
+                                    <tr>
+                                       <th width="40%" class="back-color-gray">Local Tax (in Percentage):</th>
+                                       <td>{{userDetailData.paymentDetails.localTax}}</td>
+                                    </tr>
+                                    <tr>
+                                       <th width="40%" class="back-color-gray">Federal Tax (in Percentage):</th>
+                                       <td>{{userDetailData.paymentDetails.federalTax}}</td>
+                                    </tr>
+                                    <tr>
+                                       <th width="40%" class="back-color-gray">Apply Tax (on Settlement):</th>
+                                       <td>{{userDetailData.paymentDetails.applyTax}}</td>
+                                    </tr>
+                                    <tr>
+                                       <th width="40%" class="back-color-gray">WSIB:</th>
+                                       <td>{{userDetailData.paymentDetails.wsibAccountNumber}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">WSIB Expiry:</th>
+                                        <td>{{userDetailData.paymentDetails.wsibExpiry}}</td>
+                                     </tr>
+                                 
+                                </tbody>
+                             </table>
+                         </table>
+                       </div>
+                       
+                    </div>
+                 </div>
+            </div>
+        </ng-template>
 
