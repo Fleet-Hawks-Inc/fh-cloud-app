@@ -57,6 +57,8 @@ export class VehicleDetailComponent implements OnInit {
     heightUnit: '',
     length: '',
     lengthUnit: '',
+    width: '',
+    widthUnit: '',
     interiorVolume: '',
     passangerVolume: '',
     groundClearnce: '',
@@ -80,6 +82,9 @@ export class VehicleDetailComponent implements OnInit {
     vendorID: '',
     dateOfExpiry: '',
     remiderEvery: '',
+    policyNumber: '',
+    amount: 0,
+    amountCurrency: ''
   };
   fluid = {
     fuelType: '',
@@ -129,6 +134,7 @@ export class VehicleDetailComponent implements OnInit {
     purchaseVendorID: '',
     warrantyExpirationDate: '',
     purchasePrice: '',
+    purchasePriceCurrency: '', 
     warrantyExpirationMeter: '',
     purchaseDate: '',
     purchaseComments: '',
@@ -266,7 +272,7 @@ export class VehicleDetailComponent implements OnInit {
         this.year = result.year;
         this.manufacturerID = result.manufacturerID;
         this.modelID = result.modelID;
-        this.plateNumber = result.model;
+        this.plateNumber = result.plateNumber;
         this.stateID = result.stateID;
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
@@ -297,6 +303,8 @@ export class VehicleDetailComponent implements OnInit {
         this.specifications = {
           height: result.specifications.height,
           heightUnit: result.specifications.heightUnit,
+          width: result.specifications.width,
+          widthUnit: result.specifications.widthUnit,
           length: result.specifications.length,
           lengthUnit: result.specifications.lengthUnit,
           interiorVolume: result.specifications.interiorVolume,
@@ -323,6 +331,9 @@ export class VehicleDetailComponent implements OnInit {
           vendorID: result.insurance.vendorID,
           dateOfExpiry: result.insurance.dateOfExpiry,
           remiderEvery: result.insurance.remiderEvery,
+          policyNumber: result.insurance.policyNumber,
+          amount: result.insurance.amount,
+          amountCurrency: result.insurance.amountCurrency
         };
         this.fluid = {
           fuelType: result.fluid.fuelType,
@@ -372,6 +383,7 @@ export class VehicleDetailComponent implements OnInit {
           purchaseVendorID: result.purchase.purchaseVendorID,
           warrantyExpirationDate: result.purchase.warrantyExpirationDate,
           purchasePrice: result.purchase.purchasePrice,
+          purchasePriceCurrency: result.purchase.purchasePriceCurrency,
           warrantyExpirationMeter: result.purchase.warrantyExpirationMeter,
           purchaseDate: result.purchase.purchaseDate,
           purchaseComments: result.purchase.purchaseComments,

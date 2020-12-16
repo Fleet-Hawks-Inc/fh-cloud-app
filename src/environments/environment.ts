@@ -8,8 +8,10 @@ export const environment = {
 
 
 
+
      BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
   // BaseUrl: 'http://localhost:3000/api/v1/',
+
 
 
 
