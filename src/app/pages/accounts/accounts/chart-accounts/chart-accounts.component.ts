@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chart-accounts.component.css']
 })
 export class ChartAccountsComponent implements OnInit {
-
+  form;
+  account = {};
   constructor() { }
 
   ngOnInit() {
   }
-
+  addAccount() {
+  console.log("account", this.account);
+  }
 }

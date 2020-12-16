@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../../../../services/api.service';
+import {ApiService} from '../../../../services';
 import {Router} from '@angular/router';
 
 @Component({
@@ -12,8 +12,7 @@ export class AddressesComponent implements OnInit {
   title = 'Address List';
   addresses;
 
-  constructor(private apiService: ApiService,
-              private router: Router) { }
+  constructor(private apiService: ApiService) { }
 
   ngOnInit() {
 
@@ -34,7 +33,7 @@ export class AddressesComponent implements OnInit {
     this.apiService.deleteData('addresses/' + addressID)
         .subscribe((result: any) => {
           this.fetchAddresses();
-        })
+        });
   }
 
 }

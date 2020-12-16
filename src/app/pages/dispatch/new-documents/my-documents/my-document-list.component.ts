@@ -15,6 +15,10 @@ declare var $: any;
   styleUrls: ['./my-document-list.component.css']
 })
 export class MyDocumentListComponent implements OnInit {
+  public documents = [];
+  trips;
+  currentUser;
+  form;
   image;
   ifEdit = false;
   modalTitle: string = 'Add Document';
@@ -23,46 +27,59 @@ export class MyDocumentListComponent implements OnInit {
   selectedFiles: FileList;
   private dtTrigger: Subject<any> = new Subject();
   selectedFileNames: Map<any, any>;
-  private documents;
-  carrierID: any;
-  currentUser;
-  documentData = {
-    uploadedDocs: []
-  };
-  allOptions: any = {};
   documentMode: string = 'Manual';
   documentPrefix: string;
   documentSequence: string;
-  form;
+  allOptions: any = {};
   response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
   Error: string = '';
   Success: string = '';
   errors = {};
-  
-  constructor(private apiService: ApiService,
-              private router: Router,
-              private domSanitizer: DomSanitizer,
-              private awsUS: AwsUploadService) {
-                this.selectedFileNames = new Map<any, any>();
-  }
+  carrierID: any;
+  documentData = {
+    uploadedDocs: []
+  };
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private domSanitizer: DomSanitizer,
+    private awsUS: AwsUploadService
+  ) {
+    this.selectedFileNames = new Map<any, any>();
+   }
 
   ngOnInit() {
-    
-    this.fetchAssets();
-    this.getCurrentUser();
+    this.fetchDocuments();
+    this.getCurrentuser();
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
   }
-  
-  saveDocumentMode() {
-    if(this.documentMode !== 'Manual') {
-      const prefixCode = `${this.documentPrefix}-${this.documentSequence}`;
-      this.documentData['documentNumber'] = prefixCode;
-    }
+
+  fetchDocuments = () => {
+    // this.spinner.show(); // loader init
+    this.apiService.getData('documents').subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
+        for (let i = 0; i < result.Items.length; i++) {
+          if (result.Items[i].isDeleted === 0) {
+            this.documents.push(result.Items[i]);
+          }
+        }
+        // this.spinner.hide(); // loader hide
+        
+        }
+      });
+  };
+  getCurrentuser = async () => {
+    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    console.log(this.currentUser)
   }
+
   dataTableOptions = () => {
     this.allOptions = { // All list options
       pageLength: 10,
@@ -101,54 +118,22 @@ export class MyDocumentListComponent implements OnInit {
     };
   }
 
-  fetchAssets = () => {
-    // this.spinner.show(); // loader init
-    this.apiService.getData('documents').subscribe({
-      complete: () => {},
-      error: () => {},
-      next: (result: any) => {
-        
-        for (let i = 0; i < result.Items.length - 1; i++) {
-          // if (result.Items[i].uploadedDocs.length > 0) {
-          //   const getFileName = result.Items[i].uploadedDocs[0].split('.');
-          //   let aa = uuidv4.fromString(getFileName[0]).toString();
-          //   console.log('aa', aa)
-          // }
-        }
-        this.documents = result.Items;
-        
-        console.log('aa', this.documents)
-        }
-      });
-  };
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  getCurrentUser = async () => {
-    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
-  }
   addDocument() {
     this.apiService.postData('documents', this.documentData).
     subscribe({
       complete : () => {},
-      error: (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              console.log(key);
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
+              val.message = val.message.replace(/'.*'/, 'This Field');
+              this.errors[val.context.key] = val.message;
             })
           )
           .subscribe({
             complete: () => {
+              // this.spinner.hide(); // loader hide
               this.throwErrors();
-              this.Success = '';
             },
             error: () => { },
             next: () => { },
@@ -157,13 +142,7 @@ export class MyDocumentListComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.uploadFiles();
         this.Success = 'Document Added successfully';
-        $('#addDocumentModal').modal('hide');
-        setTimeout(() => {
-          this.fetchAssets();
-          this.dtTrigger.next();
-        }, 1000);
       }
     });
   }
@@ -176,8 +155,7 @@ export class MyDocumentListComponent implements OnInit {
    */
   selectDocuments(event) {
     this.selectedFiles = event.target.files;
-    console.log(this.selectedFiles)
-    for (let i = 0; i <= this.selectedFiles.length; i++) {
+    for (let i = 0; i <= this.selectedFiles.item.length; i++) {
       const randomFileGenerate = this.selectedFiles[i].name.split('.');
       const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
       this.selectedFileNames.set(fileName, this.selectedFiles[i]);
@@ -193,6 +171,17 @@ export class MyDocumentListComponent implements OnInit {
       this.awsUS.uploadFile(this.carrierID, fileName, fileData);
     });
   }
+
+  /*
+   * Get all trips from api
+   */
+  fetchTrips() {
+    this.apiService.getData('trips').subscribe((result: any) => {
+      this.trips = result.Items;
+      console.log('trips', this.trips);
+    });
+  }
+
   /*
     * Fetch Document details before updating
     */
@@ -247,7 +236,7 @@ export class MyDocumentListComponent implements OnInit {
         this.Success = 'Document Updated successfully';
         $('#addDocumentModal').modal('hide');
         setTimeout(() => {
-          this.fetchAssets();
+          this.fetchDocuments();
           this.dtTrigger.next();
         }, 1000);
       }
@@ -261,8 +250,16 @@ export class MyDocumentListComponent implements OnInit {
       await this.awsUS.getFiles(this.carrierID, result.uploadedDocs[0]));
       console.log('this.documentsDocs', this.image);
       this.documentsDocs = this.image;
-   
-    
+  }
 
+  deactivateAsset(value, docID) {
+    if (confirm("Are you sure you want to delete?") === true) {
+      this.apiService
+      .getData(`documents/isDeleted/${docID}/${value}`)
+      .subscribe((result: any) => {
+        console.log('result', result);
+        this.fetchDocuments();
+      });
+    }
   }
 }

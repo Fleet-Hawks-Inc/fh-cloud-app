@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { Router } from '@angular/router';
 import { timer } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 
@@ -12,12 +13,16 @@ declare var $: any;
 })
 export class ServiceProgramListComponent implements OnInit {
   title = 'Service Program List';
+  dtOptions: any = {};
   programs;
+
+  programeName = '';
 
   constructor(
       private apiService: ApiService,
       private router: Router,
-      private spinner: NgxSpinnerService
+      private spinner: NgxSpinnerService,
+      private toastr: ToastrService
     ) {}
 
   ngOnInit() {
@@ -26,7 +31,7 @@ export class ServiceProgramListComponent implements OnInit {
 
   fetchPrograms() {
     this.spinner.show(); // loader init
-    this.apiService.getData('servicePrograms').subscribe({
+    this.apiService.getData(`servicePrograms?programeName=${this.programeName}`).subscribe({
       complete: () => {
         this.initDataTable();
       },
@@ -41,21 +46,37 @@ export class ServiceProgramListComponent implements OnInit {
 
   deleteProgram(programId) {
     /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable('#datatable-default')) {
-      $('#datatable-default').DataTable().clear().destroy();
-    }
+    // if ($.fn.DataTable.isDataTable('#datatable-default')) {
+    //   $('#datatable-default').DataTable().clear().destroy();
+    // }
     /******************************/
-
-    this.apiService
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.apiService
       .deleteData('servicePrograms/' + programId)
       .subscribe((result: any) => {
         this.fetchPrograms();
+        this.toastr.success('Successfully Deleted');
       });
+    }
+    
   }
 
+  // initDataTable() {
+  //   timer(200).subscribe(() => {
+  //     $('#datatable-default').DataTable();
+  //   });
+  // }
+
   initDataTable() {
-    timer(200).subscribe(() => {
-      $('#datatable-default').DataTable();
-    });
+    this.dtOptions = {
+      searching: false,
+      dom: 'Bfrtip', // lrtip to hide search field
+      processing: true,
+      
+      buttons: [
+        'colvis',
+        'excel',
+      ],
+    };
   }
 }

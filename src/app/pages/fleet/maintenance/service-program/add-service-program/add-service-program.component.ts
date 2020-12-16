@@ -16,7 +16,8 @@ declare var $: any;
 })
 export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   pageTitle: string;
-  private vehicles;
+  vehicles: any;
+  tasks = [];
   private programID;
   serviceData = {
     serviceScheduleDetails: [{
@@ -25,6 +26,10 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       repeatByTimeUnit: '',
       repeatByOdometer: '',
     }]
+  };
+
+  taskData = {
+    taskType: 'service',
   };
 
   errors = {};
@@ -63,8 +68,9 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       this.pageTitle = 'New Service Program';
     }
     this.fetchVehicles();
+    this.fetchTasks();
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      this.form = $('#form_, #form1_').validate();
     });
   }
 
@@ -87,7 +93,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-
+    this.hideErrors();
     this.apiService.postData('servicePrograms', this.serviceData).subscribe({
         complete : () => {},
         error: (err) => {
@@ -120,8 +126,53 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
           this.hasSuccess = true;
           // this.Success = 'Service Program Added successfully';
           this.toastr.success('Service added successfully');
-          this.router.navigateByUrl('/fleet/maintenance/service-program/service-program-list');
+          this.router.navigateByUrl('/fleet/maintenance/service-program/list');
 
+        }
+      });
+  }
+
+  addServiceTask() {
+    console.log('taskData', this.taskData);
+    this.errors = {};
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.hideErrors();
+    this.apiService.postData('tasks', this.taskData).subscribe({
+        complete : () => {},
+        error: (err) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                const path = val.path;
+                // We Can Use This Method
+                const key = val.message.match(/"([^']+)"/)[1];
+                console.log(key);
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+                this.Success = '';
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          // this.programName = '';
+          // this.repeatByTime = '';
+          // this.repeatByOdometer = '';
+          // this.description = '';
+          this.response = res;
+          this.hasSuccess = true;
+          // this.Success = 'Service Program Added successfully';
+          this.toastr.success('Service Task added successfully');
+          $('#addServiceTaskModal').modal('hide');
+          this.taskData['taskName'] = '';
+          this.taskData['description'] = '';
         }
       });
   }
@@ -136,8 +187,41 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     });
   }
 
+  fetchTasks() {
+    this.apiService.getData('tasks').subscribe({
+      error: () => {},
+      next: (result: any) => {
+       // this.tasks = result.Items;
+       result.Items.forEach(element => {
+        if (element.taskType === 'service') {
+          this.tasks.push(element);
+        }
+       });
+       console.log('this.tasks', this.tasks);
+      },
+    });
+  }
+
   throwErrors() {
-    this.form.showErrors(this.errors);
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
   }
 
   fetchServiceByID() {
@@ -198,7 +282,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       this.response = res;
       this.hasSuccess = true;
       this.toastr.success('Service Updated Successfully');
-      this.router.navigateByUrl('/fleet/maintenance/service-program/service-program-list');
+      this.router.navigateByUrl('/fleet/maintenance/service-program/list');
     },
   });
 }

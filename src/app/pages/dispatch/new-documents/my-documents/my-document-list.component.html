@@ -86,6 +86,7 @@
                      
                      <div class="card-body">
                          
+
                         <table datatable [dtOptions]="allOptions"  class="table table-bordered table-responsive-lg table-striped mb-0" *ngIf="documents?.length > 0">
                                      <thead>
                                          <tr>
@@ -97,6 +98,8 @@
                                              <th width="10%">Uploaded On</th>
                                              <th width="20%">Description</th>
                                              <th width="5%">Actions</th>
+
+
                                          </tr>
                                      </thead>
                                      <tbody>
@@ -113,10 +116,16 @@
                                                    <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                       <i class="fas fa-ellipsis-v"></i>
                                                    </button>
-                                                   <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                      <a class="dropdown-item" (click)="editDocument(document.docID)">Edit</a>
-                                                      <a class="dropdown-item" href="javascript:;" (click)="deactivateAsset(item.isDeleted, item.assetID)">Delete</a>
-                                                   </div>
+
+                                                   <div class="dropdown-menu"
+                                                        attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                        <a class="dropdown-item"
+                                                            (click)="editDocument(document.docID)">Edit</a>
+                                                        <a class="dropdown-item" href="javascript:;"
+                                                            (click)="deactivateAsset(document.isDeleted, document.docID)">Delete</a>
+                                                        <a class="dropdown-item" href="javascript:;">Download File</a>
+                                                    </div>
+
                                                  </div>
                                              </td>
                                          </tr>

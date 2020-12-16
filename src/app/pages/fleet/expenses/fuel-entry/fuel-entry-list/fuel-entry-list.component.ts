@@ -24,6 +24,9 @@ export class FuelEntryListComponent implements OnInit {
   toDate: any = '';
   entryId = '';
   vehicles = [];
+  vehicleList: any;
+  tripList: any;
+  assetList: any;
   countries = [];
   checked = false;
   isChecked = false;
@@ -34,6 +37,13 @@ export class FuelEntryListComponent implements OnInit {
   formattedFromDate: any = '';
   formattedToDate: any = '';
   fuelList;
+  dtOptions: any = {};
+  suggestedUnits = [];
+  vehicleID = '';
+  amount = '';
+  vehicleIdentification = '';
+  unitID = '';
+  unitName: string;
   constructor(
     private apiService: ApiService,
     private route: Router,
@@ -42,29 +52,84 @@ export class FuelEntryListComponent implements OnInit {
   }
   ngOnInit() {
     this.fuelEntries();
-    // this.fetchVehicles();
+    this.fetchVehicleList();
+    this.fetchAssetList();
     this.fetchCountries();
+    this.fetchTripList();
+    $(document).ready(() => {
+      setTimeout(() => {
+        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      }, 1800);
+    });
+  }
+  setUnit(unitID, unitName) {
+    this.unitName = unitName;
+    this.unitID = unitID;
+
+    this.suggestedUnits = [];
+  }
+  getSuggestions(value) {
+    this.suggestedUnits = [];
+    this.apiService
+      .getData(`vehicles/suggestion/${value}`)
+      .subscribe((result) => {
+        result = result.Items;
+
+        for(let i = 0; i < result.length; i++){
+          this.suggestedUnits.push({
+            unitID: result[i].vehicleID,
+            unitName: result[i].vehicleIdentification
+          });
+        }
+        this.getAssetsSugg(value);
+      });
   }
 
-  // fetchVehicle(ID) {
-  //   this.apiService.getData('vehicles/' + ID).subscribe((result: any) => {
-  //     this.vehicles = result.Items;
-  //     return this.vehicles[0].vehicleName;
-  //   });
-  // }
+  getAssetsSugg(value) {
+    this.apiService
+      .getData(`assets/suggestion/${value}`)
+      .subscribe((result) => {
+        result = result.Items;
+        for(let i = 0; i < result.length; i++){
+          this.suggestedUnits.push({
+            unitID: result[i].assetID,
+            unitName: result[i].assetIdentification
+          });
+        }
+      });
+      if(this.suggestedUnits.length == 0){
+        this.unitID = '';
+      }
+  }
+  fetchVehicleList() {
+    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+      this.vehicleList = result;
+    });
+  }
+  fetchAssetList() {
+    this.apiService.getData('assets/get/list').subscribe((result: any) => {
+      this.assetList = result;
+    });
+  }
+  fetchTripList() {
+    this.apiService.getData('trips/get/list').subscribe((result: any) => {
+      this.tripList = result;
+    });
+  }
   fuelEntries() {
-    this.apiService.getData('fuelEntries').subscribe({
+    this.spinner.show(); // loader init
+    this.apiService.getData(`fuelEntries?unitID=${this.unitID}&from=${this.fromDate}&to=${this.toDate}`).subscribe({
       complete: () => {
         this.initDataTable();
       },
       error: () => { },
       next: (result: any) => {
-        console.log(result);
+     
+        this.spinner.hide(); // loader hide
         this.fuelList = result.Items;
-        console.log(this.fuelList);
       },
     });
-
+    this.unitID = '';
   }
   getVehicleName(ID) {
     const vehicleName: any = this.vehicles.filter( (el) => {
@@ -83,30 +148,51 @@ export class FuelEntryListComponent implements OnInit {
       fromDate: this.fromDate,
       toDate: this.toDate
     };
-    console.log(this.formattedToDate);
     return;
   }
- 
-
   deleteFuelEntry(entryID) {
-    /******** Clear DataTable ************/
-    if ($.fn.DataTable.isDataTable('#datatable-default')) {
-      $('#datatable-default').DataTable().clear().destroy();
-    }
-    /******************************/
     this.apiService
       .deleteData('fuelEntries/' + entryID)
       .subscribe((result: any) => {
      //   this.spinner.show();
         this.fuelEntries();
-        this.toastr.success('Fuel Entry Deleted Successfully!');        
+        this.toastr.success('Fuel Entry Deleted Successfully!');
       });
   }
 
   initDataTable() {
-    timer(200).subscribe(() => {
-      $('#datatable-default').DataTable();
-    });
+    this.dtOptions = {
+      dom: 'lrtip', // lrtip to hide search field
+      processing: true,
+      columnDefs: [
+          {
+              targets: 0,
+              className: 'noVis'
+          },
+          {
+              targets: 1,
+              className: 'noVis'
+          },
+          {
+              targets: 2,
+              className: 'noVis'
+          },
+          {
+              targets: 3,
+              className: 'noVis'
+          },
+          {
+              targets: 4,
+              className: 'noVis'
+          }
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      buttons: [
+        'colvis',
+      ],
+    };
   }
 
 

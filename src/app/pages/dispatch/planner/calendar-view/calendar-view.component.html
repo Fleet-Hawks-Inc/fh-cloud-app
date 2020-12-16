@@ -1,0 +1,276 @@
+<style>
+    .schedule-trips ul {
+        max-height: calc(100vh - 175px);
+        overflow-x: auto;
+    }
+    #assetModal .modal-dialog{
+        max-width: 1200px;
+    }
+    canvas {
+         -moz-user-select: none;
+         -webkit-user-select: none;
+         -ms-user-select: none;
+    }
+    .td_border{
+        border: 2px solid black !important;
+    }
+</style>
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body p-0">
+            <header class="page-header pr-5">
+               <form class="form-horizontal" method="get">
+                  <div class="row px-4" style="padding-top:10px;">
+                     <!-- <div class="col-md-2 col-lg-2">
+                        <div class="input-group input-group-md mb-3">
+                           <input type="text" placeholder="Search" class="form-control" name="">
+                        </div>
+                     </div>
+                     <div class="col-lg-3 col-md-3">
+                        <div class="input-daterange input-group" data-plugin-datepicker="">
+                           <span class="input-group-prepend">
+                           <span class="input-group-text">
+                           <i class="fas fa-calendar-alt"></i>
+                           </span>
+                           </span>
+                           <input type="text" class="form-control" name="start">
+                           <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                           to
+                           </span>
+                           <input type="text" class="form-control" name="end">
+                        </div>
+                     </div>
+                     <div class="col-md-1  col-lg-1">
+                        <button type="submit" class="btn btn-sm btn-success">Search</button>
+                     </div> -->
+                     <div class="col-md-6 col-lg-6" style="font-size: 16px;">
+                        Planner
+                     </div>
+                     <div class="col-md-6  col-lg-6 text-right">
+                        <a href="javascript:;" routerLink="/dispatch/planner/map-view" class="btn btn-default btn-sm">Map View</a>
+                        <a href="javascript:;" routerLink="/dispatch/trips/add-trip" class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add Trip</a>
+                        <!-- <div class="btn-group btn-group1 flex-wrap">
+                           <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                           <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                              <a class="dropdown-item text-1" href="edit-vehicle.php">Edit</a>
+                              <a class="dropdown-item text-1" href="">Delete</a>
+                              <a class="dropdown-item text-1" href="">Import</a>
+                              <a class="dropdown-item text-1" href="">Export</a>
+                           </div>
+                        </div> -->
+                     </div>
+                  </div>
+               </form>
+            </header>
+            <section class="dispatch-planner__wrapper">
+               <div class="card">
+                  <div class="card-body">
+                     <div class="row">
+                        <div class="col-3">
+                           <div id="external-trips">
+                              <div class="schedule-trips">
+                                  <!-- search dropdown will be there -->
+                                 <!-- <select class="form-control"> 
+                                       <option data-select2-id="260">Search Trip</option>
+                                       <option value="1">#787, Regular</option>
+                                       <option value="2">#788, Outsourced</option>
+                                       <option value="2">#789, Outsourced</option>
+                                       <option value="2">#790, Regular</option>
+                                 </select> -->
+                                 <ul class="m-0 p-0 mt-4">
+                                    <li class=" mb-2 border" *ngFor="let trip of tempTrips">
+                                       <div class="fc-event-main">
+                                          <h5 class="mb-2 font-weight-bold mt-0 border-bottom pb-2">
+                                             <div class="d-inline-block">
+                                                <span class="name-short">{{ trip.assetShortName }}</span>
+                                                {{ trip.assetName }}
+                                             </div>
+                                             <a href="javascript:;" (click)="showAssignModal(trip.tripID)" class="pull-right modal-with-form btn btn-success btn-sm">Assign</a>
+                                          </h5>
+                                          <p class="mb-1"><b>P/L:</b> {{ trip.pickupLocation }}, {{ citiesObject[trip.pickupCityID] }}, {{ statesObject[trip.pickupStateID] }}, {{ countriesObject[trip.pickupCountryID] }}</p>
+                                          <p class="mb-1" *ngIf="trip.deliveryLocation != '' else locBlock "><b>D/L:</b> {{ trip.deliveryLocation }}, {{ citiesObject[trip.dropCityID] }}, {{ statesObject[trip.dropStateID] }}, {{ countriesObject[trip.dropCountryID] }}</p>
+                                          <ng-template #locBlock>
+                                            <p class="mb-1"><b>D/L:</b>- </p>
+                                          </ng-template>
+                                          <p class="mb-1"><b>Trip: #{{ trip.tripNo }}, </b>Outsourced</p>
+                                          <p class="m-0"><i class="fas fa-clock border-top"></i> {{ trip.date }}  {{ trip.time }}</p>
+                                       </div>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-9">
+                           <div class="row">
+                              <div class="col-12" id="calendar-wrap">
+                                <!-- <full-calendar [options]="calendarOptions"></full-calendar> -->
+                                <full-calendar
+                                    defaultView="dayGridMonth"
+                                    [plugins]="calendarPlugins"
+                                    [weekends]="true"
+                                    [nowIndicator]="true"
+                                    deepChangeDetection="true"
+                                    [events]="events"
+                                    ></full-calendar>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </section>
+         </section>
+    </div>
+</section>
+
+<!-- assign modal -->
+<div id="assetModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Assign</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body text-dark table-scroll-y table-scrollplan" data-select2-id="279">
+                    <table class="table table-bordered table-responsive-lg table-striped mb-0" data-select2-id="278">
+                        <thead>
+                            <tr>
+                                <th width="25%">Vehicle</th>
+                                <th width="25%">Trailer</th>
+                                <th width="25%">Driver</th>
+                                <th>Co-Driver</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <ng-select [items]="vehicles" bindLabel="vehicleIdentification"
+                                    bindValue="vehicleID" name="assetDataVehicleID" [(ngModel)]="assetDataVehicleID" id="vehicleSelect" (change)="vehicleChange($event,'change')">
+                                    </ng-select>
+                                </td>
+                                <td>
+                                    <ng-select name="informationAsset" [(ngModel)]="informationAsset" id="informationAsset" [items]="assets" 
+                                    bindLabel="assetIdentification" [multiple]="true" bindValue="assetID" (change)="assetsChange($event,'change')">
+                                    </ng-select>
+                                </td>
+                                <td>
+                                    <ng-select name="assetDataDriverUsername" [(ngModel)]="assetDataDriverUsername" 
+                                    id="driverSelect" [items]="drivers" bindLabel="fullName" bindValue="userName" (change)="driverChange($event,'driver','change')">
+                                    </ng-select>
+                                </td>
+                                <td>
+                                    <ng-select name="assetDataCoDriverUsername" [(ngModel)]="assetDataCoDriverUsername" 
+                                    id="coDriverSelect" [items]="codrivers" bindLabel="fullName" bindValue="userName" (change)="driverChange($event,'codriver','change')">
+                                    </ng-select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table>
+                                        <!-- <thead>head</thead> -->
+                                        <tbody>
+                                            <tr *ngFor="let vehicle of vehicles">
+                                                <td class="vehicleClass" id="veh_{{ vehicle.vehicleID }}" (click)="vehicleChange(vehicle,'click')">
+                                                    <div class="">
+                                                        <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                                                data-toggle="tooltip" data-placement="bottom" title=""
+                                                                data-original-title="Vehicle"></i> {{ vehicle.vehicleIdentification }}</p>
+                                                        <span class="driverstatus"><i class="fas fa-map-marker-alt"
+                                                            data-toggle="tooltip" data-placement="bottom" title=""
+                                                            data-original-title="Loation"></i> Kingston, Toronto, ON K7L 5K4
+                                                        </span>
+                                                        <span class="driverstatus">Current Status: 
+                                                            <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip"
+                                                                data-placement="bottom" title="" data-original-title="Current Status">ON
+                                                                ROAD<span></span>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table>
+                                        <tbody>
+                                            <tr *ngFor="let asset of assets">
+                                                <td class="assetClass" id="asset_{{ asset.assetID }}" (click)="assetsChange(asset,'click')">
+                                                    <div class="">
+                                                        <p class="mb-1 text-4 font-weight-semibold text-dark"> {{ asset.assetIdentification }}</p>
+                                                        <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston,
+                                                            Toronto, ON K7L 5K4</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table>
+                                        <tbody>
+                                            <tr *ngFor="let driver of drivers">
+                                                <td class="driverClass" id="drivr_{{ driver.driverID }}" (click)="driverChange(driver,'driver','click')">
+                                                    <div class="">
+                                                        <p class="mb-1 text-4 font-weight-semibold text-dark"><span
+                                                                class="offduty pull-right">OFF</span> {{ driver.fullName }}</p>
+                                                        <span class="driverstatus"> Crescent Road Vancouver, BC V6T 1Z2</span>
+                                                        <span class="driverstatus"><i class="fas fa-clock"></i> <span
+                                                                class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30 mins</span>
+                                                        <span class="driverstatus"><i class="fa fa-clock"></i> <span
+                                                                class="font-weight-bold">HOS:</span> 7 hrs 30 mins</span>
+                                                        <span class="driverstatus"><i class="fas fa-user"></i> <span
+                                                                class="font-weight-bold">On Duty Hours:</span> 2 hr 30 mins</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        
+                                    </table>
+                                </td>
+                                <td>
+                                    <table>
+                                        <tbody>
+                                            <tr *ngFor="let driver of codrivers">
+                                                <td class="codriverClass" id="codrivr_{{ driver.driverID }}" (click)="driverChange(driver,'codriver','click')">
+                                                     {{ driver.fullName }} <span class="offduty pull-right">OFF</span>
+                                                    <span class="driverstatus"><i class="fas fa-clock"></i> <span
+                                                            class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30 mins</span>
+                                                    <span class="driverstatus"><i class="fa fa-clock"></i> <span
+                                                            class="font-weight-bold">HOS:</span> 7 hrs 30 mins</span>
+                                                    <span class="driverstatus"><i class="fas fa-user"></i> <span
+                                                            class="font-weight-bold">On Duty Hours:</span> 2 hr 30 mins</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer card-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <a href="javascript:;" class="btn btn-success" (click)="saveAssetModalData()">Save</a>
+                        <button class="btn btn-default modal-dismiss" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- assign modal end -->

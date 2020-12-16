@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {from, Subject, throwError} from 'rxjs';
-import {ApiService} from '../../../../services';
+import { from, Subject, throwError } from 'rxjs';
+import { ApiService } from '../../../../services';
 import { Auth } from 'aws-amplify';
 import { HereMapService } from '../../../../services';
 import { v4 as uuidv4 } from 'uuid';
 import { AwsUploadService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { HttpClient } from '@angular/common/http';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
-import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { DomSanitizer } from '@angular/platform-browser';
+
 declare var $: any;
 
 @Component({
@@ -19,6 +22,11 @@ declare var $: any;
 })
 export class AddDriverComponent implements OnInit {
   pageTitle: string;
+  lastElement;
+  hideNextBtn: boolean = true;
+  addressField = -1;
+  currentTab = 1;
+  userLocation: any;
   public driverID;
   public driverProfileSrc: any = 'assets/img/driver/driver.png';
   selectedFiles: FileList;
@@ -26,14 +34,41 @@ export class AddDriverComponent implements OnInit {
   errors = {};
   form;
   concatArrayKeys = '';
-  manualAddress: boolean;
+  manualAddress: boolean = false;
   nextTab: any;
   carrierID: any;
+
+  statesObject: any;
+  countriesObject: any;
+  citiesObject: any;
+
+  groupData = {};
+
+  driverAddress = {
+    address: [],
+  };
   driverData = {
-    address: {},
+    driverType: 'employee',
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
+      }
+    }],
     documentDetails: [{
       documentType: '',
       document: '',
+      issuingAuthority: '',
       issuingCountry: '',
       issuingState: '',
       issueDate: '',
@@ -48,6 +83,9 @@ export class AddDriverComponent implements OnInit {
   };
   public searchTerm = new Subject<string>();
   public searchResults: any;
+
+
+  newDocuments = [];
   /**
    * Form Props
    */
@@ -84,14 +122,13 @@ export class AddDriverComponent implements OnInit {
   yardID = '';
 
 
-
+  documentTypeList: any = [];
   driverLicenseCountry = '';
   groups = [];
   countries = [];
   vehicles = [];
   states = [];
-  adrStates = [];
-  docStates = [];
+
   cities = [];
   yards = [];
   cycles = [];
@@ -100,29 +137,32 @@ export class AddDriverComponent implements OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
-
+  visibleIndex = 0;
   constructor(private apiService: ApiService,
+
+              private httpClient: HttpClient,
               private toastr: ToastrService,
               private awsUS: AwsUploadService,
               private route: ActivatedRoute,
               private spinner: NgxSpinnerService,
               private HereMap: HereMapService,
               private ngbCalendar: NgbCalendar,
+              private domSanitizer: DomSanitizer,
               private dateAdapter: NgbDateAdapter<string>,
-              private router: Router)
-    {
+              private router: Router) {
       this.selectedFileNames = new Map<any, any>();
     }
-  
+
+
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   ngOnInit() {
     this.driverID = this.route.snapshot.params['driverID'];
-    console.log(this.driverID)
     if (this.driverID) {
       this.pageTitle = 'Edit Driver';
       this.fetchDriverByID();
+      this.fetchAddress();
     } else {
       this.pageTitle = 'Add Driver';
     }
@@ -130,51 +170,93 @@ export class AddDriverComponent implements OnInit {
     this.fetchGroups(); // fetch groups
     this.fetchCountries(); // fetch countries
     this.fetchYards(); // fetch yards
-    this.fetchCycles(); // fetch cycle
-    this.fetchVehicles();
-    this.getToday();
-    this.searchLocation();
+    this.fetchCycles(); // fetch cycles
+    this.fetchVehicles(); // fetch vehicles
+    this.getToday(); // get today date on calender
+    this.searchLocation(); // search location on keyup
+
+    this.fetchAllCountriesIDs(); // fetch all countries Ids with name
+    this.fetchAllStatesIDs(); // fetch all states Ids with name
+    this.fetchAllCitiesIDs(); // fetch all cities Ids with name
+
+    this.fetchDocuments();
+
     $(document).ready(() => {
-      $('.btnNext').click(() => {
-        this.nextTab = $('.nav-tabs li a.active').closest('li').next('li');
-        this.nextTab.find('a').trigger('click');
-      });
+      this.form = $('#driverForm, #groupForm').validate();
+    });
+  }
 
-      $('.btnPrevious').click(() => {
-        $('.nav-tabs li a.active').closest('li').prev('li').find('a').trigger('click');
-      });
+  nextStep() {
+    this.currentTab++;
+  }
+  prevStep() {
+    this.currentTab--;
+  }
+  tabChange(value) {
+    this.currentTab = value;
+  }
 
-      $(document).ready(() => {
-        this.form = $('#form_').validate();
-      });
+  clearUserLocation(i) {
+    this.driverData.address[i]['userLocation'] = '';
+    $('div').removeClass('show-search__result');
+  }
+  manAddress(event, i) {
+    if (event.target.checked) {
+      $(event.target).closest('.address-item').addClass('open');
+    } else {
+      $(event.target).closest('.address-item').removeClass('open');
+    }
+  }
 
-      // $('#document-two').hide();
-      // $('#add-document').on('click', function(){
-      //   $(this).hide();
-      //   $('#document-two').show();
-      // });
+  onChangeUnitType(value: any) {
+    this.driverData['driverType'] = value;
+  }
+
+  addAddress() {
+    this.driverData.address.push({
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
+      }
     });
   }
 
   fetchCycles() {
     this.apiService.getData('cycles')
-    .subscribe((result: any) => {
-      this.cycles = result.Items;
-    });
+      .subscribe((result: any) => {
+        this.cycles = result.Items;
+      });
   }
 
   fetchGroups() {
     this.apiService.getData('groups')
-    .subscribe((result: any) => {
-      this.groups = result.Items;
-    });
+      .subscribe((result: any) => {
+        this.groups = result.Items;
+      });
   }
 
   fetchCountries() {
     this.apiService.getData('countries')
       .subscribe((result: any) => {
         this.countries = result.Items;
-        //console.log(this.countries)
+      });
+  }
+
+
+  fetchCountryByID(id: any) {
+    this.apiService.getData('countries' + id)
+      .subscribe((result: any) => {
+        this.countries = result.Items;
       });
   }
 
@@ -182,7 +264,6 @@ export class AddDriverComponent implements OnInit {
     this.apiService.getData('vehicles')
       .subscribe((result: any) => {
         this.vehicles = result.Items;
-        console.log('vehicles', this.vehicles)
       });
   }
 
@@ -190,37 +271,57 @@ export class AddDriverComponent implements OnInit {
     this.apiService.getData('yards')
       .subscribe((result: any) => {
         this.yards = result.Items;
-        //console.log(this.yards)
       });
   }
 
-  getStates() {
-    const countryID = this.driverData.address['country'];
-    this.apiService.getData('states/country/' + countryID)
+  getStates(id: any) {
+    this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
         this.states = result.Items;
-        this.adrStates = result.Items;
-        this.docStates = result.Items;
-        console.log('this.states', this.states)
       });
   }
 
-  getCities() {
-    const stateID = this.driverData.address['state'];
-    this.apiService.getData('cities/state/' + stateID)
+  getCities(id: any) {
+    this.apiService.getData('cities/state/' + id)
       .subscribe((result: any) => {
         this.cities = result.Items;
-        console.log('this.cities', this.cities)
       });
   }
 
-  getToday(): string {
-    return new Date().toISOString().split('T')[0]
+  fetchAllStatesIDs() {
+    this.apiService.getData('states/get/list')
+      .subscribe((result: any) => {
+        this.statesObject = result;
+      });
+  }
+
+  fetchAllCountriesIDs() {
+    this.apiService.getData('countries/get/list')
+      .subscribe((result: any) => {
+        this.countriesObject = result;
+      });
+  }
+
+  fetchAllCitiesIDs() {
+    this.apiService.getData('cities/get/list')
+      .subscribe((result: any) => {
+        this.citiesObject = result;
+      });
+  }
+
+  fetchDocuments() {
+    this.httpClient.get("assets/travelDocumentType.json").subscribe(data =>{
+      this.documentTypeList = data;
+    })
   }
   
-  uploadDriverImg(event): void {
-    console.log(event);
-    if (event.target.files[0]) {
+
+  getToday(): string {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  uploadDriverImg(elem, event): void {
+    if (elem === 'profile') {
       const file = event.target.files[0];
       const reader = new FileReader();
       reader.onload = e => this.driverProfileSrc = reader.result;
@@ -230,7 +331,18 @@ export class AddDriverComponent implements OnInit {
       const fileName = `${uuidv4(newFile[0])}.${newFile[1]}`;
       this.selectedFileNames.set(fileName, newFile);
       this.driverData['driverImage'] = fileName;
+    } else if (elem === 'docs') {
+      this.selectedFiles = event.target.files;
+      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
+        const randomFileGenerate = this.selectedFiles[i].name.split('.');
+        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
+        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
+        this.driverData.documentDetails[i].uploadedDocs.push(fileName);
+      }
+    } else {
+
     }
+
   }
 
   /*
@@ -243,10 +355,23 @@ export class AddDriverComponent implements OnInit {
     });
   }
 
+  getImages = async () => {
+    this.carrierID = await this.apiService.getCarrierID();
+    // console.log(' this.driverData',  this.driverData['driverImage']);
+    // this.image = this.domSanitizer.bypassSecurityTrustUrl(
+    //   await this.awsUS.getFiles(this.carrierID, this.driverData.driverImage));
+    //   console.log(' this.driverImages',  this.driverImages);
+    // this.driverImages.push(this.image);
+
+
+  }
+
   public searchLocation() {
     let target;
     this.searchTerm.pipe(
       map((e: any) => {
+        $('.map-search__results').hide();
+        $(e.target).closest('div').addClass('show-search__result');
         target = e;
         return e.target.value;
       }),
@@ -263,24 +388,71 @@ export class AddDriverComponent implements OnInit {
     });
   }
 
-  addDriver() {
-    this.spinner.show(); // loader init
-    this.register();
-    this.errors = {};
-    console.log('this.driverData', this.driverData);
-    this.apiService.postData('drivers', this.driverData).subscribe({
-      complete: () => {},
+  addGroup() {
+    this.apiService.postData('groups', this.groupData).subscribe({
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/'.*'/, 'This Field');
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              this.spinner.hide(); // loader hide
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.fetchGroups();
+        this.toastr.success('Group added successfully');
+        $('#addGroupModal').modal('hide');
+
+
+      },
+    });
+  }
+
+  async addDriver(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.hasError = false;
+    this.hasSuccess = false;
+    // this.register();
+    this.hideErrors();
+    console.log("driver", this.driverData);
+    if (this.driverData.address[0].countryName !== '' && this.driverData.address[0].stateName !== '' && this.driverData.address[0].cityName !== '') {
+      for (let i = 0; i < this.driverData.address.length; i++) {
+        const element = this.driverData.address[i];
+        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]} 
+                           ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+        let result = await this.HereMap.geoCode(fullAddress);
+        result = result.items[0];
+        element.geoCords.lat = result.position.lat;
+        element.geoCords.lng = result.position.lng;
+        delete element['userLocation'];
+      }
+    }
+    
+   
+    this.apiService.postData('drivers', this.driverData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
               this.throwErrors();
             },
             error: () => { },
@@ -298,22 +470,108 @@ export class AddDriverComponent implements OnInit {
     });
   }
 
+  async userAddress(i, item) {
+    let result = await this.HereMap.geoCode(item.address.label);
+    result = result.items[0];
+    
+    this.driverData.address[i]['userLocation'] = result.address.label;
+    this.driverData.address[i].geoCords.lat = result.position.lat;
+    this.driverData.address[i].geoCords.lng = result.position.lng;
+    // this.driverData.address[i].countryID = result.address.countryName;
+    let countryID = await this.fetchCountriesByName(result.address.countryName);
+    this.driverData.address[i].countryID = countryID;
+    this.driverData.address[i].countryName = result.address.countryName;
+
+    let stateID = await this.fetchStatesByName(result.address.state);
+    this.driverData.address[i].stateID = stateID;
+    this.driverData.address[i].stateName = result.address.state;
+
+    let cityID = await this.fetchCitiesByName(result.address.city);
+    this.driverData.address[i].cityID = cityID;
+    this.driverData.address[i].cityName = result.address.city;
+
+    this.driverData.address[i].zipCode = result.address.postalCode;
+    if (result.address.houseNumber === undefined) {
+      result.address.houseNumber = '';
+    }
+    if (result.address.street === undefined) {
+      result.address.street = '';
+    }
+    this.driverData.address[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;
+
+    $('div').removeClass('show-search__result');
+  }
+
+  async fetchCountriesByName(name: string) {
+    let result = await this.apiService.getData(`countries/get/${name}`)
+      .toPromise();
+    if (result.Items.length > 0) {
+      this.getStates(result.Items[0].countryID);
+      return result.Items[0].countryID;
+    }
+    return '';
+  }
+
+  async fetchStatesByName(name: string) {
+    let result = await this.apiService.getData(`states/get/${name}`)
+      .toPromise();
+    if (result.Items.length > 0) {
+      this.getCities(result.Items[0].stateID);
+      return result.Items[0].stateID;
+    }
+    return '';
+  }
+
+  async fetchCitiesByName(name: string) {
+    let result = await this.apiService.getData(`cities/get/${name}`)
+      .toPromise();
+    if (result.Items.length > 0) {
+      return result.Items[0].cityID;
+    }
+    return '';
+  }
+
+  remove(obj, i) {
+    if (obj === 'address') {
+      this.driverData.address.splice(i, 1);
+    } else {
+      this.driverData.documentDetails.splice(i, 1);
+    }
+  }
 
   throwErrors() {
-    this.form.showErrors(this.errors);
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
   }
 
   addDocument() {
     this.driverData.documentDetails.push({
       documentType: '',
       document: '',
+      issuingAuthority: '',
       issuingCountry: '',
       issuingState: '',
       issueDate: '',
       expiryDate: '',
       uploadedDocs: []
-    })
-    console.log(this.driverData)
+    });
   }
 
   deleteInput(i: number) {
@@ -325,9 +583,13 @@ export class AddDriverComponent implements OnInit {
   fetchDriverByID() {
     this.apiService
       .getData(`drivers/${this.driverID}`)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
         result = result.Items[0];
-        console.log(result);
+        this.getImages();
+        this.driverData['driverType'] = result.driverType;
+        this.driverData['employeeId'] = result.employeeId;
+        this.driverData['companyId'] = result.companyId;
+
         this.driverData['driverStatus'] = result.driverStatus;
         this.driverData['userName'] = result.userName;
         this.driverData['firstName'] = result.firstName;
@@ -335,22 +597,30 @@ export class AddDriverComponent implements OnInit {
         this.driverData['citizenship'] = result.citizenship;
         this.driverData['assignedVehicle'] = result.assignedVehicle;
         this.driverData['groupID'] = result.groupID;
+        this.driverProfileSrc = result.driverImage;
         this.driverData['gender'] = result.gender;
         this.driverData['workEmail'] = result.workEmail;
         this.driverData['workPhone'] = result.workPhone;
-        this.driverData.address['addressType'] = result.address.addressType;
-        this.driverData.address['country'] = result.address.country;
-        this.driverData.address['state'] = result.address.state;
-        this.driverData.address['zipCode'] = result.address.zipCode;
-        this.driverData.address['address1'] = result.address.address1;
-        this.driverData.address['address2'] = result.address.address2;
-        this.driverData.documentDetails['documentType'] = result.documentDetails.documentType;
-        this.driverData.documentDetails['document'] = result.documentDetails.document;
-        this.driverData.documentDetails['issuingAuthority'] = result.documentDetails.issuingAuthority;
-        this.driverData.documentDetails['issuingCountry'] = result.documentDetails.issuingCountry;
-        this.driverData.documentDetails['issuingState'] = result.documentDetails.issuingState;
-        this.driverData.documentDetails['issueDate'] = result.documentDetails.issueDate;
-        this.driverData.documentDetails['expiryDate'] = result.documentDetails.expiryDate;
+
+        // this.driverData.address['addressType'] = result.address.addressType;
+        // this.driverData.address['country'] = result.address.country;
+        // this.driverData.address['state'] = result.address.state;
+        // this.driverData.address['zipCode'] = result.address.zipCode;
+        // this.driverData.address['address1'] = result.address.address1;
+        // this.driverData.address['address2'] = result.address.address2;
+        for (let i = 0; i < result.documentDetails.length; i++) {
+          this.newDocuments.push({
+            documentType: result.documentDetails[i].documentType,
+            document: result.documentDetails[i].document,
+            issuingAuthority: result.documentDetails[i].issuingAuthority,
+            issuingCountry: result.documentDetails[i].issuingCountry,
+            issuingState: result.documentDetails[i].issuingState,
+            issueDate: result.documentDetails[i].issueDate,
+            expiryDate: result.documentDetails[i].expiryDate,
+          });
+          this.driverData.documentDetails = this.newDocuments;
+
+        }
         this.driverData.crossBorderDetails['ACI_ID'] = result.crossBorderDetails.ACI_ID;
         this.driverData.crossBorderDetails['ACE_ID'] = result.crossBorderDetails.ACE_ID;
         this.driverData.crossBorderDetails['fast_ID'] = result.crossBorderDetails.fast_ID;
@@ -367,6 +637,7 @@ export class AddDriverComponent implements OnInit {
         this.driverData.paymentDetails['federalTax'] = result.paymentDetails.federalTax;
         this.driverData.paymentDetails['payPeriod'] = result.paymentDetails.payPeriod;
         this.driverData.licenceDetails['CDL_Number'] = result.licenceDetails.CDL_Number;
+        this.driverData.licenceDetails['issuedCountry'] = result.licenceDetails.issuedCountry;
         this.driverData.licenceDetails['issuedState'] = result.licenceDetails.issuedState;
         this.driverData.licenceDetails['licenceExpiry'] = result.licenceDetails.licenceExpiry;
         this.driverData.licenceDetails['WCB'] = result.licenceDetails.WCB;
@@ -389,18 +660,76 @@ export class AddDriverComponent implements OnInit {
         this.driverData.emergencyDetails['email'] = result.emergencyDetails.email;
         this.driverData.emergencyDetails['emergencyAddress'] = result.emergencyDetails.emergencyAddress;
       });
+  }
+
+  updateDriver() {
+    //this.spinner.show(); // loader init
+    this.register();
+    this.hideErrors();
+    this.apiService.postData('drivers', this.driverData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.uploadFiles(); // upload selected files to bucket
+        this.toastr.success('Driver updated successfully');
+        this.router.navigateByUrl('/fleet/drivers/list');
+
+      },
+    });
+  }
 
 
+
+
+  fetchAddress() {
+    this.apiService.getData('addresses')
+      .subscribe((result: any) => {
+    });
+  }
+
+  changePaymentModeForm(value) {
+    if (value === 'Pay Per Mile') {
+      delete this.driverData.paymentDetails['loadPayPercentage'];
+      delete this.driverData.paymentDetails['loadPayPercentageOf'];
+      delete this.driverData.paymentDetails['rate'];
+    } else if (value === 'Percentage') {
+      delete this.driverData.paymentDetails['loadedMiles'];
+      delete this.driverData.paymentDetails['emptyMiles'];
+      delete this.driverData.paymentDetails['rate'];
+    } else {
+      delete this.driverData.paymentDetails['loadPayPercentage'];
+      delete this.driverData.paymentDetails['loadPayPercentageOf'];
+      delete this.driverData.paymentDetails['loadedMiles'];
+      delete this.driverData.paymentDetails['emptyMiles'];
+    }
   }
 
   concatArray(path) {
     this.concatArrayKeys = '';
     for (const i in path) {
-        this.concatArrayKeys += path[i] + '.';
+      this.concatArrayKeys += path[i] + '.';
     }
     this.concatArrayKeys = this.concatArrayKeys.substring(0, this.concatArrayKeys.length - 1);
     return this.concatArrayKeys;
   }
+  
 
   register = async () => {
     try {
@@ -413,14 +742,10 @@ export class AddDriverComponent implements OnInit {
           phone_number: this.phone,
         },
       });
-
-      console.log(res);
     } catch (err) {
       console.log('inside catch block');
       // this.hasError = true;
       // this.Error = err.message || 'Error during login';
     }
-  };
-  
-
+  }
 }

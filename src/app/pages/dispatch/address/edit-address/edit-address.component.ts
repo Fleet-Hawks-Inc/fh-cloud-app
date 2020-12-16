@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {ApiService} from '../../../../services/api.service';
+import {ApiService} from '../../../../services';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ import * as mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment';
 
 
-declare var $: any
+declare var $: any;
 
 @Component({
   selector: 'app-edit-address',
@@ -42,10 +42,10 @@ export class EditAddressComponent implements OnInit {
   states = [];
   cities = [];
   response : any ='';
-  hasError : boolean = false;
-  hasSuccess: boolean = false;
-  Error : string = '';
-  Success : string = '';
+  hasError  = false;
+  hasSuccess = false;
+  Error  = '';
+  Success  = '';
    // MAP BOX Integration
    map: mapboxgl.Map;
    style = 'mapbox://styles/mapbox/streets-v9';

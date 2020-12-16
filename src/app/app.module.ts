@@ -21,6 +21,7 @@ import { MapDashboardComponent } from './entry/map-dashboard/map-dashboard.compo
 import { DashboardComponent } from './entry/dashboard/dashboard.component';
 import { LeftBarComponent } from './entry/left-bar/left-bar.component';
 
+import { PdfAutomationComponent } from './pages/automation/pdf-automation/pdf-automation.component';
 import { NavOpenedDirective } from './directives/nav-opened.directive';
 import { SharedModule } from './shared/shared.module';
 import { ChartsModule } from 'ng2-charts';
@@ -42,8 +43,16 @@ import { NgSelect2Module } from 'ng-select2';
 import {DataTablesModule} from 'angular-datatables';
 import {PreLoadStrategy} from './preload/PreLoadStrategy';
 import { SharedModalComponent } from './shared/shared-modal/shared-modal.component';
-
-
+import {DynamicModalDirective} from './directives/dynamic-modal.directive';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxTagsInputModule } from 'ngx-tags-input';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { AddAccountComponent  } from './pages/onboard/add-account/add-account.component';
+import { ConfirmEqualValidatorDirective } from './directives/confirm-equal-validator.directive';
+import { AddAlertComponent } from './pages/alerts/add-alert/add-alert.component';
+import { AlertDetailComponent } from './pages/alerts/alert-detail/alert-detail.component';
+import { AlertListComponent } from './pages/alerts/alert-list/alert-list.component';
+import { AlertTypeDetailComponent } from './pages/alerts/alert-type-detail/alert-type-detail.component';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -61,6 +70,14 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MapDashboardComponent,
     NavOpenedDirective,
     SharedModalComponent,
+    AddAccountComponent,
+    PdfAutomationComponent,
+    DynamicModalDirective,
+    ConfirmEqualValidatorDirective,
+    AddAlertComponent,
+    AlertDetailComponent,
+    AlertListComponent,
+    AlertTypeDetailComponent
   ],
   imports: [
     AmplifyAngularModule,
@@ -76,6 +93,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MatProgressBarModule,
     ChartsModule,
     SharedModule,
+    TooltipModule.forRoot(),
     ToastrModule.forRoot(), // ToastrModule added
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     NgMultiSelectDropDownModule.forRoot(),
@@ -83,6 +101,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NgxSpinnerModule,
     NgSelect2Module,
     DataTablesModule,
+    NgxTagsInputModule,
+    NgSelectModule
   ],
   providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy],
   bootstrap: [AppComponent],

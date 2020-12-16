@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
-
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-assets',
@@ -17,6 +17,7 @@ declare var $: any;
   styleUrls: ['./add-assets.component.css'],
 })
 export class AddAssetsComponent implements OnInit {
+  allAssetTypes: any;
   public assetID;
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
@@ -46,7 +47,7 @@ export class AddAssetsComponent implements OnInit {
   private countries;
   
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
+  constructor(private apiService: ApiService, private httpClient: HttpClient, private awsUS: AwsUploadService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
               private toastr: ToastrService, private spinner: NgxSpinnerService) {
       this.selectedFileNames = new Map<any, any>();
@@ -56,10 +57,11 @@ export class AddAssetsComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   ngOnInit() {
-
+   
     this.fetchManufactuer();
     this.fetchVendors();
     this.fetchCountries(); // fetch countries
+    this.fetchAllAssetTypes();
 
     this.assetID = this.route.snapshot.params['assetID'];
     if (this.assetID) {
@@ -73,6 +75,15 @@ export class AddAssetsComponent implements OnInit {
     });
   }
 
+  /*
+   * Get all assets types from trailers.json file
+   */
+
+  fetchAllAssetTypes() {
+    this.httpClient.get("assets/trailers.json").subscribe(data =>{
+      this.allAssetTypes = data;
+    })
+  }
   /*
    * Get all manufacturers from api
    */
@@ -110,7 +121,7 @@ export class AddAssetsComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    console.log('this.assetsData', this.assetsData);
+    this.hideErrors();
     this.apiService.postData('assets', this.assetsData).subscribe({
       complete: () => { },
       error: (err) => {
@@ -120,7 +131,6 @@ export class AddAssetsComponent implements OnInit {
               const path = val.path;
               // We Can Use This Method
               const key = val.message.match(/"([^']+)"/)[1];
-              console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[key] = val.message;
             })
@@ -144,7 +154,25 @@ export class AddAssetsComponent implements OnInit {
   }
 
   throwErrors() {
-    this.form.showErrors(this.errors);
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
   }
 
   /*
@@ -156,7 +184,6 @@ export class AddAssetsComponent implements OnInit {
       .getData('assets/' + this.assetID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('result', result);
         this.assetsData['assetID'] = this.assetID;
         this.assetsData['assetIdentification'] = result.assetIdentification;
         this.assetsData['VIN'] = result.VIN;
@@ -207,7 +234,6 @@ export class AddAssetsComponent implements OnInit {
               const path = val.path;
               // We Can Use This Method
               const key = val.message.match(/'([^']+)'/)[1];
-              console.log(key);
               val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
@@ -224,7 +250,7 @@ export class AddAssetsComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success('Asset updated successfully');
-        this.router.navigateByUrl('/fleet/assets/Assets-List');
+        this.router.navigateByUrl('/fleet/assets/list');
         this.Success = '';
       },
     });
@@ -285,8 +311,6 @@ export class AddAssetsComponent implements OnInit {
     this.apiService.getData('states/country/' + countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
-        this.spinner.hide(); // loader hide
-        console.log(this.states)
       });
   }
 }

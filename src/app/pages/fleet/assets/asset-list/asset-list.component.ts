@@ -2,13 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { HereMapService } from '../../../../services/here-map.service';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-
+import { HereMapService } from '../../../../services';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { HttpClient } from '@angular/common/http';
 declare var $: any;
 
 @Component({
@@ -17,18 +15,20 @@ declare var $: any;
   styleUrls: ['./asset-list.component.css'],
 })
 export class AssetListComponent implements OnInit {
+  allAssetTypes: any;
+  assetTypesObects: any = {};
   title = 'Assets List';
   mapView: boolean = false ;
   listView: boolean = true;
   visible = true;
   allData = [];
-  refers = [];
-  drybox = [];
+  autoCarrier = [];
+  beverageRack = [];
   flatbed = [];
-  curtainSlide = [];
-  autoHauler = [];
-  dumpTipper = [];
-  interModal = [];
+  controlledTemp = [];
+  gondola = [];
+  hopper = [];
+  horseTrailer = [];
   liveStock = [];
   lowboy = [];
   stake = [];
@@ -46,7 +46,7 @@ export class AssetListComponent implements OnInit {
   flatbedOptions: any = {};
   curtainOptions: any = {};
   closeResult = '';
-  
+
   response: any = '';
   hasError = false;
   hasSuccess = false;
@@ -56,28 +56,54 @@ export class AssetListComponent implements OnInit {
   message: any;
   dtTrigger = new Subject();
 
+  suggestedAssets = [];
+  assetID = '';
+  currentStatus = '';
+  assetIdentification = '';
+
   constructor(
     private apiService: ApiService,
     private router: Router,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private modalService: NgbModal,
+    private httpClient: HttpClient,
     private hereMap: HereMapService) {}
 
   ngOnInit() {
       this.dataTableOptions();
       this.fetchAssets();
-      $(document).ready(() => {
-        setTimeout(() => {
-          $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
-        }, 2000);
-        
-      });
+      this.fetchAllAssetTypes();
+      // $(document).ready(() => {
+      //   setTimeout(() => {
+      //     $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      //   }, 2000);
+
+      // });
   }
 
   ngOnDestroy = (): void => {
     // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();
+  }
+
+
+  getSuggestions(value) {
+    this.apiService
+      .getData(`assets/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedAssets = result.Items;
+        if(this.suggestedAssets.length == 0){
+          this.assetID = '';
+        }
+      });
+  }
+
+  setAsset(assetID, assetIdentification) {
+    this.assetIdentification = assetIdentification;
+    this.assetID = assetID;
+
+    this.suggestedAssets = [];
   }
 
   someClickHandler(info: any): void {
@@ -120,8 +146,14 @@ export class AssetListComponent implements OnInit {
         {
             targets: 8,
             className: 'noVis'
-        }
+        },
+        
     ],
+    "fnDrawCallback": function(oSettings) {
+        if ($('.dataTables_wrapper tbody tr').length <= 10) {
+            $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
+        }
+    }
     };
 
     this.reeferOptions = { // Reefer list options
@@ -164,7 +196,11 @@ export class AssetListComponent implements OnInit {
             className: 'noVis'
         }
     ],
-
+    "fnDrawCallback": function(oSettings) {
+        if ($('.dataTables_wrapper tbody tr').length <= 10) {
+            $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
+        }
+    }
     };
 
     this.dryboxOptions = this.flatbedOptions = this.curtainOptions = { // Reefer list options
@@ -203,98 +239,94 @@ export class AssetListComponent implements OnInit {
               className: 'noVis'
           }
       ],
-
+      "fnDrawCallback": function(oSettings) {
+        if ($('.dataTables_wrapper tbody tr').length <= 10) {
+            $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
+        }
+    }
     };
   }
 
   fetchAssets = () => {
+    // this.allData = [];
+    // this.autoCarrier = [];
+    // this.beverageRack = [];
+    // this.flatbed = [];
+    // this.controlledTemp = [];
+    // this.gondola = [];
+    // this.hopper = [];
+    // this.horseTrailer = [];
+    // this.liveStock = [];
+    // this.lowboy = [];
+    // this.stake = [];
+    // this.stepDeck = [];
+    // this.tanker = [];
     this.spinner.show(); // loader init
-    this.apiService.getData('assets').subscribe({
+    this.apiService.getData(`assets?assetID=${this.assetID}&status=${this.currentStatus}`).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        console.log(result)
         this.spinner.hide(); // loader hide
         for (let i = 0; i < result.Items.length; i++) {
           if (result.Items[i].isDeleted === 0) {
             this.allData.push(result.Items[i]);
-            if (result.Items[i].assetDetails.assetType === 'Reefer') {
-              this.refers.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Drybox') {
-              this.drybox.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Flatbed') {
-              this.flatbed.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Curtain Side') {
-              this.curtainSlide.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Auto Hauler') {
-              this.autoHauler.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Dump/Tipper') {
-              this.dumpTipper.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Intermodal Chassis') {
-              this.interModal.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Livestock') {
-              this.liveStock.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Lowboy') {
-              this.lowboy.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Stake') {
-              this.stake.push(result.Items[i]);
-            } else if (result.Items[i].assetDetails.assetType === 'Step Deck') {
-              this.stepDeck.push(result.Items[i]);
-            } else {
-              this.tanker.push(result.Items[i]);
-            }
+            // if (result.Items[i].assetDetails.assetType === 'TC') {
+            //   this.autoCarrier.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'BI') {
+            //   this.beverageRack.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'FT' || result.Items[i].assetDetails.assetType === 'FR' ||
+            //            result.Items[i].assetDetails.assetType === 'FH' || result.Items[i].assetDetails.assetType === 'FN') {
+            //   this.flatbed.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'RT' || result.Items[i].assetDetails.assetType === 'TW') {
+            //   this.controlledTemp.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'RG' || result.Items[i].assetDetails.assetType === 'RO') {
+            //   this.gondola.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'HC' || result.Items[i].assetDetails.assetType === 'HP' ||
+            //           result.Items[i].assetDetails.assetType === 'HO') {
+            //   this.hopper.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'HE') {
+            //   this.horseTrailer.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'Livestock') {
+            //   this.liveStock.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'Lowboy') {
+            //   this.lowboy.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'Stake') {
+            //   this.stake.push(result.Items[i]);
+            // } else if (result.Items[i].assetDetails.assetType === 'Step Deck') {
+            //   this.stepDeck.push(result.Items[i]);
+            // } else {
+            //   this.tanker.push(result.Items[i]);
+            // }
           }
         }
       },
     });
   }
 
+  /*
+   * Get all assets types from trailers.json file
+   */
+
+  fetchAllAssetTypes() {
+    this.httpClient.get("assets/trailers.json").subscribe((data: any) =>{
+      this.allAssetTypes = data;
+      this.assetTypesObects =  data.reduce( (a: any, b: any) => {
+        return a[b['code']] = b['description'], a;
+    }, {});
+    })
+  }
+
   deactivateAsset(value, assetID) {
-    if (confirm("Are you sure you want to delete?") === true) {
+    if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
       .getData(`assets/isDeleted/${assetID}/${value}`)
       .subscribe((result: any) => {
-        console.log('result', result);
         this.fetchAssets();
       });
     }
   }
 
-  deleteAsset() {
-    this.hasError = false;
-    this.hasSuccess = false;
-    // this.apiService.putData('assets', this.assetsData).subscribe({
-    //   complete: () => { },
-    //   error: (err) => {
-    //     from(err.error)
-    //       .pipe(
-    //         map((val: any) => {
-    //           const path = val.path;
-    //           // We Can Use This Method
-    //           const key = val.message.match(/'([^']+)'/)[1];
-    //           console.log(key);
-    //           val.message = val.message.replace(/'.*'/, 'This Field');
-    //           // this.errors[key] = val.message;
-    //         })
-    //       )
-    //       .subscribe({
-    //         complete: () => {
-    //           // this.throwErrors();
-    //         },
-    //         error: () => { },
-    //         next: () => { },
-    //       });
-    //   },
-    //   next: (res) => {
-    //     this.response = res;
-    //     this.hasSuccess = true;
-    //     this.toastr.success('Asset updated successfully');
-    //     this.router.navigateByUrl('/fleet/assets/Assets-List');
-    //     this.Success = '';
-    //   },
-    // });
-  }
-  
+
   editAsset = () => {
     if (this.assetCheckCount === 1) {
       this.router.navigateByUrl('/fleet/assets/edit/' + this.selectedAssetID);
@@ -329,7 +361,6 @@ export class AssetListComponent implements OnInit {
   }
 
   uncheckCheckbox = (data, tableID) => {
-    // console.log(tableID, data.length )
     if (data.length > 0) {
       if (tableID === '#DataTables_Table_0_wrapper') {
         console.log('if');
@@ -337,7 +368,6 @@ export class AssetListComponent implements OnInit {
           $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons').show();
         }, 2000);
       } else {
-        console.log('else');
         setTimeout(() => {
           // $('.page-buttons').find('.dt-buttons').hide();
           $(tableID).find('.dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons').show();
@@ -346,13 +376,13 @@ export class AssetListComponent implements OnInit {
     } else {
       $('.page-buttons').find('.dt-buttons').hide();
     }
-    
+
     // arr.forEach(item => {
     //   item.checked = false;
     // });
     // this.headCheckbox = false;
   }
-  
+
 
   // Count Checkboxes
   // checkboxCount = (arr) => {

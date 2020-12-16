@@ -14,42 +14,52 @@
           <div class="row px-2" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2">
               <div class="input-group input-group-md mb-3">
-                <select data-plugin-selectTwo class="form-control populate">
-                  <optgroup label="">
-                    <option value="1">Vehicle 1</option>
-                    <option value="2">Vehicle 2</option>
-                    <option value="2">Vehicle 3</option>
-                    <option value="2">Vehicle 4</option>
-                    <option value="2">Vehicle 5</option>
-                  </optgroup>
-                </select>
+                <input
+                  type="text"
+                  autocomplete="off"
+                  name="vehicleIdentification"
+                  [(ngModel)]="vehicleIdentification"
+                  class="form-control"
+                  (input)="getSuggestions($event.target.value)"
+                />
               </div>
-            </div>
-            <div class="col-md-2 col-lg-2">
-              <div class="btn-group flex-wrap" style="width: 240px">
-                <button
-                  type="button"
-                  class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle"
-                  data-toggle="dropdown"
-                >
-                  Search by Status <span class="caret"></span>
-                </button>
-                <div class="dropdown-menu" role="menu">
-                  <a class="dropdown-item text-1" href="#">All</a>
-                  <a class="dropdown-item text-1" href="#">Active</a>
-                  <a class="dropdown-item text-1" href="#">Inactive</a>
-                  <a class="dropdown-item text-1" href="#">Sold</a>
-                  <a class="dropdown-item text-1" href="#">Out of Service</a>
-                </div>
+              <div
+                *ngFor="let suggestedVehicle of suggestedVehicles"
+                style="cursor: pointer"
+                (click)="
+                  setVehicle(
+                    suggestedVehicle.vehicleID,
+                    suggestedVehicle.vehicleIdentification
+                  )
+                "
+              >
+                {{ suggestedVehicle.vehicleIdentification }}
               </div>
             </div>
 
+            <div class="col-md-2 col-lg-2">
+              <select
+                data-plugin-selectTwo
+                [(ngModel)]="currentStatus"
+                name="currentStatus"
+                class="form-control populate"
+              >
+                <optgroup label="Select Status">
+                  <option value="">All</option>
+                  <option value="active">Active</option>
+                  <option value="inActive">Inactive</option>
+                  <option value="sold">Sold</option>
+                  <option value="outOfService">Out of Service</option>
+                </optgroup>
+              </select>
+            </div>
+
             <div class="col-md-1 col-lg-1">
-              <button type="submit" class="btn btn-sm btn-success">
+              <button (click)="fetchVehicles()" class="btn btn-sm btn-success">
                 Search
               </button>
             </div>
-            <div class="col-md-7 col-lg-7 text-right pr-3">
+            <div class="col-md-7 col-lg-7 text-right pr-3 page-buttons">
               <button
                 type="button"
                 id="map_view_btn"
@@ -83,14 +93,9 @@
                     top: 0px;
                     left: 0px;
                     transform: translate3d(0px, 38px, 0px);
-                  "
-                >
-                  <a class="dropdown-item text-1" href="edit-vehicle.php"
-                    >Edit</a
-                  >
-                  <a class="dropdown-item text-1" href="">Delete</a>
-                  <a class="dropdown-item text-1" href="">Import</a>
-                  <a class="dropdown-item text-1" href="">Export</a>
+                  ">
+                  <a class="dropdown-item text-1" [routerLink]="">Import</a>
+                  <a class="dropdown-item text-1" [routerLink]="">Export</a>
                 </div>
               </div>
               <a
@@ -108,9 +113,7 @@
           <div class="col">
             <section class="card">
               <div class="card-body">
-                <table
-                  class="table table-bordered table-responsive-lg table-striped mb-0 dataTable no-footer cus-datatable"
-                >
+                <table  class="table table-bordered table-hover table-striped mb-0"  [dtOptions]="allOptions" datatable>
                   <thead>
                     <tr>
                       <th>VIN</th>
@@ -129,22 +132,91 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}"
-                      *ngFor="let vehicle of vehicles; let i = index"
-                    >
-                      <td>{{ vehicle.vehicleIdentification }}</td>
-                      <td>Vehicle Name 1</td>
-                      <td>Box Truck</td>
-                      <td>Ford</td>
-                      <td>Fh-450</td>
-                      <td>Ontario</td>
-                      <td>111</td>
-                      <td>VH-1230</td>
-                      <td>Diesel</td>
-                      <td>Active</td>
-                      <td>Short Haul</td>
-                      <td>Rented</td>
+                    <tr *ngFor="let vehicle of vehicles; let i = index">
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{ vehicle.VIN }}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{ vehicle.vehicleIdentification }}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                      {{ vehicle.vehicleType }}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{vehicleManufacturersList[vehicle.manufacturerID]}}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                      {{vehicleModelList[vehicle.modelID]}}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        Ontario
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        111
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{vehicle.plateNumber}}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{vehicle.fluid.fuelType}}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{vehicle.currentStatus}}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{groupsList[vehicle.groupID]}}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{vehicle.ownership}}
+                      </td>
                       <td>
                         <div class="dropdown dropright">
                           <button
@@ -172,7 +244,7 @@
                             <a
                               class="dropdown-item"
                               href="javascript:;"
-                              (click)="deleteVehiclevehicle(vehicle.vehicleID)"
+                              (click)="deleteVehicle(vehicle.vehicleID)"
                               >Delete</a
                             >
                           </div>
@@ -187,97 +259,5 @@
         </div>
       </div>
     </section>
-
-    <!-- <section role="main" class="content-body">
-      <header class="page-header">
-        <h2>{{ title }}</h2>
-
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a routerLink="/">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li>
-              <span>{{ title }}</span>
-            </li>
-          </ol>
-        </div>
-      </header>
-
-      <section class="card mb-4">
-        <div class="card-body">
-          <h2 class="card-title mt-3 pull-left">{{ title }}</h2>
-          <div class="pull-right">
-            <div class="btn-group flex-wrap">
-              <button
-                type="button"
-                class="mb-1 mt-1 mr-1 btn btn-default dropdown-toggle"
-                data-toggle="dropdown"
-              >
-                <i class="fas fa-ellipsis-v"></i> Action
-                <span class="caret"></span>
-              </button>
-              <div class="dropdown-menu" role="menu">
-                <a class="dropdown-item text-1" href="#">Action</a>
-                <a class="dropdown-item text-1" href="#">Another action</a>
-                <a class="dropdown-item text-1" href="#">Something else here</a>
-                <a class="dropdown-item text-1" href="#">Separated link</a>
-              </div>
-            </div>
-
-            <a routerLink="/fleet/vehicles/Add-Vehicle-New" class="mb-1 mt-1 mr-1 btn btn-success"
-              ><i class="fas fa-plus"></i> Add Vehicle</a
-            >
-          </div>
-        </div>
-      </section>
-
-      <div class="row">
-        <div class="col">
-          <section class="card">
-            <header class="card-header">
-              <h2 class="card-title">Vehicle List</h2>
-            </header>
-            <div class="card-body">
-              <table
-                class="table table-bordered table-striped mb-0"
-                #FhDataTable id="datatable-default"
-              >
-                <thead>
-                  <tr>
-                    <th>Vehicle Name</th>
-                    <th>VIN</th>
-                    <th>Ownership</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let vehicle of vehicles">
-                    <td>{{ vehicle.vehicleName }}</td>
-                    <td>{{ vehicle.VIN }}</td>
-                    <td>{{ vehicle.ownership }}</td>
-                    <td>
-                      <a routerLink="/fleet/vehicles/Edit-Vehicle-New/{{ vehicle.vehicleID }}"
-                        >Edit</a
-                      >
-                    </td>
-                    <td>
-                      <a
-                        [routerLink]=""
-                        (click)="deleteVehicle(vehicle.vehicleID)"
-                        >Delete</a
-                      >
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </div>
-      </div>
-    </section> -->
   </div>
 </section>

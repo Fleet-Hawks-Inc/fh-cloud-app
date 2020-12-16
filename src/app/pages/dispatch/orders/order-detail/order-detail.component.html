@@ -1,0 +1,1132 @@
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+        <section role="main" class="content-body p-0">
+            <header class="page-header">
+                <div class="row pr-5 " style="padding-top:10px;">
+                   <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                      Order LTL- 006
+                   </div>
+                   <div class="col-md-8  col-lg-8 text-right pr-4">
+                   <a href="all-orders.php" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Orders</a>
+                      <div class="btn-group flex-wrap">
+                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                            aria-expanded="false">Actions<span class="caret"></span></button>
+                         <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                            <a class="dropdown-item text-1" href="#">Edit</a>
+                            <a class="dropdown-item text-1" href="#">Print</a>
+                            <a class="dropdown-item text-1" href="#">Email</a>
+                            <a class="dropdown-item text-1" href="#">Fax</a>
+                            <a class="dropdown-item text-1" href="">Cancel</a>
+                         </div>
+                      </div>
+                      <!-- <a href="#templateSelectionModal" class="modal-with-form btn btn-success btn-sm"><i class="fas fa-plus"></i>
+                         Create Invoice</a> -->
+ 
+                      <a href="new-load.php" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Order</a>
+                   </div>
+                </div>
+             </header>
+             <section class="card mb-4">
+                <div class="card-body">
+                   <div class="col-lg-12">
+                      <div class="">
+                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                            <li class="nav-item active">
+                               <a class="nav-link ml-0 pl-2 pr-2 active" href="#summary" data-toggle="tab"><i
+                                     class="fas fa-truck-moving"></i> Order Summary</a>
+                            </li>
+                            <li class="nav-item">
+                               <a class="nav-link pl-2 pr-2" href="#inv" data-toggle="tab"><i
+                                     class="fas fa-map-marked"></i> Address</a>
+                            </li>
+                            <li class="nav-item">
+                               <a class="nav-link pl-2 pr-2" href="#pay" data-toggle="tab"><i
+                                     class="fas fa-user-cog"></i> Billing</a>
+                            </li>
+ 
+                            <!-- <li class="nav-item">
+                               <a class="nav-link pl-2 pr-2" href="#bol" data-toggle="tab"><i
+                                     class="fas fa-dollar-sign"></i> Customs Broker</a>
+                            </li> -->
+ 
+                            <!-- <li class="nav-item">
+                               <a class="nav-link pl-2 pr-2" href="#doc" data-toggle="tab"><i
+                                     class="fas fa-dollar-sign"></i> Other Charges</a>
+                            </li> -->
+                            <!-- <li class="nav-item">
+                               <a class="nav-link pl-2 pr-2" href="#equipment" data-toggle="tab"><i
+                                     class="fas fa-truck-moving"></i> Equipment</a>
+                            </li> -->
+                            <li class="nav-item">
+                               <a class="nav-link pl-2 pr-2" href="#attachments" data-toggle="tab"><i
+                                     class="fas fa-file"></i> Attachments</a>
+                            </li>
+ 
+                         </ul>
+                         <div class="tab-content" style="box-shadow:none; border:none;">
+                            <div id="summary" class="tab-pane active">
+ 
+                               <div class="row">
+                                  <!-- Order Summary-->
+                                  <div class="col-xl-12 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                           <div class="widgetload">
+ 
+                                              <div class="row">
+                                  <div class="col-xl-4 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                         <div class="widgetload"  *ngFor="let item of orderData">
+                                             <div class="widgettbload">
+                                              <span class="pull-right text-3 mt-2 text-dark">
+                                              </span>
+                                                <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i class="fas fa-box"></i> LTL-006</h2>
+                                             </div>
+                     
+                                             <div class="widgetlinfo">
+                     
+                                              <p class="mb-0 text-4 font-weight-semibold text-dark">{{item.customerID}}</p>
+                                              <p class="mb-0 mt-1 text-4 font-weight-semibold text-dark">{{item.email}}</p>
+                                              <p class="mb-0 mt-1 text-4 text-dark">{{item.phone}}</p>
+ 
+ 
+                                              <!-- <p class="mb-0 text-dark"><strong>Account#</strong> <span class="pull-right">787355464</span></p> -->
+                                              <p class="mb-0 text-dark"><strong>Reference</strong> <span class="pull-right">{{item.reference}}</span></p>
+                                              <p class="mb-0 text-dark"><strong>Load Creation Date/Time</strong> <span class="pull-right">{{item.creationDate}} {{item.creationTime.hour}}:{{item.creationTime.minute}}:{{item.creationTime.second}} </span></p>
+                                              <p class="mb-0 text-dark"><strong>C-TPAT</strong> <span class="pull-right">{{item.ctpat}}</span></p>
+                                              <p class="mb-0 text-dark"><strong>CSA ?</strong> <span class="pull-right">{{item.csa}}</span></p>
+ 
+                                             </div>
+                                         </div>
+                                        </div>
+                                     </div>
+                                  </div>
+ 
+                                  <div class="col-xl-4 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                         <div class="widgetload">
+                                             <div class="widgettbload">
+                                              <span class="pull-right text-3 mt-2 text-dark">
+                                                 
+                                              </span>
+                                                <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i class="fas fa-truck-moving"></i> Trip</h2>
+                                             </div>
+                     
+                                             <div class="widgetlinfo">
+                     
+                                              
+                                              <p class="mb-0 text-dark"><strong>Trip</strong> <span class="pull-right">TR-2250</span></p>
+                                              <p class="mb-0 text-dark"><strong>Status</strong> <span class="pull-right">Assigned</span></p>
+                                              
+                                              <div class="disbtmpart w100">
+                                                 <div class="divcenter">
+                                                    <p class="mb-1"><a href="trip-detail.php" class="mb-1 mt-1 mr-1 btn btn-xs btn-dark">Go To Trip Summary</a></p>
+                                                 </div>
+                                              </div>
+ 
+                                             </div>
+                                         </div>
+                                        </div>
+                                     </div>
+                                  </div>
+ 
+                                  <div class="col-xl-4 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                         <div class="widgetload">
+                                             <div class="widgettbload">
+                                              <span class="pull-right text-3 mt-2 text-dark">
+                                                 
+                                              </span>
+                                                <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i class="fas fa-file-invoice-dollar"></i> Invoice</h2>
+                                             </div>
+                     
+                                             <div class="widgetlinfo">
+                     
+                                              <!--
+                                              <p class="mb-0 text-dark"><strong>Dispatch</strong> <span class="pull-right">DIS-2250</span></p>
+                                              <p class="mb-0 text-dark"><strong>Status</strong> <span class="pull-right">Assigned</span></p>
+                                              -->
+                                              <p class="text-center pt-5 text-dark font-weight-semibold">No Settlement added for this dispatch</p>
+ 
+                                              <div class="disbtmpart w100">
+                                                 <div class="divcenter">
+                                                    <p class="mb-1"><a data-toggle="modal" data-target="#templateSelectionModal" href="javascript:;" class="mb-1 mt-1 mr-1 modal-with-form btn btn-xs btn-dark">Create Invoice</a></p>
+                                                 </div>
+                                              </div>
+ 
+                                             </div>
+                                         </div>
+                                        </div>
+                                     </div>
+                                  </div>
+ 
+ 
+                                  <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                         <div class="widgetload">
+                                             <div class="widgettbload">
+                                              <span class="pull-right text-3 mt-2 text-dark">
+                                              </span>
+                                                <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Shipper</h2>
+                                             </div>
+                     
+                                             <div class="widgetlinfo" *ngFor="let item of shipperData">
+                                              <div class="col-lg-2 pull-left">
+                                                 <img src="assets/img/icon-load.png" class="img-fluid" alt="shipper">
+                                              </div>
+                                              <div class="col-lg-10 pull-left">
+                                                 <p class="mb-0 text-dark"><strong>{{item.shipperName}}</strong></p>
+                                              <p class="mb-0 text-dark">{{item.pickupLocation}}</p>
+                                              <p class="mb-0 text-dark"><strong>Pickup Date/Time:</strong>  {{item.locationDateTime}}</p>
+                                              <p class="mb-0 text-dark"><strong>Contact Phone:</strong>   {{item.phone}}</p>
+                                              <p class="mb-0 text-dark"><strong>Pick Up Instructions:</strong> {{item.pickupInstruction}}</p>
+                                              <p class="mb-0 text-dark"><strong>BOL:</strong> {{item.BOL}}</p>
+                                              </div>
+ 
+                                             
+ 
+                                             </div>
+                                         </div>
+                                        </div>
+                                     </div>
+                                  </div>
+ 
+ 
+                                  <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                         <div class="widgetload">
+                                             <div class="widgettbload">
+                                              <span class="pull-right text-3 mt-2 text-dark">
+                                              </span>
+                                                <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Consignee</h2>
+                                             </div>
+                     
+                                             <div class="widgetlinfo"  *ngFor="let item of consineeData">
+                                              <div class="col-lg-2 pull-left">
+                                                 <img src="assets/img/icon-unload.png" class="img-fluid" alt="shipper">
+                                              </div>
+                                              <div class="col-lg-10 pull-left">
+                                                 <p class="mb-0 text-dark"><strong>{{item.receiverName}}</strong></p>
+                                              <p class="mb-0 text-dark">{{item.dropOffLocation}}</p>
+                                              <p class="mb-0 text-dark"><strong>Delivery Date/Time:</strong>   {{item.locationDateTime}}</p>
+                                              <p class="mb-0 text-dark"><strong>Contact Phone:</strong>   {{item.phone}}</p>
+                                              <p class="mb-0 text-dark"><strong>Delivery Instructions:</strong> {{item.dropOffInstruction}}</p>
+                                              
+                                              </div>
+ 
+                                             
+ 
+                                             </div>
+                                         </div>
+                                        </div>
+                                     </div>
+                                  </div>
+ 
+                                  <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                         <div class="widgetload">
+                                             <div class="widgettbload">
+                                              <span class="pull-right text-3 mt-2 text-dark">
+                                              </span>
+                                                <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Freight Details</h2>
+                                             </div>
+                     
+                                             <div class="widgetlinfo">
+                                              <div class="col-lg-2 pull-left">
+                                                 <img src="assets/img/icon-freight.png" class="img-fluid" alt="shipper">
+                                              </div>
+                                              <div class="col-lg-10 pull-left">
+                                              
+                                              <p class="mb-0 text-dark"><strong>Commodity:</strong> Rubber Balls,Iron Rods</p>
+                                              <p class="mb-0 text-dark"><strong>Weight:</strong> 25000.00 lbs</p>
+                                              <p class="mb-0 text-dark"><strong>Qty:</strong> - 3000 piece</p>
+                                              <p class="mb-0 text-dark"><strong>L x W x H:</strong> </p>
+                                              <p class="mb-0 text-dark"><strong>Declared Value:</strong> $20,000.00</p>
+                                              <p class="mb-0 text-dark"><strong>Load Type:</strong> - LTL</p>
+                                              <p class="mb-0 text-dark"><strong>Trailer Type:</strong> VAN</p>
+                                              </div>
+ 
+                                             
+ 
+                                             </div>
+                                         </div>
+                                        </div>
+                                     </div>
+                                  </div>
+ 
+ 
+                                  <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                         <div class="widgetload">
+                                             <div class="widgettbload">
+                                              <span class="pull-right text-3 mt-2 text-dark">
+                                              </span>
+                                                <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Charges</h2>
+                                             </div>
+                     
+                                             <div class="widgetlinfo">
+                                              <div class="col-lg-2 pull-left">
+                                                 <img src="assets/img/icon-cur.png" class="img-fluid" alt="shipper">
+                                              </div>
+                                              <div class="col-lg-10 pull-left">
+                                                 <p class="mb-0 text-dark">Freight Fee <span class="pull-right">$250.00</span></p>
+                                                 <p class="mb-0 text-dark">Fuel Surcharge <span class="pull-right">$50.00</span></p>
+                                                 <p class="mb-0 text-dark">Accessorial Amount <span class="pull-right">$0.00</span></p>
+                                                 <p class="mb-0 text-dark">Accessorial Deduction Amount <span class="pull-right">$0.00</span></p>
+                                                 <p class="mb-0 text-dark">Discount Amount <span class="pull-right">$0.00</span></p>
+                                                 <p class="mb-0 text-dark">Tax Amount <span class="pull-right">$50.00</span></p>
+                                                 <p class="mb-0 text-dark bordtopdas"><strong>Total Charges</strong> <span class="pull-right">$250.00</span></p>
+                                                 <p class="mb-0 text-dark bordtopdas"><strong>Advance Received</strong> <span class="pull-right">$60.00</span></p> 
+                                                 <p class="mb-0 text-dark bordtopdas"><strong>Balance</strong> <span class="pull-right">$240.00</span></p>
+                                              </div>
+ 
+                                             
+ 
+                                             </div>
+                                         </div>
+                                        </div>
+                                     </div>
+                                  </div>
+ 
+ 
+                                  <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                         <div class="widgetload">
+                                             <div class="widgettbload">
+                                              <span class="pull-right text-3 mt-2 text-dark">
+                                              </span>
+                                                <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Load Advance</h2>
+                                             </div>
+                     
+                                             <div class="widgetlinfo">
+                                              <!-- <button type="button" class="mb-1 mt-1 mr-1 btn-sm btn btn-default"><i class="fas fa-edit"></i> Receive Advance</button> -->
+ 
+                                              <table class="table table-responsive-lg table-bordered table-striped table-sm mb-0">
+                                                 <thead>
+                                                    <tr class="bgcol2">
+                                                       <th>Receipt Number</th>
+                                                       <th>Payment Date</th>
+                                                       <th class="">Payment Mode</th>
+                                                       <th class="">Reference</th>
+                                                       <th class="">Amount</th>
+                                                       <!-- <th class="">Action</th> -->
+                                                    </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                    <tr>
+                                                       <td class="loadid"><a href="#">RCP013676000001</a></td>
+                                                       <td>5/28/2020</td>
+                                                       <td>Check</td>
+                                                       <td>-</td>
+                                                       <td>$50.00</td>
+                                                       <!-- <td><div class="btn-group flex-wrap">
+                                                          <button type="button" class="mb-1 mt-1 mr-1 btn-sm btn btn-default dropdown-toggle" data-toggle="dropdown">Option <span class="caret"></span></button>
+                                                          <div class="dropdown-menu" role="menu">
+                                                             <a class="dropdown-item text-1" href="#">View</a>
+                                                             <a class="dropdown-item text-1" href="#">Edit</a>
+                                                             <a class="dropdown-item text-1" href="#">Print</a>
+                                                             <a class="dropdown-item text-1" href="#">Void</a>
+                                                          </div>
+                                                       </div></td> -->
+                                                    </tr>
+                                                    <!-- <tr>
+                                                       <td class="loadid"><a href="#">RCP013676000002</a></td>
+                                                       <td>5/29/2020</td>
+                                                       <td>Check</td>
+                                                       <td>-</td>
+                                                       <td>$10.00</td>
+                                                       <td><div class="btn-group flex-wrap">
+                                                          <button type="button" class="mb-1 mt-1 mr-1 btn-sm btn btn-default dropdown-toggle" data-toggle="dropdown">Option <span class="caret"></span></button>
+                                                          <div class="dropdown-menu" role="menu">
+                                                             <a class="dropdown-item text-1" href="#">View</a>
+                                                             <a class="dropdown-item text-1" href="#">Edit</a>
+                                                             <a class="dropdown-item text-1" href="#">Print</a>
+                                                             <a class="dropdown-item text-1" href="#">Void</a>
+                                                          </div>
+                                                       </div></td>
+                                                    </tr> -->
+                                                   
+                                                 </tbody>
+                                              </table>
+ 
+                                              
+ 
+                                             </div>
+                                         </div>
+                                        </div>
+                                     </div>
+                                  </div>
+ 
+ 
+                                  <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                         <div class="widgetload">
+                                             <div class="widgettbload">
+                                              <span class="pull-right text-3 mt-2 text-dark">
+                                              </span>
+                                                <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Miles for the Load is entered using: Google Maps</h2>
+                                             </div>
+                     
+                                             <div class="widgetlinfo">
+                                              <!-- <button type="button" class="mb-1 mt-1 mr-1 btn-sm btn btn-default"><i class="fas fa-edit"></i> Change Route</button> -->
+ 
+                                              <table class="table table-responsive-lg table-bordered table-striped table-sm mb-0">
+                                                 <thead>
+                                                    <tr class="bgcol2">
+                                                       <th>From</th>
+                                                       <th>To</th>
+                                                       <th class="">Distance</th>
+                                                    </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                    <tr>
+                                                       <td>Regina, SK</td>
+                                                       <td>Winnipeg, MB</td>
+                                                       <td>578 KM</td>
+                                                    </tr>
+                                                 </tbody>
+                                              </table>
+ 
+                                              <p class="mb-0 mt-3 text-dark text-right"><strong>Total Miles:</strong> <span class="">359 Miles</span></p>
+ 
+                                              
+ 
+                                             </div>
+                                         </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                 
+                                
+ 
+                                     </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                
+                                 
+                               </div>
+                            </div>
+ 
+                            <div id="inv" class="tab-pane">
+                               <div class="row">
+                                  <div class="col-xl-12 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                           <div class="widgetload">
+                                              <div class="widgettbload">
+                                                 <span class="pull-right text-3 mt-2 text-dark">
+                                                 </span>
+                                                 <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
+                                                       class="fas fa-truck-moving"></i> Shipper</h2>
+                                              </div>
+ 
+                                              <div class="widgetlinfo">
+                                                 <table class="table table-bordered table-responsive-md table-sm table-hover">
+                                                 <thead>
+                                                       <tr>
+                                                          <th  class="back-color-gray font-weight-bold">Name
+                                                          </th>
+                                                          <th class="back-color-gray font-weight-bold">Address</th>
+                                                          
+                                                     
+                                                          <th class="back-color-gray font-weight-bold">Phone</th>
+                                                         
+                                                     
+                                                          <th class="back-color-gray font-weight-bold">Email</th>
+                                                        
+                                                      
+                                                          <th class="back-color-gray font-weight-bold">Fax</th>
+                                                        
+                                                      
+                                                          <th class="back-color-gray font-weight-bold">Pickup Date/Time
+                                                          </th>
+                                                          
+                                                     
+                                                          <th class="back-color-gray font-weight-bold">Pickup Instructions
+                                                          </th>
+                                                        
+                                                      
+                                                          <th class="back-color-gray font-weight-bold">Temperature
+                                                          </th>
+                                                        
+                                                     
+                                                          <th class="back-color-gray font-weight-bold">Contact Name</th>
+                                                         
+                                                          <th class="back-color-gray font-weight-bold">Contact Phone</th>
+                                                        
+                                                     
+                                                          <th class="back-color-gray font-weight-bold">Reference</th>
+                                                         
+                                                          <th class="back-color-gray font-weight-bold">Driver Load</th>
+                                                         
+                                                          <th class="back-color-gray font-weight-bold">Notes</th>
+                                                         
+                                                       </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                       <tr *ngFor="let item of shipperData">
+                                                          <td>{{item.shipperName}}</td>
+                                                          <td>{{item.pickupLocation}}</td>
+                                                          <td>{{item.phone}}</td>
+                                                          <td>john@gmail.com</td>
+                                                          <td>11554</td>
+                                                          <td>{{item.locationDateTime}}</td>
+                                                          <td>{{item.pickupInstruction</td>
+                                                          <td>{{item.minTemprature}} {{item.minTempratureUnit}} to {{item.maxTemprature}} {{item.maxTempratureUnit}}</td>
+                                                          <td>{{item.contactPerson}}</td>
+                                                          <td>{{item.phone}}</td>
+                                                          <td>{{item.reference}}</td>
+                                                          <td>{{item.driverLoad}}</td>
+                                                          <td>{{item.notes}}</td>
+                                                       </tr>
+                                                    </tbody>
+                                                 </table>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <!-- Consignee -->
+                                  <div class="col-xl-12 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                           <div class="widgetload">
+                                              <div class="widgettbload">
+                                                 <span class="pull-right text-3 mt-2 text-dark">
+                                                 </span>
+                                                 <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
+                                                       class="fas fa-truck-moving"></i> Consignee</h2>
+                                              </div>
+ 
+                                              <div class="widgetlinfo">
+                                              <table class="table table-bordered table-responsive-md table-sm table-hover">
+                                                 <thead>
+                                                       <tr>
+                                                          <th  class="back-color-gray font-weight-bold">Name
+                                                          </th>
+                                                          <th class="back-color-gray font-weight-bold">Address</th>
+                                                          
+                                                     
+                                                          <th class="back-color-gray font-weight-bold">Phone</th>
+                                                         
+                                                     
+                                                          <th class="back-color-gray font-weight-bold">Email</th>
+                                                        
+                                                      
+                                                          <th class="back-color-gray font-weight-bold">Fax</th>
+                                                        
+                                                      
+                                                          <th class="back-color-gray font-weight-bold">Delivery Date/Time
+                                                          </th>
+                                                          
+                                                     
+                                                          <th class="back-color-gray font-weight-bold">Delivery Instructions
+                                                          </th>
+                                                        
+                                                      
+                                                          <th class="back-color-gray font-weight-bold">Temperature
+                                                          </th>
+                                                        
+                                                     
+                                                          <th class="back-color-gray font-weight-bold">Contact Name</th>
+                                                         
+                                                          <th class="back-color-gray font-weight-bold">Contact Phone</th>
+                                                        
+                                                     
+                                                          <th class="back-color-gray font-weight-bold">Reference</th>
+                                                         
+                                                          <th class="back-color-gray font-weight-bold">Driver Unload</th>
+                                                         
+                                                          <th class="back-color-gray font-weight-bold">Notes</th>
+                                                         
+                                                       </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                      <tr *ngFor="let item of consineeData">
+                                                         <td>{{item.receiverName}}</td>
+                                                         <td>{{item.dropOffLocation}}</td>
+                                                         <td>{{item.phone}}</td>
+                                                         <td>john@gmail.com</td>
+                                                         <td>11554</td>
+                                                         <td>{{item.locationDateTime}}</td>
+                                                         <td>{{item.dropOffInstruction</td>
+                                                         <td>{{item.minTemprature}} {{item.minTempratureUnit}} to {{item.maxTemprature}} {{item.maxTempratureUnit}}</td>
+                                                         <td>{{item.contactPerson}}</td>
+                                                         <td>{{item.phone}}</td>
+                                                         <td>{{item.reference}}</td>
+                                                         <td>{{item.driverUnload}}</td>
+                                                         <td>{{item.notes}}</td>
+                                                      </tr>
+                                                       
+                                                    </tbody>
+                                                 </table>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+ 
+                            </div>
+ 
+                            <div id="pay" class="tab-pane">
+ 
+                               <div class="row">
+                                  <div class="col-xl-12 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                           <div class="widgetload">
+                                              <div class="widgettbload">
+                                                 <span class="pull-right text-3 mt-2 text-dark">
+                                                 </span>
+                                                 <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
+                                                       class="fas fa-box"></i> Billing</h2>
+                                              </div>
+ 
+                                              <div class="widgetlinfo">
+                                                 <table class="table table-bordered table-striped table-responsive-md table-sm">
+                                                    <thead>
+                                                    <tr>
+                                                    <th>Pick Up Location</th>
+                                                    <th>Delivery Location</th>
+                                                    <th>Commodity</th>
+                                                    <th>Quantity</th>
+                                                    <th>Weight</th>
+                                                    <th>Rate</th>
+                                                    <th>Amount</th>
+                                                 </tr>
+                                                    </thead>
+                                                 <tbody>
+                                                    <tr>
+                                                       <td>100 street, King Town, Canada</td>
+                                                       <td>1 Main street, King Town, Canada</td>
+                                                       <td>Rubber Balls</td>
+                                                       <td>1000 pc</td>
+                                                       <td>1000 lbs</td>
+                                                       <td>CAD 1/pc</td>
+                                                       <td>CAD 1000</td>
+                                                    </tr>
+                                                    <tr>
+                                                       <td>100 street, King Town, Canada</td>
+                                                       <td>1 Main street, King Town, Canada</td>
+                                                       <td>Bats</td>
+                                                       <td>1500 pc</td>
+                                                       <td>1000 lbs</td>
+                                                       <td>CAD 1/pc</td>
+                                                       <td>CAD 1500</td>
+                                                    </tr>
+                                                 </tbody>
+                                                 </table>                                               
+                                              </div>                                            
+                                           </div>
+ 
+                                           <div class="widgetload">
+                                             <div class="widgettbload">
+                                                 <span class="pull-right text-3 mt-2 text-dark">
+                                                 </span>
+                                                 <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
+                                                       class="fas fa-dollar-sign"></i> Other Charges</h2>
+                                              </div>
+                                              <div class="widgetlinfo">
+                                                 <table class="table table-bordered table-striped  table-responsive-md table-sm">
+                                                    <thead>
+                                                       <tr>
+                                                          <th width="">Name</th>
+                                                          <th width="" >Quantity</th>
+                                                          <th width="" >Rate</th>
+                                                          <th width="" >Amount</th>
+                                                          <th width="" >Action</th>
+                                                       </tr>
+                                                       </thead>
+                                                       <tbody>
+                                                       <tr>
+                                                          <td>Loading Fee</td>
+                                                          <td>2 hours</td>
+                                                          <td >14 per hour</td>
+                                                          <td>CAD 28</td>
+                                                          <td>Deducted</td>
+                                                       </tr>
+                                                       <tr>
+                                                          <td>Advance</td>
+                                                          <td></td>
+                                                          <td ></td>
+                                                          <td>CAD 50</td>
+                                                          <td>Deducted</td>
+                                                       </tr>
+                                                    </tbody>
+                                                 </table>
+                                              </div>
+                                           </div>
+                                          <div class="row">
+                                             <div class="col-lg-6 pr-0">
+                                             <table class="table table-bordered table-responsive-md table-sm">
+                                                    <tbody>
+                                                    <tr>
+                                                          <td class="back-color-gray font-weight-bold">Total Pick</td>
+                                                          <td>05</td>
+                                                       </tr>
+                                                       <tr>
+                                                       
+                                                       <td class="back-color-gray font-weight-bold">Total Drops</td>
+                                                          <td>04</td>
+                                                         </tr>
+ 
+                                                         <tr>
+                                                          <td class="back-color-gray font-weight-bold">Billable Miles
+                                                          </td>
+                                                          <td>457</td>
+                                                       </tr>
+                                                       <tr>
+                                                       <td class="back-color-gray font-weight-bold">Freight Amount
+                                                          </td>
+                                                          <td>CAD 3456</td>
+                                                       </tr>
+                                                       <tr>
+                                                          <td class="back-color-gray font-weight-bold">Fuel Surcharge
+                                                          </td>
+                                                          <td>CAD 345 (0.02%)</td>
+                                                       </tr>
+                                                       <tr>
+                                                          <td class="back-color-gray font-weight-bold">Total Amount
+                                                          </td>
+                                                          <td>CAD 3500</td>
+                                                       </tr>
+                                                       
+                                                    </tbody>
+                                                 </table>
+                                             </div>
+                                             <div class="col-lg-6 pl-0">
+                                             <table class="table table-bordered table-responsive-md table-sm">
+                                                    <tbody>
+                                                       <tr>
+                                                          <td class="back-color-gray font-weight-bold">GST
+                                                          </td>
+                                                          <td>CAD 35 (13%)</td>
+                                                       </tr>
+                                                       <tr>
+                                                          <td class="back-color-gray font-weight-bold">PST
+                                                          </td>
+                                                          <td>CAD 35 (13%)</td>
+                                                       </tr>
+                                                       <tr>
+                                                          <td class="back-color-gray font-weight-bold">HST
+                                                          </td>
+                                                          <td>CAD 35 (13%)</td>
+                                                       </tr>
+                                                       <tr>                                                        
+                                                          <td class="back-color-gray font-weight-bold">Discount
+                                                          </td>
+                                                          <td>CAD 35 (10%)</td>
+                                                       </tr>
+                                                       
+                                                    </tbody>
+                                                 </table>
+                                             </div>
+                                          </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+ 
+                            </div>                        
+                          
+                            <div id="equipment" class="tab-pane">
+                            <div class="row">
+                              <div class="col-lg-12">
+                              <table class="table table-sm table-bordered table-striped table-hover">
+                                     <thead>
+                                        <tr>
+                                           <th>Stop</th>
+                                           <th>Type</th>
+                                           <th>Date/Time</th>
+                                           <th>Name</th>
+                                           <th>State</th>
+                                           <th>City</th>
+                                           <th>Vehicle</th>
+                                           <th>asset</th>
+                                           <th>Driver</th>
+                                           <th>Co-Driver</th>
+                                           <th>Carrier</th>
+                                        </tr>
+                                     </thead>
+                                     <tbody>
+                                        <tr>
+                                           <td>1</td>
+                                           <td>Pick Up</td>
+                                           <td>6/6/2020</td>
+                                           <td><a href="#addPickupLocationModal" class="modal-with-form">ABC Inc</a></td>
+                                           <td>ON</td>
+                                           <td>Brampton</td>
+                                           <td >1001</td>
+                                           <td >TR-34</td>
+                                           <td >Dalwinder</td>
+                                           <td >Johhn</td>
+                                           <td></td>
+                                        </tr>
+                                        <tr>
+                                           <td>2</td>
+                                           <td>Delivery</td>
+                                           <td>6/7/2020</td>
+                                           <td><a href="#addDropLocationModal" class="modal-with-form">MNO Inc</a></td>
+                                           <td>SK</td>
+                                           <td>Regina</td>
+                                           <td >1001</td>
+                                           <td >Tr-34</td>
+                                           <td ></td>
+                                           <td ></td>
+                                           <td>XYZ ltd</td>
+                                        </tr>
+                                     </tbody>
+                                  </table>
+                              </div>
+                            </div>
+                            </div>
+                            <!-- Attachments -->
+                            <div id="attachments" class="tab-pane">
+                               <div class="row">
+                                  <div class="col-xl-12 col-12 mb-3 pl-0 pr-0">
+                                     <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                           <div class="widgetload">
+                                              <div class="widgettbload">
+                                                 <span class="pull-right text-3 mt-2 text-dark">
+                                                 <div class="row">
+                                                  <div class="col-lg-4 offset-lg-2 text-right"> <label class="control-label font-weight-bold">Upload BOL/POD</label></div>
+                                                  <div class="col-lg-6"><input type="file" class="p-0 form-control mb-2"></div>
+                                                 </div>
+                                                 </span>
+ 
+                                                 <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
+                                                       class="fas fa-box"></i> Attachments</h2>
+                                              </div>
+ 
+                                              <div class="widgetlinfo">
+                                                 <ul class="d-flex p-0 m-0 order-attachment__preview">
+                                                    <li><img src="assets/img/doc.jpg" class="img-fluid" height="150"></li>
+                                                    <li><img src="assets/img/doc.jpg" class="img-fluid" height="150"></li>
+                                                 </ul>
+                                                 <!-- <table class="table table-bordered table-responsive-lg">
+                                                    <tbody>
+                                                       <tr>
+                                                          <td width="33%"><img src="assets/img/doc.jpg" height="250" width="100%"></td>
+                                                          <td width="33%"><img src="assets/img/cpp.jpg" height="250" width="100%"></td>
+                                                          <td width="33%"><img src="assets/img/doc.jpg" height="250" width="100%"></td>                                                        
+                                                       </tr>
+                                                     
+                                                    </tbody>
+                                                 </table> -->
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </section>
+        </section>
+    </div>
+</section>
+<!-- Modal -->
+<div class="modal fade" id="templateSelectionModal" tabindex="-1" role="dialog" aria-labelledby="templateSelectionModalLabel" aria-hidden="true">
+   <div class="modal-dialog" style="max-width: 1200px;" role="document">
+       <div class="modal-content">
+           <div class="modal-header">
+               <h5 class="modal-title" id="templateSelectionModalLabel">Select Invoice Template </h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i>
+               </button>
+           </div>
+           <div class="modal-body">
+            <div class="invoice-templates__listing">
+               <ul class="m-0 p-0 d-flex flex-wrap">
+                  <li class="position-relative" 
+                     *ngFor="let item of templateList;let i = index"
+                     [ngClass]="{'active': selectedItem === i}"
+                     (click)='selectedItem = i;'
+                     >
+                     <img src="{{item}}" class="img-fluid">
+                     <div class="invoice-actions">
+                        <div>
+                           <a href="javascript:;" class="btn btn-success ">Use template</a>
+                        </div>
+                     </div>
+                     <div class="selected-template">
+                        <i class="fa fa-check-circle fa-fw" style="color: #000;"></i>
+                     </div>
+                  </li>
+               </ul>
+            </div>
+           </div>
+           <div class="modal-footer">
+               <a (click)="previewModal()" href="javascript:;" class="btn btn-success">Preview</a>
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+<div class="modal fade" id="previewInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="previewInvoiceModalLabel" aria-hidden="true">
+   <div class="modal-dialog" style="max-width: 1200px;" role="document">
+       <div class="modal-content">
+           <div class="modal-body">
+            <div class="print-invoice__wrapper">
+               <div class="container-fluid invoice-wrapper" id="print_wrap">
+                    <!-- Header -->
+                    <header>
+                    <div class="row align-items-center">
+                      <div class="col-sm-7 text-center text-sm-left mb-3 mb-sm-0">
+                        <img id="logo" src="assets/img/logo.png" title="FleetHawks" alt="FleetHawks">
+                      </div>
+                      <div class="col-sm-5 text-center text-sm-right">
+                        <h4 class="text-7 mb-0">Invoice</h4>
+                      </div>
+                    </div>
+                    <hr>
+                    </header>
+                    
+                    <!-- Main Content -->
+                    <main>
+                    <div class="row align-items-center">
+                      <div class="col-sm-6"><strong>Invoice No:</strong> <span>16835</span> <br><strong>Invoice Date:</strong> <span>05/12/2020</span></div>
+                      <div class="col-sm-6 text-sm-right"> <strong>Order:</strong> <span> 52415 </span> </div>
+                       
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6"> <strong>Carrier:</strong>
+                            <address>
+                            iLoad Trucking Ltd<br>
+                            245-7337 120th Street,<br>
+                            Canada 67R67 <br>
+                            (403) 635-6352 <br>
+                            <b>Contact Person:</b> Baljit Singh
+                            </address>
+                         </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-6 text-sm-right order-sm-1"> 
+                         <div *ngFor="let item of consineeData;">
+                           <strong>Consignee:</strong>
+                           <address>
+                          {{item.receiverName}}<br>
+                           {{item.dropOffLocation}}<br>
+                           {{item.phone}} <br>
+                           <b>Contact Person:</b> {{item.contactPerson}}
+                           </address>
+                           <strong>Expected Date:</strong><span> {{item.locationDateTime}}</span>
+                         </div>
+                        
+                      </div>
+                      <div class="col-sm-6  order-sm-0"> 
+                        <div *ngFor="let item of shipperData;">
+                           <strong>Shipper:</strong>
+                           <address>
+                              {{item.shipperName}}<br><br>
+                           {{item.pickupLocation}}<br>
+                           {{item.phone}} <br>
+                        <b>Contact:</b> {{item.contactPerson}}
+                           </address>
+                           <strong>Expected Date:</strong><span> {{item.locationDateTime}}</span>
+                        </div>
+                      </div>
+                    </div> 
+                    <!-- <hr class="mb-2"> -->
+                    <!-- <div class="row pb-2">
+                      <div class="col-4"><strong>Driver:</strong> <span>John Smith</span></div>
+                      <div class="col-4 text-center"> <strong>Truck:</strong> <span>54152</span></div>
+                      <div class="col-4 text-right"> <strong>Trailer:</strong> <span>#525114</span></div>
+                    </div> -->
+                    <div class="card mt-2">
+                      <div class="card-header px-2 py-0" style="background: #333;"> 
+                        <table class="table mb-0">
+                          <thead>
+                            <tr style="color: #fff;">
+                              <td style="width: 65%;" class="border-0"><strong>commodity </strong></td>
+                           <td style="width: 80px;" class=" text-center border-0"><strong>Weight</strong></td>
+                           <td style="width: 75px;" class=" text-center border-0"><strong>QTY</strong></td>
+                              <td style="width: 90px;" class="text-right border-0"><strong>Amount</strong></td>
+                            </tr>
+                          </thead>
+                        </table>
+                      </div>
+                      <div class="card-body py-0 px-2">
+                        
+                        <div class="table-responsive">
+                          <table class="table m-0">
+                            <tbody>
+                              <tr>
+                                <td style="width: 65%;" class="border-0">ABC commodity </td>
+                                <!-- <td class="col-4 text-1 border-0"></td> -->
+                                <td style="width: 80px;" class=" text-center border-0">100 KG</td>
+                             <td style="width: 75px;" class=" text-center border-0">10</td>
+                             <td style="width: 90px;" class="text-right border-0"><small>CAD </small>500.00</td>
+                              </tr>
+                              
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="card mt-3">
+                      <div class="card-header px-2 py-0" style="background: #333;">
+                        <table class="table mb-0">
+                          <thead>
+                            <tr style="color: #fff;">
+                              <td style="width: 200px;" class="border-0"><strong>Fee Method</strong></td>
+                              <td style="width: 100px;" class="text-center border-0"><strong>Value</strong></td>
+                              <td style="width: 100px;" class="text-center border-0"><strong>Rate</strong></td>
+                              <td style="width: 100px;" class="text-center border-0"><strong>Amount</strong></td>
+                              <td style="width: 100px;" class="text-center border-0"><strong>Tax</strong></td>
+                              <td style="width: 100px;" class="text-right border-0"><strong>Total</strong></td>
+                            </tr>
+                          </thead>
+                        </table>
+                      </div>
+                      <div class="card-body py-0 px-2">
+                        
+                        <div class="table-responsive">
+                          <table class="table m-0">
+                            <tbody>
+                              <tr>
+                                <td style="width: 200px;"><strong>Freight Fees <small>(Per Mile)</small></strong></td>
+                                  <td style="width: 100px;" class=" text-center">1200 Miles</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>2.00</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>2,400 </td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>400 <small>(13.0%)</small></td>
+                                  <td style="width: 100px;" class=" text-right"><small>CAD </small>2,800</td>
+                              </tr>
+                              <tr>
+                                <td style="width: 200px;"><strong>Fuel Surcharge <small><br>(Per Mile)</small></strong></td>
+                                  <td style="width: 100px;" class=" text-center">1200 Miles</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>1.00</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>1,200</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>250 <small>(12.0%)</small></td>
+                                  <td style="width: 100px;" class=" text-right"><small>CAD </small>1,650</td>
+                              </tr>
+                              <tr>
+                                <td style="width: 200px;"><strong>Tarp <small>(Other Charges)</small></strong></td>
+                                  <td style="width: 100px;" class=" text-center">-</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>30</td>
+                                  <td style="width: 100px;" class=" text-center"><small>CAD </small>30</td>
+                                  <td style="width: 100px;" class=" text-center">-</td>
+                                  <td style="width: 100px;" class=" text-right"><small>CAD </small>30</td>
+                              </tr>
+                              <tr>
+                                <td colspan="4" class="bg-light-2 text-right"><strong>Total:</strong></td>
+                                <td class="bg-light-2 text-center"><strong><small>CAD </small>650</strong></td>
+                                <td class="bg-light-2 text-right"><strong><small>CAD </small>4,480</strong></td>
+                              </tr>
+                              <tr>
+                                <td colspan="5" class="bg-light-2 text-right"><strong>Discount:</strong></td>
+                                <td class="bg-light-2 text-right"><strong><small>CAD </small>80</strong></td>
+                              </tr>
+                              <tr>
+                                <td colspan="5" class="bg-light-2 text-right"><strong>Payable Amount:</strong></td>
+                                <td class="bg-light-2 text-right"><strong><small>CAD </small>4,400</strong>  </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                     <div class="card-body py-0 px-2 mt-5">
+                         <div class="table-responsive">
+                             <table class="table m-0">
+                                 <thead>
+                                     <tr><td class="border-0 p-0"><h4 class="m-0 text-uppercase"><b>Instructions</b></h4></td></tr>
+                                 </thead>
+                                 <tbody>
+                                     <tr>
+                                         <td class="p-0 border-0">1. PLEASE ENSURE DRIVER IDENTIFIES HIMSELF AS P/U ON BEHALF OF TOTAL LOGISTICS</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0">2. DRIVER MUST BE ABLE AND WILLING TO PROVIDE EITHER COMPANY PHOTO ID or ANOTHER PIECE OF SUITABLE PICTURE IDENTIFICATION UPON SHIPPER/RECEIVER REQUEST</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0">3. ALL DRIVERS ARE REQUIRED TO HAVE SAFETY SHOES AND VEST</td>
+                                     </tr>
+
+                                     <tr>
+                                         <td class="p-0 border-0 mt-2 text-uppercase"><b>NOTE: Please note that all Food Products are subject to FDA review and therefore all drivers must report to the FDA office at the time of crossing</b></td>
+                                     </tr>
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
+
+                     <div class="card-body py-0 px-2 mt-5">
+                         <div class="table-responsive">
+                             <table class="table m-0">
+                                 <thead>
+                                     <tr><td class="border-0 p-0"><h4 class="m-0 text-uppercase"><b>Terms &amp; Conditions</b></h4></td></tr>
+                                 </thead>
+                                 <tbody>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> INVOICE WITH ALL PAPERWORK HAS TO BE SENT TO APinvoice@totallogistics.com</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> TIME IN &amp; OUT REQUIRED FOR PICK-UP AND DELIVERY</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> Third party billing by Total Logistics Control</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> All trailers must arrive at receiver’s sealed - FTL’s Sealed and LTL‘s sealed or Padlocked</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> Fuel surcharge included in all rates</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> All trailers must be 53' in length with barn doors, FOOD GRADE, odour-free, dry and clean</td>
+                                     </tr>
+                                     <tr>
+                                         <td class="p-0 border-0"><b>▸</b> Do not mix with hazmat or toxic materials</td>
+                                     </tr>
+
+
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
+                    </div>
+                    </main>
+                   
+                  </div>
+            </div>
+           </div>
+           <div class="modal-footer">
+            <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <a href="javascript:;" (click)="generatePDF()" class="btn btn-success">Print</a>
+           </div>
+       </div>
+   </div>
+</div>
+

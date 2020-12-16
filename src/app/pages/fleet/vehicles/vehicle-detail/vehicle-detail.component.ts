@@ -12,6 +12,11 @@ export class VehicleDetailComponent implements OnInit {
   /**
    * Vehicle Prop
    */
+  driversList: any = {};
+  vehicleModelList:any = {};
+  vehicleManufacturersList: any  = {};
+  groupsList: any = {};
+  statesList : any = {};
   vehicleID = '';
   vehicleIdentification = '';
   vehicleType = '';
@@ -52,6 +57,8 @@ export class VehicleDetailComponent implements OnInit {
     heightUnit: '',
     length: '',
     lengthUnit: '',
+    width: '',
+    widthUnit: '',
     interiorVolume: '',
     passangerVolume: '',
     groundClearnce: '',
@@ -75,6 +82,9 @@ export class VehicleDetailComponent implements OnInit {
     vendorID: '',
     dateOfExpiry: '',
     remiderEvery: '',
+    policyNumber: '',
+    amount: 0,
+    amountCurrency: ''
   };
   fluid = {
     fuelType: '',
@@ -85,7 +95,7 @@ export class VehicleDetailComponent implements OnInit {
   };
   wheelsAndTyres = {
     numberOfTyres: '',
-    driverType: '',
+    driveType: '',
     brakeSystem: '',
     wheelbase: '',
     rearAxle: '',
@@ -124,6 +134,7 @@ export class VehicleDetailComponent implements OnInit {
     purchaseVendorID: '',
     warrantyExpirationDate: '',
     purchasePrice: '',
+    purchasePriceCurrency: '', 
     warrantyExpirationMeter: '',
     purchaseDate: '',
     purchaseComments: '',
@@ -153,11 +164,101 @@ export class VehicleDetailComponent implements OnInit {
     measurmentUnit: '',
   };
 
+
+  issues = [];
+  reminders = [];
+  inspectionForms = [];
+  fuelEntries = [];
+  documents = [];
+  servicePrograms = [];
+  serviceHistory = [];
+  devices = [];
+  
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.vehicleID = this.route.snapshot.params['vehicleID'];
     this.getVehicle();
+    this.fetchIssues();
+    this.fetchReminders();
+    this.fetchInspectionForms();
+    this.fetchFuel();
+    this.fetchServiceProgams();
+    this.fetchServiceHistory();
+    this. fetchDriversList();
+    this.fetchStatesList();
+    this.fetchVehicleModelList();
+    this.fetchVehicleManufacturerList();
+    this.fetchGroupsList();
+
+  }
+  fetchGroupsList() {
+    this.apiService.getData('groups/get/list').subscribe((result: any) => {
+      this.groupsList = result;
+    });
+  }
+  fetchDriversList() {
+    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+      this.driversList = result;
+    });
+  }
+  fetchStatesList() {
+    this.apiService.getData('states/get/list').subscribe((result: any) => {
+      this.statesList = result;
+    });
+  }
+  fetchVehicleModelList() {
+    this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
+      this.vehicleModelList = result;
+    });
+  }
+  fetchVehicleManufacturerList() {
+    this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
+      this.vehicleManufacturersList = result;
+    });
+  }
+  fetchServiceProgams(){
+    this.apiService.getData(`serviceLogs/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.serviceHistory = result.Items;
+    })
+  }
+
+  fetchServiceHistory(){
+    this.apiService.getData(`servicePrograms/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.servicePrograms = result.Items;
+    })
+  }
+
+
+  fetchInspectionForms(){
+    this.apiService.getData(`inspectionForms/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.inspectionForms = result.Items;
+    })
+  }
+
+  
+  fetchFuel(){
+    this.apiService.getData(`fuelEntries/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.fuelEntries = result.Items;
+    })
+  }
+
+  closeIssue(issueID){
+    this.apiService.getData(`issues/setStatus/${issueID}/CLOSE`).subscribe((result) => {
+      this.fetchIssues();
+    })
+  }
+
+  fetchReminders(){
+    this.apiService.getData(`reminders/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.reminders = result.Items;
+    })
+  }
+
+  fetchIssues(){
+    this.apiService.getData(`issues/vehicle/${this.vehicleID}`).subscribe((result) => {
+      this.issues = result.Items;
+    })
   }
 
   getVehicle() {
@@ -165,14 +266,13 @@ export class VehicleDetailComponent implements OnInit {
       .getData('vehicles/' + this.vehicleID)
       .subscribe((result: any) => {
         result = result.Items[0];
-
         this.vehicleIdentification = result.vehicleIdentification;
         this.vehicleType = result.vehicleType;
         this.VIN = result.VIN;
         this.year = result.year;
         this.manufacturerID = result.manufacturerID;
         this.modelID = result.modelID;
-        this.plateNumber = result.model;
+        this.plateNumber = result.plateNumber;
         this.stateID = result.stateID;
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
@@ -203,6 +303,8 @@ export class VehicleDetailComponent implements OnInit {
         this.specifications = {
           height: result.specifications.height,
           heightUnit: result.specifications.heightUnit,
+          width: result.specifications.width,
+          widthUnit: result.specifications.widthUnit,
           length: result.specifications.length,
           lengthUnit: result.specifications.lengthUnit,
           interiorVolume: result.specifications.interiorVolume,
@@ -229,6 +331,9 @@ export class VehicleDetailComponent implements OnInit {
           vendorID: result.insurance.vendorID,
           dateOfExpiry: result.insurance.dateOfExpiry,
           remiderEvery: result.insurance.remiderEvery,
+          policyNumber: result.insurance.policyNumber,
+          amount: result.insurance.amount,
+          amountCurrency: result.insurance.amountCurrency
         };
         this.fluid = {
           fuelType: result.fluid.fuelType,
@@ -239,7 +344,7 @@ export class VehicleDetailComponent implements OnInit {
         };
         this.wheelsAndTyres = {
           numberOfTyres: result.wheelsAndTyres.numberOfTyres,
-          driverType: result.wheelsAndTyres.driverType,
+          driveType: result.wheelsAndTyres.driveType,
           brakeSystem: result.wheelsAndTyres.brakeSystem,
           wheelbase: result.wheelsAndTyres.wheelbase,
           rearAxle: result.wheelsAndTyres.rearAxle,
@@ -278,6 +383,7 @@ export class VehicleDetailComponent implements OnInit {
           purchaseVendorID: result.purchase.purchaseVendorID,
           warrantyExpirationDate: result.purchase.warrantyExpirationDate,
           purchasePrice: result.purchase.purchasePrice,
+          purchasePriceCurrency: result.purchase.purchasePriceCurrency,
           warrantyExpirationMeter: result.purchase.warrantyExpirationMeter,
           purchaseDate: result.purchase.purchaseDate,
           purchaseComments: result.purchase.purchaseComments,

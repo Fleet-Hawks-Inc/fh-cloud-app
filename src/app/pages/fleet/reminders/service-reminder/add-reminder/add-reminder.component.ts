@@ -20,18 +20,25 @@ export class AddReminderComponent implements OnInit {
   reminderData = {
     reminderType: 'service',
     reminderTasks: {
-      remindByDays: 0
+      remindByDays: 0,
     },
     subscribers: [],
   };
   numberOfDays: number;
-  time: number;
-  timeType: string;
+  time = 1;
+  timeType = 'Day(s)';
+  serviceTask = {
+    taskType: 'service'
+  };
   vehicles = [];
   users = [];
   groups = [];
+  groupData = {
+    groupType : 'users'
+  };
   finalSubscribers = [];
-  form;
+  serviceTasks = [];
+  serviceForm;
   errors = {};
   Error: string = '';
   Success: string = '';
@@ -44,10 +51,11 @@ export class AddReminderComponent implements OnInit {
     private location: Location) { }
 
   ngOnInit() {
-    this.reminderID = this.route.snapshot.params['reminderID'];
+    this.reminderID = this.route.snapshot.params[`reminderID`];
     this.fetchVehicles();
     this.fetchUsers();
     this.fetchGroups();
+    this.fetchServiceTaks();
     if (this.reminderID) {
       this.pageTitle = 'Edit Service Reminder';
       this.fetchReminderByID();
@@ -58,8 +66,17 @@ export class AddReminderComponent implements OnInit {
     }
 
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      this.serviceForm = $('#serviceForm').validate();
     });
+  }
+  fetchServiceTaks() {
+    let test = [];
+    let taskType = 'service';
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
+      test = result.Items;
+      this.serviceTasks = test.filter((s: any) => s.taskType === 'service');
+    });    
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
@@ -72,9 +89,8 @@ export class AddReminderComponent implements OnInit {
     });
   }
   fetchGroups() {
-    this.apiService.getData('groups').subscribe((result: any) => {
+    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
-      // console.log('Groups Data', this.groups);
     });
   }
 
@@ -86,20 +102,18 @@ export class AddReminderComponent implements OnInit {
       .getData('reminders/' + this.reminderID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('Fetched data', result);
         for (let i = 0; i < result.subscribers.length; i++) {
           this.test.push(result.subscribers[i].subscriberIdentification);
         }
-        // console.log('Check in fetched', this.test);
-        this.reminderData['reminderID'] = this.reminderID;
-        this.reminderData['reminderType'] = result.reminderType;
-        this.reminderData['reminderIdentification'] = result.reminderIdentification;
-        this.reminderData['reminderTasks']['task'] = result.reminderTasks.task;
-        this.reminderData['reminderTasks']['odometer'] = result.reminderTasks.odometer;
+        this.reminderData[`reminderID`] = this.reminderID;
+        this.reminderData[`reminderType`] = result.reminderType;
+        this.reminderData[`reminderIdentification`] = result.reminderIdentification;
+        this.reminderData[`reminderTasks`][`task`] = result.reminderTasks.task;
+        this.reminderData[`reminderTasks`][`odometer`] = result.reminderTasks.odometer;
         this.time = result.reminderTasks.remindByDays;
         this.timeType = 'Day(s)';
-        this.reminderData['sendEmail'] = result.sendEmail;
-        this.reminderData['subscribers'] = this.test;
+        this.reminderData[`sendEmail`] = result.sendEmail;
+        this.reminderData[`subscribers`] = this.test;
       });
 
   }
@@ -127,9 +141,7 @@ export class AddReminderComponent implements OnInit {
     return this.finalSubscribers;
   }
   addReminder() {
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    this.hideErrors();
     if (this.time > 0) {
       switch (this.timeType) {
         case 'Day(s)': {
@@ -154,28 +166,22 @@ export class AddReminderComponent implements OnInit {
             break;
           }
       }
-
+      
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
-      console.log('Filled Reminder Data', this.reminderData);
+      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);    
       this.apiService.postData('reminders', this.reminderData).subscribe({
         complete: () => { },
-        error: (err) => {
+        error: (err: any) => {
           from(err.error)
             .pipe(
               map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/'([^']+)'/)[1];
-                //console.log(key);
-                val.message = val.message.replace(/'.*'/, 'This Field');
-                this.errors[key] = val.message;
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
               })
             )
             .subscribe({
               complete: () => {
                 this.throwErrors();
-                this.Success = '';
               },
               error: () => { },
               next: () => { },
@@ -194,14 +200,29 @@ export class AddReminderComponent implements OnInit {
   }
 
   throwErrors() {
-    this.form.showErrors(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+  
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label');
+      });
+    this.errors = {};
   }
 
   // UPDATING REMINDER
   updateReminder() {
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    this.hideErrors();
     if (this.time > 0) {
       switch (this.timeType) {
         case 'Day(s)': {
@@ -229,25 +250,20 @@ export class AddReminderComponent implements OnInit {
 
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
-      console.log('updated data', this.reminderData);
+ 
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },
-        error: (err) => {
+        error: (err: any) => {
           from(err.error)
             .pipe(
               map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/'([^']+)'/)[1];
-                //console.log(key);
-                val.message = val.message.replace(/'.*'/, 'This Field');
-                this.errors[key] = val.message;
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
               })
             )
             .subscribe({
               complete: () => {
                 this.throwErrors();
-                this.Success = '';
               },
               error: () => { },
               next: () => { },
@@ -264,5 +280,67 @@ export class AddReminderComponent implements OnInit {
     else {
       this.toastr.warning('Time Must Be Positive Value');
     }
+  }
+
+
+  // SERVICE TASK
+  addServiceTask(){
+    this.apiService.postData('tasks', this.serviceTask).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        $('#addServiceTasks').modal('toggle');
+        this.toastr.success('Service Task Added Successfully');
+        this.fetchServiceTaks();
+        this.router.navigateByUrl('/fleet/reminders/service-reminder/add');
+      },
+    });
+  }
+  // GROUP MODAL
+  addGroup() {
+    this.apiService.postData('groups', this.groupData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.fetchGroups();
+        this.toastr.success('Group added successfully');
+        $('#addGroupModal').modal('hide');
+      this.fetchGroups();
+
+      },
+    });
   }
 }

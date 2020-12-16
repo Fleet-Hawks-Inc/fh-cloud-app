@@ -3,7 +3,7 @@
     position: absolute;
     top: 20px;
     right: 30px;
-    z-index: 9999;
+    z-index: 999;
     width: 20rem;
 }
 .geofence-search ul{
@@ -16,4 +16,8 @@
 .geofence-search a:hover {
     background-color: #363636;
     color: #fff;
+}
+.map-search__results {
+    left: unset;
+    top: unset;
 }

@@ -1,0 +1,15 @@
+.map-search__results {
+    display: none;
+}
+.map-search__results ul{
+    list-style: none;
+}
+.show-search__result .map-search__results {
+    display: block !important;
+}
+.address-inner {
+    display: none;
+}
+.address-item.open .address-inner {
+    display: block;
+}

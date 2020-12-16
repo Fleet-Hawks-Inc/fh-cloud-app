@@ -57,10 +57,10 @@ import {
 
 
   AddInventoryComponent,
-  EditInventoryComponent,
   InventoryListComponent
 
 } from './index';
+import { InventoryDetailComponent } from './inventory/inventory-detail/inventory-detail.component';
 
 const COMPONENTS = [
   AddUserComponent,
@@ -94,7 +94,6 @@ const COMPONENTS = [
   GraphComponent,
   DashboardDriverComponent,
   AddInventoryComponent,
-  EditInventoryComponent,
   InventoryListComponent
 ];
 
@@ -166,11 +165,12 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
-    NgSelect2Module
+    NgSelect2Module,
   ],
   exports: [...COMPONENTS],
   declarations: [
     ...COMPONENTS,
+    InventoryDetailComponent,
   ],
   providers: [NgSelectConfig, ɵs,
     {provide: NgbDateAdapter, useClass: CustomAdapter},

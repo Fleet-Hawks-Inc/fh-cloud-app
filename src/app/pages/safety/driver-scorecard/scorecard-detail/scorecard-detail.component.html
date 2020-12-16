@@ -1,0 +1,323 @@
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body">
+            <div class="page-header">
+                <h2>Scorecard Detail</h2>
+                <div class="right-wrapper text-right">
+
+                </div>
+            </div>
+
+            <div class="safety-deails m-2">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row cmaindiv mb-3">
+
+                            <div class="col cerbor">
+                                <div class="text-center p-4">
+                                    <i class="far fa-calendar-check text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ rank }}</p>
+                                    <p class="mb-0 text-uppercase">Rank</p>
+                                </div>
+                            </div>
+                            <div class="col cerbor">
+                                <div class="text-center p-4">
+                                    <i class="far fa-calendar-check text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ eventData.harshBrake }}</p>
+                                    <p class="mb-0 text-uppercase"><a href="javascript:;" (click)="openModal('harshBrake')">Harsh Brake</a></p>
+                                </div>
+                            </div>
+
+                            <div class="col cerbor">
+                                <div class="text-center p-4">
+                                    <i class="far fa-calendar-alt text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ eventData.harshAcceleration }}</p>
+                                    <p class="mb-0 text-uppercase"><a href="javascript:;" (click)="openModal('harshAcceleration')">Harsh Acceleration</a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col cerbor">
+                                <div class="text-center p-4">
+                                    <i class="fas fa-map-marker-alt text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ eventData.overSpeeding }}</p>
+                                    <p class="mb-0 text-uppercase"><a href="javascript:;" (click)="openModal('overSpeedingStart')">Over Speeding</a></p>
+                                </div>
+                            </div>
+                            <div class="col cerbor">
+                                <div class="text-center p-4">
+                                    <i class="fas fa-map-marker-alt text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ eventData.harshTurn }}</p>
+                                    <p class="mb-0 text-uppercase"><a href="javascript:;" (click)="openModal('harshTurn')">Harsh Turn</a></p>
+                                </div>
+                            </div>
+                            <div class="col cerbor">
+                                <div class="text-center p-4">
+                                    <i class="fas fa-map-marker-alt text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ eventData.crashes }}</p>
+                                    <p class="mb-0 text-uppercase"><a href="javascript:;" (click)="openModal('crashes')">Crashes</a></p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="text-center p-4">
+                                    <i class="fas fa-map-marker-alt text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ eventData.fuelIdling }}</p>
+                                    <p class="mb-0 text-uppercase">Idling</p>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-0">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-lg-3 col-xl-3  mb-xl-0 pr-1">
+                                <div class="thumb-info">
+                                    <img src="img/pp.jpg" class="rounded img-fluid" alt="{{ eventData.driver.fullName }}">
+                                    <div class="thumb-info-title">
+                                        <span class="thumb-info-inner">{{ eventData.driver.fullName }}</span>
+                                    </div>
+                                </div>
+                                <div class="widget-toggle-expand mb-1">
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CDL:
+                                        </div>
+                                        <div class="col-lg-6 p-2 bor_half">{{ eventData.driver.licenceDetails.CDL_Number }}</div>
+                                    </div>
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
+                                            Cycle:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{ eventData.driver.cycleName }}</div>
+                                    </div>
+                                    <!-- <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Exempted/Non-Exempted:</div>
+                                        <div class="col-lg-6 p-2 bor_half">Non-Exempted</div>
+                                        </div> -->
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home
+                                            Terminal:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{ eventData.driver.homeTerminal }}</div>
+                                    </div>
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">
+                                            Phone:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{ eventData.driver.workPhone }}</div>
+                                    </div>
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-4 text-left back-color-gray">
+                                            Email:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{ eventData.driver.workEmail }}</div>
+                                    </div>
+                                </div>
+                                <!-- <div class="row" style="margin-top:20px;">
+                                     <div class="col-lg-12">
+                                        <a class="text-uppercase text-muted float-right modal-with-form text-dark" href="#driverDetailsModal">(View All)</a>
+                                     </div>
+                                  </div> -->
+                            </div>
+                            <div class="col-lg-2 pr-1">
+                                <p class="mb-2 text-4 font-weight-bold text-dark">Safety Score</p>
+                                <div class="circle-wrap">
+                                    <div class="circle">
+
+                                        <div class="mask full">
+                                            <div class="fill"></div>
+                                        </div>
+
+                                        <div class="mask half">
+                                            <div class="fill"></div>
+                                        </div>
+
+                                        <div class="inside-circle">
+                                            86%
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <ul class="p-0 d-flex justify-content-around flex-wrap flex-column"
+                                    style="list-style: none;">
+                                    <li class="text-center">
+                                        <p class="mb-0 text-5 font-weight-bold text-dark">100 miles</p>
+                                        <p class="mb-0">Distance</p>
+                                    </li>
+                                    <li class="text-center mt-3">
+                                        <p class="mb-0 text-5 font-weight-bold text-dark">36h 10m</p>
+                                        <p class="mb-0">Total Driven</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-7 col-md-12  pr-1">
+                                <div class="bg-white">
+                                    <p class="mb-2 text-4 font-weight-bold text-dark">Trends</p>
+                                    <ul class="nav nav-tabs top-tabs" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="harsh-rate-tab" data-toggle="tab"
+                                                href="#harsh-rate" role="tab" aria-controls="harsh-rate"
+                                                aria-selected="false">Harsh Event Rate</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " id="harsh-count-tab" data-toggle="tab"
+                                                href="#harsh-count" role="tab" aria-controls="harsh-count"
+                                                aria-selected="true">Harsh Event Count</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " id="speeding-tab" data-toggle="tab"
+                                                href="#speeding-harsh" role="tab" aria-controls="speeding"
+                                                aria-selected="true">Speeding</a>
+                                        </li>
+
+                                    </ul>
+                                    <div class="tab-content p-0 mt-3 routing-trends__charts">
+                                        <div class="tab-pane active" id="harsh-rate" role="tabpanel"
+                                            aria-labelledby="harsh-rate-tab">
+                                            <div class="chartjs-size-monitor">
+                                                <div class="chartjs-size-monitor-expand">
+                                                    <div class=""></div>
+                                                </div>
+                                                <div class="chartjs-size-monitor-shrink">
+                                                    <div class=""></div>
+                                                </div>
+                                            </div>
+                                            <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
+                                            [legend]="chartLegend" [chartType]="chartType">
+                                            </canvas> 
+                                        </div>
+                                        <div class="tab-pane " id="harsh-count" role="tabpanel"
+                                            aria-labelledby="harsh-count-tab">
+                                            <div class="chartjs-size-monitor">
+                                                <div class="chartjs-size-monitor-expand">
+                                                    <div class=""></div>
+                                                </div>
+                                                <div class="chartjs-size-monitor-shrink">
+                                                    <div class=""></div>
+                                                </div>
+                                            </div>
+                                            <canvas baseChart [datasets]="countChartData" [labels]="countChartLabels" [options]="countChartOptions"
+                                            [legend]="countChartLegend" [chartType]="countChartType">
+                                            </canvas>
+                                        </div>
+                                        <div class="tab-pane" id="speeding-harsh" role="tabpanel"
+                                            aria-labelledby="speeding-tab">
+                                            <div class="chartjs-size-monitor">
+                                                <div class="chartjs-size-monitor-expand">
+                                                    <div class=""></div>
+                                                </div>
+                                                <div class="chartjs-size-monitor-shrink">
+                                                    <div class=""></div>
+                                                </div>
+                                            </div>
+                                            <canvas baseChart [datasets]="speedingChartData" [labels]="speedingChartLabels" [options]="speedingChartOptions"
+                                            [legend]="speedingChartLegend" [chartType]="speedingChartType">
+                                            </canvas>
+                                        </div>
+                                        <div class="safety-events-filter" style="top: 40px;right: 0;">
+                                            <div class="input-daterange input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-calendar-alt"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" data-plugin-datepicker=""
+                                                    name="start">
+                                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                                    to
+                                                </span>
+                                                <input type="text" class="form-control" data-plugin-datepicker=""
+                                                    name="end">
+                                            </div>
+                                            <div class="btn-group flex-wrap">
+                                                <button type="button"
+                                                    class="mx-1 btn-default btn btn-sm dropdown-toggle"
+                                                    data-toggle="dropdown" aria-expanded="false"><i
+                                                        class="fa fa-filter"></i></button>
+                                                <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                    <a class="dropdown-item text-1" href="javascript:;">Last 1 Week</a>
+                                                    <a class="dropdown-item text-1" href="javascript:;">Last 4 Week</a>
+                                                    <a class="dropdown-item text-1" href="javascript:;">Last 8 Week</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</section>
+
+<!-- event modal start -->
+<div class="modal fade" id="eventModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document" style="max-width: 500px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modaltitle"> Events</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="form-group row text-dark">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table class="row-border hover table table-bordered table-striped mb-0 ">
+                                        <thead>
+                                            <tr>
+                                                <th>Location</th>
+                                                <th>Date &amp; Time</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="totalEvents.length > 0">
+                                            <tr *ngFor="let data of totalEvents">
+                                                <td>{{ data.location }}</td>
+                                                <td>{{ data.eventDate }}, {{ data.eventTime }}</td>
+                                                <td>
+                                                    <a href="javascript:;" data-dismiss="modal" routerLink="/safety/critical-events/event-details/{{data.eventID}}">View Detail</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                        <tbody *ngIf="!totalEvents.length > 0">
+                                            <tr style="text-align: center;">
+                                                <td colspan="3">No record found</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- event modal end -->

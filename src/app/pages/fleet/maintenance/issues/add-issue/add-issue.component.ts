@@ -9,6 +9,7 @@ import { from } from 'rxjs';
 import {  map } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 declare var $: any;
 @Component({
   selector: 'app-add-issue',
@@ -17,17 +18,16 @@ declare var $: any;
 })
 export class AddIssueComponent implements OnInit {
   title: string;
-  imageError = '';
   fileName = '';
   public issueID;
-  form;
+  issueForm;
   /**
    * Issue Prop
    */
   issueName = '';
   unitID = '';
   unitType = 'vehicle';
-  status = 'open';
+  currentStatus = 'OPEN';
   reportedDate: NgbDateStruct;
   description = '';
   odometer = '';
@@ -49,13 +49,18 @@ export class AddIssueComponent implements OnInit {
   Error = '';
   errors = {};
   Success  = '';
+  docs: SafeResourceUrl;
+  public issueImages = [];
+  image;
+  public issueDocs = [];
+  pdfSrc: string;
   // date: {year: number, month: number};
   constructor(private apiService: ApiService,
               private router: Router,
               private route: ActivatedRoute,
               private awsUS: AwsUploadService, private toaster: ToastrService,
               private spinner: NgxSpinnerService,
-              private location: Location,
+              private location: Location, private domSanitizer: DomSanitizer,
               private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
                 this.selectedFileNames = new Map<any, any>();
               }
@@ -75,7 +80,7 @@ export class AddIssueComponent implements OnInit {
       this.title = 'Add Issue';
     }
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      this.issueForm = $('#issueForm').validate();
     });
   }
   cancel() {
@@ -88,13 +93,11 @@ export class AddIssueComponent implements OnInit {
     fetchAssets() {
       this.apiService.getData('assets').subscribe((result: any) => {
         this.assets = result.Items;
-        console.log('assets', this.assets);
       });
     }
     fetchContacts() {
       this.apiService.getData('contacts').subscribe((result: any) => {
         this.contacts = result.Items;
-        console.log('CONTACTS', this.contacts);
       });
     }
     getToday(): string {
@@ -104,14 +107,12 @@ export class AddIssueComponent implements OnInit {
       this.unitType = value;
     }
   addIssue() {
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    this.hideErrors();
     const data = {
       issueName: this.issueName,
       unitType: this.unitType,
       unitID: this.unitID,
-      status: this.status,
+      currentStatus: this.currentStatus,
       reportedDate: this.reportedDate,
       description: this.description,
       odometer: this.odometer,
@@ -120,26 +121,20 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
-    console.log('Issue data on console', data);
     this.apiService.postData('issues/', data).
   subscribe({
     complete : () => {},
-    error: (err) => {
+    error: (err: any) => {
       from(err.error)
         .pipe(
           map((val: any) => {
-            const path = val.path;
-            // We Can Use This Method
-            const key = val.message.match(/"([^']+)"/)[1];
-            console.log(key);
             val.message = val.message.replace(/".*"/, 'This Field');
-            this.errors[key] = val.message;
+            this.errors[val.context.key] = val.message;
           })
         )
         .subscribe({
           complete: () => {
             this.throwErrors();
-            this.Success = '';
           },
           error: () => { },
           next: () => { },
@@ -154,14 +149,30 @@ export class AddIssueComponent implements OnInit {
   });
 }
 throwErrors() {
-  this.form.showErrors(this.errors);
+  from(Object.keys(this.errors))
+    .subscribe((v) => {
+      $('[name="' + v + '"]')
+        .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+        .addClass('error');
+    });
+  // this.vehicleForm.showErrors(this.errors);
+}
+
+hideErrors() {
+  from(Object.keys(this.errors))
+    .subscribe((v) => {
+      $('[name="' + v + '"]')
+        .removeClass('error')
+        .next()
+        .remove('label');
+    });
+  this.errors = {};
 }
  /*
    * Selecting files before uploading
    */
   selectDocuments(event, obj) {
     this.selectedFiles = event.target.files;
-    console.log('selected files', this.selectedFiles[0].name);
     if (obj === 'uploadedDocs') {
       for (let i = 0; i <= this.selectedFiles.item.length; i++) {
         const randomFileGenerate = this.selectedFiles[i].name.split('.');
@@ -198,21 +209,67 @@ throwErrors() {
     .getData('issues/' + this.issueID)
     .subscribe((result: any) => {
       result = result.Items[0];
-      console.log('result', result);
       this.issueID = this.issueID;
       this.issueName = result.issueName;
       this.unitID = result.unitID;
       this.unitType = result.unitType;
-      this.status = result.status;
+      this.currentStatus = result.currentStatus;
       this.reportedDate = result.reportedDate;
       this.description = result.description;
       this.odometer = result.odometer;
       this.reportedBy = result.reportedBy;
       this.assignedTo = result.assignedTo;
+      this.uploadedPhotos = result.uploadedPhotos;
+      this.uploadedDocs = result.uploadedDocs;
+      setTimeout(() => {
+        this.getImages();
+        this.getDocuments();
+       }, 1500);
     });
   this.spinner.hide();
 }
-
+getImages = async () => {
+  this.carrierID = await this.apiService.getCarrierID();
+  for (let i = 0; i < this.uploadedPhotos.length; i++) {
+    this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles
+    (this.carrierID, this.uploadedPhotos[i]));
+    this.issueImages.push(this.image);
+  }
+}
+deleteImage(i: number) {
+  this.carrierID =  this.apiService.getCarrierID();
+  this.awsUS.deleteFile(this.carrierID, this.uploadedPhotos[i]);
+  this.uploadedPhotos.splice(i, 1);
+  this.issueImages.splice(i, 1);
+  this.toaster.success('Image Deleted Successfully!');
+  // this.apiService.getData(`issues/updatePhotos?issueID=${this.issueID}&uploadedPhotos=${this.uploadedPhotos}`).subscribe((result: any) => {
+  //   this.toaster.success('Image Deleted Successfully!');
+  // });
+}
+getDocuments = async () => {
+  this.carrierID = await this.apiService.getCarrierID();
+  for (let i = 0; i < this.uploadedDocs.length; i++) {
+    this.docs = this.domSanitizer.bypassSecurityTrustResourceUrl(
+            await this.awsUS.getFiles(this.carrierID, this.uploadedDocs[i]));
+    this.issueDocs.push(this.docs);
+  }
+}
+deleteDoc(i: number) {
+  this.carrierID =  this.apiService.getCarrierID();
+  this.awsUS.deleteFile(this.carrierID, this.uploadedDocs[i]);
+  this.uploadedDocs.splice(i, 1);
+  this.issueDocs.splice(i, 1);
+  // this.apiService.getData(`issues/updateDocs?issueID=${this.issueID}&uploadedDocs=${this.uploadedDocs}`).subscribe((result: any) => {
+  //   this.toaster.success('Document Deleted Successfully!');
+  // });
+}
+setPDFSrc(val) {
+  this.pdfSrc = '';
+  this.pdfSrc = val;
+}
+setSrcValue(){
+  this.pdfSrc = '';
+}
 /*
    * Update Issue
   */
@@ -225,7 +282,7 @@ throwErrors() {
     issueName: this.issueName,
     unitID: this.unitID,
     unitType: this.unitType,
-    status: this.status,
+    currentStatus: this.currentStatus,
     reportedDate: this.reportedDate,
     description: this.description,
     odometer: this.odometer,
@@ -234,26 +291,20 @@ throwErrors() {
     uploadedPhotos: this.uploadedPhotos,
     uploadedDocs: this.uploadedDocs
   };
-  console.log('Issue data on console', data);
   this.apiService.putData('issues/', data).
 subscribe({
   complete : () => {},
-  error: (err) => {
+  error: (err: any) => {
     from(err.error)
       .pipe(
         map((val: any) => {
-          const path = val.path;
-          // We Can Use This Method
-          const key = val.message.match(/"([^']+)"/)[1];
-          console.log(key);
           val.message = val.message.replace(/".*"/, 'This Field');
-          this.errors[key] = val.message;
+          this.errors[val.context.key] = val.message;
         })
       )
       .subscribe({
         complete: () => {
           this.throwErrors();
-          this.Success = '';
         },
         error: () => { },
         next: () => { },

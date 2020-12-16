@@ -22,6 +22,8 @@ export class AddGeofenceComponent implements OnInit {
       cords: []
     }
   };
+  geofenceTypes;
+  geofenceTypeData = {};
   getGeofenceID;
   public marker;
   public map;
@@ -73,15 +75,14 @@ export class AddGeofenceComponent implements OnInit {
       this.fetchGeofenceByID();
     } else {
       this.pageTitle = 'Add Geofence';
-
     }
     // here maps initialization
     this.map = this.LeafletMap.initGeoFenceMap();
     this.mapControls(this.map);
     this.searchLocation();
-
+    this.fetchGeofenceTypes();
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      this.form = $('#form_, #geofenceTypeForm').validate();
     });
   }
 
@@ -120,9 +121,6 @@ export class AddGeofenceComponent implements OnInit {
         const polyEdit = layer.toGeoJSON();
         this.geofenceData.geofence.type = polyEdit.geometry.type;
         this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
-
-        console.log('update', this.geofenceData);
-
       });
 
 
@@ -140,21 +138,38 @@ export class AddGeofenceComponent implements OnInit {
   }
 
 
-  addCategory() {
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
-    const data1 = {
-      geofenceNewCategory: this.geofenceNewCategory
-    };
-    console.log(data1);
+  addGeofenceType() {
+    this.apiService.postData('geofenceTypes', this.geofenceTypeData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.toastr.success('Type Added successfully');
+
+      },
+    });
   }
   addGeofence() {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
     this.spinner.show();
-   // console.log(this.geofenceData);
     this.apiService.postData('geofences', this.geofenceData)
       .pipe(tap(v => {
         console.log(v)
@@ -183,13 +198,31 @@ export class AddGeofenceComponent implements OnInit {
         this.hasSuccess = true;
         this.toastr.success('Geofence Added successfully');
         this.spinner.hide();
-        this.router.navigateByUrl('/fleet/geofence/geofence-list');
+        this.router.navigateByUrl('/fleet/geofence/list');
       },
     });
   }
 
   throwErrors() {
-    this.form.showErrors(this.errors);
+    console.log(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
   }
 
   createGeofenceTypeModal() {
@@ -198,13 +231,14 @@ export class AddGeofenceComponent implements OnInit {
     });
   }
 
+
+
   fetchGeofenceByID() {
     this.spinner.show();
     this.apiService
       .getData('geofences/' + this.getGeofenceID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        // console.log('result', result);
         this.geofenceData['geofenceID'] = this.getGeofenceID;
         this.geofenceData['geofenceName'] = result.geofenceName;
         this.geofenceData['location'] = result.location;
@@ -212,44 +246,44 @@ export class AddGeofenceComponent implements OnInit {
         this.geofenceData['geofenceType'] = result.geofenceType;
         this.geofenceData.geofence.type = result.geofence.type;
         this.geofenceData.geofence.cords = result.geofence.cords;
-        const newCoords = [];
-        for (let i = 0; i < result.geofence.cords[0].length - 1; i++) {
-
-          for (let j = 0; j < result.geofence.cords[0][i].length - 1; j++) {
-            newCoords.push([result.geofence.cords[0][i][j + 1], result.geofence.cords[0][i][j]]);
-
+        if (result.geofence.cords[0]) {
+          const newCoords = [];
+          for (let i = 0; i < result.geofence.cords[0].length - 1; i++) {
+  
+            for (let j = 0; j < result.geofence.cords[0][i].length - 1; j++) {
+              newCoords.push([result.geofence.cords[0][i][j + 1], result.geofence.cords[0][i][j]]);
+  
+            }
           }
+          const polylayer = L.polygon(newCoords).addTo(this.map);
+          if(newCoords.length > 0) {
+            this.map.fitBounds(polylayer.getBounds());
+          }
+          this.mapControls(this.map);
+          polylayer.on('pm:update', (e) => {
+            const layer = e.layer;
+            
+            const polyEdit = layer.toGeoJSON();
+            this.geofenceData.geofence.type = polyEdit.geometry.type;
+            this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
+          });
+  
+          polylayer.on('pm:drag', (e) => {
+            const layer = e.layer;
+            // console.log("pm:drag", layer);
+            const polyEdit = layer.toGeoJSON();
+            this.geofenceData.geofence.type = polyEdit.geometry.type;
+            this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
+          });
+          polylayer.on('pm:remove', (e) => {
+            const layer = e.layer;
+            const polyEdit = layer.toGeoJSON();
+            this.geofenceData.geofence.type = '';
+            this.geofenceData.geofence.cords[0] = [];
+          });
+          this.spinner.hide();
         }
-        console.log(newCoords);
-        // console.log(new_cords);
-        const polylayer = L.polygon(newCoords).addTo(this.map);
-        if(newCoords.length > 0) {
-          this.map.fitBounds(polylayer.getBounds());
-        }
-        this.mapControls(this.map);
-        polylayer.on('pm:update', (e) => {
-          const layer = e.layer;
-          // console.log("update", layer);
-          const polyEdit = layer.toGeoJSON();
-          this.geofenceData.geofence.type = polyEdit.geometry.type;
-          this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
-        });
-
-        polylayer.on('pm:drag', (e) => {
-          const layer = e.layer;
-          // console.log("pm:drag", layer);
-          const polyEdit = layer.toGeoJSON();
-          this.geofenceData.geofence.type = polyEdit.geometry.type;
-          this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
-        });
-        polylayer.on('pm:remove', (e) => {
-          const layer = e.layer;
-          console.log("pm:remove", layer);
-          const polyEdit = layer.toGeoJSON();
-          this.geofenceData.geofence.type = '';
-          this.geofenceData.geofence.cords[0] = [];
-        });
-        this.spinner.hide();
+       
       });
   }
   /*
@@ -258,7 +292,6 @@ export class AddGeofenceComponent implements OnInit {
  updateGeofence() {
   this.hasError = false;
   this.hasSuccess = false;
-  console.log('update', this.geofenceData);
   this.apiService.putData('geofences', this.geofenceData).subscribe({
     complete: () => { },
     error: (err) => {
@@ -306,10 +339,16 @@ export class AddGeofenceComponent implements OnInit {
         return throwError(e);
       }),
     ).subscribe(res => {
-      console.log('geo search', res);
       this.searchResults = res;
 
     });
+  }
+
+  fetchGeofenceTypes() {
+    this.apiService.getData('geofenceTypes')
+      .subscribe((result: any) => {
+        this.geofenceTypes = result.Items;
+      });
   }
 
   searchDestination(loc, lat, lng) {

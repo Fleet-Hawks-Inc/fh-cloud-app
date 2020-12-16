@@ -63,9 +63,9 @@
               "src/assets/js/custom.js",
               "src/assets/js/theme.init.js",
               "src/assets/js/examples/examples.dashboard.js",
-              "src/assets/js/jquery.validate.min.js",
               "node_modules/chart.js/dist/Chart.bundle.min.js",
               "node_modules/slick-carousel/slick/slick.min.js",
+              "src/assets/js/jquery.validate.min.js",
               "node_modules/select2/dist/js/select2.min.js"
             ]
           },
@@ -89,8 +89,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "7mb",
-                  "maximumError": "7mb"
+                  "maximumWarning": "8mb",
+                  "maximumError": "8mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -118,8 +118,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "7mb",
-                  "maximumError": "7mb"
+                  "maximumWarning": "8mb",
+                  "maximumError": "8mb"
                 },
                 {
                   "type": "anyComponentStyle",

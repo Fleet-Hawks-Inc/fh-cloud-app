@@ -526,3 +526,28 @@ html.fixed .content-body {
     width: 100%;
     text-decoration-line: none;
 }
+.minus-sign {
+    position: absolute;
+    top: 12px;
+    width: 25px;
+    left: -18px;
+    height: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.map-search__results {
+    position: absolute;
+    list-style: none;
+    top: 75px;
+    left: 15px;
+    width: 100%;
+    z-index: 9;
+    box-shadow: 0 0 1px 1px rgba(0,0,0,0.1);
+}
+.custom-dt-buttons .buttons-excel {
+    display: none;
+}
+.dataTables_filter {
+    display: none;
+}

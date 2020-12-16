@@ -1,52 +1,52 @@
 <ul class="nav nav-main">                         
 
- <li class="">
-     <a class="nav-link" [routerLink]="['/dispatch']">
+  <li routerLinkActive="nav-active"> 
+     <a class="nav-link" [routerLink]="['/dispatch', 'quotes']">
      <i class="fas fa-truck-loading" aria-hidden="true"></i>
      <span>Estimates</span>
      </a>                        
   </li>
-  <li class="">
-     <a class="nav-link" [routerLink]="['/dispatch']">
+  <li routerLinkActive="nav-active"> 
+     <a class="nav-link" [routerLink]="['/dispatch', 'orders']"> 
      <i class="fas fa-truck-loading" aria-hidden="true"></i>
      <span>Orders</span>
      </a>                        
   </li>
-  <li class="">
-     <a class="nav-link" [routerLink]="['/dispatch']">
+  <li routerLinkActive="nav-active"> 
+     <a class="nav-link" [routerLink]="['/dispatch','trips','trip-list']">
      <i class="fas fa-road" aria-hidden="true"></i>
      <span>Trips</span>
      </a>                        
   </li>
  
-  <li class="">
+  <li routerLinkActive="nav-active"> 
      <a class="nav-link" [routerLink]="['/dispatch', 'routes', 'route-list']">
      <i class="fas fa-route" aria-hidden="true"></i>
      <span>Routes</span>
      </a>                        
   </li>
-  <li class="">
-     <a class="nav-link" routerLink="['/dispatch', 'routing', 'Route-Planner']">
+  <li routerLinkActive="nav-active"> 
+     <a class="nav-link" [routerLink]="['/dispatch', 'planner', 'calendar-view']">
      <i class="far fa-file-alt" aria-hidden="true"></i>
      <span> Planner</span>
      </a>                        
   </li>
 
-  <li class="">
-     <a class="nav-link" [routerLink]="['/dispatch']">
+  <li routerLinkActive="nav-active"> 
+     <a class="nav-link" [routerLink]="['/dispatch','invoices']">
      <i class="fas fa-file-invoice" aria-hidden="true"></i>
      <span>Invoices</span>
      </a>                        
   </li>
-  <li class="">
-     <a class="nav-link" [routerLink]="['/dispatch', 'cross-border']">
+  <li routerLinkActive="nav-active"> 
+     <a class="nav-link" [routerLink]="['/dispatch', 'cross-border','eManifests']">
      <i class="fas fa-flag-usa" aria-hidden="true"></i>
      <span>Cross Border</span>
      </a>                        
   </li>
 
 
-  <li class="">
+  <li routerLinkActive="nav-active"> 
      <a class="nav-link" [routerLink]="['/dispatch', 'documents']">
      <i class="far fa-folder" aria-hidden="true"></i>
      <span>Documents</span>

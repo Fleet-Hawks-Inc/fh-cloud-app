@@ -1,0 +1,1230 @@
+<section class="body">
+   
+   <!-- start: header -->
+   <app-header></app-header>
+   <!-- end: header -->
+
+
+
+   <div class="inner-wrapper">
+       <!-- start: sidebar -->
+       <app-sidebar></app-sidebar>
+       <!-- end: sidebar -->
+       <section role="main" class="content-body p-0">
+        <header class="page-header">
+           <div class="row pr-5 " style="padding-top:10px;">
+              <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}} </div>
+              <div class="col-md-8  col-lg-8 text-right pr-4">
+                 <!-- <a class="btn btn-success btn-sm modal-with-form" href="#bolTemplateModal">Create BOL</a>  --><a href="all-orders.php" class="btn btn-default"><i class="fas fa-list"></i> All Orders</a> </div>
+           </div>
+        </header>
+           <div class="card">
+               <div class="card-body">
+                 <form #orderForm="ngForm" (ngSubmit)="orderForm.form.valid && onSubmit()">
+                         <div class="form-group row">
+                           <div class="col-lg-12 text-right">
+                               <!-- <p class="mb-0"><a href="#" class="blue1 font-weight-bold"><i class="fas fa-tools"></i> Load Setting</a></p> -->
+                           </div>
+                           <div class="col-lg-6">
+                               <div class="row">
+                                   <div class="col-lg-3 col-sm-12 col-xs-12 col-12 labelalign">
+                                       <label class="control-label font-weight-semibold mb-0 text-3 text-dark">Load Type</label>
+                                   </div>
+                                   <div class="col-lg-6">
+                                       <!-- <div class="btn-group-toggle" data-toggle="buttons">
+                                           <label class="btn btn-outline btn-fleet mr-2 active" style="width:110px;">
+                                               <input autocomplete="off" id="btnopt1" name="loadType" type="radio"> FTL </label>
+                                           <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;">
+                                               <input autocomplete="off" id="btnopt2" name="loadType" type="radio"> LTL </label>
+                                       </div> -->
+                                       <label class="d-inline mr-3">
+                                            <input [(ngModel)]="quoteData.orderMode" type="radio" name="mode" value="FTL">FTL
+                                      </label>
+                                      <label>
+                                            <input [(ngModel)]="quoteData.orderMode" type="radio" name="mode" value="LTL">LTL
+                                      </label>
+                                   </div>
+                               </div>
+                           </div>
+                           
+                       </div>
+                       
+                       <div class="form-group row mt-3">
+                           <div class="col-lg-12">
+                               <h4 class="mt-0 text-dark font-weight-bold text-4">Customer</h4> </div>
+                           <div class="col-lg-5 offset-lg-1">
+                               <div class="row">
+                                   <div class="col-lg-10">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark">Customer</label>
+                                       <select [(ngModel)]="quoteData.customerID" name="customerID" #customerID="ngModel" required customerID (change)="selectedCustomer($event.target.value)" class="form-control">
+                                           <optgroup label="Select Customer">
+                                              <option value=""></option>
+                                               <option 
+                                                  *ngFor="let customer of customers" 
+                                                  value="{{customer.customerID}}"
+                                               >
+                                                  {{customer.firstName}} {{customer.lastName}}
+                                               </option>
+                                           </optgroup>
+                                       </select>
+                                       <span class="text-danger"
+                                         *ngIf="(customerID.touched || orderForm.submitted)&& customerID.errors?.required">
+                                         This Field is required
+                                      </span>
+                                   </div>
+                                   <div class="col-lg-2 mar-top-37"> <a class="btn btn-success btn-sm modal-with-form" href="#addCustomerModal"><i class="fas fa-plus"></i></a> </div>
+                                   <div class="col-lg-10 mt-4" *ngIf="customerSelected">
+                                       <div class="" style="border: 0.4px solid #e1e2e3; border-radius: 0px 0px 15px 15px;">
+                                           <div class="row pl-3 pr-3">
+                                               <div class="col-lg-6" style="background-color:#e1e2e3;">
+                                                   <h5 class=" font-weight-bold">Details</h5> </div>
+                                               <div class="col-lg-6 text-right" style="background-color:#e1e2e3;">
+                                                   <!-- <button type="button" class="btn btn-default btn-xs mt-2" data-toggle="modal" data-target="#addressModal"><i class="fas fa-pencil-alt"></i>Edit</button> -->
+                                               </div>
+                                           </div>
+                                           <div class="row pl-3 pr-3">
+                                               <div class="col-lg-12">
+                                                  <div class="row" *ngFor="let item of customerSelected">
+                                                     <div class="col-lg-6">
+                                                        <label class="control-label text-lg-right"><span class=" font-weight-bold">Address:</span> {{item.customerAddress.address1}} {{item.customerAddress.address2}}</label>
+                                                     </div>
+                                                     <div class="col-lg-6">
+                                                        <label class="control-label text-lg-right"><span class=" font-weight-bold">Phone:</span> {{item.workPhone}}</label>
+                                                     </div>
+                                                     <div class="col-lg-6">
+                                                        <label class="control-label text-lg-right"><span class=" font-weight-bold">City:</span> {{item.customerAddress.cityID}}</label>
+                                                     </div>
+                                                     <div class="col-lg-6">
+                                                        <label class="control-label text-lg-right"><span class=" font-weight-bold">State:</span> {{item.customerAddress.stateID}}</label>
+                                                     </div>
+                                                     <div class="col-lg-6">
+                                                        <label class="control-label text-lg-right"><span class=" font-weight-bold">Country:</span> {{item.customerAddress.countryID}}</label>
+                                                     </div>
+                                                     <div class="col-lg-6">
+                                                        <label class="control-label text-lg-right"><span class=" font-weight-bold">Email:</span>
+                                                           {{item.workEmail}}</label>
+                                                     </div>
+                                                     <div class="col-lg-6">
+                                                        <label class="control-label text-lg-right"><span class=" font-weight-bold">Fax:</span> --</label>
+                                                     </div>
+                                                  </div>
+                                                   
+                                                   
+                                               </div>
+                                               
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                               <!-- <div class="row mt-2">
+                                   <div class="col-lg-10">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark">Customer PO#</label>
+                                       <input [(ngModel)]="quoteData.customerPO" name="customerPO" type="text" class="form-control"> </div>
+                               </div> -->
+                               
+                           </div>
+                           <div class="col-lg-5 offset-lg-1">
+                               <div class="row">
+                                   <div class="col-lg-10">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark">Quote Number</label>
+                                       <input [(ngModel)]="quoteData.quoteNumber" name="quoteNumber" type="text" class="form-control"> </div>
+                               </div>
+                               <div class="row mt-2">
+                                   <div class="col-lg-5">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark">Quote Creation Date</label>
+                                       <input type="text" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" [(ngModel)]="quoteData.creationDate" name="creationDate" class="form-control">
+                                   </div>
+                                   <div class="col-lg-5">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark">Quote Expiry Date</label>
+                                       <input type="text" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" [(ngModel)]="quoteData.expiryDate" name="expiryDate" class="form-control">
+                                    </div>
+                               </div>
+                               <div class="row mt-2">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark">Reference</label>
+                                       <input [(ngModel)]="quoteData.reference" name="reference" type="text" class="form-control"> </div>
+                              </div>
+                               
+                           </div>
+                       </div>
+                       
+                     
+                       <div class="row">
+                          <div class="col-6">
+                             <div class="shipper__listing" *ngIf="quoteData.shipperInfo?.length > 0">
+                                <h4 class="mt-0 text-dark font-weight-bold text-4">Shippers</h4>
+                                <table class="table">
+                                   <tbody>
+                                     
+                                      <tr *ngFor="let item of quoteData.shipperInfo; let i = index;">
+                                         <td>
+                                            {{item.shipperName}}
+                                         </td>
+                                         <td>
+                                            {{item.pickupLocation}}
+                                         </td>
+                                         <td>
+                                            {{item.locationDateTime}}
+                                         </td>
+                                         <td>
+                                            <i (click)="editList('shipper', item, i)" class="fa fa-edit fa-fw"></i>
+                                            <i (click)="removeList('shipper', i)" class="fa fa-trash fa-fw"></i>
+                                         </td>
+                                      </tr>
+                                      
+                                   </tbody>
+                                </table>
+                              </div>
+                          </div>
+                          <div class="col-6">
+                             <div class="shipper__listing" *ngIf="quoteData.receiverInfo?.length > 0">
+                                <h4 class="mt-0 text-dark font-weight-bold text-4">Receivers</h4>
+                                <table class="table">
+                                   <tbody>
+                                     
+                                      <tr *ngFor="let item of quoteData.receiverInfo; let i = index;">
+                                         <td>
+                                            {{item.receiverName}}
+                                         </td>
+                                         <td>
+                                            {{item.dropOffLocation}}
+                                         </td>
+                                         <td>
+                                            {{item.locationDateTime}}
+                                         </td>
+                                         <td>
+                                            <i class="fa fa-edit fa-fw"></i>
+                                            <i (click)="removeList('receiver', i)" class="fa fa-trash fa-fw"></i>
+                                         </td>
+                                      </tr>
+                                      
+                                   </tbody>
+                                </table>
+                              </div>
+                          </div>
+                       </div>
+                     <div class="form-group row divderrel">
+                        <div class="midledriver">
+                        </div>
+                        <p class="mb-1 mt-1 mr-1 midleicon btn btn-default"><i class="fas fa-arrow-circle-right"></i></p>
+                        <div class="col-lg-6">
+                           <h4 class="mt-0 text-dark font-weight-bold text-4">Add Shipper</h4>
+                           
+                           <div class="pl-0 pr-5">
+                           <div class="toggle toggle-primary">
+                               <section class="toggle">
+                                   <label (click)="toggleAccordian(i)" class="text-dark text-5 font-weight-bold">Shipper
+                                      <!-- <span *ngIf="i != 0;" (click)="remove('shipper', i)" class="minus-sign btn btn-success btn-sm">
+                                         <i class="fas fa-minus fa-fw d-block m-0"></i>
+                                      </span>  -->
+                                   </label>
+                                   <div class="" *ngIf="visibleIndex === i">
+                                   <div class="row">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Shipper</label>
+                                      </div>
+                                      <div class="col-lg-6 col-md-12">
+                                         <select [(ngModel)]="shipperCurrent.shipperName"
+                                         name="shipperName" #shipperName="ngModel" required shipperName class="form-control">
+                                            <optgroup label="">
+                                               <option value="Manjot" data-select2-id="6">Manjot</option>
+                                               <option value="Heera">Heera</option>
+                                               <option value="Sagar">Sagar</option>
+                                            </optgroup>
+                                         </select>
+                                         <span class="text-danger" *ngIf="(orderForm.submitted) && shipperName.errors?.required">
+                                            This Field is required
+                                         </span>
+                                      </div>
+                                      <div class="col-lg-3">
+                                         
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Pickup Location</label>
+                                      </div>
+                                      
+                                      <div class="col-lg-6">
+                                         <input [(ngModel)]="shipperCurrent.pickupLocation"
+                                         name="pickupLocation" (keyup)="searchTerm.next($event);" class="form-control" #pickupLocation="ngModel" required pickupLocation tabindex="-1" aria-hidden="true">
+                                         
+                                         <ul class="p-0 m-0 text-left map-search__results bg-white" *ngIf="searchResults">
+                                            <li *ngFor="let item of searchResults;">
+                                               <a href="javascript:;" (click)="assignLocation('shipper', item.address.label)" title="{{item.address.label}}">{{item.address.label}}</a>
+                                            </li>
+                                         </ul>
+                                         
+                                         <span class="text-danger" *ngIf="(orderForm.submitted) && pickupLocation.errors?.required">
+                                            This Field is required
+                                         </span>
+                                      </div>
+                                      <div class="col-lg-3">
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Pickup Date/Time</label>
+                                      </div>
+                                      <div class="col-lg-3">
+                                         <div class="input-group">
+                                            <input [(ngModel)]="shipperCurrent.pickupDate"
+                                            name="pickupDate" type="text" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" #pickupDate="ngModel" required pickupDate placeholder="" class="form-control">
+                                         </div>
+                                         <span class="text-danger" *ngIf="(orderForm.submitted) && pickupDate.errors?.required">
+                                            This Field is required
+                                         </span>
+                                      </div>
+                                      <div class="col-lg-3">
+                                         <div class="input-group">
+                                            <ngb-timepicker [(ngModel)]="shipperCurrent.pickupTime"
+                                            name="pickupTime" type="text" class="" placeholder=""  #pickupTime="ngModel" required pickupTime [meridian]="meridian" [spinners]="spinners" [seconds]="seconds"></ngb-timepicker>
+                                            <!-- <input [(ngModel)]="item.pickupTime"
+                                            name="item.pickupTime{{i}}" type="text" class="form-control" placeholder="hour:minute"  #pickupTime="ngModel" required pickupTime id="timepicker2"> -->
+                                         </div>
+                                         <span class="text-danger" *ngIf="(orderForm.submitted) && pickupTime.errors?.required">
+                                            This Field is required
+                                         </span>
+                                      </div>
+                                      <!-- <div class="col-lg-3 mt-1">
+                                      </div> -->
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Pickup Instruction</label>
+                                      </div>
+                                      <div class="col-lg-6">
+                                         <textarea [(ngModel)]="shipperCurrent.pickupInstruction"
+                                         name="pickupInstruction" class="form-control" rows="3" id="textareaDefault" style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
+                                      </div>
+                                      <div class="col-lg-3">
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Contact Person at PickUp</label>
+                                      </div>
+                                      <div class="col-lg-6">
+                                         <input [(ngModel)]="shipperCurrent.contactPerson"
+                                         name="contactPerson" type="text" class="form-control" id="inputDefault">
+                                      </div>
+                                      <div class="col-lg-3 mt-1">
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Phone</label>
+                                      </div>
+                                      <div class="col-lg-6">
+                                         <input [(ngModel)]="shipperCurrent.phone"
+                                         name="phone" type="text" class="form-control" id="inputDefault">
+                                      </div>
+                                      <div class="col-lg-3 mt-1">
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">BOL</label>
+                                      </div>
+                                      <div class="col-lg-6">
+                                         <input [(ngModel)]="shipperCurrent.BOL"
+                                         name="BOL" type="file" />
+                                      </div>
+                                      <div class="col-lg-3 mt-1">
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Reference</label>
+                                      </div>
+                                      <div class="col-lg-6">
+                                         <input [(ngModel)]="shipperCurrent.reference"
+                                         name="reference"  type="text" class="form-control" id="inputDefault">
+                                      </div>
+                                      <div class="col-lg-3 mt-1">
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Notes</label>
+                                      </div>
+                                      <div class="col-lg-6">
+                                         <input [(ngModel)]="shipperCurrent.notes"
+                                         name="notes"  type="text" class="form-control" id="inputDefault">
+                                      </div>
+                                      <div class="col-lg-3 mt-1">
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Temperature Required</label>
+                                      </div>
+                                      <div class="col-lg-3">
+                                         <input [(ngModel)]="shipperCurrent.minTemprature"
+                                         name="minTemprature"  type="text" class="form-control" placeholder="From" id="inputDefault">
+                                      </div>
+                                      <div class="col-lg-2">
+                                         <select [(ngModel)]="shipperCurrent.minTempratureUnit"
+                                         name="minTempratureUnit" data-plugin-selecttwo="" class="form-control populate" data-select2-id="10" tabindex="-1" aria-hidden="true">
+                                            <optgroup label="">
+                                               <option value="°C" data-select2-id="12">°C</option>
+                                               <option value="°F">°F</option>
+                                            </optgroup>
+                                         </select>
+                                      </div>
+                                      <div class="col-lg-3 mt-1">
+                                      </div>
+                                   </div>
+
+                                   
+
+
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                      </div>
+                                      <div class="col-lg-3">
+                                         <input [(ngModel)]="shipperCurrent.maxTemprature"
+                                         name="maxTemprature" type="text" class="form-control" placeholder="To" id="inputDefault">
+                                      </div>
+                                      <div class="col-lg-2">
+                                         <select [(ngModel)]="shipperCurrent.maxTempratureUnit"
+                                         name="maxTempratureUnit" data-plugin-selecttwo="" class="form-control populate" data-select2-id="13" tabindex="-1" aria-hidden="true">
+                                            <optgroup label="">
+                                               <option value="°C" data-select2-id="15">°C</option>
+                                               <option value="°F">°F</option>
+                                            </optgroup>
+                                           </select>
+                                      </div>
+                                      <div class="col-lg-3 mt-1">
+                                      </div>
+                                   </div>
+
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 col-sm-12 col-xs-12 col-12 labelalign">
+                                         <label class="control-label font-weight-semibold mb-0 text-3 text-dark" for="inputDefault">Will Driver Load ?</label>
+                                      </div>
+                                      <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                         <div class="radio-custom">
+                                            <input [(ngModel)]="shipperCurrent.driverLoad"
+                                            name="driverLoad" type="radio" value="yes" id="loadyes" checked="">
+                                            <label for="radioExample1">Yes</label>
+                                         </div>
+                                      </div>
+                                      <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                         <div class="radio-custom">
+                                            <input [(ngModel)]="shipperCurrent.driverLoad"
+                                            name="driverLoad" type="radio" value="no" id="loadno">
+                                            <label for="radioExample2">No</label>
+                                         </div>
+                                      </div>
+                                   </div>
+
+                                   <div class="divcenter mt-2">
+                                      <p class="mb-1"><a href="javascript:;" (click)="saveShipper()" class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Save</a></p>
+                                   </div>
+                                   </div>
+                               </section>
+                           </div>
+                           </div>
+                           
+                           <!-- <a (click)="addShipper()" class="btn btn-success btn-sm" href="javascript:;"><i class="fas fa-plus"></i> Add Next Shipper</a> -->
+                           
+                           
+                        </div>
+                        
+                        
+                        
+                        <div class="col-lg-6">
+                           <h4 class="mt-0 text-dark font-weight-bold text-4">Add Receiver</h4>
+                           
+                           <div class="pl-0 pr-5">
+                           <div class="toggle toggle-primary" data-plugin-toggle>
+                               <section class="toggle">
+                                   <label (click)="toggleAccordian(i)" class="text-dark text-5 font-weight-bold">Receiver
+                                      <!-- <span *ngIf="i != 0;" (click)="remove('receiver', i)" class="minus-sign btn btn-success btn-sm">
+                                         <i class="fas fa-minus fa-fw d-block m-0"></i>
+                                      </span> -->
+                                   </label>
+                                   <div class="" *ngIf="visibleIndex === i">
+                                   <div class="row">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Receiver</label>
+                                      </div>
+                                      <div class="col-lg-6 col-md-12">
+                                         <select [(ngModel)]="receiverCurrent.receiverName"
+                                         name="receiverName" #receiverName="ngModel" required receiverName class="form-control" data-select2-id="16" tabindex="-1" aria-hidden="true">
+                                            <optgroup label="">
+                                               <option value="Manjot" data-select2-id="18">Manjot</option>
+                                               <option value="Heera">Heera</option>
+                                               <option value="Sagar">Sagar</option>
+                                            </optgroup>
+                                         </select>
+                                         <span class="text-danger" *ngIf="(orderForm.submitted) && receiverName.errors?.required">
+                                            This Field is required
+                                         </span>
+                                      </div>
+                                      <div class="col-lg-3">
+                                         
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Drop Off Location</label>
+                                      </div>
+                                      <div class="col-lg-6">
+                                         <input [(ngModel)]="receiverCurrent.dropOffLocation"
+                                         name="dropOffLocation" #dropOffLocation="ngModel" required dropOffLocation (keyup)="searchTerm.next($event);" class="form-control" tabindex="-1" aria-hidden="true">
+                                         
+                                         <ul class="p-0 m-0 text-left map-search__results bg-white" *ngIf="searchResults1">
+                                            <li *ngFor="let item of searchResults1;">
+                                               <a href="javascript:;" (click)="assignLocation('receiver', item.address.label)" title="{{item.address.label}}">{{item.address.label}}</a>
+                                            </li>
+                                         </ul>
+                                         <!-- <select [(ngModel)]="item.dropOffLocation"
+                                         name="item.dropOffLocation{{i}}" #dropOffLocation="ngModel" required dropOffLocation class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
+                                            <optgroup label="">
+                                               <option value="Calgary, Alberta" data-select2-id="21">Calgary, Alberta</option>
+                                               <option value="Delta, BC">Delta, BC</option>
+                                               <option value="Winnipeg, Manitoba">Winnipeg, Manitoba</option>
+                                            </optgroup>
+                                         </select> -->
+                                         <span class="text-danger" *ngIf="(orderForm.submitted) && dropOffLocation.errors?.required">
+                                            This Field is required
+                                         </span>
+                                      </div>
+                                      <div class="col-lg-3">
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label  class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Delivery Date/Time</label>
+                                      </div>
+                                      <div class="col-lg-3">
+                                         <div class="input-group">
+                                            <input [(ngModel)]="receiverCurrent.dropOffDate"
+                                            name="dropOffDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" #dropOffDate="ngModel" required dropOffDate type="text" placeholder="" class="form-control">
+                                         </div>
+                                         <span class="text-danger" *ngIf="(orderForm.submitted) && dropOffDate.errors?.required">
+                                            This Field is required
+                                         </span>
+                                      </div>
+                                      <div class="col-lg-3">
+                                         <div class="input-group">
+                                            <ngb-timepicker  [(ngModel)]="receiverCurrent.dropOffTime"
+                                            name="dropOffTime" #dropOffTime="ngModel" required dropOffTime type="text" class="" placeholder="" [meridian]="meridian" [spinners]="spinners" [seconds]="seconds"></ngb-timepicker>
+                                         </div>
+                                         <span class="text-danger" *ngIf="(orderForm.submitted) && dropOffTime.errors?.required">
+                                            This Field is required
+                                         </span>
+                                      </div>
+                                      <!-- <div class="col-lg-3 mt-1">
+                                      </div> -->
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Delivery Instruction</label>
+                                      </div>
+                                      <div class="col-lg-6">
+                                         <textarea [(ngModel)]="receiverCurrent.dropOffInstruction"
+                                         name="dropOffInstruction" class="form-control" rows="3" id="textareaDefault" style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
+                                      </div>
+                                      <div class="col-lg-3">
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Contact Person at Delivery</label>
+                                      </div>
+                                      <div class="col-lg-6">
+                                         <input [(ngModel)]="receiverCurrent.contactPerson"
+                                         name="contactPerson" type="text" class="form-control" id="inputDefault">
+                                      </div>
+                                      <div class="col-lg-3 mt-1">
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Phone</label>
+                                      </div>
+                                      <div class="col-lg-6">
+                                         <input [(ngModel)]="receiverCurrent.phone"
+                                         name="phone" type="text" class="form-control" id="inputDefault">
+                                      </div>
+                                      <div class="col-lg-3 mt-1">
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Reference</label>
+                                      </div>
+                                      <div class="col-lg-6">
+                                         <input [(ngModel)]="receiverCurrent.reference"
+                                         name="reference" type="text" class="form-control" id="inputDefault">
+                                      </div>
+                                      <div class="col-lg-3 mt-1">
+                                      </div>
+                                   </div>
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Notes</label>
+                                      </div>
+                                      <div class="col-lg-6">
+                                         <input [(ngModel)]="receiverCurrent.notes"
+                                         name="notes" type="text" class="form-control" id="inputDefault">
+                                      </div>
+                                      <div class="col-lg-3 mt-1">
+                                      </div>
+                                   </div>
+
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Temperature Required</label>
+                                      </div>
+                                      <div class="col-lg-3">
+                                         <input [(ngModel)]="receiverCurrent.minTemprature"
+                                         name="minTemprature" type="text" class="form-control" placeholder="From" id="inputDefault">
+                                      </div>
+                                      <div class="col-lg-2">
+                                         <select [(ngModel)]="receiverCurrent.minTempratureUnit"
+                                         name="minTempratureUnit" data-plugin-selecttwo="" class="form-control populate" data-select2-id="22" tabindex="-1" aria-hidden="true">
+                                            <optgroup label="">
+                                               <option value="°C" data-select2-id="24">°C</option>
+                                               <option value="°F">°F</option>
+                                            </optgroup>
+                                         </select>
+                                         </div>
+                                      <div class="col-lg-3 mt-1">
+                                      </div>
+                                   </div>
+
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 labelalign">
+                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                      </div>
+                                      <div class="col-lg-3">
+                                         <input [(ngModel)]="receiverCurrent.maxTemprature"
+                                         name="maxTemprature" type="text" class="form-control" placeholder="To" id="inputDefault">
+                                      </div>
+                                      <div class="col-lg-2">
+                                         <select [(ngModel)]="receiverCurrent.maxTempratureUnit"
+                                         name="maxTempratureUnit" data-plugin-selecttwo="" class="form-control populate" data-select2-id="25" tabindex="-1" aria-hidden="true">
+                                            <optgroup label="">
+                                               <option value="°C" data-select2-id="24">°C</option>
+                                               <option value="°F">°F</option>
+                                            </optgroup>
+                                         </select>
+                                        </div>
+                                      <div class="col-lg-3 mt-1">
+                                      </div>
+                                   </div>
+
+                                   <div class="row mt-3">
+                                      <div class="col-lg-3 col-sm-12 col-xs-12 col-12 labelalign">
+                                         <label class="control-label font-weight-semibold mb-0 text-3 text-dark" for="inputDefault">Will Driver Unload ?</label>
+                                      </div>
+                                      <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                         <div class="radio-custom">
+                                            <input [(ngModel)]="receiverCurrent.driverUnload"
+                                            name="driverUnload" type="radio" value="yes" id="unloadyes" checked="">
+                                            <label for="radioExample1">Yes</label>
+                                         </div>
+                                      </div>
+                                      <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                         <div class="radio-custom">
+                                            <input [(ngModel)]="receiverCurrent.driverUnload"
+                                            name="driverUnload" type="radio" value="no" id="unloadno">
+                                            <label for="radioExample2">No</label>
+                                         </div>
+                                      </div>
+                                   </div>
+
+                                   <div class="divcenter mt-2">
+                                      <a href="javascript:;" class="mb-1 mt-1 mr-1 btn btn-md btn-dark" (click)="saveReceiver()">Save</a>
+                                   </div>
+                                   </div>
+                               </section>
+                           </div>
+                           </div>
+                           
+                           <!-- <a class="btn btn-success btn-sm" href="javascript:" (click)="addReceiver()"><i class="fas fa-plus"></i> Add Next Receiver</a> -->
+                           
+                           
+                        </div>
+                     </div>
+
+                     
+                     <div class="form-group row">
+                       
+                        <div class="col-lg-12">
+                           <h4 class="mt-0 text-dark font-weight-bold text-4">Freight Details</h4>
+                           <div class="row mt-3">
+                              <div class="col-lg-2">
+                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Pick Up Location</label>
+                                 <select [(ngModel)]="quoteData.freightDetails.pickupLocation"
+                                 name="pickupLocation" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                       <option *ngFor="let item of quoteData.shipperInfo;" value="{{item.shipperName}}">{{item.pickupLocation}}</option>
+                                    </optgroup>
+                                 </select>
+                              </div>
+                              
+                              <div class="col-lg-2">
+                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Delivery Location</label>
+                                 <select [(ngModel)]="quoteData.freightDetails.deliveryLocation"
+                                 name="deliveryLocation" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                      <option *ngFor="let item of quoteData.receiverInfo;" value="{{item.receiverName}}">{{item.dropOffLocation}}</option>
+                                    </optgroup>
+                                 </select>
+                              </div>
+
+                              <div class="col-lg-1">
+                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Commodity</label>
+                                 <input [(ngModel)]="quoteData.freightDetails.commodity"
+                                 name="commodity" type="text" class="form-control">
+                              </div>
+
+                              <div class="col-lg-1">
+                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Quantity</label>
+                                 <input [(ngModel)]="quoteData.freightDetails.quantity"
+                                 name="quantity" type="text" class="form-control">
+                              </div>
+                              
+                              <div class="col-lg-1">
+                               <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                 <select [(ngModel)]="quoteData.freightDetails.quantityUnit"
+                                 name="quantityUnit" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                       <option value="Bag" data-select2-id="21">Bag</option>
+                                       <option value="Bale">Bale</option>
+                                       <option value="Barrel">Barrel</option>
+                                       <option value="Basket">Basket</option>
+                                       <option value="Bin">Bin</option>
+                                       <option value="Box">Box</option>
+                                       <option value="Bucket">Bucket</option>
+                                       <option value="Can">Can</option>
+                                       <option value="Crate">Crate</option>
+                                    </optgroup>
+                                 </select>
+                              </div>
+                              
+                              <div class="col-lg-1">
+                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Rate</label>
+                                 <input [(ngModel)]="quoteData.freightDetails.rate"
+                                 name="rate" type="text" class="form-control">
+                              </div>
+                              
+                              <div class="col-lg-1">
+                               <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                 <select [(ngModel)]="quoteData.freightDetails.rateUnit"
+                                 name="rateUnit" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                      <option value="Bag" data-select2-id="21">Bag</option>
+                                      <option value="Bale">Bale</option>
+                                      <option value="Barrel">Barrel</option>
+                                      <option value="Basket">Basket</option>
+                                      <option value="Bin">Bin</option>
+                                      <option value="Box">Box</option>
+                                      <option value="Bucket">Bucket</option>
+                                      <option value="Can">Can</option>
+                                      <option value="Crate">Crate</option>
+                                    </optgroup>
+                                 </select>
+                              </div>
+                              
+                              
+
+                              <div class="col-lg-1">
+                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Weight</label>
+                                 <input [(ngModel)]="quoteData.freightDetails.weight"
+                                 name="weight" type="text" class="form-control">
+                              </div>
+                              
+                              <div class="col-lg-1">
+                               <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                 <select [(ngModel)]="quoteData.freightDetails.weightUnit"
+                                 name="weightUnit" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                       <option value="ton(s)" data-select2-id="21">ton(s)</option>
+                                       <option value="Kilograms">Kilograms</option>
+                                       <option value="lbs">lbs</option>
+                                    </optgroup>
+                                 </select>
+                              </div>
+                              
+                              
+                              <div class="col-lg-1">
+                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Amount</label>
+                                 <div class="input-group mb-3">
+                                    <span class="input-group-prepend positionsta">
+                                    <span class="input-group-text pt-0 pb-0">$</span>
+                                    </span>
+                                    <input [(ngModel)]="quoteData.freightDetails.amount"
+                                    name="amount" type="text" class="form-control">
+                                 </div>
+                              </div>
+                              
+                           </div>
+
+                           <a (click)="addFreight()" class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Another Line</a>
+                        </div>
+                        
+                     </div>
+
+
+                     <div class="form-group row">
+                       
+                        <div class="col-lg-6">
+                           <h4 class="mt-0 text-dark font-weight-bold text-4">Additional Details</h4>
+
+                           <div class="row mt-3">
+                              <div class="col-lg-3 labelalign">
+                                 <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">&nbsp;</label>
+                              </div>
+                              <div class="col-lg-6">
+                                 <div class="checkbox-custom checkbox-default">
+                                    <input [(ngModel)]="quoteData.additionalDetails.dropTrailer"
+                                    name="dropTrailer" type="checkbox" id="droptrailer">
+                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="droptrailer">Drop Trailer</label>
+                                 </div>
+                             
+                              </div>
+                              <div class="col-lg-3">
+                              </div>
+                           </div>
+
+                           
+                           
+                           <div class="row mt-3">
+                              <div class="col-lg-3 labelalign">
+                                 <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Trailer Type</label>
+                              </div>
+                              <div class="col-lg-6">
+                                 <select [disabled]="quoteData.additionalDetails.dropTrailer" [(ngModel)]="quoteData.additionalDetails.trailerType"
+                                 name="trailerType" class="form-control populate" data-select2-id="49" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                    <option value="Refer" data-select2-id="51">Refer</option>
+                                    <option value="Dry Van">Dry Van</option>
+                                    <option value="Flat Bed">Flat Bed</option>
+                                    </optgroup>
+                                    </select>
+                              </div>
+                              <div class="col-lg-3">
+                              </div>
+                           </div>
+
+                           <div class="row mt-3">
+                              <div class="col-lg-3 labelalign">
+                                 <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Load Type</label>
+                              </div>
+                              <div class="col-lg-2">
+                                 <div class="checkbox-custom checkbox-default">
+                                    <input name="loadType1" (change)="getLoadTypes(0, 'hazMat', $event.target.checked)" value="hazMat" type="checkbox" id="HazMat">
+                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="HazMat">HazMat</label>
+                                 </div>
+                              </div>
+
+                              <div class="col-lg-3">
+                                 <div class="checkbox-custom checkbox-default">
+                                    <input
+                                    name="loadType2" (change)="getLoadTypes(1, 'oversize load', $event.target.checked)" value="oversize load" type="checkbox" id="Load">
+                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="Load">Oversize Load</label>
+                                 </div>
+                              </div>
+
+                              <div class="col-lg-2">
+                                 <div class="checkbox-custom checkbox-default">
+                                    <input
+                                    name="loadType3" (change)="getLoadTypes(2, 'reefer', $event.target.checked)" value="reefer" type="checkbox" id="Reefer">
+                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="Reefer">Reefer</label>
+                                 </div>
+                              </div>
+
+                              <div class="col-lg-2">
+                                 <div class="checkbox-custom checkbox-default">
+                                    <input
+                                    name="loadType4" (change)="getLoadTypes(3, 'tanker', $event.target.checked)" value="tanker" type="checkbox" id="Tanker">
+                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="Tanker">Tanker</label>
+                                 </div>
+                              </div>
+
+                              
+                           </div>
+
+                           
+                        </div>
+                        <div class="col-lg-6">
+                           <div class="row mt-5">
+                                   <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark">Attachments</label>
+                                   </div>
+                                   <div class="col-lg-6 col-md-12">
+                                       <input [(ngModel)]="quoteData.additionalDetails.attachments"
+                                       name="attachments" type="file" class="form-control p-0"> </div>
+                                   <div class="col-lg-3"> </div>
+                               </div>
+                        </div>
+                     </div>
+
+
+                     <div class="form-group row">
+                       
+                        <div class="col-lg-8">
+                           <h4 class="mt-0 text-dark font-weight-bold text-4">Charges</h4>
+
+                           
+                           <div class="row mt-3">
+                              <div class="col-lg-3 labelalign">
+                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Freight Fee</label>
+                              </div>
+                              <div class="col-lg-3 col-md-12">
+                                 <select [(ngModel)]="quoteData.charges.freightFee.type"
+                                 name="type" data-plugin-selecttwo="" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                       <option value="Flat Fee">Flat Fee</option>
+                                       <option value="Per Mile">Per Mile</option>
+                                       <option value="Bag">Bag</option>
+                                       <option value="Barrel">Barrel</option>
+                                       <option value="Basket">Basket</option>
+                                       <option value="Bin">Bin</option>
+                                       <option value="Box">Box</option>
+                                       <option value="Bucket">Bucket</option>
+                                       <option value="Can">Can</option>
+                                       <option value="Crate">Crate</option>
+                                    </optgroup>
+                                 </select>
+                              </div>
+                              <div class="col-lg-2">
+                                 <div class="input-group mb-3">
+                                    <span class="input-group-prepend positionsta">
+                                    <span class="input-group-text pt-0 pb-0">$</span>
+                                    </span>
+                                    <input [(ngModel)]="quoteData.charges.freightFee.amount"
+                                    name="amount" (keyup)="amountCalculate()" type="text" class="form-control" placeholder="0.00">
+                                 </div>
+                              </div>
+                              <div class="col-lg-2">
+                                 <select [(ngModel)]="quoteData.charges.freightFee.currency"
+                                 name="currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                       <option value="CAD">CAD</option>
+                                       <option value="USD">USD</option>
+                                    </optgroup>
+                                 </select>
+                              </div>
+                              <div class="col-lg-2">
+                                 <p class="text-right">$ <span [innerHTML]="freightFee">0.00</span> </p>
+                              </div>
+
+                           </div>
+                           <div class="row mt-3">
+                              <div class="col-lg-3 labelalign">
+                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Fuel Surcharge</label>
+                              </div>
+                              <div class="col-lg-3">
+                                 <select [(ngModel)]="quoteData.charges.fuelSurcharge.type"
+                                 name="type" class="form-control populate" data-select2-id="55" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                      <option value="Flat Fee">Flat Fee</option>
+                                      <option value="Per Mile">Per Mile</option>
+                                      <option value="Bag">Bag</option>
+                                      <option value="Barrel">Barrel</option>
+                                      <option value="Basket">Basket</option>
+                                      <option value="Bin">Bin</option>
+                                      <option value="Box">Box</option>
+                                      <option value="Bucket">Bucket</option>
+                                      <option value="Can">Can</option>
+                                      <option value="Crate">Crate</option>
+                                    </optgroup>
+                                 </select>
+                              </div>
+                              <div class="col-lg-2">
+                                 <div class="input-group mb-3">
+                                    <span class="input-group-prepend positionsta">
+                                    <span class="input-group-text pt-0 pb-0">$</span>
+                                    </span>
+                                    <input [(ngModel)]="quoteData.charges.fuelSurcharge.amount"
+                                    name="amount" (keyup)="amountCalculate()" type="text" class="form-control" placeholder="0.00">
+                                 </div>
+                              </div>
+                              <div class="col-lg-2">
+                                 <select [(ngModel)]="quoteData.charges.fuelSurcharge.currency"
+                                 name="currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                      <option value="CAD">CAD</option>
+                                      <option value="USD">USD</option>
+                                    </optgroup>
+                                 </select>
+                              </div>
+                              <div class="col-lg-2">
+                                 <p class="text-right">$ <span [innerHTML]="fuelSurcharge">0.00 </span></p>
+                              </div>
+                           </div>
+                           <div class="row mt-3">
+                              <div class="col-lg-3 labelalign">
+                                 <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Accessorial Fee</label>
+                              </div>
+                              <div class="col-lg-3">
+                                 <select [(ngModel)]="quoteData.charges.accessorialFee.type"
+                                 name="type" class="form-control populate" data-select2-id="58" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                    <option value="Stop Off" data-select2-id="60">Stop Off</option>
+                                    <option value="Lumper">Lumper</option>
+                                    <option value="Detention">Detention</option>
+                                    <option value="Tarp">Tarp</option>
+                                    </optgroup>
+                                    </select>
+                              </div>
+                              <div class="col-lg-2">
+                                 <div class="input-group mb-3">
+                                    <span class="input-group-prepend positionsta">
+                                    <span class="input-group-text pt-0 pb-0">$</span>
+                                    </span>
+                                    <input (keyup)="amountCalculate()" [(ngModel)]="quoteData.charges.accessorialFee.amount"
+                                    name="amount" type="text" class="form-control" placeholder="0.00">
+                                 </div>
+                              </div>
+                              <div class="col-lg-2">
+                                 <select [(ngModel)]="quoteData.charges.accessorialFee.currency"
+                                 name="currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                      <option value="CAD">CAD</option>
+                                      <option value="USD">USD</option>
+                                    </optgroup>
+                                 </select>
+                              </div>
+                              <div class="col-lg-2">
+                                 <p class="text-right">$ <span [innerHTML]="accessorialFee">0.00 </span></p>
+                              </div>
+                           </div>
+                           <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Accessorial Fee</a>
+                           <div class="row mt-3">
+                              <div class="col-lg-3 labelalign">
+                                 <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Accessorial Deduction</label>
+                              </div>
+                              <div class="col-lg-3">
+                                 <select [(ngModel)]="quoteData.charges.accessorialDeduction.type"
+                                 name="type" class="form-control populate" data-select2-id="61" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                    <option value="Stop Off" data-select2-id="63">Stop Off</option>
+                                    <option value="Lumper">Lumper</option>
+                                    <option value="Detention">Detention</option>
+                                    <option value="Tarp">Tarp</option>
+                                    </optgroup>
+                                    </select>
+                              </div>
+                              <div class="col-lg-2">
+                                 <div class="input-group mb-3">
+                                    <span class="input-group-prepend positionsta">
+                                    <span class="input-group-text pt-0 pb-0">$</span>
+                                    </span>
+                                    <input (keyup)="amountCalculate()" [(ngModel)]="quoteData.charges.accessorialDeduction.amount"
+                                    name="amount" type="text" class="form-control" placeholder="0.00">
+                                 </div>
+                              </div>
+                              <div class="col-lg-2">
+                                 <select [(ngModel)]="quoteData.charges.accessorialDeduction.unit"
+                                 name="unit" data-plugin-selecttwo="" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
+                                    <optgroup label="">
+                                       <option value="CAD">CAD</option>
+                                       <option value="USD">USD</option>
+                                    </optgroup>
+                                 </select>
+                              </div>
+                              <div class="col-lg-2">
+                                 <p class="text-right">$ <span [innerHTML]="accessorialDeduction">0.00 </span></p>
+                              </div>
+                           </div>
+                           <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Accessorial Deduction</a>
+                          
+                          <div class="row">
+                                   <div class="col-lg-8">
+                                       <div class="row mt-3">
+                                           <div class="col-lg-3 labelalign">
+                                               <label class="control-label font-weight-semibold text-3 text-dark pt-2">Tax 1</label>
+                                           </div>
+                                           <div class="col-lg-2 pr-0">
+                                               <input [(ngModel)]="quoteData.taxesInfo.name"
+                                               name="name" type="text" class="form-control" value="GST"> </div>
+                                           <div class="col-lg-2 pr-0 pl-0">
+                                               <input [(ngModel)]="quoteData.taxesInfo.amount"
+                                               name="amount" (keyup)="taxCalculate($event.target.value)" type="text" class="form-control" value="13"> </div>
+                                           <div class="col-lg-2 pl-0">
+                                               <select (change)="taxCalculate($event.target.value)" [(ngModel)]="quoteData.taxesInfo.unit"
+                                               name="unit" class="form-control populate">
+                                                   <optgroup label="">
+                                                     <option selected value="percentage">%</option>
+                                                     <option value="CAD">CAD</option>
+                                                     <option value="USD">USD</option>
+                                                   </optgroup>
+                                               </select>
+                                           </div>
+                                       </div>
+                                       <div class="row mt-3">
+                                           <div class="col-lg-3 labelalign">
+                                               <label class="control-label font-weight-semibold text-3 text-dark pt-2">Tax 2</label>
+                                           </div>
+                                           <div class="col-lg-2 pr-0">
+                                               <input type="text" class="form-control" value="PST"> </div>
+                                           <div class="col-lg-2 pr-0 pl-0">
+                                               <input type="text" class="form-control" value="5"> </div>
+                                           <div class="col-lg-2 pl-0">
+                                               <select data-plugin-selectTwo class="form-control populate">
+                                                   <optgroup label="">
+                                                     <option selected value="percentage">%</option>
+                                                     <option value="CAD">CAD</option>
+                                                     <option value="USD">USD</option>
+                                                   </optgroup>
+                                               </select>
+                                           </div>
+                                       </div>
+                                       <div class="row mt-3">
+                                           <div class="col-lg-3 labelalign">
+                                               <label class="control-label font-weight-semibold text-3 text-dark pt-2">Tax 3</label>
+                                           </div>
+                                           <div class="col-lg-2 pr-0">
+                                               <input type="text" class="form-control" value="HST"> </div>
+                                           <div class="col-lg-2 pr-0 pl-0">
+                                               <input type="text" class="form-control" value="0"> </div>
+                                           <div class="col-lg-2 pl-0">
+                                               <select data-plugin-selectTwo class="form-control populate">
+                                                   <optgroup label="">
+                                                     <option selected value="percentage">%</option>
+                                                       <option value="CAD">CAD</option>
+                                                       <option value="USD">USD</option>
+                                                   </optgroup>
+                                               </select>
+                                           </div>
+                                       </div>
+                                       <div class="row mt-3">
+                                           <div class="col-lg-3 labelalign">
+                                               <label class="control-label font-weight-semibold text-3 text-dark pt-2">Discount</label>
+                                           </div>
+                                           <div class="col-lg-2 pr-0">
+                                               <input (keyup)="discountCalculate($event.target.value)" [(ngModel)]="quoteData.discount.amount"
+                                               name="amount"  type="text" class="form-control" value="0"> </div>
+                                           <div class="col-lg-2 pl-0">
+                                               <select (change)="discountCalculate($event.target.value)" [(ngModel)]="quoteData.discount.unit"
+                                               name="unit" data-plugin-selectTwo class="form-control populate">
+                                                   <optgroup label="">
+                                                       <option selected value="percentage">%</option>
+                                                       <option value="CAD">CAD</option>
+                                                       <option value="USD">USD</option>
+                                                   </optgroup>
+                                               </select>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="col-lg-4">
+                                       <div class="row mt-3">
+                                           <div class="col-lg-9 bordtop pt-1">
+                                               <h5 class="text-right font-weight-semibold text-4 text-dark">Sub Total</h5> </div>
+                                           <div class="col-lg-3 bordtop pt-1">
+                                               <p class="text-right">$ <span [innerHTML]="subTotal"> </span></p>
+                                           </div>
+                                       </div>
+                                       <div class="row">
+                                           <div class="col-lg-9 pt-1 bordtop text-right">
+                                               <h5 class="text-right font-weight-semibold text-4 text-dark">Discount</h5> </div>
+                                           <div class="col-lg-3 bordtop pt-1">
+                                               <p class="text-right"> 
+                                                  <span *ngIf="quoteData.discount.unit != 'percentage'"> $</span>
+                                                  <span *ngIf="quoteData.discount.unit === 'percentage'"> %</span> <span [innerHTML]="discount"> </span></p>
+                                           </div>
+                                       </div>
+                                       <div class="row">
+                                           <div class="col-lg-9 bordtop pt-1">
+                                               <h5 class="text-right font-weight-semibold text-4 text-dark">Taxes</h5> </div>
+                                           <div class="col-lg-3 bordtop pt-1">
+                                               <p class="text-right">0.00</p>
+                                           </div>
+                                       </div>
+                                       <div class="row">
+                                           <div class="col-lg-9 bordtop pt-1">
+                                               <h5 class="text-right font-weight-semibold text-4 text-dark">Total Amount</h5> </div>
+                                           <div class="col-lg-3 bordtop pt-1">
+                                               <p class="text-right"> $ <span [innerHTML]="totalAmount"> </span> </p>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           
+                           
+                        </div>
+
+                        <div class="col-lg-4">
+
+                           <div class="col-lg-12 bordall">
+                              <h5 class="font-weight-semibold text-4 text-dark">Miles</h5>
+                               <h5 class="text-4 text-dark mb-3">Calculated Using</h5>
+
+                           
+                           <div class="col-lg-12 mb-3">
+                             <!-- <div class="btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-outline btn-fleet mr-2 mb-2" style="width:130px;">
+                                   <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
+                                      value="google"> Google Miles</label>
+                                <br>
+                                <label class="btn btn-outline btn-fleet mr-2 mb-2" style="width:130px;">
+                                   <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
+                                      value="pcmiles"> PC Miles</label>
+                                <br>
+                                <label class="btn btn-outline btn-fleet mr-2 mb-2 active" style="width:130px;">
+                                   <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
+                                      value="manual"> Manual</label>
+                             </div> -->
+                             <label class="d-block">
+                                   <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
+                                   value="google"> Google Miles
+                             </label>
+                             <label class="d-block">
+                                   <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
+                                   value="pcmiles"> PC Miles
+                             </label>
+                             <label class="d-block">
+                                   <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
+                                   value="manual"> Manual
+                             </label>
+                           </div>
+                           
+                           
+
+                           
+                           <div class="col-lg-12 mb-3">
+                              <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Total Miles</label>
+                              <input type="text" [(ngModel)]="quoteData.totalMiles"
+                              name="totalMiles" class="form-control">
+                           </div>
+                           </div>
+
+                           <div class="col-lg-12 pl-0 mt-3">
+                              <label class="control-label font-weight-bold text-4 text-dark" for="inputDefault">Remarks</label>
+                            <textarea [(ngModel)]="quoteData.remarks"
+                            name="remarks" class="form-control" rows="10" id="textareaDefault"></textarea>
+                            </div>
+
+                           
+
+                        </div>
+
+                        
+                     </div>
+
+          
+                  <div class="form-group row">
+                     <div class="col-lg-12">
+                        <a href="#" class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a> 
+                        <button (click)="onSubmit()" type="submit" class="btn btn-dark mt-1 modal-confirm">Create Load</button>
+                     </div>
+                   </div>
+              </form>
+              
+              
+              
+
+               </div>
+           </div>
+       </section>
+   </div>
+</section>

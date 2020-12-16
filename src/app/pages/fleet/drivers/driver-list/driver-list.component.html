@@ -1,374 +1,455 @@
 <section class="body">
-  <!-- start: header -->
-  <app-header></app-header>
-  <!-- end: header -->
+   <!-- start: header -->
+   <app-header></app-header>
+   <!-- end: header -->
 
-  <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <app-sidebar></app-sidebar>
-    <!-- end: sidebar -->
-    <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header pr-5">
-         <form class="form-horizontal" method="get">
-            <div class="row px-2" style="padding-top:10px;">
-               <div class="col-md-2 col-lg-2">
-                  <div class="input-group input-group-md mb-3">
-                     <select data-plugin-selectTwo class="form-control populate">
-                        <optgroup label="">
-                           <option value="1">Driver 1</option>
-                           <option value="2">Driver 2</option>
-                           <option value="2">Driver 3</option>
-                           <option value="2">Driver 4</option>
-                           <option value="2">Driver 5</option>
-                        </optgroup>
-                     </select>
-                  </div>
-               </div>
-               <div class="col-md-4 col-lg-4" >
-                  <div class="btn-group flex-wrap" style="width:240px;">
-                     <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle" data-toggle="dropdown">Search by Duty Status <span class="caret"></span></button>
-                     <div class="dropdown-menu" role="menu">
-                        <a class="dropdown-item text-1" href="#">All</a>
-                        <a class="dropdown-item text-1" href="#">On Duty</a>
-                        <a class="dropdown-item text-1" href="#">Off Duty</a>
-                        <a class="dropdown-item text-1" href="#">Sleeper</a>
-                        <a class="dropdown-item text-1" href="#">Driving</a>
+   <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->
+      <section role="main" class="content-body pl-0 pr-0 pt-0">
+         <header class="page-header pr-5">
+            <form class="form-horizontal" method="get">
+               <div class="row pr-1 mr-1" style="padding-top:10px;">
+                  <div class="col-md-3 col-lg-3">
+                     <div class="input-group input-group-md mb-3">
+                        <input type="text" autocomplete="off" name="driverName" [(ngModel)]="driverName"
+                           class="form-control" (input)="getSuggestions($event.target.value)">
+                     </div>
+                     <div *ngFor="let suggestedDriver of suggestedDrivers" style="cursor: pointer;"
+                        (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)">
+                        {{ suggestedDriver.firstName }} {{ suggestedDriver.lastName }}
                      </div>
                   </div>
-               </div>
-               
-               <div class="col-md-1  col-lg-1">
-                  <button type="submit" class="btn btn-sm btn-success">Search</button>
-               </div>
-               <div class="col-md-5 col-lg-5 pr-3 text-right page-buttons">
-                  <button type="button" id="map_view_btn" class="btn btn-default btn-sm">Map View</button>
-                  <button type="button" id="list_view_btn" class="btn btn-success btn-sm">List View</button>
-                  
-                  <div class="btn-group btn-group1 flex-wrap">
-                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
-                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a (click)="editDriver()" class="dropdown-item text-1" href="javascript:;">Edit</a>
-                        <a (click)="deleteDriver()" class="dropdown-item text-1" href="javascript:;">Delete</a>
-                        <a class="dropdown-item text-1" href="">Import</a>
-                        <a class="dropdown-item text-1" href="">Export</a>
+                  <div class="col-md-2 col-lg-2">
+                     <div class="btn-group flex-wrap" style="min-width:190px;">
+                        <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Search by Duty Status <span class="caret"></span></button>
+                        <div class="dropdown-menu dutystatwd" role="menu">
+                           <a class="dropdown-item text-1" [routerLink]="">All</a>
+                           <a class="dropdown-item text-1" [routerLink]="">On Duty</a>
+                           <a class="dropdown-item text-1" [routerLink]="">Off Duty</a>
+                           <a class="dropdown-item text-1" [routerLink]="">Sleeper</a>
+                           <a class="dropdown-item text-1" [routerLink]="">Driving</a>
+                        </div>
                      </div>
                   </div>
-                  <a routerLink="/fleet/drivers/add" class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i> Add Driver</a>
-               </div>
-            </div>
-         </form>
-      </header>
-      <div class="mapclass drivermain" id="map_view" style="display: none;">
-         <div id="map" class="mapclassmain"></div>
-         <div class="iconRmini" id="arrowRmini">
-            <a href="#"><i class="fas fa-arrow-right"></i></a>
-         </div>
-         <div class="iconLmini" id="arrowLmini" style="display: none">
-            <a href="#"><i class="fas fa-arrow-left"></i></a>
-         </div>
-         
-         <!-- ENTIRE FLEET DROP DOWN ON MAP -->
-         <div class="entire_fleet_map">
-            <div class="form-group row">
-               <div class="col-lg-12">
-                  <div class="input-group input-group-select-append">
-                     <span class="input-group-prepend">
-                     <span class="input-group-text">
-                     <i class="fas fa-sitemap"></i>
-                     </span>
-                     </span>
-                     <select class="form-control" multiple="multiple" data-plugin-multiselect data-plugin-options='{ "maxHeight": 200, "enableCaseInsensitiveFiltering": true }' id="ms_example6">
-                        <optgroup label="Group1">
-                           <option value="analysis"  selected> Entire Fleet</option>
-                           <option value="algebra">Linear</option>
-                           <option value="discrete">Discrete</option>
-                           <option value="numerical">Numerical</option>
-                           <option value="probability">Probability</option>
-                        </optgroup>
-                        <optgroup label="Group2">
-                           <option value="programming">Name 1</option>
-                           <option value="automata">Automata Theory</option>
-                           <option value="complexity">Complexity Theory</option>
-                           <option value="software">Software Engineering</option>
-                        </optgroup>
-                     </select>
+
+                  <div class="col-md-1  col-lg-1">
+                     <button type="submit" (click)="fetchDrivers()" class="btn btn-sm btn-success">Search</button>
+                  </div>
+
+                  <div class="col-md-6 col-lg-6 pr-1 text-right page-buttons">
+                     <button type="button" (click)="mapShow()" id="map_view_btn" class="btn btn-default btn-sm mr-2 ml-2">Map View</button>
+                     <button type="button" (click)="listView = true;mapView = false;" id="list_view_btn" class="btn btn-success btn-sm mr-2">List View</button>
+
+                     <div class="btn-group btn-group1 flex-wrap mr-2">
+                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                           aria-expanded="false">Actions<span class="caret"></span></button>
+                        <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                           style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                           <!-- <a (click)="editDriver()" class="dropdown-item text-1" href="javascript:;">Edit</a>
+                        <a (click)="deleteDriver()" class="dropdown-item text-1" href="javascript:;">Delete</a> -->
+                           <a class="dropdown-item text-1" href="javascript:;">Import</a>
+                           <a class="dropdown-item text-1" href="javascript:;" (click)="export()">Export</a>
+                        </div>
+                     </div>
+
+                     <a routerLink="/fleet/drivers/add" class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i> Add Driver</a>
                   </div>
                </div>
+            </form>
+         </header>
+         <div class="mapclass drivermain" id="map_view" *ngIf="mapView">
+            <div id="map" style="height: calc(100vh - 110px);"></div>
+            <div class="vehicleRmini" *ngIf="visible" id="arrowRvehicle">
+               <a href="javascript:;" (click)="valuechange()"><i class="fas fa-arrow-right"></i></a>
             </div>
-         </div>
-         <div class="driverminilist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverMiniList">
-            <div class="driverdetailMap">
-               <a href="driver-profile2.php">
-                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span> Manjit Singh</p>
-                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L 5K4</span>
-                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
-                  <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used Vehicle:</span> Scania Truck F 3650</span>
-                  <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span class="font-weight-bold">Asset Attached:</span> 54566</span>
-               </a>
+            <div class="vehicleLmini" *ngIf="!visible" id="arrowLvehicle">
+               <a href="javascript:;" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <div class="driverdetailMap">
-               <a href="driver-profile2.php">
-                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="offduty pull-right">OFF</span> Roshan Prince</p>
-                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T 1Z2</span>
-                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
-                  <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used Vehicle:</span> Scania Truck</span>
-                  <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span class="font-weight-bold">Asset Attached:</span> 54566</span>
-               </a>
-            </div>
-            <div class="driverdetailMap">
-               <a href="driver-profile2.php">
-                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="dutyonly pull-right">D</span> Bachitar</p>
-                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
-                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
-                  <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used Vehicle:</span> Scania Truck</span>
-                  <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span class="font-weight-bold">Asset Attached:</span> 54566</span>
-               </a>
-            </div>
-            <div class="driverdetailMap">
-               <a href="driver-profile2.php">
-                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="pcduty pull-right">PC</span> Kapil Sharma</p>
-                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
-                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
-                  <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used Vehicle:</span> Scania Truck</span>
-                  <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span class="font-weight-bold">Asset Attached:</span> 54566</span>
-               </a>
-            </div>
-            <div class="driverdetailMap">
-               <a href="driver-profile2.php">
-                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="ymduty pull-right">YM</span> Rohit Aggarwal</p>
-                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J 1P3</span>
-                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
-                  <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used Vehicle:</span> Scania Truck</span>
-                  <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span class="font-weight-bold">Asset Attached:</span> 54566</span>
-               </a>
-            </div>
-            <div class="driverdetailMap">
-               <a href="driver-profile2.php">
-                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span> Manjot Birdi</p>
-                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
-                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
-                  <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used Vehicle:</span> Scania Truck</span>
-                  <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span class="font-weight-bold">Asset Attached:</span> 54566</span>
-               </a>
-            </div>
-            <div class="driverdetailMap">
-               <a href="driver-profile2.php">
-                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="dutyonly pull-right">D</span> Ricky Clerk</p>
-                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 2542 Cleary Crt Mississauga ON L5K 1Y3</span>
-                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
-                  <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used Vehicle:</span> Scania Truck</span>
-                  <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span class="font-weight-bold">Asset Attached:</span> 54566</span>
-               </a>
-            </div>
-            <div class="driverdetailMap">
-               <a href="driver-profile2.php">
-                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span> Manjit Singh</p>
-                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L 5K4</span>
-                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
-                  <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used Vehicle:</span> Scania Truck</span>
-                  <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span class="font-weight-bold">Asset Attached:</span> 54566</span>
-               </a>
-            </div>
-            <div class="driverdetailMap">
-               <a href="driver-profile2.php">
-                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="offduty pull-right">OFF</span> Roshan Prince</p>
-                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T 1Z2</span>
-                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
-                  <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used Vehicle:</span> Scania Truck</span>
-                  <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span class="font-weight-bold">Asset Attached:</span> 54566</span>
-               </a>
-            </div>
-            <div class="driverdetailMap">
-               <a href="driver-profile2.php">
-                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="dutyonly pull-right">D</span> Bachitar</p>
-                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
-                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
-                  <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used Vehicle:</span> Scania Truck</span>
-                  <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span class="font-weight-bold">Asset Attached:</span> 54566</span>
-               </a>
-            </div>
-            <div class="driverdetailMap">
-               <a href="driver-profile2.php">
-                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="pcduty pull-right">PC</span> Kapil Sharma</p>
-                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
-                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
-                  <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used Vehicle:</span> Scania Truck</span>
-                  <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span class="font-weight-bold">Asset Attached:</span> 54566</span>
-               </a>
-            </div>
-            <div class="driverdetailMap">
-               <a href="driver-profile2.php">
-                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="ymduty pull-right">YM</span> Rohit Aggarwal</p>
-                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J 1P3</span>
-                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
-                  <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used Vehicle:</span> Scania Truck</span>
-                  <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span class="font-weight-bold">Asset Attached:</span> 54566</span>
-               </a>
-            </div>
-            <div class="driverdetailMap">
-               <a href="driver-profile2.php">
-                  <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span> Manjot Birdi</p>
-                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 122 St Surrey BC V3V 4L4</span>
-                  <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current Cycle:</span> 20</span>
-                  <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used Vehicle:</span> Scania Truck</span>
-                  <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span class="font-weight-bold">Asset Attached:</span> 54566</span>
-               </a>
-            </div>
-         </div>
-      </div>
-      <div id="list_view">
-         <div class="row">
-            <div class="col">
+
+            <!-- ENTIRE FLEET DROP DOWN ON MAP -->
+            <div id="map_collapse_sidebar">
                <section class="card">
-                  <div class="card-body">
-                     <table datatable [dtOptions]="dtOptions" class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="drivers.length > 0">
-                        <thead>
-                           <tr>
-                              <!-- <th><input type="checkbox"></th> -->
-                              
-                              <th>Name</th>
-                              <th>Duty Status</th>
-                              <th>Location</th>
-                              <th>Cur. Cycle</th>
-                              <th>Cur. Vehicle</th>
-                              <th>Assets</th>
-                              <th>Contact</th>
-                              <th>DL</th>
-                              <th>Document</th>
-                              <th>Status</th>
-                              <th>Actions</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <tr *ngFor="let driver of drivers;let i = index;">
-                              <!-- <td><input [checked]="isChecked" [(ngModel)]="driver.checked" (ngModelChange)="checkboxCount()" value="{{driver.assetIdentification}}" type="checkbox"></td> -->
-                              
-                              <td routerLink="/fleet/drivers/detail/{{driver.driverID}}">
-                                 <span class="font-weight-bold line-height-lg">{{driver.firstName}} {{driver.lastName}}</span>
-                              </td>
-                              <td>Live Status</td>
-                              <td>{{driver.address.address1}} {{driver.address.city}} {{driver.address.state }} {{driver.address.country}}</td>
-                              <td>{{driver.hosDetails.hosCycle}}</td>
-                              <td>{{driver.assignedVehicle}}</td>
-                              <td>Live Status</td>
-                              <td><span class="font-weight-bold">Phone:</span>{{driver.workPhone}} <br> <span class="font-weight-bold">E-mail:</span>{{driver.workEmail}}</td>
-                              <td><span class="font-weight-bold">DL#:</span>{{driver.licenceDetails.CDL_Number}} <br><span class="font-weight-bold">DL State:</span> {{driver.licenceDetails.issuedState}}</td>
-                              <td><span class="font-weight-bold">Type#:</span>{{driver.documentDetails[0].documentType}} <br><span class="font-weight-bold">Issue State:</span>{{driver.documentDetails[0].issuingState}}</td>
-                              
-                              <td>{{driver.driverStatus}}</td>
-                              <td class="border-0">
-                                 <div class="dropdown dropright">
-                                    <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                       <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                       <a class="dropdown-item" routerLink="/fleet/drivers/edit/{{driver.driverID}}">Edit</a>
-                                       <a href="javascript:;" class="dropdown-item" (click)="deactivateAsset(driver.isDeleted, driver.driverID)">Delete</a>
-                                    </div>
-                                  </div>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                     
+                  <header class="card-header" style="border-radius:none;">
+                     <div class="card-actions">
+                        <a class="card-action card-action-toggle" href="javascript:;" data-card-toggle=""></a>
+                     </div>
+                     <h2 class="card-title" style="width:230px;"><i class="fas fa-sitemap"></i>&nbsp;&nbsp;&nbsp; Entire Fleet</h2>
+                     <div class="mt-3">
+                        <select data-plugin-selectTwo class="form-control populate">
+                           <optgroup label="Select Truck">
+                              <option value="1">Groups</option>
+                              <option value="2">Vehicles</option>
+                              <option value="2">Drivers</option>
+                              <option value="2">Assets</option>
+                           </optgroup>
+                        </select>
+                     </div>
+                  </header>
+                  <div class="card-body" style="display: block;">
+                     <div class="treeCheckbox">
+                        <ul>
+                           <li data-jstree='{ "opened" : true }'>
+                              Entire Fleet
+                              <ul>
+                                 <li data-jstree='{ "opened" : false }'>
+                                    Long Haul
+                                    <ul>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          John Smith
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Mike William
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Harry Johnson
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          James
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Juan Carlos
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Mike Jones
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Sarah Smith
+                                       </li>
+                                    </ul>
+                                 </li>
+                                 <li data-jstree=''>
+                                    Short Haul
+                                    <ul>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          John Smith
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Mike William
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Harry Johnson
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          James Rodriguez
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Juan Carlos
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Mike Jones
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Sarah Smith
+                                       </li>
+                                    </ul>
+                                 </li>
+                                 <li data-jstree=''>
+                                    Regions
+                                    <ul>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Canada
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Central
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Mexico
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Northeast
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Southeast
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Southeast
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          West
+                                       </li>
+                                    </ul>
+                                 </li>
+                                 <li data-jstree=''>
+                                    Ungrouped
+                                 </li>
+                              </ul>
+                           </li>
+                        </ul>
+                     </div>
                   </div>
                </section>
             </div>
-         </div>
-      </div>
-   </section>
-   
-    <!-- <section role="main" class="content-body">
-      <header class="page-header">
-        <h2>{{ title }}</h2>
-
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a routerLink="">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li>
-              <span>{{ title }}</span>
-            </li>
-          </ol>
-        </div>
-      </header>
-
-      <section class="card mb-4">
-        <div class="card-body">
-          <h2 class="card-title mt-3 pull-left">{{ title }}</h2>
-          <div class="pull-right">
-            <div class="btn-group flex-wrap">
-              <button
-                type="button"
-                class="mb-1 mt-1 mr-1 btn btn-default dropdown-toggle"
-                data-toggle="dropdown"
-              >
-                <i class="fas fa-ellipsis-v"></i> Action
-                <span class="caret"></span>
-              </button>
-              <div class="dropdown-menu" role="menu">
-                <a class="dropdown-item text-1" href="#">Action</a>
-                <a class="dropdown-item text-1" href="#">Another action</a>
-                <a class="dropdown-item text-1" href="#">Something else here</a>
-                <a class="dropdown-item text-1" href="#">Separated link</a>
-              </div>
+            <div class="driverminilist" *ngIf="visible" style="overflow-y: scroll; overflow-x: hidden; height: 100%;"
+               id="driverMiniList">
+               <div class="driverdetailMap">
+                  <a href="driver-profile2.php">
+                     <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span>
+                        Manjit Singh</p>
+                     <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L
+                        5K4</span>
+                     <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current
+                           Cycle:</span> 20</span>
+                     <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used
+                           Vehicle:</span> Scania Truck F 3650</span>
+                     <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span
+                           class="font-weight-bold">Asset Attached:</span> 54566</span>
+                  </a>
+               </div>
+               <div class="driverdetailMap">
+                  <a href="driver-profile2.php">
+                     <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="offduty pull-right">OFF</span>
+                        Roshan Prince</p>
+                     <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T
+                        1Z2</span>
+                     <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current
+                           Cycle:</span> 20</span>
+                     <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used
+                           Vehicle:</span> Scania Truck</span>
+                     <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span
+                           class="font-weight-bold">Asset Attached:</span> 54566</span>
+                  </a>
+               </div>
+               <div class="driverdetailMap">
+                  <a href="driver-profile2.php">
+                     <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="dutyonly pull-right">D</span>
+                        Bachitar</p>
+                     <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
+                     <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current
+                           Cycle:</span> 20</span>
+                     <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used
+                           Vehicle:</span> Scania Truck</span>
+                     <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span
+                           class="font-weight-bold">Asset Attached:</span> 54566</span>
+                  </a>
+               </div>
+               <div class="driverdetailMap">
+                  <a href="driver-profile2.php">
+                     <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="pcduty pull-right">PC</span>
+                        Kapil Sharma</p>
+                     <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S
+                        0S4</span>
+                     <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current
+                           Cycle:</span> 20</span>
+                     <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used
+                           Vehicle:</span> Scania Truck</span>
+                     <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span
+                           class="font-weight-bold">Asset Attached:</span> 54566</span>
+                  </a>
+               </div>
+               <div class="driverdetailMap">
+                  <a href="driver-profile2.php">
+                     <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="ymduty pull-right">YM</span>
+                        Rohit Aggarwal</p>
+                     <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J
+                        1P3</span>
+                     <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current
+                           Cycle:</span> 20</span>
+                     <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used
+                           Vehicle:</span> Scania Truck</span>
+                     <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span
+                           class="font-weight-bold">Asset Attached:</span> 54566</span>
+                  </a>
+               </div>
+               <div class="driverdetailMap">
+                  <a href="driver-profile2.php">
+                     <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span>
+                        Manjot Birdi</p>
+                     <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S
+                        0S4</span>
+                     <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current
+                           Cycle:</span> 20</span>
+                     <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used
+                           Vehicle:</span> Scania Truck</span>
+                     <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span
+                           class="font-weight-bold">Asset Attached:</span> 54566</span>
+                  </a>
+               </div>
+               <div class="driverdetailMap">
+                  <a href="driver-profile2.php">
+                     <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="dutyonly pull-right">D</span>
+                        Ricky Clerk</p>
+                     <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 2542 Cleary Crt Mississauga ON L5K
+                        1Y3</span>
+                     <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current
+                           Cycle:</span> 20</span>
+                     <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used
+                           Vehicle:</span> Scania Truck</span>
+                     <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span
+                           class="font-weight-bold">Asset Attached:</span> 54566</span>
+                  </a>
+               </div>
+               <div class="driverdetailMap">
+                  <a href="driver-profile2.php">
+                     <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span>
+                        Manjit Singh</p>
+                     <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L
+                        5K4</span>
+                     <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current
+                           Cycle:</span> 20</span>
+                     <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used
+                           Vehicle:</span> Scania Truck</span>
+                     <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span
+                           class="font-weight-bold">Asset Attached:</span> 54566</span>
+                  </a>
+               </div>
+               <div class="driverdetailMap">
+                  <a href="driver-profile2.php">
+                     <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="offduty pull-right">OFF</span>
+                        Roshan Prince</p>
+                     <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T
+                        1Z2</span>
+                     <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current
+                           Cycle:</span> 20</span>
+                     <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used
+                           Vehicle:</span> Scania Truck</span>
+                     <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span
+                           class="font-weight-bold">Asset Attached:</span> 54566</span>
+                  </a>
+               </div>
+               <div class="driverdetailMap">
+                  <a href="driver-profile2.php">
+                     <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="dutyonly pull-right">D</span>
+                        Bachitar</p>
+                     <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
+                     <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current
+                           Cycle:</span> 20</span>
+                     <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used
+                           Vehicle:</span> Scania Truck</span>
+                     <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span
+                           class="font-weight-bold">Asset Attached:</span> 54566</span>
+                  </a>
+               </div>
+               <div class="driverdetailMap">
+                  <a href="driver-profile2.php">
+                     <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="pcduty pull-right">PC</span>
+                        Kapil Sharma</p>
+                     <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S
+                        0S4</span>
+                     <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current
+                           Cycle:</span> 20</span>
+                     <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used
+                           Vehicle:</span> Scania Truck</span>
+                     <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span
+                           class="font-weight-bold">Asset Attached:</span> 54566</span>
+                  </a>
+               </div>
+               <div class="driverdetailMap">
+                  <a href="driver-profile2.php">
+                     <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="ymduty pull-right">YM</span>
+                        Rohit Aggarwal</p>
+                     <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J
+                        1P3</span>
+                     <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current
+                           Cycle:</span> 20</span>
+                     <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used
+                           Vehicle:</span> Scania Truck</span>
+                     <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span
+                           class="font-weight-bold">Asset Attached:</span> 54566</span>
+                  </a>
+               </div>
+               <div class="driverdetailMap">
+                  <a href="driver-profile2.php">
+                     <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span>
+                        Manjot Birdi</p>
+                     <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 122 St Surrey BC V3V 4L4</span>
+                     <span class="driverstatus"><i class="fas fa-clock"></i> <span class="font-weight-bold">Current
+                           Cycle:</span> 20</span>
+                     <span class="driverstatus"><i class="fa fa-truck"></i> <span class="font-weight-bold">Last Used
+                           Vehicle:</span> Scania Truck</span>
+                     <span class="driverstatus"><i class="fas fa-truck-loading"></i> <span
+                           class="font-weight-bold">Asset Attached:</span> 54566</span>
+                  </a>
+               </div>
             </div>
+         </div>
+         <div id="list_view" *ngIf="listView">
+            <div class="row">
+               <div class="col">
+                  <section class="card">
+                     <div class="card-body">
 
-            <a routerLink="/fleet/drivers/Add-Driver" class="mb-1 mt-1 mr-1 btn btn-success"
-              ><i class="fas fa-plus"></i> Add Driver</a
-            >
-          </div>
-        </div>
+                        <table datatable [dtOptions]="dtOptions"
+                           class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="drivers.length > 0">
+                           <thead>
+                              <tr>
+                                 <!-- <th><input type="checkbox"></th> -->
+
+                                 <th width="8%">Name</th>
+                                 <th width="8%">Duty Status</th>
+                                 <th width="14%">Location</th>
+
+                                 <th>Cur. Cycle</th>
+                                 <th>Cur. Vehicle</th>
+                                 <th>Assets</th>
+                                 <th>Contact</th>
+                                 <th>DL</th>
+                                 <th>Document</th>
+                                 <th>Status</th>
+                                 <th width="50">Actions</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr *ngFor="let driver of drivers;let i = index;">
+                                 <!-- <td><input [checked]="isChecked" [(ngModel)]="driver.checked" (ngModelChange)="checkboxCount()" value="{{driver.assetIdentification}}" type="checkbox"></td> -->
+                                 <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;">
+                                    <span class="font-weight-bold line-height-lg">{{driver.firstName}}
+                                       {{driver.lastName}}</span>
+                                 </td>
+                                 <td>Live Status</td>
+                                 <td>{{driver.addressDetails.address1}} {{driver.addressDetails.address2}}
+                                    {{citiesObject[driver.addressDetails.cityID]}}
+                                    {{statesObject[driver.addressDetails.stateID]}}
+                                    {{countriesObject[driver.addressDetails.countryID]}}
+                                    {{driver.addressDetails.zipCode}}</td>
+                                 <td>{{cyclesObject[driver.hosDetails.hosCycle]}}</td>
+                                 <td>{{vehiclesObject[driver.assignedVehicle]}}</td>
+                                 <td>Live Status</td>
+                                 <td><span class="font-weight-bold">Phone: </span>{{driver.workPhone}} <br> <span
+                                       class="font-weight-bold">E-mail: </span>{{driver.workEmail}}</td>
+                                 <td><span class="font-weight-bold">DL#: </span>{{driver.licenceDetails.CDL_Number}}
+                                    <br><span class="font-weight-bold">DL State:
+                                    </span>{{statesObject[driver.licenceDetails.issuedState]}}</td>
+                                 <td><span class="font-weight-bold">Type#:
+                                    </span>{{documentsTypesObects[driver.documentDetails[0].documentType]}} <br><span
+                                       class="font-weight-bold">Issue State:
+                                    </span>{{statesObject[driver.documentDetails[0].issuingState]}}</td>
+
+                                 <td>{{driver.driverStatus}}</td>
+                                 <td class="border-0">
+                                    <div class="dropdown dropright">
+                                       <button class="bg-transparent border-0" type="button"
+                                          id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                          aria-expanded="false">
+                                          <i class="fas fa-ellipsis-v"></i>
+                                       </button>
+                                       <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                          <a class="dropdown-item"
+                                             routerLink="/fleet/drivers/edit/{{driver.driverID}}">Edit</a>
+                                          <a href="javascript:;" class="dropdown-item"
+                                             (click)="deactivateDriver(driver, driver.driverID)">Delete</a>
+                                       </div>
+                                    </div>
+                                 </td>
+                              </tr>
+                              <tr *ngIf="!drivers.length > 0">
+                                 <td colspan="11">
+                                    No records found
+                                 </td>
+                                 <td style="display: none;"></td>
+                                 <td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td>
+                                 <td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td>
+                              </tr>
+                           </tbody>
+                        </table>
+
+                     </div>
+                  </section>
+               </div>
+            </div>
+         </div>
       </section>
 
-      <div class="row">
-        <div class="col">
-          <section class="card">
-            <header class="card-header">
-              <h2 class="card-title">{{ title }}</h2>
-            </header>
-            <div class="card-body">
-              <table
-                class="table table-bordered table-striped mb-0"
-                #FhDataTable id="datatable-default"
-              >
-                <thead>
-                  <tr>
-                    <th>User Name</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Address</th>
-                    <th>Type</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let user of users">
-                    <td>{{ user.userName }}</td>
-                    <td>{{ user.firstName }}</td>
-                    <td>{{ user.lastName }}</td>
-                    <td>{{ user.address }}</td>
-                    <td>{{ user.userType }}</td>
-
-                    <td>
-                      <a routerLink="/fleet/drivers/Edit-Driver/{{ user.userName }}">Edit</a>
-                    </td>
-                    <td>
-                      <a [routerLink]="" (click)="deleteUser(user.userName)"
-                        >Delete</a
-                      >
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </div>
-      </div>
-    </section> -->
-  </div>
+   </div>
 </section>

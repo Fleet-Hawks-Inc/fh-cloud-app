@@ -11,7 +11,7 @@ declare var $: any;
 export class EditVehicleNewComponent implements OnInit {
   title = 'Edit Vehicles';
 
-  activeTab = 'details';
+  activeTab = 1;
   /**
    * Quantum prop
    */
@@ -27,6 +27,7 @@ export class EditVehicleNewComponent implements OnInit {
   vehicleIdentification = '';
   vehicleType = '';
   VIN = '';
+  DOT = '';
   year = '';
   manufacturerID = '';
   modelID = '';
@@ -85,7 +86,10 @@ export class EditVehicleNewComponent implements OnInit {
     premiumCurrency: '',
     vendorID: '',
     dateOfExpiry: '',
-    remiderEvery: ''
+    remiderEvery: '',
+    policyNumber: '',
+    amount: 0,
+    amountCurrency: ''
   };
   fluid = {
     fuelType: '',
@@ -96,7 +100,7 @@ export class EditVehicleNewComponent implements OnInit {
   };
   wheelsAndTyres = {
     numberOfTyres: '',
-    driverType: '',
+    driveType: '',
     brakeSystem: '',
     wheelbase: '',
     rearAxle: '',
@@ -175,6 +179,7 @@ export class EditVehicleNewComponent implements OnInit {
   countries = [];
   states = [];
   groups = [];
+  drivers = [];
 
   errors = {};
   form;
@@ -204,7 +209,9 @@ export class EditVehicleNewComponent implements OnInit {
     this.fetchInspectionForms();
     this.fetchManufacturers();
     this.fetchCountries();
+    this.fetchStates();
     this.fetchGroups();
+    this.fetchDrivers();
 
     this.apiService.getData('devices')
     .subscribe((result: any) => {
@@ -212,6 +219,20 @@ export class EditVehicleNewComponent implements OnInit {
     });
 
     this.getVehicle();
+  }
+
+  fetchDrivers(){
+    this.apiService.getData('drivers').subscribe((result: any) => {
+      this.drivers = result.Items;
+    });
+  }
+
+  fetchStates() {
+    this.apiService
+      .getData('states')
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
   }
 
   getVehicle(){
@@ -223,10 +244,11 @@ export class EditVehicleNewComponent implements OnInit {
         this.vehicleIdentification = result.vehicleIdentification;
         this.vehicleType = result.vehicleType;
         this.VIN = result.VIN;
+        this.DOT = result.DOT;
         this.year = result.year;
         this.manufacturerID = result.manufacturerID;
         this.modelID = result.modelID;
-        this.plateNumber = result.model;
+        this.plateNumber = result.plateNumber;
         this.stateID = result.stateID;
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
@@ -281,7 +303,10 @@ export class EditVehicleNewComponent implements OnInit {
           premiumCurrency: result.insurance.premiumCurrency,
           vendorID: result.insurance.vendorID,
           dateOfExpiry: result.insurance.dateOfExpiry,
-          remiderEvery: result.insurance.remiderEvery
+          remiderEvery: result.insurance.remiderEvery,
+          policyNumber: result.insurance.policyNumber,
+          amount: result.insurance.amount,
+        amountCurrency: result.insurance.amountCurrency
         };
         this.fluid = {
           fuelType: result.fluid.fuelType,
@@ -292,7 +317,7 @@ export class EditVehicleNewComponent implements OnInit {
         };
         this.wheelsAndTyres = {
           numberOfTyres: result.wheelsAndTyres.numberOfTyres,
-          driverType: result.wheelsAndTyres.driverType,
+          driveType: result.wheelsAndTyres.driveType,
           brakeSystem: result.wheelsAndTyres.brakeSystem,
           wheelbase: result.wheelsAndTyres.wheelbase,
           rearAxle: result.wheelsAndTyres.rearAxle,
@@ -431,6 +456,7 @@ export class EditVehicleNewComponent implements OnInit {
       vehicleIdentification: this.vehicleIdentification,
       vehicleType: this.vehicleType,
       VIN: this.VIN,
+      DOT: this.DOT,
       year: this.year,
       manufacturerID: this.manufacturerID,
       modelID: this.modelID,
@@ -489,7 +515,10 @@ export class EditVehicleNewComponent implements OnInit {
         premiumCurrency: this.insurance.premiumCurrency,
         vendorID: this.insurance.vendorID,
         dateOfExpiry: this.insurance.dateOfExpiry,
-        remiderEvery: this.insurance.remiderEvery
+        remiderEvery: this.insurance.remiderEvery,
+        policyNumber: this.insurance.policyNumber,
+        amount: this.insurance.amount,
+        amountCurrency: this.insurance.amountCurrency
       },
       fluid: {
         fuelType: this.fluid.fuelType,
@@ -500,7 +529,7 @@ export class EditVehicleNewComponent implements OnInit {
       },
       wheelsAndTyres: {
         numberOfTyres: this.wheelsAndTyres.numberOfTyres,
-        driverType: this.wheelsAndTyres.driverType,
+        driveType: this.wheelsAndTyres.driveType,
         brakeSystem: this.wheelsAndTyres.brakeSystem,
         wheelbase: this.wheelsAndTyres.wheelbase,
         rearAxle: this.wheelsAndTyres.rearAxle,
@@ -616,4 +645,16 @@ export class EditVehicleNewComponent implements OnInit {
     this.quantum = newValue;
     this.quantumSelected = newValue;
    }
+
+   next(){
+    this.activeTab++;
+  }
+
+  previous(){
+    this.activeTab--;
+  }
+
+  changeTab(value){
+    this.activeTab = value;
+  }
 }

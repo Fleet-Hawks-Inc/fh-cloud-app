@@ -81,6 +81,7 @@ export class ApiService {
     // };
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
+    
     return this.http.get<any>(this.BaseUrl + url , headers);
   }
 
@@ -103,7 +104,7 @@ export class ApiService {
               console.log(auth);
 
               const jwt = auth.accessToken.jwtToken;
-              //console.log('jwt' , jwt);
+              // console.log('jwt' , jwt);
               this.httpOptions = {
                 headers: new HttpHeaders({
                   'Authorization': `Bearer ${jwt}`,
@@ -134,7 +135,16 @@ export class ApiService {
     }
   }
 
+  getDatatablePostData(url: string, data) {
+    // this.getHeaders();
+    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
+    };
+    // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
+    //   'x-auth-token': this.jwt})
+    // };
+    return this.http.post(this.BaseUrl + url , data , headers);
 
+  }
 
 
 }

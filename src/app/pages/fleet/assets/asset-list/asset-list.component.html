@@ -16,23 +16,29 @@
             <div class="row" style="padding-top:10px;">
                <div class="col-md-2 col-lg-2">
                   <div class="input-group input-group-md mb-3">
-                     <ng-select [(ngModel)]="selectedAssets" name='search_asset' style="width: 100%;">
-                        <ng-option class="p-0" *ngFor="let item of allData" [value]="item.id"><a class="p-2 d-block" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</a></ng-option>
-                    </ng-select>
+                     <input type="text" autocomplete="off" name="assetIdentification" [(ngModel)]="assetIdentification" class="form-control" (input)="getSuggestions($event.target.value)">
+                   </div>
+                   <div *ngFor="let suggestedAsset of suggestedAssets" style="cursor: pointer;" (click)="setAsset(suggestedAsset.assetID, suggestedAsset.assetIdentification)">
+                     {{ suggestedAsset.assetIdentification }}
                   </div>
                </div>
+               
                <div class="col-md-2  col-lg-2">
-                  <div class="btn-group flex-wrap" style="width:240px;">
-                     <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle" data-toggle="dropdown">Search by Status <span class="caret"></span></button>
-                     <div class="dropdown-menu" role="menu">
-                        <a class="dropdown-item text-1" href="#">All</a>
-                        <a class="dropdown-item text-1" href="#">Active</a>
-                        <a class="dropdown-item text-1" href="#">Inactive</a>
-                     </div>
-                  </div>
+                  <select
+                     data-plugin-selectTwo
+                     [(ngModel)]="currentStatus" 
+                     name="currentStatus"
+                     class="form-control populate">
+                     <optgroup label="Select Type">
+                        <option *ngFor="let item of allAssetTypes;" value="{{item.description}}">{{item.description}}</option>
+                         
+                     </optgroup>
+                  </select>
                </div>
+
+               
                <div class="col-md-1  col-lg-1">
-                  <button type="submit" class="btn btn-sm btn-success">Search</button>
+                  <button type="submit" (click)="fetchAssets()" class="btn btn-sm btn-success">Search</button>
                </div>
                <div class="col-md-7  col-lg-7 text-right pr-5 page-buttons">
                   <button type="button" (click)="mapShow()" id="map_view_btn" class="btn btn-sm btn-default">Map View</button>
@@ -144,59 +150,109 @@
       <!-- LIST VIEW OF ASSETS  -->
       <div id="list_view" *ngIf="listView">
          <div class="p-2">
+            <table datatable [dtOptions]="allOptions" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="allData.length > 0">
+               <thead>
+                  <tr>
+                     <th>Asset Name/Number</th>
+                     <th>Type</th>                                          
+                     <th>Plate Number</th>
+                     <th>Last Known Location</th>                                          
+                     <th>Year</th>
+                     <th>Make</th>
+                     <th>Model</th>
+                     <th>Ownership</th>
+                     <th>Status</th>
+                     <th>Actions</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr *ngFor="let item of allData;let i = index">
+                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
+                     <td>{{assetTypesObects[item.assetDetails.assetType]}}</td>                                          
+                     <td>{{item.assetDetails.licencePlateNumber}}</td>
+                     <td >Live Location</td>
+                     <td >{{item.assetDetails.year}}</td>
+                     <td >{{item.assetDetails.manufacturer}}</td>
+                     <td >{{item.assetDetails.model}}</td>
+                     <td >{{item.assetDetails.ownerShip}}</td>
+                     <td><span class="badge badge-dark p-1 text-uppercase">{{item.assetDetails.currentStatus}}</span></td>
+                     <td>
+                        <div class="dropdown dropright">
+                           <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <i class="fas fa-ellipsis-v"></i>
+                           </button>
+                           <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                              <a class="dropdown-item" routerLink="/fleet/assets/edit/{{item.assetID}}">Edit</a>
+                              <a class="dropdown-item" href="javascript:;" (click)="deactivateAsset(item.isDeleted, item.assetID)">Delete</a>
+                           </div>
+                         </div>
+                     </td>
+                  </tr>
+                  <tr *ngIf="!allData.length > 0">
+                     <td colspan="10">
+                        <div  class="alert alert-info m-0 text-center" role="alert">
+                           No records found
+                           
+                        </div>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         
+         <!-- <div class="p-2">
             <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                <li class="nav-item">
-                  <a class="nav-link active" (click)="uncheckCheckbox(allData, '#DataTables_Table_0_wrapper')" id="all-tab" data-toggle="tab" href="#allassets" role="tab" aria-controls="allassets" aria-selected="true">All</a>
+                  <a class="nav-link active" id="all-tab" data-toggle="tab" href="#allassets" role="tab" aria-controls="allassets" aria-selected="true">All</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox(refers, '#DataTables_Table_1_wrapper')" id="reefer-tab" data-toggle="tab" href="#reefer" role="tab" aria-controls="reefer" aria-selected="false">Reefer</a>
+                  <a class="nav-link" id="reefer-tab" data-toggle="tab" href="#reefer" role="tab" aria-controls="reefer" aria-selected="false">Auto Carrier</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox(drybox, '#DataTables_Table_2_wrapper')" id="dryBox-tab" data-toggle="tab" href="#dryBox" role="tab" aria-controls="dryBox" aria-selected="false">Dry Box</a>
+                  <a class="nav-link" id="dryBox-tab" data-toggle="tab" href="#dryBox" role="tab" aria-controls="dryBox" aria-selected="false">Beverage Rack</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox(flatbed, '#DataTables_Table_3_wrapper')" id="flatBed-tab" data-toggle="tab" href="#flatBed" role="tab" aria-controls="flatBed" aria-selected="false">Flatbed</a>
+                  <a class="nav-link" id="curtain-slide-tab" data-toggle="tab" href="#curtain-slide" role="tab" aria-controls="curtain-slide" aria-selected="false">Controlled Temprature</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox(curtainSlide, '#DataTables_Table_4_wrapper')" id="curtain-slide-tab" data-toggle="tab" href="#curtain-slide" role="tab" aria-controls="curtain-slide" aria-selected="false">Curtain Slide</a>
+                  <a class="nav-link" id="flatBed-tab" data-toggle="tab" href="#flatBed" role="tab" aria-controls="flatBed" aria-selected="false">Flatbed</a>
+               </li>
+               
+               <li class="nav-item">
+                  <a class="nav-link" id="autohauler-tab" data-toggle="tab" href="#autohauler" role="tab" aria-controls="autohauler" aria-selected="false">Gondola </a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox(autoHauler, '#DataTables_Table_5_wrapper')" id="autohauler-tab" data-toggle="tab" href="#autohauler" role="tab" aria-controls="autohauler" aria-selected="false">Auto Hauler</a>
+                  <a class="nav-link" id="dump-tipper-tab" data-toggle="tab" href="#dump-tipper" role="tab" aria-controls="dump-tipper" aria-selected="false">Hopper Car</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox(dumpTipper, '#DataTables_Table_6_wrapper')" id="dump-tipper-tab" data-toggle="tab" href="#dump-tipper" role="tab" aria-controls="dump-tipper" aria-selected="false">Dump/Tipper</a>
+                  <a class="nav-link" id="intermodalChassis-tab" data-toggle="tab" href="#intermodalChassis" role="tab" aria-controls="intermodalChassis" aria-selected="false">Horse Trailer</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox(interModal, '#DataTables_Table_7_wrapper')" id="intermodalChassis-tab" data-toggle="tab" href="#intermodalChassis" role="tab" aria-controls="intermodalChassis" aria-selected="false">Intermodal Chassis</a>
+                  <a class="nav-link" id="livestock-tab" data-toggle="tab" href="#livestock" role="tab" aria-controls="livestock" aria-selected="false">Refrigerated </a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox(liveStock, '#DataTables_Table_8_wrapper')" id="livestock-tab" data-toggle="tab" href="#livestock" role="tab" aria-controls="livestock" aria-selected="false">Livestock</a>
+                  <a class="nav-link" id="lowboy-tab" data-toggle="tab" href="#lowboy" role="tab" aria-controls="lowboy" aria-selected="false">Semi-Truck</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox(lowboy, '#DataTables_Table_9_wrapper')" id="lowboy-tab" data-toggle="tab" href="#lowboy" role="tab" aria-controls="lowboy" aria-selected="false">Lowboy</a>
+                  <a class="nav-link" id="stake-tab" data-toggle="tab" href="#stake" role="tab" aria-controls="Stake" aria-selected="false">Single Drop</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox(stake, '#DataTables_Table_10_wrapper')" id="stake-tab" data-toggle="tab" href="#stake" role="tab" aria-controls="Stake" aria-selected="false">Stake</a>
+                  <a class="nav-link" id="stepDeck-tab" data-toggle="tab" href="#stepDeck" role="tab" aria-controls="stepDeck" aria-selected="false">Tank</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox(stepDeck, '#DataTables_Table_11_wrapper')" id="stepDeck-tab" data-toggle="tab" href="#stepDeck" role="tab" aria-controls="stepDeck" aria-selected="false">Step Deck</a>
-               </li>
-               <li class="nav-item">
-                  <a class="nav-link" (click)="uncheckCheckbox(tanker, '#DataTables_Table_12_wrapper')" id="tanker-tab" data-toggle="tab" href="#tanker" role="tab" aria-controls="tanker" aria-selected="false">Tanker</a>
+                  <a class="nav-link" id="tanker-tab" data-toggle="tab" href="#tanker" role="tab" aria-controls="tanker" aria-selected="false">Other</a>
                </li>
             </ul>
-         </div>
+         </div> 
          <div class="row">
             <div class="col">
                <section class="card">
                   <div class="card-body">
                      <div class="tab-content p-0" id="myTabContent">
                         <div class="tab-pane show active" id="allassets" role="tabpanel" aria-labelledby="all-tab">
-                           <table datatable [dtOptions]="allOptions" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="allData.length > 0">
+                           <table datatable [dtOptions]="allOptions" [dtTrigger]="dtTrigger" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="allData.length > 0">
                               <thead>
                                  <tr>
-                                    <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
-                                    <!-- <th></th> -->
                                     <th>Asset Name/Number</th>
                                     <th>Type</th>                                          
                                     <th>Plate Number</th>
@@ -211,10 +267,8 @@
                               </thead>
                               <tbody>
                                  <tr *ngFor="let item of allData;let i = index">
-                                    <!-- <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(allData)" value="{{item.assetIdentification}}" type="checkbox"></td> -->
-                                    
                                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
-                                    <td>{{item.assetDetails.assetType}}</td>                                          
+                                    <td>{{allAssetTypes[item.assetDetails.assetType]}}</td>                                          
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td >Live Location</td>
                                     <td >{{item.assetDetails.year}}</td>
@@ -242,7 +296,7 @@
                            </div>
                         </div>
                         <div class="tab-pane fade" id="reefer" role="tabpanel" aria-labelledby="reefer-tab">
-                           <table datatable [dtOptions]="reeferOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="refers.length > 0">
+                           <table datatable [dtOptions]="reeferOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="autoCarrier.length > 0">
                               <thead>
                                  <tr>
                                     <th>Asset Name</th>
@@ -261,7 +315,7 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr *ngFor="let item of refers;let i = index">
+                                 <tr *ngFor="let item of autoCarrier;let i = index">
                                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td onclick="window.location='asset1_details.php'">Live Location</td>
                                     <td onclick="window.location='asset1_details.php'">Live Location</td>
@@ -287,18 +341,16 @@
                                  </tr>
                               </tbody>
                            </table>
-                           <div *ngIf="!refers.length > 0" class="alert alert-info m-0 text-center" role="alert">
+                           <div *ngIf="!autoCarrier.length > 0" class="alert alert-info m-0 text-center" role="alert">
                               No records found
                               
                            </div>
                         </div>
 
                         <div class="tab-pane fade" id="dryBox" role="tabpanel" aria-labelledby="dryBox-tab">
-                           <table datatable [dtOptions]="dryboxOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="drybox.length > 0">
+                           <table datatable [dtOptions]="dryboxOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="beverageRack.length > 0">
                               <thead>
                                  <tr>
-                                    <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
-                                    
                                     <th>Asset Name</th>
                                     <th>Plate Number</th>
                                     <th>Last Known Location</th>
@@ -311,8 +363,7 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr *ngFor="let item of drybox;let i = index">
-                                    <!-- <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(drybox)" value="{{item.assetIdentification}}" type="checkbox"></td>                                           -->
+                                 <tr *ngFor="let item of beverageRack;let i = index">
                                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td>Live Location</td>
@@ -329,7 +380,6 @@
                                           <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                              <a class="dropdown-item" routerLink="/fleet/assets/edit/{{item.assetID}}">Edit</a>
                                              <a class="dropdown-item" href="javascript:;" (click)="deactivateAsset(item.isActivate)">Activate</a>
-                                             <!-- <a class="dropdown-item" (click)="deactivateAsset(item.isActivate)">Activate</a> -->
                                           </div>
                                         </div>
                                     </td>
@@ -337,7 +387,7 @@
                                  
                               </tbody>
                            </table>
-                           <div *ngIf="!drybox.length > 0" class="alert alert-info m-0 text-center" role="alert">
+                           <div *ngIf="!beverageRack.length > 0" class="alert alert-info m-0 text-center" role="alert">
                               No records found
                               
                            </div>
@@ -347,8 +397,6 @@
                            <table datatable [dtOptions]="flatbedOptions" class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="flatbed.length > 0" >
                               <thead>
                                  <tr>
-                                    <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
-                                    
                                     <th>Asset Name</th>
                                     <th>Plate Number</th>
                                     <th>Last Known Location</th>
@@ -362,8 +410,6 @@
                               </thead>
                               <tbody>
                                  <tr *ngFor="let item of flatbed;let i = index">
-                                    <!-- <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(flatbed)" value="{{item.assetIdentification}}" type="checkbox"></td>                                           -->
-                                    
                                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td >Live Location</td>
@@ -393,11 +439,9 @@
                         </div>
 
                         <div class="tab-pane fade" id="curtain-slide" role="tabpanel" aria-labelledby="curtain-slide-tab">
-                           <table datatable [dtOptions]="curtainOptions" class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="curtainSlide.length > 0" >
+                           <table datatable [dtOptions]="curtainOptions" class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="controlledTemp.length > 0" >
                               <thead>
                                  <tr>
-                                    <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
-                                    
                                     <th >Asset Name</th>
                                     <th >Plate Number</th>
                                     <th >Last Know Location</th>
@@ -410,9 +454,7 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr *ngFor="let item of curtainSlide;let i = index">
-                                    <!-- <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(curtainSlide)" value="{{item.assetIdentification}}" type="checkbox"></td>                                           -->
-                                    
+                                 <tr *ngFor="let item of controlledTemp;let i = index">
                                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td >Live Location</td>
@@ -435,7 +477,7 @@
                                  </tr>
                               </tbody>
                            </table>
-                           <div *ngIf="!curtainSlide.length > 0" class="alert alert-info m-0 text-center" role="alert">
+                           <div *ngIf="!controlledTemp.length > 0" class="alert alert-info m-0 text-center" role="alert">
                               No records found
                               
                            </div>
@@ -443,11 +485,9 @@
                         
 
                         <div class="tab-pane fade" id="autohauler" role="tabpanel" aria-labelledby="autohauler-tab">
-                           <table datatable [dtOptions]="dryboxOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="autoHauler.length > 0">
+                           <table datatable [dtOptions]="dryboxOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="gondola.length > 0">
                               <thead>
                                  <tr>
-                                    <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
-                                    
                                     <th>Asset Name</th>
                                     <th>Plate Number</th>
                                     <th>Last Known Location</th>
@@ -460,8 +500,7 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr *ngFor="let item of autoHauler;let i = index">
-                                    <!-- <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(autoHauler)" value="{{item.assetIdentification}}" type="checkbox"></td>                                           -->
+                                 <tr *ngFor="let item of gondola;let i = index">
                                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td>Live Location</td>
@@ -485,18 +524,16 @@
                                  
                               </tbody>
                            </table>
-                           <div *ngIf="!autoHauler.length > 0" class="alert alert-info m-0 text-center" role="alert">
+                           <div *ngIf="!gondola.length > 0" class="alert alert-info m-0 text-center" role="alert">
                               No records found
                               
                            </div>
                         </div>
 
                         <div class="tab-pane fade" id="dump-tipper" role="tabpanel" aria-labelledby="dump-tipper-tab">
-                           <table datatable [dtOptions]="dryboxOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="dumpTipper.length > 0">
+                           <table datatable [dtOptions]="dryboxOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="hopper.length > 0">
                               <thead>
                                  <tr>
-                                    <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
-                                    
                                     <th>Asset Name</th>
                                     <th>Plate Number</th>
                                     <th>Last Known Location</th>
@@ -509,8 +546,7 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr *ngFor="let item of dumpTipper;let i = index">
-                                    <!-- <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(dumpTipper)" value="{{item.assetIdentification}}" type="checkbox"></td>                                           -->
+                                 <tr *ngFor="let item of hopper;let i = index">
                                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td>Live Location</td>
@@ -534,18 +570,16 @@
                                  
                               </tbody>
                            </table>
-                           <div *ngIf="!dumpTipper.length > 0" class="alert alert-info m-0 text-center" role="alert">
+                           <div *ngIf="!hopper.length > 0" class="alert alert-info m-0 text-center" role="alert">
                               No records found
                               
                            </div>
                         </div>
 
                         <div class="tab-pane fade" id="intermodalChassis" role="tabpanel" aria-labelledby="intermodalChassis-tab">
-                           <table datatable [dtOptions]="dryboxOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="interModal.length > 0">
+                           <table datatable [dtOptions]="dryboxOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="horseTrailer.length > 0">
                               <thead>
                                  <tr>
-                                    <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
-                                    
                                     <th>Asset Name</th>
                                     <th>Plate Number</th>
                                     <th>Last Known Location</th>
@@ -558,8 +592,7 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr *ngFor="let item of interModal;let i = index">
-                                    <!-- <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(dumpTipper)" value="{{item.assetIdentification}}" type="checkbox"></td>                                           -->
+                                 <tr *ngFor="let item of horseTrailer;let i = index">
                                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td>Live Location</td>
@@ -583,7 +616,7 @@
                                  
                               </tbody>
                            </table>
-                           <div *ngIf="!interModal.length > 0" class="alert alert-info m-0 text-center" role="alert">
+                           <div *ngIf="!horseTrailer.length > 0" class="alert alert-info m-0 text-center" role="alert">
                               No records found
                               
                            </div>
@@ -593,8 +626,6 @@
                            <table datatable [dtOptions]="dryboxOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="liveStock.length > 0">
                               <thead>
                                  <tr>
-                                    <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
-                                    
                                     <th>Asset Name</th>
                                     <th>Plate Number</th>
                                     <th>Last Known Location</th>
@@ -608,7 +639,6 @@
                               </thead>
                               <tbody>
                                  <tr *ngFor="let item of liveStock;let i = index">
-                                    <!-- <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(dumpTipper)" value="{{item.assetIdentification}}" type="checkbox"></td>                                           -->
                                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td>Live Location</td>
@@ -642,8 +672,6 @@
                            <table datatable [dtOptions]="dryboxOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="lowboy.length > 0">
                               <thead>
                                  <tr>
-                                    <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
-                                    
                                     <th>Asset Name</th>
                                     <th>Plate Number</th>
                                     <th>Last Known Location</th>
@@ -657,7 +685,6 @@
                               </thead>
                               <tbody>
                                  <tr *ngFor="let item of lowboy;let i = index">
-                                    <!-- <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(dumpTipper)" value="{{item.assetIdentification}}" type="checkbox"></td>                                           -->
                                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td>Live Location</td>
@@ -691,8 +718,6 @@
                            <table datatable [dtOptions]="dryboxOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="stake.length > 0">
                               <thead>
                                  <tr>
-                                    <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
-                                    
                                     <th>Asset Name</th>
                                     <th>Plate Number</th>
                                     <th>Last Known Location</th>
@@ -706,7 +731,6 @@
                               </thead>
                               <tbody>
                                  <tr *ngFor="let item of stake;let i = index">
-                                    <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(dumpTipper)" value="{{item.assetIdentification}}" type="checkbox"></td>                                          
                                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td>Live Location</td>
@@ -740,8 +764,6 @@
                            <table datatable [dtOptions]="dryboxOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="stepDeck.length > 0">
                               <thead>
                                  <tr>
-                                    <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
-                                    
                                     <th>Asset Name</th>
                                     <th>Plate Number</th>
                                     <th>Last Known Location</th>
@@ -755,7 +777,6 @@
                               </thead>
                               <tbody>
                                  <tr *ngFor="let item of stepDeck;let i = index">
-                                    <!-- <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(dumpTipper)" value="{{item.assetIdentification}}" type="checkbox"></td>                                           -->
                                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td>Live Location</td>
@@ -789,7 +810,6 @@
                            <table datatable [dtOptions]="dryboxOptions"  class="table table-bordered table-responsive-lg table-striped mb-0 reefer-datatable"  *ngIf="tanker.length > 0">
                               <thead>
                                  <tr>
-                                    <!-- <th width="5%"><input [(ngModel)]="headCheckbox" (change)="checkuncheckall($event)" type="checkbox"></th> -->
                                     
                                     <th>Asset Name</th>
                                     <th>Plate Number</th>
@@ -804,7 +824,6 @@
                               </thead>
                               <tbody>
                                  <tr *ngFor="let item of tanker;let i = index">
-                                    <!-- <td><input [checked]="isChecked" [(ngModel)]="item.checked" (ngModelChange)="checkboxCount(dumpTipper)" value="{{item.assetIdentification}}" type="checkbox"></td>                                           -->
                                     <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td>Live Location</td>
@@ -837,7 +856,7 @@
                   </div>
                </section>
             </div>
-         </div>
+         </div> -->
       </div>
    </section>
 </div>
