@@ -5227,10 +5227,10 @@
                             <label>
                               <input
                                 type="radio"
-                                name="optionsRadios"
-                                id="optionsRadios1"
-                                value="option1"
-                                checked=""
+                                name="settings.primaryMeter" 
+                                ngValue="miles"
+                                disabled
+                                [(ngModel)]="settings.primaryMeter"
                               />
                               Miles
                             </label>
@@ -5241,10 +5241,10 @@
                             <label>
                               <input
                                 type="radio"
-                                name="optionsRadios"
-                                id="optionsRadios1"
-                                value="option1"
-                                checked=""
+                                disabled
+                                name="settings.primaryMeter" 
+                                ngValue="kilometers"  
+                                [(ngModel)]="settings.primaryMeter"
                               />
                               Kilometers
                             </label>
@@ -5259,12 +5259,12 @@
                             <label>
                               <input
                                 type="radio"
-                                name="optionsRadios"
-                                id="optionsRadios1"
-                                value="option1"
-                                checked=""
+                                disabled
+                                name="settings.fuelUnit" 
+                                ngValue="gallons(USA)"  
+                                [(ngModel)]="settings.fuelUnit"
                               />
-                              Gallons (US)
+                              Gallons (USA)
                             </label>
                           </div>
                         </div>
@@ -5273,10 +5273,10 @@
                             <label>
                               <input
                                 type="radio"
-                                name="optionsRadios"
-                                id="optionsRadios1"
-                                value="option1"
-                                checked=""
+                                disabled
+                                name="settings.fuelUnit" 
+                                ngValue="gallons(CA)"  
+                                [(ngModel)]="settings.fuelUnit"
                               />
                               Gallons (CA)
                             </label>
@@ -5287,10 +5287,10 @@
                             <label>
                               <input
                                 type="radio"
-                                name="optionsRadios"
-                                id="optionsRadios1"
-                                value="option1"
-                                checked=""
+                                disabled
+                                name="settings.fuelUnit" 
+                                ngValue="liters"  
+                                [(ngModel)]="settings.fuelUnit"
                               />
                               Litres
                             </label>
@@ -5386,10 +5386,10 @@
                             <label>
                               <input
                                 type="radio"
-                                name="optionsRadios4"
-                                id="optionsRadios4"
-                                value="option1"
-                                checked=""
+                                disabled
+                                name="settings.measurmentUnit" 
+                                ngValue="imperial"  
+                                [(ngModel)]="settings.measurmentUnit"
                               />
                               Imperial (inches, pounds, gallons, miles)
                             </label>
@@ -5400,10 +5400,10 @@
                             <label>
                               <input
                                 type="radio"
-                                name="optionsRadios4"
-                                id="optionsRadios4"
-                                value="option1"
-                                checked=""
+                                disabled
+                                name="settings.measurmentUnit" 
+                                ngValue="metric"  
+                                [(ngModel)]="settings.measurmentUnit"
                               />
                               Metric (centimeters, kilograms, liters,
                               kilometers)
