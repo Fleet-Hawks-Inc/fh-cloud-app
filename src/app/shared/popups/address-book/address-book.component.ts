@@ -23,7 +23,9 @@ export class AddressBookComponent implements OnInit {
   receivers: any;
   staffs: any;
   fcCompanies: any;
+
   allData: any;
+
   form;
   countries;
   states;
@@ -264,8 +266,10 @@ export class AddressBookComponent implements OnInit {
           this.receivers = receivers.Items,
           this.staffs = staffs.Items,
           this.fcCompanies = fcCompanies.Items,
+
           this.allData = [...this.customers, ...this.drivers, ...this.brokers, ...this.vendors,
                             ...this.carriers, ...this.shippers, ...this.receivers, ...this.staffs, ...this.fcCompanies];                           
+
           this.countries = countries;
           this.addresses = addresses;
         }
