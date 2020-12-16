@@ -40,7 +40,7 @@
                              </div>
                              <div class="row  m-0" >
                                 <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Cycle:</div>
-                                <div class="col-lg-6 p-2 bor_half">{{cycle}}</div>
+                                <div class="col-lg-6 p-2 bor_half">{{cycleObjects[cycle]}}</div>
                              </div>
                              <!-- <div class="row  m-0">
                                 <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Exempted/Non-Exempted:</div>
@@ -48,7 +48,7 @@
                                 </div> -->
                              <div class="row  m-0">
                                 <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
-                                <div class="col-lg-6 p-2 bor_half">{{homeTerminal}}</div>
+                                <div class="col-lg-6 p-2 bor_half">{{yardsObjects[homeTerminal]}}</div>
                              </div>
                              <div class="row  m-0">
                                 <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Phone:</div>
@@ -86,7 +86,7 @@
                                    <a class="nav-link" href="#driverTripsDriverProfile" data-toggle="tab">Trips</a>
                                 </li>
                              </ul>
-                             <div class="tab-content mt-3" style="box-shadow:none;border:none;">
+                             <div class="tab-content mt-1" style="box-shadow:none;border:none;">
                                 <div id="logsDriverProfile" class="tab-pane active">
                                    <div >
                                       <table class="table table-striped table-bordered simple-table">

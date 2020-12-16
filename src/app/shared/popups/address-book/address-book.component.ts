@@ -3,6 +3,9 @@ import { ApiService } from '../../../services/api.service';
 import { from, Subject, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { HereMapService } from '../../../services';
+import { ToastrService } from 'ngx-toastr';
+import { mergeMap, takeUntil } from 'rxjs/operators';
+import { forkJoin, Observable, of } from 'rxjs';
 
 declare var $: any;
 @Component({
@@ -11,109 +14,198 @@ declare var $: any;
   styleUrls: ['./address-book.component.css']
 })
 export class AddressBookComponent implements OnInit {
+  customers: any;
+  drivers: any;
+  brokers: any;
+  vendors: any;
+  carriers: any;
+  shippers: any;
+  receivers: any;
+  staffs: any;
+  fcCompanies: any;
+
+  allData: any;
+
   form;
   countries;
   states;
   cities;
   public customerProfileSrc: any = 'assets/img/driver/driver.png';
-  public customers = [];
   userLocation;
   manualAddress: boolean;
+  manualAddress1: boolean;
+  dtOptions: DataTables.Settings = {};
   wsib: false;
-
+  addresses = [];
   // Customer Object
   customerData = {
-    contactType: 'customer',
-    additionalData: {
-      customerAdditionalData: {
-        address: [{
-          addressType: '',
-          countryID: '',
-          stateID: '',
-          cityID: '',
-          addressZip: '',
-          address1: '',
-          address2: '',
-          saveAsLocation: '',
-        }],
-        additionalContact: {}
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    },
+    }],
+    additionalContact: {}
   };
   
   // Broker Object
   brokerData = {
-    contactType: 'broker',
-    additionalData: {
-      brokerAdditionalData: {
-        address: {},
-        additionalContact: {}
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    },
+    }],
+    additionalContact: {}
   };
 
   // Vendor Object
   vendorData = {
-    contactType: 'vendor',
-    additionalData: {
-      vendorAdditionalData: {
-        address: {}
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    }
+    }], 
   };
 
   // Carrier Object
   carrierData = {
-    contactType: 'carrier',
-    additionalData: {
-      carrierAdditionalData: {
-        address: {},
-        additionalContact: {}
+    paymentDetails: {},
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    }
+    }],
+    additionalContact: {}
+      
   };
 
   // Shipper Object
   shipperData = {
-    contactType: 'shipper',
-    additionalData: {
-      shipperAdditionalData: {
-        address: {},
-        additionalContact: {}
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    }
+    }],
+    additionalContact: {}
   };
 
   // Consignee Object
   consigneeData = {
-    contactType: 'consignee',
-    additionalData: {
-      consigneeAdditionalData: {
-        address: {},
-        additionalContact: {}
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    }
+    }],
+    additionalContact: {}
   };
 
   // fcCompany Object
   fcCompanyData = {
-    contactType: 'factoring',
-    additionalData: {
-      factoringAdditionalData: {
-        address: {},
-        fcDetails: {}
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    }
+    }],
+    fcDetails: {}
   };
 
    // Staff Object
    staffData = {
-    contactType: 'staff',
-    additionalData: {
-      staffAdditionalData: {
-        address: {},
+    paymentDetails: {},
+    address: [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { 
+        lat: '', 
+        lng: '' 
       }
-    }
+    }],
+    userAccount: {},
+    additionalContact: {}
   };
 
   public searchTerm = new Subject<string>();
@@ -124,17 +216,66 @@ export class AddressBookComponent implements OnInit {
   hasSuccess: boolean = false;
   Error: string = '';
   Success: string = '';
+  private destroy$ = new Subject();
   errors = {};
   constructor(
             private apiService: ApiService,
+            private toastr: ToastrService,
             private HereMap: HereMapService)
   { }
 
   ngOnInit() {
-    this.fetchContacts();
-    this.fetchCountries();
-    this.searchLocation();
+    forkJoin([
+      this.fetchCustomers(),
+      this.fetchDrivers(),
+      this.fetchBrokers(),
+      this.fetchVendors(),
+      this.fetchCarriers(),
+      this.fetchShippers(),
+      this.fetchConsignee(),
+      this.fetchStaffs(),
+      this.fetchFcCompanies(),
+      this.fetchCountries(),
+      this.fetchAddress(),
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        complete: () => {
+          this.initDataTable();
+        },
+        error: () => { },
+        next: ([
+          customers,
+          drivers,
+          brokers,
+          vendors,
+          carriers,
+          shippers,
+          receivers,
+          staffs,
+          fcCompanies,
+          countries,
+          addresses
+        ]: any) => {
+          this.customers = customers.Items;
+          this.drivers = drivers.Items;
+          this.brokers = brokers.Items,
+          this.vendors = vendors.Items,
+          this.carriers = carriers.Items,
+          this.shippers = shippers.Items,
+          this.receivers = receivers.Items,
+          this.staffs = staffs.Items,
+          this.fcCompanies = fcCompanies.Items,
 
+          this.allData = [...this.customers, ...this.drivers, ...this.brokers, ...this.vendors,
+                            ...this.carriers, ...this.shippers, ...this.receivers, ...this.staffs, ...this.fcCompanies];                           
+
+          this.countries = countries;
+          this.addresses = addresses;
+        }
+      });
+    this.searchLocation();
+    
     $(document).ready(() => {
       this.form = $('#customerForm, #brokerForm, #vendorForm, #carrierForm, #consigneeForm').validate();
     });
@@ -144,75 +285,95 @@ export class AddressBookComponent implements OnInit {
     this.HereMap.geoCode(value);
   }
 
-  async userAddress(address) {
-    let label = address.label;
-    this.userLocation = address.label;
-
-    if (label) {
-      this.customerData.additionalData.customerAdditionalData.address['address1'] = '';
-      this.customerData.additionalData.customerAdditionalData.address['stateID'] = '';
-      this.customerData.additionalData.customerAdditionalData.address['cityID'] = '';
-      this.customerData.additionalData.customerAdditionalData.address['addressZip'] = '';
-      // $('.address_country, .address_state, .address_city, .address_zip, .address_one').val('');
-      let result = await this.HereMap.geoCode(label);
-      result = result.items[0];
-      console.log('result', result);
-      // tslint:disable-next-line: max-line-length
-      if (result.title !== undefined || result.address.street !== undefined || result.address.houseNumber !== undefined || result.address.countryName !== undefined || result.addess.postalCode) {
-        this.customerData.additionalData.customerAdditionalData.address['address1'] =
-                                                  `${result.title} ${result.address.houseNumber} ${result.address.street}`;
-        console.log('this.countries', this.countries);
-        this.countries.filter(country => {
-          console.log('country', country);
-          if (country.countryName === result.address.countryName) {
-            console.log('result.address.countryName', result.address.countryName);
-            this.customerData.additionalData.customerAdditionalData.address['countryID'] = country.countryID;
-          }
-        });
-        // this.getStates();
-
-        if (this.states) {
-          this.states.filter(state => {
-            if (state.stateName === result.address.state) {
-              this.customerData.additionalData.customerAdditionalData.address['stateID'] = state.stateID;
-            }
-          });
-        }
-        // this.getCities();
-        if (this.cities) {
-          this.cities.filter(city => {
-            if (city.cityName === result.address.city) {
-              this.customerData.additionalData.customerAdditionalData.address['cityID'] = city.cityID;
-            }
-          });
-        }
-        
-        this.customerData.additionalData.customerAdditionalData.address['addressZip'] = result.address.postalCode;
-      }
-
-    }
-    this.searchResults = false;
+  removeUserLocation(data) {
+    data.forEach(element => {
+        delete element.userLocation;
+    });
   }
 
-  addAddress(item) {
-    console.log("itesm", item);
-    this.customerData.additionalData.customerAdditionalData.address.push({
-      addressType: item.addressType,
-      countryID: item.countryID,
-      stateID: item.stateID,
-      cityID: item.cityID,
-      addressZip: item.address_zip,
-      address1: item.address1,
-      address2: item.address2,
-      saveAsLocation: item.saveAsLocation,
+  remove(data, i) {
+    data.address.splice(i, 1);
+  }
+
+  async userAddress(data: any, i: number, item: any) {
+    let result = await this.HereMap.geoCode(item.address.label);
+    result = result.items[0];
+    $('div').removeClass('show-search__result');
+
+    data.address[i].userLocation = result.address.label;
+    data.address[i].geoCords.lat = result.position.lat;
+    data.address[i].geoCords.lng = result.position.lng;
+
+    let countryID = await this.fetchCountriesByName(result.address.countryName);
+    data.address[i].countryID = countryID;
+    data.address[i].countryName = result.address.countryName;
+
+    let stateID = await this.fetchStatesByName(result.address.state);
+    data.address[i].stateID = stateID;
+    data.address[i].stateName = result.address.state;
+
+    let cityID = await this.fetchCitiesByName(result.address.city);
+    data.address[i].cityID = cityID;
+    data.address[i].cityName = result.address.city;
+    if (result.address.houseNumber === undefined) {
+      result.address.houseNumber = '';
+    }
+    if (result.address.street === undefined) {
+      result.address.street = '';
+    }
+    data.address[i].zipCode = result.address.postalCode;
+    data.address[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;
+  }
+
+  async fetchCountriesByName(name: string) {
+    let result = await this.apiService.getData(`countries/get/${name}`)
+      .toPromise();
+    if (result.Items.length > 0) {
+      this.getStates(result.Items[0].countryID);
+      return result.Items[0].countryID;
+    }
+    return '';
+  }
+
+  async fetchStatesByName(name: string) {
+    let result = await this.apiService.getData(`states/get/${name}`)
+      .toPromise();
+    if (result.Items.length > 0) {
+      this.getCities(result.Items[0].stateID);
+      return result.Items[0].stateID;
+    }
+    return '';
+  }
+
+  async fetchCitiesByName(name: string) {
+    let result = await this.apiService.getData(`cities/get/${name}`)
+      .toPromise();
+    if (result.Items.length > 0) {
+      return result.Items[0].cityID;
+    }
+    return '';
+  }
+
+  addAddress(data) {
+    data.address.push({
+      addressType: '',
+      countryID: '',
+      stateID: '',
+      cityID: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: { lat: '', lng: '' }
     });
-    console.log("address", this.customerData.additionalData.customerAdditionalData.address);
   }
 
   public searchLocation() {
     let target;
     this.searchTerm.pipe(
       map((e: any) => {
+        $('.map-search__results').hide();
+        $('div').removeClass('show-search__result');
+        $(e.target).closest('div').addClass('show-search__result');
         target = e;
         return e.target.value;
       }),
@@ -226,7 +387,6 @@ export class AddressBookComponent implements OnInit {
       }),
     ).subscribe(res => {
       if (res) {
-        console.log('res', res);
         this.searchResults = res;
       }
     });
@@ -234,9 +394,9 @@ export class AddressBookComponent implements OnInit {
 
   // Add Customer
   addCustomer() {
-    console.log('this.this.documentData', this.customerData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.customerData).
+    this.removeUserLocation(this.customerData.address)
+    this.apiService.postData('customers', this.customerData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -259,16 +419,27 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addCustomerModal').modal('hide');
-          this.Success = 'Customer Added Successfully';
+          this.toastr.success('Customer Added Successfully');
         }
       });
   }
 
+  async checkUserExist(phone: number, email: string){
+    this.addresses.forEach(element => {
+      if( element.email === email || element.phone === phone) {
+        console.log('exists');
+      } else {
+        console.log('not exists');
+      }
+    });
+  }
+
   // Add Broker
-  addBroker() {
-    console.log('brokerData', this.brokerData);
+  async addBroker() {
     this.hideErrors();
-    this.apiService.postData('contacts', this.brokerData).
+    this.removeUserLocation(this.brokerData.address);
+    let result = await this.checkUserExist(this.brokerData['workPhone'], this.brokerData['workEmail'])
+    this.apiService.postData('brokers', this.brokerData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -290,17 +461,17 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Broker Added Successfully';
+          $('#addBrokerModal').modal('hide');
+          this.toastr.success('Customer Added Successfully');
         }
       });
   }
 
   // Add Vendor
   addVendor() {
-    console.log('vendorData', this.vendorData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.vendorData).
+    this.removeUserLocation(this.vendorData.address);
+    this.apiService.postData('vendors', this.vendorData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -322,17 +493,20 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Vendor Added Successfully';
+          this.vendorData = {
+            address: []
+          };
+          $('#addVendorModal').modal('hide');
+          this.toastr.success('Vendor Added Successfully');
         }
       });
   }
 
   // Add Carrier
   addCarrier() {
-    console.log('carrierData', this.carrierData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.carrierData).
+    this.removeUserLocation(this.carrierData.address);
+    this.apiService.postData('carriers', this.carrierData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -354,8 +528,8 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Carrier Added Successfully';
+          $('#addCarrierModal').modal('hide');
+          this.toastr.success('Carrier Added Successfully');
         }
       });
   }
@@ -363,9 +537,9 @@ export class AddressBookComponent implements OnInit {
   
   // Add Shipper
   addShipper() {
-    console.log('shipperData', this.shipperData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.shipperData).
+    this.removeUserLocation(this.shipperData.address);
+    this.apiService.postData('shippers', this.shipperData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -387,17 +561,17 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Shipper Added Successfully';
+          $('#addShipperModal').modal('hide');
+          this.toastr.success('Shipper Added Successfully');
         }
       });
   }
 
   // Add Consignee
   addConsignee() {
-    console.log('consigneeData', this.consigneeData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.consigneeData).
+    this.removeUserLocation(this.consigneeData.address);
+    this.apiService.postData('receivers', this.consigneeData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -419,17 +593,17 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Consignee Added Successfully';
+          $('#addConsigneeModal').modal('hide');
+          this.toastr.success('Consignee Added Successfully');
         }
       });
   }
 
   // Add FC Company
   addFCompany() {
-    console.log('fcCompanyData', this.fcCompanyData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.fcCompanyData).
+    this.removeUserLocation(this.fcCompanyData.address);
+    this.apiService.postData('factoringCompanies', this.fcCompanyData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -451,17 +625,17 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Company Added Successfully';
+          $('#addFCModal').modal('hide');
+          this.toastr.success('Company Added Successfully');
         }
       });
   }
 
   // Add addStaff
   addStaff() {
-    console.log('staffData', this.staffData);
     this.hideErrors();
-    this.apiService.postData('contacts', this.staffData).
+    this.removeUserLocation(this.staffData.address);
+    this.apiService.postData('staffs', this.staffData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -483,8 +657,8 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addCustomerModal').modal('hide');
-          this.Success = 'Staff Added Successfully';
+          $('#addStaffModal').modal('hide');
+          this.toastr.success('Staff Added Successfully');
         }
       });
   }
@@ -512,53 +686,28 @@ export class AddressBookComponent implements OnInit {
     this.errors = {};
   }
 
-  fetchContacts() {
-    this.apiService.getData('contacts').subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        for (let i = 0; i < result.Items.length; i++) {
-          if (result.Items[i].isDeleted === 0) {
-            this.customers.push(result.Items[i]);
-          }
-        }
-        // console.log('this.fetchContacts', this.customers);
-      }
-    });
-  }
-
   /*
    * Get all countries from api
    */
   fetchCountries() {
-    this.apiService.getData('countries').subscribe((result: any) => {
-      this.countries = result.Items;
-      // console.log('countries', this.countries);
-    });
+    return this.apiService.getData('countries');
   }
 
-  getStates(event) {
-    // const countryID = event.target.value;
-    const countryID = this.customerData.additionalData.customerAdditionalData.address['countryID'];
-    this.apiService.getData('states/country/' + countryID)
+  getStates(id) {
+    this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
         this.states = result.Items;
-        console.log('this.states', this.states)
       });
   }
 
-  getCities(event) {
-    // const stateID = event.target.value;
-    const stateID = this.customerData.additionalData.customerAdditionalData.address['stateID'];
-    this.apiService.getData('cities/state/' + stateID)
+  getCities(id) {
+    this.apiService.getData('cities/state/' + id)
       .subscribe((result: any) => {
         this.cities = result.Items;
-        console.log('this.cities', this.cities)
       });
   }
 
   uploadDriverImg(event): void {
-    console.log(event);
     if (event.target.files[0]) {
       const file = event.target.files[0];
       const reader = new FileReader();
@@ -566,6 +715,65 @@ export class AddressBookComponent implements OnInit {
 
       reader.readAsDataURL(file);
     }
+  }
+
+
+  fetchAddress() {
+    return this.apiService.getData('addresses');
+  }
+  
+  fetchCustomers() {
+    return this.apiService.getData('customers');
+  }
+
+  fetchDrivers() {
+    return this.apiService.getData('drivers');
+  }
+  
+  fetchBrokers() {
+    return this.apiService.getData('brokers');
+  }
+
+  fetchVendors() {
+    return this.apiService.getData('vendors');
+  }
+
+  fetchCarriers() {
+    return this.apiService.getData('carriers');
+  }
+  
+  fetchShippers() {
+    return this.apiService.getData('shippers');
+  }
+  
+  fetchConsignee() {
+    return this.apiService.getData('receivers');
+  }
+
+  fetchStaffs() {
+    return this.apiService.getData('staffs');
+  }
+
+  fetchFcCompanies() {
+    return this.apiService.getData('factoringCompanies');
+  }
+
+
+  carrierWSIB(value) {
+    if (value !== true) {
+      delete this.carrierData['paymentDetails']['wsibAccountNumber'];
+      delete this.carrierData['paymentDetails']['wsibExpiry'];
+    }
+  }
+
+  initDataTable() {
+    this.dtOptions = {
+      searching: false,
+      dom: 'Bfrtip', // lrtip to hide search field
+      processing: true,
+      
+     
+    };
   }
 
 }

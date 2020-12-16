@@ -125,7 +125,6 @@ export class AssetDetailComponent implements OnInit {
       .subscribe((result: any) => {
         if (result) {
           this.assetData = result.Items[0];
-          // console.log(this.assetData)
           if (!this.assetData.hasOwnProperty('devices')) {
             this.assetData['devices'] = [];
           }
@@ -156,7 +155,7 @@ export class AssetDetailComponent implements OnInit {
           this.spinner.hide(); // loader hide
         }
       }, (err) => {
-        console.log('asset detail', err);
+        
       });
   }
 
@@ -166,10 +165,9 @@ export class AssetDetailComponent implements OnInit {
       .subscribe((result: any) => {
         if (result) {
           this.deviceData = result['Items'];
-          console.log('deviceData', this.deviceData);
         }
       }, (err) => {
-        console.log('asset detail', err);
+       
       });
   }
 
@@ -187,7 +185,6 @@ export class AssetDetailComponent implements OnInit {
         let result = await this.apiService.getData('devices/' + element).toPromise();
         this.allDevices.push(result.Items[0]);
       });
-      console.log('allDevices', this.allDevices);
     }
   }
 
@@ -220,13 +217,11 @@ export class AssetDetailComponent implements OnInit {
       this.toastr.error("Device already selected");
     }
     this.fetchDevicesByID();
-    // console.log('assetData', this.assetData);
   }
 
   addDevice() {
     delete this.assetData.carrierID;
     delete this.assetData.timeModified;
-    console.log('assetData', this.assetData);
     this.apiService.postData('assets/' + this.assetID, this.assetData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -250,7 +245,7 @@ export class AssetDetailComponent implements OnInit {
         if (this.messageStatus) {
           this.toastr.success('Device added successfully');
         } else {
-          this.toastr.success('Device updated successfully');
+          this.toastr.success('Device removed successfully');
         }
         $('#attachDeviceModal').modal('hide');
       },

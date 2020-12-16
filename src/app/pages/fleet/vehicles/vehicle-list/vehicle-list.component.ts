@@ -65,7 +65,6 @@ export class VehicleListComponent implements OnInit {
       },
       error: () => {},
       next: (result: any) => {
-        console.log(result);
         this.vehicles = result.Items;
       },
     });

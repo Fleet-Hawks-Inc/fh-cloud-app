@@ -12,6 +12,7 @@ import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import * as moment from "moment";
 
+
 @Component({
   selector: 'app-my-document-list',
   templateUrl: './my-document-list.component.html',
@@ -111,12 +112,7 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
     this.allOptions = { // All list options
       pageLength: 10,
       processing: true,
-      // select: {
-      //     style:    'multi',
-      //     selector: 'td:first-child'
-      // },
       dom: 'Bfrtip',
-      // Configure the buttons
       buttons: [
          {
               extend: 'colvis',
@@ -159,7 +155,6 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
           )
           .subscribe({
             complete: () => {
-              // this.spinner.hide(); // loader hide
               this.throwErrors();
             },
             error: () => { },

@@ -65,4 +65,11 @@ export class InventoryListComponent implements OnInit {
   }
 
 
+  deleteItem(itemID) {
+    this.apiService
+      .deleteData('items/' + itemID)
+      .subscribe((result: any) => {
+        this.fetchItems();
+      });
+  }
 }
