@@ -65,7 +65,6 @@ export class ServiceDetailComponent implements OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        console.log(result);
         this.logsData = result.Items;
         result = result.Items[0];
         
@@ -93,8 +92,6 @@ export class ServiceDetailComponent implements OnInit {
         this.partsTaxAmount = result.allServiceParts.taxAmount;
         this.partsTaxPercent = result.allServiceParts.taxPercent;
         this.partsTotal = result.allServiceParts.total;
-
-        console.log('allServiceTasks', this.allServiceTasks);
         this.spinner.hide(); // loader hide
       },
     });
@@ -104,7 +101,6 @@ export class ServiceDetailComponent implements OnInit {
     this.apiService.getData('vehicles/get/list')
       .subscribe((result: any) => {
         this.vehiclesObject = result;
-        console.log('vehiclesObject', this.vehiclesObject);
       });
   }
 
