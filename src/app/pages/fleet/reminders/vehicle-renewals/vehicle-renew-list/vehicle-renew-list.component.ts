@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { group } from 'console';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
 import Constants from '../../../constants';

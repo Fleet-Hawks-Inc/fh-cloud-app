@@ -93,13 +93,11 @@ export class AddIssueComponent implements OnInit {
     fetchAssets() {
       this.apiService.getData('assets').subscribe((result: any) => {
         this.assets = result.Items;
-        console.log('assets', this.assets);
       });
     }
     fetchContacts() {
       this.apiService.getData('contacts').subscribe((result: any) => {
         this.contacts = result.Items;
-        console.log('CONTACTS', this.contacts);
       });
     }
     getToday(): string {
@@ -123,7 +121,6 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
-    console.log('Issue data on console', data);
     this.apiService.postData('issues/', data).
   subscribe({
     complete : () => {},
@@ -152,7 +149,6 @@ export class AddIssueComponent implements OnInit {
   });
 }
 throwErrors() {
-  console.log(this.errors);
   from(Object.keys(this.errors))
     .subscribe((v) => {
       $('[name="' + v + '"]')
@@ -177,7 +173,6 @@ hideErrors() {
    */
   selectDocuments(event, obj) {
     this.selectedFiles = event.target.files;
-    console.log('selected files', this.selectedFiles);
     if (obj === 'uploadedDocs') {
       for (let i = 0; i <= this.selectedFiles.item.length; i++) {
         const randomFileGenerate = this.selectedFiles[i].name.split('.');
@@ -194,8 +189,6 @@ hideErrors() {
         this.uploadedPhotos.push(fileName);
       }
     }
-    console.log('uploaded photos', this.uploadedPhotos);
-    console.log('selected files names', this.selectedFileNames);
   }
   /*
    * Uploading files which selected
@@ -216,7 +209,6 @@ hideErrors() {
     .getData('issues/' + this.issueID)
     .subscribe((result: any) => {
       result = result.Items[0];
-      console.log('result', result);
       this.issueID = this.issueID;
       this.issueName = result.issueName;
       this.unitID = result.unitID;
@@ -243,14 +235,12 @@ getImages = async () => {
     (this.carrierID, this.uploadedPhotos[i]));
     this.issueImages.push(this.image);
   }
-  console.log('fetched images', this.issueImages);
 }
 deleteImage(i: number) {
   this.carrierID =  this.apiService.getCarrierID();
   this.awsUS.deleteFile(this.carrierID, this.uploadedPhotos[i]);
   this.uploadedPhotos.splice(i, 1);
   this.issueImages.splice(i, 1);
-  console.log('new array' ,this.uploadedPhotos);
   this.toaster.success('Image Deleted Successfully!');
   // this.apiService.getData(`issues/updatePhotos?issueID=${this.issueID}&uploadedPhotos=${this.uploadedPhotos}`).subscribe((result: any) => {
   //   this.toaster.success('Image Deleted Successfully!');
@@ -263,14 +253,12 @@ getDocuments = async () => {
             await this.awsUS.getFiles(this.carrierID, this.uploadedDocs[i]));
     this.issueDocs.push(this.docs);
   }
-  console.log('docs', this.issueDocs);
 }
 deleteDoc(i: number) {
   this.carrierID =  this.apiService.getCarrierID();
   this.awsUS.deleteFile(this.carrierID, this.uploadedDocs[i]);
   this.uploadedDocs.splice(i, 1);
   this.issueDocs.splice(i, 1);
-  console.log('new array',this.uploadedDocs);
   // this.apiService.getData(`issues/updateDocs?issueID=${this.issueID}&uploadedDocs=${this.uploadedDocs}`).subscribe((result: any) => {
   //   this.toaster.success('Document Deleted Successfully!');
   // });
@@ -278,7 +266,6 @@ deleteDoc(i: number) {
 setPDFSrc(val) {
   this.pdfSrc = '';
   this.pdfSrc = val;
-  console.log('pdf', this.pdfSrc);
 }
 setSrcValue(){
   this.pdfSrc = '';
@@ -304,7 +291,6 @@ setSrcValue(){
     uploadedPhotos: this.uploadedPhotos,
     uploadedDocs: this.uploadedDocs
   };
-  console.log('Issue data on console', data);
   this.apiService.putData('issues/', data).
 subscribe({
   complete : () => {},
