@@ -239,6 +239,7 @@ export class AddGeofenceComponent implements OnInit {
       .getData('geofences/' + this.getGeofenceID)
       .subscribe((result: any) => {
         result = result.Items[0];
+
         this.geofenceData['geofenceID'] = this.getGeofenceID;
         this.geofenceData['geofenceName'] = result.geofenceName;
         this.geofenceData['location'] = result.location;
@@ -255,6 +256,7 @@ export class AddGeofenceComponent implements OnInit {
   
             }
           }
+
           const polylayer = L.polygon(newCoords).addTo(this.map);
           if(newCoords.length > 0) {
             this.map.fitBounds(polylayer.getBounds());
@@ -277,6 +279,7 @@ export class AddGeofenceComponent implements OnInit {
           });
           polylayer.on('pm:remove', (e) => {
             const layer = e.layer;
+
             const polyEdit = layer.toGeoJSON();
             this.geofenceData.geofence.type = '';
             this.geofenceData.geofence.cords[0] = [];
