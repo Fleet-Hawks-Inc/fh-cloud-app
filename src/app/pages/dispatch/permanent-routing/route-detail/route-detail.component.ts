@@ -21,7 +21,7 @@ export class RouteDetailComponent implements OnInit {
   routeNo   = '';
   routeName = '';
   notes     = '';
-  stopInformation = '';
+  stopInformation = [];
   assetName = '';
   driverName  = '';
   coDriverName = '';
@@ -32,10 +32,12 @@ export class RouteDetailComponent implements OnInit {
   sourceCountryName = '';
   sourceStateName = '';
   sourceCityName = '';
+  sourceZipcode = '';
   destinationAddress = '';
   destinationCountryName = '';
   destinationStateName = '';
   destinationCityName = '';
+  destinationZipcode = '';
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, 
     private spinner: NgxSpinnerService,private route: ActivatedRoute, private hereMap: HereMapService) {}
@@ -51,30 +53,38 @@ export class RouteDetailComponent implements OnInit {
     this.apiService.getData('routes/' + this.routeID).
       subscribe(async (result: any) => {
         result = result.Items[0];
-        console.log("route", result);
+        // console.log("route", result);
         this.routeNo   = result.routeNo;
-        console.log(result);
+        // console.log(result);
         this.routeName = result.routeName;
         this.notes     = result.notes;
 
-        if(result.destinationInformation.stop != undefined){
-          this.stopInformation = result.destinationInformation.stop;
+        if(result.stops != undefined){
+          this.stopInformation = result.stops;
         }
 
-        if(result.sourceInformation.recurring.recurringType != undefined){
-          if(result.sourceInformation.recurring.recurringType == ''){
+        if(result.recurring.recurringType != undefined){
+          if(result.recurring.recurringType == ''){
             this.recurringType = '-';
           } else{
-            this.recurringType = result.sourceInformation.recurring.recurringType;
+            this.recurringType = result.recurring.recurringType;
           }
         }
 
         if(result.sourceInformation.sourceAddress != '' && result.sourceInformation.sourceAddress != undefined){
           this.sourceAddress = result.sourceInformation.sourceAddress;
+          this.sourceCountryName = result.sourceInformation.sourceCountry;
+          this.sourceStateName = result.sourceInformation.sourceState;
+          this.sourceCityName = result.sourceInformation.sourceCity;
+          this.sourceZipcode = result.sourceInformation.sourceZipCode;
         }
 
         if(result.destinationInformation.destinationAddress != '' && result.destinationInformation.destinationAddress != undefined){
           this.destinationAddress = result.destinationInformation.destinationAddress;
+          this.sourceCountryName = result.destinationInformation.destinationCountry;
+          this.sourceStateName = result.destinationInformation.destinationState;
+          this.sourceCityName = result.destinationInformation.destinationCity;
+          this.destinationZipcode = result.destinationInformation.destinationZipCode;
         }
 
         if(result.AssetID != '' && result.AssetID != undefined){
@@ -91,30 +101,6 @@ export class RouteDetailComponent implements OnInit {
         
         if(result.coDriverUserName != '' && result.coDriverUserName != undefined){
           this.fetchDriver(result.coDriverUserName,'codriver');
-        }
-
-        if(result.sourceInformation.sourceCountryID != '' && result.sourceInformation.sourceCountryID != undefined){
-          this.fetchCountries(result.sourceInformation.sourceCountryID,'source');
-        }
-
-        if(result.sourceInformation.sourceStateID != '' && result.sourceInformation.sourceStateID != undefined){
-          this.fetchStates(result.sourceInformation.sourceStateID, 'source');
-        }
-
-        if(result.sourceInformation.sourceCityID != '' && result.sourceInformation.sourceCityID != undefined){
-          this.fetchCities(result.sourceInformation.sourceCityID, 'source');
-        }
-        //
-        if(result.destinationInformation.destinationCountryID != '' && result.destinationInformation.destinationCountryID != undefined){
-          this.fetchCountries(result.destinationInformation.destinationCountryID,'source');
-        }
-
-        if(result.destinationInformation.destinationStateID != '' && result.destinationInformation.destinationStateID != undefined){
-          this.fetchStates(result.destinationInformation.destinationStateID, 'source');
-        }
-
-        if(result.destinationInformation.destinationCityID != '' && result.destinationInformation.destinationCityID != undefined){
-          this.fetchCities(result.destinationInformation.destinationCityID, 'source');
         }
 
         var ths = this;
@@ -158,48 +144,7 @@ export class RouteDetailComponent implements OnInit {
       })
   }
 
-  fetchCountries(countryID, type){
-    this.apiService.getData('countries/'+countryID)
-      .subscribe((result: any) =>{
-        // console.log(result.Items[0]);
-        if(result.Items[0].countryName != undefined){ 
-          if(type == 'source'){
-            this.sourceCountryName = result.Items[0].countryName;
-          } else{
-            this.destinationCountryName = result.Items[0].countryName;
-          }
-        }
-      })
-  }
-
-  fetchStates(stateID, type){
-    this.apiService.getData('states/'+stateID)
-      .subscribe((result: any) =>{
-        // console.log(result.Items[0]);
-        if(result.Items[0].stateName != undefined){ 
-          if(type == 'source'){
-            this.sourceStateName = result.Items[0].stateName;
-          } else{
-            this.destinationStateName = result.Items[0].stateName;
-          }
-        }
-      })
-  }
-
-  fetchCities(cityID, type){
-    this.apiService.getData('cities/'+cityID)
-      .subscribe((result: any) =>{
-        console.log(result.Items[0]);
-        if(result.Items[0].cityName != undefined){ 
-          if(type == 'source'){
-            this.sourceCityName = result.Items[0].cityName;
-          } else{
-            this.destinationCityName = result.Items[0].cityName;
-          }
-        }
-      })
-  }
-
+  
   mapShow() {
     // this.mapView = true;
     // setTimeout(() => {
