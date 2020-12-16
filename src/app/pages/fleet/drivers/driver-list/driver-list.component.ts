@@ -342,9 +342,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
           this.toastr.success('Driver deleted successfully!');
           this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
           this.fetchDrivers();
-        }, err => {
-          console.log('driver delete', err);
-        });
+        }, err => {});
     }
   }
 
