@@ -146,7 +146,7 @@ vehicles= [];
     fuelIndication: '',
     fuelQuality: '',
     maxHP: '',
-    maxTorque: '',
+    maxTorque: 0,
     readlineRPM: '',
     transmissionSummary: '',
     transmissionType: '',
@@ -202,6 +202,7 @@ vehicles= [];
     uploadedDocs = [];
     carrierID;
     programs = [];
+    vendors = [];
     timeCreated: '';
   errors = {};
   vehicleForm;
@@ -242,6 +243,7 @@ vehicles= [];
     this.fetchManufacturers();
     this.fetchCountries();
     this.fetchStates();
+    this.fetchVendors();
     this.fetchGroups();
     this.fetchDrivers();
     this.fetchVehicles();
@@ -262,7 +264,11 @@ vehicles= [];
 
 
   }
-
+  fetchVendors() {
+    this.apiService.getData('vendors').subscribe((result: any) => {
+      this.vendors = result.Items;
+    });
+  } 
   fetchDrivers(){
     this.apiService.getData('drivers').subscribe((result: any) => {
       this.drivers = result.Items;
@@ -364,7 +370,7 @@ vehicles= [];
         height: this.specifications.height,
         heightUnit: this.specifications.heightUnit,
         length: this.specifications.length,
-        lengtUnit: this.specifications.lengthUnit,
+        lengthUnit: this.specifications.lengthUnit,
         width: this.specifications.width,
         widthUnit: this.specifications.widthUnit,
         interiorVolume: this.specifications.interiorVolume,
@@ -494,9 +500,10 @@ vehicles= [];
       },
       next: (res) => {
         this.response = res;
-        this.hasSuccess = true;
+        this.Success = '';
         // this.uploadFiles(); // upload selected files to bucket
-        this.Success = 'Vehicle Added successfully';
+        this.toastr.success('Vehicle Added Successfully');
+        this.router.navigateByUrl('/fleet/vehicles/list');
       },
     });
   }
@@ -724,8 +731,9 @@ vehicles= [];
   updateVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
+    this.hideErrors();
     const data = {
-      vehicleID: this.vehicleID,
+      vehicleID : this.vehicleID,
       vehicleIdentification: this.vehicleIdentification,
       vehicleType: this.vehicleType,
       VIN: this.VIN,
@@ -748,14 +756,14 @@ vehicles= [];
       bodySubType: this.bodySubType,
       msrp: this.msrp,
       inspectionFormID: this.inspectionFormID,
-      lifeCycle:  {
+      lifeCycle: {
         inServiceDate: this.lifeCycle.inServiceDate,
         inServiceOdometer: this.lifeCycle.inServiceOdometer,
         estimatedServiceMonths: this.lifeCycle.estimatedServiceMonths,
         estimatedServiceMiles: this.lifeCycle.estimatedServiceMiles,
         estimatedResaleValue: this.lifeCycle.estimatedResaleValue,
         outOfServiceDate: this.lifeCycle.outOfServiceDate,
-        outOfServiceOdometer: this.lifeCycle.outOfServiceOdometer
+        outOfServiceOdometer: this.lifeCycle.outOfServiceOdometer,
       },
       specifications: {
         height: this.specifications.height,
@@ -778,7 +786,7 @@ vehicles= [];
         maxPayload: this.specifications.maxPayload,
         EPACity: this.specifications.EPACity,
         EPACombined: this.specifications.EPACombined,
-        EPAHighway: this.specifications.EPAHighway
+        EPAHighway: this.specifications.EPAHighway,
       },
       insurance: {
         dateOfIssue: this.insurance.dateOfIssue,
@@ -796,7 +804,7 @@ vehicles= [];
         fuelTankOneCapacity: this.fluid.fuelTankOneCapacity,
         fuelQuality: this.fluid.fuelQuality,
         fuelTankTwoCapacity: this.fluid.fuelTankTwoCapacity,
-        oilCapacity: this.fluid.oilCapacity
+        oilCapacity: this.fluid.oilCapacity,
       },
       wheelsAndTyres: {
         numberOfTyres: this.wheelsAndTyres.numberOfTyres,
@@ -811,7 +819,7 @@ vehicles= [];
         frontWheelDiameter: this.wheelsAndTyres.frontWheelDiameter,
         rearWheelDiameter: this.wheelsAndTyres.rearWheelDiameter,
         frontTyrePSI: this.wheelsAndTyres.frontTyrePSI,
-        rearTyrePSI: this.wheelsAndTyres.rearTyrePSI
+        rearTyrePSI: this.wheelsAndTyres.rearTyrePSI,
       },
       engine: {
         engineSummary: this.engine.engineSummary,
@@ -833,16 +841,17 @@ vehicles= [];
         transmissionSummary: this.engine.transmissionSummary,
         transmissionType: this.engine.transmissionType,
         transmissonBrand: this.engine.transmissonBrand,
-        transmissionGears: this.engine.transmissionGears
+        transmissionGears: this.engine.transmissionGears,
       },
       purchase: {
         purchaseVendorID: this.purchase.purchaseVendorID,
         warrantyExpirationDate: this.purchase.warrantyExpirationDate,
         purchasePrice: this.purchase.purchasePrice,
+        purchasePriceCurrency: this.purchase.purchasePriceCurrency,
         warrantyExpirationMeter: this.purchase.warrantyExpirationMeter,
         purchaseDate: this.purchase.purchaseDate,
         purchaseComments: this.purchase.purchaseComments,
-        purchaseOdometer: this.purchase.purchaseOdometer
+        purchaseOdometer: this.purchase.purchaseOdometer,
       },
       loan: {
         loanVendorID: this.loan.loanVendorID,
@@ -857,7 +866,7 @@ vehicles= [];
         loadEndDate: this.loan.loadEndDate,
         accountNumber: this.loan.accountNumber,
         generateExpenses: this.loan.generateExpenses,
-        notes: this.loan.notes
+        notes: this.loan.notes,
       },
       settings: {
         primaryMeter: this.settings.primaryMeter,
@@ -865,20 +874,34 @@ vehicles= [];
         hardBreakingParams: this.settings.hardBreakingParams,
         hardAccelrationParams: this.settings.hardAccelrationParams,
         turningParams: this.settings.turningParams,
-        measurmentUnit: this.settings.measurmentUnit
-      }
-  };
+        measurmentUnit: this.settings.measurmentUnit,
+      },
+      uploadedPhotos: this.uploadedPhotos,
+      uploadedDocs: this.uploadedDocs
+    };
 
     this.apiService.putData('vehicles', data).
     subscribe({
       complete : () => {},
-      error : (err) => {
-        this.hasError = true;
-        this.Error = err.error;
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
       },
       next: (res) => {
         this.response = res;
-        this.hasSuccess = true;
+        this.Success = '';
         this.toastr.success('Vehicle Updated successfully');
         this.router.navigateByUrl('/fleet/vehicles/list');
 

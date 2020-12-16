@@ -52,12 +52,18 @@ export class AddDriverComponent implements OnInit {
     address: [{
       addressType: '',
       countryID: '',
+      countryName: '',
       stateID: '',
+      stateName: '',
       cityID: '',
+      cityName: '',
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: { lat: '', lng: '' }
+      geoCords: { 
+        lat: '', 
+        lng: '' 
+      }
     }],
     documentDetails: [{
       documentType: '',
@@ -173,6 +179,7 @@ export class AddDriverComponent implements OnInit {
     this.fetchAllStatesIDs(); // fetch all states Ids with name
     this.fetchAllCitiesIDs(); // fetch all cities Ids with name
 
+    this.fetchDocuments();
 
     $(document).ready(() => {
       this.form = $('#driverForm, #groupForm').validate();
@@ -209,12 +216,18 @@ export class AddDriverComponent implements OnInit {
     this.driverData.address.push({
       addressType: '',
       countryID: '',
+      countryName: '',
       stateID: '',
+      stateName: '',
       cityID: '',
+      cityName: '',
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: { lat: '', lng: '' }
+      geoCords: { 
+        lat: '', 
+        lng: '' 
+      }
     });
   }
 
@@ -222,7 +235,6 @@ export class AddDriverComponent implements OnInit {
     this.apiService.getData('cycles')
       .subscribe((result: any) => {
         this.cycles = result.Items;
-        // console.log('this.cycle', this.cycles);
       });
   }
 
@@ -297,12 +309,18 @@ export class AddDriverComponent implements OnInit {
       });
   }
 
+  fetchDocuments() {
+    this.httpClient.get("assets/travelDocumentType.json").subscribe(data =>{
+      this.documentTypeList = data;
+    })
+  }
+  
+
   getToday(): string {
     return new Date().toISOString().split('T')[0];
   }
 
   uploadDriverImg(elem, event): void {
-    console.log(event);
     if (elem === 'profile') {
       const file = event.target.files[0];
       const reader = new FileReader();
@@ -401,22 +419,27 @@ export class AddDriverComponent implements OnInit {
     });
   }
 
+
   async addDriver() {
+
+    this.hasError = false;
+    this.hasSuccess = false;
     this.register();
     this.hideErrors();
-    // Add geoCords when selecting manual address
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.driverData.address.length; i++) {
-      const element = this.driverData.address[i];
-      let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]} 
-                         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
-      let result = await this.HereMap.geoCode(fullAddress);
-      result = result.items[0];
-      element.geoCords.lat = result.position.lat;
-      element.geoCords.lng = result.position.lng;
-      delete element['userLocation'];
+   
+    if (this.driverData.address[0].countryName !== '' && this.driverData.address[0].stateName !== '' && this.driverData.address[0].cityName !== '') {
+      for (let i = 0; i < this.driverData.address.length; i++) {
+        const element = this.driverData.address[i];
+        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]} 
+                           ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+        let result = await this.HereMap.geoCode(fullAddress);
+        result = result.items[0];
+        element.geoCords.lat = result.position.lat;
+        element.geoCords.lng = result.position.lng;
+        delete element['userLocation'];
+      }
     }
-
+    
     this.apiService.postData('drivers', this.driverData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -456,13 +479,16 @@ export class AddDriverComponent implements OnInit {
     // this.driverData.address[i].countryID = result.address.countryName;
     let countryID = await this.fetchCountriesByName(result.address.countryName);
     this.driverData.address[i].countryID = countryID;
-    
+    this.driverData.address[i].countryName = result.address.countryName;
+
     let stateID = await this.fetchStatesByName(result.address.state);
     this.driverData.address[i].stateID = stateID;
+    this.driverData.address[i].stateName = result.address.state;
 
     let cityID = await this.fetchCitiesByName(result.address.city);
     this.driverData.address[i].cityID = cityID;
-    
+    this.driverData.address[i].cityName = result.address.city;
+
     this.driverData.address[i].zipCode = result.address.postalCode;
     if (result.address.houseNumber === undefined) {
       result.address.houseNumber = '';
@@ -677,6 +703,23 @@ export class AddDriverComponent implements OnInit {
     });
   }
 
+  changePaymentModeForm(value) {
+    if (value === 'Pay Per Mile') {
+      delete this.driverData.paymentDetails['loadPayPercentage'];
+      delete this.driverData.paymentDetails['loadPayPercentageOf'];
+      delete this.driverData.paymentDetails['rate'];
+    } else if (value === 'Percentage') {
+      delete this.driverData.paymentDetails['loadedMiles'];
+      delete this.driverData.paymentDetails['emptyMiles'];
+      delete this.driverData.paymentDetails['rate'];
+    } else {
+      delete this.driverData.paymentDetails['loadPayPercentage'];
+      delete this.driverData.paymentDetails['loadPayPercentageOf'];
+      delete this.driverData.paymentDetails['loadedMiles'];
+      delete this.driverData.paymentDetails['emptyMiles'];
+    }
+  }
+
   concatArray(path) {
     this.concatArrayKeys = '';
     for (const i in path) {
@@ -685,6 +728,7 @@ export class AddDriverComponent implements OnInit {
     this.concatArrayKeys = this.concatArrayKeys.substring(0, this.concatArrayKeys.length - 1);
     return this.concatArrayKeys;
   }
+  
 
   register = async () => {
     try {
@@ -697,8 +741,6 @@ export class AddDriverComponent implements OnInit {
           phone_number: this.phone,
         },
       });
-
-      console.log(res);
     } catch (err) {
       console.log('inside catch block');
       // this.hasError = true;

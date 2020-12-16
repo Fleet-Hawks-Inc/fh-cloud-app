@@ -23,6 +23,9 @@ export class AddressBookComponent implements OnInit {
   receivers: any;
   staffs: any;
   fcCompanies: any;
+
+  allData: any;
+
   form;
   countries;
   states;
@@ -263,7 +266,10 @@ export class AddressBookComponent implements OnInit {
           this.receivers = receivers.Items,
           this.staffs = staffs.Items,
           this.fcCompanies = fcCompanies.Items,
-          
+
+          this.allData = [...this.customers, ...this.drivers, ...this.brokers, ...this.vendors,
+                            ...this.carriers, ...this.shippers, ...this.receivers, ...this.staffs, ...this.fcCompanies];                           
+
           this.countries = countries;
           this.addresses = addresses;
         }
@@ -430,7 +436,6 @@ export class AddressBookComponent implements OnInit {
 
   // Add Broker
   async addBroker() {
-    console.log('brokerData', this.brokerData);
     this.hideErrors();
     this.removeUserLocation(this.brokerData.address);
     let result = await this.checkUserExist(this.brokerData['workPhone'], this.brokerData['workEmail'])
@@ -703,7 +708,6 @@ export class AddressBookComponent implements OnInit {
   }
 
   uploadDriverImg(event): void {
-    console.log(event);
     if (event.target.files[0]) {
       const file = event.target.files[0];
       const reader = new FileReader();

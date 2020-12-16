@@ -75,7 +75,6 @@ export class IssueDetailComponent implements OnInit {
     .getData('issues/' + this.issueID)
     .subscribe((result: any) => {
       result = result.Items[0];
-      console.log('result', result);
       this.issueID = this.issueID;
       this.issueName = result.issueName;
       this.unitID = result.unitID;
@@ -161,7 +160,6 @@ export class IssueDetailComponent implements OnInit {
   setPDFSrc(val) {
     this.pdfSrc = '';
     this.pdfSrc = val;
-    console.log('pdf', this.pdfSrc);
   }
   updateIssue() {
     const data = {
@@ -178,7 +176,6 @@ export class IssueDetailComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
-    console.log('Issue data on console', data);
     this.apiService.putData('issues/', data).
   subscribe({
     complete : () => {
