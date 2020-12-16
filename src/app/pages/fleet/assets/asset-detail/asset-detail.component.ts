@@ -155,7 +155,7 @@ export class AssetDetailComponent implements OnInit {
           this.spinner.hide(); // loader hide
         }
       }, (err) => {
-        console.log('asset detail', err);
+        
       });
   }
 
@@ -167,7 +167,7 @@ export class AssetDetailComponent implements OnInit {
           this.deviceData = result['Items'];
         }
       }, (err) => {
-        console.log('asset detail', err);
+       
       });
   }
 
