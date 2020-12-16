@@ -260,8 +260,8 @@ export class AddGeofenceComponent implements OnInit {
   
             }
           }
-          console.log(newCoords);
-          // console.log(new_cords);
+          
+          
           const polylayer = L.polygon(newCoords).addTo(this.map);
           if(newCoords.length > 0) {
             this.map.fitBounds(polylayer.getBounds());
@@ -284,7 +284,7 @@ export class AddGeofenceComponent implements OnInit {
           });
           polylayer.on('pm:remove', (e) => {
             const layer = e.layer;
-            console.log("pm:remove", layer);
+            
             const polyEdit = layer.toGeoJSON();
             this.geofenceData.geofence.type = '';
             this.geofenceData.geofence.cords[0] = [];
