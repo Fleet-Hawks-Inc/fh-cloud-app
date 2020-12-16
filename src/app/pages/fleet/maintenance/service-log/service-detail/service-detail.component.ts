@@ -104,7 +104,6 @@ export class ServiceDetailComponent implements OnInit {
     this.apiService.getData('vehicles/get/list')
       .subscribe((result: any) => {
         this.vehiclesObject = result;
-        console.log('vehiclesObject', this.vehiclesObject);
       });
   }
 
