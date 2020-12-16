@@ -70,7 +70,7 @@
   .add_topnav_vehicle{float: left;padding: 0px;}
   .add_topnav_vehicle ul{list-style-type: none; float: left; margin: 0; padding: 0;}
   /* .addv_topnav ul li{float: left;} */
-  .add_topnav_vehicle ul li {float: left;color: #2e353e; text-decoration: none; font-weight: 600; padding:6px 15px; border-radius: 50px; margin: 0 4px;}
+  .add_topnav_vehicle ul li {float: left;color: #2e353e; text-decoration: none; font-weight: 600; padding:6px 15px; border-radius: 50px; margin: 0px;}
   .add_topnav_vehicle ul li:hover{color: #fff; background: #aaa; text-decoration: none;}
   .add_topnav_vehicle ul li.active{color: #fff; background: #aaa;; text-decoration: none;}
   

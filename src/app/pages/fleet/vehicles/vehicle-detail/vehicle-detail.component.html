@@ -8,15 +8,13 @@
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
     <section role="main" class="content-body pl-0 pt-0 pr-0">
-      <header class="page-header">
-        <div class="row">
+      <header class="page-header pr-5">
+        <div class="row pr-1 mr-1" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4">
-            <h2>Vehicle Details</h2>
+            <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Vehicle Details</h4>
           </div>
-          <div class="col-md-7 col-lg-7 text-right" style="padding-top: 10px">
-            <a routerLink="/fleet/vehicles/list" class="btn btn-default btn-sm"
-              ><i class="fas fa-list"></i> Vehicles List</a
-            >
+          <div class="col-md-8 col-lg-8 text-right pr-1">
+            <a routerLink="/fleet/vehicles/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles List</a>
           </div>
         </div>
       </header>
@@ -38,16 +36,7 @@
                     >
                       <ul class="nav nav-tabs top-tabs" role="tablist">
                         <li class="nav-item">
-                          <a
-                            class="nav-link active"
-                            id="vehicleBasic-tab"
-                            data-toggle="tab"
-                            href="#vehicleBasic"
-                            role="tab"
-                            aria-controls="vehicleBasic"
-                            aria-selected="true"
-                            >Basic Details</a
-                          >
+                          <a class="nav-link active" id="vehicleBasic-tab" data-toggle="tab" href="#vehicleBasic" role="tab" aria-controls="vehicleBasic" aria-selected="true" >Basic Details</a>
                         </li>
                         <li class="nav-item">
                           <a
@@ -162,10 +151,7 @@
                   </section>
                 </div>
               </div>
-              <div
-                class="tab-content"
-                id=""
-                style="box-shadow: none; border: none"
+              <div class="tab-content pt-1" id="" style="box-shadow: none; border: none"
               >
                 <div
                   class="tab-pane show active"
@@ -175,7 +161,7 @@
                 >
                   <!-- Basic Details DIV    -->
                   <div id="vehicle-basic-div">
-                    <div class="row pt-3">
+                    <div class="row pt-2">
                       <div class="col-lg-4">
                         <!-- BASIC DIV -->
                         <div id="vehicle-details" class="">
@@ -275,11 +261,7 @@
                             </div>
                           </div>
                           <div class="row m-0">
-                            <div
-                              class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                            >
-                              Model:
-                            </div>
+                            <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Model:</div>
                             <div class="col-lg-8 p-2 border-box">
                               {{ modelID }}
                             </div>
@@ -443,10 +425,8 @@
                                     class="btn btn-xs btn-dark pull-right ml-3"
                                     >View All</a
                                   >
-                                  <a
-                                    routerLink="/fleet/maintenance/issues/add"
-                                    class="btn btn-xs btn-default pull-right"
-                                    ><i class="fas fa-plus"></i>Add Issue</a
+                                  <a routerLink="/fleet/maintenance/issues/add"
+                                    class="btn btn-xs btn-default pull-right"><i class="fas fa-plus"></i> Add Issue</a
                                   >
                                 </div>
                               </div>
@@ -508,8 +488,7 @@
                                   <a
                                     routerLink="/fleet/reminders/service-reminder/add"
                                     class="btn btn-xs btn-default pull-right"
-                                    ><i class="fas fa-plus"></i>Add Service
-                                    Reminders</a
+                                    ><i class="fas fa-plus"></i> Add Service Reminders</a
                                   >
                                 </div>
                               </div>
@@ -571,9 +550,7 @@
                               <a
                                 routerLink="/fleet/reminders/vehicle-renewals/add"
                                 class="btn btn-xs btn-default pull-right"
-                                ><i class="fas fa-plus"></i>Add Renewal
-                                Reminders</a
-                              >
+                                ><i class="fas fa-plus"></i> Add Renewal Reminders</a>
                             </div>
                           </div>
                           <div class="row text-center m-0">
@@ -773,9 +750,7 @@
                               <a
                                 routerLink="/fleet/maintenance/service-program/Add-Service-Program"
                                 class="btn btn-xs btn-default pull-right"
-                                ><i class="fas fa-plus"></i>Add Service
-                                Program</a
-                              >
+                                ><i class="fas fa-plus"></i> Add Service Program</a>
                             </div>
                           </div>
                           <table class="table table-responsive-lg mt-3 mb-0">
@@ -821,9 +796,7 @@
                               <a
                                 routerLink="/fleet/maintenance/service-log/add-service"
                                 class="btn btn-xs btn-default pull-right"
-                                ><i class="fas fa-plus"></i>Add Service
-                                Program</a
-                              >
+                                ><i class="fas fa-plus"></i> Add Service Program</a>
                             </div>
                           </div>
                           <table class="table table-responsive-lg mt-3 mb-0">
@@ -866,10 +839,7 @@
                               >
                               <a
                                 routerLink="/fleet/expenses/fuel/add"
-                                class="btn btn-xs btn-default pull-right"
-                                ><i class="fas fa-plus"></i>Add Fuel
-                                Entry</a
-                              >
+                                class="btn btn-xs btn-default pull-right"><i class="fas fa-plus"></i> Add Fuel Entry</a>
                             </div>
                           </div>
 
@@ -1349,83 +1319,82 @@
                           <!-- <div class="col-lg-8 p-2 text-right" ><a href="edit-vehicle.php" class="btn btn-xs btn-default"><i class="fas fa-pencil-alt"></i>Edit</a></div> -->
                         </div>
                         <div class="row m-0">
-                          <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                          <div class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             Length:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.length }}
                             {{ specifications.lengthUnit }}
                           </div>
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             Width:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">22</div>
+                          <div class="col-lg-7 p-2 border-box">22</div>
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             Height:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.height }}
                             {{ specifications.heightUnit }}
                           </div>
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             Interior Volume:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.interiorVolume }}
                           </div>
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             Passenger Volume:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.passangerVolume }}
                           </div>
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             Cargo Volume:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.cargoVolume }}
                           </div>
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             Ground Clearance:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.groundClearnce }}
                             {{ specifications.groundClearnceUnit }}
                           </div>
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             Bed Length:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.badLength }}
                             {{ specifications.badLengthUnit }}
                           </div>
@@ -1441,21 +1410,21 @@
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             Curb Weight:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.curbWeight }}
                           </div>
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             Gross Vehicle Weight Rating:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.grossVehicleWeightRating }}
                           </div>
                         </div>
@@ -1467,51 +1436,51 @@
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             Towing Capacity:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.towingCapacity }}
                           </div>
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             Max Payload:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.maxPayload }}
                           </div>
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             EPA City:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.EPACity }}
                           </div>
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             EPA Highway:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.EPAHighway }}
                           </div>
                         </div>
                         <div class="row m-0">
                           <div
-                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             EPA Combined:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-7 p-2 border-box">
                             {{ specifications.EPACombined }}
                           </div>
                         </div>
@@ -2279,7 +2248,7 @@
                               >Fuel Unit</label
                             >
                           </div>
-                          <div class="col-lg-4 offset-lg-2">
+                          <div class="col-lg-4 offset-lg-1">
                             <div class="row">
                               <div class="col-lg-12">
                                 <div class="radio">
@@ -2370,7 +2339,7 @@
                           </div>
                           <div class="col-lg-4">
                             <label
-                              class="control-label font-weight-bold text-lg-right pt-2"
+                              class="control-label font-weight-bold text-lg-right pt-0"
                               for="inputDefault"
                               >Hard Breaking Parameters</label
                             >
@@ -2393,7 +2362,7 @@
                           </div>
                           <div class="col-lg-4">
                             <label
-                              class="control-label font-weight-bold text-lg-right pt-2"
+                              class="control-label font-weight-bold text-lg-right pt-0"
                               for="inputDefault"
                               >Hard Accelration Parameters
                             </label>
@@ -2420,7 +2389,7 @@
                           </div>
                           <div class="col-lg-4">
                             <label
-                              class="control-label font-weight-bold text-lg-right pt-2"
+                              class="control-label font-weight-bold text-lg-right pt-0"
                               for="inputDefault"
                               >Turning Parameters
                             </label>
@@ -2451,7 +2420,7 @@
                               >Measurement Unit</label
                             >
                           </div>
-                          <div class="col-lg-4 offset-lg-2">
+                          <div class="col-lg-4 offset-lg-1">
                             <div class="row">
                               <div class="col-lg-12">
                                 <div class="radio">
