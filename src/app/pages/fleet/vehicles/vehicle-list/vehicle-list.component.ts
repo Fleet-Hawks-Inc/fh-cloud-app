@@ -20,6 +20,7 @@ export class VehicleListComponent implements OnInit {
   groupsList: any = {};
   vehicleModelList: any = {};
   vehicleManufacturersList: any = {};
+  currentView = 'list';
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
@@ -82,6 +83,24 @@ export class VehicleListComponent implements OnInit {
       .subscribe((result: any) => {
         this.fetchVehicles();
       });
+  }
+
+  /**
+   * change the view of summary
+   */
+  changeView(){
+    if(this.currentView == 'list'){
+      this.currentView = 'map'
+    }else {
+      this.currentView = 'list';
+    }
+  }
+
+  /**
+   * export excel
+   */
+  export() {
+    $('.buttons-excel').trigger('click');
   }
 
   initDataTable() {
