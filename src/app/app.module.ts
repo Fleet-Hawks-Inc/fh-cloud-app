@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { AppComponent } from './app.component';
@@ -40,14 +39,14 @@ import { environment } from '../environments/environment';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgSelect2Module } from 'ng-select2';
-import {DataTablesModule} from 'angular-datatables';
-import {PreLoadStrategy} from './preload/PreLoadStrategy';
+import { DataTablesModule } from 'angular-datatables';
+import { PreLoadStrategy } from './preload/PreLoadStrategy';
 import { SharedModalComponent } from './shared/shared-modal/shared-modal.component';
-import {DynamicModalDirective} from './directives/dynamic-modal.directive';
+import { DynamicModalDirective } from './directives/dynamic-modal.directive';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxTagsInputModule } from 'ngx-tags-input';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { AddAccountComponent  } from './pages/onboard/add-account/add-account.component';
+import { AddAccountComponent } from './pages/onboard/add-account/add-account.component';
 import { ConfirmEqualValidatorDirective } from './directives/confirm-equal-validator.directive';
 import { AddAlertComponent } from './pages/alerts/add-alert/add-alert.component';
 import { AlertDetailComponent } from './pages/alerts/alert-detail/alert-detail.component';
@@ -107,4 +106,4 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
