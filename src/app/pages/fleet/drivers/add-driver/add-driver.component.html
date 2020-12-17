@@ -19,31 +19,33 @@
 				 <div class="p-2 pt-4">
 					<ul class="nav nav-tabs top-tabs" id="driver-tabs" role="tablist">
 					   <li class="nav-item">
-						  <a class="nav-link" [ngClass]="{'active': currentTab == 1}" (click)="tabChange(1)" id="addDriverBasic-tab" data-toggle="tab" href="#addDriverBasic" role="tab" aria-controls="addDriverBasic" aria-selected="true">Basic Details</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 1}" (click)="tabChange(1)" [routerLink]="">Basic Details</a>
 					   </li>
 					   <li class="nav-item">
-						  <a class="nav-link" [ngClass]="{'active': currentTab == 2}" (click)="tabChange(2)" id="addDriverAddress-tab" data-toggle="tab" href="#addDriverAddress" role="tab" aria-controls="addDriverAddress" aria-selected="false">Address</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 2}" (click)="tabChange(2)" [routerLink]="">Address</a>
 					   </li>
 					   <li class="nav-item">
-						  <a class="nav-link" [ngClass]="{'active': currentTab == 3}" (click)="tabChange(3)" id="documents-tab" data-toggle="tab" href="#documents" role="tab" aria-controls="documents" aria-selected="false">Documents Details</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 3}" (click)="tabChange(3)" [routerLink]="">Documents Details</a>
 					   </li>
 					   <li class="nav-item">
-						  <a class="nav-link" [ngClass]="{'active': currentTab == 4}" (click)="tabChange(4)" id="addDriverCrossBorder-tab" data-toggle="tab" href="#addDriverCrossBorder" role="tab" aria-controls="addDriverCrossBorder" aria-selected="false">Cross Border</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 4}" (click)="tabChange(4)" [routerLink]="">Cross Border</a>
 					   </li>
 					   <li class="nav-item">
-						  <a class="nav-link" [ngClass]="{'active': currentTab == 5}" (click)="tabChange(5)" id="payment-tab" data-toggle="tab" href="#payment" role="tab" aria-controls="payment" aria-selected="false">Payment & licence Details</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 5}" (click)="tabChange(5)" [routerLink]="">Payment & licence Details</a>
 					   </li>
 					   <li class="nav-item">
-						  <a class="nav-link" [ngClass]="{'active': currentTab == 6}" (click)="tabChange(6)" id="Driverhos-tab" data-toggle="tab" href="#Driverhos" role="tab" aria-controls="Driverhos" aria-selected="false">HOS Compliance</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 6}" (click)="tabChange(6)" [routerLink]="">HOS Compliance</a>
 					   </li>
 					   <li class="nav-item">
-						  <a class="nav-link" [ngClass]="{'active': currentTab == 7}" (click)="tabChange(7)" id="emergency-tab" data-toggle="tab" href="#emergency" role="tab" aria-controls="emergency" aria-selected="false">Emergency Contact</a>
+						  <a class="nav-link" [ngClass]="{'active': currentTab == 7}" (click)="tabChange(7)" [routerLink]="">Emergency Contact</a>
 					   </li>
 					</ul>
 				 </div>
+
 				 <div class="card-body pt-0">
 					<div class="tab-content pt-2" id="myTabContent" style="box-shadow:none;border:none;">
 					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 1}" *ngIf="currentTab == 1" id="addDriverBasic" role="tabpanel" aria-labelledby="addDriverBasic-tab">
+
 						  <div>
 							 <div class="form-group row">
 								<div class="col-lg-10">
@@ -217,7 +219,7 @@
 						  </div>
 					   </div>
 					   <!-- ADDRESS -->
-					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 2}" *ngIf="currentTab == 2" id="addDriverAddress" role="tabpanel" aria-labelledby="addDriverAddress-tab">
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 2}" id="addDriverAddress" role="tabpanel" aria-labelledby="addDriverAddress-tab">
 						   <div class="row">
 							<div class="col-lg-10">
 								<label class="control-label font-weight-bold text-lg-right text-5 pt-2"
@@ -332,7 +334,7 @@
 						  </div>
 					   </div>
 					   <!-- Travel -->
-					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 3}" *ngIf="currentTab == 3" id="documents" role="tabpanel" aria-labelledby="documents-tab">
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 3}" id="documents" role="tabpanel" aria-labelledby="documents-tab">
 						  <div>
 							 <div class="row">
 								<div class="col-lg-10">
@@ -440,7 +442,7 @@
 						  </div>
 					   </div>
 					   <!--    CROSS BORDER -->
-					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 4}" *ngIf="currentTab == 4" id="addDriverCrossBorder" role="tabpanel" aria-labelledby="addDriverCrossBorder-tab">
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 4}" id="addDriverCrossBorder" role="tabpanel" aria-labelledby="addDriverCrossBorder-tab">
 						  <div>
 							 <div class="row">
 								<div class="col-lg-10">
@@ -495,7 +497,7 @@
 						  </div>
 					   </div>
 					   <!-- Payment -->
-					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 5}" *ngIf="currentTab == 5" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 5}" id="payment" role="tabpanel" aria-labelledby="payment-tab">
 						  <div>
 							<div class="form-group row">
 								<div class="col-lg-10">
@@ -507,10 +509,10 @@
 									  <div class="col-lg-10">
 										 <label class="control-label font-weight-bold text-lg-right pt-2"
 											>Default Payment Type</label>
-										 <select [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType" data-plugin-selectTwo class="form-control populate" id="paymentTypeForm" onchange="changePaymentModeForm()">
+										 <select (click)="changePaymentModeForm($event.target.value)" [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType" data-plugin-selectTwo class="form-control populate" id="paymentTypeForm">
 											<optgroup label="Select Type">
 											   <option value="Pay Per Mile">Pay Per Mile</option>
-											   <option value="Percentage">Percentage</option>
+											   <option value="Percentage">Percentage</option> 
 											   <option value="Pay Per Hour">Pay Per Hour</option>
 											</optgroup>
 										 </select>
@@ -688,7 +690,7 @@
 							 </div>
 						  </div>
 					   </div>
-					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 6}" *ngIf="currentTab == 6" id="Driverhos" role="tabpanel" aria-labelledby="Driverhos-tab">
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 6}" id="Driverhos" role="tabpanel" aria-labelledby="Driverhos-tab">
 						  <div>
 							 <div class="form-group row">
 								<div class="col-lg-10">
@@ -777,7 +779,7 @@
 							 </div>
 						  </div>
 					   </div>
-					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 7}" *ngIf="currentTab == 7" id="emergency" role="tabpanel" aria-labelledby="emergency-tab">
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 7}" id="emergency" role="tabpanel" aria-labelledby="emergency-tab">
 						  <div>
 							 <div class="form-group row">
 								<div class="col-lg-10">
@@ -826,10 +828,12 @@
 				 </div>
 				 <div class="form-group row mt-3">
 					<div class="col-lg-12 text-right pb-4 pr-5">
+
 					   <button type="button" (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Cancel</button>
 					   <a href="javascript:;" (click)="nextStep()"  *ngIf="currentTab != 7" class="btn btn-success btnNext">Next</a>
-					   <a href="javascript:;" (click)="addDriver()" class="btn btn-success">Submit</a>
+					   <a href="javascript:;" *ngIf="currentTab == 7 && !driverID" (click)="addDriver()" class="btn btn-success">Submit</a>
 					   <a href="javascript:;" *ngIf="currentTab == 7 && driverID" (click)="updateDriver()" class="btn btn-success">Update</a>
+
 					</div>
 				 </div>
 			  </form>

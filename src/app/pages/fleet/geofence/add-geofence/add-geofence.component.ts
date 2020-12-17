@@ -121,9 +121,6 @@ export class AddGeofenceComponent implements OnInit {
         const polyEdit = layer.toGeoJSON();
         this.geofenceData.geofence.type = polyEdit.geometry.type;
         this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
-
-        console.log('update', this.geofenceData);
-
       });
 
 
@@ -173,7 +170,6 @@ export class AddGeofenceComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.spinner.show();
-    console.log(this.geofenceData);
     this.apiService.postData('geofences', this.geofenceData)
       .pipe(tap(v => {
         console.log(v)
@@ -243,7 +239,7 @@ export class AddGeofenceComponent implements OnInit {
       .getData('geofences/' + this.getGeofenceID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        // console.log('result', result);
+
         this.geofenceData['geofenceID'] = this.getGeofenceID;
         this.geofenceData['geofenceName'] = result.geofenceName;
         this.geofenceData['location'] = result.location;
@@ -260,8 +256,7 @@ export class AddGeofenceComponent implements OnInit {
   
             }
           }
-          console.log(newCoords);
-          // console.log(new_cords);
+
           const polylayer = L.polygon(newCoords).addTo(this.map);
           if(newCoords.length > 0) {
             this.map.fitBounds(polylayer.getBounds());
@@ -269,7 +264,7 @@ export class AddGeofenceComponent implements OnInit {
           this.mapControls(this.map);
           polylayer.on('pm:update', (e) => {
             const layer = e.layer;
-            // console.log("update", layer);
+            
             const polyEdit = layer.toGeoJSON();
             this.geofenceData.geofence.type = polyEdit.geometry.type;
             this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
@@ -284,7 +279,7 @@ export class AddGeofenceComponent implements OnInit {
           });
           polylayer.on('pm:remove', (e) => {
             const layer = e.layer;
-            console.log("pm:remove", layer);
+
             const polyEdit = layer.toGeoJSON();
             this.geofenceData.geofence.type = '';
             this.geofenceData.geofence.cords[0] = [];
@@ -300,7 +295,6 @@ export class AddGeofenceComponent implements OnInit {
  updateGeofence() {
   this.hasError = false;
   this.hasSuccess = false;
-  console.log('update', this.geofenceData);
   this.apiService.putData('geofences', this.geofenceData).subscribe({
     complete: () => { },
     error: (err) => {
@@ -348,7 +342,6 @@ export class AddGeofenceComponent implements OnInit {
         return throwError(e);
       }),
     ).subscribe(res => {
-      console.log('geo search', res);
       this.searchResults = res;
 
     });
@@ -358,7 +351,6 @@ export class AddGeofenceComponent implements OnInit {
     this.apiService.getData('geofenceTypes')
       .subscribe((result: any) => {
         this.geofenceTypes = result.Items;
-        console.log('this.geofenceTypes', this.geofenceTypes);
       });
   }
 
