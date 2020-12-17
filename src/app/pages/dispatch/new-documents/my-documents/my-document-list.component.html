@@ -1,10 +1,7 @@
 <section class="body">
-
     <!-- start: header -->
     <app-header></app-header>
     <!-- end: header -->
-
-
 
     <div class="inner-wrapper">
         <!-- start: sidebar -->
@@ -12,7 +9,6 @@
         <!-- end: sidebar -->
         <section role="main" class="content-body p-0">
             <header class="page-header pr-5">
-
                 <div class="row px-2 pt-2">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
@@ -34,11 +30,21 @@
                                     <i class="fas fa-calendar-alt"></i>
                                 </span>
                             </span>
-                            <input data-plugin-datepicker="" type="text" class="form-control" name="start">
+                            <input 
+                                [(ngModel)]="filterValues.startDate" name="fromDate" 
+                                type="text" 
+                                placeholder="DD-MM-YYYY"
+                                (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                class="form-control" autocomplete="off"> 
                             <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                 to
                             </span>
-                            <input data-plugin-datepicker="" type="text" class="form-control" name="end">
+                            <input 
+                                [(ngModel)]="filterValues.endDate" name="toDate" 
+                                type="text" 
+                                placeholder="DD-MM-YYYY"
+                                (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                                class="form-control" autocomplete="off"> 
                         </div>
                     </div>
                     <div class="col-lg-2">
@@ -54,7 +60,8 @@
                         </select>
                     </div>
                     <div class="col-md-1  col-lg-1">
-                        <button type="submit" class="btn btn-sm btn-success">Search</button>
+                        <button type="button" (click)="searchFilter()" class="btn btn-sm btn-success">Search</button>
+                        <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
                     <div class="col-lg-4">
                         <div class="btn-group flex-wrap pull-right mt-1">
@@ -62,8 +69,6 @@
                                 aria-expanded="false">Actions<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a class="dropdown-item text-1 modal-with-form" href="#editDocumentModal">Edit</a>
-                                <a class="dropdown-item text-1" href="#">Delete</a>
                                 <a class="dropdown-item text-1" href="#">Print</a>
                                 <a class="dropdown-item text-1" href="">Export</a>
                                 <a class="dropdown-item text-1 modal-with-form" href="#emailForm">Email</a>
@@ -103,14 +108,14 @@
                                         <th width="10%">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody *ngIf="documents.length > 0">
                                     <tr *ngFor="let document of documents;let i = index;">
                                         <td>{{document.documentNumber}}</td>
                                         <td>{{document.tripID}}</td>
                                         <td>{{document.docType}}</td>
                                         <td>{{document.documentName}}</td>
                                         <td>{{currentUser}}</td>
-                                        <td>{{document.timeCreated}}</td>
+                                        <td>{{document.timeCreated  | date: 'dd-MM-yyyy'}}</td>
                                         <td>{{document.description}}</td>
                                         <td>
                                             <div class="dropdown dropright">
@@ -161,6 +166,11 @@
                                             
                                          </tr> -->
                                 </tbody>
+                                <tbody *ngIf="documents.length === 0">
+                                    <tr>
+                                      <td colspan="9" class="no-data-available">No records found</td>
+                                    </tr>
+                                <tbody>
                             </table>
 
 

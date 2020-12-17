@@ -94,7 +94,19 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('routes/fetch-records?lastEvaluatedKey='+this.lastEvaluated.key+'&lastEvaluatedValue='+this.lastEvaluated.value+'&search='+this.searchedRouteId, dataTablesParameters).subscribe(resp => {
-          this.routes = resp['Items'];
+          // let allDrivers = resp['Items'].map((i) => { i.stops.stopNamefullName = i.firstName + ' ' + i.lastName; return i; });
+
+          this.routes = resp['Items'].map((i) => { 
+            i.stopNames = '';
+            if(i.stops) {
+              let ind = 1;
+              i.stops.map((j) => {
+                i.stopNames += ind + '. '+j.stopName+' ';
+                ind++;
+              })
+            }
+            return i;
+          });
           if(resp['LastEvaluatedKey'] !== undefined){
             this.lastEvaluated = {
               key : 'routeID',

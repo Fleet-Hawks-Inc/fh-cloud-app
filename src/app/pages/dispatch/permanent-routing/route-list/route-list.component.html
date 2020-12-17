@@ -63,14 +63,14 @@
                                             <td>{{ route.sourceInformation.sourceAddress }}</td>                                                
                                             <td>{{ route.destinationInformation.destinationAddress }}</td>
                                             <td>{{ route.miles }} miles</td>
-                                            <td *ngIf="route.recurring !== undefined">
-                                                {{ route.recurring.recurringType }}
+                                            <td>
+                                                <span *ngIf="route.recurring">
+                                                    {{ route.recurring.recurringType }}
+                                                </span>
                                             </td>
-                                            <td *ngIf="route.recurring == undefined">
-                                                -
+                                            <td>
+                                                {{ route.stopNames }}
                                             </td>
-                                            
-                                            <td>-</td>
                                             <td>{{ route.notes }}</td>
                                             <td>
                                                 <div class="dropdown dropright">
