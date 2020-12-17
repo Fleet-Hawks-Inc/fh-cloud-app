@@ -163,7 +163,10 @@ a:active {
 }
 /* Layout Base - Flexbox supported */
 @media only screen and (min-width: 768px) {
-	
+	html.flexbox,		
+  	html.flexboxlegacy {		
+ 		/* Tab Navigation */		
+ 	}
 
 	html.flexbox .inner-wrapper,
 	html.flexboxlegacy .inner-wrapper {
