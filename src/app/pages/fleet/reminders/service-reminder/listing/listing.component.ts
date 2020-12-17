@@ -7,21 +7,31 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import Constants from '../../../constants'
 declare var $: any;
+import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
+
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
   styleUrls: ['./listing.component.css']
 })
-export class ListingComponent implements OnInit {
+export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
+
+  @ViewChild(DataTableDirective, { static: false })
+  dtElement: DataTableDirective;
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
+
   public remindersData = [];
-  dtOptions: any = {};
+  // dtOptions: any = {};
   vehicles = [];
   reminderIdentification = '';
   reminderID = '';
   task: string;
   vehicleList: any = {};
   groups: any = {};
-  serviceLogs:any = [];
+  serviceLogs: any = [];
   allRemindersData = [];
   vehicleIdentification = '';
   unitID = '';
@@ -38,14 +48,21 @@ export class ListingComponent implements OnInit {
   searchServiceTask = '';
   filterStatus: string;
   inServiceOdometer: string;
+
+  totalRecords = 20;
+  pageLength = 10;
+  lastEvaluatedKey = '';
+
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
+    this.getReminders();
     this.fetchServiceLogs();
     this.fetchGroups();
     this.fetchTasksList();
     this.fetchVehicleList();
     this.fetchServiceTaks();
+    this.initDataTable()
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -67,169 +84,220 @@ export class ListingComponent implements OnInit {
       this.groups = result;
     });
   }
-  fetchServiceLogs() {   
+  fetchServiceLogs() {
     this.apiService.getData('serviceLogs').subscribe({
-      complete: () => { this.fetchReminders(); },
-      next: (result:any) => {
+      complete: () => { },
+      next: (result: any) => {
         this.serviceLogs = result.Items;
-      }   
+      }
     });
-    
-      }
-      setFilterStatus(val) {
-        this.filterStatus = val;
-      }
+
+  }
+  setFilterStatus(val) {
+    this.filterStatus = val;
+  }
   fetchServiceTaks() {
     let test = [];
-    let taskType = 'service';
     this.apiService.getData('tasks').subscribe((result: any) => {
       // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
       test = result.Items;
       this.serviceTasks = test.filter((s: any) => s.taskType === 'service');
-    });    
+    });
   }
   getVehicle(vehicleID) {
     this.apiService
       .getData('vehicles/' + vehicleID)
       .subscribe((result: any) => {
         result = result.Items[0];
-          this.inServiceOdometer = result.lifeCycle.inServiceOdometer;  
-          return result.lifeCycle.inServiceOdometer;   
+        this.inServiceOdometer = result.lifeCycle.inServiceOdometer;
+        return result.lifeCycle.inServiceOdometer;
       });
   }
-  resolveReminder(unitID) {  
+  resolveReminder(unitID) {
     let unitType = 'vehicle';
     const unit = {
-      unitID:  unitID,
+      unitID: unitID,
       unitType: unitType,
+    }
+
+    window.localStorage.setItem('reminderUnitID', JSON.stringify(unit));
+    this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
   }
-  
-  window.localStorage.setItem('reminderUnitID', JSON.stringify(unit));
-  this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
-  }
-fetchReminders = async () => {
-   this.allRemindersData = [];
-   this.remindersData = [];
-   let lastCompleted;
-   let serviceOdometer = 0;
-   this.apiService.getData(`reminders?reminderIdentification=${this.vehicleID}&serviceTask=${this.searchServiceTask}`).subscribe({  
-    complete: () => {this.initDataTable(); },
-    error: () => { },
-    next: (result: any) => {
-      this.allRemindersData = result.Items;
-        for(let j=0; j < this.allRemindersData.length; j++) {
-          let reminderStatus: string;
-        if (this.allRemindersData[j].reminderType === 'service') {    
-          for(let i = 0; i < this.serviceLogs.length; i++){
-            for( let s=0; s < this.serviceLogs[i].allServiceTasks.serviceTaskList.length; s++) {
-              // console.log('service task data', this.serviceLogs[i].allServiceTasks.serviceTaskList[s].reminderID);
-               if(this.serviceLogs[i].allServiceTasks.serviceTaskList[s].reminderID === this.allRemindersData[j].reminderID){
-                       
-                lastCompleted = this.serviceLogs[i].completionDate;
-                serviceOdometer = +this.serviceLogs[i].odometer;
-               }
-               else {
-                // serviceOdometer = this.getVehicle(this.allRemindersData[j].reminderIdentification);               
-                lastCompleted = moment().subtract(7,'d').format('DD/MM/YYYY');
-                serviceOdometer = this.allRemindersData[j].reminderTasks.odometer; 
-               }              
-            }
+  fetchReminders = async () => {
+    this.remindersData = [];
+    let lastCompleted;
+    let serviceOdometer = 0;
+    for (let j = 0; j < this.allRemindersData.length; j++) {
+      let reminderStatus: string;
+      for (let i = 0; i < this.serviceLogs.length; i++) {
+        for (let s = 0; s < this.serviceLogs[i].allServiceTasks.serviceTaskList.length; s++) {
+          // console.log('service task data', this.serviceLogs[i].allServiceTasks.serviceTaskList[s].reminderID);
+          if (this.serviceLogs[i].allServiceTasks.serviceTaskList[s].reminderID === this.allRemindersData[j].reminderID) {
+
+            lastCompleted = this.serviceLogs[i].completionDate;
+            serviceOdometer = +this.serviceLogs[i].odometer;
           }
-          const convertedDate = moment(lastCompleted, 'DD/MM/YYYY').add(this.allRemindersData[j].reminderTasks.remindByDays,'days');
-          const remainingDays = convertedDate.diff(this.currentDate, 'days');
-           const remainingMiles = (serviceOdometer + (this.allRemindersData[j].reminderTasks.odometer)) - this.currentOdometer;
-       
-        if (remainingDays < 0) {
-          reminderStatus = 'OVERDUE';
-        }
-        else if (remainingDays <= 7 && remainingDays >= 0) {
-          reminderStatus = 'DUE SOON';
-        }
-          const data = {
-            reminderID: this.allRemindersData[j].reminderID,
-            reminderIdentification: this.allRemindersData[j].reminderIdentification,
-            reminderTasks: {
-              task: this.allRemindersData[j].reminderTasks.task,
-              remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
-              remainingDays: remainingDays,
-              odometer: this.allRemindersData[j].reminderTasks.odometer,
-              remainingMiles: remainingMiles,
-              reminderStatus: reminderStatus,
-            },
-            subscribers : this.allRemindersData[j].subscribers,
-            lastCompleted: lastCompleted,
-          };
-          this.remindersData.push(data);
+          else {
+            // serviceOdometer = this.getVehicle(this.allRemindersData[j].reminderIdentification);               
+            lastCompleted = moment().subtract(7, 'd').format('DD/MM/YYYY');
+            serviceOdometer = this.allRemindersData[j].reminderTasks.odometer;
+          }
         }
       }
-      if (this.filterStatus === Constants.OVERDUE) {
-        this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
+      const convertedDate = moment(lastCompleted, 'DD/MM/YYYY').add(this.allRemindersData[j].reminderTasks.remindByDays, 'days');
+      const remainingDays = convertedDate.diff(this.currentDate, 'days');
+      const remainingMiles = (serviceOdometer + (this.allRemindersData[j].reminderTasks.odometer)) - this.currentOdometer;
+
+      if (remainingDays < 0) {
+        reminderStatus = 'OVERDUE';
       }
-      else if (this.filterStatus === Constants.DUE_SOON) {
-        this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
+      else if (remainingDays <= 7 && remainingDays >= 0) {
+        reminderStatus = 'DUE SOON';
       }
-      else {
-        this.remindersData = this.remindersData;
-      }
-    },
-  });
-}
-setVehicle(vehicleID, vehicleIdentification) {
-  this.vehicleIdentification = vehicleIdentification;
-  this.vehicleID = vehicleID;
-  this.suggestedVehicles = [];
-}
-getSuggestions(value) {
-  this.apiService
-    .getData(`vehicles/suggestion/${value}`)
-    .subscribe((result) => {
-      this.suggestedVehicles = result.Items;
-      if (this.suggestedVehicles.length === 0) {
-        this.vehicleID = '';
-      }
-    });
-}
-  deleteReminder(entryID) {
+      const data = {
+        reminderID: this.allRemindersData[j].reminderID,
+        reminderIdentification: this.allRemindersData[j].reminderIdentification,
+        reminderTasks: {
+          task: this.allRemindersData[j].reminderTasks.task,
+          remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
+          remainingDays: remainingDays,
+          odometer: this.allRemindersData[j].reminderTasks.odometer,
+          remainingMiles: remainingMiles,
+          reminderStatus: reminderStatus,
+        },
+        subscribers: this.allRemindersData[j].subscribers,
+        lastCompleted: lastCompleted,
+      };
+      this.remindersData.push(data);
+    }
+    if (this.filterStatus === Constants.OVERDUE) {
+      this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
+    }
+    else if (this.filterStatus === Constants.DUE_SOON) {
+      this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
+    }
+    else {
+      this.remindersData = this.remindersData;
+    }
+  }
+  setVehicle(vehicleID, vehicleIdentification) {
+    this.vehicleIdentification = vehicleIdentification;
+    this.vehicleID = vehicleID;
+    this.suggestedVehicles = [];
+  }
+  getSuggestions(value) {
     this.apiService
-      .deleteData('reminders/' + entryID)
+      .getData(`vehicles/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedVehicles = result.Items;
+        if (this.suggestedVehicles.length === 0) {
+          this.vehicleID = '';
+        }
+      });
+  }
+
+  deleteReminder(entryID) {
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.apiService
+      .getData(`reminders/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
-        this.toastr.success('Service Reminder Deleted Successfully!');
-        this.fetchReminders();
+        // console.log('result', result);
+        this.rerender();
+        this.toastr.success('Service Renewal Reminder Deleted Successfully!');
+      });
+    }
+  }
+
+  getReminders() {
+    this.apiService
+      .getData('reminders/get-reminders/service')
+      .subscribe((result) => {
+        // this.suggestedVehicles = result.Items;
+        this.totalRecords = result.Count;
       });
   }
 
   initDataTable() {
-    this.dtOptions = {
-      dom: 'lrtip', // lrtip to hide search field
+    let current = this;
+    this.dtOptions = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
       processing: true,
-      columnDefs: [
-          {
-              targets: 0,
-              className: 'noVis'
-          },
-          {
-              targets: 1,
-              className: 'noVis'
-          },
-          {
-              targets: 2,
-              className: 'noVis'
-          },
-          {
-              targets: 3,
-              className: 'noVis'
-          },
-          {
-              targets: 4,
-              className: 'noVis'
+      order: [],
+      columnDefs: [ //sortable false
+        { "targets": [0], "orderable": false },
+        { "targets": [1], "orderable": false },
+        { "targets": [2], "orderable": false },
+        { "targets": [3], "orderable": false },
+        { "targets": [4], "orderable": false },
+        { "targets": [5], "orderable": false },
+      ],
+      dom: 'lrtip',
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=service' + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+          current.allRemindersData = resp['Items'];
+          current.fetchReminders();
+          // console.log(resp)
+          if (resp['LastEvaluatedKey'] !== undefined) {
+            this.lastEvaluatedKey = resp['LastEvaluatedKey'].assetID;
+
+          } else {
+            this.lastEvaluatedKey = '';
           }
-      ],
-      colReorder: {
-        fixedColumnsLeft: 1
-      },
-      buttons: [
-        'colvis',
-      ],
+
+          callback({
+            recordsTotal: current.totalRecords,
+            recordsFiltered: current.totalRecords,
+            data: []
+          });
+        });
+      }
     };
+  }
+
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+
+  rerender(status = ''): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      if (status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
+
+  searchFilter() {
+    if (this.vehicleID !== '' || this.searchServiceTask !== '' && this.searchServiceTask !== null && this.searchServiceTask !== undefined
+      || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
+      this.rerender('reset');
+    } else {
+      return false;
+    }
+  }
+
+  resetFilter() {
+    if (this.vehicleID !== '' || this.searchServiceTask !== '' || this.searchServiceTask !== null || this.searchServiceTask !== undefined
+      || this.filterStatus !== '' || this.filterStatus !== null || this.filterStatus !== undefined) {
+      this.vehicleID = '';
+      this.vehicleIdentification = '';
+      this.searchServiceTask = '';
+      this.filterStatus = '';
+      this.rerender();
+    } else {
+      return false;
+    }
   }
 }

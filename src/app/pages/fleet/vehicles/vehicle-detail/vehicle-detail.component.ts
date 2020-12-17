@@ -412,7 +412,6 @@ export class VehicleDetailComponent implements OnInit {
           turningParams: result.settings.turningParams,
           measurmentUnit: result.settings.measurmentUnit,
         };
-
         $('#hardBreakingParametersValue').html(
           this.settings.hardBreakingParams
         );
