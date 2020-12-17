@@ -10,31 +10,35 @@
     <!-- end: sidebar -->
 
     <section role="main" class="content-body pt-0 pr-0 pl-0">
-      <header class="page-header">
-         <div class="row pr-5 " style="padding-top:10px;">
-            <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{title}} </div>
-            <div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink = "/fleet/vehicles/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles List</a> </div>
+
+      <header class="page-header pr-5">
+         <div class="row pr-1 mr-1" style="padding-top:10px;">
+            <div class="col-md-4 col-lg-4"> <h4 class="text-4 mt-0 mb-0 text-dark">Add Vehicle</h4></div>
+            <div class="col-md-8 col-lg-8 text-right pr-1"> <a href="vehicles.php" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles List</a> </div>
          </div>
       </header>
       <div class="row text-dark">
-         <div class="col pr-0 pb-3">          
+         <div class="col pr-0 pb-3">
+
+               <div class="p-2">
+                  <ul class="nav nav-tabs top-tabs mt-2" id="top-tabs" role="tablist">
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(1)" [ngClass]="{'active': activeTab == 1}">Basic Details</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(2)" [ngClass]="{'active': activeTab == 2}" >Lifecycle</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(3)" [ngClass]="{'active': activeTab == 3}" >Specifications</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(4)" [ngClass]="{'active': activeTab == 4}" >Insurance</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(5)"  [ngClass]="{'active': activeTab == 5}">Fluids</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(6)"  [ngClass]="{'active': activeTab == 6}" >Wheels & Tires</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(7)"  [ngClass]="{'active': activeTab == 7}" >Engine & Transmission</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(8)"  [ngClass]="{'active': activeTab == 8}" >Purchase</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(9)" [ngClass]="{'active': activeTab == 9}" >Loan</a> </li>
+                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(10)" [ngClass]="{'active': activeTab == 10}">Settings</a> </li>
+                  </ul>
+               </div>
 
            <form id="vehicleForm" class="form-horizontal form-bordered bg-white" method="post">
-            <div class="p-2">
-               <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                  <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(1)" [ngClass]="{'active': activeTab == 1}">Basic Details</a> </li>
-                  <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(2)" [ngClass]="{'active': activeTab == 2}" >Lifecycle</a> </li>
-                  <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(3)" [ngClass]="{'active': activeTab == 3}" >Specifications</a> </li>
-                  <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(4)" [ngClass]="{'active': activeTab == 4}" >Insurance</a> </li>
-                  <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(5)"  [ngClass]="{'active': activeTab == 5}">Fluids</a> </li>
-                  <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(6)"  [ngClass]="{'active': activeTab == 6}" >Wheels & Tires</a> </li>
-                  <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(7)"  [ngClass]="{'active': activeTab == 7}" >Engine & Transmission</a> </li>
-                  <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(8)"  [ngClass]="{'active': activeTab == 8}" >Purchase</a> </li>
-                  <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(9)" [ngClass]="{'active': activeTab == 9}" >Loan</a> </li>
-                  <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(10)" [ngClass]="{'active': activeTab == 10}">Settings</a> </li>
-               </ul>
-            </div>
-             <div class="card-body">
+
+             <div class="card-body pt-2">
+
                   <div class="tab-content" id="myTabContent">
                      <div class="tab-pane" [ngClass]="{'show active': activeTab == 1}" id="details" role="tabpanel" aria-labelledby="details-tab">
                         <div class="">
