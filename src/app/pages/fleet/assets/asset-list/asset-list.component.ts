@@ -8,13 +8,21 @@ import { HereMapService } from '../../../../services';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 declare var $: any;
+import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
 
 @Component({
   selector: 'app-asset-list',
   templateUrl: './asset-list.component.html',
   styleUrls: ['./asset-list.component.css'],
 })
-export class AssetListComponent implements OnInit {
+export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
+
+  @ViewChild(DataTableDirective, { static: false })
+  dtElement: DataTableDirective;
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
+
   allAssetTypes: any;
   assetTypesObects: any = {};
   title = 'Assets List';
@@ -54,12 +62,16 @@ export class AssetListComponent implements OnInit {
   Success: string = '';
 
   message: any;
-  dtTrigger = new Subject();
+  // dtTrigger = new Subject();
 
   suggestedAssets = [];
   assetID = '';
   currentStatus = '';
   assetIdentification = '';
+
+  totalRecords = 20;
+  pageLength = 10;
+  lastEvaluatedKey = '';
 
   constructor(
     private apiService: ApiService,
@@ -70,10 +82,11 @@ export class AssetListComponent implements OnInit {
     private httpClient: HttpClient,
     private hereMap: HereMapService) {}
 
-  ngOnInit() {
-      this.dataTableOptions();
+  ngOnInit(): void {
+      // this.dataTableOptions();
       this.fetchAssets();
       this.fetchAllAssetTypes();
+      this.initDataTable();
       // $(document).ready(() => {
       //   setTimeout(() => {
       //     $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -81,12 +94,6 @@ export class AssetListComponent implements OnInit {
 
       // });
   }
-
-  ngOnDestroy = (): void => {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
 
   getSuggestions(value) {
     this.apiService
@@ -109,143 +116,143 @@ export class AssetListComponent implements OnInit {
   someClickHandler(info: any): void {
     this.message = info.id + ' - ' + info.firstName;
   }
-  dataTableOptions = () => {
-    this.allOptions = { // All list options
-      pageLength: 10,
-      processing: true,
-      // select: {
-      //     style:    'multi',
-      //     selector: 'td:first-child'
-      // },
-      dom: 'Bfrtip',
-      // Configure the buttons
-      buttons: [
-         {
-              extend: 'colvis',
-              columns: ':not(.noVis)'
-          }
-      ],
-      colReorder: true,
-      columnDefs: [
-        {
-            targets: 1,
-            className: 'noVis'
-        },
-        {
-            targets: 2,
-            className: 'noVis'
-        },
-        {
-            targets: 3,
-            className: 'noVis'
-        },
-        {
-            targets: 4,
-            className: 'noVis'
-        },
-        {
-            targets: 8,
-            className: 'noVis'
-        },
+  // dataTableOptions = () => {
+  //   this.allOptions = { // All list options
+  //     pageLength: 10,
+  //     processing: true,
+  //     // select: {
+  //     //     style:    'multi',
+  //     //     selector: 'td:first-child'
+  //     // },
+  //     dom: 'Bfrtip',
+  //     // Configure the buttons
+  //     buttons: [
+  //        {
+  //             extend: 'colvis',
+  //             columns: ':not(.noVis)'
+  //         }
+  //     ],
+  //     colReorder: true,
+  //     columnDefs: [
+  //       {
+  //           targets: 1,
+  //           className: 'noVis'
+  //       },
+  //       {
+  //           targets: 2,
+  //           className: 'noVis'
+  //       },
+  //       {
+  //           targets: 3,
+  //           className: 'noVis'
+  //       },
+  //       {
+  //           targets: 4,
+  //           className: 'noVis'
+  //       },
+  //       {
+  //           targets: 8,
+  //           className: 'noVis'
+  //       },
         
-    ],
-    "fnDrawCallback": function(oSettings) {
-        if ($('.dataTables_wrapper tbody tr').length <= 10) {
-            $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
-        }
-    }
-    };
+  //   ],
+  //   "fnDrawCallback": function(oSettings) {
+  //       if ($('.dataTables_wrapper tbody tr').length <= 10) {
+  //           $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
+  //       }
+  //   }
+  //   };
 
-    this.reeferOptions = { // Reefer list options
-      pageLength: 10,
-      processing: true,
-      dom: 'Bfrtip',
-      // Configure the buttons
-      buttons: [
-         {
-              extend: 'colvis',
-              columns: ':not(.noVis)'
-          }
-      ],
-      colReorder: {
-        fixedColumnsLeft: 1
-      },
-      columnDefs: [
-        {
-            targets: 0,
-            className: 'noVis'
-        },
-        {
-            targets: 1,
-            className: 'noVis'
-        },
-        {
-            targets: 2,
-            className: 'noVis'
-        },
-        {
-            targets: 3,
-            className: 'noVis'
-        },
-        {
-            targets: 4,
-            className: 'noVis'
-        },
-        {
-            targets: 9,
-            className: 'noVis'
-        }
-    ],
-    "fnDrawCallback": function(oSettings) {
-        if ($('.dataTables_wrapper tbody tr').length <= 10) {
-            $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
-        }
-    }
-    };
+  //   this.reeferOptions = { // Reefer list options
+  //     pageLength: 10,
+  //     processing: true,
+  //     dom: 'Bfrtip',
+  //     // Configure the buttons
+  //     buttons: [
+  //        {
+  //             extend: 'colvis',
+  //             columns: ':not(.noVis)'
+  //         }
+  //     ],
+  //     colReorder: {
+  //       fixedColumnsLeft: 1
+  //     },
+  //     columnDefs: [
+  //       {
+  //           targets: 0,
+  //           className: 'noVis'
+  //       },
+  //       {
+  //           targets: 1,
+  //           className: 'noVis'
+  //       },
+  //       {
+  //           targets: 2,
+  //           className: 'noVis'
+  //       },
+  //       {
+  //           targets: 3,
+  //           className: 'noVis'
+  //       },
+  //       {
+  //           targets: 4,
+  //           className: 'noVis'
+  //       },
+  //       {
+  //           targets: 9,
+  //           className: 'noVis'
+  //       }
+  //   ],
+  //   "fnDrawCallback": function(oSettings) {
+  //       if ($('.dataTables_wrapper tbody tr').length <= 10) {
+  //           $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
+  //       }
+  //   }
+  //   };
 
-    this.dryboxOptions = this.flatbedOptions = this.curtainOptions = { // Reefer list options
-      pageLength: 10,
-      processing: true,
-      dom: 'Bfrtip',
-      // Configure the buttons
-      buttons: [
-         {
-              extend: 'colvis',
-              columns: ':not(.noVis)'
-          }
-      ],
-      colReorder: {
-        fixedColumnsLeft: 1
-      },
-      columnDefs: [
-          {
-              targets: 0,
-              className: 'noVis'
-          },
-          {
-              targets: 1,
-              className: 'noVis'
-          },
-          {
-              targets: 2,
-              className: 'noVis'
-          },
-          {
-              targets: 3,
-              className: 'noVis'
-          },
-          {
-              targets: 8,
-              className: 'noVis'
-          }
-      ],
-      "fnDrawCallback": function(oSettings) {
-        if ($('.dataTables_wrapper tbody tr').length <= 10) {
-            $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
-        }
-    }
-    };
-  }
+  //   this.dryboxOptions = this.flatbedOptions = this.curtainOptions = { // Reefer list options
+  //     pageLength: 10,
+  //     processing: true,
+  //     dom: 'Bfrtip',
+  //     // Configure the buttons
+  //     buttons: [
+  //        {
+  //             extend: 'colvis',
+  //             columns: ':not(.noVis)'
+  //         }
+  //     ],
+  //     colReorder: {
+  //       fixedColumnsLeft: 1
+  //     },
+  //     columnDefs: [
+  //         {
+  //             targets: 0,
+  //             className: 'noVis'
+  //         },
+  //         {
+  //             targets: 1,
+  //             className: 'noVis'
+  //         },
+  //         {
+  //             targets: 2,
+  //             className: 'noVis'
+  //         },
+  //         {
+  //             targets: 3,
+  //             className: 'noVis'
+  //         },
+  //         {
+  //             targets: 8,
+  //             className: 'noVis'
+  //         }
+  //     ],
+  //     "fnDrawCallback": function(oSettings) {
+  //       if ($('.dataTables_wrapper tbody tr').length <= 10) {
+  //           $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
+  //       }
+  //   }
+  //   };
+  // }
 
   fetchAssets = () => {
     // this.allData = [];
@@ -261,15 +268,18 @@ export class AssetListComponent implements OnInit {
     // this.stake = [];
     // this.stepDeck = [];
     // this.tanker = [];
+    this.totalRecords = 0;
     this.spinner.show(); // loader init
-    this.apiService.getData(`assets?assetID=${this.assetID}&status=${this.currentStatus}`).subscribe({
+    // this.apiService.getData(`assets?assetID=${this.assetID}&status=${this.currentStatus}`).subscribe({
+      this.apiService.getData(`assets`).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.spinner.hide(); // loader hide
         for (let i = 0; i < result.Items.length; i++) {
           if (result.Items[i].isDeleted === 0) {
-            this.allData.push(result.Items[i]);
+            // this.allData.push(result.Items[i]);
+            this.totalRecords += 1
             // if (result.Items[i].assetDetails.assetType === 'TC') {
             //   this.autoCarrier.push(result.Items[i]);
             // } else if (result.Items[i].assetDetails.assetType === 'BI') {
@@ -321,7 +331,8 @@ export class AssetListComponent implements OnInit {
       this.apiService
       .getData(`assets/isDeleted/${assetID}/${value}`)
       .subscribe((result: any) => {
-        this.fetchAssets();
+        this.toastr.success('Asset deleted successfully');
+        this.rerender();
       });
     }
   }
@@ -411,4 +422,93 @@ export class AssetListComponent implements OnInit {
   //     this.isChecked = false;
   //   }
   // }
+
+  initDataTable() {
+    let current = this;
+    // console.log('this.pageLengths');
+    // console.log(this.pageLength)
+    this.dtOptions = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
+      processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0],"orderable": false},
+        {"targets": [1],"orderable": false},
+        {"targets": [2],"orderable": false},
+        {"targets": [3],"orderable": false},
+        {"targets": [4],"orderable": false},
+        {"targets": [5],"orderable": false},
+        {"targets": [6],"orderable": false},
+        {"targets": [7],"orderable": false},
+        {"targets": [8],"orderable": false},
+        {"targets": [9],"orderable": false},
+      ],
+      dom: 'lrtip',
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('assets/fetch/records?assetID='+this.assetID+'&status='+this.currentStatus+'&lastKey='+this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+            current.allData = resp['Items'];
+            // console.log(resp)
+            if (resp['LastEvaluatedKey'] !== undefined) {
+              this.lastEvaluatedKey = resp['LastEvaluatedKey'].assetID;
+              
+            } else {
+              this.lastEvaluatedKey = '';
+            }
+
+            callback({
+              recordsTotal: current.totalRecords,
+              recordsFiltered: current.totalRecords,
+              data: []
+            });
+          });
+      }
+    };
+  }
+
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+
+  rerender(status=''): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
+
+  searchFilter() {
+    if(this.assetID !== '' || this.currentStatus !== '') {
+      this.rerender('reset');
+    } else {
+      return false;
+    }
+  }
+
+  resetFilter() {
+    if(this.assetID !== '' || this.currentStatus !== '') {
+      // this.spinner.show();
+      this.assetID = '';
+      this.assetIdentification = '';
+      this.currentStatus = '';
+      this.rerender();
+      // this.spinner.hide();
+    } else {
+      return false;
+    }
+  }
+
 }

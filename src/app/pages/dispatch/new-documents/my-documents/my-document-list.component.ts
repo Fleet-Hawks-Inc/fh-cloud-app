@@ -10,6 +10,8 @@ import { Auth } from 'aws-amplify';
 declare var $: any;
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
+import * as moment from "moment";
+
 
 @Component({
   selector: 'app-my-document-list',
@@ -57,14 +59,12 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
     searchValue: '',
     startDate: '',
     endDate: '',
-    category: '',
-    start: '',
-    end: ''
+    start: <any> '',
+    end: <any> ''
   };
   lastEvaluated = {
     value1: '',
   };
-  alldocumentCount: 10;
 
   constructor(
     private apiService: ApiService,
@@ -287,8 +287,6 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
 
   initDataTable() {
     let current = this;
-    
-    this.serviceUrl = "documents/fetch-records?value1=";
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
       pageLength: current.pageLength,
@@ -307,23 +305,16 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData(current.serviceUrl + current.lastEvaluated.value1 +
-          '&searchValue=' + this.filterValues.searchValue + "&startDate=" + this.filterValues.start + 
-          "&endDate=" + this.filterValues.end + "&category=" + this.filterValues.category, dataTablesParameters).subscribe(resp => {
+        current.apiService.getDatatablePostData('documents/fetch-records?value1=' + current.lastEvaluated.value1 +
+          '&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start + 
+          "&to=" + this.filterValues.end, dataTablesParameters).subscribe(resp => {
             // current.fetchTrips(resp)
             current.documents = resp['Items'];
-            console.log(resp)
+            // console.log(resp)
             if (resp['LastEvaluatedKey'] !== undefined) {
-              if (resp['LastEvaluatedKey'].carrierID !== undefined) {
-                current.lastEvaluated = {
-                  value1: resp['LastEvaluatedKey'].tripID,
-                }
-              } else {
-                current.lastEvaluated = {
-                  value1: resp['LastEvaluatedKey'].tripID,
-                }
+              current.lastEvaluated = {
+                value1: resp['LastEvaluatedKey'].docID,
               }
-
             } else {
               current.lastEvaluated = {
                 value1: '',
@@ -356,5 +347,43 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
+  }
+
+  searchFilter() {
+    if(this.filterValues.startDate !== '' || this.filterValues.endDate !== '') {
+      if(this.filterValues.startDate !== '') {
+        let start = this.filterValues.startDate.split('-').reverse().join('-');
+        this.filterValues.start = moment(start+' 00:00:01').format("X");
+        this.filterValues.start = this.filterValues.start*1000;
+      }
+      if(this.filterValues.endDate !== '') {
+        let end = this.filterValues.endDate.split('-').reverse().join('-');
+        this.filterValues.end = moment(end+' 23:59:59').format("X");
+        this.filterValues.end = this.filterValues.end*1000;
+      }
+      this.pageLength = this.totalRecords;
+      this.rerender();
+    } else {
+      return false;
+    }
+  }
+
+  resetFilter() {
+    if(this.filterValues.startDate !== '' || this.filterValues.endDate !== '') {
+      // this.spinner.show();
+      this.filterValues = {
+        searchValue: '',
+        startDate: '',
+        endDate: '',
+        start: <any> '',
+        end: <any> ''
+      };
+      this.pageLength = 10;
+      this.rerender();
+      // this.spinner.hide();
+    } else {
+      return false;
+    }
+    
   }
 }
