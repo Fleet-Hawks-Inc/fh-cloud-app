@@ -80,6 +80,17 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
       pageLength: 10,
       serverSide: true,
       processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0],"orderable": false},
+        {"targets": [1],"orderable": false},
+        {"targets": [2],"orderable": false},
+        {"targets": [3],"orderable": false},
+        {"targets": [4],"orderable": false},
+        {"targets": [5],"orderable": false},
+        {"targets": [6],"orderable": false},
+        {"targets": [7],"orderable": false},
+      ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('routes/fetch-records?lastEvaluatedKey='+this.lastEvaluated.key+'&lastEvaluatedValue='+this.lastEvaluated.value+'&search='+this.searchedRouteId, dataTablesParameters).subscribe(resp => {
@@ -112,6 +123,7 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
         complete: () => {},
         error: () => { },
         next: (result: any) => {
+          this.suggestedRoutes = [];
           for (let i = 0; i < result.Items.length; i++) {
             const element = result.Items[i];
   
@@ -132,7 +144,6 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.suggestedRoutes = [];
 
     this.rerender();
-    this.initDataTable();
   }
 
   ngAfterViewInit(): void {
@@ -151,5 +162,14 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
+  }
+
+  resetFilter() {
+    if(this.searchedRouteName !== '' || this.searchedRouteId !== '') {
+      this.searchedRouteId = '';
+      this.searchedRouteName = '';
+      this.rerender();
+    }
+    return false;
   }
 }

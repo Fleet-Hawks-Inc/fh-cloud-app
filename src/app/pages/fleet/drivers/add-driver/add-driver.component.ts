@@ -428,14 +428,14 @@ export class AddDriverComponent implements OnInit {
     });
   }
 
-  async addDriver(e) {
-    e.preventDefault();
-    e.stopPropagation();
+
+  async addDriver() {
+
     this.hasError = false;
     this.hasSuccess = false;
-    // this.register();
+    this.register();
     this.hideErrors();
-    console.log("driver", this.driverData);
+   
     if (this.driverData.address[0].countryName !== '' && this.driverData.address[0].stateName !== '' && this.driverData.address[0].cityName !== '') {
       for (let i = 0; i < this.driverData.address.length; i++) {
         const element = this.driverData.address[i];
@@ -449,7 +449,6 @@ export class AddDriverComponent implements OnInit {
       }
     }
     
-   
     this.apiService.postData('drivers', this.driverData).subscribe({
       complete: () => { },
       error: (err: any) => {

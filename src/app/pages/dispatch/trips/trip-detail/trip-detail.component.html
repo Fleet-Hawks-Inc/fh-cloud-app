@@ -16,7 +16,7 @@
                             class="badge p-1 badge-dark mt-2 mb-0">{{ tripData.tripStatus }}</span>
                     </div>
                     <div class="col-md-8  col-lg-8 text-right">
-                        <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a>
+                        <!-- <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a> -->
                         <div class="btn-group flex-wrap">
                             <button type="button" class="mb-1 mx-1 btn btn-success btn-sm dropdown-toggle"
                                 data-toggle="dropdown" aria-expanded="false">Send to Manifest<span
@@ -100,17 +100,18 @@
                                                         <div class="col-lg-4"> <label
                                                                 class="control-label font-weight-semibold">Upload
                                                                 BOL/POD</label></div>
-                                                        <div class="col-lg-8"><input type="file"
-                                                                class="p-0 form-control mb-2"></div>
+                                                        <div class="col-lg-8">
+                                                            <input type="file"
+                                                                class="p-0 form-control mb-2" name="UploadBol" (change)="selectDocuments($event)"></div>
                                                     </div>
 
 
                                                     <div class="row">
                                                         <div class="col-md-4">
                                                             <a class="image-popup-no-margins"
-                                                                href="http://3.6.238.81/pankaj_fleetdash/img/doc.jpg">
+                                                                href="javascript:;">
                                                                 <img class="img-fluid"
-                                                                    src="http://3.6.238.81/pankaj_fleetdash/img/doc.jpg"
+                                                                    src="" alt="Image"
                                                                     width="75">
                                                             </a>
                                                         </div>
@@ -363,9 +364,9 @@
                                                         <i class="fas fa-dollar-sign"></i> Expenses</h2>
                                                 </div>
                                                 <div class="col-lg-4 text-right mt-2">
-                                                    <a href="fuel-expenses.php" class=" btn btn-xs btn-dark"> Fuel
+                                                    <a href="javascript:;" routerLink="/fleet/expenses/fuel/list" class=" btn btn-xs btn-dark"> Fuel
                                                         Expenses</a>
-                                                    <a href="other-expenses.php" class="btn btn-xs btn-dark"> Other
+                                                    <a href="javascript:;" routerLink="/fleet/expenses/fuel/list" class="btn btn-xs btn-dark"> Other
                                                         Expenses</a>
                                                 </div>
                                             </div>
@@ -502,8 +503,10 @@
                                             <div class=""></div>
                                         </div>
                                     </div>
-                                    <canvas id="speedChart" style="height: 260px; display: block; width: 470px;"
-                                        width="470" height="260" class="chartjs-render-monitor"></canvas>
+                                    <canvas baseChart [datasets]="speedChartData" [labels]="speedChartLabels"
+                                            [options]="speedChartOptions" [legend]="speedChartLegend"
+                                            [chartType]="speedChartType"  style="height: 260px !important;">
+                                    </canvas>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -517,12 +520,10 @@
                                             <div class=""></div>
                                         </div>
                                     </div>
-                                    <canvas id="reeferChart" style="height: 260px; display: block; width: 470px;"
-                                        width="470" height="260" class="chartjs-render-monitor">
+                                    <canvas baseChart [datasets]="temperatureChartData" [labels]="temperatureChartLabels"
+                                            [options]="temperatureChartOptions" [legend]="temperatureChartLegend"
+                                            [chartType]="temperatureChartType"  style="height: 260px !important;">
                                     </canvas>
-                                    <!-- <canvas baseChart [datasets]="dataSets" [labels]="reeferChartLabels" [options]="chartOptions"
-                                        [legend]="chartLegend" [chartType]="reeferChartType">
-                                    </canvas> -->
                                 </div>
                             </div>
                         </div>

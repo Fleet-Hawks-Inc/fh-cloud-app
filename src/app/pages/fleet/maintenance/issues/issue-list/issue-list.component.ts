@@ -45,7 +45,6 @@ export class IssueListComponent implements OnInit {
   setUnit(unitID, unitName) {
     this.unitName = unitName;
     this.unitID = unitID;
-
     this.suggestedUnits = [];
   }
 
@@ -78,7 +77,6 @@ export class IssueListComponent implements OnInit {
           });
         }
       });
-      console.log(this.suggestedUnits);
       if(this.suggestedUnits.length == 0){
         this.unitID = '';
       }
@@ -91,7 +89,6 @@ export class IssueListComponent implements OnInit {
   fetchContactList() {
     this.apiService.getData('contacts/get/list').subscribe((result: any) => {
       this.contactList = result;
-      console.log('fetched contacts', this.contactList);
     });
   }
   fetchAssetList() {
@@ -121,29 +118,29 @@ export class IssueListComponent implements OnInit {
   }
   initDataTable() {
     this.dtOptions = {
-      dom: 'lrtip', // lrtip to hide search field
+      dom: 'Bfrtip', // lrtip to hide search field
       processing: true,
       columnDefs: [
-          {
-              targets: 0,
-              className: 'noVis'
-          },
-          {
-              targets: 1,
-              className: 'noVis'
-          },
-          {
-              targets: 2,
-              className: 'noVis'
-          },
-          {
-              targets: 3,
-              className: 'noVis'
-          },
-          {
-              targets: 4,
-              className: 'noVis'
-          }
+        {
+          targets: 0,
+          className: 'noVis'
+        },
+        {
+          targets: 1,
+          className: 'noVis'
+        },
+        {
+          targets: 2,
+          className: 'noVis'
+        },
+        {
+          targets: 3,
+          className: 'noVis'
+        },
+        {
+          targets: 4,
+          className: 'noVis'
+        }
       ],
       colReorder: {
         fixedColumnsLeft: 1

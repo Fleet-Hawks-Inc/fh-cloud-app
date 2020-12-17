@@ -35,7 +35,6 @@ import {
   EditAssetComponent,
 
   AddInventoryComponent,
-  EditInventoryComponent,
   InventoryListComponent,
   InventoryDetailComponent
 
@@ -77,7 +76,6 @@ const COMPONENTS = [
 
 
   AddInventoryComponent,
-  EditInventoryComponent,
   InventoryListComponent,
   InventoryDetailComponent
 ];
@@ -226,7 +224,7 @@ const routes: Routes = [
     path: 'inventory',
     children: [
       { path: 'add', component: AddInventoryComponent },
-      { path: 'edit/:itemID', component: EditInventoryComponent },
+      { path: 'edit/:itemID', component: AddInventoryComponent },
       { path: 'list', component: InventoryListComponent },
       { path: 'detail/:itemID', component: InventoryDetailComponent },
     ],

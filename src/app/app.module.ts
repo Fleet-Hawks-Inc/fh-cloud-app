@@ -52,6 +52,7 @@ import { ConfirmEqualValidatorDirective } from './directives/confirm-equal-valid
 import { AddAlertComponent } from './pages/alerts/add-alert/add-alert.component';
 import { AlertDetailComponent } from './pages/alerts/alert-detail/alert-detail.component';
 import { AlertListComponent } from './pages/alerts/alert-list/alert-list.component';
+import { AlertTypeDetailComponent } from './pages/alerts/alert-type-detail/alert-type-detail.component';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -75,7 +76,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     ConfirmEqualValidatorDirective,
     AddAlertComponent,
     AlertDetailComponent,
-    AlertListComponent
+    AlertListComponent,
+    AlertTypeDetailComponent
   ],
   imports: [
     AmplifyAngularModule,

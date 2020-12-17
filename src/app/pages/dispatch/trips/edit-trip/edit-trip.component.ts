@@ -204,6 +204,18 @@ export class EditTripComponent implements OnInit {
   assetDataCoDriverUsername = '';
   informationAsset = [];
 
+  statesObject: any = {};
+  countriesObject: any = {};
+  citiesObject: any = {};
+  vehiclesObject: any = {};
+  assetsObject: any = {};
+  carriersObject: any = {};
+  driversObject: any = {};
+  ordersObject: any = {};
+
+  temperature = '';
+  tempUnit = '';
+
   ngOnInit() {
 
     this.tripID = this.route.snapshot.params['tripID'];
@@ -901,8 +913,8 @@ export class EditTripComponent implements OnInit {
   updateTrip() {
     // console.log('tripData');
     this.hideErrors();
-    if (this.tripData.reeferTemperature != '' && this.tripData.reeferTemperatureUnit != undefined) {
-      this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
+    if (this.temperature != '' && this.tempUnit != '') {
+      this.tripData.reeferTemperature = this.temperature + this.tempUnit;
     } else {
       this.tripData.reeferTemperature = '';
     }
@@ -1044,8 +1056,9 @@ export class EditTripComponent implements OnInit {
         let temp = refTemp.substring(0, refTemp.length - 1);
         let tempUnit = refTemp.substring(refTemp.length - 1, refTemp.length);
 
-        this.tripData.reeferTemperature = temp;
-        this.tripData.reeferTemperatureUnit = tempUnit;
+        this.temperature = temp;
+        this.tempUnit = tempUnit;
+        // this.tripData.dateCreated = this.trip.dateCreated;
 
         let tripPlanning = this.tripData.tripPlanning;
         if (result.orderId.length > 0) {
@@ -1061,6 +1074,7 @@ export class EditTripComponent implements OnInit {
           const element = this.ftlOrders[m];
           if (result.orderId.indexOf(element.orderNumber) !== -1) {
             this.ftlOrders[m].selected = true;
+            this.OrderIDs.push(element.orderNumber)
           } else{
             this.ftlOrders[m].selected = false;
           }
@@ -1070,6 +1084,7 @@ export class EditTripComponent implements OnInit {
           const element = this.ltlOrders[m];
           if (result.orderId.indexOf(element.orderNumber) !== -1) {
             this.ltlOrders[m].selected = true;
+            this.OrderIDs.push(element.orderNumber)
           } else{
             this.ltlOrders[m].selected = false;
           }
@@ -1110,7 +1125,7 @@ export class EditTripComponent implements OnInit {
             miles: element.miles,
             name: element.name,
             trailer: '',
-            trailerName: "",
+            trailerID: [],
             type: element.type,
             vehicleID: element.vehicleID,
             vehicleName: ""
@@ -1122,24 +1137,28 @@ export class EditTripComponent implements OnInit {
           let assetArr = [];
           for (let j = 0; j < element.assetID.length; j++) {
             const assetID = element.assetID[j];
-            // let assetName = this.fetchAssetDetail(assetID,j);
+            // obj.trailerID.push(assetID);
+            let assetName = this.fetchAssetDetail(assetID,j);
 
             this.apiService.getData('assets/' + assetID)
               .subscribe((result: any) => {
                 // console.log('========here');
-                if (result.Items[0].assetIdentification != undefined) {
-                  assetName = result.Items[0].assetIdentification;
-                  // console.log('assetName', assetName)
-
-                  let assObj = {
-                    id: assetID,
-                    name: assetName
+                if(result.Items.length > 0) {
+                  if (result.Items[0].assetIdentification != undefined) {
+                    assetName = result.Items[0].assetIdentification;
+                    // console.log('assetName', assetName)
+  
+                    let assObj = {
+                      id: assetID,
+                      name: assetName
+                    }
+  
+                    this.allAssetName += assetName + ', ';
+                    assetArr.push(assObj);
+                    this.trips[i].trailerName = this.allAssetName;
                   }
-
-                  this.allAssetName += assetName + ', ';
-                  assetArr.push(assObj);
-                  this.trips[i].trailerName = this.allAssetName;
                 }
+                
               })
 
             // console.log('========now here');
@@ -1160,8 +1179,10 @@ export class EditTripComponent implements OnInit {
   fetchAssetDetail(assetID, index) {
     this.apiService.getData('assets/' + assetID)
       .subscribe((result: any) => {
-        if (result.Items[0].assetIdentification != undefined) {
-          return result.Items[0].assetIdentification;
+        if(result.Items.length > 0) {
+          if (result.Items[0].assetIdentification != undefined) {
+            return result.Items[0].assetIdentification;
+          }
         }
       })
   }
@@ -1170,8 +1191,10 @@ export class EditTripComponent implements OnInit {
     this.apiService.getData('vehicles/' + vehicleID)
       .subscribe((result: any) => {
         // console.log(result.Items[0]);
-        if (result.Items[0].vehicleIdentification != undefined) {
-          this.trips[index].vehicleName = result.Items[0].vehicleIdentification
+        if(result.Items.length > 0) {
+          if (result.Items[0].vehicleIdentification != undefined) {
+            this.trips[index].vehicleName = result.Items[0].vehicleIdentification
+          }
         }
       })
   }
@@ -1180,11 +1203,13 @@ export class EditTripComponent implements OnInit {
     this.apiService.getData('drivers/userName/' + driverUserName)
       .subscribe((result: any) => {
         // console.log(result.Items[0]);
-        if (result.Items[0].firstName != undefined) {
-          if (type === 'driver') {
-            this.trips[index].driverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
-          } else {
-            this.trips[index].coDriverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
+        if(result.Items.length > 0) {
+          if (result.Items[0].firstName != undefined) {
+            if (type === 'driver') {
+              this.trips[index].driverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
+            } else {
+              this.trips[index].coDriverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
+            }
           }
         }
       })
@@ -1194,8 +1219,10 @@ export class EditTripComponent implements OnInit {
     this.apiService.getData('countries/' + countryID)
       .subscribe((result: any) => {
         // console.log(result.Items[0]);
-        if (result.Items[0].countryName != undefined) {
-          this.trips[index].location.countryName = result.Items[0].countryName;
+        if(result.Items.length > 0) {
+          if (result.Items[0].countryName != undefined) {
+            this.trips[index].location.countryName = result.Items[0].countryName;
+          }
         }
       })
   }
@@ -1205,8 +1232,10 @@ export class EditTripComponent implements OnInit {
       .subscribe((result: any) => {
         // console.log('carrier');
         // console.log(result.Items[0]);
-        if (result.Items[0].businessDetail.carrierName != undefined) {
-          this.trips[index].carrierName = result.Items[0].businessDetail.carrierName;
+        if(result.Items.length > 0) {
+          if (result.Items[0].businessDetail.carrierName != undefined) {
+            this.trips[index].carrierName = result.Items[0].businessDetail.carrierName;
+          }
         }
       })
   }
@@ -1215,8 +1244,10 @@ export class EditTripComponent implements OnInit {
     this.apiService.getData('states/' + stateID)
       .subscribe((result: any) => {
         // console.log(result.Items[0]);
-        if (result.Items[0].stateName != undefined) {
-          this.trips[index].location.stateName = result.Items[0].stateName;
+        if(result.Items.length > 0) {
+          if (result.Items[0].stateName != undefined) {
+            this.trips[index].location.stateName = result.Items[0].stateName;
+          }
         }
       })
   }
@@ -1225,9 +1256,11 @@ export class EditTripComponent implements OnInit {
     this.apiService.getData('cities/' + cityID)
       .subscribe((result: any) => {
         // console.log(result.Items[0]);
-        if (result.Items[0].cityName != undefined) {
-          this.trips[index].location.cityName = result.Items[0].cityName;
-          this.trips[index].locationName = this.trips[index].location.address1 + ', ' + this.trips[index].location.address2 + ', ' + this.trips[index].location.zipcode + ', ' + this.trips[index].location.cityName + ', ' + this.trips[index].location.stateName + ', ' + this.trips[index].location.countryName;
+        if(result.Items.length > 0) {
+          if (result.Items[0].cityName != undefined) {
+            this.trips[index].location.cityName = result.Items[0].cityName;
+            this.trips[index].locationName = this.trips[index].location.address1 + ', ' + this.trips[index].location.address2 + ', ' + this.trips[index].location.zipcode + ', ' + this.trips[index].location.cityName + ', ' + this.trips[index].location.stateName + ', ' + this.trips[index].location.countryName;
+          }
         }
       })
   }
@@ -1257,4 +1290,60 @@ export class EditTripComponent implements OnInit {
         });
       this.errors = {};
   }
+
+  // fetchAllStatesIDs() {
+  //   this.apiService.getData('states/get/list')
+  //     .subscribe((result: any) => {
+  //       this.statesObject = result;
+  //     });
+  // }
+
+  // fetchAllCountriesIDs() {
+  //   this.apiService.getData('countries/get/list')
+  //     .subscribe((result: any) => {
+  //       this.countriesObject = result;
+  //     });
+  // }
+
+  // fetchAllCitiesIDs() {
+  //   this.apiService.getData('cities/get/list')
+  //     .subscribe((result: any) => {
+  //       this.citiesObject = result;
+  //     });
+  // }
+
+  // fetchAllVehiclesIDs() {
+  //   this.apiService.getData('vehicles/get/list')
+  //     .subscribe((result: any) => {
+  //       this.vehiclesObject = result;
+  //     });
+  // }
+
+  // fetchAllAssetIDs() {
+  //   this.apiService.getData('assets/get/list')
+  //     .subscribe((result: any) => {
+  //       this.assetsObject = result;
+  //     });
+  // }
+
+  // fetchAllCarrierIDs() {
+  //   this.apiService.getData('carriers/get/list')
+  //     .subscribe((result: any) => {
+  //       this.carriersObject = result;
+  //     });
+  // }
+
+  // fetchAllDriverIDs() {
+  //   this.apiService.getData('drivers/get/list')
+  //     .subscribe((result: any) => {
+  //       this.driversObject = result;
+  //     });
+  // }
+
+  // fetchAllOrderIDs() {
+  //   this.apiService.getData('orders/get/list')
+  //     .subscribe((result: any) => {
+  //       this.ordersObject = result;
+  //     });
+  // }
 }

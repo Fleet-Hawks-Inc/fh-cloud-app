@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-hos-list',
@@ -63,10 +64,14 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
     driverName: ''
   }
   suggestions = [];
+  driversObject: any = {};
+  driverIDsObject: any = {};
 
   ngOnInit(): void {
     this.fetchevents();
-    this.initDataTable()
+    this.initDataTable();
+    this.fetchAllDriverIDs();
+    this.fetchDriverIDs();
   }
 
   ngAfterViewInit(): void {
@@ -94,6 +99,16 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
       pageLength: 10,
       serverSide: true,
       processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0],"orderable": false},
+        {"targets": [1],"orderable": false},
+        {"targets": [2],"orderable": false},
+        {"targets": [3],"orderable": false},
+        {"targets": [4],"orderable": false},
+        {"targets": [5],"orderable": false},
+        {"targets": [6],"orderable": false},
+      ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('safety/eventLogs/fetch/hosViolation-records?lastEvaluatedValue1='+this.lastEvaluated.value1
@@ -124,24 +139,8 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.events = [];
     for (let i = 0; i < arrValues.length; i++) {
       const element = arrValues[i];
-
-      element.driverName = '';
-      element.driverID = '';
-      // this.fetchVehicleDetail(element.vehicleID, element);
-      this.fetchDriverDetail(element.driverUsername, element);
       this.events.push(element);
     }
-  }
-
-  fetchDriverDetail(driverUserName, tripArr) {
-    this.apiService.getData('drivers/userName/' + driverUserName)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].firstName != undefined) {
-          tripArr.driverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
-        }
-        tripArr.driverID = result.Items[0].employeeId;
-      })
   }
 
   changeCoachingStatus(event, eventID) {
@@ -175,21 +174,31 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
       return false;
     }
 
-    let start = this.filterData.startDate;
-    let end = this.filterData.endDate;
-    let startD = <any> '';
-    let endD = <any> '';
+    let start = <any> '';
+    let end = <any> '';
+    start = this.filterData.startDate;
+    end = this.filterData.endDate;
+    
+
+    // this.filterValue.filterDateStart = moment(this.filterValue.date+' 00:00:01').format("X");
+    //   this.filterValue.filterDateEnd = moment(this.filterValue.date+' 23:59:59').format("X");
+    //   this.filterValue.filterDateStart = this.filterValue.filterDateStart*1000;
+    //   this.filterValue.filterDateEnd = this.filterValue.filterDateEnd*1000;
 
     if(this.filterData.startDate !== '') {
       // start = start.split("-").reverse().join("-");
-      startD = start.split("-");
-      start = startD[0]+startD[1]+startD[2];
+      // startD = start.split("-");
+      // start = startD[0]+startD[1]+startD[2];
+      start = moment(start+' 00:00:01').format("X")
+      start = start*1000;
     }
 
     if(this.filterData.endDate !== '') {
       // end = end.split("-").reverse().join("-");
-      endD = end.split("-");
-      end = endD[0]+endD[1]+endD[2];
+      // endD = end.split("-");
+      // end = endD[0]+endD[1]+endD[2];
+      end = moment(end+' 23:59:59').format("X");
+      end = end*1000;
     }
 
     this.filterData.start = start;
@@ -249,6 +258,19 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else {
       return false;
     }
-    
+  }
+
+  fetchAllDriverIDs() {
+    this.apiService.getData('drivers/get/list')
+      .subscribe((result: any) => {
+        this.driversObject = result;
+      });
+  }
+
+  fetchDriverIDs() {
+    this.apiService.getData('drivers/get/data')
+      .subscribe((result: any) => {
+        this.driverIDsObject = result;
+      });
   }
 }

@@ -92,7 +92,6 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
   errors = {};
   lastEvaluated = {
     value1: '',
-    value2: ''
   };
   totalRecords = 20;
   pageLength = 10;
@@ -101,8 +100,19 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     searchValue: '',
     startDate: '',
     endDate: '',
-    category: ''
+    category: '',
+    start: '',
+    end: ''
   };
+
+  statesObject: any = {};
+  countriesObject: any = {};
+  citiesObject: any = {};
+  vehiclesObject: any = {};
+  assetsObject: any = {};
+  carriersObject: any = {};
+  driversObject: any = {};
+  ordersObject: any = {};
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -112,22 +122,31 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     // this.dummyInit();
     this.initDataTable('all');
 
+    this.fetchAllStatesIDs();
+    this.fetchAllVehiclesIDs();
+    this.fetchAllCitiesIDs();
+    this.fetchAllCountriesIDs();
+    this.fetchAllAssetIDs();
+    this.fetchAllCarrierIDs();
+    this.fetchAllDriverIDs();
+    this.fetchAllOrderIDs();
+
     // this.initPage();
   }
 
   async fetchTrips(result) {
     this.trips = [];
     let current = this;
-    console.log('in fetch trips')
-    console.log(result)
-    // this.spinner.show();
+    // console.log('in fetch trips')
+    // console.log(result)
+    this.spinner.show();
 
     for (let i = 0; i < result.Items.length; i++) {
       let locationArr = [];
       let dropArr = [];
 
       if (result.Items[i].isDeleted == '0') {
-
+        // result.Items[i].date = '';
         result.Items[i].pickupCountry = '';
         result.Items[i].pickupState = '';
         result.Items[i].pickupCity = '';
@@ -137,105 +156,76 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
         result.Items[i].dropCity = '';
         result.Items[i].dropTime = '';
         result.Items[i].dropLocation = '';
-        result.Items[i].driverName = '';
-        result.Items[i].vehicleName = '';
-        result.Items[i].assetName = '';
-        result.Items[i].carrierName = '';
+        result.Items[i].driverUsername = '';
+        result.Items[i].vehicleId = '';
+        result.Items[i].assetId = [];
+        result.Items[i].carrierId = '';
 
         const element = result.Items[i];
+        // console.log('element')
+        // console.log(element)
         let pickup;
         let drop;
         let planData;
 
-        let pickupAddr = new Promise(function (resolve, reject) {
-          planData = result.Items[i].tripPlanning[0];
-          pickup = result.Items[i].tripPlanning[0].location;
+        planData = result.Items[i].tripPlanning[0];
+        pickup = result.Items[i].tripPlanning[0].location;
 
-          let countryUrl = current.apiService.getData('countries/' + pickup.countryID);
-          let stateUrl = current.apiService.getData('states/' + pickup.stateID);
-          let cityUrl = current.apiService.getData('cities/' + pickup.cityID);
+        result.Items[i].pickupCountry = pickup.countryID;
+        result.Items[i].pickupState = pickup.stateID;
+        result.Items[i].pickupCity = pickup.cityID;
 
-          locationArr.push(countryUrl);
-          locationArr.push(stateUrl);
-          locationArr.push(cityUrl);
+        let pdate = planData.date;
+        let newpdate = '';
+        if (pdate !== '' && pdate !== undefined) {
+          newpdate = pdate.split("-").reverse().join("-");
+        }
 
-          let pdate = planData.date;
-          let newpdate = '';
-          if (pdate !== '' && pdate !== undefined) {
-            newpdate = pdate.split("-").reverse().join("-");
-          }
+        result.Items[i].pickupLocation = pickup.address1 + ', ' + pickup.address2 + ', ' + pickup.zipcode;
+        result.Items[i].pickupTime = newpdate + ' ' + planData.time;
 
-          forkJoin(locationArr)
-            .subscribe(serviceResp => {
-              result.Items[i].pickupCountry = serviceResp[0].Items[0].countryName;
-              result.Items[i].pickupState = serviceResp[1].Items[0].stateName;
-              result.Items[i].pickupCity = serviceResp[2].Items[0].cityName;
-              result.Items[i].pickupLocation = pickup.address1 + ', ' + pickup.address2 + ', ' + pickup.zipcode;
+        let lastloc = result.Items[i].tripPlanning.length - 1
+        drop = result.Items[i].tripPlanning[lastloc].location;
 
-              result.Items[i].pickupTime = newpdate + ' ' + planData.time;
-              resolve(true);
-            });
+        result.Items[i].dropCountry = drop.countryID;
+        result.Items[i].dropState = drop.stateID;
+        result.Items[i].dropCity = drop.cityID;
 
-        })
+        let ddate = result.Items[i].tripPlanning[lastloc].date;
+        let newddate = '';
+        if (ddate !== '' && ddate !== undefined) {
+          newddate = ddate.split("-").reverse().join("-");
+        }
 
-        let dropAddr = new Promise(function (resolve, reject) {
-          let lastloc = result.Items[i].tripPlanning.length - 1
-          drop = result.Items[i].tripPlanning[lastloc].location;
-
-          let ddate = result.Items[i].tripPlanning[lastloc].date;
-          let newddate = '';
-          if (ddate !== '' && ddate !== undefined) {
-            newddate = ddate.split("-").reverse().join("-");
-          }
-
-          let countryUrl = current.apiService.getData('countries/' + drop.countryID);
-          let stateUrl = current.apiService.getData('states/' + drop.stateID);
-          let cityUrl = current.apiService.getData('cities/' + drop.cityID);
-
-          dropArr.push(countryUrl);
-          dropArr.push(stateUrl);
-          dropArr.push(cityUrl);
-
-          forkJoin(dropArr)
-            .subscribe(serviceResp => {
-              result.Items[i].dropCountry = serviceResp[0].Items[0].countryName;
-              result.Items[i].dropState = serviceResp[1].Items[0].stateName;
-              result.Items[i].dropCity = serviceResp[2].Items[0].cityName;
-              result.Items[i].dropLocation = drop.address1 + ', ' + drop.address2 + ', ' + drop.zipcode;
-
-              result.Items[i].dropTime = newddate + ' ' + result.Items[i].tripPlanning[lastloc].time;
-              resolve(true);
-            });
-        })
-
-        await pickupAddr.then(function (result) {
-          // this.activities = result;
-        }.bind(this));
-
-        await dropAddr.then(function (result) {
-          // this.activities = result;
-        }.bind(this));
+        result.Items[i].dropLocation = drop.address1 + ', ' + drop.address2 + ', ' + drop.zipcode;
+        result.Items[i].dropTime = newddate + ' ' + result.Items[i].tripPlanning[lastloc].time;
 
         if (planData.assetID !== '' && planData.assetID !== undefined) {
           for (let j = 0; j < planData.assetID.length; j++) {
             const astId = planData.assetID[j];
-            this.fetchAssetDetail(astId, result.Items[i]);
+            // this.fetchAssetDetail(astId, result.Items[i]);
+            // let assteName = this.assetsObject[astId]+', ';
+            result.Items[i].assetId.push(astId)
+            // console.log('asset')
+            // console.log(result.Items[i].assetId)
           }
         }
 
         if (planData.driverUsername !== '' && planData.driverUsername !== undefined) {
-          this.fetchDriverDetail(planData.driverUsername, result.Items[i]);
+          result.Items[i].driverUsername = planData.driverUsername;
         }
 
         if (planData.vehicleID !== '' && planData.vehicleID !== undefined) {
-          this.fetchVehicleDetail(planData.vehicleID, result.Items[i]);
+          result.Items[i].vehicleId = planData.vehicleID;
         }
 
         if (planData.carrierID !== '' && planData.carrierID !== undefined) {
-          this.fetchCarrierName(planData.carrierID, result.Items[i]);
+          result.Items[i].carrierId = planData.carrierID;
         }
-
+        // result.Items[i].dateCreated = element.dateCreated;
         this.trips.push(result.Items[i]);
+        // console.log('trip');
+        // console.log(this.trips)
       }
     }
 
@@ -364,89 +354,6 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.form.showErrors(this.errors);
   }
 
-  fetchCountryName(countryID, index, type, tripArr) {
-    this.apiService.getData('countries/' + countryID)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].countryName != undefined) {
-          if (type === 'pickup') {
-            tripArr.pickupCountry = result.Items[0].countryName;
-          } else {
-            tripArr.dropCountry = result.Items[0].countryName;
-          }
-        }
-      })
-  }
-
-  fetchStateDetail(stateID, index, type, tripArr) {
-    this.apiService.getData('states/' + stateID)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].stateName != undefined) {
-          if (type === 'pickup') {
-            tripArr.pickupState = result.Items[0].stateName;
-          } else {
-            tripArr.dropState = result.Items[0].stateName;
-          }
-        }
-      })
-  }
-
-  fetchCityDetail(cityID, index, type, tripArr) {
-    this.apiService.getData('cities/' + cityID)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].cityName != undefined) {
-          if (type === 'pickup') {
-            tripArr.pickupCity = result.Items[0].cityName;
-          } else {
-            tripArr.dropCity = result.Items[0].cityName;
-          }
-        }
-      })
-  }
-
-  fetchAssetDetail(assetID, tripArr) {
-    this.apiService.getData('assets/' + assetID)
-      .subscribe((result: any) => {
-        // console.log('asset')
-        if (result.Items[0].assetIdentification != undefined) {
-          tripArr.assetName = result.Items[0].assetIdentification + ', ';
-        }
-      })
-  }
-
-  fetchVehicleDetail(vehicleID, tripArr) {
-    this.apiService.getData('vehicles/' + vehicleID)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].vehicleIdentification != undefined) {
-          tripArr.vehicleName = result.Items[0].vehicleIdentification
-        }
-      })
-  }
-
-  fetchDriverDetail(driverUserName, tripArr) {
-    this.apiService.getData('drivers/userName/' + driverUserName)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].firstName != undefined) {
-          tripArr.driverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
-        }
-      })
-  }
-
-  fetchCarrierName(carrierID, tripArr) {
-    this.apiService.getData('carriers/' + carrierID)
-      .subscribe((result: any) => {
-        // console.log('carrier');
-        // console.log(result.Items[0]);
-        if (result.Items[0].businessDetail.carrierName != undefined) {
-          tripArr.carrierName = result.Items[0].businessDetail.carrierName;
-        }
-      })
-  }
-
   fetchTabData(tabType) {
     let current = this;
     $(".navtabs").removeClass('active');
@@ -482,32 +389,22 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     }
     current.lastEvaluated = {
       value1: '',
-      value2: ''
     }
     current.initDataTable(tabType, 'reload');
   }
 
-  initDataTable(tabType, check = '', filters:any = '') {
+  initDataTable(tabType, check = '', filters: any = '') {
     let current = this;
-    if(tabType === 'all') {
+    if (tabType === 'all') {
       this.serviceUrl = "trips/fetch-records/" + tabType + "?value1=";
     } else {
-      this.serviceUrl = "trips/fetch-records/" + tabType + "?recLimit="+this.allTripsCount+"&value1=";
+      this.serviceUrl = "trips/fetch-records/" + tabType + "?recLimit=" + this.allTripsCount + "&value1=";
     }
 
-    if(filters === 'yes') {
-      let startDatee:any = '';
-      let endDatee:any = '';
-      if(this.tripsFiltr.startDate !== ''){
-        startDatee = new Date(this.tripsFiltr.startDate).getTime();
-      }
-      
-      if(this.tripsFiltr.endDate !== ''){
-        endDatee = new Date(this.tripsFiltr.endDate+" 00:00:00").getTime();
-      }
-      this.tripsFiltr.category = 'tripNo';
-      this.serviceUrl = this.serviceUrl+'&filter=true&searchValue='+this.tripsFiltr.searchValue+"&startDate="+startDatee+"&endDate="+endDatee+"&category="+this.tripsFiltr.category+"&value1=";
-    }
+    // if (filters === 'yes') {
+    //   this.tripsFiltr.category = 'tripNo';
+    //   this.serviceUrl = this.serviceUrl + '&searchValue=' + this.tripsFiltr.searchValue + "&startDate=" + this.tripsFiltr.startDate + "&endDate=" + this.tripsFiltr.endDate + "&category=" + this.tripsFiltr.category + "&value1=";
+    // }
     // console.log(this.serviceUrl);
 
     if (check !== '') {
@@ -519,39 +416,52 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       pageLength: current.pageLength,
       serverSide: true,
       processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0],"orderable": false},
+        {"targets": [1],"orderable": false},
+        {"targets": [2],"orderable": false},
+        {"targets": [3],"orderable": false},
+        {"targets": [4],"orderable": false},
+        {"targets": [5],"orderable": false},
+        {"targets": [6],"orderable": false},
+        {"targets": [7],"orderable": false},
+        {"targets": [8],"orderable": false},
+        {"targets": [9],"orderable": false},
+        {"targets": [10],"orderable": false},
+        {"targets": [11],"orderable": false},
+        {"targets": [12],"orderable": false},
+        {"targets": [13],"orderable": false},
+      ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData(current.serviceUrl+current.lastEvaluated.value1 + 
-          '&value2=' + current.lastEvaluated.value2, dataTablesParameters).subscribe(resp => {
-          current.fetchTrips(resp)
-          // console.log('in ajax')
-          // console.log(resp)
-          if (resp['LastEvaluatedKey'] !== undefined) {
-            if (resp['LastEvaluatedKey'].carrierID !== undefined) {
-              current.lastEvaluated = {
-                value1: resp['LastEvaluatedKey'].tripID,
-                value2: resp['LastEvaluatedKey'].carrierID
+        current.apiService.getDatatablePostData(current.serviceUrl + current.lastEvaluated.value1 +
+          '&searchValue=' + this.tripsFiltr.searchValue + "&startDate=" + this.tripsFiltr.start + 
+          "&endDate=" + this.tripsFiltr.end + "&category=" + this.tripsFiltr.category, dataTablesParameters).subscribe(resp => {
+            current.fetchTrips(resp)
+            if (resp['LastEvaluatedKey'] !== undefined) {
+              if (resp['LastEvaluatedKey'].carrierID !== undefined) {
+                current.lastEvaluated = {
+                  value1: resp['LastEvaluatedKey'].tripID,
+                }
+              } else {
+                current.lastEvaluated = {
+                  value1: resp['LastEvaluatedKey'].tripID,
+                }
               }
+
             } else {
               current.lastEvaluated = {
-                value1: resp['LastEvaluatedKey'].tripID,
-                value2: ''
+                value1: '',
               }
             }
 
-          } else {
-            current.lastEvaluated = {
-              value1: '',
-              value2: ''
-            }
-          }
-
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
+            callback({
+              recordsTotal: current.totalRecords,
+              recordsFiltered: current.totalRecords,
+              data: []
+            });
           });
-        });
       }
     };
   }
@@ -575,28 +485,124 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   filterTrips() {
-    // alert('3');
-    // console.log('tripsFiltr');
-    // console.log(this.tripsFiltr)
-    this.totalRecords = this.allTripsCount;
-    this.initDataTable('all', 'reload','yes');
+    if(this.tripsFiltr.searchValue !== '' || this.tripsFiltr.startDate !== '' 
+    || this.tripsFiltr.endDate !== '' || this.tripsFiltr.category !== '') {
+
+      let sdate;
+      let edate;
+      if(this.tripsFiltr.startDate !== ''){
+        sdate = this.tripsFiltr.startDate.split('-');
+        if(sdate[0] < 10) {
+          sdate[0] = '0'+sdate[0]
+        }
+        this.tripsFiltr.start = sdate[2]+'-'+sdate[1]+'-'+sdate[0];
+      }
+      if(this.tripsFiltr.endDate !== ''){
+        edate = this.tripsFiltr.endDate.split('-');
+        if(edate[0] < 10) {
+          edate[0] = '0'+edate[0]
+        }
+        this.tripsFiltr.end = edate[2]+'-'+edate[1]+'-'+edate[0];
+      }
+      this.pageLength = this.allTripsCount;
+      this.totalRecords = this.allTripsCount;
+      this.initDataTable('all', 'reload', 'yes');
+    } else {
+      return false;
+    }
+  }
+
+  resetFilter() {
+    if(this.tripsFiltr.startDate !== '' || this.tripsFiltr.endDate !== '' || this.tripsFiltr.searchValue !== '') {
+      this.spinner.show();
+      this.tripsFiltr = {
+        searchValue: '',
+        startDate: '',
+        endDate: '',
+        category: '',
+        start: '',
+        end: ''
+      };
+      $("#categorySelect").text('Search by category');
+      this.pageLength = 10;
+      this.rerender();
+      this.spinner.hide();
+    } else {
+      return false;
+    }
   }
 
   selectCategory(type) {
     let typeText = '';
     this.tripsFiltr.category = type;
 
-    if(type === 'TripNo') {
+    if (type === 'TripNo') {
       typeText = 'Trip Number';
       this.tripsFiltr.category = 'tripNo'
-    } else if(type === 'TripType') {
+    } else if (type === 'TripType') {
       typeText = 'Trip Type';
-    } else if(type === 'OrderNo') {
+    } else if (type === 'OrderNo') {
       typeText = 'Order Number';
     } else {
       typeText = type;
     }
-
+    this.tripsFiltr.category = 'tripNo';
     $("#categorySelect").text(typeText);
+  }
+
+  fetchAllStatesIDs() {
+    this.apiService.getData('states/get/list')
+      .subscribe((result: any) => {
+        this.statesObject = result;
+      });
+  }
+
+  fetchAllCountriesIDs() {
+    this.apiService.getData('countries/get/list')
+      .subscribe((result: any) => {
+        this.countriesObject = result;
+      });
+  }
+
+  fetchAllCitiesIDs() {
+    this.apiService.getData('cities/get/list')
+      .subscribe((result: any) => {
+        this.citiesObject = result;
+      });
+  }
+
+  fetchAllVehiclesIDs() {
+    this.apiService.getData('vehicles/get/list')
+      .subscribe((result: any) => {
+        this.vehiclesObject = result;
+      });
+  }
+
+  fetchAllAssetIDs() {
+    this.apiService.getData('assets/get/list')
+      .subscribe((result: any) => {
+        this.assetsObject = result;
+      });
+  }
+
+  fetchAllCarrierIDs() {
+    this.apiService.getData('carriers/get/list')
+      .subscribe((result: any) => {
+        this.carriersObject = result;
+      });
+  }
+
+  fetchAllDriverIDs() {
+    this.apiService.getData('drivers/get/list')
+      .subscribe((result: any) => {
+        this.driversObject = result;
+      });
+  }
+
+  fetchAllOrderIDs() {
+    this.apiService.getData('orders/get/list')
+      .subscribe((result: any) => {
+        this.ordersObject = result;
+      });
   }
 }

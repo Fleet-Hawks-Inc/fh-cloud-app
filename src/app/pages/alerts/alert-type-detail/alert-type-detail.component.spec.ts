@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditInventoryComponent } from './edit-inventory.component';
+import { AlertTypeDetailComponent } from './alert-type-detail.component';
 
-describe('EditInventoryComponent', () => {
-  let component: EditInventoryComponent;
-  let fixture: ComponentFixture<EditInventoryComponent>;
+describe('AlertTypeDetailComponent', () => {
+  let component: AlertTypeDetailComponent;
+  let fixture: ComponentFixture<AlertTypeDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditInventoryComponent ]
+      declarations: [ AlertTypeDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditInventoryComponent);
+    fixture = TestBed.createComponent(AlertTypeDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

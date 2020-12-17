@@ -201,7 +201,7 @@
                               Group:
                             </div>
                             <div class="col-lg-8 p-2 border-box">
-                              {{ groupID }}
+                              {{ groupsList[groupID] }}
                             </div>
                           </div>
                           <div class="row m-0">
@@ -211,7 +211,7 @@
                               Operator:
                             </div>
                             <div class="col-lg-8 p-2 border-box">
-                              Piayara Singh
+                              {{driversList[driverID]}}
                             </div>
                           </div>
                           <div class="row m-0">
@@ -271,7 +271,7 @@
                               Make:
                             </div>
                             <div class="col-lg-8 p-2 border-box">
-                              {{ manufacturerID }}
+                              {{vehicleManufacturersList[manufacturerID] }}
                             </div>
                           </div>
                           <div class="row m-0">
@@ -281,7 +281,7 @@
                               Model:
                             </div>
                             <div class="col-lg-8 p-2 border-box">
-                              {{ modelID }}
+                              {{ vehicleModelList[modelID] }}
                             </div>
                           </div>
                           <div class="row m-0">
@@ -311,7 +311,7 @@
                               Registration State/Province:
                             </div>
                             <div class="col-lg-8 p-2 border-box">
-                              {{ stateID }}
+                              {{ statesList[stateID] }}
                             </div>
                           </div>
                           <div class="row m-0">
@@ -1365,7 +1365,8 @@
                           >
                             Width:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">22</div>
+                          <div class="col-lg-8 p-2 border-box">{{ specifications.width }}
+                            {{ specifications.widthUnit }}</div>
                         </div>
                         <div class="row m-0">
                           <div
@@ -1553,6 +1554,26 @@
                           </div>
                           <div class="col-lg-8 p-2 border-box">
                             {{ insurance.dateOfIssue }}
+                          </div>
+                        </div>
+                        <div class="row m-0">
+                          <div
+                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                          >
+                            Policy Number:
+                          </div>
+                          <div class="col-lg-8 p-2 border-box">
+                            {{ insurance.policyNumber }}
+                          </div>
+                        </div>
+                        <div class="row m-0">
+                          <div
+                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                          >
+                            Insurance Amount:
+                          </div>
+                          <div class="col-lg-8 p-2 border-box">
+                            {{ insurance.amount }} {{insurance.amountCurrency}}
                           </div>
                         </div>
                         <div class="row m-0">
@@ -2050,7 +2071,7 @@
                             Purchase Price :
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ purchase.purchasePrice }}
+                            {{ purchase.purchasePrice }} {{purchase.purchasePriceCurrency}}
                           </div>
                         </div>
                         <div class="row m-0">

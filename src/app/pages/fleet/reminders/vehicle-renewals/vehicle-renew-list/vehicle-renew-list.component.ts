@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { group } from 'console';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
+import Constants from '../../../constants';
 declare var $: any;
 @Component({
   selector: 'app-vehicle-renew-list',
@@ -38,7 +38,7 @@ export class VehicleRenewListComponent implements OnInit {
     this.fetchServiceTaks();
     this.fetchRenewals();
     this.fetchVehicles();
-    this.fetchGroups();
+    this.fetchGroupsList();
     this.fetchVehicleList();
     this.fetchTasksList();
     
@@ -48,7 +48,7 @@ export class VehicleRenewListComponent implements OnInit {
       }, 1800);
     });
   }
-  fetchGroups() {
+  fetchGroupsList() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groups = result;
       //   console.log('Groups Data', this.groups);
@@ -89,7 +89,6 @@ export class VehicleRenewListComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         this.allRemindersData = result.Items;
-        console.log(this.allRemindersData);
         for(let j=0; j < this.allRemindersData.length; j++) {
           let reminderStatus: string;
           if (this.allRemindersData[j].reminderType === 'vehicle') {
@@ -116,12 +115,11 @@ export class VehicleRenewListComponent implements OnInit {
              this.remindersData.push(data); 
           }
         }
-        console.log('new data', this.remindersData);
-        if (this.filterStatus === 'OVERDUE') {
-          this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === 'OVERDUE');
+        if (this.filterStatus === Constants.OVERDUE) {
+          this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
         }
-        else if (this.filterStatus === 'DUE SOON') {
-          this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === 'DUE SOON');
+        else if (this.filterStatus === Constants.DUE_SOON) {
+          this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
         }
         else {
           this.remindersData = this.remindersData;
@@ -156,7 +154,7 @@ export class VehicleRenewListComponent implements OnInit {
    
   initDataTable() {
     this.dtOptions = {
-      dom: 'Bfrtip', // lrtip to hide search field
+      dom: 'lrtip', // lrtip to hide search field
       processing: true,
       columnDefs: [
           {

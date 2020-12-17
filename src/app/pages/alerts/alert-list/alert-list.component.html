@@ -37,13 +37,12 @@
                  <div class="btn-group flex-wrap">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                       <a class="dropdown-item text-1" href="">Edit</a>
-                       <a class=" dropdown-item text-1" href="#">Delete</a>
+                      
                        <a class="dropdown-item text-1" href="">Import</a>
                        <a class="dropdown-item text-1" href="">Export</a>
                     </div>
                  </div>
-                 <a href="add-alert.php" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Alert </a>
+                 <a routerLink="/add-alert" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Alert </a>
 
               </div>
            </div>
@@ -74,12 +73,14 @@
                              </thead>
                              <tbody>
                                 <tr *ngFor="let alert of alertsList" style="cursor: pointer;">
-                                 <td routerLink="/alert-detail"> {{alert.alertName}}</td>
-                                     <td onclick="window.location='alert-detail.php'">{{alert.alertType}}</td>
-                                     <td onclick="window.location='alert-detail.php'">All Vehicles</td>
-                                     <td onclick="window.location='alert-detail.php'"></td>
-                                     <td onclick="window.location='alert-detail.php'">All Drivers</td>
-                                     <td onclick="window.location='alert-detail.php'">Group 1</td>
+                                 <td routerLink="/alert-detail/{{alert.alertID}}"> {{alert.alertName}}</td>
+                                     <td routerLink="/alert-detail/{{alert.alertID}}">{{alert.alertType}}</td>
+                                     <td routerLink="/alert-detail/{{alert.alertID}}"><span *ngFor = "let vehicle of alert.vehicles">{{vehiclesList[vehicle]}},</span></td>
+                                     <td routerLink="/alert-detail/{{alert.alertID}}"><span *ngFor = "let asset of alert.assets">{{assetsList[asset]}},</span></td>
+                                     <td routerLink="/alert-detail/{{alert.alertID}}"> <span *ngFor = "let driver of alert.drivers">{{driversList[driver]}},</span></td>
+                                     <td routerLink="/alert-detail/{{alert.alertID}}"><span *ngFor = "let group of alert.groups">{{groupsList[group]}},</span> 
+                                       <span *ngFor = "let user of alert.users">{{user}},</span>
+                                       <span *ngFor = "let otherEmail of alert.otherEmails">{{otherEmail}},</span></td>
                                      <td>	<div class="switch switch-sm switch-dark">
                                                                      <input type="checkbox" name="switch" data-plugin-ios-switch checked="checked" />
                                                                  </div>
@@ -88,8 +89,8 @@
                                      <td><div class="btn-group flex-wrap">
                                         <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                         <div class="dropdown-menu" role="menu">
-                                           <a routerLink="" class="dropdown-item text-1" >Edit</a>
-                                           <button type="button" class="dropdown-item text-1" >Delete</button>
+                                           <a routerLink="/edit-alert/{{alert.alertID}}" class="dropdown-item text-1" >Edit</a>
+                                           <button type="button" class="dropdown-item text-1" (click)="deleteAlert(alert.alertID)" >Delete</button>
                                         </div>
                                      </div></td>
                                  </tr>

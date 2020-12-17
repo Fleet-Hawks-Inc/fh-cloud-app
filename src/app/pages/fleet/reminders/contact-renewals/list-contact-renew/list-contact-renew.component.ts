@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 declare var $: any;
 import * as moment from 'moment';
+import Constants from '../../../constants'
 @Component({
   selector: 'app-list-contact-renew',
   templateUrl: './list-contact-renew.component.html',
@@ -82,7 +83,7 @@ export class ListContactRenewComponent implements OnInit {
           this.contactID = '';
         }
       });
-    console.log('suggested contacts', this.suggestedContacts);
+   
   }
   fetchRenewals = async () => {
     this.remindersData = [];
@@ -96,7 +97,7 @@ export class ListContactRenewComponent implements OnInit {
           if (this.allRemindersData[j].reminderType === 'contact') {
             const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate, 'DD-MM-YYYY');
             const remainingDays = convertedDate.diff(this.currentDate, 'days');
-            console.log('remaining days', remainingDays);
+           
             if (remainingDays < 0) {
               reminderStatus = 'OVERDUE';
             }
@@ -118,13 +119,11 @@ export class ListContactRenewComponent implements OnInit {
             this.remindersData.push(data);
           }
         }
-        // console.log('new data', this.remindersData);
-        // console.log('filter status', this.filterStatus);
-        if (this.filterStatus === 'OVERDUE') {
-          this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === 'OVERDUE');
+        if (this.filterStatus === Constants.OVERDUE) {
+          this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
         }
-        else if (this.filterStatus === 'DUE SOON') {
-          this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === 'DUE SOON');
+        else if (this.filterStatus === Constants.DUE_SOON) {
+          this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
         }
         else {
           this.remindersData = this.remindersData;

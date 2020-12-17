@@ -1,3 +1,8 @@
+<style>
+   .boxes{
+      cursor: pointer;
+   }
+</style>
 <section class="body">
    <!-- start: header -->
    <app-header></app-header>
@@ -12,17 +17,17 @@
            <header class="page-header pr-5">
               <h2>Routing &amp; Dispatch Overview</h2>
               <div class="right-wrapper text-right mt-2 pr-2">
-                 <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Estimate</a>
-                 <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Order</a>
-                 <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" routerLink="/dispatch/trips/add-trip"><i class="fas fa-plus"></i> Trip</a>
-                 <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" routerLink="/dispatch/routes/add-route"><i class="fas fa-plus"></i> Permanent Route</a>
+                 <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/quotes/add"><i class="fas fa-plus"></i> Estimate</a>
+                 <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/orders/add"><i class="fas fa-plus"></i> Order</a>
+                 <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/trips/add-trip"><i class="fas fa-plus"></i> Trip</a>
+                 <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/routes/add-route"><i class="fas fa-plus"></i> Permanent Route</a>
               </div>
            </header>
            <div class="routing-overview__wrapper m-3">
               <div class="row">
                  <div class="col-8">
                     <div class="row my-3">
-                       <div class="col-6 pr-2" routerLink="/dispatch/trips/trip-list">
+                       <div class="col-6 pr-2 boxes" routerLink="/dispatch/trips/trip-list">
                           <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                              <div>
                                 <h4 class="m-0">Active Trips</h4>
@@ -33,7 +38,7 @@
                              </div>
                           </div>
                        </div>
-                       <div class="col-6 pl-2" routerLink="/dispatch/trips/trip-list">
+                       <div class="col-6 pl-2 boxes" routerLink="/dispatch/trips/trip-list">
                           <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                              <div>
                                 <h4 class="m-0">Total Trips</h4>
@@ -45,34 +50,8 @@
                           </div>
                        </div>
                     </div>
-
-                     <!-- <div class="row my-3">
-                       <div class="col-6 pr-2" onclick="window.location='all-invoices.php'">
-                          <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-                             <div>
-                                <h4 class="m-0">Open Invoices</h4>
-                                <h3 class="mt-1 mb-0 font-weight-bold">25</h3>
-                             </div>
-                             <div class="grey-bg p-4" style="color: #979797;">
-                                <i class="far fa-file-alt text-dark fa-fw" style="font-size:20px;"></i>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="col-6 pl-2" onclick="window.location='all-invoices.php'">
-                          <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-                             <div>
-                                <h4 class="m-0">Invoices Paid</h4>
-                                <h3 class="mt-1 mb-0 font-weight-bold">15</h3>
-                             </div>
-                             <div class="grey-bg p-4" style="color: #979797;">
-                                <i class="far fa-file-alt text-dark fa-fw" style="font-size:20px;"></i>
-                             </div>
-                          </div>
-                       </div>
-                    </div> -->
-
                     <div class="row">
-                       <div class="col-4 pr-2" routerLink="/dispatch/routes/route-list">
+                       <div class="col-4 pr-2 boxes" routerLink="/dispatch/routes/route-list">
                           <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                              <div>
                                 <h3 class="m-0 f-17">Permanent Routes</h3>
@@ -83,7 +62,7 @@
                              </div>
                           </div>
                        </div>
-                       <div class="col-4 px-2" routerLink="/dispatch/trips/trip-list">
+                       <div class="col-4 px-2 boxes" routerLink="/dispatch/trips/trip-list">
                           <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                              <div>
                                 <h3 class="m-0 f-17">Today Pickup</h3>
@@ -95,7 +74,7 @@
                           </div>
                        </div>
 
-                       <div class="col-4 pl-2" routerLink="/dispatch/trips/trip-list">
+                       <div class="col-4 pl-2 boxes" routerLink="/dispatch/trips/trip-list">
                           <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                              <div>
                                 <h3 class="m-0 f-17">Tomorrow Pickup</h3>
@@ -155,13 +134,13 @@
                           <div class="col-6 pr-1">
                              <div class="grey-bg py-2 p-3 d-flex justify-content-between align-items-center text-dark">
                                 <h4 class="m-0 font-weight-bold">ACE</h4>
-                                <h4 class="m-0">65</h4>
+                                <h4 class="m-0">{{ aceManifestCount }}</h4>
                              </div>
                           </div>
                           <div class="col-6 pl-1">
                              <div class="grey-bg py-2 p-3 d-flex justify-content-between align-items-center text-dark">
                                 <h4 class="m-0  font-weight-bold">ACI</h4>
-                                <h4 class="m-0">20</h4>
+                                <h4 class="m-0">{{ aciManifestCount }}</h4>
                              </div>
                           </div>
                        </div>

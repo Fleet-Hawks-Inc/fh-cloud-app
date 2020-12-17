@@ -19,8 +19,8 @@ export const environment = {
   },
   awsBucket: {
     bucketName: 'fh-dashboard-assets',
-    accessKeyId: 'AKIARUNMEEHU3E2DK3S7',
-    secretAccessKey: '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',
+    accessKeyId: 'REMOVE_ME',
+    secretAccessKey: 'REMOVE_ME',
     region: 'ap-south-1'
   },
   HOSTNAME: 'myhome.anterbox.com',

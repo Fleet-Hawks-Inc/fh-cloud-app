@@ -104,7 +104,7 @@
                       <div class="row">
                         <div class="col-lg-6 pr-0">
                           <input
-                            type="text"
+                            type="number"
                             class="form-control"
                             name="cost"
                             [(ngModel)]="cost"
@@ -134,7 +134,7 @@
                         >Quantity</label
                       >
                       <input
-                        type="text"
+                        type="number"
                         class="form-control"
                         name="quantity"
                         [(ngModel)]="quantity"
@@ -191,7 +191,7 @@
                             *ngFor="let warehouse of warehouses"
                             value="{{ warehouse.warehouseID }}"
                           >
-                            {{ warehouse.wareHouseName }}
+                            {{ warehouse.warehouseName }}
                           </option>
                         </optgroup>
                       </select>
@@ -401,7 +401,7 @@
                             >Days</label
                           >
                           <input
-                            type="text"
+                            type="number"
                             class="form-control"
                             name="days"
                             [(ngModel)]="days"
@@ -413,7 +413,7 @@
                             >Time</label
                           >
                           <input
-                            type="text"
+                            type="number"
                             class="form-control"
                             name="time"
                             [(ngModel)]="time"
@@ -482,12 +482,8 @@
                   >
                     Cancel
                   </button>
-                  <a
-                    [routerLink]=""
-                    (click)="addInventory()"
-                    class="btn btn-success"
-                    >Submit</a
-                  >
+                  <a href="javascript:;" *ngIf="!itemID" (click)="addInventory()" class="btn btn-success">Submit</a>
+                  <a href="javascript:;" *ngIf="itemID" (click)="updateInventory()" class="btn btn-success">Update</a>
                 </div>
               </div>
               <div class="form-group row">
