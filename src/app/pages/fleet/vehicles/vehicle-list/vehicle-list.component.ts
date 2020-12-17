@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { timer } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 declare var $: any;
 
 @Component({
@@ -20,7 +21,7 @@ export class VehicleListComponent implements OnInit {
   groupsList: any = {};
   vehicleModelList: any = {};
   vehicleManufacturersList: any = {};
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService,private toastr: ToastrService) {}
 
   ngOnInit() {
     this.fetchGroups();
@@ -80,6 +81,7 @@ export class VehicleListComponent implements OnInit {
     this.apiService
       .deleteData('vehicles/' + vehicleId)
       .subscribe((result: any) => {
+        this.toastr.success('Vehicle Deleted Successfully!');
         this.fetchVehicles();
       });
   }
