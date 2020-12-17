@@ -15,7 +15,8 @@
                     <div class="row px-4" style="padding-top:10px;">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
-                                <input type="text" class="form-control" name="searchValue" [(ngModel)]="orderFiltr.searchValue" placeholder="Search">
+                                <input type="text" class="form-control" name="searchValue"
+                                    [(ngModel)]="orderFiltr.searchValue" placeholder="Search">
                             </div>
                         </div>
 
@@ -26,35 +27,51 @@
                                         <i class="fas fa-calendar-alt"></i>
                                     </span>
                                 </span>
-                                <input type="text" class="form-control" name="startDate" [(ngModel)]="orderFiltr.startDate">
+                                <input [(ngModel)]="orderFiltr.startDate" name="fromDate" type="text"
+                                    placeholder="DD-MM-YYYY" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                    class="form-control" autocomplete="off">
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
-                                <input type="text" class="form-control" name="endDate" [(ngModel)]="orderFiltr.endDate">
+                                <input [(ngModel)]="orderFiltr.endDate" name="toDate" type="text"
+                                    placeholder="DD-MM-YYYY" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                                    class="form-control" autocomplete="off">
                             </div>
                         </div>
                         <div class="col-md-2  col-lg-2">
                             <div class="btn-group flex-wrap" style="width:100%;">
                                 <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle"
-                                    data-toggle="dropdown"  id="categorySelect">Search by Category<span class="caret"></span></button>
+                                    data-toggle="dropdown" id="categorySelect">Search by Category<span
+                                        class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('All')">All</a>
-                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Company')">Company</a>
-                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Customer')">Customer</a>
-                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Driver')">Driver</a>
-                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Vehicle')">Vehicle</a>
-                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Trailer')">Trailer</a>
-                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Vendor')">Vendor</a>
-                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Broker')">Broker</a>
-                                    <a class="dropdown-item text-1"  href="javascript:;" (click)="selectCategory('Location')">Location</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('All')">All</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Company')">Company</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Customer')">Customer</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Driver')">Driver</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Vehicle')">Vehicle</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Trailer')">Trailer</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Vendor')">Vendor</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Broker')">Broker</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Location')">Location</a>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-1  col-lg-1">
-                            <button type="submit" class="btn btn-sm btn-success" (click)="filterTrips()">Search</button>
+                        <div class="col-md-2 col-lg-2">
+                            <button type="submit" class="btn btn-sm btn-success mr-3"
+                                (click)="filterOrders()">Search</button>
+                            <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                         </div>
-                        <div class="col-md-4  col-lg-4 text-right pr-5">
+                        <div class="col-md-3 col-lg-3 text-right pr-5">
 
                             <div class="btn-group flex-wrap">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle"
@@ -62,8 +79,6 @@
                                         class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" href="">Edit</a>
-                                    <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
                                     <a class="dropdown-item text-1" href="">Import</a>
                                     <a class="dropdown-item text-1" href="">Export</a>
                                 </div>
@@ -157,7 +172,8 @@
                                             Rate: {{order.freightDetails.rate}} {{order.freightDetails.rateUnit}}</td>
                                         <td>T Amt: CAD {{order.freightDetails.amount}}<br> -->
                                             Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00</td>
+                                            Balance: CAD 300.00
+                                        </td>
                                         <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
                                         <td>
                                             <div class="dropdown dropright">

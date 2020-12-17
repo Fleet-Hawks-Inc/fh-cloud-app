@@ -100,7 +100,9 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     searchValue: '',
     startDate: '',
     endDate: '',
-    category: ''
+    category: '',
+    start: '',
+    end: ''
   };
 
   statesObject: any = {};
@@ -434,8 +436,8 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData(current.serviceUrl + current.lastEvaluated.value1 +
-          '&searchValue=' + this.tripsFiltr.searchValue + "&startDate=" + this.tripsFiltr.startDate + 
-          "&endDate=" + this.tripsFiltr.endDate + "&category=" + this.tripsFiltr.category, dataTablesParameters).subscribe(resp => {
+          '&searchValue=' + this.tripsFiltr.searchValue + "&startDate=" + this.tripsFiltr.start + 
+          "&endDate=" + this.tripsFiltr.end + "&category=" + this.tripsFiltr.category, dataTablesParameters).subscribe(resp => {
             current.fetchTrips(resp)
             if (resp['LastEvaluatedKey'] !== undefined) {
               if (resp['LastEvaluatedKey'].carrierID !== undefined) {
@@ -485,8 +487,46 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
   filterTrips() {
     if(this.tripsFiltr.searchValue !== '' || this.tripsFiltr.startDate !== '' 
     || this.tripsFiltr.endDate !== '' || this.tripsFiltr.category !== '') {
+
+      let sdate;
+      let edate;
+      if(this.tripsFiltr.startDate !== ''){
+        sdate = this.tripsFiltr.startDate.split('-');
+        if(sdate[0] < 10) {
+          sdate[0] = '0'+sdate[0]
+        }
+        this.tripsFiltr.start = sdate[2]+'-'+sdate[1]+'-'+sdate[0];
+      }
+      if(this.tripsFiltr.endDate !== ''){
+        edate = this.tripsFiltr.endDate.split('-');
+        if(edate[0] < 10) {
+          edate[0] = '0'+edate[0]
+        }
+        this.tripsFiltr.end = edate[2]+'-'+edate[1]+'-'+edate[0];
+      }
+      this.pageLength = this.allTripsCount;
       this.totalRecords = this.allTripsCount;
       this.initDataTable('all', 'reload', 'yes');
+    } else {
+      return false;
+    }
+  }
+
+  resetFilter() {
+    if(this.tripsFiltr.startDate !== '' || this.tripsFiltr.endDate !== '' || this.tripsFiltr.searchValue !== '') {
+      this.spinner.show();
+      this.tripsFiltr = {
+        searchValue: '',
+        startDate: '',
+        endDate: '',
+        category: '',
+        start: '',
+        end: ''
+      };
+      $("#categorySelect").text('Search by category');
+      this.pageLength = 10;
+      this.rerender();
+      this.spinner.hide();
     } else {
       return false;
     }
@@ -506,7 +546,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else {
       typeText = type;
     }
-
+    this.tripsFiltr.category = 'tripNo';
     $("#categorySelect").text(typeText);
   }
 
