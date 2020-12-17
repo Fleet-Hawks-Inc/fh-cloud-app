@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { timer } from 'rxjs';
 declare var $: any;
-import { HereMapService } from '../../../../services';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -22,7 +21,7 @@ export class VehicleListComponent implements OnInit {
   vehicleModelList: any = {};
   vehicleManufacturersList: any = {};
   currentView = 'list';
-  constructor(private apiService: ApiService, private hereMap: HereMapService) {}
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.fetchGroups();
@@ -92,9 +91,6 @@ export class VehicleListComponent implements OnInit {
   changeView(){
     if(this.currentView == 'list'){
       this.currentView = 'map'
-      setTimeout(() => {
-        this.hereMap.mapInit();
-      }, 500);
     }else {
       this.currentView = 'list';
     }
