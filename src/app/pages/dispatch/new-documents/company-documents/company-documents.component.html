@@ -1,11 +1,7 @@
 <section class="body">
-
     <!-- start: header -->
     <app-header></app-header>
     <!-- end: header -->
-
-
-
     <div class="inner-wrapper">
         <!-- start: sidebar -->
         <app-sidebar></app-sidebar>
@@ -25,11 +21,17 @@
                                         <i class="fas fa-calendar-alt"></i>
                                     </span>
                                 </span>
-                                <input data-plugin-datepicker="" type="text" class="form-control" name="start">
+                                <input [(ngModel)]="filterValues.startDate" name="fromDate" type="text"
+                                    placeholder="DD-MM-YYYY" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                    class="form-control" autocomplete="off">
+
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
-                                <input data-plugin-datepicker="" type="text" class="form-control" name="end">
+                                <input [(ngModel)]="filterValues.endDate" name="toDate" type="text"
+                                    placeholder="DD-MM-YYYY" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                                    class="form-control" autocomplete="off">
+                                <!-- <input data-plugin-datepicker="" type="text" class="form-control" name="end"> -->
                             </div>
                         </div>
                         <div class="col-lg-2">
@@ -45,7 +47,9 @@
                             </select>
                         </div>
                         <div class="col-md-1  col-lg-1">
-                            <button type="submit" class="btn btn-sm btn-success">Search</button>
+                            <button type="button" (click)="searchFilter()"
+                                class="btn btn-sm btn-success">Search</button>
+                            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                         </div>
                         <div class="col-lg-4 text-right">
                             <div class="btn-group flex-wrap pull-right mt-1">
@@ -156,7 +160,8 @@
                               </div>
                             </form>
                        </div> -->
-                       <table datatable [dtOptions]="allOptions"  class="table table-bordered table-responsive-lg table-striped mb-0" *ngIf="documents?.length > 0">
+                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                class="row-border hover table table-bordered table-striped mb-0">
                                 <thead>
 
                                     <tr>
@@ -171,7 +176,7 @@
                                         <th width="5%">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody *ngIf="documents.length > 0">
                                     <tr *ngFor="let document of documents;let i = index;">
                                         <td>{{document.documentNumber}}</td>
                                         <td>{{document.tripID}}</td>
@@ -179,7 +184,7 @@
                                         <td>{{document.documentName}}</td>
                                         <td>{{document.uploadedDocs[0]}}</td>
                                         <td>--</td>
-                                        <td>{{document.timeCreated}}</td>
+                                        <td>{{document.timeCreated | date: 'dd-MM-yyyy'}}</td>
                                         <td>{{document.description}}</td>
                                         <td>
                                             <div class="dropdown dropright">
@@ -201,10 +206,13 @@
                                     </tr>
 
                                 </tbody>
+                                <tbody *ngIf="documents.length === 0">
+                                    <tr>
+                                      <td colspan="9" class="no-data-available">No records found</td>
+                                    </tr>
+                                <tbody>
                             </table>
-                            <div *ngIf="!documents?.length > 0" class="alert alert-info m-0 text-center" role="alert">
-                                No Records Found
-                            </div>
+
                             <!-- email modal Form -->
                             <div id="emailForm" class="modal-block modal-block-primary mfp-hide">
                                 <section class="card">
@@ -257,7 +265,8 @@
 
 </section>
 
-<div class="modal fade" id="addSequenceModal" tabindex="-1" role="dialog" aria-labelledby="addSequenceModalLabel" aria-hidden="true">
+<div class="modal fade" id="addSequenceModal" tabindex="-1" role="dialog" aria-labelledby="addSequenceModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" style="max-width: 600px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -269,59 +278,66 @@
             <div class="modal-body">
                 <form>
                     <div class="form-row">
-                        
-                          <div class="form-group col-lg-6 col-md-12">
-                                <div class="btn-group-toggle" data-toggle="buttons">
-                                    <!-- <label class="btn btn-outline btn-fleet mr-2 active" style="width:125px;" id="stop">
+
+                        <div class="form-group col-lg-6 col-md-12">
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                                <!-- <label class="btn btn-outline btn-fleet mr-2 active" style="width:125px;" id="stop">
                                         <input value="manual" name="mode" type="radio"> Manual </label>
                                         <label class="btn btn-outline btn-fleet mr-2 " style="width:125px;" id="yard">
                                         <input value="auto" name="mode" type="radio"> Automatic</label> -->
-                                    
-                                </div>
-                                <label>
-                                    <input [(ngModel)]="documentMode" type="radio" name="mode" value="Manual">Manual
-                                </label>
-                                <label>
-                                    <input [(ngModel)]="documentMode" type="radio" name="mode" value="Automatic">Automatic
-                                </label>
-                          </div>
-                       </div>
-                       <div class="form-row">
-                            <div *ngIf="documentMode == 'Manual'" class="form-group col-lg-12 col-md-12" id="manualDiv"
-                            >
-                             <label
-                                class="control-label font-weight-semibold labelmt text-3 text-dark">Document Number</label>                         
-                                <div class="row">
-                                  <div class="col-lg-12"><small>Document number must be entered manually for each new Document.</small></div>
-                                </div>
-                           
-                          </div>
-                          <div *ngIf="documentMode == 'Automatic'" class="form-group col-lg-12 col-md-12" id="automaticDiv">
-                             <label
-                                class="control-label font-weight-semibold labelmt text-3 text-dark">Document Number</label>
-                                <div class="row">
-                                  <div class="col-lg-5"><input type="text" name="prefix" [(ngModel)]="documentPrefix" value="" class="form-control" placeholder="Prefix"></div>
-                                  <div class="col-lg-1">-</div>
-                                  <div class="col-lg-5"> <input type="text" name="sequence" [(ngModel)]="documentSequence" value="" class="form-control" placeholder="Sequence"></div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-lg-12"><small>Prefix can be any combinatiion of alphanumeric characters.</small></div>
-                                  <div class="col-lg-12"><small>Sequence is numeric value and will be increased by 1 for each new "Document".</small></div>
-                                </div>
-                           
-                          </div>
-                       </div>
-                    </form>
+
+                            </div>
+                            <label>
+                                <input [(ngModel)]="documentMode" type="radio" name="mode" value="Manual">Manual
+                            </label>
+                            <label>
+                                <input [(ngModel)]="documentMode" type="radio" name="mode" value="Automatic">Automatic
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div *ngIf="documentMode == 'Manual'" class="form-group col-lg-12 col-md-12" id="manualDiv">
+                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Document
+                                Number</label>
+                            <div class="row">
+                                <div class="col-lg-12"><small>Document number must be entered manually for each new
+                                        Document.</small></div>
+                            </div>
+
+                        </div>
+                        <div *ngIf="documentMode == 'Automatic'" class="form-group col-lg-12 col-md-12"
+                            id="automaticDiv">
+                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Document
+                                Number</label>
+                            <div class="row">
+                                <div class="col-lg-5"><input type="text" name="prefix" [(ngModel)]="documentPrefix"
+                                        value="" class="form-control" placeholder="Prefix"></div>
+                                <div class="col-lg-1">-</div>
+                                <div class="col-lg-5"> <input type="text" name="sequence" [(ngModel)]="documentSequence"
+                                        value="" class="form-control" placeholder="Sequence"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12"><small>Prefix can be any combinatiion of alphanumeric
+                                        characters.</small></div>
+                                <div class="col-lg-12"><small>Sequence is numeric value and will be increased by 1 for
+                                        each new "Document".</small></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button (click)="saveDocumentMode()" data-dismiss="modal" data-toggle="modal" data-target="#addDocumentModal" type="button" class="btn btn-success">Save</button>
+                <button (click)="saveDocumentMode()" data-dismiss="modal" data-toggle="modal"
+                    data-target="#addDocumentModal" type="button" class="btn btn-success">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="addDocumentModal" tabindex="-1" role="dialog" aria-labelledby="addDocumentModalLabel" aria-hidden="true">
+<div class="modal fade" id="addDocumentModal" tabindex="-1" role="dialog" aria-labelledby="addDocumentModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" style="max-width: 600px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -331,20 +347,16 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal"
-                method="get"
-                name="form"
-                id="form_">
+                <form class="form-horizontal" method="get" name="form" id="form_">
                     <div class="form-row">
                         <div class="form-group col-lg-12">
                             <label for="">Document#</label>
                             <input [readonly]="documentMode == 'Automatic'" [(ngModel)]="documentData.documentNumber"
-                            name="documentNumber" type="text" class="form-control" >
+                                name="documentNumber" type="text" class="form-control">
                         </div>
                         <div class="form-group col-lg-12">
                             <label for="">Select Trip ID</label>
-                            <select [(ngModel)]="documentData.tripID"
-                            name="tripID" class="form-control">
+                            <select [(ngModel)]="documentData.tripID" name="tripID" class="form-control">
                                 <option>#7876</option>
                                 <option>#7877</option>
                                 <option>#7878</option>
@@ -355,8 +367,7 @@
                         </div>
                         <div class="form-group col-lg-12">
                             <label for="">Document Type</label>
-                            <select [(ngModel)]="documentData.docType"
-                            name="docType" class="form-control">
+                            <select [(ngModel)]="documentData.docType" name="docType" class="form-control">
                                 <option>BOL</option>
                                 <option>POD</option>
                                 <option>Fuel Receipts</option>
@@ -365,21 +376,22 @@
                         </div>
                         <div class="form-group col-lg-12">
                             <label for="">Document Name</label>
-                            <input [(ngModel)]="documentData.documentName"
-                            name="documentName" type="text" class="form-control" >
+                            <input [(ngModel)]="documentData.documentName" name="documentName" type="text"
+                                class="form-control">
                         </div>
                         <div class="form-group col-lg-12 mb-3">
                             <label for="">Choose File</label>
-                            <input (change)="selectDocuments($event)" type="file" class="form-control" >
-                            <span>	
-                                Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, gif, png, bmp, tif, tiff).
+                            <input (change)="selectDocuments($event)" type="file" class="form-control">
+                            <span>
+                                Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, gif, png, bmp, tif,
+                                tiff).
                                 The maximum file size can be 15MB or less.</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputAddress">Description</label>
-                        <textarea [(ngModel)]="documentData.description"
-                        name="description" class="form-control" rows="3" id="textareaDefault"></textarea>
+                        <textarea [(ngModel)]="documentData.description" name="description" class="form-control"
+                            rows="3" id="textareaDefault"></textarea>
                     </div>
                 </form>
             </div>
