@@ -38,11 +38,12 @@ export class FuelEntryListComponent implements OnInit {
   formattedToDate: any = '';
   fuelList;
   dtOptions: any = {};
-  suggestedVehicles = [];
+  suggestedUnits = [];
   vehicleID = '';
   amount = '';
   vehicleIdentification = '';
-
+  unitID = '';
+  unitName: string;
   constructor(
     private apiService: ApiService,
     private route: Router,
@@ -61,20 +62,44 @@ export class FuelEntryListComponent implements OnInit {
       }, 1800);
     });
   }
-  setVehicle(vehicleID, vehicleIdentification) {
-    this.vehicleIdentification = vehicleIdentification;
-    this.vehicleID = vehicleID;
-    this.suggestedVehicles = [];
+  setUnit(unitID, unitName) {
+    this.unitName = unitName;
+    this.unitID = unitID;
+
+    this.suggestedUnits = [];
   }
   getSuggestions(value) {
+    this.suggestedUnits = [];
     this.apiService
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
-        this.suggestedVehicles = result.Items;
-        if (this.suggestedVehicles.length === 0) {
-          this.vehicleID = '';
+        result = result.Items;
+
+        for(let i = 0; i < result.length; i++){
+          this.suggestedUnits.push({
+            unitID: result[i].vehicleID,
+            unitName: result[i].vehicleIdentification
+          });
+        }
+        this.getAssetsSugg(value);
+      });
+  }
+
+  getAssetsSugg(value) {
+    this.apiService
+      .getData(`assets/suggestion/${value}`)
+      .subscribe((result) => {
+        result = result.Items;
+        for(let i = 0; i < result.length; i++){
+          this.suggestedUnits.push({
+            unitID: result[i].assetID,
+            unitName: result[i].assetIdentification
+          });
         }
       });
+      if(this.suggestedUnits.length == 0){
+        this.unitID = '';
+      }
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -84,7 +109,6 @@ export class FuelEntryListComponent implements OnInit {
   fetchAssetList() {
     this.apiService.getData('assets/get/list').subscribe((result: any) => {
       this.assetList = result;
-      console.log('asset list', this.assetList);
     });
   }
   fetchTripList() {
@@ -93,17 +117,19 @@ export class FuelEntryListComponent implements OnInit {
     });
   }
   fuelEntries() {
-    this.apiService.getData(`fuelEntries?amount=${this.amount}&from=${this.fromDate}&to=${this.toDate}`).subscribe({
+    this.spinner.show(); // loader init
+    this.apiService.getData(`fuelEntries?unitID=${this.unitID}&from=${this.fromDate}&to=${this.toDate}`).subscribe({
       complete: () => {
         this.initDataTable();
       },
       error: () => { },
       next: (result: any) => {
-        console.log(result);
+     
+        this.spinner.hide(); // loader hide
         this.fuelList = result.Items;
-        console.log('Fuel data', this.fuelList);
       },
     });
+    this.unitID = '';
   }
   getVehicleName(ID) {
     const vehicleName: any = this.vehicles.filter( (el) => {
@@ -122,7 +148,6 @@ export class FuelEntryListComponent implements OnInit {
       fromDate: this.fromDate,
       toDate: this.toDate
     };
-    console.log(this.formattedToDate);
     return;
   }
   deleteFuelEntry(entryID) {

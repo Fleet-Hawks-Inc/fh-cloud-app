@@ -122,7 +122,6 @@ export class AddAssetsComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    console.log('this.assetsData', this.assetsData);
     this.apiService.postData('assets', this.assetsData).subscribe({
       complete: () => { },
       error: (err) => {
@@ -132,7 +131,6 @@ export class AddAssetsComponent implements OnInit {
               const path = val.path;
               // We Can Use This Method
               const key = val.message.match(/"([^']+)"/)[1];
-              console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[key] = val.message;
             })
@@ -186,7 +184,6 @@ export class AddAssetsComponent implements OnInit {
       .getData('assets/' + this.assetID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('result', result);
         this.assetsData['assetID'] = this.assetID;
         this.assetsData['assetIdentification'] = result.assetIdentification;
         this.assetsData['VIN'] = result.VIN;
@@ -237,7 +234,6 @@ export class AddAssetsComponent implements OnInit {
               const path = val.path;
               // We Can Use This Method
               const key = val.message.match(/'([^']+)'/)[1];
-              console.log(key);
               val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
             })
@@ -315,8 +311,6 @@ export class AddAssetsComponent implements OnInit {
     this.apiService.getData('states/country/' + countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
-        this.spinner.hide(); // loader hide
-        console.log(this.states)
       });
   }
 }

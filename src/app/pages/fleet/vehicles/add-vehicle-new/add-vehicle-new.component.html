@@ -10,6 +10,7 @@
     <!-- end: sidebar -->
 
     <section role="main" class="content-body pt-0 pr-0 pl-0">
+
       <header class="page-header pr-5">
          <div class="row pr-1 mr-1" style="padding-top:10px;">
             <div class="col-md-4 col-lg-4"> <h4 class="text-4 mt-0 mb-0 text-dark">Add Vehicle</h4></div>
@@ -37,6 +38,7 @@
            <form id="vehicleForm" class="form-horizontal form-bordered bg-white" method="post">
 
              <div class="card-body pt-2">
+
                   <div class="tab-content" id="myTabContent">
                      <div class="tab-pane" [ngClass]="{'show active': activeTab == 1}" id="details" role="tabpanel" aria-labelledby="details-tab">
                         <div class="">
@@ -124,7 +126,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Model</label>
                                        <ng-select class="form-control populate" name="modelID" [(ngModel)]="modelID">
                                           <optgroup label="">
-                                             <ng-option *ngFor="let model of models" value="model.modelID">{{model.name}}</ng-option>
+                                             <ng-option *ngFor="let model of models" value="{{model.modelID}}">{{model.name}}</ng-option>
                                           </optgroup>
                                        </ng-select>
                                     </div>
@@ -150,7 +152,7 @@
                                        </ng-select>
                                     </div>
                                     <div class="col-lg-2  mar-top-37">
-                                       <a href="#addDriverModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                       <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Driver's Team <small>(If any)</small></label>
@@ -161,7 +163,7 @@
                                        </ng-select>
                                     </div>
                                     <div class="col-lg-2  mar-top-37">
-                                       <a href="#addDriverModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                       <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
                                     </div>
                                  </div>
                               </div>
@@ -194,18 +196,15 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Service Program</label>
-                                       <ng-select class="form-control populate" name="serviceProgramID" [(ngModel)]="serviceProgramID">
-                                          <optgroup label="">
-                                             <ng-option value="1">Heavy Duty Maintenance</ng-option>
-                                             <ng-option value="2">Light Duty Maintenance</ng-option>
-                                             <ng-option value="2">Basic Vehicle Maintenance</ng-option>
-                                          </optgroup>
+                                       <ng-select class="form-control populate" name="serviceProgramID" [(ngModel)]="serviceProgramID">                                    
+                                             <ng-option *ngFor="let serviceProgram of servicePrograms" value="{{serviceProgram.programID}}">{{serviceProgram.programName}}</ng-option>
+                                   
                                        </ng-select>
                                     </div>
                                  </div>
                               </div>
                               <div class="col-lg-5 offset-lg-1">
-                                 <div class="row pt-2">
+                                 <!-- <div class="row pt-2">
                                     <div class="col-lg-10">
                                        <div class="row">
                                           <div class="col-lg-6">
@@ -231,7 +230,7 @@
                                           </div>
                                        </div>
                                     </div>
-                                 </div>
+                                 </div> -->
                               </div>
                            </div>
                            <div class="row pt-3">
@@ -256,7 +255,7 @@
                                        <ng-select  [(ngModel)]="groupID"
                                        name="groupID" style="width: 100%;">                                    
                                        <optgroup label="Select Group">
-                                          <ng-option *ngFor="let group of groups" value="group.groupID">
+                                          <ng-option *ngFor="let group of groups" value="{{group.groupID}}">
                                              {{group.groupName}}</ng-option>
                                        <optgroup>
                                     </ng-select>
@@ -317,7 +316,7 @@
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">MSRP <span class="font-size-12"> (Manufacturer Suggested Retail Price)</span></label>
-                                       <input type="number" class="form-control" name="msrp" [(ngModel)]="msrp">
+                                       <input type="text" class="form-control" name="msrp" [(ngModel)]="msrp">
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Add Document</label>
@@ -421,7 +420,7 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Resale Value</label>
-                                       <input type="number" class="form-control" name="lifeCycle.estimatedResaleValue" [(ngModel)]="lifeCycle.estimatedResaleValue">
+                                       <input type="text" class="form-control" name="lifeCycle.estimatedResaleValue" [(ngModel)]="lifeCycle.estimatedResaleValue">
                                     </div>
                                  </div>
                               </div>
@@ -461,10 +460,10 @@
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Height</label>
                                        <div class="row">
-                                          <div class="col-lg-6">
+                                          <div class="col-lg-6 pr-0">
                                              <input type="number" class="form-control" name="specifications.height" [(ngModel)]="specifications.height">
                                           </div>
-                                          <div class="col-lg-6">
+                                          <div class="col-lg-6 pl-0">
                                              <ng-select class="form-control populate" name="specifications.heightUnit" [(ngModel)]="specifications.heightUnit">
                                                 <ng-option value="Feet">Feet</ng-option>
                                                 <ng-option value="Centimeters">Centimeters</ng-option>
@@ -477,10 +476,10 @@
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Length</label>
                                        <div class="row">
-                                          <div class="col-lg-6">
+                                          <div class="col-lg-6 pr-0">
                                              <input type="number" class="form-control" name="specifications.length" [(ngModel)]="specifications.length">
                                           </div>
-                                          <div class="col-lg-6">
+                                          <div class="col-lg-6 pl-0">
                                              <ng-select class="form-control populate" name="specifications.lengthUnit" [(ngModel)]="specifications.lengthUnit">
                                                 <ng-option value="Feet">Feet</ng-option>
                                                 <ng-option value="Centimeters">Centimeters</ng-option>
@@ -491,13 +490,13 @@
                                        </div>
                                     </div>
                                     <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Ground Clearance</label>
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Width</label>
                                        <div class="row">
-                                          <div class="col-lg-6">
-                                             <input type="number" class="form-control" name="specifications.groundClearnce" [(ngModel)]="specifications.groundClearnce">
+                                          <div class="col-lg-6 pr-0">
+                                             <input type="number" class="form-control" name="specifications.width" [(ngModel)]="specifications.width">
                                           </div>
-                                          <div class="col-lg-6">
-                                             <ng-select class="form-control populate" name="specifications.groundClearnceUnit" [(ngModel)]="specifications.groundClearnceUnit">
+                                          <div class="col-lg-6 pl-0">
+                                             <ng-select class="form-control populate" name="specifications.widthUnit" [(ngModel)]="specifications.widthUnit">
                                                 <ng-option value="Feet">Feet</ng-option>
                                                 <ng-option value="Centimeters">Centimeters</ng-option>
                                                 <ng-option value="Inches">Inches</ng-option>
@@ -509,10 +508,10 @@
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Bed Length</label>
                                        <div class="row">
-                                          <div class="col-lg-6">
+                                          <div class="col-lg-6 pr-0">
                                              <input type="number" class="form-control" name="specifications.badLength" [(ngModel)]="specifications.badLength">
                                           </div>
-                                          <div class="col-lg-6">
+                                          <div class="col-lg-6 pl-0">
                                              <ng-select class="form-control populate" name="specifications.badLengthUnit" [(ngModel)]="specifications.badLengthUnit">
                                                 <ng-option value="Feet">Feet</ng-option>
                                                 <ng-option value="Centimeters">Centimeters</ng-option>
@@ -528,15 +527,55 @@
                                  <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Interior Volume</label>
-                                       <input type="number" class="form-control" name="specifications.interiorVolume" [(ngModel)]="specifications.interiorVolume">
+                                      
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" name="specifications.interiorVolume" [(ngModel)]="specifications.interiorVolume">
+                                          <span class="input-group-append">
+                                          <span class="input-group-text pt-0 pb-0">
+                                          ft<sup>3</sup>
+                                          </span>
+                                          </span>
+                                       </div>
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Passenger Volume</label>
-                                       <input type="number" class="form-control" name="specifications.passangerVolume" [(ngModel)]="specifications.passangerVolume">
+                                      
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" name="specifications.passangerVolume" [(ngModel)]="specifications.passangerVolume">
+                                          <span class="input-group-append">
+                                          <span class="input-group-text pt-0 pb-0">
+                                          ft<sup>3</sup>
+                                          </span>
+                                          </span>
+                                       </div>
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Volume</label>
-                                       <input type="number" class="form-control" name="specifications.cargoVolume" [(ngModel)]="specifications.cargoVolume">
+                                     
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" name="specifications.cargoVolume" [(ngModel)]="specifications.cargoVolume">
+                                          <span class="input-group-append">
+                                          <span class="input-group-text pt-0 pb-0">
+                                          ft<sup>3</sup>
+                                          </span>
+                                          </span>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Ground Clearnce</label>
+                                       <div class="row">
+                                          <div class="col-lg-6 pr-0">
+                                             <input type="number" class="form-control" name="specifications.groundClearnce" [(ngModel)]="specifications.groundClearnce">
+                                          </div>
+                                          <div class="col-lg-6 pl-0">
+                                             <ng-select class="form-control populate" name="specifications.groundClearnceUnit" [(ngModel)]="specifications.groundClearnceUnit">
+                                                <ng-option value="Feet">Feet</ng-option>
+                                                <ng-option value="Centimeters">Centimeters</ng-option>
+                                                <ng-option value="Inches">Inches</ng-option>
+                                                <ng-option value="Meter">Meter</ng-option>
+                                             </ng-select>
+                                          </div>
+                                       </div>
                                     </div>
                                  </div>
                               </div>
@@ -549,7 +588,15 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Curb Weight</label>
-                                       <input type="number" class="form-control" name="specifications.curbWeight" [(ngModel)]="specifications.curbWeight">
+                                
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" name="specifications.curbWeight" [(ngModel)]="specifications.curbWeight">
+                                          <span class="input-group-append">
+                                          <span class="input-group-text pt-0 pb-0">
+                                          lb
+                                          </span>
+                                          </span>
+                                       </div>
                                     </div>
                                  </div>
                                  <div class="checkbox mt-4">
@@ -562,8 +609,13 @@
                               <div class="col-lg-5 offset-lg-1">
                                  <div class="row">
                                     <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Gross Vehicle Weight Rating</label>
-                                       <input type="number" class="form-control" name="specifications.grossVehicleWeightRating" [(ngModel)]="specifications.grossVehicleWeightRating">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Gross Vehicle Weight Rating</label>                                    
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" name="specifications.grossVehicleWeightRating" [(ngModel)]="specifications.grossVehicleWeightRating">
+                                          <span class="input-group-append">
+                                          <span class="input-group-text pt-0 pb-0">lb</span>
+                                          </span>
+                                       </div>
                                     </div>
                                  </div>
                               </div>
@@ -576,7 +628,13 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Towing Capacity</label>
-                                       <input type="number" class="form-control" name="specifications.towingCapacity" [(ngModel)]="specifications.towingCapacity">
+                                     
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" name="specifications.towingCapacity" [(ngModel)]="specifications.towingCapacity">
+                                          <span class="input-group-append">
+                                          <span class="input-group-text pt-0 pb-0">lb</span>
+                                          </span>
+                                       </div>
                                     </div>
                                  </div>
                               </div>
@@ -584,7 +642,12 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Max Payload</label>
-                                       <input type="number" class="form-control" name="specifications.maxPayload" [(ngModel)]="specifications.maxPayload">
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" name="specifications.maxPayload" [(ngModel)]="specifications.maxPayload">
+                                          <span class="input-group-append">
+                                          <span class="input-group-text pt-0 pb-0">lb</span>
+                                          </span>
+                                       </div>
                                     </div>
                                  </div>
                               </div>
@@ -650,22 +713,15 @@
                               <div class="col-lg-5 offset-lg-1">
                                  <div class="row">
                                     <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Vendor</label>
-                                       <ng-select class="form-control populate" name="insurance.vendorID" [(ngModel)]="insurance.vendorID">
-                                          <optgroup label="">
-                                             <ng-option value="1">Vendor 1</ng-option>
-                                             <ng-option value="1">Vendor 2</ng-option>
-                                             <ng-option value="1">Vendor 3</ng-option>
-                                             <ng-option value="1">Vendor 4</ng-option>
-                                             <ng-option value="1">Vendor 5</ng-option>
-                                             <ng-option value="1">Vendor 6</ng-option>
-                                             <ng-option value="1">Vendor 7</ng-option>
-                                             <ng-option value="1">Vendor 8</ng-option>
-                                          </optgroup>
-                                       </ng-select>
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Vendor</label>                                      
+                                       <ng-select  placeholder="Select Vendor" name="insurance.vendorID" [(ngModel)]="insurance.vendorID">
+                              
+                                          <ng-option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.vendorName}}</ng-option>
+                                      
+                                     </ng-select>
                                     </div>
                                     <div class="col-lg-2  mar-top-37">
-                                       <a href="#addVendorModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                       <a routerLink="" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
                                     </div>
                                  </div>
                               </div>
@@ -768,11 +824,11 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 1 Capacity</label>
-                                       <input type="text" class="form-control" name="fluid.fuelTankOneCapacity" [(ngModel)]="fluid.fuelTankOneCapacity">
+                                       <input type="number" class="form-control" name="fluid.fuelTankOneCapacity" [(ngModel)]="fluid.fuelTankOneCapacity">
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 2 Capacity</label>
-                                       <input type="text" class="form-control" name="fluid.fuelTankTwoCapacity" [(ngModel)]="fluid.fuelTankTwoCapacity">
+                                       <input type="number" class="form-control" name="fluid.fuelTankTwoCapacity" [(ngModel)]="fluid.fuelTankTwoCapacity">
                                     </div>
                                  </div>
                               </div>
@@ -785,7 +841,7 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Oil Capacity</label>
-                                       <input type="text" class="form-control" name="fluid.oilCapacity" [(ngModel)]="fluid.oilCapacity">
+                                       <input type="number" class="form-control" name="fluid.oilCapacity" [(ngModel)]="fluid.oilCapacity">
                                     </div>
                                  </div>
                               </div>
@@ -816,7 +872,15 @@
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Wheelbase (mm)</label>
-                                       <input type="text" class="form-control" name="wheelsAndTyres.wheelbase" [(ngModel)]="wheelsAndTyres.wheelbase">
+                                      
+                                       <div class="input-group">
+                                          <input type="text" class="form-control"  name="wheelsAndTyres.wheelbase" [(ngModel)]="wheelsAndTyres.wheelbase">
+                                          <span class="input-group-append">
+                                          <span class="input-group-text pt-0 pb-0">
+                                          in
+                                          </span>
+                                          </span>
+                                       </div>
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Rear Axle</label>
@@ -836,11 +900,11 @@
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Front Track Width (mm)</label>
-                                       <input type="text" class="form-control" name="wheelsAndTyres.frontTrackWidth" [(ngModel)]="wheelsAndTyres.frontTrackWidth">
+                                       <input type="number" class="form-control" name="wheelsAndTyres.frontTrackWidth" [(ngModel)]="wheelsAndTyres.frontTrackWidth">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Rear Track Width</label>
-                                       <input type="text" class="form-control" name="wheelsAndTyres.rearTrackWidth" [(ngModel)]="wheelsAndTyres.rearTrackWidth">
+                                       <input type="number" class="form-control" name="wheelsAndTyres.rearTrackWidth" [(ngModel)]="wheelsAndTyres.rearTrackWidth">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Front Wheel Diameter (cm)</label>
@@ -852,11 +916,11 @@
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Front Tire PSI</label>
-                                       <input type="text" class="form-control" name="wheelsAndTyres.frontTyrePSI" [(ngModel)]="wheelsAndTyres.frontTyrePSI">
+                                       <input type="number" class="form-control" name="wheelsAndTyres.frontTyrePSI" [(ngModel)]="wheelsAndTyres.frontTyrePSI">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Rear Tire PSI</label>
-                                       <input type="text" class="form-control" name="wheelsAndTyres.rearTyrePSI" [(ngModel)]="wheelsAndTyres.rearTyrePSI">
+                                       <input type="number" class="form-control" name="wheelsAndTyres.rearTyrePSI" [(ngModel)]="wheelsAndTyres.rearTyrePSI">
                                     </div>
                                  </div>
                               </div>
@@ -898,11 +962,11 @@
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Stroke</label>
-                                       <input type="text" class="form-control" name="engine.stroke" [(ngModel)]="engine.stroke">
+                                       <input type="number" class="form-control" name="engine.stroke" [(ngModel)]="engine.stroke">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Valves</label>
-                                       <input type="text" class="form-control" name="engine.valves" [(ngModel)]="engine.valves">
+                                       <input type="number" class="form-control" name="engine.valves" [(ngModel)]="engine.valves">
                                     </div>
                                  </div>
                               </div>
@@ -910,15 +974,15 @@
                                  <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Compression</label>
-                                       <input type="text" class="form-control" name="engine.compression" [(ngModel)]="engine.compression">
+                                       <input type="number" class="form-control" name="engine.compression" [(ngModel)]="engine.compression">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Cylinders</label>
-                                       <input type="text" class="form-control" name="engine.cylinders" [(ngModel)]="engine.cylinders">
+                                       <input type="number" class="form-control" name="engine.cylinders" [(ngModel)]="engine.cylinders">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Displacement</label>
-                                       <input type="text" class="form-control" name="engine.displacement" [(ngModel)]="engine.displacement">
+                                       <input type="number" class="form-control" name="engine.displacement" [(ngModel)]="engine.displacement">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Induction</label>
@@ -934,7 +998,7 @@
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Max Torque</label>
-                                       <input type="text" class="form-control" name="engine.maxTorque" [(ngModel)]="engine.maxTorque">
+                                       <input type="number" class="form-control" name="engine.maxTorque" [(ngModel)]="engine.maxTorque">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Redline RPM</label>
@@ -967,7 +1031,7 @@
                                     </div>
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Gears</label>
-                                       <input type="text" class="form-control" name="engine.transmissionGears" [(ngModel)]="engine.transmissionGears">
+                                       <input type="number" class="form-control" name="engine.transmissionGears" [(ngModel)]="engine.transmissionGears">
                                     </div>
                                  </div>
                               </div>
@@ -984,17 +1048,12 @@
                               <div class="col-lg-5 offset-lg-1">
                                  <div class="d-flex">
                                     <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Vendor</label>
-                                       <ng-select class="form-control populate" name="purchase.purchaseVendorID" [(ngModel)]="purchase.purchaseVendorID">
-                                          <optgroup label="">
-                                             <ng-option value="1">Vendor 1</ng-option>
-                                             <ng-option value="2">Vendor 2</ng-option>
-                                             <ng-option value="2">Vendor 3</ng-option>
-                                             <ng-option value="2">Vendor 4</ng-option>
-                                             <ng-option value="2">Vendor 5</ng-option>
-                                             <ng-option value="2">Vendor 6</ng-option>
-                                          </optgroup>
-                                       </ng-select>
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Vendor</label>                                      
+                                       <ng-select  placeholder="Select Vendor"  name="purchase.purchaseVendorID" [(ngModel)]="purchase.purchaseVendorID">
+                              
+                                          <ng-option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.vendorName}}</ng-option>
+                                      
+                                     </ng-select>
                                     </div>
                                     <div class="col-lg-2  mar-top-37">
                                     <a href="#addVendorModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
@@ -1002,12 +1061,20 @@
                                  </div>
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Price</label>
-                                    <ng-select class="form-control populate" name="purchase.purchasePrice" [(ngModel)]="purchase.purchasePrice">
-                                       <optgroup label="">
-                                          <ng-option value="USD">USD</ng-option>
-                                          <ng-option value="CAD">CAD</ng-option>
-                                       </optgroup>
-                                    </ng-select>
+                                    <div class="row">
+                                       <div class="col-lg-6">
+<input class="form-control" name="purchase.purchasePrice" [(ngModel)]="purchase.purchasePrice">
+                                       </div>
+                                       <div class="col-lg-6">
+                                          <ng-select class="form-control populate" name="purchase.purchasePriceCurrency" [(ngModel)]="purchase.purchasePriceCurrency">
+                                             <optgroup label="">
+                                                <ng-option value="USD">USD</ng-option>
+                                                <ng-option value="CAD">CAD</ng-option>
+                                             </optgroup>
+                                          </ng-select>
+                                       </div>
+                                    </div>
+                                  
                                  </div>
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Date</label>
@@ -1050,17 +1117,12 @@
                               <div class="col-lg-5 offset-lg-1">
                                  <div class="row">
                                     <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Loan Vendor</label>
-                                       <ng-select class="form-control populate" name="loan.loanVendorID" [(ngModel)]="loan.loanVendorID">
-                                          <optgroup label="">
-                                             <ng-option value="1">Vendor 1</ng-option>
-                                             <ng-option value="2">Vendor 2</ng-option>
-                                             <ng-option value="2">Vendor 3</ng-option>
-                                             <ng-option value="2">Vendor 4</ng-option>
-                                             <ng-option value="2">Vendor 5</ng-option>
-                                             <ng-option value="2">Vendor 6</ng-option>
-                                          </optgroup>
-                                       </ng-select>
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Loan Vendor</label>                                      
+                                       <ng-select  placeholder="Select Vendor"  name="loan.loanVendorID" [(ngModel)]="loan.loanVendorID">
+                              
+                                          <ng-option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.vendorName}}</ng-option>
+                                      
+                                     </ng-select>
                                     </div>
                                     <div class="col-lg-2  mar-top-37">
                                     <a href="#addVendorModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
@@ -1228,9 +1290,11 @@
            </form>
             <div class="form-group row">
                   <div class="col-lg-12 pr-5 text-right pb-4">
-                     <button *ngIf="activeTab != 1" type="button" (click)="previous()" class="btn btn-default mt-4">Previous</button>
+                     <button *ngIf="activeTab != 1" type="button" (click)="previous()" class="btn btn-default mr-2 mt-4">Previous</button>
                      <a *ngIf="activeTab != 10" [routerLink]="" (click)="next()" class="btn btn-success mt-4">Next</a>
-                      <a *ngIf="activeTab == 10" [routerLink]="" (click)="addVehicle()" class="btn btn-success mt-4">Submit</a>
+                     <button type="button" *ngIf="activeTab == 10" class="btn btn-default mr-2 mt-4"  (click)="cancel()" >Cancel</button> 
+                      <a *ngIf="activeTab == 10 && !vehicleID" [routerLink]="" (click)="addVehicle()" class="btn btn-success mt-4">Save</a>
+                      <a *ngIf="activeTab == 10 && vehicleID" [routerLink]="" (click)="updateVehicle()" class="btn btn-success mt-4">Update</a>
                   </div>
             </div>
             <div class="form-group row">
@@ -1282,6 +1346,7 @@
   </div>
 </div>
 
+<!-- GROUP MODAL -->
 <div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal" aria-hidden="true">
    <div class="modal-dialog" style="max-width: 600px;" role="document">
      <div class="modal-content">
@@ -1295,15 +1360,21 @@
              <div class="card-body p-0">
             <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
                <div class="form-row">
-                 <div class="form-group col-lg-6">
+                 <div class="form-group col-lg-12">
                    <label class="control-label font-weight-bold">Group Name</label>
                    <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"> 
                  </div>
-                 <div class="form-group col-lg-6">
-                   <label class="control-label font-weight-bold">Group Type</label>
-                   <input [(ngModel)]="groupData.groupType" name="groupType" type="text" class="form-control"> 
-                 </div>
                </div>
+               <div class="form-row">
+                  <div class="form-group col-lg-12">
+                    <label class="control-label font-weight-bold">Group Members</label>
+                    <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers"
+                    style="width: 100%;">
+                    <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}
+                    </ng-option>
+                 </ng-select>
+                  </div>
+                </div>
                <div class="form-row">
                  <div class="form-group col-lg-12">
                    <div class="row">

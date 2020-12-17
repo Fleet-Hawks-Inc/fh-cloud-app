@@ -10,6 +10,8 @@ import {FixedRightSidebarComponent} from './sidebars/fixed-right-sidebar/fixed-r
 import {AddressBookComponent} from './popups/address-book/address-book.component';
 import {DriverComponent} from './popups/driver/driver.component';
 import {VehicleComponent} from './popups/vehicle/vehicle.component';
+// DataTable
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   imports: [
@@ -17,7 +19,8 @@ import {VehicleComponent} from './popups/vehicle/vehicle.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    DataTablesModule
   ],
   declarations: [
     SidebarComponent,

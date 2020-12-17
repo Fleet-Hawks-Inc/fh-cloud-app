@@ -26,6 +26,8 @@ export class DriverDetailComponent implements OnInit {
   cdl;
   phone;
   email;
+  cycleObjects: any = {};
+  yardsObjects: any = {};
 
   constructor(
         private hereMap: HereMapService,
@@ -41,6 +43,8 @@ export class DriverDetailComponent implements OnInit {
     this.hereMap.mapInit();
     this.driverID = this.route.snapshot.params['driverID']; // get asset Id from URL
     this.fetchDriver();
+    this.fetchCyclesbyIDs();
+    this.fetchYardsByIDs();
   }
 
    /**
@@ -53,10 +57,8 @@ export class DriverDetailComponent implements OnInit {
       .subscribe((result: any) => {
         if (result) {
           this.driverData = result['Items'][0];
-
-          console.log('driverData', this.driverData);
-          this.getCycleByID(this.driverData.hosDetails.hosCycle);
-          this.fetchYardByID(this.driverData.hosDetails.homeTerminal);
+          this.cycle = this.driverData.hosDetails.hosCycle;
+          this.homeTerminal = this.driverData.hosDetails.homeTerminal;
           this.workEmail = this.driverData.workEmail;
           this.workPhone = this.driverData.workPhone;
           this.CDL = this.driverData.licenceDetails.CDL_Number;
@@ -71,20 +73,18 @@ export class DriverDetailComponent implements OnInit {
       });
   }
 
-  getCycleByID(cycleID:any) {
-    this.apiService.getData('cycles/' + cycleID)
+  fetchCyclesbyIDs() {
+    this.apiService.getData('cycles/get/list')
       .subscribe((result: any) => {
-        this.cycle = result.Items[0].cycleName;
-        return this.cycle;
+        this.cycleObjects = result;
       });
   }
 
-  fetchYardByID(yardID: any) {
-    this.apiService.getData('yards/' + yardID)
-      .subscribe((result: any) => {
-        this.homeTerminal = result.Items[0].yardName;
-        return this.homeTerminal;
-      });
+  fetchYardsByIDs() {
+    this.apiService.getData('yards/get/list')
+    .subscribe((result: any) => {
+      this.yardsObjects = result;
+    });
   }
 
   
@@ -95,8 +95,6 @@ export class DriverDetailComponent implements OnInit {
     this.image = this.domSanitizer.bypassSecurityTrustUrl(
       await this.awsUS.getFiles(this.carrierID, this.driverData.driverImage));
     this.driverImages.push(this.image);
-    
-    console.log(' this.driverImages',  this.driverImages);
   }
 
 }
