@@ -1,1 +1,415 @@
-<p>Wssup world</p>>
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body pl-0 pt-0 pr-0">
+      <header class="page-header pr-5">
+        <form class="form-horizontal" method="get">
+          <div class="row px-2" style="padding-top: 10px">
+            <div class="col-md-2 col-lg-2">
+              <div class="input-group input-group-md mb-3">
+                <input
+                  type="text"
+                  autocomplete="off"
+                  name="vehicleIdentification"
+                  [(ngModel)]="vehicleIdentification"
+                  class="form-control"
+                  (input)="getSuggestions($event.target.value)"
+                />
+              </div>
+              <div
+                *ngFor="let suggestedVehicle of suggestedVehicles"
+                style="cursor: pointer"
+                (click)="
+                  setVehicle(
+                    suggestedVehicle.vehicleID,
+                    suggestedVehicle.vehicleIdentification
+                  )
+                "
+              >
+                {{ suggestedVehicle.vehicleIdentification }}
+              </div>
+            </div>
+
+            <div class="col-md-2 col-lg-2">
+              <select
+                data-plugin-selectTwo
+                [(ngModel)]="currentStatus"
+                name="currentStatus"
+                class="form-control populate"
+              >
+                <optgroup label="Select Status">
+                  <option value="">All</option>
+                  <option value="active">Active</option>
+                  <option value="inActive">Inactive</option>
+                  <option value="sold">Sold</option>
+                  <option value="outOfService">Out of Service</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="col-md-1 col-lg-1">
+              <button (click)="fetchVehicles()" class="btn btn-sm btn-success">
+                Search
+              </button>
+            </div>
+            <div class="col-md-7 col-lg-7 text-right pr-3 page-buttons">
+              <button
+                type="button"
+                id="map_view_btn"
+                [ngClass]="(currentView=='map')?'btn-success':'btn-default'"
+                class="btn btn-sm"
+                (click)="changeView()"
+              >
+                Map View
+              </button>
+              <button
+                type="button"
+                id="list_view_btn"
+                [ngClass]="(currentView=='list')?'btn-success':'btn-default'"
+                class="btn btn-sm"
+                (click)="changeView()"
+              >
+                List View
+              </button>
+              <div class="btn-group btn-group1 flex-wrap">
+                <button
+                  type="button"
+                  class="btn btn-success btn-sm dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Actions<span class="caret"></span>
+                </button>
+                <div
+                  class="dropdown-menu"
+                  role="menu"
+                  x-placement="bottom-start"
+                  style="
+                    position: absolute;
+                    will-change: transform;
+                    top: 0px;
+                    left: 0px;
+                    transform: translate3d(0px, 38px, 0px);
+                  ">
+                  <a class="dropdown-item text-1" [routerLink]="">Import</a>
+                  <a class="dropdown-item text-1" (click)="export()">Export</a>
+                </div>
+              </div>
+              <a
+                routerLink="/fleet/vehicles/add"
+                class="btn btn-success btn-sm mx-2"
+                style="color: white"
+                ><i class="fas fa-plus"></i> Add Vehicle</a
+              >
+            </div>
+          </div>
+        </form>
+      </header>
+      <div id="list_view" *ngIf="currentView == 'list'">
+        <div class="row">
+          <div class="col">
+            <section class="card">
+              <div class="card-body">
+                <table  class="table table-bordered table-hover table-striped mb-0"  [dtOptions]="allOptions" datatable>
+                  <thead>
+                    <tr>
+                      <th>VIN</th>
+                      <th>Vehicle Name</th>
+                      <th>Vehicle Type</th>
+                      <th>Make</th>
+                      <th>Modal</th>
+                      <th>Last Location</th>
+                      <th>Trip</th>
+                      <th>Plate Number</th>
+                      <th>Fuel Type</th>
+                      <th>Current Status</th>
+                      <th>Group</th>
+                      <th>Ownership</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let vehicle of vehicles; let i = index">
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{ vehicle.VIN }}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{ vehicle.vehicleIdentification }}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                      {{ vehicle.vehicleType }}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{vehicleManufacturersList[vehicle.manufacturerID]}}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                      {{vehicleModelList[vehicle.modelID]}}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        Ontario
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        111
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{vehicle.plateNumber}}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{vehicle.fluid.fuelType}}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{vehicle.currentStatus}}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{groupsList[vehicle.groupID]}}
+                      </td>
+                      <td
+                        routerLink="/fleet/vehicles/detail/{{
+                          vehicle.vehicleID
+                        }}"
+                      >
+                        {{vehicle.ownership}}
+                      </td>
+                      <td>
+                        <div class="dropdown dropright">
+                          <button
+                            class="bg-transparent border-0"
+                            type="button"
+                            id="dropdownMenuButton-{{ i }}"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            [routerLink]=""
+                          >
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+                          <div
+                            class="dropdown-menu"
+                            attr.aria-labelledby="dropdownMenuButton-{{ i }}"
+                          >
+                            <a
+                              class="dropdown-item"
+                              routerLink="/fleet/vehicles/edit/{{
+                                vehicle.vehicleID
+                              }}"
+                              >Edit</a
+                            >
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="deleteVehicle(vehicle.vehicleID)"
+                              >Delete</a
+                            >
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <!--Map view-->
+      <div class="mapclass vehiclemain" id="map_view" *ngIf="currentView == 'map'">
+        <div id="map" class="" style="height: calc(100vh - 110px);"></div>
+
+        <div class="vehicleRmini" id="arrowRvehicle">
+           <a href="#"><i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="vehicleLmini" id="arrowLvehicle" style="display: none">
+           <a href="#"><i class="fas fa-arrow-left"></i></a>
+        </div>
+        <!-- ENTIRE FLEET DROP DOWN ON MAP -->
+        <div class="entire_fleet_map">
+           <div class="form-group row">
+              <div class="col-lg-12">
+                 <div class="input-group input-group-select-append">
+                    <span class="input-group-prepend">
+                    <span class="input-group-text">
+                    <i class="fas fa-sitemap"></i>
+                    </span>
+                    </span>
+                    <select class="form-control" multiple="multiple" data-plugin-multiselect="" data-plugin-options="{ &quot;maxHeight&quot;: 200, &quot;enableCaseInsensitiveFiltering&quot;: true }" id="ms_example6" style="display: none;">
+                       <optgroup label="Group1">
+                          <option value="analysis" selected=""> Entire Fleet</option>
+                          <option value="algebra">Linear</option>
+                          <option value="discrete">Discrete</option>
+                          <option value="numerical">Numerical</option>
+                          <option value="probability">Probability</option>
+                       </optgroup>
+                       <optgroup label="Group2">
+                          <option value="programming">Name 1</option>
+                          <option value="automata">Automata Theory</option>
+                          <option value="complexity">Complexity Theory</option>
+                          <option value="software">Software Engineering</option>
+                       </optgroup>
+                    </select><div class="btn-group"><button type="button" class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" title=" Entire Fleet"><span class="multiselect-selected-text"> Entire Fleet</span> <b class="caret"></b></button><ul class="multiselect-container dropdown-menu" style="max-height: 200px; overflow: hidden auto;"><div class="input-group"><span class="input-group-prepend"><span class="input-group-text"><i class="fas fa-search"></i></span></span><input class="form-control multiselect-search" type="text" placeholder="Search"></div><li class="multiselect-item multiselect-group"><label>Group1</label></li><li class="active"><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="analysis">  Entire Fleet</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="algebra"> Linear</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="discrete"> Discrete</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="numerical"> Numerical</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="probability"> Probability</label></a></li><li class="multiselect-item multiselect-group"><label>Group2</label></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="programming"> Name 1</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="automata"> Automata Theory</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="complexity"> Complexity Theory</label></a></li><li><a class="dropdown-item" tabindex="0"><label style="display: block;" class="checkbox"><input type="checkbox" value="software"> Software Engineering</label></a></li></ul></div>
+                 </div>
+              </div>
+           </div>
+        </div>
+        <div class="vehicleminilist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="vehicleMiniList">
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Prius</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> Kingston, Toronto, ON K7L 5K4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">ON ROAD<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Big Truck</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> Crt Brampton ON L6Z 3G4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">PARKED<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Small Truck</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> McCallum Ave Regina SK S4S 0S4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">YARD<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Prius</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> Kingston, Toronto, ON K7L 5K4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">ON ROAD<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Big Truck</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> Crt Brampton ON L6Z 3G4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">PARKED<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Small Truck</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> McCallum Ave Regina SK S4S 0S4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">YARD<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Prius</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> Kingston, Toronto, ON K7L 5K4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">ON ROAD<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Big Truck</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> Crt Brampton ON L6Z 3G4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">PARKED<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Small Truck</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> McCallum Ave Regina SK S4S 0S4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">YARD<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Prius</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> Kingston, Toronto, ON K7L 5K4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">ON ROAD<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Big Truck</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> Crt Brampton ON L6Z 3G4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">PARKED<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Small Truck</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> McCallum Ave Regina SK S4S 0S4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">YARD<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Prius</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> Kingston, Toronto, ON K7L 5K4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">ON ROAD<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Big Truck</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> Crt Brampton ON L6Z 3G4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">PARKED<span></span>
+              </span></span></a>
+           </div>
+           <div class="vehicleDetailMap">
+              <a href="vehicle-details2.php">
+                 <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Vehicle"></i> Small Truck</p>
+                 <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Loation"></i> McCallum Ave Regina SK S4S 0S4</span>
+                 <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Current Status">YARD<span></span>
+              </span></span></a>
+           </div>
+        </div>
+     </div>
+    </section>
+  </div>
+</section>
