@@ -476,11 +476,26 @@ vehicles= [];
         hardAccelrationParams: this.settings.hardAccelrationParams,
         turningParams: this.settings.turningParams,
         measurmentUnit: this.settings.measurmentUnit,
-      },
-      uploadedPhotos: this.uploadedPhotos,
-      uploadedDocs: this.uploadedDocs
+      }
     };
-    this.apiService.postData('vehicles', data).subscribe({
+    
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedPhotos.length; i++){
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append docs if any
+    for(let j = 0; j < this.uploadedDocs.length; j++){
+      formData.append('uploadedDocs', this.uploadedDocs[j]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(data));
+
+    this.apiService.postData('vehicles', formData, true).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
@@ -534,21 +549,15 @@ vehicles= [];
    * Selecting files before uploading
    */
   selectDocuments(event, obj) {
-    this.selectedFiles = event.target.files;
+    let files = [...event.target.files];
+
     if (obj === 'uploadedDocs') {
-      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-        const randomFileGenerate = this.selectedFiles[i].name.split('.');
-        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-        this.uploadedDocs.push(fileName);
+      for (let i = 0; i < files.length; i++) {
+        this.uploadedDocs.push(files[i])
       }
     } else {
-      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-        const randomFileGenerate = this.selectedFiles[i].name.split('.');
-        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-
-        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-        this.uploadedPhotos.push(fileName);
+      for (let i = 0; i < files.length; i++) {
+          this.uploadedPhotos.push(files[i])
       }
     }
   }
@@ -875,12 +884,26 @@ vehicles= [];
         hardAccelrationParams: this.settings.hardAccelrationParams,
         turningParams: this.settings.turningParams,
         measurmentUnit: this.settings.measurmentUnit,
-      },
-      uploadedPhotos: this.uploadedPhotos,
-      uploadedDocs: this.uploadedDocs
+      }
     };
 
-    this.apiService.putData('vehicles', data).
+     // create form data instance
+     const formData = new FormData();
+
+     //append photos if any
+     for(let i = 0; i < this.uploadedPhotos.length; i++){
+       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+     }
+ 
+     //append docs if any
+     for(let j = 0; j < this.uploadedDocs.length; j++){
+       formData.append('uploadedDocs', this.uploadedDocs[j]);
+     }
+ 
+     //append other fields
+     formData.append('data', JSON.stringify(data));
+
+    this.apiService.putData('vehicles', formData, true).
     subscribe({
       complete : () => {},
       error: (err: any) => {
