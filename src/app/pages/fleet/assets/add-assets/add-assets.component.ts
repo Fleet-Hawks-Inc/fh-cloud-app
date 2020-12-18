@@ -353,7 +353,7 @@ export class AddAssetsComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.fetchGroups();
-        this.toastr.success('Group added successfully');
+        this.toastr.success('Group added successfully.');
         $('#addGroupModal').modal('hide');
 
 
