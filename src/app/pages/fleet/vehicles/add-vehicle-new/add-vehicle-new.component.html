@@ -173,7 +173,7 @@
                                        <ngx-slick-carousel class="carousel"
                                           #slickModal="slick-carousel"
                                           [config]="slideConfig"
-                                          (init)="slickInit($event)">
+                                          >
                                           <div ngxSlickItem *ngFor="let slide of slides" class="slide">
                                              <img src="{{slide.img}}" alt="">
                                           </div>
