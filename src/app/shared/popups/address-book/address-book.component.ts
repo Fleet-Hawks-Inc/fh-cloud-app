@@ -6,6 +6,7 @@ import { HereMapService } from '../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { mergeMap, takeUntil } from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 declare var $: any;
 @Component({
@@ -23,9 +24,7 @@ export class AddressBookComponent implements OnInit {
   receivers: any;
   staffs: any;
   fcCompanies: any;
-
   allData: any;
-
   form;
   countries;
   states;
@@ -205,8 +204,10 @@ export class AddressBookComponent implements OnInit {
       }
     }],
     userAccount: {},
-    additionalContact: {}
   };
+
+  userDetailData: any;
+  userDetailTitle: string;
 
   public searchTerm = new Subject<string>();
   public searchResults: any;
@@ -221,6 +222,7 @@ export class AddressBookComponent implements OnInit {
   constructor(
             private apiService: ApiService,
             private toastr: ToastrService,
+            private modalService: NgbModal,
             private HereMap: HereMapService)
   { }
 
@@ -266,11 +268,9 @@ export class AddressBookComponent implements OnInit {
           this.receivers = receivers.Items,
           this.staffs = staffs.Items,
           this.fcCompanies = fcCompanies.Items,
-
           this.allData = [...this.customers, ...this.drivers, ...this.brokers, ...this.vendors,
                             ...this.carriers, ...this.shippers, ...this.receivers, ...this.staffs, ...this.fcCompanies];                           
-
-          this.countries = countries;
+          this.countries = countries.Items;
           this.addresses = addresses;
         }
       });
@@ -291,6 +291,13 @@ export class AddressBookComponent implements OnInit {
     });
   }
 
+  openDetail(targetModal, data) {
+    $('.modal').modal('hide');
+    this.userDetailTitle = data.firstName;
+    const modalRef = this.modalService.open(targetModal);
+    this.userDetailData = data;
+    console.log("this.userDetailData", this.userDetailData);
+  }
   remove(data, i) {
     data.address.splice(i, 1);
   }
@@ -438,7 +445,7 @@ export class AddressBookComponent implements OnInit {
   async addBroker() {
     this.hideErrors();
     this.removeUserLocation(this.brokerData.address);
-    let result = await this.checkUserExist(this.brokerData['workPhone'], this.brokerData['workEmail'])
+    // let result = await this.checkUserExist(this.brokerData['workPhone'], this.brokerData['workEmail'])
     this.apiService.postData('brokers', this.brokerData).
       subscribe({
         complete: () => { },
@@ -768,12 +775,12 @@ export class AddressBookComponent implements OnInit {
 
   initDataTable() {
     this.dtOptions = {
+      "pageLength": 10,
       searching: false,
-      dom: 'Bfrtip', // lrtip to hide search field
       processing: true,
       
-     
     };
+    
   }
 
 }
