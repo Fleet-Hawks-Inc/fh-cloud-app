@@ -1,4 +1,4 @@
-FROM public.ecr.aws/i6d0h2n7/node:12.7.0 AS build
+FROM node:12.20.0 AS build
 WORKDIR /usr/src/app
 COPY package.json ./
 RUN npm install
