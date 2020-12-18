@@ -10,12 +10,12 @@
     <!-- end: sidebar -->
 
     <section role="main" class="content-body pl-0 pt-0">
-      <header class="page-header pl-5">
-         <div class="row pr-5 " style="padding-top:10px;">
+      <header class="page-header pr-5">
+         <div class="row pr-1 mr-1" style="padding-top:10px;">
             <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
                {{pageTitle}}
             </div>
-            <div class="col-md-8  col-lg-8 text-right pr-4">
+            <div class="col-md-8 col-lg-8 text-right pr-1">
                <a [routerLink]="['/fleet', 'geofence', 'list']"  class="btn btn-default btn-sm"><i class="fas fa-list"></i> Geofences List</a>
             </div>
          </div>
@@ -109,7 +109,7 @@
                  </div>
                  <div class="form-group row">
                     <div class="col-lg-11 text-right">
-                       <button class="btn btn-default">Cancel</button>
+                       <button class="btn btn-default mr-2">Cancel</button>
                        <button *ngIf="!getGeofenceID" class="btn btn-success" (click)="addGeofence()">Submit</button>
                        <button *ngIf="getGeofenceID" class="btn btn-success" (click)="updateGeofence()">Update</button>
 

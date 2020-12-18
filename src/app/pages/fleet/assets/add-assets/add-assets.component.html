@@ -10,10 +10,10 @@
 		<app-sidebar></app-sidebar>
 		<!-- end: sidebar -->
 		<section role="main" class="content-body pl-0 pr-0 pt-0">
-			<header class="page-header">
-				<div class="row pr-5 " style="padding-top:10px;">
-					<div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}} </div>
-					<div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="/fleet/assets/list"
+			<header class="page-header pr-5">
+				<div class="row pr-1 mr-1" style="padding-top:10px;">
+					<div class="col-md-4 col-lg-4"><h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4> </div>
+					<div class="col-md-8 col-lg-8 text-right pr-1"> <a routerLink="/fleet/assets/list"
 							class="btn btn-default btn-sm"><i class="fas fa-list"></i> Assets List</a> </div>
 				</div>
 			</header>
@@ -65,8 +65,7 @@
 											</select>
 										</div>
 										<div class="col-lg-5">
-											<label class="control-label font-weight-bold text-lg-right pt-2">Asset
-												Status</label>
+											<label class="control-label font-weight-bold text-lg-right pt-2">Asset Status</label>
 											<select [(ngModel)]="assetsData.assetDetails.currentStatus" name="assetDetails.currentStatus" data-plugin-selectTwo class="form-control populate">
 												<optgroup label="">
 													<option value="Active">Active</option>
@@ -100,7 +99,7 @@
 												</optgroup>
 											</select>
 										</div>
-										<div class="col-lg-3 mx-4">
+										<div class="col-lg-4 pl-0">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Make</label>
 											<select 
@@ -112,7 +111,7 @@
 												<option *ngFor="let item of manufacturers" id="{{item.manufacturerID}}" value="{{item.name}}">{{item.name}}</option>
 											</select> 
 										</div>
-										<div class="col-lg-3">
+										<div class="col-lg-3 pl-0">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Model</label>
 											<select 
@@ -129,7 +128,7 @@
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Length</label>
 											<div class="row">
-												<div class="col-lg-6 pr-0">
+												<div class="col-lg-6">
 													<input [(ngModel)]="assetsData.assetDetails.length" name="assetDetails.length" type="number" class="form-control"> </div>
 												<div class="col-lg-6 pl-0">
 													<select [(ngModel)]="assetsData.assetDetails.lengthUnit" name="assetDetails.lengthUnit" data-plugin-selectTwo class="form-control populate">
@@ -165,7 +164,7 @@
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">GVWR</label>
 											<div class="row">
-												<div class="col-lg-6 pr-0">
+												<div class="col-lg-6">
 													<input [(ngModel)]="assetsData.assetDetails.GVWR" name="assetDetails.GVWR" type="text" class="form-control"> </div>
 												<div class="col-lg-6 pl-0">
 													<select 
@@ -187,7 +186,7 @@
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">GAWR</label>
 											<div class="row">
-												<div class="col-lg-6 pr-0">
+												<div class="col-lg-6">
 													<input [(ngModel)]="assetsData.assetDetails.GAWR" name="assetDetails.GAWR" type="text" class="form-control"> </div>
 												<div class="col-lg-6 pl-0">
                           <select 
@@ -229,8 +228,7 @@
 									<div class="row mt-2">
 										<div class="col-lg-5">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
-                        Country</label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Country</label>
                         <select 
                           [(ngModel)]="assetsData.assetDetails.licenceCountryID" 
                           name="assetDetails.licenceCountryID"
@@ -247,8 +245,7 @@
                     </div>
                     <div class="col-lg-5">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
-                        State/Province</label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence State/Province</label>
                         <select 
                           [(ngModel)]="assetsData.assetDetails.licenceStateID" 
                           name="assetDetails.licenceStateID"
@@ -266,8 +263,7 @@
 									<div class="row mt-2">
 										<div class="col-lg-10">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
-												Plate Number</label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Plate Number</label>
 											<input [(ngModel)]="assetsData.assetDetails.licencePlateNumber" name="assetDetails.licencePlateNumber" class="form-control" type="text"> </div>
 									</div>
 									<div class="row mt-2">
@@ -283,14 +279,12 @@
 							<div class="row pt-3">
 								<div class="col-lg-12">
 									<label
-										class="control-label font-weight-bold font-weight-bold text-lg-right text-4 pt-2">Insurance
-										Details</label>
+										class="control-label font-weight-bold font-weight-bold text-lg-right text-4 pt-2">Insurance Details</label>
 								</div>
 								<div class="col-lg-5 offset-lg-1">
 									<div class="row ">
 										<div class="col-lg-5">
-											<label class="control-label font-weight-bold text-lg-right pt-2">Date of
-												Issue</label>
+											<label class="control-label font-weight-bold text-lg-right pt-2">Date of Issue</label>
                       <input 
                         [(ngModel)]="assetsData.insuranceDetails.dateOfIssue" name="insuranceDetails.dateOfIssue" 
                         type="text" 
@@ -299,10 +293,9 @@
                         class="form-control"> 
                       </div>
 										<div class="col-lg-5">
-											<label class="control-label font-weight-bold text-lg-right pt-2">Premium
-												Amount</label>
+											<label class="control-label font-weight-bold text-lg-right pt-2">Premium Amount</label>
 											<div class="row">
-												<div class="col-lg-6 pr-0">
+												<div class="col-lg-6">
 													<input [(ngModel)]="assetsData.insuranceDetails.premiumAmount" name="insuranceDetails.premiumAmount" type="text" class="form-control">
 												</div>
 												<div class="col-lg-6 pl-0">
@@ -318,8 +311,7 @@
 									</div>
 									<div class="row pt-2">
 										<div class="col-lg-5">
-											<label class="control-label font-weight-bold text-lg-right pt-2">Date of
-												Expiry</label>
+											<label class="control-label font-weight-bold text-lg-right pt-2">Date of Expiry</label>
                       <input 
                         [(ngModel)]="assetsData.insuranceDetails.dateOfExpiry" 
                         name="insuranceDetails.dateOfExpiry" 
@@ -328,10 +320,9 @@
                         type="text" class="form-control">
 										</div>
 										<div class="col-lg-5">
-											<label class="control-label font-weight-bold text-lg-right pt-2">Reminder
-												Before Expiry</label>
+											<label class="control-label font-weight-bold text-lg-right pt-2">Reminder Before Expiry</label>
 											<div class="row">
-												<div class="col-lg-6 pr-0"><input [(ngModel)]="assetsData.insuranceDetails.reminderBefore" name="insuranceDetails.reminderBefore" type="number" class="form-control">
+												<div class="col-lg-6"><input [(ngModel)]="assetsData.insuranceDetails.reminderBefore" name="insuranceDetails.reminderBefore" type="number" class="form-control">
 												</div>
 												<div class="col-lg-6 pl-0">
 													<select [(ngModel)]="assetsData.insuranceDetails.reminderBeforeUnit" name="insuranceDetails.reminderBeforeUnit" data-plugin-selectTwo class="form-control populate">
@@ -406,9 +397,8 @@
 									<div class="row pt-2">
 										<div class="col-lg-10">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
-												Photo</label>
-											<input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" type="file" multiple class="form-control p-0"> 
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Photo</label>
+											<input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" type="file" multiple class="form-control border-0 p-0"> 
 										</div>
 										
 									</div>
@@ -417,9 +407,8 @@
 									<div class="row pt-2">
 										<div class="col-lg-10">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
-												Document</label>
-											<input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple class="form-control p-0"> 
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Document</label>
+											<input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple class="form-control border-0 p-0"> 
 										</div>
 										
 									</div>
@@ -427,7 +416,7 @@
 							</div>
 							<div class="form-group row">
 								<div class="col-lg-11 text-right"> 
-									<a routerLink="/fleet/assets/list" class="btn btn-default">Cancel</a> 
+									<a routerLink="/fleet/assets/list" class="btn btn-default mr-2">Cancel</a> 
                   <!-- <a (click)="addAsset()" class="btn btn-success">Submit</a>  -->
                   <a href="javascript:;" *ngIf="!assetID" (click)="addAsset()" class="btn btn-success" id="nextBtn">Save</a> 
                   <a href="javascript:;" *ngIf="assetID" (click)="updateAsset()" class="btn btn-success">Update</a> 
