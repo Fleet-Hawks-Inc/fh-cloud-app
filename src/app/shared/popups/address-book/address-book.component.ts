@@ -24,9 +24,7 @@ export class AddressBookComponent implements OnInit {
   receivers: any;
   staffs: any;
   fcCompanies: any;
-
   allData: any;
-
   form;
   countries;
   states;
@@ -206,7 +204,6 @@ export class AddressBookComponent implements OnInit {
       }
     }],
     userAccount: {},
-    additionalContact: {}
   };
 
   userDetailData: any;
@@ -271,11 +268,10 @@ export class AddressBookComponent implements OnInit {
           this.receivers = receivers.Items,
           this.staffs = staffs.Items,
           this.fcCompanies = fcCompanies.Items,
-
           this.allData = [...this.customers, ...this.drivers, ...this.brokers, ...this.vendors,
                             ...this.carriers, ...this.shippers, ...this.receivers, ...this.staffs, ...this.fcCompanies];                           
-
           this.countries = countries.Items;
+          console.log("shippers", this.shippers);
           this.addresses = addresses;
         }
       });
@@ -301,7 +297,7 @@ export class AddressBookComponent implements OnInit {
     this.userDetailTitle = data.firstName;
     const modalRef = this.modalService.open(targetModal);
     this.userDetailData = data;
-   
+    console.log("this.userDetailData", this.userDetailData);
   }
   remove(data, i) {
     data.address.splice(i, 1);
@@ -780,12 +776,12 @@ export class AddressBookComponent implements OnInit {
 
   initDataTable() {
     this.dtOptions = {
+      "pageLength": 10,
       searching: false,
-      dom: 'Bfrtip', // lrtip to hide search field
       processing: true,
       
-     
     };
+    
   }
 
 }
