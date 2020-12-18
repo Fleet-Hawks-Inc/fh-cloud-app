@@ -301,7 +301,7 @@ export class AddressBookComponent implements OnInit {
     this.userDetailTitle = data.firstName;
     const modalRef = this.modalService.open(targetModal);
     this.userDetailData = data;
-    console.log("this.userDetailData", this.userDetailData);
+   
   }
   remove(data, i) {
     data.address.splice(i, 1);
