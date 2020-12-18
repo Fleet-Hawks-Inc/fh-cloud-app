@@ -6,7 +6,7 @@ COPY . .
 RUN npm run buildPreprod
 
 ### STAGE 2: Run ###
-FROM public.ecr.aws/i6d0h2n7/nginx:1.17.1-alpine
+FROM nginx:stable-alpine
 COPY --from=build /usr/src/app/dist/fleethawks-dashboard /usr/share/nginx/html
 
 EXPOSE 80
