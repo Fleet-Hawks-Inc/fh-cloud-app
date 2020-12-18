@@ -54,24 +54,28 @@ export class ApiService {
   }
 
 
-  postData(url: string, data) {
-    // this.getHeaders();
-    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
-    };
-    // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
-    //   'x-auth-token': this.jwt})
-    // };
+  postData(url: string, data, formData: boolean = false) {
+    let headers: object;
+    if(formData){
+      headers =  {headers: {}}
+    }
+    else {
+      headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})};
+    }
+    
     return this.http.post(this.BaseUrl + url , data , headers);
 
   }
 
-  putData(url: string, data) {
-    // this.getHeaders();
-    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
-    };
-    // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
-    //   'x-auth-token': this.jwt})
-    // };
+  putData(url: string, data, formData: boolean = false) {
+    let headers: object;
+    if(formData){
+      headers =  {headers: {}}
+    }
+    else {
+      headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})};
+    }
+
     return this.http.put<any>(this.BaseUrl + url , data , headers);
 
   }
