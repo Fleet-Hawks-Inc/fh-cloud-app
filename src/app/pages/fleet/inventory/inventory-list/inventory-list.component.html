@@ -53,14 +53,8 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let item of items; let i = index"
-
-                          routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                          <td>
-
-                         
-                          <td>
-
+                        <tr *ngFor="let item of items; let i = index">
+                          <td routerLink="/fleet/inventory/detail/{{item.itemID}}">
                             {{i + 1}}
                           </td>
                           <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">

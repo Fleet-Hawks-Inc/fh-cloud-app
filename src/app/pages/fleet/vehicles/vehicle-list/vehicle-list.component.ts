@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { timer } from 'rxjs';
 declare var $: any;
+import { HereMapService } from '../../../../services';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -20,7 +21,8 @@ export class VehicleListComponent implements OnInit {
   groupsList: any = {};
   vehicleModelList: any = {};
   vehicleManufacturersList: any = {};
-  constructor(private apiService: ApiService) {}
+  currentView = 'list';
+  constructor(private apiService: ApiService, private hereMap: HereMapService) {}
 
   ngOnInit() {
     this.fetchGroups();
@@ -82,6 +84,27 @@ export class VehicleListComponent implements OnInit {
       .subscribe((result: any) => {
         this.fetchVehicles();
       });
+  }
+
+  /**
+   * change the view of summary
+   */
+  changeView(){
+    if(this.currentView == 'list'){
+      this.currentView = 'map'
+      setTimeout(() => {
+        this.hereMap.mapInit();
+      }, 500);
+    }else {
+      this.currentView = 'list';
+    }
+  }
+
+  /**
+   * export excel
+   */
+  export() {
+    $('.buttons-excel').trigger('click');
   }
 
   initDataTable() {
