@@ -157,7 +157,7 @@ export class AddAssetsComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.uploadFiles(); // upload selected files to bucket
-        this.toastr.success('Asset added successfully');
+        this.toastr.success('Asset added successfully.');
         this.router.navigateByUrl('/fleet/assets/list');
       },
     });
@@ -260,7 +260,7 @@ export class AddAssetsComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.toastr.success('Asset updated successfully');
+        this.toastr.success('Asset updated successfully.');
         this.router.navigateByUrl('/fleet/assets/list');
         this.Success = '';
       },
