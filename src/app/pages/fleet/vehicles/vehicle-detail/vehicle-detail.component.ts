@@ -9,6 +9,9 @@ declare var $: any;
   styleUrls: ['./vehicle-detail.component.css'],
 })
 export class VehicleDetailComponent implements OnInit {
+  slides = [];
+  Asseturl = this.apiService.AssetUrl;
+
   /**
    * Vehicle Prop
    */
@@ -164,7 +167,6 @@ export class VehicleDetailComponent implements OnInit {
     measurmentUnit: '',
   };
 
-
   issues = [];
   reminders = [];
   inspectionForms = [];
@@ -173,6 +175,15 @@ export class VehicleDetailComponent implements OnInit {
   servicePrograms = [];
   serviceHistory = [];
   devices = [];
+
+  slideConfig = {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dots: true,
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 1500,
+  };
   
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
@@ -412,6 +423,11 @@ export class VehicleDetailComponent implements OnInit {
           turningParams: result.settings.turningParams,
           measurmentUnit: result.settings.measurmentUnit,
         };
+
+        if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+          this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+        }
+
         $('#hardBreakingParametersValue').html(
           this.settings.hardBreakingParams
         );
