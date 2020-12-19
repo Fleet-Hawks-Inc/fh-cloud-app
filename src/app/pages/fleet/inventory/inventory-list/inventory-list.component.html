@@ -12,7 +12,7 @@
       <header class="page-header pr-5">
         <h2>Inventory Overview</h2>
         <div class="right-wrapper text-right mt-2 pr-2">
-          <a [routerLink]="" (click)="openTransferModal()" class="modal-with-form btn btn-success btn-sm"><i
+          <a [routerLink]="" (click)="openTransferModal()" class="modal-with-form btn btn-success btn-sm mr-2"><i
               class="fas fa-exchange-alt"></i> Transfer</a>
           <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm" style="color: white"><i
               class="fas fa-plus"></i> Add Inventory</a>
@@ -38,7 +38,7 @@
                 </div>
                 <div class="tab-content p-0" id="myTabContent">
                   <div class="tab-pane show active" id="einv" role="tabpanel" aria-labelledby="all-tab">
-                    <table class="table table-bordered table-responsive-lg table-striped mb-0" id="simple-table">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
                       <thead>
                         <tr>
                           <th width="5%">Part#</th>
@@ -52,10 +52,10 @@
                           <th>Actions</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody *ngIf="items.length > 0">
                         <tr *ngFor="let item of items; let i = index">
                           <td routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                            {{i + 1}}
+                            {{ partNo[i]}}
                           </td>
                           <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
                             {{item.name}}
@@ -91,6 +91,11 @@
                          </td>
                         </tr>
                       </tbody>
+                      <tbody *ngIf="items.length === 0">
+                        <tr>
+                          <td colspan="9" class="no-data-available">No records found</td>
+                        </tr>
+                      <tbody>
                     </table>
                   </div>
 
@@ -298,8 +303,8 @@
                   <select data-plugin-selectTwo class="form-control populate" name="warehouseID1"
                     [(ngModel)]="warehouseID1">
                     <optgroup label="Select Warehouse">
-                      <option *ngFor="let warehouse of warehouses" value="{{warehouse.warehouseID}}">
-                        {{warehouse.warehouseName}}</option>
+                      <option *ngFor="let warehouse of warehouses | keyvalue" value="{{warehouse.key}}">
+                        {{warehouse.value}}</option>
 
                     </optgroup>
                   </select>
@@ -310,8 +315,8 @@
                   <select data-plugin-selectTwo class="form-control populate" name="warehouseID2"
                     [(ngModel)]="warehouseID2">
                     <optgroup label="Select Warehouse">
-                      <option *ngFor="let warehouse of warehouses" value="{{warehouse.warehouseID}}">
-                        {{warehouse.warehouseName}}</option>
+                      <option *ngFor="let warehouse of warehouses | keyvalue" value="{{warehouse.key}}">
+                        {{warehouse.value}}</option>
 
                     </optgroup>
                   </select>
