@@ -13,6 +13,7 @@ export class ApiService {
   public jwtDecoded;
   public carrierID = '';
   public BaseUrl = environment.BaseUrl;
+  public AssetUrl = environment.AssetURL;
   private httpOptions;
 
   private httpOptionsOld = {
