@@ -1610,7 +1610,7 @@
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 State</label>
-                                                            <select (change)= "getCities($event.target.value)"[(ngModel)]="item.stateID"
+                                                            <select (change)= "getCities($event.target.value)" [(ngModel)]="item.stateID"
                                                             name="stateID{{i}}" data-plugin-selectTwo class="form-control populate address_state">
                                                                 <optgroup label="Select State">
                                                                     <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>

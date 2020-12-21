@@ -18,7 +18,6 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
 
   title = 'Issues List';
@@ -28,7 +27,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
   assetList: any = {};
   vehicleName: string;
   contactName: string;
-  // dtOptions: any = {};
+  dtOptions: any = {};
   unitID = '';
   unitName = '';
   issueName = '';
@@ -197,6 +196,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
   resetFilter() {
     if (this.unitID !== '' || this.issueName !== '') {
       this.unitID = '';
+      this.unitName = '';
       this.issueName = '';
       this.rerender();
     } else {
