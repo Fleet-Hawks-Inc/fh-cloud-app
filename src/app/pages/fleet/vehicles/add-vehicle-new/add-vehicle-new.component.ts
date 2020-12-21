@@ -200,6 +200,8 @@ vehicles= [];
   selectedFileNames: Map<any, any>;
   uploadedPhotos = [];
     uploadedDocs = [];
+    existingPhotos = [];
+    existingDocs = [];
     carrierID;
     programs = [];
     vendors = [];
@@ -719,6 +721,8 @@ vehicles= [];
           turningParams: result.settings.turningParams,
           measurmentUnit: result.settings.measurmentUnit
         };
+        this.existingPhotos = result.uploadedPhotos;
+        this.existingDocs = result.uploadedDocs;
 
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
           this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
@@ -888,7 +892,9 @@ vehicles= [];
         hardAccelrationParams: this.settings.hardAccelrationParams,
         turningParams: this.settings.turningParams,
         measurmentUnit: this.settings.measurmentUnit,
-      }
+      },
+      uploadedPhotos: this.existingPhotos,
+      uploadedDocs: this.existingDocs
     };
 
      // create form data instance

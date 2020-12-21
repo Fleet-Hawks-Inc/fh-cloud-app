@@ -41,6 +41,10 @@ export class AddInventoryComponent implements OnInit {
   vendors = [];
   itemGroups = [];
   warehouses = [];
+  existingPhotos = [];
+  existingDocs = [];
+  uploadedPhotos = [];
+  uploadedDocs = [];
 
   /**
    * group props
@@ -97,6 +101,23 @@ export class AddInventoryComponent implements OnInit {
     });
   }
 
+   /*
+   * Selecting files before uploading
+   */
+  selectDocuments(event, obj) {
+    let files = [...event.target.files];
+
+    if (obj === 'uploadedDocs') {
+      for (let i = 0; i < files.length; i++) {
+        this.uploadedDocs.push(files[i])
+      }
+    } else {
+      for (let i = 0; i < files.length; i++) {
+          this.uploadedPhotos.push(files[i])
+      }
+    }
+  }
+
   getInventory() {
     this.apiService.getData("items/" + this.itemID).subscribe((result: any) => {
       result = result.Items[0];
@@ -121,6 +142,8 @@ export class AddInventoryComponent implements OnInit {
       this.days = result.days;
       this.time = result.time;
       this.notes = result.notes;
+      this.existingPhotos = result.uploadedPhotos;
+      this.existingDocs = result.uploadedDocs;
     });
   }
 
@@ -207,7 +230,23 @@ export class AddInventoryComponent implements OnInit {
       notes: this.notes,
     };
 
-    this.apiService.postData("items", data).subscribe({
+     // create form data instance
+     const formData = new FormData();
+
+     //append photos if any
+     for(let i = 0; i < this.uploadedPhotos.length; i++){
+       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+     }
+ 
+     //append docs if any
+     for(let j = 0; j < this.uploadedDocs.length; j++){
+       formData.append('uploadedDocs', this.uploadedDocs[j]);
+     }
+ 
+     //append other fields
+     formData.append('data', JSON.stringify(data));
+
+    this.apiService.postData("items", formData, true).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
@@ -346,10 +385,27 @@ export class AddInventoryComponent implements OnInit {
       days: this.days,
       time: this.time,
       notes: this.notes,
+      uploadedPhotos: this.existingPhotos,
+      uploadedDocs: this.existingDocs
     };
+   
+     // create form data instance
+     const formData = new FormData();
 
-    // console.log(data);return false;
-    this.apiService.putData("items", data).subscribe({
+     //append photos if any
+     for(let i = 0; i < this.uploadedPhotos.length; i++){
+       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+     }
+ 
+     //append docs if any
+     for(let j = 0; j < this.uploadedDocs.length; j++){
+       formData.append('uploadedDocs', this.uploadedDocs[j]);
+     }
+ 
+     //append other fields
+     formData.append('data', JSON.stringify(data));
+
+    this.apiService.putData("items", formData, true).subscribe({
       complete: () => {},
       error: (err) => {
         this.hasError = true;
