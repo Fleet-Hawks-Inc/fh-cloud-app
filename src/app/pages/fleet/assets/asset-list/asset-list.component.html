@@ -150,8 +150,7 @@
       <!-- LIST VIEW OF ASSETS  -->
       <div id="list_view" *ngIf="listView">
          <div class="p-2">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-               class="row-border hover table table-bordered table-striped mb-0">
+            <table datatable [dtOptions]="allOptions" datatable class="row-border hover table table-bordered table-striped mb-0 " *ngIf="allData.length > 0">
                <thead>
                   <tr>
                      <th>Asset Name/Number</th>
@@ -164,10 +163,12 @@
                      <th>Ownership</th>
                      <th>Status</th>
                      <th>Actions</th>
-                  </tr>
+                  </tr> 
                </thead>
+
                <tbody *ngIf="allData.length > 0">
                   <tr class="cursorpoint" *ngFor="let item of allData;let i = index">
+
                      <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                      <td>{{assetTypesObects[item.assetDetails.assetType]}}</td>                                          
                      <td>{{item.assetDetails.licencePlateNumber}}</td>
@@ -190,11 +191,6 @@
                      </td>
                   </tr>
                </tbody>
-               <tbody *ngIf="allData.length === 0">
-                  <tr>
-                    <td colspan="10" class="no-data-available">No records found</td>
-                  </tr>
-              <tbody>
             </table>
          </div>
          

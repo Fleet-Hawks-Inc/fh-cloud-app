@@ -18,10 +18,14 @@
                                 <input type="text" name="programeName" [(ngModel)]="programeName" class="form-control" placeholder="Search">
                             </div>
                         </div>
-                        <div class="col-md-1 col-lg-1">
-                            <button type="submit" (click)="fetchPrograms()" class="btn btn-sm btn-success">Search</button>
+
+                        <div class="col-md-2 col-lg-2 pl-2">
+                            <button type="submit" (click)="searchFilter()"
+                                class="btn btn-sm btn-success mr-2">Search</button>
+                            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                         </div>
-                        <div class="col-md-8 col-lg-8 text-right pr-1">
+                        <div class="col-md-6  col-lg-6 text-right pr-4">
+
             
                             <div class="btn-group flex-wrap mr-2">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -61,7 +65,8 @@
                                            <section class="card">
                                             
                                               <div class="card-body p-0">
-                                                 <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0">
+                                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                                    class="row-border hover table table-bordered table-striped mb-0">
                                                     <thead>
                                                        <tr>
                                                           <th width="25%">Service Program Name</th>
@@ -69,8 +74,10 @@
                                                           <th width="15%">Actions</th>
                                                        </tr>
                                                     </thead>
-                                                    <tbody>
+
+                                                    <tbody *ngIf="programs.length > 0">
                                                        <tr class="cursorpoint" *ngFor="let program of programs; let i = index;">
+
                                                           <td routerLink="/fleet/maintenance/service-program/detail/{{program.programID}}">{{program.programName}}</td>
                                                           <td>{{program.description}}</td>                                   
                                                           <td>
@@ -85,12 +92,12 @@
                                                               </div>
                                                           </td>
                                                        </tr>
-                                                       <tr *ngIf="!programs?.length > 0">
-                                                            <td colspan="3">No Data Found</td>
-                                                            <td style="display: none;"></td>
-                                                            <td style="display: none;"></td>
-                                                       </tr>
                                                     </tbody>
+                                                    <tbody *ngIf="programs.length === 0">
+                                                        <tr>
+                                                            <td colspan="3" class="no-data-available">No records found</td>
+                                                        </tr>
+                                                    <tbody>
                                                  </table>
                                               </div>
                                            </section>

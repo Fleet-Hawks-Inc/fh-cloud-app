@@ -15,7 +15,13 @@
                     <div class="row pr-1 mr-1" style="padding-top:10px;">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-sm mb-3">
-                                <input type="text" class="form-control" placeholder="Search by Vehicle Name">
+                                <input autocomplete="off" type="text" name="vehicleIdentification" [(ngModel)]="vehicleIdentification"
+                                class="form-control" (input)="getSuggestions($event.target.value)"
+                                placeholder="Search by Vehicle Name"/>
+                            </div>
+                            <div *ngFor="let suggestedUnit of suggestedVehicles" style="cursor: pointer"
+                                (click)="setVehicle(suggestedUnit.vehicleID, suggestedUnit.vehicleIdentification)">
+                                {{ suggestedUnit.vehicleIdentification }}
                             </div>
                         </div>
 
@@ -142,28 +148,30 @@
                                     <option value="">Windshield Wiper(s) Replacement</option>
                                 </optgroup>
                             </select>
+
+                        <div class="col-md-2 col-lg-2 pl-2">
+                            <button type="submit" (click)="searchFilter()"
+                                class="btn btn-sm btn-success mr-2">Search</button>
+                            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                         </div>
 
-                        <div class="col-md-1  col-lg-1">
-                            <button type="submit" class="btn btn-sm btn-success">Search</button>
-                        </div>
+                        <div class="col-md-6  col-lg-6 text-right pr-4">
 
-                        <div class="col-md-7 col-lg-7 text-right pr-1">
             
                             <div class="btn-group flex-wrap mr-2">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="false">Actions<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" href="">Edit</a>
-                                    <a class="dropdown-item text-1" href="">Delete</a>
                                     <a class="dropdown-item text-1" href="">Import</a>
                                     <a class="dropdown-item text-1" href="">Export</a>
                                 </div>
                             </div>
                             
-                            <a routerLink="/fleet/maintenance/service-log/add-service" class="btn btn-success btn-sm" style="color:white;"><i
-                                    class="fas fa-plus"></i> Add Service Entry</a>
+
+                            <a routerLink="/fleet/maintenance/service-log/add-service" class="btn btn-success btn-sm ml-2" style="color:white;"><i
+                                    class="fas fa-plus"></i> Add Service Log</a>
+
             
                         </div>
 
@@ -208,7 +216,8 @@
                                            <section class="card">
                                             
                                               <div class="card-body p-0">
-                                                 <table class="table table-responsive-lg table-bordered table-striped mb-0" id="simple-table">
+                                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                                    class="row-border hover table table-bordered table-striped mb-0">
                                                     <thead>
                                                        <tr>
                                                           <!-- <th width="5%"><input type="checkbox"></th> -->
@@ -219,8 +228,10 @@
                                                           <th>Actions</th>
                                                        </tr>
                                                     </thead>
-                                                    <tbody>
+
+                                                    <tbody *ngIf="logs.length > 0">
                                                        <tr class="cursorpoint" *ngFor="let item of logs; let i = index;">
+
                                                           <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
                                                             <span class="font-weight-bold">{{vehiclesObject[item.vehicleID]}}</span>
                                                             <span *ngIf="!item?.vehicleID" class="font-weight-bold">{{assetsObject[item.assetID]}}</span><br>
@@ -299,6 +310,11 @@
                                                      -->
                                                       
                                                     </tbody>
+                                                    <tbody *ngIf="logs.length === 0">
+                                                        <tr>
+                                                            <td colspan="5" class="no-data-available">No records found</td>
+                                                        </tr>
+                                                    <tbody>
                                                  </table>
                                               </div>
                                            </section>

@@ -51,7 +51,9 @@
                     </div>
                     <div class="tab-content p-0" id="myTabContent">
                         <div class="tab-pane show active" id="allAddress" role="tabpanel" aria-labelledby="allAddress-tab">
-                            <table class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable [dtOptions]="dtOptions" 
+                                class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                *ngIf="allData?.length > 0">
                                 <thead>
                                     <tr>
                                         <th width="10%">Type</th>
@@ -63,20 +65,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of allData;">
+                                    <tr *ngFor="let item of allData;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Customer">CU</span></td>
-                                        <td>{{item.firstName}} {{item.firstName}}</td>
+                                        <td>{{item.firstName}} {{item.lastName}}</td>
                                         <td>{{item.workEmail}}</td>
                                         <td>{{item.workPhone}}</td>
                                         <td>100 street, King town,34E4R5,Canada</td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
-                                                   id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                                   data-toggle="dropdown" aria-haspopup="true"
                                                    aria-expanded="false">
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
-                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
                                                 </div>
@@ -88,7 +90,10 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="customer-tab">
-                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable 
+                                [dtOptions]="dtOptions" 
+                                class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                *ngIf="customers?.length > 0">
                                 <thead>
                                     <tr>
                                         <th width="10%">Type</th>
@@ -96,24 +101,26 @@
                                         <th width="20%">Email Address</th>
                                         <th width="15%">Phone Number</th>
                                         <th width="45%">Address</th>
-                                        <th>Actions</th>
+                                        <th width="5%">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let customer of customers;">
+                                    <tr *ngFor="let customer of customers;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Customer">CU</span></td>
-                                        <td>{{customer.firstName}} {{customer.firstName}}</td>
+                                        <td (click)="openDetail(content, customer)">{{customer.firstName}} {{customer.lastName}}</td>
                                         <td>{{customer.workEmail}}</td>
                                         <td>{{customer.workPhone}}</td>
-                                        <td>100 street, King town,34E4R5,Canada</td>
+                                        <td>{{customer.address[0].address1}} {{customer.address[0].address2}}, 
+                                            {{customer.address[0].cityName}}, {{customer.address[0].stateName}}, 
+                                            {{customer.address[0].countryName}}. {{customer.address[0].zipCode}}</td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
-                                                   id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                                   data-toggle="dropdown" aria-haspopup="true"
                                                    aria-expanded="false">
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
-                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                <div class="dropdown-menu">
                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
                                                 </div>
@@ -124,7 +131,9 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="driver" role="tabpanel" aria-labelledby="driver-tab">
-                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable [dtOptions]="dtOptions" 
+                                class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                *ngIf="drivers?.length > 0">
                                 <thead>
                                     <tr>
                                         <th width="10%">Type</th>
@@ -136,20 +145,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let driver of drivers;">
+                                    <tr *ngFor="let driver of drivers;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Driver">DR</span></td>
-                                        <td>{{driver.firstName}} {{driver.firstName}}</td>
+                                        <td>{{driver.firstName}} {{driver.lastName}}</td>
                                         <td>{{driver.workEmail}}</td>
                                         <td>{{driver.workPhone}}</td>
                                         <td>100 street, King town,34E4R5,Canada</td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
-                                                   id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                                   data-toggle="dropdown" aria-haspopup="true"
                                                    aria-expanded="false">
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
-                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                <div class="dropdown-menu">
                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
                                                 </div>
@@ -161,7 +170,9 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="broker" role="tabpanel" aria-labelledby="broker-tab">
-                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable [dtOptions]="dtOptions" 
+                                class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                *ngIf="brokers?.length > 0">
                                 <thead>
                                     <tr>
                                         <th width="10%">Type</th>
@@ -173,20 +184,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let broker of brokers;">
+                                    <tr *ngFor="let broker of brokers;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Broker">BR</span></td>
-                                        <td>{{broker.firstName}} {{broker.lastName}}</td>
+                                        <td (click)="openDetail(content, broker)">{{broker.firstName}} {{broker.lastName}}</td>
                                         <td>{{broker.workEmail}}</td>
                                         <td>{{broker.workPhone}}</td>
-                                        <td>100 street, King town,34E4R5,Canada</td>
+                                        <td>{{broker.address[0].address1}} {{broker.address[0].address2}},
+                                            {{broker.address[0].cityName}}, {{broker.address[0].stateName}}, 
+                                            {{broker.address[0].countryName}}. {{broker.address[0].zipCode}}</td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
-                                                   id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                                   data-toggle="dropdown" aria-haspopup="true"
                                                    aria-expanded="false">
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
-                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                <div class="dropdown-menu">
                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
                                                 </div>
@@ -197,7 +210,9 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="vendor" role="tabpanel" aria-labelledby="vendor-tab">
-                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable [dtOptions]="dtOptions" 
+                                class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                *ngIf="vendors?.length > 0">
                                 <thead>
                                     <tr>
                                         <th width="10%">Type</th>
@@ -209,20 +224,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let vendor of vendors;">
+                                    <tr *ngFor="let vendor of vendors;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Vendor">VN</span></td>
-                                        <td>{{vendor.firstName}} {{vendor.lastName}}</td>
-                                        <td>{{vendor.email}}</td>
-                                        <td>{{vendor.phone}}</td>
-                                        <td>100 street, King town,34E4R5,Canada</td>
+                                        <td (click)="openDetail(content, vendor)">{{vendor.firstName}} {{vendor.lastName}}</td>
+                                        <td>{{vendor.workEmail}}</td>
+                                        <td>{{vendor.workPhone}}</td>
+                                        <td>{{vendor.address[0].address1}} {{vendor.address[0].address2}},
+                                            {{vendor.address[0].cityName}}, {{vendor.address[0].stateName}}, 
+                                            {{vendor.address[0].countryName}}. {{vendor.address[0].zipCode}}</td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
-                                                   id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                                   data-toggle="dropdown" aria-haspopup="true"
                                                    aria-expanded="false">
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
-                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                <div class="dropdown-menu">
                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
                                                 </div>
@@ -234,7 +251,9 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="carrier" role="tabpanel" aria-labelledby="carrier-tab">
-                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable [dtOptions]="dtOptions" 
+                                class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                *ngIf="carriers?.length > 0">
                                 <thead>
                                     <tr>
                                         <th width="10%">Type</th>
@@ -246,31 +265,35 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let carrier of carriers;">
+                                    <!-- <tr *ngFor="let carrier of carriers;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Carrier">CR</span></td>
-                                        <td>{{carrier.firstName}} {{carrier.lastName}}</td>
-                                        <td>{{carrier.email}}</td>
-                                        <td>{{carrier.phone}}</td>
-                                        <td>100 street, King town,34E4R5,Canada</td>
+                                        <td (click)="openDetail(content, carrier)">{{carrier.firstName}} {{carrier.lastName}}</td>
+                                        <td>{{carrier.workEmail}}</td>
+                                        <td>{{carrier.workPhone}}</td>
+                                        <td>{{carrier.address[0].address1}} {{carrier.address[0].address2}},
+                                            {{carrier.address[0].cityName}}, {{carrier.address[0].stateName}}, 
+                                            {{carrier.address[0].countryName}}. {{carrier.address[0].zipCode}}</td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
-                                                   id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                                   data-toggle="dropdown" aria-haspopup="true"
                                                    aria-expanded="false">
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
-                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                <div class="dropdown-menu">
                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>
                         <div class="tab-pane fade" id="shipper" role="tabpanel" aria-labelledby="shipper-tab">
-                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable [dtOptions]="dtOptions" 
+                                class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                *ngIf="shippers?.length > 0">
                                 <thead>
                                     <tr>
                                         <th width="10%">Type</th>
@@ -282,20 +305,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let shipper of shippers;">
+                                    <tr *ngFor="let shipper of shippers;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Shipper">SH</span></td>
-                                        <td>{{shipper.firstName}} {{shipper.lastName}}</td>
-                                        <td>{{shipper.email}}</td>
-                                        <td>{{shipper.phone}}</td>
-                                        <td>100 street, King town,34E4R5,Canada</td>
+                                        <td (click)="openDetail(content, shipper)">{{shipper.firstName}} {{shipper.lastName}}</td>
+                                        <td>{{shipper.workEmail}}</td>
+                                        <td>{{shipper.workPhone}}</td>
+                                        <td>{{shipper.address[0].address1}} {{shipper.address[0].address2}},
+                                            {{shipper.address[0].cityName}}, {{shipper.address[0].stateName}}, 
+                                            {{shipper.address[0].countryName}}. {{shipper.address[0].zipCode}}</td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
-                                                   id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                                   data-toggle="dropdown" aria-haspopup="true"
                                                    aria-expanded="false">
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
-                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                <div class="dropdown-menu">
                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
                                                 </div>
@@ -306,7 +331,9 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="consignee" role="tabpanel" aria-labelledby="consignee-tab">
-                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table" >
+                            <table datatable [dtOptions]="dtOptions" 
+                                class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                *ngIf="receivers?.length > 0">
                                 <thead>
                                     <tr>
                                         <th width="10%">Type</th>
@@ -318,20 +345,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let receiver of receivers;">
+                                    <tr *ngFor="let receiver of receivers;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Consignee">CO</span></td>
-                                        <td>{{receiver.firstName}} {{receiver.lastName}}</td>
-                                        <td>{{receiver.email}}</td>
-                                        <td>{{receiver.phone}}</td>
-                                        <td>100 street, King town,34E4R5,Canada</td>
+                                        <td (click)="openDetail(content, receiver)">{{receiver.firstName}} {{receiver.lastName}}</td>
+                                        <td>{{receiver.workEmail}}</td>
+                                        <td>{{receiver.workPhone}}</td>
+                                        <td>{{receiver.address[0].address1}} {{receiver.address[0].address2}},
+                                            {{receiver.address[0].cityName}}, {{receiver.address[0].stateName}}, 
+                                            {{receiver.address[0].countryName}}. {{receiver.address[0].zipCode}}</td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
-                                                   id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                                   data-toggle="dropdown" aria-haspopup="true"
                                                    aria-expanded="false">
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
-                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                <div class="dropdown-menu">
                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
                                                 </div>
@@ -342,7 +371,9 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="staff" role="tabpanel" aria-labelledby="staff-tab">
-                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable [dtOptions]="dtOptions" 
+                                class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                *ngIf="staffs?.length > 0">
                                 <thead>
                                     <tr>
                                         <th width="5%">Type</th>
@@ -356,22 +387,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let staff of staffs;">
+                                    <tr *ngFor="let staff of staffs;let i = index;">
                                         <td><span class="badge badge-pill badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="Staff">ST</span></td>
-                                        <td>{{staff.firstName}} {{staff.lastName}}</td>
+                                        <td (click)="openDetail(content, staff)">{{staff.firstName}} {{staff.lastName}}</td>
                                         <td>{{staff.userAccount.department}}</td>
                                         <td>{{staff.userAccount.designation}}</td>
                                         <td>{{staff.workEmail}}</td>
                                         <td>{{staff.workPhone}}</td>
-                                        <td>500 street, Queen town,34E4R5,Canada</td>
+                                        <td>{{staff.address[0].address1}} {{staff.address[0].address2}},
+                                            {{staff.address[0].cityName}}, {{staff.address[0].stateName}}, 
+                                            {{staff.address[0].countryName}}. {{staff.address[0].zipCode}}</td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
-                                                   id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                                   data-toggle="dropdown" aria-haspopup="true"
                                                    aria-expanded="false">
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
-                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                <div class="dropdown-menu">
                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
                                                 </div>
@@ -384,7 +417,9 @@
                         </div>
                         <!-- factoring Company Table -->
                         <div class="tab-pane fade" id="fc" role="tabpanel" aria-labelledby="fc-tab">
-                            <table datatable [dtOptions]="dtOptions" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
+                            <table datatable [dtOptions]="dtOptions" 
+                                class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                *ngIf="fcCompanies?.length > 0">
                                 <thead>
                                     <tr>
                                         <th width="5%">Type</th>
@@ -396,13 +431,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let company of fcCompanies;">
+                                    <tr *ngFor="let company of fcCompanies;let i = index;">
                                         <td><span class="badge badge-pill badge-dark p-1" data-toggle="tooltip" data-placement="bottom" title="Factoring Company">FC</span></td>
-                                        <td>{{company.companyName}}</td>
+                                        <td (click)="openDetail(content, company)">{{company.companyName}}</td>
                                         <td>{{company.firstName}} {{company.lastName}}</td>
-                                        <td>{{company.email}}</td>
-                                        <td>{{company.phone}}</td>
-                                        <td>500 street, Queen town,34E4R5,Canada</td>
+                                        <td>{{company.workEmail}}</td>
+                                        <td>{{company.workPhone}}</td>
+                                        <td>{{company.address[0].address1}} {{company.address[0].address2}},
+                                            {{company.address[0].cityName}}, {{company.address[0].stateName}}, 
+                                            {{company.address[0].countryName}}. {{company.address[0].zipCode}}</td>
                                     </tr>
                                     
                                 </tbody>
@@ -496,8 +533,8 @@
                                             <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img
                                                     class="business_image_style" src="assets/img\driver\driver.png" />
                                                 <div class="mt-3">
-                                                    <input [(ngModel)]="vendorData.vendorProfile"
-                                                    name="vendorProfile" type="file" hidden="hidden">
+                                                    <input [(ngModel)]="vendorData.ProfileImg"
+                                                    name="ProfileImg" type="file" hidden="hidden">
                                                     <button class="btn btn-dark">Add Picture</button>
                                                 </div>
                                             </div>
@@ -735,8 +772,8 @@
                                                         <img
                                                         [src]="customerProfileSrc" height="150px" width="150px"><br>
                                                         <div class="mt-3 btn btn-dark btn-sm">
-                                                            <input (change)="uploadDriverImg($event)" [(ngModel)]="customerData.customerProfile"
-                                                            name="customerProfile" type="file" class="hidden_input"> Add Picture 
+                                                            <input (change)="uploadDriverImg($event)" [(ngModel)]="customerData.ProfileImg"
+                                                            name="ProfileImg" type="file" class="hidden_input"> Add Picture 
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -933,14 +970,14 @@
                                                             class="control-label font-weight-bold text-lg-right pt-2">First
                                                             Name</label>
                                                         <input [(ngModel)]="customerData.additionalContact.firstName"
-                                                        name="firstName" type="text" class="form-control"> 
+                                                        name="firstName1" type="text" class="form-control"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Last
                                                             Name</label>
                                                         <input [(ngModel)]="customerData.additionalContact.lastName"
-                                                        name="lastName" type="text" class="form-control"> 
+                                                        name="lastName1" type="text" class="form-control"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -974,7 +1011,7 @@
                                             </div>
                                         </div> 
                                     </div>
-                                    <div class="col-lg-12 text-right pb-4 pr-5">
+                                    <div class="col-lg-12 text-right pb-4 pr-5 mt-3">
                                         <button type="button" class="btn btn-default">Cancel</button>
                                         <a href="javascript:;" (click)="addCustomer()" class="btn btn-success">Submit</a>                            
                                      </div>
@@ -1059,8 +1096,8 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">DBA
                                                             Name</label>
-                                                        <input [(ngModel)]="brokerData.dba"
-                                                        name="dba" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.dbaName"
+                                                        name="dbaName" type="text" class="form-control"> </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name</label>
@@ -1096,8 +1133,8 @@
                                                     <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img
                                                             class="business_image_style" src="assets/img/driver/driver.png" />
                                                         <div class="mt-3">
-                                                            <input [(ngModel)]="brokerData.brokerProfile"
-                                                            name="brokerProfile"  type="file" hidden="hidden">
+                                                            <input [(ngModel)]="brokerData.ProfileImg"
+                                                            name="ProfileImg"  type="file" hidden="hidden">
                                                             <button class="btn btn-dark">Add Picture</button>
                                                         </div>
                                                     </div>
@@ -1154,7 +1191,7 @@
                                                     <label for="w1-terms1">Type Manually</label>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4 mar-top-37">
+                                            <div class="col-lg-3 mar-top-37">
                                                 <a href="javascript:;" class="btn btn-dark">Clear</a>
                                                 <a *ngIf="i == 0;" (click)="addAddress(brokerData);" class="btn btn-success" href="javascript:;"><i
                                                         class="fa fa-plus fa-fw"></i></a>
@@ -1337,8 +1374,8 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Carrier
                                                             Name</label>
-                                                        <input [(ngModel)]="carrierData.carrierName"
-                                                        name="carrierName" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="carrierData.companyName"
+                                                        name="companyName" type="text" class="form-control"> </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name</label>
@@ -1387,8 +1424,8 @@
                                                     <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img
                                                             class="business_image_style" src="assets/img\driver\driver.png" />
                                                         <div class="mt-3">
-                                                            <input [(ngModel)]="carrierData.carrierProfile"
-                                                            name="carrierProfile" type="file" hidden="hidden">
+                                                            <input [(ngModel)]="carrierData.ProfileImg"
+                                                            name="ProfileImg" type="file" hidden="hidden">
                                                             <button class="btn btn-dark">Add Picture</button>
                                                         </div>
                                                     </div>
@@ -1573,7 +1610,7 @@
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 State</label>
-                                                            <select (change)= "getCities($event.target.value)"[(ngModel)]="item.stateID"
+                                                            <select (change)= "getCities($event.target.value)" [(ngModel)]="item.stateID"
                                                             name="stateID{{i}}" data-plugin-selectTwo class="form-control populate address_state">
                                                                 <optgroup label="Select State">
                                                                     <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
@@ -1734,8 +1771,8 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Shipper
                                                     Name</label>
-                                                <input [(ngModel)]="shipperData.shipperName"
-                                                name="shipperName" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="shipperData.companyName"
+                                                name="companyName" type="text" class="form-control"> </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                     First Name</label>
@@ -1764,8 +1801,8 @@
                                                     src="assets/img\driver\driver.png" /></div>
                                             <div class="col-lg-12 text-center">
                                                 <div class="mt-3 btn btn-dark btn-sm" style="position:relative;">
-                                                    <input [(ngModel)]="shipperData.shipperProfile"
-                                                    name="shipperProfile"  type="file" class="hidden_input"> Add Picture </div>
+                                                    <input [(ngModel)]="shipperData.ProfileImg"
+                                                    name="ProfileImg"  type="file" class="hidden_input"> Add Picture </div>
                                             </div>
                                             <div class="col-lg-12 pt-1 mt-2">
                                                 <label
@@ -2002,8 +2039,8 @@
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Consignee
                                                     Name</label>
-                                                <input [(ngModel)]="consigneeData.receiverName"
-                                                name="receiverName" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="consigneeData.companyName"
+                                                name="companyName" type="text" class="form-control"> </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                     First Name</label>
@@ -2032,8 +2069,8 @@
                                                     src="assets/img/driver/driver.png" /></div>
                                             <div class="col-lg-12 text-center">
                                                 <div class="mt-3 btn btn-dark btn-sm" style="position:relative;">
-                                                    <input [(ngModel)]="consigneeData.receiverProfile"
-                                                    name="receiverProfile" type="file" class="hidden_input"> Add Picture </div>
+                                                    <input [(ngModel)]="consigneeData.ProfileImg"
+                                                    name="ProfileImg" type="file" class="hidden_input"> Add Picture </div>
                                             </div>
                                             <div class="col-lg-12 pt-1 mt-2">
                                                 <label
@@ -2312,8 +2349,8 @@
                                                     <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img
                                                             class="business_image_style" src="assets/img\driver\driver.png" />
                                                         <div class="mt-3">
-                                                            <input [(ngModel)]="fcCompanyData.fcProfile"
-                                                            name="fcProfile"  type="file" hidden="hidden">
+                                                            <input [(ngModel)]="fcCompanyData.ProfileImg"
+                                                            name="ProfileImg"  type="file" hidden="hidden">
                                                             <button class="btn btn-dark">Add Picture</button>
                                                         </div>
                                                     </div>
@@ -2575,8 +2612,8 @@
                                                     <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img
                                                             class="business_image_style" src="assets/img\driver\driver.png" />
                                                         <div class="mt-3">
-                                                            <input [(ngModel)]="staffData.staffProfile"
-                                                            name="staffProfile" type="file" hidden="hidden">
+                                                            <input [(ngModel)]="staffData.ProfileImg"
+                                                            name="ProfileImg" type="file" hidden="hidden">
                                                             <button class="btn btn-dark">Add Picture</button>
                                                         </div>
                                                     </div>
@@ -2827,5 +2864,298 @@
 
 
 
-
+<ng-template #content let-modal>
+            <div class="modal-header">
+                <h5 class="modal-title">{{userDetailTitle}}'s Details</h5>
+                <button type="button" (click)="modal.dismiss()" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="card-body text-dark">
+                    <ul class="nav top-tabs nav-tabs wizard-steps">
+                       <li class="nav-item active"> <a href="#customerBasicDetails" data-toggle="tab" class="nav-link text-center active">
+                          Basic Details
+                          </a> 
+                       </li>
+                       <li class="nav-item"> <a href="#customerAddressDetails" data-toggle="tab" class="nav-link text-center">
+                          Address
+                          </a> 
+                       </li>
+                       <li class="nav-item" *ngIf="userDetailData.userAccount"> <a href="#customerUserAccount" data-toggle="tab" class="nav-link text-center">
+                        User Account
+                            </a> 
+                        </li>
+                       <li class="nav-item" *ngIf="userDetailData.paymentDetails"> <a href="#customPaymentDetails" data-toggle="tab" class="nav-link text-center">
+                                Payment
+                            </a> 
+                        </li>
+                       <li class="nav-item" *ngIf="userDetailData.additionalContact"> <a href="#customerAdditionalContact" data-toggle="tab" class="nav-link text-center">
+                          Additional Contact
+                          </a> 
+                       </li>
+                       
+                       
+                    </ul>
+                    <div class="tab-content">
+                       <div id="customerBasicDetails" class="tab-pane active">
+                          <div class="row">
+                             <div class="col-lg-12">
+                                <div class="thumb-info text-center mb-3"> <img src="img/pp.jpg" class="rounded img-fluid" alt="John Doe" style="max-width: 200px;"> </div>
+                             </div>
+                             <div class="col-lg-6">
+                                <table class="table table-bordered m-0">
+                                   <tbody>
+                                       <tr *ngIf="userDetailData.brokerType">
+                                            <th width="40%" class="back-color-gray">Broker Type:</th>
+                                            <td>{{userDetailData.brokerType}}</td>
+                                       </tr>
+                                     
+                                      <tr *ngIf="userDetailData.dbaName">
+                                         <th width="40%" class="back-color-gray">DBA Name:</th>
+                                         <td>{{userDetailData.dbaName}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.dateOfBirth">
+                                        <th width="40%" class="back-color-gray">Date of Birth:</th>
+                                        <td>{{userDetailData.dateOfBirth}}</td>
+                                     </tr>
+                                      
+                                      <tr>
+                                         <th width="40%" class="back-color-gray">Contact Name:</th>
+                                         <td>{{userDetailData.firstName}} {{userDetailData.lastName}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.companyName">
+                                        <th width="40%" class="back-color-gray">Company Name:</th>
+                                        <td>{{userDetailData.companyName}}</td>
+                                     </tr>
+                                      <tr *ngIf="userDetailData.mc">
+                                         <th width="40%" class="back-color-gray">MC:</th>
+                                         <td>{{userDetailData.mc}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.dot">
+                                         <th width="40%" class="back-color-gray">DOT:</th>
+                                         <td>{{userDetailData.dot}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.ein">
+                                         <th width="40%" class="back-color-gray">EIN:</th>
+                                         <td>{{userDetailData.ein}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.fast">
+                                         <th width="40%" class="back-color-gray">Fast:</th>
+                                         <td>{{userDetailData.fast}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.fastExpiry">
+                                         <th width="40%" class="back-color-gray">Fast Expiry:</th>
+                                         <td>{{userDetailData.fastExpiry}}</td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                             </div>
+                             <div class="col-lg-6">
+                                <table class="table table-bordered m-0">
+                                   <tbody>
+                                      <tr *ngIf="userDetailData.fastExpiry">
+                                         <th width="40%" class="back-color-gray">Account Number:</th>
+                                         <td>{{userDetailData.accountNumber}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.trailerPreference">
+                                         <th width="40%" class="back-color-gray">Trailer Preference:</th>
+                                         <td>{{userDetailData.trailerPreference}}</td>
+                                      </tr>
+                                      <tr>
+                                         <th width="40%" class="back-color-gray">Work Phone:</th>
+                                         <td>{{userDetailData.workPhone}}</td>
+                                      </tr>
+                                      <tr>
+                                         <th width="40%" class="back-color-gray">Work Email:</th>
+                                         <td>{{userDetailData.workEmail}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.csa">
+                                         <th width="40%" class="back-color-gray">CSA:</th>
+                                         <td>{{userDetailData.csa}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.ctpat">
+                                         <th width="40%" class="back-color-gray">CTPAT:</th>
+                                         <td>{{userDetailData.ctpat}}</td>
+                                      </tr>
+                                      <tr *ngIf="userDetailData.pip">
+                                         <th width="40%" class="back-color-gray">PIP:</th>
+                                         <td>{{userDetailData.pip}}</td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                             </div>
+                          </div>
+                       </div>
+                       <div id="customerAddressDetails" class="tab-pane ">
+                          <table style="float: left;" [style.width]="userDetailData.address.length > 1 ? '50%' : '100%'" class="table table-bordered mb-2" *ngFor="let item of userDetailData.address">
+                             <tbody>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Address Type:</th>
+                                   <td>{{item.addressType}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray"> Country:</th>
+                                   <td>{{item.countryName}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">State:</th>
+                                   <td>{{item.stateName}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray"> City:</th>
+                                   <td>{{item.cityName}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Zip Code:</th>
+                                   <td>{{item.zipCode}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Address:</th>
+                                   <td>{{item.address1}} {{item.address2}}</td>
+                                </tr>
+                             </tbody>
+                          </table>
+                       </div>
+                       <div id="customerAdditionalContact" class="tab-pane" *ngIf="userDetailData.additionalContact">
+                          <table class="table table-bordered m-0">
+                             <tbody>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Name:</th>
+                                   <td>
+                                       {{userDetailData.additionalContact.firstName ? userDetailData.additionalContact.firstName : '-'}} 
+                                       {{userDetailData.additionalContact.lastName ? userDetailData.additionalContact.lastName : ''}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Designation:</th>
+                                   <td>{{userDetailData.additionalContact.designation ? userDetailData.additionalContact.designation : '-'}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Phone:</th>
+                                   <td>{{userDetailData.additionalContact.phone ? userDetailData.additionalContact.phone : '-'}}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Email:</th>
+                                   <td>{{userDetailData.additionalContact.email ? userDetailData.additionalContact.email : '-' }}</td>
+                                </tr>
+                                <tr>
+                                   <th width="40%" class="back-color-gray">Fax:</th>
+                                   <td>{{userDetailData.additionalContact.fax ? userDetailData.additionalContact.fax : '-'}}</td>
+                                </tr>
+                             </tbody>
+                          </table>
+                       </div>
+                       <div id="customPaymentDetails" class="tab-pane" *ngIf="userDetailData.paymentDetails">
+                        
+                        <table class="table table-bordered m-0">
+                            <tbody>
+                                <tr *ngIf="userDetailData.paymentDetails.inBonded">
+                                    <th width="40%" class="back-color-gray">In-Bonded Carrier:</th>
+                                    <td>{{userDetailData.paymentDetails.inBonded}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.paymentDetails.mc">
+                                    <th width="40%" class="back-color-gray">MC:</th>
+                                    <td>{{userDetailData.paymentDetails.mc}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.paymentDetails.dot">
+                                    <th width="40%" class="back-color-gray">DOT:</th>
+                                    <td>{{userDetailData.paymentDetails.dot}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.paymentDetails.fast">
+                                    <th width="40%" class="back-color-gray">Fast:</th>
+                                    <td>{{userDetailData.paymentDetails.fast}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.paymentDetails.fastExpiry">
+                                    <th width="40%" class="back-color-gray">Fast Expiry:</th>
+                                    <td>{{userDetailData.paymentDetails.fastExpiry}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.paymentDetails.ccc">
+                                    <th width="40%" class="back-color-gray">CCC:</th>
+                                    <td>{{userDetailData.paymentDetails.ccc}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.paymentDetails.scac">
+                                    <th width="40%" class="back-color-gray">SCAC:</th>
+                                    <td>{{userDetailData.paymentDetails.scac}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.paymentDetails.cvor">
+                                    <th width="40%" class="back-color-gray">CVOR:</th>
+                                    <td>{{userDetailData.paymentDetails.cvor}}</td>
+                                </tr>
+                                
+                                <tr *ngIf="userDetailData.paymentDetails.payrollType">
+                                    <th width="40%" class="back-color-gray">Payroll Type:</th>
+                                    <td>{{userDetailData.paymentDetails.payrollType}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.paymentDetails.payrollRate">
+                                    <th width="40%" class="back-color-gray">Payroll Rate:</th>
+                                    <td>{{userDetailData.paymentDetails.payrollRate}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.paymentDetails.localTax">
+                                    <th width="40%" class="back-color-gray">Local Tax (in Percentage):</th>
+                                    <td>{{userDetailData.paymentDetails.localTax}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.paymentDetails.federalTax">
+                                    <th width="40%" class="back-color-gray">Federal Tax (in Percentage):</th>
+                                    <td>{{userDetailData.paymentDetails.federalTax}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.paymentDetails.applyTax">
+                                    <th width="40%" class="back-color-gray">Apply Tax (on Settlement):</th>
+                                    <td>{{userDetailData.paymentDetails.applyTax}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.paymentDetails.wsibAccountNumber">
+                                    <th width="40%" class="back-color-gray">WSIB:</th>
+                                    <td>{{userDetailData.paymentDetails.wsibAccountNumber}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.paymentDetails.wsibExpiry">
+                                    <th width="40%" class="back-color-gray">WSIB Expiry:</th>
+                                    <td>{{userDetailData.paymentDetails.wsibExpiry}}</td>
+                                    </tr>
+                                    <tr *ngIf="userDetailData.paymentDetails.SIN">
+                                    <th width="40%" class="back-color-gray">SIN:</th>
+                                    <td>{{userDetailData.paymentDetails.SIN}}</td>
+                                    </tr>
+                                    <tr *ngIf="userDetailData.paymentDetails.WCB">
+                                    <th width="40%" class="back-color-gray">WCB:</th>
+                                    <td>{{userDetailData.paymentDetails.WCB}}</td>
+                                    </tr>
+                                    <tr *ngIf="userDetailData.paymentDetails.healthCare">
+                                    <th width="40%" class="back-color-gray">Health Care:</th>
+                                    <td>{{userDetailData.paymentDetails.healthCare}}</td>
+                                    </tr>
+                                    <tr *ngIf="userDetailData.paymentDetails.payPeriod">
+                                    <th width="40%" class="back-color-gray">Pay Period:</th>
+                                    <td>{{userDetailData.paymentDetails.payPeriod}}</td>
+                                    </tr>
+                                    
+                            </tbody>
+                            </table>
+                         
+                       </div>
+                       <div id="customerUserAccount" class="tab-pane" *ngIf="userDetailData.userAccount">
+                        <table class="table table-bordered m-0">
+                            <tbody>
+                                <tr *ngIf="userDetailData.userAccount.contractEndDate">
+                                    <th width="40%" class="back-color-gray">Contract Start-Date:</th>
+                                    <td>{{userDetailData.userAccount.contractStartDate}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.userAccount.contractEndDate">
+                                    <th width="40%" class="back-color-gray">Contract End-Date:</th>
+                                    <td>{{userDetailData.userAccount.contractEndDate}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.userAccount.contractEndDate">
+                                    <th width="40%" class="back-color-gray">Department:</th>
+                                    <td>{{userDetailData.userAccount.department}}</td>
+                                </tr>
+                                <tr *ngIf="userDetailData.userAccount.contractEndDate">
+                                    <th width="40%" class="back-color-gray">Designation:</th>
+                                    <td>{{userDetailData.userAccount.designation}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                       </div>
+                       
+                    </div>
+                 </div>
+            </div>
+        </ng-template>
 

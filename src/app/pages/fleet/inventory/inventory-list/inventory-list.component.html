@@ -10,6 +10,7 @@
 
     <section role="main" class="content-body">
       <header class="page-header pr-5">
+
         <div class="row pr-1 mr-1" style="padding-top:10px;">
           <div class="col-md-2 col-lg-2">
              <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">Inventory Overview</h4>
@@ -20,7 +21,7 @@
           </div>
        </div>
 
-    
+
       </header>
 
       <div class="routing-overview__wrapper">
@@ -42,7 +43,7 @@
                 </div>
                 <div class="tab-content border-0 p-0" id="myTabContent">
                   <div class="tab-pane show active" id="einv" role="tabpanel" aria-labelledby="all-tab">
-                    <table class="table table-bordered table-responsive-lg table-striped mb-0" id="simple-table">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
                       <thead>
                         <tr>
                           <th width="5%">Part#</th>
@@ -56,16 +57,16 @@
                           <th>Actions</th>
                         </tr>
                       </thead>
-                      <tbody>
+
+                      <tbody *ngIf="items.length > 0">
                         <tr class="cursorpoint" *ngFor="let item of items; let i = index"
 
                           routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                          <td>
+                        
 
-                         
-                          <td>
+                          <td routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                            {{ partNo[i]}}
 
-                            {{i + 1}}
                           </td>
                           <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
                             {{item.name}}
@@ -101,6 +102,11 @@
                          </td>
                         </tr>
                       </tbody>
+                      <tbody *ngIf="items.length === 0">
+                        <tr>
+                          <td colspan="9" class="no-data-available">No records found</td>
+                        </tr>
+                      <tbody>
                     </table>
                   </div>
 
@@ -308,8 +314,8 @@
                   <select data-plugin-selectTwo class="form-control populate" name="warehouseID1"
                     [(ngModel)]="warehouseID1">
                     <optgroup label="Select Warehouse">
-                      <option *ngFor="let warehouse of warehouses" value="{{warehouse.warehouseID}}">
-                        {{warehouse.warehouseName}}</option>
+                      <option *ngFor="let warehouse of warehouses | keyvalue" value="{{warehouse.key}}">
+                        {{warehouse.value}}</option>
 
                     </optgroup>
                   </select>
@@ -320,8 +326,8 @@
                   <select data-plugin-selectTwo class="form-control populate" name="warehouseID2"
                     [(ngModel)]="warehouseID2">
                     <optgroup label="Select Warehouse">
-                      <option *ngFor="let warehouse of warehouses" value="{{warehouse.warehouseID}}">
-                        {{warehouse.warehouseName}}</option>
+                      <option *ngFor="let warehouse of warehouses | keyvalue" value="{{warehouse.key}}">
+                        {{warehouse.value}}</option>
 
                     </optgroup>
                   </select>

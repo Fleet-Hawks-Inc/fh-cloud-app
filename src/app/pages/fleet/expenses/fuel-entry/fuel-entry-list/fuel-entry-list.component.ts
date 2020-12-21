@@ -6,6 +6,9 @@ import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
 
 
 declare var $: any;
@@ -16,7 +19,13 @@ declare var $: any;
   styleUrls: ['./fuel-entry-list.component.css'],
   providers: [DatePipe]
 })
-export class FuelEntryListComponent implements OnInit {
+export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit {
+
+  @ViewChild(DataTableDirective, { static: false })
+  dtElement: DataTableDirective;
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
+
   title = 'Fuel Entries List';
   // fromDate: NgbDateStruct;
   // toDate: NgbDateStruct;
@@ -36,14 +45,21 @@ export class FuelEntryListComponent implements OnInit {
   countryName: any = '';
   formattedFromDate: any = '';
   formattedToDate: any = '';
-  fuelList;
-  dtOptions: any = {};
+  fuelList = [];
+  // dtOptions: any = {};
   suggestedUnits = [];
   vehicleID = '';
   amount = '';
   vehicleIdentification = '';
   unitID = '';
   unitName: string;
+  start: any = '';
+  end: any = '';
+
+  totalRecords = 20;
+  pageLength = 10;
+  lastEvaluatedKey = '';
+
   constructor(
     private apiService: ApiService,
     private route: Router,
@@ -56,6 +72,7 @@ export class FuelEntryListComponent implements OnInit {
     this.fetchAssetList();
     this.fetchCountries();
     this.fetchTripList();
+    this.initDataTable()
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -118,15 +135,13 @@ export class FuelEntryListComponent implements OnInit {
   }
   fuelEntries() {
     this.spinner.show(); // loader init
-    this.apiService.getData(`fuelEntries?unitID=${this.unitID}&from=${this.fromDate}&to=${this.toDate}`).subscribe({
-      complete: () => {
-        this.initDataTable();
-      },
+    this.apiService.getData(`fuelEntries`).subscribe({
+      complete: () => {},
       error: () => { },
       next: (result: any) => {
-     
         this.spinner.hide(); // loader hide
-        this.fuelList = result.Items;
+        // this.fuelList = result.Items; 
+        this.totalRecords = result.Count;
       },
     });
     this.unitID = '';
@@ -150,50 +165,104 @@ export class FuelEntryListComponent implements OnInit {
     };
     return;
   }
+ 
   deleteFuelEntry(entryID) {
-    this.apiService
-      .deleteData('fuelEntries/' + entryID)
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.apiService
+      .getData(`fuelEntries/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
-     //   this.spinner.show();
-        this.fuelEntries();
+        this.rerender();
         this.toastr.success('Fuel Entry Deleted Successfully!');
       });
+    }
   }
 
   initDataTable() {
-    this.dtOptions = {
-      dom: 'lrtip', // lrtip to hide search field
+    let current = this;
+    this.dtOptions = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
       processing: true,
-      columnDefs: [
-          {
-              targets: 0,
-              className: 'noVis'
-          },
-          {
-              targets: 1,
-              className: 'noVis'
-          },
-          {
-              targets: 2,
-              className: 'noVis'
-          },
-          {
-              targets: 3,
-              className: 'noVis'
-          },
-          {
-              targets: 4,
-              className: 'noVis'
+      order: [],
+      columnDefs: [ //sortable false
+        { "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32], "orderable": false },
+      ],
+      dom: 'lrtip',
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('fuelEntries/fetch-records?unitID='+this.unitID+'&from='+this.start+'&to='+this.end+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+          current.fuelList = resp['Items'];
+          // current.fetchRenewals();
+          // console.log(resp)
+          if (resp['LastEvaluatedKey'] !== undefined) {
+            this.lastEvaluatedKey = resp['LastEvaluatedKey'].entryID;
+
+          } else {
+            this.lastEvaluatedKey = '';
           }
-      ],
-      colReorder: {
-        fixedColumnsLeft: 1
-      },
-      buttons: [
-        'colvis',
-      ],
+
+          callback({
+            recordsTotal: current.totalRecords,
+            recordsFiltered: current.totalRecords,
+            data: []
+          });
+        });
+      }
     };
   }
 
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
 
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+
+  rerender(status = ''): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      if (status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
+
+  searchFilter() {
+    if (this.unitID !== '' || this.fromDate !== '' || this.toDate !== '' ) {
+      console.log('inn')
+      if(this.fromDate !== '') {
+        this.start = this.fromDate.split('-').reverse().join('-');
+        console.log(this.start)
+      }
+      if(this.toDate !== '') {
+        this.end = this.toDate.split('-').reverse().join('-');
+        console.log(this.end)
+      }
+      console.log('res')
+      this.rerender('reset');
+    } else {
+      return false;
+    }
+  }
+
+  resetFilter() {
+    if (this.unitID !== '' || this.fromDate !== '' || this.toDate !== '' ) {
+      this.unitID = '';
+      this.fromDate = '';
+      this.toDate = '';
+      this.unitName = '';
+      this.start = '';
+      this.end = '';
+      this.rerender();
+    } else {
+      return false;
+    }
+  }
 }
