@@ -7,7 +7,7 @@ export const environment = {
 
     BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
     // BaseUrl: 'http://localhost:3000/api/v1/',
-
+  AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
 
   temp: 'search',
   LoginUrl: 'users/login',

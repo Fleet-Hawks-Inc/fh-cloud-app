@@ -20,7 +20,7 @@ declare var $: any;
 })
 export class AddVehicleNewComponent implements OnInit {
   title = 'Add Vehicle';
-
+  Asseturl = this.apiService.AssetUrl;
   activeTab = 1;
   /**
    * Quantum prop
@@ -179,12 +179,12 @@ vehicles= [];
     notes: '',
   };
   settings = {
-    primaryMeter: '',
-    fuelUnit: '',
+    primaryMeter: 'miles',
+    fuelUnit: 'gallons(CA)',
     hardBreakingParams: 0,
     hardAccelrationParams: 0,
     turningParams: 0,
-    measurmentUnit: '',
+    measurmentUnit: 'imperial',
   };
 
   countryID = '';
@@ -212,7 +212,7 @@ vehicles= [];
   Error: string = '';
   Success: string = '';
 
-  slides = [{ img: 'assets/img/truck.jpg' }, { img: 'assets/img/truck.jpg' }];
+  slides = ['assets/img/truck.jpg' , 'assets/img/truck.jpg'];
   slideConfig = {
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -502,7 +502,7 @@ vehicles= [];
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
@@ -720,6 +720,10 @@ vehicles= [];
           measurmentUnit: result.settings.measurmentUnit
         };
 
+        if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+          this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+        }
+
         this.timeCreated = result.timeCreated;
 
         $('#hardBreakingParametersValue').html(
@@ -911,7 +915,7 @@ vehicles= [];
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
