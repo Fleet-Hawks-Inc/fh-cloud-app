@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { timer } from 'rxjs';
+import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
 declare var $: any;
+import { ToastrService } from 'ngx-toastr';
 import { HereMapService } from '../../../../services';
 
 @Component({
@@ -9,10 +12,16 @@ import { HereMapService } from '../../../../services';
   templateUrl: './vehicle-list.component.html',
   styleUrls: ['./vehicle-list.component.css'],
 })
-export class VehicleListComponent implements OnInit {
+export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
+
+  @ViewChild(DataTableDirective, { static: false })
+  dtElement: DataTableDirective;
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
+
   title = 'Vehicle List';
-  vehicles;
-  dtOptions: any = {};
+  vehicles = [];
+  // dtOptions: any = {};
   suggestedVehicles = [];
   vehicleID = '';
   currentStatus = '';
@@ -22,13 +31,19 @@ export class VehicleListComponent implements OnInit {
   vehicleModelList: any = {};
   vehicleManufacturersList: any = {};
   currentView = 'list';
-  constructor(private apiService: ApiService, private hereMap: HereMapService) {}
+
+  totalRecords = 20;
+  pageLength = 10;
+  lastEvaluatedKey = '';
+
+  constructor(private apiService: ApiService, private hereMap: HereMapService, private toastr: ToastrService) {}
 
   ngOnInit() {
     this.fetchGroups();
     this.fetchVehicles();
     this.fetchVehicleModelList();
     this.fetchVehicleManufacturerList();
+    this.initDataTable();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -61,13 +76,12 @@ export class VehicleListComponent implements OnInit {
     });
   }
   fetchVehicles() {
-    this.apiService.getData(`vehicles?vehicleID=${this.vehicleID}&status=${this.currentStatus}`).subscribe({
-      complete: () => {
-        this.initDataTable();
-      },
+    this.apiService.getData('vehicles').subscribe({
+      complete: () => {},
       error: () => {},
       next: (result: any) => {
-        this.vehicles = result.Items;
+        // this.vehicles = result.Items;
+        this.totalRecords = result.Count;
       },
     });
   }
@@ -76,14 +90,6 @@ export class VehicleListComponent implements OnInit {
     this.vehicleID = vehicleID;
 
     this.suggestedVehicles = [];
-  }
-
-  deleteVehicle(vehicleId) {
-    this.apiService
-      .deleteData('vehicles/' + vehicleId)
-      .subscribe((result: any) => {
-        this.fetchVehicles();
-      });
   }
 
   /**
@@ -108,118 +114,87 @@ export class VehicleListComponent implements OnInit {
   }
 
   initDataTable() {
-    // this.dtOptions = {
-    //   dom: 'lrtip', // lrtip to hide search field
-    //   processing: true,
-    //   columnDefs: [
-    //       {
-    //           targets: 0,
-    //           className: 'noVis'
-    //       },
-    //       {
-    //           targets: 1,
-    //           className: 'noVis'
-    //       },
-    //       {
-    //           targets: 2,
-    //           className: 'noVis'
-    //       },
-    //       {
-    //           targets: 3,
-    //           className: 'noVis'
-    //       },
-    //       {
-    //           targets: 4,
-    //           className: 'noVis'
-    //       },
-    //       {
-    //         targets: 5,
-    //         className: 'noVis'
-    //     },
-    //     {
-    //         targets: 6,
-    //         className: 'noVis'
-    //     },
-    //     {
-    //         targets: 7,
-    //         className: 'noVis'
-    //     },
-    //     {
-    //         targets: 8,
-    //         className: 'noVis'
-    //     },
-    //     {
-    //         targets: 9,
-    //         className: 'noVis'
-    //     },
-    //     {
-    //       targets: 10,
-    //       className: 'noVis'
-    //   },
-    //   {
-    //       targets: 11,
-    //       className: 'noVis'
-    //   },
-    //   {
-    //       targets: 12,
-    //       className: 'noVis'
-    //   },
-    //   {
-    //       targets: 13,
-    //       className: 'noVis'
-    //   }
-    //   ],
-    //   colReorder: {
-    //     fixedColumnsLeft: 1
-    //   },
-    //   buttons: [
-    //     'colvis',
-    //   ],
-    // };
-    this.allOptions = { 
-      pageLength: 10,
+    let current = this;
+    this.dtOptions = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
       processing: true,
-      // select: {
-      //     style:    'multi',
-      //     selector: 'td:first-child'
-      // },
-      dom: 'Bfrtip',
-      // Configure the buttons
-      buttons: [
-         {
-              extend: 'colvis',
-              columns: ':not(.noVis)'
-          }
+      order: [],
+      columnDefs: [ //sortable false
+        { "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12], "orderable": false },
       ],
-      colReorder: true,
-      columnDefs: [
-        {
-            targets: 1,
-            className: 'noVis'
-        },
-        {
-            targets: 2,
-            className: 'noVis'
-        },
-        {
-            targets: 3,
-            className: 'noVis'
-        },
-        {
-            targets: 4,
-            className: 'noVis'
-        },
-        {
-            targets: 8,
-            className: 'noVis'
-        },
-        
-    ],
-    "fnDrawCallback": function(oSettings) {
-        if ($('.dataTables_wrapper tbody tr').length <= 10) {
-            $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
-        }
-    }
+      dom: 'lrtip',
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('vehicles/fetch-records?vehicleID='+this.vehicleID+'&status='+this.currentStatus + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+          current.vehicles = resp['Items'];
+          if (resp['LastEvaluatedKey'] !== undefined) {
+            this.lastEvaluatedKey = resp['LastEvaluatedKey'].vehicleID;
+
+          } else {
+            this.lastEvaluatedKey = '';
+          }
+
+          callback({
+            recordsTotal: current.totalRecords,
+            recordsFiltered: current.totalRecords,
+            data: []
+          });
+        });
+      }
     };
+  }
+
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+
+  rerender(status = ''): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      if (status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
+
+  searchFilter() {
+    if (this.vehicleID !== '' || this.currentStatus !== '') {
+      this.rerender('reset');
+    } else {
+      return false;
+    }
+  }
+
+  resetFilter() {
+    if (this.vehicleID !== '' || this.currentStatus !== '') {
+      this.vehicleID = '';
+      this.vehicleIdentification = '';
+      this.currentStatus = '';
+      this.rerender();
+    } else {
+      return false;
+    }
+  }
+
+  deleteVehicle(entryID) {
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.apiService
+      .getData(`vehicles/isDeleted/${entryID}/`+1)
+      .subscribe((result: any) => {
+        this.rerender();
+        this.toastr.success('Vehicle Deleted Successfully!');
+      });
+    }
   }
 }

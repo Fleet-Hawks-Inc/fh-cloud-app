@@ -20,7 +20,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
+  dtOptions: any = {};
   dtTrigger: Subject<any> = new Subject();
 
   allAssetTypes: any;
