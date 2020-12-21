@@ -424,7 +424,7 @@ export class AddDriverComponent implements OnInit {
 
     this.hasError = false;
     this.hasSuccess = false;
-    this.register();
+    // this.register();
     this.hideErrors();
    
     if (this.driverData.address[0].countryName !== '' && this.driverData.address[0].stateName !== '' && this.driverData.address[0].cityName !== '') {
@@ -663,7 +663,7 @@ export class AddDriverComponent implements OnInit {
 
   updateDriver() {
     //this.spinner.show(); // loader init
-    this.register();
+    // this.register();
     this.hideErrors();
     this.apiService.postData('drivers', this.driverData).subscribe({
       complete: () => { },

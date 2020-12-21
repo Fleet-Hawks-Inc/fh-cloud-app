@@ -14,15 +14,15 @@
                             <span class="caret"></span>
                         </button>
                         <div class="dropdown-menu" role="menu"> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" href="javascript:;">Customer</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addDriverModal" href="javascript:;">Driver</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addBrokerModal" href="javascript:;">Broker</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addVendorModal" href="javascript:;">Vendor</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCarrierModal" href="javascript:;">Carrier</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addShipperModal" href="javascript:;">Shipper</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addConsigneeModal" href="javascript:;">Consignee</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addFCModal" href="javascript:;">Factoring Company</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addStaffModal" href="javascript:;">Staff</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" (click)="updateButton = false;" href="javascript:;">Customer</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addDriverModal" (click)="updateButton = false;" href="javascript:;">Driver</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addBrokerModal" (click)="updateButton = false;" href="javascript:;">Broker</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addVendorModal" (click)="updateButton = false;" href="javascript:;">Vendor</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCarrierModal" (click)="updateButton = false;" href="javascript:;">Carrier</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addShipperModal" (click)="updateButton = false;" href="javascript:;">Shipper</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addConsigneeModal" (click)="updateButton = false;" href="javascript:;">Consignee</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addFCModal" (click)="updateButton = false;" href="javascript:;">Factoring Company</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addStaffModal" (click)="updateButton = false;" href="javascript:;">Staff</a> 
                         </div>
                     </div>
                     <div class="btn-group flex-wrap pull-right mr-2">
@@ -66,7 +66,8 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of allData;let i = index;">
-                                        <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Customer">CU</span></td>
+                                        <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" 
+                                            title="{{item.entityType}}">{{item.entityType}}</span></td>{{item}}
                                         <td>{{item.firstName}} {{item.lastName}}</td>
                                         <td>{{item.workEmail}}</td>
                                         <td>{{item.workPhone}}</td>
@@ -121,14 +122,17 @@
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                   <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
+                                                   <a class="dropdown-item" href="javascript:;" (click)="editUser(customer.entityType, customer)">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateCustomer(customer, customer.customerID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div *ngIf="!customers?.length > 0" class="alert alert-info">
+                                No data Found
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="driver" role="tabpanel" aria-labelledby="driver-tab">
                             <table datatable [dtOptions]="dtOptions" 
@@ -159,8 +163,8 @@
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                   <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser(driver.entityType, driver)">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateDriver(driver, driver.driverID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
@@ -168,6 +172,9 @@
                                     
                                 </tbody>
                             </table>
+                            <div *ngIf="!drivers?.length > 0" class="alert alert-info">
+                                No data Found
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="broker" role="tabpanel" aria-labelledby="broker-tab">
                             <table datatable [dtOptions]="dtOptions" 
@@ -200,14 +207,17 @@
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                   <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser(broker.entityType, broker)">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateBroker(broker, broker.brokerID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div *ngIf="!brokers?.length > 0" class="alert alert-info">
+                                No data Found
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="vendor" role="tabpanel" aria-labelledby="vendor-tab">
                             <table datatable [dtOptions]="dtOptions" 
@@ -240,8 +250,8 @@
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                   <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser(vendor.entityType, vendor)">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateVendor(vendor, vendor.vendorID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
@@ -249,6 +259,9 @@
                                     
                                 </tbody>
                             </table>
+                            <div *ngIf="!vendors?.length > 0" class="alert alert-info">
+                                No data Found
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="carrier" role="tabpanel" aria-labelledby="carrier-tab">
                             <table datatable [dtOptions]="dtOptions" 
@@ -289,6 +302,9 @@
                                     </tr> -->
                                 </tbody>
                             </table>
+                            <div *ngIf="!carriers?.length > 0" class="alert alert-info">
+                                No data Found
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="shipper" role="tabpanel" aria-labelledby="shipper-tab">
                             <table datatable [dtOptions]="dtOptions" 
@@ -321,14 +337,17 @@
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                   <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser(shipper.entityType, shipper)">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateShipper(shipper, shipper.shipperID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div *ngIf="!shippers?.length > 0" class="alert alert-info">
+                                No data Found
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="consignee" role="tabpanel" aria-labelledby="consignee-tab">
                             <table datatable [dtOptions]="dtOptions" 
@@ -361,14 +380,17 @@
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                   <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser(receiver.entityType, receiver)">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateReceiver(receiver, receiver.receiverID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div *ngIf="!receivers?.length > 0" class="alert alert-info">
+                                No data Found
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="staff" role="tabpanel" aria-labelledby="staff-tab">
                             <table datatable [dtOptions]="dtOptions" 
@@ -405,8 +427,8 @@
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                   <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser(staff.entityType, staff)">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateStaff(staff, staff.staffID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
@@ -414,6 +436,9 @@
                                     
                                 </tbody>
                             </table>
+                            <div *ngIf="!staffs?.length > 0" class="alert alert-info">
+                                No data Found
+                            </div>
                         </div>
                         <!-- factoring Company Table -->
                         <div class="tab-pane fade" id="fc" role="tabpanel" aria-labelledby="fc-tab">
@@ -428,6 +453,7 @@
                                         <th width="15%">Email Address</th>
                                         <th width="15%">Phone Number</th>
                                         <th width="20%">Address</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -440,10 +466,26 @@
                                         <td>{{company.address[0].address1}} {{company.address[0].address2}},
                                             {{company.address[0].cityName}}, {{company.address[0].stateName}}, 
                                             {{company.address[0].countryName}}. {{company.address[0].zipCode}}</td>
+                                            <td>
+                                                <div class="dropdown dropright">
+                                                    <button class="bg-transparent border-0" type="button"
+                                                       data-toggle="dropdown" aria-haspopup="true"
+                                                       aria-expanded="false">
+                                                       <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="javascript:;" (click)="editUser(company.entityType, company)">Edit</a>
+                                                        <a class="dropdown-item" href="javascript:;" (click)="deactivateCompany(company, company.factoringCompanyID)">Delete</a>
+                                                    </div>
+                                                 </div>
+                                            </td>
                                     </tr>
                                     
                                 </tbody>
                             </table>
+                            <div *ngIf="!fcCompanies?.length > 0" class="alert alert-info">
+                                No data Found
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -667,7 +709,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <a type="button" class="btn btn-success" href="javascript:;" (click)="addVendor()">Submit</a>
+          <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addVendor()">Submit</a>
+          <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton" (click)="updateVendor()">Update</a>
         </div>
       </div>
     </div>
@@ -1013,7 +1056,8 @@
                                     </div>
                                     <div class="col-lg-12 text-right pb-4 pr-5 mt-3">
                                         <button type="button" class="btn btn-default">Cancel</button>
-                                        <a href="javascript:;" (click)="addCustomer()" class="btn btn-success">Submit</a>                            
+                                        <a href="javascript:;" *ngIf="!updateButton" (click)="addCustomer()" class="btn btn-success">Submit</a>
+                                        <a href="javascript:;" *ngIf="updateButton" (click)="updateCustomer()" class="btn btn-success">Update</a>
                                      </div>
                                   </div>
                                 
@@ -1315,7 +1359,9 @@
                                     <div class="row mt-3">
                                         <div class="col-lg-12 text-right pr-5">
                                             <button class="btn btn-default modal-dismiss">Cancel</button>
-                                            <a href="javascript:;" class="btn btn-success modal-dismiss" (click)="addBroker()">Submit</a>
+                                            <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="!updateButton" (click)="addBroker()">Submit</a>
+                                            <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton" (click)="updateBroker()">Update</a>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -1610,7 +1656,7 @@
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 State</label>
-                                                            <select (change)= "getCities($event.target.value)"[(ngModel)]="item.stateID"
+                                                            <select (change)= "getCities($event.target.value)" [(ngModel)]="item.stateID"
                                                             name="stateID{{i}}" data-plugin-selectTwo class="form-control populate address_state">
                                                                 <optgroup label="Select State">
                                                                     <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
@@ -1986,7 +2032,8 @@
                         <div class="row mt-3">
                             <div class="col-lg-12 text-right pr-5">
                                 <button class="btn btn-default modal-dismiss">Cancel</button>
-                                <a class="btn btn-success" href="javascript:;" (click)="addShipper()">Submit</a>
+                                <a class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addShipper()">Submit</a>
+                                <a href="javascript:;" class="btn btn-success" *ngIf="updateButton" (click)="updateShipper()">Update</a>
                             </div>
                         </div>
                     </form>
@@ -2254,7 +2301,8 @@
                         <div class="row mt-3">
                             <div class="col-lg-12 text-right pr-5">
                                 <button class="btn btn-default modal-dismiss">Cancel</button>
-                                <a class="btn btn-success" href="javascript:;" (click)="addConsignee()">Submit</a>
+                                <a class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addConsignee()">Submit</a>
+                                <a href="javascript:;" class="btn btn-success" *ngIf="updateButton" (click)="updateConsignee()">Update</a>
                             </div>
                         </div>
                     
@@ -2512,7 +2560,9 @@
                                 <div class="row mt-3">
                                     <div class="col-lg-12 text-right pr-5">
                                         <button class="btn btn-default modal-dismiss">Cancel</button>
-                                        <a class="btn btn-success" href="javascript:;" (click)="addFCompany()">Submit</a>
+                                        <a class="btn btn-success" href="javascript:;"  *ngIf="!updateButton" (click)="addFCompany()">Submit</a>
+                                        <a class="btn btn-success" href="javascript:;"  *ngIf="updateButton" (click)="updateFCompany()">Update</a>
+                                        
                                     </div>
                                 </div>
                             </form>
@@ -2849,7 +2899,8 @@
                                 <div class="row mt-3">
                                     <div class="col-lg-12 text-right pr-5">
                                         <button class="btn btn-default modal-dismiss">Cancel</button>
-                                        <a class="btn btn-success" href="javascript:;" (click)="addStaff()">Submit</a>
+                                        <a class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addStaff()">Submit</a>
+                                        <a href="javascript:;" *ngIf="updateButton" (click)="updateStaff()" class="btn btn-success">Update</a>
                                     </div>
                                 </div>
                             </form>
