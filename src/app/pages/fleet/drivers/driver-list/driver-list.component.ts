@@ -87,26 +87,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
           countryIds,
           citiesIds
         ]: any) => {
-          let newArr = [];
-          // tslint:disable-next-line: prefer-for-of
-          for (let i = 0; i < addresses.Items.length; i++) {
-            // tslint:disable-next-line: prefer-for-of
-            for (let j = 0; j < drivers.Items.length; j++) {
-              if (addresses.Items[i].entityID === drivers.Items[j].driverID) {
-                drivers.Items[j].addressDetails = {
-                  address1: addresses.Items[i].address1,
-                  address2: addresses.Items[i].address2,
-                  addressID: addresses.Items[i].addressID,
-                  addressType: addresses.Items[i].addressType,
-                  cityID: addresses.Items[i].cityID,
-                  countryID: addresses.Items[i].countryID,
-                  geoCords: addresses.Items[i].geoCords,
-                  stateID: addresses.Items[i].stateID,
-                  zipCode: addresses.Items[i].zipCode,
-                };
-              }
-            }
-          }
+          
           for (const iterator of drivers.Items) {
             if (iterator.isDeleted === 0) {
               this.drivers.push(iterator);
@@ -344,9 +325,8 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
           this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
           this.fetchDrivers();
 
-        }, err => {
-         
-        });
+        }, err => {});
+
     }
   }
 
