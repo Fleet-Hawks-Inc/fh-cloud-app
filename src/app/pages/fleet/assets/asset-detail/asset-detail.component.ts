@@ -154,9 +154,7 @@ export class AssetDetailComponent implements OnInit {
           // this.getImages();
           this.spinner.hide(); // loader hide
         }
-      }, (err) => {
-        
-      });
+      }, (err) => {});
   }
 
   fetchDeviceInfo = () => {
@@ -166,9 +164,7 @@ export class AssetDetailComponent implements OnInit {
         if (result) {
           this.deviceData = result['Items'];
         }
-      }, (err) => {
-       
-      });
+      }, (err) => {});
   }
 
   fetchAllStatesIDs() {
