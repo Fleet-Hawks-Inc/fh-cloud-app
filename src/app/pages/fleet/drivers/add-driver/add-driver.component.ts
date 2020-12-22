@@ -42,7 +42,11 @@ export class AddDriverComponent implements OnInit {
   countriesObject: any;
   citiesObject: any;
 
-  groupData = {};
+  allDrivers: any;
+
+  groupData = {
+    groupType : 'drivers'
+  };
 
   driverAddress = {
     address: [],
@@ -120,8 +124,7 @@ export class AddDriverComponent implements OnInit {
     type: '',
   };
   yardID = '';
-
-
+  
   documentTypeList: any = [];
   driverLicenseCountry = '';
   groups = [];
@@ -172,6 +175,7 @@ export class AddDriverComponent implements OnInit {
     this.fetchYards(); // fetch yards
     this.fetchCycles(); // fetch cycles
     this.fetchVehicles(); // fetch vehicles
+    this.fetchDrivers();
     this.getToday(); // get today date on calender
     this.searchLocation(); // search location on keyup
 
@@ -238,11 +242,11 @@ export class AddDriverComponent implements OnInit {
       });
   }
 
+  
   fetchGroups() {
-    this.apiService.getData('groups')
-      .subscribe((result: any) => {
-        this.groups = result.Items;
-      });
+    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
+      this.groups = result.Items;
+    });
   }
 
   fetchCountries() {
@@ -388,6 +392,11 @@ export class AddDriverComponent implements OnInit {
     });
   }
 
+  fetchDrivers() {
+    this.apiService.getData(`drivers`).subscribe( res=> {
+      this.allDrivers = res.Items;
+    });
+  }
   addGroup() {
     this.apiService.postData('groups', this.groupData).subscribe({
       complete: () => { },

@@ -56,21 +56,6 @@
 .addv_topnav ul li:hover{color: #000; background: #fff;; text-decoration: none;}
 .addv_topnav ul li.active{color: #000; background: #fff;; text-decoration: none;}
 
-/* ADD VEHICLE INFORMATION */
-#vehicle_new_details
-{
-  display: block;
-}
-#vehicle_new_lifecycle,
-#vehicle_new_specifications,
-#vehicle_new_wheels,
-#vehicle_new_engine,
-#vehicle_new_settings,
-#vehicle_new_fluids
-{
-display: none;
-}
-
 .sub-heading-new-vehicle
 {
 font-size: 1rem;
