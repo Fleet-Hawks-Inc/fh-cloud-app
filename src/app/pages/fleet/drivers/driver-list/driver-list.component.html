@@ -371,7 +371,8 @@
                      <div class="card-body">
 
                         <table datatable [dtOptions]="dtOptions"
-                           class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="drivers.length > 0">
+                           class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" 
+                           *ngIf="drivers?.length > 0">
                            <thead>
                               <tr>
                                  <!-- <th><input type="checkbox"></th> -->
@@ -429,7 +430,7 @@
                                     </div>
                                  </td>
                               </tr>
-                              <tr *ngIf="!drivers.length > 0">
+                              <tr *ngIf="!drivers?.length > 0">
                                  <td colspan="11">
                                     No records found
                                  </td>
