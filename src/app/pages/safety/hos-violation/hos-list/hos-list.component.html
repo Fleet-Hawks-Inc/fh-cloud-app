@@ -76,7 +76,7 @@
                                                     <th>Status</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody *ngIf="events.length > 0">
                                                 <tr *ngFor="let data of events">
                                                     <td routerLink="/safety/hos-violations/details/{{data.eventID}}">{{ driverIDsObject[data.driverUsername] }}</td>
                                                     <td>{{ driversObject[data.driverUsername] }}</td>
@@ -94,6 +94,11 @@
                                                     </td>
                                                 </tr>
                                             </tbody>
+                                            <tbody *ngIf="events.length === 0">
+                                                <tr>
+                                                  <td colspan="7" class="no-data-available">No record(s) found</td>
+                                                </tr>
+                                            <tbody>
                                         </table>
                                     </div>
                                 </div>

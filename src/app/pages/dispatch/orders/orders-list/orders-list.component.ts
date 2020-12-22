@@ -19,10 +19,7 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
   dtTrigger: Subject<any> = new Subject();
 
   orders = [];
-  lastEvaluated = {
-    value1: '',
-    value2: ''
-  };
+  lastEvaluatedKey = '';
   orderFiltr = {
     searchValue: '',
     startDate: '',
@@ -73,10 +70,10 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-
+        this.totalRecords = result.Count; 
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
-          if(element.isDeleted === '0') {
+          if(element.isDeleted === 0) {
             this.allordersCount = this.allordersCount+1;
             this.totalRecords = this.allordersCount; 
             if(element.orderStatus == 'confirmed') {
@@ -140,10 +137,7 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
 
     }
 
-    current.lastEvaluated = {
-      value1: '',
-      value2: ''
-    }
+    current.lastEvaluatedKey = '';
     current.initDataTable(tabType, 'reload');
   }
 
@@ -152,10 +146,7 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
     let current = this;
     
     if(tabType !== 'all') {
-      this.lastEvaluated = {
-        value1: '',
-        value2: ''
-      };
+      this.lastEvaluatedKey = ''
     }
 
     if(tabType === 'all') {
@@ -179,38 +170,21 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       dom: 'lrtip',
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0],"orderable": false},
-        {"targets": [1],"orderable": false},
-        {"targets": [2],"orderable": false},
-        {"targets": [3],"orderable": false},
-        {"targets": [4],"orderable": false},
-        {"targets": [5],"orderable": false},
-        {"targets": [6],"orderable": false},
-        {"targets": [7],"orderable": false},
+        {"targets": [0,1,2,3,4,5,6,7],"orderable": false},
       ],
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData(this.serviceUrl +current.lastEvaluated.value1 + 
-        '&value2=' + current.lastEvaluated.value2, dataTablesParameters).subscribe(resp => {
+        current.apiService.getDatatablePostData(this.serviceUrl +current.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           this.orders = resp['Items'];
 
           if (resp['LastEvaluatedKey'] !== undefined) {
             if (resp['LastEvaluatedKey'].carrierID !== undefined) {
-              current.lastEvaluated = {
-                value1: resp['LastEvaluatedKey'].orderID,
-                value2: resp['LastEvaluatedKey'].carrierID
-              }
+              current.lastEvaluatedKey = resp['LastEvaluatedKey'].orderID
             } else {
-              current.lastEvaluated = {
-                value1: resp['LastEvaluatedKey'].orderID,
-                value2: ''
-              }
+              current.lastEvaluatedKey = ''
             }
 
           } else {
-            current.lastEvaluated = {
-              value1: '',
-              value2: ''
-            }
+            current.lastEvaluatedKey = ''
           }
 
           callback({
@@ -269,7 +243,7 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       };
       $("#categorySelect").text('Search by category');
       this.pageLength = 10;
-      this.rerender();
+      this.initDataTable('all', 'reload','yes');
       this.spinner.hide();
     } else {
       return false;
