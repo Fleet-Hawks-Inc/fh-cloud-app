@@ -265,7 +265,7 @@
                             *ngFor="let vendor of vendors"
                             value="{{ vendor.vendorID }}"
                           >
-                            {{ vendor.vendorName }}
+                            {{ vendor.companyName }}
                           </option>
                         </optgroup>
                       </select>
@@ -353,7 +353,7 @@
                               *ngFor="let vendor of vendors"
                               value="{{ vendor.vendorID }}"
                             >
-                              {{ vendor.vendorName }}
+                              {{ vendor.companyName }}
                             </option>
                           </optgroup>
                         </select>
@@ -438,6 +438,7 @@
                         class="control-label font-weight-bold text-lg-right pt-2"
                         >Attach Photo</label >
                       <input
+                        (change)="selectDocuments($event, 'uploadedPhotos')"
                         type="file"
                         class="form-control border-0 p-0"
                         id="inputDefault"
@@ -453,6 +454,7 @@
                         class="control-label font-weight-bold text-lg-right pt-2">Attach Document</label
                       >
                       <input
+                        (change)="selectDocuments($event, 'uploadedDocs')"
                         type="file"
                         class="form-control border-0 p-0"
                         id="inputDefault"

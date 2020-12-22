@@ -371,7 +371,8 @@
                      <div class="card-body">
 
                         <table datatable [dtOptions]="dtOptions"
-                           class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="drivers.length > 0">
+                           class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" 
+                           *ngIf="drivers?.length > 0">
                            <thead>
                               <tr>
                                  <!-- <th><input type="checkbox"></th> -->
@@ -398,11 +399,7 @@
                                        {{driver.lastName}}</span>
                                  </td>
                                  <td>Live Status</td>
-                                 <td>{{driver.addressDetails.address1}} {{driver.addressDetails.address2}}
-                                    {{citiesObject[driver.addressDetails.cityID]}}
-                                    {{statesObject[driver.addressDetails.stateID]}}
-                                    {{countriesObject[driver.addressDetails.countryID]}}
-                                    {{driver.addressDetails.zipCode}}</td>
+                                 <td>Live Location</td>
                                  <td>{{cyclesObject[driver.hosDetails.hosCycle]}}</td>
                                  <td>{{vehiclesObject[driver.assignedVehicle]}}</td>
                                  <td>Live Status</td>
@@ -433,7 +430,7 @@
                                     </div>
                                  </td>
                               </tr>
-                              <tr *ngIf="!drivers.length > 0">
+                              <tr *ngIf="!drivers?.length > 0">
                                  <td colspan="11">
                                     No records found
                                  </td>

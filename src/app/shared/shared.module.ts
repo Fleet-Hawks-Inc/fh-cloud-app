@@ -42,8 +42,9 @@ import { DataTablesModule } from 'angular-datatables';
     MultiSidebarComponents,
     HeaderComponent,
     DriverComponent,
-    VehicleComponent
-
+    VehicleComponent,
+    SidebarComponent,
+    FixedRightSidebarComponent
   ]
 })
 export class SharedModule {
