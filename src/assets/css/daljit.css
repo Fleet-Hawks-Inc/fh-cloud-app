@@ -551,3 +551,6 @@ html.fixed .content-body {
 .dataTables_filter {
     display: none;
 }
+.modal {
+    overflow-y: auto;
+}
