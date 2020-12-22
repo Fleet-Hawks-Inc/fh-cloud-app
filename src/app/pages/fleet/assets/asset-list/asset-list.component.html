@@ -11,9 +11,9 @@
     <!-- end: sidebar -->
 
     <section role="main" class="content-body pl-1 pt-0 pr-0">
-      <header class="page-header">
+      <header class="page-header pr-5">
          <form class="form-horizontal" method="get">
-            <div class="row" style="padding-top:10px;">
+            <div class="row pr-1 mr-1" style="padding-top:10px;">
                <div class="col-md-2 col-lg-2">
                   <div class="input-group input-group-md mb-3">
                      <input type="text" autocomplete="off" name="assetIdentification" [(ngModel)]="assetIdentification" class="form-control" (input)="getSuggestions($event.target.value)">
@@ -23,7 +23,7 @@
                   </div>
                </div>
                
-               <div class="col-md-2  col-lg-2">
+               <div class="col-md-2 col-lg-2">
                   <select
                      data-plugin-selectTwo
                      [(ngModel)]="currentStatus" 
@@ -35,15 +35,16 @@
                   </select>
                </div>
 
-               <div class="col-md-2  col-lg-2">
+               <div class="col-md-2 col-lg-2">
                   <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">Search</button>
                   <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                </div>
-               <div class="col-md-6  col-lg-6 text-right pr-5 page-buttons">
-                  <button type="button" (click)="mapShow()" id="map_view_btn" class="btn btn-sm btn-default mr-3">Map View</button>
-                  <button type="button" (click)="listView = true;mapView = false;" id="list_view_btn" class="btn btn-sm btn-success mr-3">List View</button>
-                  <div class="btn-group flex-wrap">
-                     <button type="button" class="btn btn-success btn-sm dropdown-toggle mr-3" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+
+               <div class="col-md-6 col-lg-6 text-right pr-1 page-buttons">
+                  <button type="button" (click)="mapShow()" id="map_view_btn" class="btn btn-sm btn-default mr-2">Map View</button>
+                  <button type="button" (click)="listView = true;mapView = false;" id="list_view_btn" class="btn btn-sm btn-success mr-2">List View</button>
+                  <div class="btn-group flex-wrap mr-2">
+                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                         <a class="dropdown-item text-1" (click)="editAsset()" href="javascript:;">Edit</a>
                         <a class="dropdown-item text-1" (click)="deleteAsset()" href="javascript:;">Delete</a>
@@ -51,7 +52,7 @@
                         <a class="dropdown-item text-1" href="">Export</a>
                      </div>
                   </div>
-                  <a routerLink="/fleet/assets/add" class="btn btn-success btn-sm mr-4" style="color:white;"><i class="fas fa-plus"></i> Add Asset</a>
+                  <a routerLink="/fleet/assets/add" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Add Asset</a>
                </div>
             </div>
          </form>
@@ -164,8 +165,12 @@
                      <th>Actions</th>
                   </tr> 
                </thead>
+
+
                <tbody *ngIf="allData.length > 0">
-                  <tr *ngFor="let item of allData;let i = index">
+                  <tr class="cursorpoint" *ngFor="let item of allData;let i = index">
+
+
                      <td routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                      <td>{{assetTypesObects[item.assetDetails.assetType]}}</td>                                          
                      <td>{{item.assetDetails.licencePlateNumber}}</td>
