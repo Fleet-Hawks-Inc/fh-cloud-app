@@ -11,7 +11,7 @@
          <header class="page-header pr-5">
             <form class="form-horizontal" method="get">
                <div class="row pr-1 mr-1" style="padding-top:10px;">
-                  <div class="col-md-3 col-lg-3">
+                  <div class="col-md-2 col-lg-2">
                      <div class="input-group input-group-md mb-3">
                         <input type="text" autocomplete="off" name="driverName" [(ngModel)]="driverName"
                            class="form-control" (input)="getSuggestions($event.target.value)">
@@ -21,7 +21,7 @@
                         {{ suggestedDriver.firstName }} {{ suggestedDriver.lastName }}
                      </div>
                   </div>
-                  <div class="col-md-2 col-lg-2">
+                  <div class="col-md-3 col-lg-3">
                      <div class="btn-group flex-wrap" style="min-width:190px;">
                         <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Search by Duty Status <span class="caret"></span></button>
                         <div class="dropdown-menu dutystatwd" role="menu">
@@ -34,11 +34,12 @@
                      </div>
                   </div>
 
-                  <div class="col-md-1  col-lg-1">
-                     <button type="submit" (click)="fetchDrivers()" class="btn btn-sm btn-success">Search</button>
+                  <div class="col-md-2  col-lg-2">
+                     <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">Search</button>
+                     <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                   </div>
 
-                  <div class="col-md-6 col-lg-6 pr-1 text-right page-buttons">
+                  <div class="col-md-5 col-lg-5 pr-1 text-right page-buttons">
                      <button type="button" (click)="mapShow()" id="map_view_btn" class="btn btn-default btn-sm mr-2 ml-2">Map View</button>
                      <button type="button" (click)="listView = true;mapView = false;" id="list_view_btn" class="btn btn-success btn-sm mr-2">List View</button>
 
@@ -369,9 +370,7 @@
                <div class="col">
                   <section class="card">
                      <div class="card-body">
-
-                        <table datatable [dtOptions]="dtOptions"
-                           class="table table-bordered table-responsive-lg table-striped mb-0 drybox-datatable" *ngIf="drivers.length > 0">
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
                            <thead>
                               <tr>
                                  <!-- <th><input type="checkbox"></th> -->
@@ -390,7 +389,7 @@
                                  <th width="50">Actions</th>
                               </tr>
                            </thead>
-                           <tbody>
+                           <tbody *ngIf="drivers.length > 0">
                               <tr *ngFor="let driver of drivers;let i = index;">
                                  <!-- <td><input [checked]="isChecked" [(ngModel)]="driver.checked" (ngModelChange)="checkboxCount()" value="{{driver.assetIdentification}}" type="checkbox"></td> -->
                                  <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;">
@@ -398,11 +397,7 @@
                                        {{driver.lastName}}</span>
                                  </td>
                                  <td>Live Status</td>
-                                 <td>{{driver.addressDetails.address1}} {{driver.addressDetails.address2}}
-                                    {{citiesObject[driver.addressDetails.cityID]}}
-                                    {{statesObject[driver.addressDetails.stateID]}}
-                                    {{countriesObject[driver.addressDetails.countryID]}}
-                                    {{driver.addressDetails.zipCode}}</td>
+                                 <td>Live Address</td>
                                  <td>{{cyclesObject[driver.hosDetails.hosCycle]}}</td>
                                  <td>{{vehiclesObject[driver.assignedVehicle]}}</td>
                                  <td>Live Status</td>
@@ -433,23 +428,19 @@
                                     </div>
                                  </td>
                               </tr>
-                              <tr *ngIf="!drivers.length > 0">
-                                 <td colspan="11">
-                                    No records found
-                                 </td>
-                                 <td style="display: none;"></td>
-                                 <td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td>
-                                 <td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td>
-                              </tr>
                            </tbody>
+                           <tbody *ngIf="drivers.length === 0">
+                              <tr>
+                                 <td colspan="11" class="no-data-available">No records found</td>
+                              </tr>
+                           <tbody>
                         </table>
-
+                        
                      </div>
                   </section>
                </div>
             </div>
          </div>
       </section>
-
    </div>
 </section>

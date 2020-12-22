@@ -98,7 +98,7 @@ export class AddIncidentComponent implements OnInit {
             result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
             for (let i = 0; i < result.Items.length; i++) {
                 const element = result.Items[i];
-                if(element.isDeleted == '0') {
+                if(element.isDeleted == 0) {
                     this.drivers.push(element);
                 }   
             }
@@ -120,7 +120,7 @@ export class AddIncidentComponent implements OnInit {
         .subscribe((result: any) => {
             for (let i = 0; i < result.Items.length; i++) {
                 const element = result.Items[i];
-                if(element.isDeleted == '0') {
+                if(element.isDeleted == 0) {
                     this.trips.push(element);
                 }   
             }

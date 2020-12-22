@@ -39,13 +39,13 @@
                         </li> -->
                         <li class="" [class.active]="navSelected === 'dispatch'">
 
-                            <a class="nav-link" [routerLink]="['/dispatch', 'home', 'routing-dispatch-overview']" (click)="onNavSelected('dispatch')">
+                            <a class="nav-link" [routerLink]="['/dispatch', 'overview']" (click)="onNavSelected('dispatch')">
 
                                 Routing & Dispatch 
                             </a>
                         </li>
                         <li class="" [class.active]="navSelected === 'safety'">
-                            <a class="nav-link" [routerLink]="" (click)="onNavSelected('safety')">
+                            <a class="nav-link" [routerLink]="['/safety', 'overview']" (click)="onNavSelected('safety')">
                                 Safety
                             </a>
                         </li>
