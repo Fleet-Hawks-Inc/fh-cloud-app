@@ -9,10 +9,11 @@
 	  <!-- end: sidebar -->
   
 	  <section role="main" class="content-body pl-0">
-		<header class="page-header">
+		<header class="page-header pr-5">
 		  <form class="form-horizontal" method="get" name="form" id="form_">
-			 <div class="row pr-4 pl-4" style="padding-top:10px;">
-				<div class="col-md-2 col-lg-2 pr-0 pl-0">
+			<div class="row pr-1 mr-1" style="padding-top:10px;">
+				
+				<div class="col-md-2 col-lg-2">
 					<div class="input-group input-group-sm mb-3">
 					  <input
 						autocomplete="off"
@@ -37,7 +38,7 @@
 					<input class="form-control" name="amount" [(ngModel)]="amount" >
 				   </div>
 				</div> -->
-				<div class="col-lg-2 col-md-2 pl-2 pr-0">              
+				<div class="col-lg-2 col-md-2">              
 				  <div class="form-group">
 					<div class="input-group">
 					   <span class="input-group-prepend positionsta">
@@ -53,7 +54,8 @@
 					 </div>				   
 				  </div> 
 				 </div>
-				 <div class="col-lg-2 col-md-2 pr-0 pl-2">
+
+				 <div class="col-lg-2 col-md-2">
 					<div class="form-group">
 					   <div class="input-group">
 						  <span class="input-group-prepend positionsta">
@@ -69,11 +71,11 @@
 						</div>					  
 					 </div>					  
 				</div>
-				<div class="col-md-1  col-lg-1 pl-2">
+				<div class="col-md-1 col-lg-1">
 				   <button type="submit" (click)="fuelEntries()" class="btn btn-sm btn-success">Search</button>
 				</div>
-				<div class="col-md-5  col-lg-5 text-right pr-5 page-buttons">
-				   <div class="btn-group flex-wrap">
+				<div class="col-md-5  col-lg-5 text-right pr-1 page-buttons">
+				   <div class="btn-group flex-wrap mr-2">
 					  <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
 					  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
 				
@@ -81,7 +83,7 @@
 						 <a class="dropdown-item text-1" href="">Export</a>
 					  </div>
 				   </div>
-				   <a routerLink="/fleet/expenses/fuel/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Fuel Entry</a>
+				   <a routerLink="/fleet/expenses/fuel/add" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Add Fuel Entry</a>
 				</div>
 			 </div>
 		  </form>
