@@ -1242,21 +1242,21 @@
                               <div class="col-lg-4">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Hard Breaking Parameters</label>
                                  <div class="slidecontainer">
-                                    <input type="range" min="1" max="10" class="slider" id="hardBreakingParameters" (input)="onChangeHardBreakingParameters($event.target.value)" name="hardBreakingParameters" />
+                                    <input type="range" min="1" max="10" class="slider" id="hardBreakingParameters" (input)="onChangeHardBreakingParameters($event.target.value)" name="hardBreakingParameters" [value]="settings.hardBreakingParams"/>
                                     <p>Value: <span id="hardBreakingParametersValue"></span></p>
                                  </div>
                               </div>
                               <div class="col-lg-4">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Hard Accelration Parameters </label>
                                  <div class="slidecontainer">
-                                    <input type="range" min="1" max="10" class="slider" id="hardAccelrationParameters" #ranger (input)="onChangeAccelrationParameters($event.target.value)" name="hardAccelrationParameters" />
+                                    <input type="range" min="1" max="10" class="slider" id="hardAccelrationParameters" #ranger (input)="onChangeAccelrationParameters($event.target.value)" name="hardAccelrationParameters" [value]="settings.hardAccelrationParams"/>
                                     <p>Value: <span id="hardAccelrationParametersValue"></span></p>
                                  </div>
                               </div>
                               <div class="col-lg-4">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Turning Parameters </label>
                                  <div class="slidecontainer">
-                                    <input type="range" min="1" max="10" class="slider" id="turningParameters" #ranger (input)="onChangeturningParameters($event.target.value)" name="turningParameters" />
+                                    <input type="range" min="1" max="10" class="slider" id="turningParameters" #ranger (input)="onChangeturningParameters($event.target.value)" name="turningParameters" [value]="settings.turningParams"/>
                                     <p>Value: <span id="turningParametersValue"></span></p>
                                  </div>
                               </div>
