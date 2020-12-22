@@ -10,15 +10,13 @@
     <!-- end: sidebar -->
 
     <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header">
-        <div class="row pr-5" style="padding-top: 10px">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            New Part
+      <header class="page-header pr-5">
+        <div class="row pr-1 mr-1" style="padding-top:10px;">
+          <div class="col-md-4 col-lg-4">
+            <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">New Part</h4>
           </div>
-          <div class="col-md-8 col-lg-8 text-right pr-4">
-            <a routerLink="/fleet/inventory/list" class="btn btn-default btn-sm"
-              ><i class="fas fa-list"></i>Inventory List</a
-            >
+          <div class="col-md-8 col-lg-8 text-right pr-1">
+            <a routerLink="/fleet/inventory/list" class="btn btn-default btn-sm" ><i class="fas fa-list"></i> Inventory List</a>
           </div>
         </div>
       </header>
@@ -28,18 +26,14 @@
             <form class="form-horizontal form-bordered" method="get" id="form">
               <div class="row">
                 <div class="col-lg-12">
-                  <label
-                    class="control-label font-weight-bold text-lg-right text-dark text-4 font-weight-bold pt-2"
-                    >Inventory Details</label
-                  >
+                  <label class="control-label font-weight-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Inventory Details</label>
                 </div>
                 <div class="col-lg-5 offset-lg-1">
                   <div class="row">
                     <div class="col-lg-10">
                       <label
                         class="control-label font-weight-bold text-lg-right pt-2"
-                        >Part Number</label
-                      >
+                        >Part Number</label >
                       <input
                         type="text"
                         name="partNumber"
@@ -99,10 +93,9 @@
                     <div class="col-lg-5">
                       <label
                         class="control-label font-weight-bold text-lg-right pt-2"
-                        >Unit Cost(base)</label
-                      >
+                        >Unit Cost (base)</label >
                       <div class="row">
-                        <div class="col-lg-6 pr-0">
+                        <div class="col-lg-6">
                           <input
                             type="number"
                             class="form-control"
@@ -443,12 +436,11 @@
                     <div class="col-lg-10">
                       <label
                         class="control-label font-weight-bold text-lg-right pt-2"
-                        >Attach Photo</label
-                      >
+                        >Attach Photo</label >
                       <input
                         (change)="selectDocuments($event, 'uploadedPhotos')"
                         type="file"
-                        class="form-control p-0"
+                        class="form-control border-0 p-0"
                         id="inputDefault"
                       />
                     </div>
@@ -459,13 +451,12 @@
                   <div class="row mt-2">
                     <div class="col-lg-10">
                       <label
-                        class="control-label font-weight-bold text-lg-right pt-2"
-                        >Attach Document</label
+                        class="control-label font-weight-bold text-lg-right pt-2">Attach Document</label
                       >
                       <input
                         (change)="selectDocuments($event, 'uploadedDocs')"
                         type="file"
-                        class="form-control p-0"
+                        class="form-control border-0 p-0"
                         id="inputDefault"
                       />
                     </div>
@@ -477,11 +468,7 @@
               </div>
               <div class="form-group row">
                 <div class="col-lg-11 text-right">
-                  <button
-                    type="button"
-                    class="btn btn-default"
-                    onclick="goBack()"
-                  >
+                  <button type="button" class="btn btn-default mr-2" onclick="goBack()" >
                     Cancel
                   </button>
                   <a href="javascript:;" *ngIf="!itemID" (click)="addInventory()" class="btn btn-success">Submit</a>

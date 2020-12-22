@@ -10,13 +10,18 @@
 
     <section role="main" class="content-body">
       <header class="page-header pr-5">
-        <h2>Inventory Overview</h2>
-        <div class="right-wrapper text-right mt-2 pr-2">
-          <a [routerLink]="" (click)="openTransferModal()" class="modal-with-form btn btn-success btn-sm mr-2"><i
-              class="fas fa-exchange-alt"></i> Transfer</a>
-          <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm" style="color: white"><i
-              class="fas fa-plus"></i> Add Inventory</a>
-        </div>
+
+        <div class="row pr-1 mr-1" style="padding-top:10px;">
+          <div class="col-md-2 col-lg-2">
+             <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">Inventory Overview</h4>
+          </div>
+          <div class="col-md-10 col-lg-10 text-right pr-1">
+            <a [routerLink]="" (click)="openTransferModal()" class="modal-with-form btn btn-success btn-sm mr-2"><i class="fas fa-exchange-alt"></i> Transfer</a>
+             <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm" style="color: white"><i class="fas fa-plus"></i> Add Inventory</a>
+          </div>
+       </div>
+
+
       </header>
 
       <div class="routing-overview__wrapper">
@@ -24,8 +29,8 @@
           <div class="col-lg-12">
             <section class="card">
               <div class="card-body">
-                <div class="m-2 pb-2">
-                  <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                <div class="pb-3">
+                  <ul class="nav nav-tabs top-tabs mb-1" id="top-tabs" role="tablist">
                     <li class="nav-item">
                       <a class="nav-link active" id="all-tab" data-toggle="tab" href="#einv" role="tab"
                         aria-controls="allassets" aria-selected="true">Existing Inventory</a>
@@ -36,7 +41,7 @@
                     </li>
                   </ul>
                 </div>
-                <div class="tab-content p-0" id="myTabContent">
+                <div class="tab-content border-0 p-0" id="myTabContent">
                   <div class="tab-pane show active" id="einv" role="tabpanel" aria-labelledby="all-tab">
                     <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
                       <thead>
@@ -52,10 +57,16 @@
                           <th>Actions</th>
                         </tr>
                       </thead>
+
                       <tbody *ngIf="items.length > 0">
-                        <tr *ngFor="let item of items; let i = index">
+                        <tr class="cursorpoint" *ngFor="let item of items; let i = index"
+
+                          routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                        
+
                           <td routerLink="/fleet/inventory/detail/{{item.itemID}}">
                             {{ partNo[i]}}
+
                           </td>
                           <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
                             {{item.name}}
@@ -114,7 +125,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+                        <tr class="cursorpoint">
                           <td>
                             01
                           </td>

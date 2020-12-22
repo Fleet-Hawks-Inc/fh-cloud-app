@@ -9,10 +9,10 @@
         <!-- end: sidebar -->
   
         <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header service-log-header">
+            <header class="page-header pr-5 service-log-header">
             
                 <form class="form-horizontal" method="get">
-                    <div class="row pr-5" style="padding-top:10px;">
+                    <div class="row pr-1 mr-1" style="padding-top:10px;">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-sm mb-3">
                                 <input autocomplete="off" type="text" name="vehicleIdentification" [(ngModel)]="vehicleIdentification"
@@ -24,6 +24,7 @@
                                 {{ suggestedUnit.vehicleIdentification }}
                             </div>
                         </div>
+
                         <div class="col-md-2  col-lg-2">
                             <select data-plugin-selectTwo class="form-control populate">
                                 <optgroup label="Search Service Task">
@@ -147,7 +148,7 @@
                                     <option value="">Windshield Wiper(s) Replacement</option>
                                 </optgroup>
                             </select>
-                        </div>
+
                         <div class="col-md-2 col-lg-2 pl-2">
                             <button type="submit" (click)="searchFilter()"
                                 class="btn btn-sm btn-success mr-2">Search</button>
@@ -155,8 +156,9 @@
                         </div>
 
                         <div class="col-md-6  col-lg-6 text-right pr-4">
+
             
-                            <div class="btn-group flex-wrap">
+                            <div class="btn-group flex-wrap mr-2">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="false">Actions<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
@@ -166,10 +168,14 @@
                                 </div>
                             </div>
                             
+
                             <a routerLink="/fleet/maintenance/service-log/add-service" class="btn btn-success btn-sm ml-2" style="color:white;"><i
                                     class="fas fa-plus"></i> Add Service Log</a>
+
             
                         </div>
+
+
                     </div>
                 </form>
             
@@ -193,7 +199,7 @@
                 <div class="col">
                     <section class="card">
                         <div class="card-body">
-                            <div class="mb-2">
+                            <div class="mb-3 pb-1">
                                 <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" routerLink="/fleet/maintenance/service-log/list" id="service-log-tab" data-toggle="tab" href="#service-log" role="tab" aria-controls="open" aria-selected="true">Service Log</a>
@@ -222,8 +228,10 @@
                                                           <th>Actions</th>
                                                        </tr>
                                                     </thead>
+
                                                     <tbody *ngIf="logs.length > 0">
-                                                       <tr *ngFor="let item of logs; let i = index;">
+                                                       <tr class="cursorpoint" *ngFor="let item of logs; let i = index;">
+
                                                           <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
                                                             <span class="font-weight-bold">{{vehiclesObject[item.vehicleID]}}</span>
                                                             <span *ngIf="!item?.vehicleID" class="font-weight-bold">{{assetsObject[item.assetID]}}</span><br>

@@ -35,7 +35,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   driverCheckCount;
   selectedDriverID;
   drivers = [];
-  
+
   dtTrigger: Subject<any> = new Subject();
   dtOptions: any = {};
 
@@ -162,6 +162,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   fetchDrivers() {
+
     this.apiService.getData('drivers')
     .subscribe({
       complete: () => {
@@ -181,10 +182,17 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     .subscribe((result: any) => {
       this.statesObject = result;
     });
+
+  }
+
+  fetchAllStatesIDs() {
+    return this.apiService.getData('states/get/list');
+
   }
 
 
   fetchAllCountriesIDs() {
+
     this.apiService.getData('countries/get/list')
     .subscribe((result: any) => {
       this.countriesObject = result;
@@ -210,7 +218,9 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     .subscribe((result: any) => {
       this.cyclesObject = result;
     });
+    
   }
+
 
   checkboxCount = () => {
     this.driverCheckCount = 0;
@@ -266,16 +276,15 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       pageLength: this.pageLength,
       serverSide: true,
       processing: true,
+
       order: [],
       columnDefs: [ //sortable false
         { "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "orderable": false },
       ],
       dom: 'Bfrtip',
       buttons: [
-        'copy',
-        'print',
+        'colvis',
         'excel',
-        'csv'
       ],
       colReorder: {
         fixedColumnsLeft: 1
@@ -295,6 +304,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
           });
         });
       }
+
     };
   }
 

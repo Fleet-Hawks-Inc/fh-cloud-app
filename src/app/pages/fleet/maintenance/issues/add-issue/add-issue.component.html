@@ -9,12 +9,12 @@
         <!-- end: sidebar -->
 
         <section role="main" class="content-body pl-0 pr-0 pt-0">
-            <header class="page-header">
-                <div class="row pr-5 " style="padding-top:10px;">
-                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark pl-4">
-                        {{title}}
+            <header class="page-header pr-5">
+                <div class="row pr-1 mr-1" style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4">
+                        <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{title}}</h4>
                     </div>
-                    <div class="col-md-8  col-lg-8 text-right pr-4">
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
                         <a routerLink="/fleet/maintenance/issues/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Issues
                             List</a>
                     </div>
@@ -144,7 +144,7 @@
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right">Attach
                                                 Photo</label>
-                                                <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" type="file" multiple class="form-control p-0">
+                                                <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" type="file" multiple class="form-control border-0 p-0">
                                             </div>
                                         <div class="col-lg-2  mar-top-37">                                    
                                        </div>
@@ -172,7 +172,7 @@
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right">Attach
                                                 Document</label>
-                                                <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple class="form-control p-0">
+                                                <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple class="form-control border-0 p-0">
                                         </div>
                                         <div class="col-lg-2  mar-top-37">
                                             <!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
