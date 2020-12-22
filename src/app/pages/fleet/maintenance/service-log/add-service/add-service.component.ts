@@ -45,7 +45,7 @@ export class AddServiceComponent implements OnInit {
   Success: string = '';
 
   serviceData = {
-    unitType: '',
+    unitType: 'vehicle',
     vehicleID: '',
     assetID: '',
     allServiceTasks: {
@@ -416,7 +416,6 @@ export class AddServiceComponent implements OnInit {
       reminderID: data.reminderID,
       schedule: `Every ${data.reminderTasks.odometer} Miles`,
     });
-    console.log('this.serviceData.allServiceTasks.serviceTaskList', this.serviceData.allServiceTasks.serviceTaskList);
   }
 
   removeListedTasks(data) {
@@ -452,16 +451,12 @@ export class AddServiceComponent implements OnInit {
   }
 
   removeTasks(item) {
-    console.log("remove item", item)
     this.serviceData.allServiceTasks.serviceTaskList.filter(s => {
-      console.log("s", s)
       if (s.taskName === item.label) {
         let index = this.serviceData.allServiceTasks.serviceTaskList.indexOf(s);
-        console.log("index", index)
         this.serviceData.allServiceTasks.serviceTaskList.splice(index, 1);
       }
   });
-    console.log('allServiceTasks', this.serviceData.allServiceTasks);
   }
 
   
@@ -524,7 +519,6 @@ export class AddServiceComponent implements OnInit {
     let countAmount = 0;
     let quantity = this.serviceData.allServiceParts.servicePartsList;
     quantity.forEach(element => {
-      console.log('element',  element);
       if (element.quantity !== '' && element.rate !== '' ) {
         countQuantity += (parseFloat(element.quantity) || 0) ;
         element.partCost = (parseFloat(element.quantity) || 0) * (parseFloat(element.rate) || 0);
