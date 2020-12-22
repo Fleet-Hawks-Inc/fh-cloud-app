@@ -554,10 +554,12 @@ vehicles= [];
     let files = [...event.target.files];
 
     if (obj === 'uploadedDocs') {
+      this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i])
       }
     } else {
+      this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
           this.uploadedPhotos.push(files[i])
       }

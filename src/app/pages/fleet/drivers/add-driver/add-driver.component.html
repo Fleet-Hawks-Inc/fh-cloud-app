@@ -44,7 +44,7 @@
 
 				 <div class="card-body pt-0">
 					<div class="tab-content pt-2" id="myTabContent" style="box-shadow:none;border:none;">
-					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 1}" *ngIf="currentTab == 1" id="addDriverBasic" role="tabpanel" aria-labelledby="addDriverBasic-tab">
+					   <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 1}" id="addDriverBasic" role="tabpanel" aria-labelledby="addDriverBasic-tab">
 
 						  <div>
 							 <div class="form-group row">
@@ -102,10 +102,10 @@
 									  <div class="col-lg-10">
 										 <label class="control-label font-weight-bold text-lg-right pt-2"
 											>Driver Status</label>
-										 <select [(ngModel)]="driverData.driverStatus" name="driverStatus" class="form-control">
-											<option value="Active">Active</option>
-											<option value="InActive">InActive</option>
-										 </select>
+										 <ng-select [(ngModel)]="driverData.driverStatus" name="driverStatus" class="form-control">
+											<ng-option value="Active">Active</ng-option>
+											<ng-option value="InActive">InActive</ng-option>
+										 </ng-select>
 									  </div>
 									  <div class="col-lg-10">
 										 <label class="control-label font-weight-bold text-lg-right pt-2"
@@ -128,16 +128,16 @@
 									  <div class="col-lg-10">
 										 <label class="control-label font-weight-bold text-lg-right pt-2"
 											>Citizenship</label>
-										 <select [(ngModel)]="driverData.citizenship" name="citizenship" class="form-control populate" data-plugin-selecttwo>
-											<option class="text-capitalize" *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
-										 </select>
+										 <ng-select [(ngModel)]="driverData.citizenship" name="citizenship" class="form-control populate" data-plugin-selecttwo>
+											<ng-option class="text-capitalize" *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+										 </ng-select>
 									  </div>
 									  <div class="col-lg-10">
 										 <label class="control-label font-weight-bold text-lg-right pt-2"
 											>Assign Vehicle</label>
-										 <select [(ngModel)]="driverData.assignedVehicle" name="assignedVehicle" class="form-control populate" data-plugin-selecttwo>
-											<option *ngFor = "let vehicle of vehicles;" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</option>
-										</select>
+										 <ng-select [(ngModel)]="driverData.assignedVehicle" name="assignedVehicle" class="form-control populate" data-plugin-selecttwo>
+											<ng-option *ngFor = "let vehicle of vehicles;" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
+										</ng-select>
 									  </div>
 									  <div class="col-lg-2  mar-top-37 pl-0">
 										<a data-toggle="modal" data-target="#addVehicleModal"  href="javascript:;" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
@@ -148,16 +148,16 @@
 											>Group</label>
 
 
-											   <select
+											   <ng-select
 												  data-plugin-selectTwo
 												  class="form-control populate"
 												  [(ngModel)]="driverData.groupID"
 												  name="groupID"
 												  >
-												  <optgroup label="">
-													<option *ngFor="let group of groups" value="{{group.groupID}}">{{group.groupName}}</option>
-												  </optgroup>
-											   </select>
+												  
+												<ng-option *ngFor="let group of groups" value="{{group.groupID}}">{{group.groupName}}</ng-option>
+												  
+											   </ng-select>
 
 
 
@@ -233,20 +233,20 @@
 									  <div class="col-lg-10">
 										 <label class="control-label font-weight-bold text-lg-right pt-2"
 											>Address Type</label>
-										 <select [(ngModel)]="item.addressType" name="item.addressType{{i}}" data-plugin-selectTwo class="form-control populate">
-											<optgroup label="Select Address">
-											   <option value="Work">Work</option>
-											   <option value="Home">Home</option>
-											   <option value="Office">Office</option>
-											</optgroup>
-										 </select>
+										 <ng-select [(ngModel)]="item.addressType" name="address[{{i}}].addressType" data-plugin-selectTwo class="form-control populate">
+											
+											   <ng-option value="Work">Work</ng-option>
+											   <ng-option value="Home">Home</ng-option>
+											   <ng-option value="Office">Office</ng-option>
+											
+										 </ng-select>
 									  </div>
 								   </div>
 								</div>
 								<div class="col-lg-4">
 									<label class="control-label font-weight-bold text-lg-right pt-2" >Start typing your location, we'll pull address automatically from Map</label>
 									<input [(ngModel)]="item.userLocation" 
-										name="item.userLocation{{i}}" 
+										name="userLocation{{i}}" 
 										(keyup)="searchTerm.next($event);"
 										type="text" 
 										class="form-control"
@@ -281,7 +281,7 @@
 												   >Select Country</label>
 												<select
 														[(ngModel)]="item.countryID"
-													 name="item.countryID{{i}}" data-plugin-selectTwo
+													 name="countryID{{i}}" data-plugin-selectTwo
 													 (change)="getStates($event.target.value)"
 													 class="form-control populate">
 												   <optgroup label="Select Country">
@@ -292,7 +292,7 @@
 										   <div class="col-lg-5">
 											  <label class="control-label font-weight-bold text-lg-right pt-2"
 												 >Select State</label>
-											  <select (change)="getCities($event.target.value)" [(ngModel)]="item.stateID" name="item.stateID{{i}}" data-plugin-selectTwo class="form-control populate">
+											  <select (change)="getCities($event.target.value)" [(ngModel)]="item.stateID" name="stateID{{i}}" data-plugin-selectTwo class="form-control populate">
 												 <optgroup label="Select State">
 													<option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
 												</optgroup>
@@ -301,7 +301,7 @@
 										   <div class="col-lg-5">
 											  <label class="control-label font-weight-bold text-lg-right pt-2"
 												 >Select City</label>
-											  <select [(ngModel)]="item.cityID" name="item.cityID{{i}}" data-plugin-selectTwo class="form-control populate">
+											  <select (change)="getCityName(i, $event.target.value)" [(ngModel)]="item.cityID" name="cityID{{i}}" data-plugin-selectTwo class="form-control populate">
 												 <optgroup label="Select City">
 													<option class="text-capitalize" *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
 												 </optgroup>
@@ -310,7 +310,7 @@
 										   <div class="col-lg-5">
 											  <label class="control-label font-weight-bold text-lg-right pt-2"
 												 >Zip Code</label>
-											  <input [(ngModel)]="item.zipCode" name="item.zipCode{{i}}" type="text" class="form-control" >
+											  <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control" >
 										   </div>
 										</div>
 									 </div>
@@ -319,12 +319,12 @@
 										   <div class="col-lg-10">
 											  <label class="control-label font-weight-bold text-lg-right"
 												 >Address 1</label>
-											  <input [(ngModel)]="item.address1" name="item.address1{{i}}" type="text" class="form-control" >
+											  <input [(ngModel)]="item.address1" name="address1{{i}}" type="text" class="form-control" >
 										   </div>
 										   <div class="col-lg-10">
 											  <label class="control-label font-weight-bold text-lg-right pt-2"
 												 >Address 2</label>
-											  <input [(ngModel)]="item.address2" name="item.address2{{i}}" type="text" class="form-control" >
+											  <input [(ngModel)]="item.address2" name="address2{{i}}" type="text" class="form-control" >
 										   </div>
 										</div>
 									 </div>
@@ -829,8 +829,8 @@
 				 </div>
 				 <div class="form-group row mt-3">
 					<div class="col-lg-12 text-right pb-4 pr-5">
-
-					   <button type="button" (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Cancel</button>
+						<a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
+					   <button type="button"  *ngIf="currentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
 					   <a href="javascript:;" (click)="nextStep()"  *ngIf="currentTab != 7" class="btn btn-success btnNext">Next</a>
 					   <a href="javascript:;" *ngIf="currentTab == 7 && !driverID" (click)="addDriver()" class="btn btn-success">Submit</a>
 					   <a href="javascript:;" *ngIf="currentTab == 7 && driverID" (click)="updateDriver()" class="btn btn-success">Update</a>
