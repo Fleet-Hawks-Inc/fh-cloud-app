@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Location } from '@angular/common';
 
 declare var $: any;
 
@@ -90,6 +91,7 @@ export class AddDriverComponent implements OnInit {
 
 
   newDocuments = [];
+  newAddress = []
   /**
    * Form Props
    */
@@ -151,6 +153,7 @@ export class AddDriverComponent implements OnInit {
               private HereMap: HereMapService,
               private ngbCalendar: NgbCalendar,
               private domSanitizer: DomSanitizer,
+              private location: Location,
               private dateAdapter: NgbDateAdapter<string>,
               private router: Router) {
       this.selectedFileNames = new Map<any, any>();
@@ -198,6 +201,10 @@ export class AddDriverComponent implements OnInit {
   }
   tabChange(value) {
     this.currentTab = value;
+  }
+
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
   }
 
   clearUserLocation(i) {
@@ -452,11 +459,12 @@ export class AddDriverComponent implements OnInit {
     this.apiService.postData('drivers', this.driverData).subscribe({
       complete: () => { },
       error: (err: any) => {
-        from(err.error)
+        from(err.error) 
           .pipe(
             map((val: any) => {
+              console.log('val.context.label', val.context.label);
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
@@ -478,6 +486,10 @@ export class AddDriverComponent implements OnInit {
     });
   }
 
+  getCityName(i, id: any) {
+    let result = this.citiesObject[id];
+    this.driverData.address[i].cityName = result;
+  }
   async userAddress(i, item) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
@@ -547,13 +559,13 @@ export class AddDriverComponent implements OnInit {
     }
   }
 
+
   throwErrors() {
-    console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+          .addClass('error')
       });
     // this.vehicleForm.showErrors(this.errors);
   }
@@ -593,7 +605,8 @@ export class AddDriverComponent implements OnInit {
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-        this.getImages();
+        console.log('result', result);
+        // this.getImages();
         this.driverData['driverType'] = result.driverType;
         this.driverData['employeeId'] = result.employeeId;
         this.driverData['companyId'] = result.companyId;
@@ -610,12 +623,28 @@ export class AddDriverComponent implements OnInit {
         this.driverData['workEmail'] = result.workEmail;
         this.driverData['workPhone'] = result.workPhone;
 
-        // this.driverData.address['addressType'] = result.address.addressType;
-        // this.driverData.address['country'] = result.address.country;
-        // this.driverData.address['state'] = result.address.state;
-        // this.driverData.address['zipCode'] = result.address.zipCode;
-        // this.driverData.address['address1'] = result.address.address1;
-        // this.driverData.address['address2'] = result.address.address2;
+        
+        for (let i = 0; i < result.address.length; i++) {
+          this.getStates(result.address[i].countryID);
+          this.getCities(result.address[i].stateID);
+          this.newAddress.push({
+            addressType: result.address[i].addressType,
+            countryID: result.address[i].countryID,
+            countryName: result.address[i].countryName,
+            stateID: result.address[i].stateID,
+            stateName: result.address[i].stateName,
+            cityID: result.address[i].cityID,
+            cityName: result.address[i].cityName,
+            zipCode: result.address[i].zipCode,
+            address1: result.address[i].address1,
+            address2: result.address[i].address2,
+            geoCords: { 
+              lat: result.address[i].geoCords.lat, 
+              lng: result.address[i].geoCords.lng
+            }
+          })
+        }
+        this.driverData.address = this.newAddress;
         for (let i = 0; i < result.documentDetails.length; i++) {
           this.newDocuments.push({
             documentType: result.documentDetails[i].documentType,
@@ -674,14 +703,19 @@ export class AddDriverComponent implements OnInit {
     //this.spinner.show(); // loader init
     // this.register();
     this.hideErrors();
-    this.apiService.postData('drivers', this.driverData).subscribe({
+    for (let i = 0; i < this.driverData.address.length; i++) {
+      const element = this.driverData.address[i];
+      delete element['userLocation'];
+    }
+    this.driverData['driverID'] = this.driverID;
+    this.apiService.putData('drivers', this.driverData).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
@@ -695,7 +729,7 @@ export class AddDriverComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.uploadFiles(); // upload selected files to bucket
+        // this.uploadFiles(); // upload selected files to bucket
         this.toastr.success('Driver updated successfully');
         this.router.navigateByUrl('/fleet/drivers/list');
 
