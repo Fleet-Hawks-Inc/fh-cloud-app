@@ -39,6 +39,7 @@ const routes: Routes = [
     NgSelectModule,
     DataTablesModule,
   ],
+   exports: [],
 
 })
 export class VehiclesModule {}

@@ -151,7 +151,7 @@
 
                               </div>
                               <div class="col-lg-2  mar-top-37">
-                                 <a href="#addVehicleModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                 <a href="javascript:;" (click)="vehicleModal = true;" data-toggle="modal" data-target="#addvehicleModal"  class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
                               </div>
                            </div>
                         </div>
@@ -210,6 +210,21 @@
          <div class="modal-footer">
             <button class="btn btn-default" data-dismiss="modal">Cancel</button>
             <button class="btn btn-success" (click)="addServiceTask()">Save</button>  
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- Delete MODAL -->
+<div class="modal fade" id="addvehicleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document" style="max-width: 98%;">
+     <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Add Vehicle</h5>
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i></button>
+         </div>
+         <div class="modal-body">
+            <!-- <app-add-vehicle-new *ngIf="vehicleModal"></app-add-vehicle-new> -->
          </div>
       </div>
    </div>

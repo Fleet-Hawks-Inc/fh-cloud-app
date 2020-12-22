@@ -16,6 +16,7 @@ declare var $: any;
 })
 export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   pageTitle: string;
+  vehicleModal: boolean = false;
   vehicles: any;
   tasks = [];
   private programID;

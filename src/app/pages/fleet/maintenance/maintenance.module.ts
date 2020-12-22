@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import { NgSelect2Module } from 'ng-select2';
+import {SlickCarouselModule} from 'ngx-slick-carousel';
 import {
   AddServiceProgramComponent,
   ServiceProgramListComponent,
@@ -49,6 +50,7 @@ import {DataTablesModule} from 'angular-datatables';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {NgxSpinnerModule} from 'ngx-spinner';
+import { AddVehicleNewComponent } from '../vehicles/add-vehicle-new/add-vehicle-new.component';
 
 const routes: Routes = [
   {
@@ -130,7 +132,8 @@ const routes: Routes = [
 ];
 @NgModule({
   declarations: [
-    ...COMPONENTS
+    ...COMPONENTS,
+    // AddVehicleNewComponent
   ],
   imports: [
     CommonModule,
@@ -144,7 +147,8 @@ const routes: Routes = [
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
-    NgSelect2Module
+    NgSelect2Module,
+    SlickCarouselModule
   ],
   exports: [...COMPONENTS]
 
