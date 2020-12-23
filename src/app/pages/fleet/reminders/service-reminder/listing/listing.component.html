@@ -9,9 +9,9 @@
         <!-- end: sidebar -->
 
         <section role="main" class="content-body pl-0 pt-0">
-            <header class="page-header">
-                <div class="row pr-5 pl-1" style="padding-top:10px;">
-                    <div class="col-md-2 col-lg-2 pr-0">
+            <header class="page-header pr-5">
+                <div class="row pr-1 mr-1" style="padding-top:10px;">
+                    <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
                             <input type="text" autocomplete="off" name="vehicleIdentification"
                                 [(ngModel)]="vehicleIdentification" class="form-control"
@@ -27,7 +27,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2 col-lg-2 pl-1 pr-0">
+                    <div class="col-md-2 col-lg-2">
                         <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100%;">
                             <optgroup label="Select Service Task">
                                 <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
@@ -36,7 +36,7 @@
                         </ng-select>
                     </div>
 
-                    <div class="col-md-2 col-lg-2 pl-1 pr-0">
+                    <div class="col-md-2 col-lg-2">
                         <ng-select [(ngModel)]="filterStatus" name="filterStatus" style="width: 100%;"
                             placeholder="Select Reminder Status" (change)="setFilterStatus($event)">
                             <optgroup label="Select Reminder Status">
@@ -46,14 +46,14 @@
                             </optgroup>
                         </ng-select>
                     </div>
-                    <div class="col-md-2 col-lg-2 pl-1">
+                    <div class="col-md-2 col-lg-2">
                         <button type="submit" (click)="searchFilter()"
                             class="btn btn-sm btn-success mr-2">Search</button>
                         <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
-                    <div class="col-md-4  col-lg-4 text-right page-buttons">
 
-                        <div class="btn-group flex-wrap mr-1">
+                    <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
+                        <div class="btn-group flex-wrap mr-2">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false">Actions<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
@@ -62,15 +62,13 @@
                                 <a class="dropdown-item text-1" href="">Export</a>
                             </div>
                         </div>
-                        <a routerLink="/fleet/reminders/service-reminder/add" class="btn btn-sm btn-success mr-1"><i
-                                class="fas fa-plus"></i> Add
-                            Service Reminder</a>
+                        <a routerLink="/fleet/reminders/service-reminder/add" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Service Reminder</a>
                     </div>
                 </div>
             </header>
             <section class="card bg-white">
                 <div class="wtopnav">
-                    <ul class="nav nav-tabs top-tabs">
+                    <ul class="nav nav-tabs top-tabs mt-1">
                         <li class="nav-item"><a class="nav-link active"
                                 routerLink="/fleet/reminders/service-reminder/list">Service Reminders </a></li>
                         <li class="nav-item"><a class="nav-link"
@@ -83,7 +81,7 @@
             <div class="row text-dark">
                 <div class="col">
                     <section class="card">
-                        <div class="card-body">
+                        <div class="card-body pt-1">
                             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
                                 class="row-border hover table table-bordered table-striped mb-0">
                                 <thead>
