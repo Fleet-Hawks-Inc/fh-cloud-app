@@ -185,11 +185,6 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   }
 
-  fetchAllStatesIDs() {
-    return this.apiService.getData('states/get/list');
-
-  }
-
 
   fetchAllCountriesIDs() {
 
