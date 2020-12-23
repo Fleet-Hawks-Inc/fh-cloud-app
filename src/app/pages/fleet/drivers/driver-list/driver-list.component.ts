@@ -35,8 +35,9 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   driverCheckCount;
   selectedDriverID;
   drivers = [];
-  dtOptions: any = {};
+
   dtTrigger: Subject<any> = new Subject();
+  dtOptions: any = {};
 
 
   statesObject: any = {};
@@ -50,6 +51,11 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   dutyStatus = '';
   suggestedDrivers = [];
   homeworld: Observable<{}>;
+
+  totalRecords = 20;
+  pageLength = 10;
+  lastEvaluatedKey = '';
+
   private destroy$ = new Subject();
   constructor(
     private apiService: ApiService,
@@ -62,45 +68,13 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   ngOnInit(): void {
     
     this.fetchAllDocumentsTypes();
-
-    forkJoin([
-      this.fetchDrivers(),
-      this.fetchAddress(),
-      this.fetchAllStatesIDs(),
-      this.fetchAllVehiclesIDs(),
-      this.fetchAllCyclesIDs(),
-      this.fetchAllCountriesIDs(),
-      this.fetchAllCitiesIDs()
-    ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        complete: () => {
-          this.initDataTable();
-        },
-        error: () => { },
-        next: ([
-          drivers,
-          addresses,
-          statesIds,
-          vehcilesIds,
-          cycleIds,
-          countryIds,
-          citiesIds
-        ]: any) => {
-          
-          for (const iterator of drivers.Items) {
-            if (iterator.isDeleted === 0) {
-              this.drivers.push(iterator);
-            }
-          }
-          this.statesObject = statesIds;
-          this.vehiclesObject = vehcilesIds;
-          this.cyclesObject = cycleIds;
-          this.countriesObject = countryIds;
-          this.citiesObject = citiesIds;
-        }
-      });
-
+    this.fetchDrivers();
+    this.fetchAllStatesIDs();
+    this.fetchAllVehiclesIDs();
+    this.fetchAllCyclesIDs();
+    this.fetchAllCountriesIDs();
+    this.fetchAllCitiesIDs();
+    this.initDataTable();
 
     $(document).ready(() => {
       setTimeout(() => {
@@ -118,10 +92,15 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
+  rerender(status=''): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
       dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
@@ -166,7 +145,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   getSuggestions(value) {
     this.apiService
-      .getData(`drivers/suggestion/${value}`)
+      .getData(`drivers/get/suggestions/${value}`)
       .subscribe((result) => {
         this.suggestedDrivers = result.Items;
         if (this.suggestedDrivers.length === 0) {
@@ -175,41 +154,73 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       });
   }
 
-  setDriver(driverID, driverName) {
-    this.driverName = driverName;
+  setDriver(driverID, firstName, lastName) {
+    this.driverName = firstName+' '+lastName;
     this.driverID = driverID;
 
     this.suggestedDrivers = [];
   }
 
   fetchDrivers() {
-    return this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`);
+
+    this.apiService.getData('drivers')
+    .subscribe({
+      complete: () => {
+        this.initDataTable();
+      },
+      error: () => { },
+      next: (result: any) => {
+        // console.log(result);
+        // console.log(result.Items);
+        this.totalRecords = result.Count;
+      },
+    });
+  }
+
+  fetchAllStatesIDs() {
+    this.apiService.getData('states/get/list')
+    .subscribe((result: any) => {
+      this.statesObject = result;
+    });
+
   }
 
   fetchAllStatesIDs() {
     return this.apiService.getData('states/get/list');
-    
+
   }
 
 
   fetchAllCountriesIDs() {
-    return this.apiService.getData('countries/get/list');
-    
+
+    this.apiService.getData('countries/get/list')
+    .subscribe((result: any) => {
+      this.countriesObject = result;
+    });
   }
 
   fetchAllCitiesIDs() {
-    return this.apiService.getData('cities/get/list');
-   
+    this.apiService.getData('cities/get/list')
+    .subscribe((result: any) => {
+      this.citiesObject = result;
+    });
   }
 
   fetchAllVehiclesIDs() {
-    return this.apiService.getData('vehicles/get/list');
-    
+    this.apiService.getData('vehicles/get/list')
+    .subscribe((result: any) => {
+      this.vehiclesObject = result;
+    });
   }
 
   fetchAllCyclesIDs() {
-    return this.apiService.getData('cycles/get/list');
+    this.apiService.getData('cycles/get/list')
+    .subscribe((result: any) => {
+      this.cyclesObject = result;
+    });
+    
   }
+
 
   checkboxCount = () => {
     this.driverCheckCount = 0;
@@ -249,26 +260,72 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.apiService
         .getData(`drivers/isDeleted/${driverID}/${item.isDeleted}`)
         .subscribe((result: any) => {
+          this.rerender();
           this.toastr.success('Driver deleted successfully!');
-          this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
-          this.fetchDrivers();
-
-        }, err => {});
-
+          // this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
+        }, err => {
+         
+        });
     }
   }
 
   initDataTable() {
-    this.dtOptions = {
-      searching: false,
-      dom: 'Bfrtip', // lrtip to hide search field
+    let current = this;
+    this.dtOptions = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
       processing: true,
+
+      order: [],
+      columnDefs: [ //sortable false
+        { "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "orderable": false },
+      ],
+      dom: 'Bfrtip',
       buttons: [
         'colvis',
         'excel',
-      ]
-     
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+          current.drivers = resp['Items'];
+          if (resp['LastEvaluatedKey'] !== undefined) {
+            this.lastEvaluatedKey = resp['LastEvaluatedKey'].driverID;
+          } else {
+            this.lastEvaluatedKey = '';
+          }
+          callback({
+            recordsTotal: current.totalRecords,
+            recordsFiltered: current.totalRecords,
+            data: []
+          });
+        });
+      }
+
     };
   }
 
+  searchFilter() {
+    if(this.driverID !== '' || this.dutyStatus !== '') {
+      this.rerender('reset');
+    } else {
+      return false;
+    }
+  }
+
+  resetFilter() {
+    if(this.driverID !== '' || this.dutyStatus !== '') {
+      // this.spinner.show();
+      this.driverID = '';
+      this.dutyStatus = '';
+      this.driverName = '';
+      this.rerender();
+      // this.spinner.hide();
+    } else {
+      return false;
+    }
+  }
 }

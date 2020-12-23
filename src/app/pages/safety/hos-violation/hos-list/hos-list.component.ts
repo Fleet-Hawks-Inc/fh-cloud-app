@@ -22,10 +22,9 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
   dtTrigger: Subject<any> = new Subject();
 
   events = [];
-  lastEvaluated = {
-    value1: '',
-  };
-  totalRecords = 10;
+  lastEvaluatedKey = '';
+  totalRecords = 20;
+  pageLength = 10;
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -83,10 +82,15 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
+  rerender(status=''): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
       dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
@@ -96,34 +100,24 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
     let current = this;
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
-      pageLength: 10,
+      pageLength: this.pageLength,
       serverSide: true,
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0],"orderable": false},
-        {"targets": [1],"orderable": false},
-        {"targets": [2],"orderable": false},
-        {"targets": [3],"orderable": false},
-        {"targets": [4],"orderable": false},
-        {"targets": [5],"orderable": false},
-        {"targets": [6],"orderable": false},
+        {"targets": [0,1,2,3,4,5,6],"orderable": false},
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('safety/eventLogs/fetch/hosViolation-records?lastEvaluatedValue1='+this.lastEvaluated.value1
+        current.apiService.getDatatablePostData('safety/eventLogs/fetch/hosViolation-records?lastEvaluatedValue1='+this.lastEvaluatedKey
         +"&driver="+this.filterData.driverID+'&severity='+current.filterData.severity+'&startDate='+current.filterData.start+'&endDate='+current.filterData.end, dataTablesParameters).subscribe(resp => {
           // console.log('------------');
           // console.log(resp)
           current.getEventDetail(resp['Items']);
           if(resp['LastEvaluatedKey'] !== undefined){
-            this.lastEvaluated = {
-              value1 : resp['LastEvaluatedKey'].eventID,
-            }
+            this.lastEvaluatedKey = resp['LastEvaluatedKey'].eventID;
           } else {
-            this.lastEvaluated = {
-              value1 : '',
-            }
+            this.lastEvaluatedKey = '';
           }
           callback({
             recordsTotal: current.totalRecords,
@@ -178,25 +172,13 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
     let end = <any> '';
     start = this.filterData.startDate;
     end = this.filterData.endDate;
-    
-
-    // this.filterValue.filterDateStart = moment(this.filterValue.date+' 00:00:01').format("X");
-    //   this.filterValue.filterDateEnd = moment(this.filterValue.date+' 23:59:59').format("X");
-    //   this.filterValue.filterDateStart = this.filterValue.filterDateStart*1000;
-    //   this.filterValue.filterDateEnd = this.filterValue.filterDateEnd*1000;
 
     if(this.filterData.startDate !== '') {
-      // start = start.split("-").reverse().join("-");
-      // startD = start.split("-");
-      // start = startD[0]+startD[1]+startD[2];
-      start = moment(start+' 00:00:01').format("X")
+      start = moment(start+' 00:00:00').format("X")
       start = start*1000;
     }
 
     if(this.filterData.endDate !== '') {
-      // end = end.split("-").reverse().join("-");
-      // endD = end.split("-");
-      // end = endD[0]+endD[1]+endD[2];
       end = moment(end+' 23:59:59').format("X");
       end = end*1000;
     }
@@ -204,7 +186,7 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.filterData.start = start;
     this.filterData.end = end;
 
-    this.rerender();
+    this.rerender('reset');
   }
 
   getSuggestions(searchvalue='') {

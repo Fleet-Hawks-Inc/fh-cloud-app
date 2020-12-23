@@ -94,7 +94,7 @@
                                <th>Actions</th>
                            </tr>
                        </thead>
-                       <tbody>
+                       <tbody *ngIf="quotes.length > 0">
                            <tr *ngFor="let quote of quotes;let i = index;">
                                <td routerLink="/dispatch/quotes/detail/{{quote.quoteID}}">{{quote.quoteNumber}}</td>
 
@@ -107,7 +107,7 @@
                                    Location: {{quote.shipperInfo[0].pickupLocation}}
                                </td>
                                <td>Date: {{quote.receiverInfo[0].locationDateTime}} <br>
-                                   Location: {{quote.receiverInfo[0].dropOffLocation}}</td>
+                                   Location: {{quote.receiverInfo[0].dropOffLocation}}</td> 
                                <td></td>
                                <td>{{quote.totalMiles}}</td>
                                <td></td>
@@ -129,6 +129,11 @@
                                </td>
                            </tr>
                        </tbody>
+                       <tbody *ngIf="quotes.length === 0">
+                            <tr>
+                            <td colspan="12" class="no-data-available">No record(s) found</td>
+                            </tr>
+                        </tbody>
                    </table>
                </div>
            </section>
