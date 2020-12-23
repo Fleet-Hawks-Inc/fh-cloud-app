@@ -10,12 +10,12 @@
     <!-- end: sidebar -->
 
     <section role="main" class="content-body pl-0">
-      <header class="page-header pl-2">
-         <div class="row pr-5 " style="padding-top:10px;">
-            <div class="col-md-6 col-lg-6 font-weight-bold text-4 text-dark pt-1">
-               {{title}}
+      <header class="page-header pr-5">
+         <div class="row pr-1 mr-1" style="padding-top:10px;">
+            <div class="col-md-6 col-lg-6 font-weight-bold text-4 text-dark">
+               <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{title}}</h4>
             </div>
-            <div class="col-md-6  col-lg-6 text-right pr-4">                               
+            <div class="col-md-6  col-lg-6 text-right pr-1">
                <a [routerLink]="['/fleet', 'expenses','fuel', 'list']"  class="btn btn-default btn-sm"><i class="fas fa-list"></i> Fuel Entry List</a>
             </div>
          </div>
@@ -38,10 +38,11 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-9">
                                   <div class="btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn btn-outline btn-fleet mr-2" [class.active]="fuelData.unitType === 'vehicle'" style="width:110px;" (click) = "onChangeUnitType('vehicle')">
+                                    <label class="btn btn-outline btn-fleet mr-2 mb-2" [class.active]="fuelData.unitType === 'vehicle'" style="width:110px;" (click) = "onChangeUnitType('vehicle')">
                                       <input type="radio" name="unitType" [(ngModel)]="fuelData.unitType"
                                          id="fuel_unit_vehicle"  checked hidden value="vehicle" > Vehicle </label>
-                                    <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="fuelData.unitType === 'reefer'" (click) = "onChangeUnitType('reefer')">
+                                   
+                                         <label class="btn btn-outline btn-fleet mb-2" style="width:110px;" [class.active]="fuelData.unitType === 'reefer'" (click) = "onChangeUnitType('reefer')">
                                       <input type="radio" name="unitType" [(ngModel)]="fuelData.unitType"
                                          id="fuel_unit_reefer"  hidden value="reefer" > Reefer </label>
                                   </div>
@@ -182,7 +183,7 @@
                        </div>
                     </div>
                  </div>
-                 <div class="form-group row">
+                 <div class="form-group row pb-4">
                     <div class="col-lg-12">
                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-2">Payment Details</label>
                     </div>
@@ -236,7 +237,7 @@
                        </div>
                     </div>
                  </div>
-                 <div class="form-group row">
+                 <div class="form-group row pb-4">
                     <div class="col-lg-12">
                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-2">Fuel Stop Details</label>
                     </div>
@@ -288,7 +289,7 @@
                     </div>
                  </div>
                  
-                 <div class="form-group row">
+                 <div class="form-group row pb-4">
                   <div class="col-lg-12">
                       <label class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-2">Add Trip ID</label>
                    </div>
@@ -306,7 +307,7 @@
                     </div>
                   
                 </div>
-                 <div class="form-group row">
+                 <div class="form-group row pb-4">
                     <div class="col-lg-12">
                        <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional Details</label>
                     </div>
@@ -327,7 +328,7 @@
                        <div class="form-group row" id="attachPhotoLine">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Attach Photo</label>
-                             <input (change)="selectDocuments($event, 'uploadedPhotos')" name="additionalDetails.uploadedPhotos" type="file" multiple class="form-control p-0"> 
+                             <input (change)="selectDocuments($event, 'uploadedPhotos')" name="additionalDetails.uploadedPhotos" type="file" multiple class="form-control border-0 p-0"> 
                            </div>
                           <div class="col-lg-2  mar-top-37">
                           </div>

@@ -9,8 +9,9 @@
     <!-- end: sidebar -->
 
     <section role="main" class="content-body pt-0 pl-0 pr-0">
-      <header class="page-header">
-        <div class="row pr-4" style="padding-top: 10px">
+      <header class="page-header pr-5">
+        <div class="row pr-1 mr-1" style="padding-top:10px;">
+          
           <div class="col-md-2 col-lg-2">
             <div class="input-group input-group-md mb-3">
               <input
@@ -20,6 +21,7 @@
               />
             </div>
           </div>
+          
           <div class="col-md-2 col-lg-2">
             <div class="input-group input-group-md mb-3">
               <select data-plugin-selectTwo class="form-control populate">
@@ -32,6 +34,7 @@
               </select>
             </div>
           </div>
+
           <div class="col-md-2 col-lg-2">
             <div class="input-group input-group-md mb-3">
               <select data-plugin-selectTwo class="form-control populate">
@@ -47,6 +50,7 @@
               </select>
             </div>
           </div>
+
           <div class="col-md-2 col-lg-2">
             <div class="input-group input-group-md mb-3">
               <select data-plugin-selectTwo class="form-control populate">
@@ -59,6 +63,7 @@
               </select>
             </div>
           </div>
+
           <div class="col-md-2 col-lg-2">
             <div class="input-group input-group-sm mb-3">
               <button type="submit" class="btn btn-sm btn-success">
@@ -66,7 +71,8 @@
               </button>
             </div>
           </div>
-          <div class="col-md-2 col-lg-2 text-right pr-5">
+
+          <div class="col-md-2 col-lg-2 text-right pr-1">
             <div class="btn-group flex-wrap">
               <button
                 type="button"
@@ -76,17 +82,8 @@
               >
                 Actions<span class="caret"></span>
               </button>
-              <div
-                class="dropdown-menu"
-                role="menu"
-                x-placement="bottom-start"
-                style="
-                  position: absolute;
-                  will-change: transform;
-                  top: 0px;
-                  left: 0px;
-                  transform: translate3d(0px, 38px, 0px);
-                "
+              <div class="dropdown-menu" role="menu" x-placement="bottom-start" style=" position: absolute; will-change: transform;
+                  top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);"
               >
                 <a class="dropdown-item text-1" href="">Edit</a>
                 <a class="dropdown-item text-1" href="">Delete</a>
@@ -95,8 +92,10 @@
               </div>
             </div>
           </div>
+
         </div>
       </header>
+
       <div class="row">
         <div class="col pr-0">
           <section class="card">
@@ -114,12 +113,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr
-                    routerLink="/compliance/dvir/inspection-detail/{{
+                  <tr class="cursorpoint"  routerLink="/compliance/dvir/inspection-detail/{{
                       inspection.inspectionID
-                    }}"
-                    *ngFor="let inspection of dailyInspections"
-                  >
+                    }}"                     *ngFor="let inspection of dailyInspections" >
                     <td>{{ inspection.timeCreated | date:'medium' }}</td>
                     <td>driveruser1</td>
                     <td>{{ inspection.inspectionType }}</td>
