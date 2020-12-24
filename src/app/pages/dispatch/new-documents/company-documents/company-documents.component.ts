@@ -7,7 +7,6 @@ import { AwsUploadService } from '../../../../services/aws-upload.service';
 import { v4 as uuidv4 } from 'uuid';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 declare var $: any;
-declare var $: any;
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import * as moment from "moment";
@@ -22,7 +21,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
 
-  dtOptions: DataTables.Settings = {};
+  dtOptions: any = {};
   dtTrigger: Subject<any> = new Subject();
 
   public documents = [];
@@ -53,15 +52,15 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   pageLength = 10;
   serviceUrl = '';
   filterValues = {
+    docID: '',
     searchValue: '',
     startDate: '',
     endDate: '',
     start: <any>'',
     end: <any>''
   };
-  lastEvaluated = {
-    value1: '',
-  };
+  lastEvaluatedKey = '';
+  suggestions = [];
 
   constructor(
     private apiService: ApiService,
@@ -104,43 +103,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
       this.documentData['documentNumber'] = prefixCode;
     }
   }
-  dataTableOptions = () => {
-    this.allOptions = { // All list options
-      pageLength: 10,
-      processing: true,
-      // select: {
-      //     style:    'multi',
-      //     selector: 'td:first-child'
-      // },
-      dom: 'Bfrtip',
-      // Configure the buttons
-      buttons: [
-        {
-          extend: 'colvis',
-          columns: ':not(.noVis)'
-        }
-      ],
-      colReorder: true,
-      columnDefs: [
-        {
-          targets: 1,
-          className: 'noVis'
-        },
-        {
-          targets: 2,
-          className: 'noVis'
-        },
-        {
-          targets: 3,
-          className: 'noVis'
-        },
-        {
-          targets: 4,
-          className: 'noVis'
-        },
-      ],
-    };
-  }
+  
   addDocument() {
     this.apiService.postData('documents', this.documentData).
       subscribe({
@@ -306,40 +269,65 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
       serverSide: true,
       processing: true,
       order: [],
-      columnDefs: [ //sortable false
-        { "targets": [0], "orderable": false },
-        { "targets": [1], "orderable": false },
-        { "targets": [2], "orderable": false },
-        { "targets": [3], "orderable": false },
-        { "targets": [4], "orderable": false },
-        { "targets": [5], "orderable": false },
-        { "targets": [6], "orderable": false },
-        { "targets": [7], "orderable": false },
-        { "targets": [8], "orderable": false },
+      buttons: [
+        {
+          extend: 'colvis',
+          columns: ':not(.noVis)'
+        }
       ],
-      dom: 'lrtip',
+      columnDefs: [
+        {
+          targets: 0,
+          className: 'noVis',
+          "orderable": false
+        },
+        {
+          targets: 1,
+          className: 'noVis',
+          "orderable": false
+        },
+        {
+          targets: 2,
+          className: 'noVis',
+          "orderable": false
+        },
+        {
+          targets: 3,
+          className: 'noVis',
+          "orderable": false
+        },
+        {
+          targets: 4,
+          className: 'noVis',
+          "orderable": false
+        },
+        {
+          targets: 5,
+          "orderable": false
+        },
+        {
+          targets: 6,
+          "orderable": false
+        },
+        {
+          targets: 7,
+          "orderable": false
+        },
+        {
+          targets: 8,
+          "orderable": false
+        },
+      ],
+      dom: 'Bfrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('documents/fetch-records?value1=' + current.lastEvaluated.value1 +
-          '&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +
+        current.apiService.getDatatablePostData('documents/fetch-records?value1=' + current.lastEvaluatedKey +
+          '&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start +
           "&to=" + this.filterValues.end, dataTablesParameters).subscribe(resp => {
-            // current.fetchTrips(resp)
             current.documents = resp['Items'];
-            console.log(resp)
             if (resp['LastEvaluatedKey'] !== undefined) {
-              if (resp['LastEvaluatedKey'].carrierID !== undefined) {
-                current.lastEvaluated = {
-                  value1: resp['LastEvaluatedKey'].tripID,
-                }
-              } else {
-                current.lastEvaluated = {
-                  value1: resp['LastEvaluatedKey'].tripID,
-                }
-              }
-
+              current.lastEvaluatedKey = resp['LastEvaluatedKey'].docID
             } else {
-              current.lastEvaluated = {
-                value1: '',
-              }
+              current.lastEvaluatedKey = ''
             }
 
             callback({
@@ -361,17 +349,22 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
+  rerender(status=''): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
       dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
   }
 
   searchFilter() {
-    if (this.filterValues.startDate !== '' || this.filterValues.endDate !== '') {
+    if (this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
       if (this.filterValues.startDate !== '') {
         let start = this.filterValues.startDate.split('-').reverse().join('-');
         this.filterValues.start = moment(start + ' 00:00:01').format("X");
@@ -383,16 +376,17 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
         this.filterValues.end = this.filterValues.end * 1000;
       }
       this.pageLength = this.totalRecords;
-      this.rerender();
+      this.rerender('reset');
     } else {
       return false;
     }
   }
 
   resetFilter() {
-    if (this.filterValues.startDate !== '' || this.filterValues.endDate !== '') {
+    if (this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
       // this.spinner.show();
       this.filterValues = {
+        docID: '',
         searchValue: '',
         startDate: '',
         endDate: '',
@@ -405,6 +399,33 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
     } else {
       return false;
     }
+  }
 
+  getSuggestions(searchvalue='') {
+    this.suggestions = [];
+    if(searchvalue !== '') {
+      this.apiService.getData('documents/get/suggestions/'+searchvalue).subscribe({
+        complete: () => {},
+        error: () => { },
+        next: (result: any) => {
+          this.suggestions = [];
+          for (let i = 0; i < result.Items.length; i++) {
+            const element = result.Items[i];
+  
+            let obj = {
+              id: element.docID,
+              name: element.documentNumber
+            };
+            this.suggestions.push(obj)
+          }
+        }
+      })
+    }    
+  }
+
+  searchSelectedRoute(document) {
+    this.filterValues.docID = document.id;
+    this.filterValues.searchValue = document.name;
+    this.suggestions = [];
   }
 }

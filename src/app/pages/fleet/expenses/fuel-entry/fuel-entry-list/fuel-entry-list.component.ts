@@ -235,8 +235,7 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
   }
 
   searchFilter() {
-    if (this.unitID !== '' || this.fromDate !== '' || this.toDate !== '' ) {
-      console.log('inn')
+    if (this.unitID !== '' || this.fromDate !== '' || this.toDate !== '' || this.unitName !== '') {
       if(this.fromDate !== '') {
         this.start = this.fromDate.split('-').reverse().join('-');
         console.log(this.start)
@@ -245,7 +244,6 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
         this.end = this.toDate.split('-').reverse().join('-');
         console.log(this.end)
       }
-      console.log('res')
       this.rerender('reset');
     } else {
       return false;
@@ -253,7 +251,7 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
   }
 
   resetFilter() {
-    if (this.unitID !== '' || this.fromDate !== '' || this.toDate !== '' ) {
+    if (this.unitID !== '' || this.fromDate !== '' || this.toDate !== '' || this.unitName !== '') {
       this.unitID = '';
       this.fromDate = '';
       this.toDate = '';
