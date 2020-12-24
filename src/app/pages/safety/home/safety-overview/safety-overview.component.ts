@@ -8,6 +8,8 @@ import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import * as moment from "moment";
+import { letterSpacing } from 'html2canvas/dist/types/css/property-descriptors/letter-spacing';
+import { ENODEV } from 'constants';
 
 @Component({
   selector: 'app-safety-overview',
@@ -129,7 +131,21 @@ export class SafetyOverviewComponent implements OnInit {
               rank: 0
             }
             let eventtim = <any>'00:00:00';
-            this.apiService.getData('safety/eventLogs/fetch/driver/eventData/' + element.userName+'?year='+this.currentYear)
+            //to get data of current year or filtered year
+            let start:any = '';
+            let end:any = '';
+            if(this.currentYear !== '') {
+              let startDate = this.currentYear+'-01-01 00:00:00';
+              let endDate = this.currentYear+'-12-31 23:59:59';
+
+              start = moment(startDate).format("X")
+              start = start*1000;
+
+              end = moment(endDate).format("X");
+              end = end*1000;
+            }
+            
+            this.apiService.getData('safety/eventLogs/fetch/driver/eventData/' + element.userName+'?start='+start+'&end='+end)
               .subscribe((result1: any) => {
                 // console.log('result1--')
                 // console.log(result1)
@@ -563,19 +579,37 @@ export class SafetyOverviewComponent implements OnInit {
       dec: 0
     }
     
+    //to get data of current year or filtered year
+    let start:any = '';
+    let end:any = '';
+    if(this.currentYear !== '') {
+      let startDate = this.currentYear+'-01-01 00:00:00';
+      let endDate = this.currentYear+'-12-31 23:59:59';
+
+      start = moment(startDate).format("X")
+      start = start*1000;
+
+      end = moment(endDate).format("X");
+      end = end*1000;
+    }
     
-    this.apiService.getData('safety/eventLogs/fetch/all-events?year='+this.currentYear)
+    this.apiService.getData('safety/eventLogs/fetch/all-events?start='+start+'&end='+end)
       .subscribe((result: any) => {
-        // console.log(result.Items);
+        console.log(result.Items);
         // this.events = result.Items;
-        
 
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
-          eventdate = element.eventDate.split("-");
-          let eventMonth = eventdate[1];
-          console.log('eventMonth')
-          console.log(eventMonth)
+          // eventdate = element.eventDate.split("-");
+
+          let check = moment(element.date, 'YYYY/MM/DD');
+          let eventMonth = check.format('M');
+          let day   = check.format('D');
+          let year  = check.format('YYYY');
+
+          // let eventMonth = eventdate[1];
+          // console.log('eventMonth')
+          // console.log(element.eventType)
 
           if(element.eventType === "critical") {
             this.events.criticalEventsCount += 1; 
@@ -583,6 +617,8 @@ export class SafetyOverviewComponent implements OnInit {
 
           if(element.eventType === "incident") {
             this.events.incidentCount += 1; 
+            // console.log('this.events.incidentCount') 
+            // console.log(this.events.incidentCount) 
           }
 
           if(element.eventType === "hosViolation") {

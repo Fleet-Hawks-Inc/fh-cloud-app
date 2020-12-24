@@ -20,7 +20,7 @@ declare var $: any;
 })
 export class AddVehicleNewComponent implements OnInit {
   title = 'Add Vehicle';
-
+  Asseturl = this.apiService.AssetUrl;
   activeTab = 1;
   /**
    * Quantum prop
@@ -180,7 +180,7 @@ vehicles= [];
   };
   settings = {
     primaryMeter: 'miles',
-    fuelUnit: 'gallons(USA)',
+    fuelUnit: 'gallons(CA)',
     hardBreakingParams: 0,
     hardAccelrationParams: 0,
     turningParams: 0,
@@ -200,6 +200,8 @@ vehicles= [];
   selectedFileNames: Map<any, any>;
   uploadedPhotos = [];
     uploadedDocs = [];
+    existingPhotos = [];
+    existingDocs = [];
     carrierID;
     programs = [];
     vendors = [];
@@ -212,7 +214,7 @@ vehicles= [];
   Error: string = '';
   Success: string = '';
 
-  slides = [{ img: 'assets/img/truck.jpg' }, { img: 'assets/img/truck.jpg' }];
+  slides = ['assets/img/truck.jpg' , 'assets/img/truck.jpg'];
   slideConfig = {
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -476,18 +478,33 @@ vehicles= [];
         hardAccelrationParams: this.settings.hardAccelrationParams,
         turningParams: this.settings.turningParams,
         measurmentUnit: this.settings.measurmentUnit,
-      },
-      uploadedPhotos: this.uploadedPhotos,
-      uploadedDocs: this.uploadedDocs
+      }
     };
-    this.apiService.postData('vehicles', data).subscribe({
+    
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedPhotos.length; i++){
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append docs if any
+    for(let j = 0; j < this.uploadedDocs.length; j++){
+      formData.append('uploadedDocs', this.uploadedDocs[j]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(data));
+
+    this.apiService.postData('vehicles', formData, true).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
@@ -534,21 +551,17 @@ vehicles= [];
    * Selecting files before uploading
    */
   selectDocuments(event, obj) {
-    this.selectedFiles = event.target.files;
+    let files = [...event.target.files];
+
     if (obj === 'uploadedDocs') {
-      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-        const randomFileGenerate = this.selectedFiles[i].name.split('.');
-        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-        this.uploadedDocs.push(fileName);
+      this.uploadedDocs = [];
+      for (let i = 0; i < files.length; i++) {
+        this.uploadedDocs.push(files[i])
       }
     } else {
-      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-        const randomFileGenerate = this.selectedFiles[i].name.split('.');
-        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-
-        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-        this.uploadedPhotos.push(fileName);
+      this.uploadedPhotos = [];
+      for (let i = 0; i < files.length; i++) {
+          this.uploadedPhotos.push(files[i])
       }
     }
   }
@@ -710,6 +723,12 @@ vehicles= [];
           turningParams: result.settings.turningParams,
           measurmentUnit: result.settings.measurmentUnit
         };
+        this.existingPhotos = result.uploadedPhotos;
+        this.existingDocs = result.uploadedDocs;
+
+        if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+          this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+        }
 
         this.timeCreated = result.timeCreated;
 
@@ -876,11 +895,27 @@ vehicles= [];
         turningParams: this.settings.turningParams,
         measurmentUnit: this.settings.measurmentUnit,
       },
-      uploadedPhotos: this.uploadedPhotos,
-      uploadedDocs: this.uploadedDocs
+      uploadedPhotos: this.existingPhotos,
+      uploadedDocs: this.existingDocs
     };
 
-    this.apiService.putData('vehicles', data).
+     // create form data instance
+     const formData = new FormData();
+
+     //append photos if any
+     for(let i = 0; i < this.uploadedPhotos.length; i++){
+       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+     }
+ 
+     //append docs if any
+     for(let j = 0; j < this.uploadedDocs.length; j++){
+       formData.append('uploadedDocs', this.uploadedDocs[j]);
+     }
+ 
+     //append other fields
+     formData.append('data', JSON.stringify(data));
+
+    this.apiService.putData('vehicles', formData, true).
     subscribe({
       complete : () => {},
       error: (err: any) => {
@@ -888,7 +923,7 @@ vehicles= [];
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({

@@ -12,6 +12,7 @@ import {HttpLoadingService} from './services';
 export class AppComponent  implements OnInit, AfterContentChecked  {
   title = 'fleethawks-dashboard';
   loading = false;
+  token: boolean = false;
   constructor(private router: Router,
               @Inject(DOCUMENT) private document: Document,
               private changeDetector: ChangeDetectorRef,
@@ -27,6 +28,11 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
         } else {
           rootHtml.classList.add('fixed');
           rootHtml.classList.remove('sidebar-left-collapsed');
+        }
+        if(localStorage.getItem('LoggedIn') != undefined && localStorage.getItem('LoggedIn')) {
+          this.token = true;
+        } else {
+          this.token = false;
         }
       }
 

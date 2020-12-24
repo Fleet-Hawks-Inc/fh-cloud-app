@@ -35,8 +35,9 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   driverCheckCount;
   selectedDriverID;
   drivers = [];
-  dtOptions: DataTables.Settings = {};
+
   dtTrigger: Subject<any> = new Subject();
+  dtOptions: any = {};
 
 
   statesObject: any = {};
@@ -50,6 +51,11 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   dutyStatus = '';
   suggestedDrivers = [];
   homeworld: Observable<{}>;
+
+  totalRecords = 20;
+  pageLength = 10;
+  lastEvaluatedKey = '';
+
   private destroy$ = new Subject();
   constructor(
     private apiService: ApiService,
@@ -62,64 +68,13 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   ngOnInit(): void {
     
     this.fetchAllDocumentsTypes();
-
-    forkJoin([
-      this.fetchDrivers(),
-      this.fetchAddress(),
-      this.fetchAllStatesIDs(),
-      this.fetchAllVehiclesIDs(),
-      this.fetchAllCyclesIDs(),
-      this.fetchAllCountriesIDs(),
-      this.fetchAllCitiesIDs()
-    ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        complete: () => {
-          this.initDataTable();
-        },
-        error: () => { },
-        next: ([
-          drivers,
-          addresses,
-          statesIds,
-          vehcilesIds,
-          cycleIds,
-          countryIds,
-          citiesIds
-        ]: any) => {
-          let newArr = [];
-          // tslint:disable-next-line: prefer-for-of
-          for (let i = 0; i < addresses.Items.length; i++) {
-            // tslint:disable-next-line: prefer-for-of
-            for (let j = 0; j < drivers.Items.length; j++) {
-              if (addresses.Items[i].entityID === drivers.Items[j].driverID) {
-                drivers.Items[j].addressDetails = {
-                  address1: addresses.Items[i].address1,
-                  address2: addresses.Items[i].address2,
-                  addressID: addresses.Items[i].addressID,
-                  addressType: addresses.Items[i].addressType,
-                  cityID: addresses.Items[i].cityID,
-                  countryID: addresses.Items[i].countryID,
-                  geoCords: addresses.Items[i].geoCords,
-                  stateID: addresses.Items[i].stateID,
-                  zipCode: addresses.Items[i].zipCode,
-                };
-              }
-            }
-          }
-          for (const iterator of drivers.Items) {
-            if (iterator.isDeleted === 0) {
-              this.drivers.push(iterator);
-            }
-          }
-          this.statesObject = statesIds;
-          this.vehiclesObject = vehcilesIds;
-          this.cyclesObject = cycleIds;
-          this.countriesObject = countryIds;
-          this.citiesObject = citiesIds;
-        }
-      });
-
+    this.fetchDrivers();
+    this.fetchAllStatesIDs();
+    this.fetchAllVehiclesIDs();
+    this.fetchAllCyclesIDs();
+    this.fetchAllCountriesIDs();
+    this.fetchAllCitiesIDs();
+    this.initDataTable();
 
     $(document).ready(() => {
       setTimeout(() => {
@@ -137,10 +92,15 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
+  rerender(status=''): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
       dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
@@ -185,7 +145,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   getSuggestions(value) {
     this.apiService
-      .getData(`drivers/suggestion/${value}`)
+      .getData(`drivers/get/suggestions/${value}`)
       .subscribe((result) => {
         this.suggestedDrivers = result.Items;
         if (this.suggestedDrivers.length === 0) {
@@ -194,113 +154,68 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       });
   }
 
-  setDriver(driverID, driverName) {
-    this.driverName = driverName;
+  setDriver(driverID, firstName, lastName) {
+    this.driverName = firstName+' '+lastName;
     this.driverID = driverID;
 
     this.suggestedDrivers = [];
   }
 
   fetchDrivers() {
-    // this.spinner.show(); // loader init
-    // let character = this.apiService.getData('drivers');
-    // let characterHomeworld = this.apiService.getData('addresses');
 
-    // forkJoin([character, characterHomeworld]).subscribe(results => {
-    //   console.log("results", results);
-    // });
-
-    //  this.apiService.getData('drivers')
-    //     .pipe(mergeMap(character => this.apiService.getData('addresses'))).subscribe( res => {
-    //       console.log('homeworld', this.homeworld);
-    //     });
-    //   console.log('homeworld', this.homeworld);
-    // this.apiService.getData(`drivers`).pipe(
-    //   mergeMap(resp => {
-    //     console.log("resp", resp);
-    //     return this.apiService.getData(`addresses`).pipe(
-    //       map(countResp => {
-    //         console.log("countResp", countResp);
-    //       })
-    //     )
-    //   })
-    // ).subscribe(res => {
-    //   console.log("drivers", res);
-    // })
-    return this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`);
-    // .subscribe({
-    //   complete: () => {
-    //     this.initDataTable();
-    //   },
-    //   error: () => { },
-    //   next: (result: any) => {
-    //     // console.log(result);
-    //     // console.log(result.Items);
-
-    //     for (const iterator of result.Items) {
-    //       if (iterator.isDeleted === 0) {
-    //         this.drivers.push(iterator);
-    //       }
-    //     }
-
-    //     // console.log(result);
-
-    //     this.drivers = result.Items;
-
-    //     //  console.log('drivers', this.drivers);
-
-
-    //     // this.drivers = result.Items;
-
-
-    //     // for (let i = 0; i < result.Items.length; i++) {
-    //     //   // console.log(result.Items[i].isDeleted);
-    //     //   if (result.Items[i].isDeleted === 0) {
-    //     //     this.drivers.push(result.Items[i]);
-    //     //   }
-    //     // }
-
-    //     //  this.spinner.hide(); // loader hide
-
-    //   },
-    // });
+    this.apiService.getData('drivers')
+    .subscribe({
+      complete: () => {
+        this.initDataTable();
+      },
+      error: () => { },
+      next: (result: any) => {
+        // console.log(result);
+        // console.log(result.Items);
+        this.totalRecords = result.Count;
+      },
+    });
   }
 
   fetchAllStatesIDs() {
-    return this.apiService.getData('states/get/list');
-    // .subscribe((result: any) => {
-    //   this.statesObject = result;
-    // });
+    this.apiService.getData('states/get/list')
+    .subscribe((result: any) => {
+      this.statesObject = result;
+    });
+
   }
 
 
   fetchAllCountriesIDs() {
-    return this.apiService.getData('countries/get/list');
-    // .subscribe((result: any) => {
-    //   this.countriesObject = result;
-    // });
+
+    this.apiService.getData('countries/get/list')
+    .subscribe((result: any) => {
+      this.countriesObject = result;
+    });
   }
 
   fetchAllCitiesIDs() {
-    return this.apiService.getData('cities/get/list');
-    // .subscribe((result: any) => {
-    //   this.citiesObject = result;
-    // });
+    this.apiService.getData('cities/get/list')
+    .subscribe((result: any) => {
+      this.citiesObject = result;
+    });
   }
 
   fetchAllVehiclesIDs() {
-    return this.apiService.getData('vehicles/get/list');
-    // .subscribe((result: any) => {
-    //   this.vehiclesObject = result;
-    // });
+    this.apiService.getData('vehicles/get/list')
+    .subscribe((result: any) => {
+      this.vehiclesObject = result;
+    });
   }
 
   fetchAllCyclesIDs() {
-    return this.apiService.getData('cycles/get/list');
-    // .subscribe((result: any) => {
-    //   this.cyclesObject = result;
-    // });
+    this.apiService.getData('cycles/get/list')
+    .subscribe((result: any) => {
+      this.cyclesObject = result;
+    });
+    
   }
+
 
   checkboxCount = () => {
     this.driverCheckCount = 0;
@@ -340,10 +255,9 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.apiService
         .getData(`drivers/isDeleted/${driverID}/${item.isDeleted}`)
         .subscribe((result: any) => {
+          this.rerender();
           this.toastr.success('Driver deleted successfully!');
-          this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
-          this.fetchDrivers();
-
+          // this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
         }, err => {
          
         });
@@ -351,13 +265,62 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   initDataTable() {
-    this.dtOptions = {
-      searching: false,
-      dom: 'Bfrtip', // lrtip to hide search field
+    let current = this;
+    this.dtOptions = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
       processing: true,
-      
-     
+
+      order: [],
+      columnDefs: [ //sortable false
+        { "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "orderable": false },
+      ],
+      dom: 'Bfrtip',
+      buttons: [
+        'colvis',
+        'excel',
+      ],
+      colReorder: {
+        fixedColumnsLeft: 1
+      },
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+          current.drivers = resp['Items'];
+          if (resp['LastEvaluatedKey'] !== undefined) {
+            this.lastEvaluatedKey = resp['LastEvaluatedKey'].driverID;
+          } else {
+            this.lastEvaluatedKey = '';
+          }
+          callback({
+            recordsTotal: current.totalRecords,
+            recordsFiltered: current.totalRecords,
+            data: []
+          });
+        });
+      }
+
     };
   }
 
+  searchFilter() {
+    if(this.driverID !== '' || this.dutyStatus !== '') {
+      this.rerender('reset');
+    } else {
+      return false;
+    }
+  }
+
+  resetFilter() {
+    if(this.driverID !== '' || this.dutyStatus !== '') {
+      // this.spinner.show();
+      this.driverID = '';
+      this.dutyStatus = '';
+      this.driverName = '';
+      this.rerender();
+      // this.spinner.hide();
+    } else {
+      return false;
+    }
+  }
 }
