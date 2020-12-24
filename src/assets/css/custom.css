@@ -1907,3 +1907,23 @@ table.dataTable thead th, table.dataTable thead td {
 
 /*drop down icon on asset page*/
 .toggleright::after{margin-top: 8px !important; float: right !important; color:#999;}
+
+/* placeholder classes */
+::-webkit-input-placeholder { /* Edge */
+  color: e1e1e1 !important;
+  font-size: 12px !important;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: e1e1e1 !important;
+  font-size: 12px !important;
+}
+
+::placeholder {
+  color: e1e1e1 !important;
+  font-size: 12px !important;
+}
+/* Optional label color */
+.optional-label-color {
+  color: e1e1e1 !important;
+}
