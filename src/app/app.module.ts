@@ -102,7 +102,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NgSelect2Module,
     DataTablesModule,
     NgxTagsInputModule,
-    NgSelectModule
+    NgSelectModule,
   ],
   providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy],
   bootstrap: [AppComponent],

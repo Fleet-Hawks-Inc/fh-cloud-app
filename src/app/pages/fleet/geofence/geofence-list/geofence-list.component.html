@@ -13,9 +13,9 @@
     <!-- end: sidebar -->
 
     <section role="main" class="content-body pt-0" style="padding-left: 15px;">
-      <header class="page-header">
+      <header class="page-header pr-5">
         <form>
-           <div class="row px-4" style="padding-top:10px;">
+         <div class="row pr-1 mr-1" style="padding-top:10px;">
               <div class="col-md-2 col-lg-2">
                <div class="input-group input-group-md mb-3">
                   <input type="text" autocomplete="off" name="geofenceName" [(ngModel)]="geofenceName" class="form-control" (input)="getSuggestions($event.target.value)">
@@ -24,7 +24,7 @@
                   {{ suggestedGeofence.geofenceName }}
                </div>
               </div>
-              <div class="col-md-2  col-lg-2">
+              <div class="col-md-2 col-lg-2">
                  <select
                     data-plugin-selectTwo
                     [(ngModel)]="type" 
@@ -46,28 +46,28 @@
                  </select>
               </div>
               
-              <div class="col-md-1  col-lg-1">
+              <div class="col-md-1 col-lg-1">
                  <button type="submit" (click)="fetchGeofences()" class="btn btn-sm btn-success">Search</button>
               </div>
-              <div class="col-md-7  col-lg-7 text-right pr-5">
-                 <div class="btn-group flex-wrap">
+              <div class="col-md-7 col-lg-7 text-right pr-1">
+                 <div class="btn-group flex-wrap mr-2">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                        <!-- <a (click)="editGeofence()" class="dropdown-item text-1" href="javascript:;">Edit</a>
                        <a (click)="deleteGeofence()" class=" dropdown-item text-1" href="javascript:;">Delete</a> -->
-                       <a class="dropdown-item text-1" href="">Import</a>
-                       <a class="dropdown-item text-1" href="">Export</a>
+                       <a class="dropdown-item text-1" href="javascript:;">Import</a>
+                       <a class="dropdown-item text-1" href="javascript:;">Export</a>
                     </div>
                  </div>
-                 <a routerLink="/fleet/geofence/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Geo-Fence</a>
+                 <a routerLink="/fleet/geofence/add" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Add Geo-Fence</a>
               </div>
            </div>
         </form>
      </header>
 
      
-      <div class="row">
-        <div class="col pr-0 pl-0">
+      <div class="row mt-3">
+        <div class="col">
            <section class="card">
               <div class="card-body pl-0 pt-0 text-dark">
                  <div class="row">
@@ -124,7 +124,7 @@
                 <div *ngFor="let geofence of geofences;let i = index" class="" (click)="toggleAccordian(i, geofence.geofence.cords)">
                   <table class="table m-0 text-left" style="cursor: pointer;">
                      <tbody>
-                        <tr>
+                        <tr class="border_bottom">
                            <td style="width: 20%;" class="border-0 text-left">{{geofence.geofenceName}}</td>
                            <td style="width: 20%;" class="border-0">{{geofence.location}}</td>
                            <td style="width: 20%;" class="border-0">{{geofence.geofenceType}}</td>

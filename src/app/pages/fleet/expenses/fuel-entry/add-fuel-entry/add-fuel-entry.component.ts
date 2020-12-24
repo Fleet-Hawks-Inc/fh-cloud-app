@@ -23,34 +23,35 @@ export class AddFuelEntryComponent implements OnInit {
   title = 'Add Fuel Entry';
   public entryID;
   /********** Form Fields ***********/
- fuelData = {
-  unitType : 'vehicle',
-  currency: 'USD',
-  fuelQtyAmt: 0,
-  fuelQty: 0,
-  DEFFuelQty: 0,
-  DEFFuelQtyAmt: 0,
-  totalAmount: 0,
-  discount: 0,
-  amountPaid: 0,
-  costPerGallon: 0,
-  totalGallons: 0,
-      countryID: '',
-     stateID: '',
-     reimburseToDriver: false,
-     deductFromPay: false,
-  additionalDetails: {
-        avgGVW: '',
-        odometer: '',
-        description: '',
-        uploadedPhotos: [],
-      }
- };
+  fuelData = {
+    unitType: 'vehicle',
+    currency: 'USD',
+    fuelQtyAmt: 0,
+    fuelQty: 0,
+    DEFFuelQty: 0,
+    DEFFuelQtyAmt: 0,
+    totalAmount: 0,
+    discount: 0,
+    amountPaid: 0,
+    costPerGallon: 0,
+    fuelDate: '',
+    totalGallons: 0,
+    countryID: '',
+    stateID: '',
+    reimburseToDriver: false,
+    deductFromPay: false,
+    additionalDetails: {
+      avgGVW: '',
+      odometer: '',
+      description: '',
+      uploadedPhotos: [],
+    }
+  };
   fuelQtyUnit = 'gallon';
   DEFFuelQtyUnit = 'gallon';
   costPerUnit = 0;
   fuelDate: NgbDateStruct;
- 
+
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedFiles = [];
@@ -83,12 +84,12 @@ export class AddFuelEntryComponent implements OnInit {
 
 
   constructor(private apiService: ApiService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer,
-              private location: Location,
-              private awsUS: AwsUploadService, private toaster: ToastrService,
-              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
+    private router: Router,
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer,
+    private location: Location,
+    private awsUS: AwsUploadService, private toaster: ToastrService,
+    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
     this.selectedFileNames = new Map<any, any>();
   }
   get today() {
@@ -157,7 +158,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
     });
-  } 
+  }
   fillCountry() {
     this.apiService
       .getData('states/' + this.fuelData.stateID)
@@ -180,7 +181,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.fuelQtyAmt = 0;
     this.fuelData.fuelQty = 0;
     this.calculate();
-    if(isNaN(this.costPerUnit)){
+    if (isNaN(this.costPerUnit)) {
       this.costPerUnit = 0;
     }
   }
@@ -198,7 +199,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.totalAmount = 0;
     this.costPerUnit = 0;
     this.fuelData.totalAmount = Number(this.fuelData.fuelQtyAmt) + Number(this.fuelData.DEFFuelQtyAmt);
-    let units = Number(this.fuelData.fuelQty) + Number(this.fuelData.DEFFuelQty); 
+    let units = Number(this.fuelData.fuelQty) + Number(this.fuelData.DEFFuelQty);
     this.fuelData.amountPaid = this.fuelData.totalAmount - this.fuelData.discount;
     const test = (this.fuelData.amountPaid / units);
     this.costPerUnit = +(test.toFixed(2));
@@ -221,6 +222,11 @@ export class AddFuelEntryComponent implements OnInit {
       this.fuelData.totalGallons = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
       this.fuelData.costPerGallon = +((this.fuelData.amountPaid / this.fuelData.totalGallons).toFixed(2));
     }
+
+    if (this.fuelData.fuelDate !== '') {
+      //date in Y-m-d format 
+      this.fuelData.fuelDate = this.fuelData.fuelDate.split('-').reverse().join('-');
+    }
     this.apiService.postData('fuelEntries', this.fuelData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -241,7 +247,7 @@ export class AddFuelEntryComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-       // this.uploadFiles(); // upload selected files to bucket
+        // this.uploadFiles(); // upload selected files to bucket
         this.toaster.success('Fuel Entry Added successfully');
         this.router.navigateByUrl('/fleet/expenses/fuel/list');
       },
@@ -303,7 +309,7 @@ export class AddFuelEntryComponent implements OnInit {
         result = result.Items[0];
         this.fuelData[`entryID`] = this.entryID;
         this.fuelData[`currency`] = result.currency,
-        this.fuelData[`unitType`] = result.unitType;
+          this.fuelData[`unitType`] = result.unitType;
         this.fuelData[`unitID`] = result.unitID;
         this.fuelData[`fuelQty`] = result.fuelQty;
         this.fuelData[`fuelQtyAmt`] = +result.fuelQtyAmt;
@@ -316,7 +322,7 @@ export class AddFuelEntryComponent implements OnInit {
         this.costPerUnit = result.costPerGallon;
         this.fuelData[`totalGallons`] = result.totalGallons;
         this.fuelData[`amountPaid`] = result.amountPaid;
-        this.fuelData[`fuelDate`] = result.fuelDate;
+        this.fuelData[`fuelDate`] = result.fuelDate.split('-').reverse().join('-');
         this.fuelData[`fuelTime`] = result.fuelTime;
         this.fuelData[`fuelType`] = result.fuelType;
 
@@ -326,14 +332,13 @@ export class AddFuelEntryComponent implements OnInit {
         this.fuelData[`reimburseToDriver`] = result.reimburseToDriver;
         this.fuelData[`deductFromPay`] = result.deductFromPay;
 
-
         this.fuelData[`vendorID`] = result.vendorID;
         this.fuelData[`countryID`] = result.countryID;
         this.fuelData[`stateID`] = result.stateID;
         this.fuelData[`cityID`] = result.cityID;
         this.fuelData[`tripID`] = result.tripID;
 
-        this.fuelData[`additionalDetails`][`avgGVW`] =  result.additionalDetails.avgGVW;
+        this.fuelData[`additionalDetails`][`avgGVW`] = result.additionalDetails.avgGVW;
         this.fuelData[`additionalDetails`][`odometer`] = result.additionalDetails.odometer;
         this.fuelData[`additionalDetails`][`description`] = result.additionalDetails.description;
         this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
@@ -351,7 +356,7 @@ export class AddFuelEntryComponent implements OnInit {
     }
   }
   deleteImage(i: number) {
-    this.carrierID =  this.apiService.getCarrierID();
+    this.carrierID = this.apiService.getCarrierID();
     this.awsUS.deleteFile(this.carrierID, this.fuelData.additionalDetails.uploadedPhotos[i]);
     this.fuelData.additionalDetails.uploadedPhotos.splice(i, 1);
     this.fuelEntryImages.splice(i, 1);
@@ -373,11 +378,16 @@ export class AddFuelEntryComponent implements OnInit {
       this.fuelData.totalGallons = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
       this.fuelData.costPerGallon = this.fuelData.amountPaid / this.fuelData.totalGallons;
     }
-    else{
+    else {
       this.fuelData.fuelQty = +((this.fuelData.fuelQty / 3.785).toFixed(2));
       this.fuelData.DEFFuelQty = +((this.fuelData.DEFFuelQty / 3.785).toFixed(2));
       this.fuelData.totalGallons = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
       this.fuelData.costPerGallon = +((this.fuelData.amountPaid / this.fuelData.totalGallons).toFixed(2));
+    }
+
+    if (this.fuelData.fuelDate !== '') {
+      //date in Y-m-d format 
+      this.fuelData.fuelDate = this.fuelData.fuelDate.split('-').reverse().join('-');
     }
     this.apiService.putData('fuelEntries', this.fuelData).subscribe({
       complete: () => { },
@@ -399,13 +409,13 @@ export class AddFuelEntryComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-      //  this.uploadFiles(); // upload selected files to bucket
+        //  this.uploadFiles(); // upload selected files to bucket
         this.toaster.success('Fuel Entry Updated successfully');
-        this.router.navigateByUrl('/fleet/expenses/fuel/list');
+        // this.router.navigateByUrl('/fleet/expenses/fuel/list');
       },
     });
   }
-  
+
 
 
 }

@@ -23,11 +23,9 @@ export class IncidentListComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject();
 
   events = [];
-  lastEvaluated = {
-    value1: '',
-    value2: ''
-  };
-  totalRecords = 10;
+  lastEvaluatedKey = '';
+  totalRecords = 20;
+  pageLength = 10;
   coachingStatus = [
     {
       value:'open',
@@ -88,10 +86,15 @@ export class IncidentListComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
+  rerender(status=''): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
       dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
@@ -133,34 +136,21 @@ export class IncidentListComponent implements OnInit {
     // let current = this;
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
-      pageLength: 10,
+      pageLength: this.pageLength,
       serverSide: true,
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0],"orderable": false},
-        {"targets": [1],"orderable": false},
-        {"targets": [2],"orderable": false},
-        {"targets": [3],"orderable": false},
-        {"targets": [4],"orderable": false},
-        {"targets": [5],"orderable": false},
-        {"targets": [6],"orderable": false},
-        {"targets": [7],"orderable": false},
+        {"targets": [0,1,2,3,4,5,6,7],"orderable": false},
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-          current.apiService.getDatatablePostData(this.serviceUrl+this.lastEvaluated.value1+"&driver="+this.filterValue.driverID+"&from="+this.filterValue.filterDateStart+"&to="+this.filterValue.filterDateEnd , dataTablesParameters).subscribe(resp => {
+          current.apiService.getDatatablePostData(this.serviceUrl+this.lastEvaluatedKey+"&driver="+this.filterValue.driverID+"&from="+this.filterValue.filterDateStart+"&to="+this.filterValue.filterDateEnd , dataTablesParameters).subscribe(resp => {
           current.getEventDetail(resp['Items']);
           if(resp['LastEvaluatedKey'] !== undefined){
-            this.lastEvaluated = {
-              value1 : resp['LastEvaluatedKey'].eventID,
-              value2:''
-            }
+            this.lastEvaluatedKey = resp['LastEvaluatedKey'].eventID
           } else {
-            this.lastEvaluated = {
-              value1 : '',
-              value2 : ''
-            }
+            this.lastEvaluatedKey = ''
           }
           callback({
             recordsTotal: current.totalRecords,
@@ -223,7 +213,7 @@ export class IncidentListComponent implements OnInit {
       $(".navtabs").removeClass('active');
       $("#allSafetyIncidents-tab").addClass('active');
     }
-    this.rerender();
+    this.rerender('reset');
   }
 
   fetchevents() {
@@ -256,10 +246,7 @@ export class IncidentListComponent implements OnInit {
 
     }
 
-    current.lastEvaluated = {
-      value1: '',
-      value2: ''
-    }
+    current.lastEvaluatedKey = '';
     current.initDataTable(tabType, 'reload');
   }
 
@@ -289,7 +276,7 @@ export class IncidentListComponent implements OnInit {
     this.filterValue.driverName = data.name;
     this.suggestions = [];
 
-    this.rerender();
+    this.rerender('reset');
   }
 
   resetFilter() {
