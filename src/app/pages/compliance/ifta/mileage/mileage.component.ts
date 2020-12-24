@@ -74,7 +74,6 @@ export class MileageComponent implements OnInit {
       next: (result: any) => {
         // console.log(result);
         this.fuelList = result;
-        console.log('fuel data', this.fuelList);
       },
     });
   }
@@ -87,10 +86,9 @@ export class MileageComponent implements OnInit {
       next: (result: any) => {
         // console.log(result);
         this.stateList = result;
-        console.log('State data', this.stateList);
         for(let i=0; i < this.stateList.length; i++){
            this.totalGallons = this.totalGallons + this.stateList[i].fuelGal;
-         // console.log('fuel dal',this.stateList[i].fuelGal);
+        
         }
       },
     });
@@ -116,9 +114,7 @@ export class MileageComponent implements OnInit {
     this.apiService.getData('fuelEntries/vehicle/' + vehicleID)
       .subscribe((result: any) => {
         this.data = result.Items;
-        console.log('Fetched Data', this.data);
         this.unitList = this.data.filter(v => v.stateID === stateID);
-       // console.log('Vehicle list', this.unitList, 'state id', stateID);
       });
   }
   fetchFuelDetailReefer(ID, state) {
@@ -129,9 +125,7 @@ export class MileageComponent implements OnInit {
     this.apiService.getData('fuelEntries/reefer/' + reeferID)
       .subscribe((result: any) => {
         this.data = result.Items;
-        console.log('Fetched Data', this.data);
         this.unitList =  this.data.filter(r => r.stateID === stateID);
-      //  console.log('reefer list', this.unitList, 'state id', stateID);
       });
   }
   fetchVehicleList() {
@@ -142,7 +136,6 @@ export class MileageComponent implements OnInit {
   fetchAssetList() {
     this.apiService.getData('assets/get/list').subscribe((result: any) => {
       this.assetList = result;
-      console.log('asset list', this.assetList);
     });
   }
   fetchTripList() {
