@@ -564,6 +564,7 @@ vehicles= [];
           this.uploadedPhotos.push(files[i])
       }
     }
+    console.log("photo", this.uploadedPhotos)
   }
   /*
    * Uploading files which selected
