@@ -192,8 +192,6 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('fuelEntries/fetch-records?unitID='+this.unitID+'&from='+this.start+'&to='+this.end+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.fuelList = resp['Items'];
-          // current.fetchRenewals();
-          // console.log(resp)
           if (resp['LastEvaluatedKey'] !== undefined) {
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].entryID;
 
@@ -238,11 +236,9 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
     if (this.unitID !== '' || this.fromDate !== '' || this.toDate !== '' || this.unitName !== '') {
       if(this.fromDate !== '') {
         this.start = this.fromDate.split('-').reverse().join('-');
-        console.log(this.start)
       }
       if(this.toDate !== '') {
         this.end = this.toDate.split('-').reverse().join('-');
-        console.log(this.end)
       }
       this.rerender('reset');
     } else {
