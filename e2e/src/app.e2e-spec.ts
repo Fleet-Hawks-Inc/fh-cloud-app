@@ -8,16 +8,22 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getTitleText()).toEqual('fleethawks-dashboard app is running!');
-  });
+  // it('should display welcome message', () => {
+  //   page.navigateTo();
+  //   expect(page.getTitleText()).toEqual('fleethawks-dashboard app is running!');
+  // });
 
-  afterEach(async () => {
-    // Assert that there are no errors emitted from the browser
-    const logs = await browser.manage().logs().get(logging.Type.BROWSER);
-    expect(logs).not.toContain(jasmine.objectContaining({
-      level: logging.Level.SEVERE,
-    } as logging.Entry));
+  // afterEach(async () => {
+  //   // Assert that there are no errors emitted from the browser
+  //   const logs = await browser.manage().logs().get(logging.Type.BROWSER);
+  //   expect(logs).not.toContain(jasmine.objectContaining({
+  //     level: logging.Level.SEVERE,
+  //   } as logging.Entry));
+  // });
+
+  it('when login is successful', () => {
+    page.navigateTo();
+    page.fillCredentials();
+    page.navigateToHomepage();
   });
 });
