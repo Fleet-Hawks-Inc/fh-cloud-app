@@ -60,19 +60,19 @@
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Length</td>
-                                             <td class="text-capitalize">{{length}}</td>
+                                             <td class="text-capitalize">{{length ? length : '-'}} {{lengthUnit}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Axles</td>
-                                             <td class="text-capitalize">{{axle}}</td>
+                                             <td class="text-capitalize">{{axle ? axle : '-'}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">GVWR</td>
-                                             <td class="text-capitalize">{{GAWR}}</td>
+                                             <td class="text-capitalize">{{GAWR ? GAWR : '-'}} {{GAWR_Unit}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">GAWR</td>
-                                             <td class="text-capitalize">{{GVWR}}</td>
+                                             <td class="text-capitalize">{{GVWR ? GVWR : '-'}} {{GVWR_Unit}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Ownership</td>
@@ -82,7 +82,7 @@
                                              <td class="back-color-gray font-weight-bold">
                                                 Notes
                                              </td>
-                                             <td class="text-capitalize">{{remarks}}</td>
+                                             <td class="text-capitalize">{{remarks ? remarks : '-'}}</td>
                                           </tr>
                                        </tbody>
                                     </table>
@@ -150,25 +150,25 @@
                                <tbody>
                                   <tr>
                                      <td width="40%" class="back-color-gray font-weight-bold">Date of Issue</td>
-                                     <td  width="60%">{{dateOfIssue}} </td>
+                                     <td  width="60%">{{dateOfIssue ? dateOfIssue : '-'}} </td>
                                   </tr>
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Date of Expiry</td>
-                                     <td>{{dateOfExpiry}}</td>
+                                     <td>{{dateOfExpiry ? dateOfExpiry : '-'}}</td>
                                   </tr>
                                   
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Premium Amount</td>
-                                     <td>{{premiumAmount}}</td>
+                                     <td>{{premiumAmount ? premiumAmount : '-'}} {{premiumCurrency}}</td>
                                   </tr>
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Reminder Before Expiry</td>
-                                     <td class="text-capitalize">{{reminderBefore}}</td>
+                                     <td class="text-capitalize">{{reminderBefore ? reminderBefore : ''}} {{reminderBeforeUnit ? reminderBeforeUnit : '-'}}</td>
                                   </tr>
                                   
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Vendor</td>
-                                     <td class="text-capitalize">{{vendor}}</td>
+                                     <td class="text-capitalize">{{vendor ? vendor : '-'}}</td>
                                   </tr>
                                </tbody>
                             </table>
