@@ -27,10 +27,6 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
   suggestedRoutes = [];
   // dtOptions: any = {};
   // dtOptions: DataTables.Settings = {};
-  lastEvaluated = {
-    key: '',
-    value: ''
-  };
 
   searchedRouteId = '';
   searchedRouteName = '';
@@ -39,7 +35,10 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
-  totalRecords = 10;
+  
+  totalRecords = 20;
+  pageLength = 10;
+  lastEvaluatedKey = '';
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -82,20 +81,12 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0],"orderable": false},
-        {"targets": [1],"orderable": false},
-        {"targets": [2],"orderable": false},
-        {"targets": [3],"orderable": false},
-        {"targets": [4],"orderable": false},
-        {"targets": [5],"orderable": false},
-        {"targets": [6],"orderable": false},
-        {"targets": [7],"orderable": false},
+        {"targets": [0,1,2,3,4,5,6,7],"orderable": false},
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('routes/fetch-records?lastEvaluatedKey='+this.lastEvaluated.key+'&lastEvaluatedValue='+this.lastEvaluated.value+'&search='+this.searchedRouteId, dataTablesParameters).subscribe(resp => {
-          // let allDrivers = resp['Items'].map((i) => { i.stops.stopNamefullName = i.firstName + ' ' + i.lastName; return i; });
-
+        current.apiService.getDatatablePostData('routes/fetch-records?lastEvaluatedKey='+this.lastEvaluatedKey+'&search='+this.searchedRouteId, dataTablesParameters).subscribe(resp => {
+          
           this.routes = resp['Items'].map((i) => { 
             i.stopNames = '';
             if(i.stops) {
@@ -108,15 +99,9 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
             return i;
           });
           if(resp['LastEvaluatedKey'] !== undefined){
-            this.lastEvaluated = {
-              key : 'routeID',
-              value : resp['LastEvaluatedKey'].routeID
-            }
+            this.lastEvaluatedKey = resp['LastEvaluatedKey'].routeID
           } else {
-            this.lastEvaluated = {
-              key : '',
-              value : ''
-            }
+            this.lastEvaluatedKey = ''
           }
           callback({
             recordsTotal: current.totalRecords,
@@ -155,7 +140,7 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.searchedRouteName = route.name;
     this.suggestedRoutes = [];
 
-    this.rerender();
+    this.rerender('reset');
   }
 
   ngAfterViewInit(): void {
@@ -167,10 +152,15 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
+  rerender(status=''): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
       dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
