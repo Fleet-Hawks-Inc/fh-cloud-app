@@ -9,7 +9,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 declare var $: any;
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
-import * as moment from "moment";
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-company-documents',
@@ -243,10 +243,8 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
 
   getImages = async (result) => {
     this.carrierID = await this.apiService.getCarrierID();
-    console.log("dfdf", result.uploadedDocs[0]);
     this.image = this.domSanitizer.bypassSecurityTrustUrl(
       await this.awsUS.getFiles(this.carrierID, result.uploadedDocs[0]));
-    console.log('this.documentsDocs', this.image);
     this.documentsDocs = this.image;
   }
 
@@ -255,7 +253,6 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
       this.apiService
         .getData(`documents/isDeleted/${docID}/${value}`)
         .subscribe((result: any) => {
-          console.log('result', result);
           this.fetchDocuments();
         });
     }
