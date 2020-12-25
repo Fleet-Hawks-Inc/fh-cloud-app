@@ -12,15 +12,11 @@
                 <div class="row px-2 pt-2">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
-                            <select data-plugin-selecttwo="" class="form-control populate">
-                                <optgroup label="">
-                                    <option value="1" data-select2-id="260">Document 1</option>
-                                    <option value="2">Document 2</option>
-                                    <option value="2">Document 3</option>
-                                    <option value="2">Document 4</option>
-                                    <option value="2">Document 5</option>
-                                </optgroup>
-                            </select>
+                            <input type="text" class="form-control" [(ngModel)]="filterValues.searchValue" name="searchValue"
+                            (input)="getSuggestions($event.target.value)" autocomplete="off" placeholder="Search Document#">
+                        </div>
+                        <div *ngFor="let data of suggestions" style="cursor: pointer" (click)="searchSelectedRoute(data)">
+                            {{ data.name }}
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3">
@@ -47,23 +43,11 @@
                                 class="form-control" autocomplete="off"> 
                         </div>
                     </div>
-                    <div class="col-lg-2">
-
-                        <select data-plugin-selecttwo="" class="form-control populate">
-                            <optgroup label="">
-                                <option value="1">Last 1 Week</option>
-                                <option value="2">Last 1 Month</option>
-                                <option value="2">Year to Date</option>
-                                <option value="2">Previous Year to Date</option>
-                                <option value="2">Date Range</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="col-md-1  col-lg-1">
-                        <button type="button" (click)="searchFilter()" class="btn btn-sm btn-success">Search</button>
+                    <div class="col-md-2 col-lg-2">
+                        <button type="button" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">Search</button>
                         <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-5">
                         <div class="btn-group flex-wrap pull-right mt-1">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle " data-toggle="dropdown"
                                 aria-expanded="false">Actions<span class="caret"></span></button>

@@ -39,7 +39,7 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit() {
     this.fetchQuotes();
-    this.initDataTable('all')
+    this.initDataTable()
   }
 
   fetchQuotes = () => {
@@ -65,7 +65,7 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
       });
   }
 
-  initDataTable(filters:any = '') {
+  initDataTable() {
     let current = this;
     this.serviceUrl = 'quotes/fetch-records'+ "?value1=";
     this.dtOptions = { // All list options

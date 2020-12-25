@@ -418,20 +418,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0],"orderable": false},
-        {"targets": [1],"orderable": false},
-        {"targets": [2],"orderable": false},
-        {"targets": [3],"orderable": false},
-        {"targets": [4],"orderable": false},
-        {"targets": [5],"orderable": false},
-        {"targets": [6],"orderable": false},
-        {"targets": [7],"orderable": false},
-        {"targets": [8],"orderable": false},
-        {"targets": [9],"orderable": false},
-        {"targets": [10],"orderable": false},
-        {"targets": [11],"orderable": false},
-        {"targets": [12],"orderable": false},
-        {"targets": [13],"orderable": false},
+        {"targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],"orderable": false},
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
@@ -475,10 +462,15 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
+  rerender(status=''): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
       dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
@@ -543,10 +535,15 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       typeText = 'Trip Type';
     } else if (type === 'OrderNo') {
       typeText = 'Order Number';
+    } else if(type === 'TripType') {
+      typeText = 'Trip Type';
+    } else if(type === 'OrderNo') {
+      typeText = 'Order Number';
     } else {
       typeText = type;
     }
-    this.tripsFiltr.category = 'tripNo';
+    
+    // this.tripsFiltr.category = 'tripNo';
     $("#categorySelect").text(typeText);
   }
 
@@ -593,7 +590,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   fetchAllDriverIDs() {
-    this.apiService.getData('drivers/get/list')
+    this.apiService.getData('drivers/get/username-list')
       .subscribe((result: any) => {
         this.driversObject = result;
       });
