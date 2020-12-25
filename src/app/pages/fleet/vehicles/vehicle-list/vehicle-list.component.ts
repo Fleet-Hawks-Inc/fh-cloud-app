@@ -30,7 +30,6 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
   groupsList: any = {};
   vehicleModelList: any = {};
   vehicleManufacturersList: any = {};
-  constructor(private apiService: ApiService,private toastr: ToastrService, private hereMap: HereMapService) {}
   currentView = 'list';
 
 
@@ -94,17 +93,6 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
 
     this.suggestedVehicles = [];
   }
-
-
-  deleteVehicle(vehicleId) {
-    this.apiService
-      .deleteData('vehicles/' + vehicleId)
-      .subscribe((result: any) => {
-        this.toastr.success('Vehicle Deleted Successfully!');
-        this.fetchVehicles();
-      });
-  }
-
 
   /**
    * change the view of summary
