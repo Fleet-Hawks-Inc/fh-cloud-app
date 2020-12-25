@@ -11,11 +11,14 @@
         <app-sidebar></app-sidebar>
         <!-- end: sidebar -->
         <section role="main" class="content-body p-0">
-         <header class="page-header">
-            <div class="row pr-5 " style="padding-top:10px;">
-               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}} </div>
-               <div class="col-md-8  col-lg-8 text-right pr-4">
-                  <!-- <a class="btn btn-success btn-sm modal-with-form" href="#bolTemplateModal">Create BOL</a>  --><a href="all-orders.php" class="btn btn-default"><i class="fas fa-list"></i> All Orders</a> </div>
+         <header class="page-header pr-5">
+            <div class="row pr-1 mr-1" style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4">
+                  <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
+               </div>
+               <div class="col-md-8 col-lg-8 text-right pr-1">
+                  <!-- <a class="btn btn-success btn-sm modal-with-form" href="#bolTemplateModal">Create BOL</a>  --><a href="all-orders.php" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Orders</a>
+               </div>
             </div>
          </header>
             <div class="card">
@@ -251,8 +254,8 @@
                            </div>
                         </div>
                       <div class="form-group row divderrel">
-                         <div class="midledriver">
-                         </div>
+                         <!-- <div class="midledriver">
+                         </div> -->
                          <p class="mb-1 mt-1 mr-1 midleicon btn btn-default"><i class="fas fa-arrow-circle-right"></i></p>
                          <div class="col-lg-6">
                             <h4 class="mt-0 text-dark font-weight-bold text-4">Add Shipper</h4>
@@ -908,7 +911,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-12">
                                         <input [(ngModel)]="orderData.additionalDetails.attachments"
-                                        name="attachments" type="file" class="form-control p-0"> </div>
+                                        name="attachments" type="file" class="form-control border-0 p-0"> </div>
                                     <div class="col-lg-3"> </div>
                                 </div>
                          </div>
@@ -1091,10 +1094,10 @@
                                             <div class="col-lg-3 labelalign">
                                                 <label class="control-label font-weight-semibold text-3 text-dark pt-2">Tax 1</label>
                                             </div>
-                                            <div class="col-lg-2 pr-0">
+                                            <div class="col-lg-2">
                                                 <input [(ngModel)]="orderData.taxesInfo.name"
                                                 name="name" type="text" class="form-control" value="GST"> </div>
-                                            <div class="col-lg-2 pr-0 pl-0">
+                                            <div class="col-lg-2 pl-0">
                                                 <input [(ngModel)]="orderData.taxesInfo.amount"
                                                 name="amount" (keyup)="taxCalculate($event.target.value)" type="text" class="form-control" value="13"> </div>
                                             <div class="col-lg-2 pl-0">
@@ -1112,9 +1115,9 @@
                                             <div class="col-lg-3 labelalign">
                                                 <label class="control-label font-weight-semibold text-3 text-dark pt-2">Tax 2</label>
                                             </div>
-                                            <div class="col-lg-2 pr-0">
+                                            <div class="col-lg-2">
                                                 <input type="text" class="form-control" value="PST"> </div>
-                                            <div class="col-lg-2 pr-0 pl-0">
+                                            <div class="col-lg-2 pl-0">
                                                 <input type="text" class="form-control" value="5"> </div>
                                             <div class="col-lg-2 pl-0">
                                                 <select data-plugin-selectTwo class="form-control populate">
@@ -1130,9 +1133,9 @@
                                             <div class="col-lg-3 labelalign">
                                                 <label class="control-label font-weight-semibold text-3 text-dark pt-2">Tax 3</label>
                                             </div>
-                                            <div class="col-lg-2 pr-0">
+                                            <div class="col-lg-2">
                                                 <input type="text" class="form-control" value="HST"> </div>
-                                            <div class="col-lg-2 pr-0 pl-0">
+                                            <div class="col-lg-2 pl-0">
                                                 <input type="text" class="form-control" value="0"> </div>
                                             <div class="col-lg-2 pl-0">
                                                 <select data-plugin-selectTwo class="form-control populate">
@@ -1148,7 +1151,7 @@
                                             <div class="col-lg-3 labelalign">
                                                 <label class="control-label font-weight-semibold text-3 text-dark pt-2">Discount</label>
                                             </div>
-                                            <div class="col-lg-2 pr-0">
+                                            <div class="col-lg-2">
                                                 <input (keyup)="discountCalculate($event.target.value)" [(ngModel)]="orderData.discount.amount"
                                                 name="amount"  type="text" class="form-control" value="0"> </div>
                                             <div class="col-lg-2 pl-0">
@@ -1262,7 +1265,7 @@
                    <div class="form-group row">
                       <div class="col-lg-12">
                          <a href="#" class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a> 
-                         <button type="submit" class="btn btn-dark mt-1 modal-confirm">Create Load</button>
+                         <button type="submit" class="btn btn-dark modal-confirm">Create Load</button>
                       </div>
                     </div>
                </form>
