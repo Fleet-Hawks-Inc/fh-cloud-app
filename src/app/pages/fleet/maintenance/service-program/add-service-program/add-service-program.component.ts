@@ -140,28 +140,23 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     this.hasSuccess = false;
     this.hideErrors();
     this.apiService.postData('tasks', this.taskData).subscribe({
-        complete : () => {},
-        error: (err) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
-                console.log(key);
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-                this.Success = '';
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error) 
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
         next: (res) => {
           // this.programName = '';
           // this.repeatByTime = '';
