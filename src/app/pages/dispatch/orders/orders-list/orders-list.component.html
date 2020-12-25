@@ -9,10 +9,10 @@
         <app-sidebar></app-sidebar>
         <!-- end: sidebar -->
         <section role="main" class="content-body p-0">
-            <header class="page-header">
+            <header class="page-header pr-5">
                 <form class="form-horizontal" method="get">
 
-                    <div class="row px-4" style="padding-top:10px;">
+                    <div class="row pr-1 mr-1" style="padding-top:10px;">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
                                 <input type="text" class="form-control" name="searchValue"
@@ -38,12 +38,12 @@
                                     class="form-control" autocomplete="off">
                             </div>
                         </div>
-                        <div class="col-md-2  col-lg-2">
-                            <div class="btn-group flex-wrap" style="width:100%;">
-                                <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle"
-                                    data-toggle="dropdown" id="categorySelect">Search by Category<span
+
+                        <div class="col-md-2 col-lg-2">
+                            <div class="btn-group flex-wrap" style="min-width:190px;">
+                                <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle togglecolor" data-toggle="dropdown" id="categorySelect">Search by Category<span
                                         class="caret"></span></button>
-                                <div class="dropdown-menu" role="menu">
+                                <div class="dropdown-menu dutystatwd" role="menu">
                                     <a class="dropdown-item text-1" href="javascript:;"
                                         (click)="selectCategory('All')">All</a>
                                     <a class="dropdown-item text-1" href="javascript:;"
@@ -71,9 +71,9 @@
                                 (click)="filterOrders()">Search</button>
                             <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                         </div>
-                        <div class="col-md-3 col-lg-3 text-right pr-5">
+                        <div class="col-md-3 col-lg-3 text-right pr-1">
 
-                            <div class="btn-group flex-wrap">
+                            <div class="btn-group flex-wrap mr-2">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle"
                                     data-toggle="dropdown" aria-expanded="false">Actions<span
                                         class="caret"></span></button>
@@ -84,15 +84,14 @@
                                 </div>
                             </div>
                             <a data-toggle="modal" data-target="#addSequenceModal" href="javascript:;"
-                                class="btn btn-success btn-sm ml-2 modal-with-form" style="color:white;"><i
-                                    class="fas fa-plus"></i> Add Order </a>
+                                class="btn btn-success btn-sm modal-with-form" style="color:white;"><i class="fas fa-plus"></i> Add Order </a>
 
                         </div>
                     </div>
                 </form>
             </header>
             <section class="card mt-0 mb-4">
-                <div class="card-body">
+                <div class="card-body pt-3">
                     <div class="m-2">
                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                             <li class="nav-item">
@@ -151,7 +150,7 @@
                                     </tr>
                                 </thead>
                                 <tbody *ngIf="orders.length > 0">
-                                    <tr *ngFor="let order of orders;let i = index;">
+                                    <tr class="cursorpoint" *ngFor="let order of orders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
@@ -221,7 +220,7 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="form-row">
+                    <div class="form-row mb-2 mt-2">
                         <div class="form-group col-lg-6 col-md-12">
                             <div class="btn-group-toggle" data-toggle="buttons">
                                 <label class="btn btn-outline btn-fleet mr-2 active" style="width:125px;" id="stop"
@@ -234,7 +233,7 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-lg-12 col-md-12" id="manualDiv">
+                        <div class="form-group col-lg-12 col-md-12 mb-0" id="manualDiv">
                             <label class="control-label font-weight-semibold labelmt text-3 text-dark">Document
                                 Number</label>
                             <div class="row">

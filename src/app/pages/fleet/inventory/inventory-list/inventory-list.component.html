@@ -59,11 +59,7 @@
                       </thead>
 
                       <tbody *ngIf="items.length > 0">
-                        <tr class="cursorpoint" *ngFor="let item of items; let i = index"
-
-                          routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                        
-
+                        <tr class="cursorpoint" *ngFor="let item of items; let i = index">
                           <td routerLink="/fleet/inventory/detail/{{item.itemID}}">
                             {{ partNo[i]}}
 

@@ -9,13 +9,14 @@
         <!-- end: sidebar -->
 
         <section role="main" class="content-body pt-0 pl-0">
-            <header class="page-header">
-               <div class="row pr-5 pl-2" style="padding-top:10px;">
-                  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                    {{pageTitle}}
+            <header class="page-header pr-5">
+               <div class="row pr-1 mr-1" style="padding-top:10px;">
+                  <div class="col-md-4 col-lg-4">
+                     <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
                   </div>
-                  <div class="col-md-8  col-lg-8 text-right">
-                     <a routerLink="/fleet/reminders/vehicle-renewals/list" class="btn btn-default btn-sm mx-2" style="color:black;"><i class="fas fa-list"></i> Vehicle Renewals</a>
+                  
+                  <div class="col-md-8  col-lg-8 text-right pr-1">
+                     <a routerLink="/fleet/reminders/vehicle-renewals/list" class="btn btn-default btn-sm" style="color:black;"><i class="fas fa-list"></i> Vehicle Renewals</a>
                   </div>
                </div>
             </header>
@@ -94,7 +95,7 @@
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)</label>
                                     <div class="row">
-                                        <div class="col-lg-4 pr-0"><input [(ngModel)]="time" name="time" type="number" class="form-control" min="1"></div>
+                                        <div class="col-lg-4"><input [(ngModel)]="time" name="time" type="number" class="form-control" min="1"></div>
                                         <div class="col-lg-8 pl-0"> <ng-select [(ngModel)]="timeType" name="timeType" >
                                      
                                           <ng-option value="Day(s)">Day(s)</ng-option>
@@ -109,9 +110,10 @@
                               </div>
                            </div>
                         </div>
+                        
                         <div class="form-group row pt-2">
                            <div class="col-lg-11 text-right pr-0">
-                              <a href="javascript:;" (click)="cancel()" class="btn btn-default mr-1" >Cancel</a>
+                              <a href="javascript:;" (click)="cancel()" class="btn btn-default mr-2" >Cancel</a>
                               <a href="javascript:;" *ngIf="!reminderID" (click)="addRenewal()" class="btn btn-success" >Save</a> 
                               <a href="javascript:;" *ngIf="reminderID" (click)="updateRenewal()" class="btn btn-success">Update</a>
                            </div>

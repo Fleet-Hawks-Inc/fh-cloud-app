@@ -554,3 +554,6 @@ html.fixed .content-body {
 .modal {
     overflow-y: auto;
 }
+.ng-select.error .ng-select-container {
+    border-color: #a94442;
+}
