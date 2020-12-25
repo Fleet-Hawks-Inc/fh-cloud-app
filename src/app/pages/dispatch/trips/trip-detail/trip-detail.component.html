@@ -10,33 +10,31 @@
 
         <section role="main" class="content-body pt-0 pl-0 pr-0">
             <header class="page-header pr-5">
-                <div class="row pr-1 " style="padding-top:10px;">
-                    <div class="col-md-4 col-lg-4  text-dark">
-                        <span class="font-weight-bold text-4">Trip #{{ tripData.tripNo }}</span> <span
-                            class="badge p-1 badge-dark mt-2 mb-0">{{ tripData.tripStatus }}</span>
+                <div class="row pr-1 mr-1" style="padding-top:9px;">
+                    
+                    <div class="col-md-4 col-lg-4 text-dark">
+                        <span class="font-weight-bold text-4">Trip #{{ tripData.tripNo }}</span> <span class="badge p-1 badge-dark mt-2 mb-0">{{ tripData.tripStatus }}</span>
                     </div>
-                    <div class="col-md-8  col-lg-8 text-right">
+                    
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
                         <!-- <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a> -->
-                        <div class="btn-group flex-wrap">
-                            <button type="button" class="mb-1 mx-1 btn btn-success btn-sm dropdown-toggle"
-                                data-toggle="dropdown" aria-expanded="false">Send to Manifest<span
-                                    class="caret"></span></button>
+                        <div class="btn-group flex-wrap mr-2">
+                            <button type="button" class="mb-1 btn btn-success btn-sm dropdown-toggle"
+                                data-toggle="dropdown" aria-expanded="false">Send to Manifest<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a href="#sendACEmanifestModal" class="modal-with-form dropdown-item text-1">ACE
-                                    eManifest</a>
-                                <a href="#sendACImanifestModal" class="modal-with-form dropdown-item text-1">ACI
-                                    eManifest</a>
+                                <a href="#sendACEmanifestModal" class="modal-with-form dropdown-item text-1">ACE eManifest</a>
+                                <a href="#sendACImanifestModal" class="modal-with-form dropdown-item text-1">ACI eManifest</a>
                             </div>
                         </div>
-                        <a href="javascript:;" routerLink="/dispatch/trips/trip-list" class="btn btn-default btn-sm"><i
-                                class="fas fa-list"></i>
+
+                        <a href="javascript:;" routerLink="/dispatch/trips/trip-list" class="btn btn-default btn-sm mr-2"><i class="fas fa-list"></i>
                             Trips List</a>
-                        <a href="javascript:;" routerLink="/dispatch/trips/add-trip" class="btn btn-success btn-sm "><i
-                                class="fas fa-plus"></i> Create Trip</a>
+                        <a href="javascript:;" routerLink="/dispatch/trips/add-trip" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Create Trip</a>
                     </div>
                 </div>
             </header>
+
             <section class="card mb-4">
                 <div class="card-body">
                     <div class="col-lg-12">
@@ -50,7 +48,7 @@
                                         </div>
                                         <div class="widgetlinfo">
                                             <table
-                                                class="table table-bordered table-hover table-responsive-md table-sm">
+                                                class="table table-bordered table-responsive-md table-sm">
                                                 <thead>
                                                     <tr>
                                                         <th>Order#</th>
@@ -90,19 +88,16 @@
 
                                                     </span>
 
-                                                    <h2
-                                                        class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                    <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
                                                         <i class="fas fa-box"></i> Attachments</h2>
                                                 </div>
 
                                                 <div class="widgetlinfo">
                                                     <div class="row">
                                                         <div class="col-lg-4"> <label
-                                                                class="control-label font-weight-semibold">Upload
-                                                                BOL/POD</label></div>
+                                                                class="control-label font-weight-semibold">Upload BOL/POD</label></div>
                                                         <div class="col-lg-8">
-                                                            <input type="file"
-                                                                class="p-0 form-control mb-2" name="UploadBol" (change)="selectDocuments($event)"></div>
+                                                            <input type="file" class="p-0 form-control border-0 mb-2" name="UploadBol" (change)="selectDocuments($event)"></div>
                                                     </div>
 
 
@@ -131,7 +126,7 @@
 
                                         <div class="widgetlinfo">
                                             <h4 class="mt-0 text-dark font-weight-bold text-4">Trip Route</h4>
-                                            <table class="table table-sm table-bordered table-striped table-hover"
+                                            <table class="table table-sm table-bordered table-striped"
                                                 id="locationTable">
                                                 <thead>
                                                     <tr>
@@ -364,8 +359,7 @@
                                                         <i class="fas fa-dollar-sign"></i> Expenses</h2>
                                                 </div>
                                                 <div class="col-lg-4 text-right mt-2">
-                                                    <a href="javascript:;" routerLink="/fleet/expenses/fuel/list" class=" btn btn-xs btn-dark"> Fuel
-                                                        Expenses</a>
+                                                    <a href="javascript:;" routerLink="/fleet/expenses/fuel/list" class="btn btn-xs btn-dark mr-2"> Fuel Expenses</a>
                                                     <a href="javascript:;" routerLink="/fleet/expenses/fuel/list" class="btn btn-xs btn-dark"> Other
                                                         Expenses</a>
                                                 </div>
