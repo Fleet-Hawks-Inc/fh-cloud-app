@@ -81,16 +81,14 @@
                                 >Type</label>
                              <div class="row">
                                 <div class="col-lg-11">
-                                   <select
-                                      data-plugin-selectTwo
+                                   <ng-select
                                       class="form-control populate" name="geofenceType" [(ngModel)]="geofenceData.geofenceType">
-                                      <optgroup label="">
-                                         <option *ngFor="let item of geofenceTypes;" 
+                                      <ng-option *ngFor="let item of geofenceTypes;" 
                                              value="{{item.typeID}}"
                                          > {{item.geofenceType}}
-                                         </option>
-                                      </optgroup>
-                                   </select>
+
+                                       </ng-option>
+                                    </ng-select>
                                 </div>
                                 <div class="col-lg-1 pl-0">
                                    <a data-target="#addGeofenceCategoryModal" data-toggle="modal"  class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
@@ -146,8 +144,8 @@
                <div class="form-row">
                   <div class="form-group col-md-12">
                      <label class="font-weight-bold control-label">Geofence Type</label>
-                     <input [(ngModel)]="geofenceTypeData.type"
-                     name="type" type="text" class="form-control">
+                     <input [(ngModel)]="geofenceTypeData.geofenceType"
+                     name="geofenceType" type="text" class="form-control">
                   </div>
                </div>
                <div class="form-row">

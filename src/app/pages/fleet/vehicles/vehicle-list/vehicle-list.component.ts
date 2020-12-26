@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
+import { Subject,timer } from 'rxjs';
 declare var $: any;
 import { ToastrService } from 'ngx-toastr';
 import { HereMapService } from '../../../../services';
@@ -32,11 +32,13 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
   vehicleManufacturersList: any = {};
   currentView = 'list';
 
+
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
 
   constructor(private apiService: ApiService, private hereMap: HereMapService, private toastr: ToastrService) {}
+
 
   ngOnInit() {
     this.fetchGroups();

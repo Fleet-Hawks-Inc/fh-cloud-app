@@ -13,15 +13,23 @@
        <app-sidebar></app-sidebar>
        <!-- end: sidebar -->
 
-       <section role="main" class="content-body">
+       <section role="main" class="content-body pagebody">
            <header class="page-header pr-5">
-              <h2>Routing &amp; Dispatch Overview</h2>
-              <div class="right-wrapper text-right mt-2 pr-2">
-                 <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/quotes/add"><i class="fas fa-plus"></i> Estimate</a>
+            
+            <div class="row pr-1 mr-1" style="padding-top:10px;">
+               <div class="col-md-2 col-lg-2">
+                  <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Routing &amp; Dispatch Overview</h4>
+               </div>
+               <div class="col-md-10 col-lg-10 text-right pr-1">
+                  <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/quotes/add"><i class="fas fa-plus"></i> Estimate</a>
                  <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/orders/add"><i class="fas fa-plus"></i> Order</a>
                  <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/trips/add-trip"><i class="fas fa-plus"></i> Trip</a>
-                 <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/routes/add-route"><i class="fas fa-plus"></i> Permanent Route</a>
-              </div>
+                 <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" routerLink="/dispatch/routes/add-route"><i class="fas fa-plus"></i> Permanent Route</a>
+               </div>
+            </div>
+
+              
+              
            </header>
            <div class="routing-overview__wrapper m-3">
               <div class="row">

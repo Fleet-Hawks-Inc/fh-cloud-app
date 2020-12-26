@@ -281,7 +281,7 @@ export class AddressBookComponent implements OnInit {
           this.allData = [...this.customers, ...this.drivers, ...this.brokers, ...this.vendors,
                             ...this.carriers, ...this.shippers, ...this.receivers, ...this.staffs, ...this.fcCompanies];                           
           this.countries = countries.Items;
-          console.log(' allData',  this.allData);
+          
           this.addresses = addresses;
         }
       });
