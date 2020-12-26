@@ -10,6 +10,6 @@ export class HealthcheckComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  }
+
 
 }
