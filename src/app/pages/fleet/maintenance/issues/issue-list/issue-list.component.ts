@@ -146,7 +146,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
         current.apiService.getDatatablePostData('issues/fetch-records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.issues = resp['Items'];
           if (resp['LastEvaluatedKey'] !== undefined) {
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].entryID;
+            this.lastEvaluatedKey = resp['LastEvaluatedKey'].issueID;
 
           } else {
             this.lastEvaluatedKey = '';
