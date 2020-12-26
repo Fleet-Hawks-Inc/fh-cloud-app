@@ -9,6 +9,8 @@ declare var $: any;
   styleUrls: ['./inventory-detail.component.css']
 })
 export class InventoryDetailComponent implements OnInit {
+  Asseturl = this.apiService.AssetUrl;
+
     /**
    * form props
    */
@@ -93,6 +95,16 @@ export class InventoryDetailComponent implements OnInit {
       this.days = result.days;
       this.time = result.time;
       this.notes = result.notes;
+
+      if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+        this.photos = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+      }
+
+      
+      if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
+        this.documents = result.uploadedDocs.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+      }
+
     });
   }
 

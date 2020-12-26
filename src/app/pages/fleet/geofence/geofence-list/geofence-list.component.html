@@ -82,52 +82,17 @@
                               <td style="width: 10%;" class="border-0 text-right">Actions</td>
                            </tr>
                         </thead>
-                        <!-- <span class="geoName text-4 font-weight-bold text-dark pl-2"></span>
-                        <span class="geoName text-4 font-weight-bold text-dark text-center">Location</span>
-                        <span class="geoName text-4 font-weight-bold text-dark text-center">Type</span>
-                        <span class="geofieldsdesc text-4 font-weight-bold text-dark text-center">Description</span>
-                        <span class="geoName text-4 font-weight-bold text-dark text-right">Actions</span> -->
                      </table>
                   </div>
               </div>
               
-               <!-- <ngb-accordion class="geofence-listing" 
-                  [closeOthers]="true" 
-                  *ngFor="let geofence of geofences; let i = index"
-                  activeIds="panel1"
-                  (panelChange)="beforeChange($event, geofence.geofence.cords)"
-                  >
-                 
-                  <ngb-panel id="panel{{i}}">
-                     <ng-template class="p-0 text-left" ngbPanelTitle style="width: 100%!important;">
-                        
-                           <table class="table m-0 text-left">
-                              <tbody>
-                                 <tr>
-                                    <td style="width: 20%;" class="border-0 text-left">{{geofence.geofenceName}}</td>
-                                    <td style="width: 20%;" class="border-0">{{geofence.location}}</td>
-                                    <td style="width: 20%;" class="border-0">{{geofence.geofenceType}}</td>
-                                    <td style="width: 30%;" class="border-0">{{geofence.description}}</td>
-                                    <td style="width: 10%;" class="border-0 text-right">
-                                       
-                                       <a class="p-0" routerLink="/fleet/geofence/edit-geofence/{{geofence.geofenceID}}"><i class="fas fa-ellipsis-v"></i></a></td>
-                                 </tr>
-                              </tbody>
-                           </table>
-                      </ng-template>
-                    <ng-template ngbPanelContent>
-                     <div id="map" style="height: 400px;"></div>
-                    </ng-template>
-                  </ngb-panel>
-                  <div *ngIf="!geofences.length > 0" class="alert alert-info m-0 text-center" role="alert"> No records found </div>
-                </ngb-accordion> -->
                 <div *ngFor="let geofence of geofences;let i = index" class="" (click)="toggleAccordian(i, geofence.geofence.cords)">
                   <table class="table m-0 text-left" style="cursor: pointer;">
                      <tbody>
                         <tr class="border_bottom">
                            <td style="width: 20%;" class="border-0 text-left">{{geofence.geofenceName}}</td>
                            <td style="width: 20%;" class="border-0">{{geofence.location}}</td>
-                           <td style="width: 20%;" class="border-0">{{geofence.geofenceType}}</td>
+                           <td style="width: 20%;" class="border-0">{{geofencesTypes[geofence.geofenceType]}}</td>
                            <td style="width: 30%;" class="border-0">{{geofence.description}}</td>
                            <td style="width: 10%;" class="border-0 text-right">
                               <div class="dropdown dropright">
@@ -147,6 +112,9 @@
                      <div id="map" style="height: 400px;"></div>
                   
                   </div>
+               </div>
+               <div *ngIf="!geofences?.length > 0" class="alert alert-info mt-3">
+                     No Data Found
                </div>
             </div>
 
