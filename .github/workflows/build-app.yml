@@ -1,0 +1,18 @@
+on: [pull_request]
+name: Build Angular App
+jobs:
+  build:
+    name: Build Angular App
+    runs-on: ubuntu-latest
+    
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get NodeJs 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - name: Install dev dependencies and build
+        run: |
+          npm install
+          npm run build
