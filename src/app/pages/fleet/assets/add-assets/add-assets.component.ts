@@ -113,9 +113,10 @@ export class AddAssetsComponent implements OnInit {
   /*
    * Get all models from api
    */
-  getModels(event) {
-    this.spinner.show(); // loader init
-    const id = event.target.options[event.target.options.selectedIndex].id;
+  getModels(id) {
+    
+    // this.spinner.show(); // loader init
+    // const id = event.target.options[event.target.options.selectedIndex].id;
     this.apiService
       .getData(`vehicleModels/manufacturer/${id}`)
       .subscribe((result: any) => {
@@ -128,9 +129,7 @@ export class AddAssetsComponent implements OnInit {
    * Add new asset
    */
   addAsset() {
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    
     this.hideErrors();
     this.apiService.postData('assets', this.assetsData).subscribe({
       complete: () => { },
@@ -164,7 +163,7 @@ export class AddAssetsComponent implements OnInit {
   }
 
   throwErrors() {
-    console.log(this.errors);
+    
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
