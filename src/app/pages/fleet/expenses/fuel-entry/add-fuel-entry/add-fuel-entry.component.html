@@ -188,31 +188,31 @@
                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-2">Payment Details</label>
                     </div>
                     <div class="col-lg-5 offset-lg-1">
-                       <div class="form-group row">
+                       <div class="row">
                           <div class="col-lg-5">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Paid By</label>
-                             <ng-select placeholder="Select Payer" name="paidBy" [(ngModel)]="fuelData.paidBy">
-                               
-                                   <ng-option value="Person 1">Person 1</ng-option>
-                                   <ng-option value="Person 2">Person 2</ng-option>
-                                   <ng-option value="Person 3">Person 3</ng-option>
-                                   <ng-option value="Person 4">Person 4</ng-option>
-                                   <ng-option value="Person 5">Person 5</ng-option>
-                               
-                             </ng-select>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Paid By</label>                            
+                             <ng-select placeholder="Select Payer" name="paidBy" [(ngModel)]="fuelData.paidBy" >                               
+                              <ng-option *ngFor="let driver of drivers"  value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</ng-option>                            
+                          
+                        </ng-select>
                           </div>
                           <div class="col-lg-5">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Payment Mode</label>
-                             <ng-select placeholder="Select Payment Mode" name="paymentMode" [(ngModel)]="fuelData.paymentMode">
-                           
+                             <ng-select placeholder="Select Payment Mode" name="paymentMode" [(ngModel)]="fuelData.paymentMode">                           
                                    <ng-option value="Cash">Cash</ng-option>
                                    <ng-option value="Check">Check</ng-option>
                                    <ng-option value="Credit Card">Credit Card</ng-option>
                                    <ng-option value="EFT">EFT</ng-option>
-                               
+                                   <ng-option value="FuelCard">Fuel Card</ng-option>
                              </ng-select>
                           </div>
                        </div>
+                       <div class="row" *ngIf="fuelData.paymentMode === 'FuelCard'">
+                        <div class="col-lg-5 offset-lg-5">
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Card Number</label>
+                           <input type="text" class="form-control" >
+                        </div>
+                     </div>
                     </div>
                     <div class="col-lg-5 offset-lg-1">
                        <div class="row">

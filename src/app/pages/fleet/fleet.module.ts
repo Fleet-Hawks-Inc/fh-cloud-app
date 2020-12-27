@@ -61,6 +61,7 @@ import {
 
 } from './index';
 import { InventoryDetailComponent } from './inventory/inventory-detail/inventory-detail.component';
+import { AbsoluteValuePipe } from './pipes/absolute-value.pipe';
 
 const COMPONENTS = [
   AddUserComponent,
@@ -171,6 +172,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   declarations: [
     ...COMPONENTS,
     InventoryDetailComponent,
+    AbsoluteValuePipe,
   ],
   providers: [NgSelectConfig, ɵs,
     {provide: NgbDateAdapter, useClass: CustomAdapter},
