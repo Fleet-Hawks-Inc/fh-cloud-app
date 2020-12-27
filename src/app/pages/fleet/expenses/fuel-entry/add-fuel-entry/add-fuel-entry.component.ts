@@ -11,6 +11,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import * as _ from 'lodash';
+
 declare var jquery: any;
 declare var $: any;
 
@@ -21,6 +22,7 @@ declare var $: any;
 })
 export class AddFuelEntryComponent implements OnInit {
   title = 'Add Fuel Entry';
+  Asseturl = this.apiService.AssetUrl;
   public entryID;
   /********** Form Fields ***********/
   fuelData = {
@@ -42,10 +44,11 @@ export class AddFuelEntryComponent implements OnInit {
     deductFromPay: false,
     additionalDetails: {
       avgGVW: '',
-      odometer: '',
+      odometer: 0,
       description: '',
-      uploadedPhotos: [],
-    }
+       uploadedPhotos: [],
+    },
+   // uploadedPhotos: []
   };
   fuelQtyUnit = 'gallon';
   DEFFuelQtyUnit = 'gallon';
@@ -71,6 +74,8 @@ export class AddFuelEntryComponent implements OnInit {
   MPG: number;
   costPerMile: number;
   miles: number;
+  uploadedPhotos = [];  
+  existingPhotos = []; 
   /******************/
 
   errors = {};
@@ -227,7 +232,18 @@ export class AddFuelEntryComponent implements OnInit {
       //date in Y-m-d format 
       this.fuelData.fuelDate = this.fuelData.fuelDate.split('-').reverse().join('-');
     }
-    this.apiService.postData('fuelEntries', this.fuelData).subscribe({
+      // create form data instance
+      const formData = new FormData();
+
+      //append photos if any
+      for(let i = 0; i < this.uploadedPhotos.length; i++){
+        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      }
+      
+  
+      //append other fields
+      formData.append('data', JSON.stringify(this.fuelData));
+    this.apiService.postData('fuelEntries', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -247,7 +263,6 @@ export class AddFuelEntryComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        // this.uploadFiles(); // upload selected files to bucket
         this.toaster.success('Fuel Entry Added successfully');
         this.router.navigateByUrl('/fleet/expenses/fuel/list');
       },
@@ -274,32 +289,20 @@ export class AddFuelEntryComponent implements OnInit {
       });
     this.errors = {};
   }
-  /*
-  * Selecting files before uploading
-  */
+   /*
+   * Selecting files before uploading
+   */
   selectDocuments(event, obj) {
-    this.selectedFiles = event.target.files;
-    if (obj === 'uploadedPhotos') {
-      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-        const randomFileGenerate = this.selectedFiles[i].name.split('.');
-        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
+    let files = [...event.target.files];
 
-        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-        this.fuelData.additionalDetails.uploadedPhotos.push(fileName);
+    if (obj === 'uploadedPhotos') {
+      this.uploadedPhotos = [];
+      for (let i = 0; i < files.length; i++) {
+        this.uploadedPhotos.push(files[i])
       }
     }
   }
-  /*
-   * Uploading files which selected
-   */
-  uploadFiles = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
-      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
-    });
-  }
-
-  /*
+ /*
  * Fetch Fuel Entry details before updating
 */
   fetchFuelEntry() {
@@ -342,34 +345,22 @@ export class AddFuelEntryComponent implements OnInit {
         this.fuelData[`additionalDetails`][`odometer`] = result.additionalDetails.odometer;
         this.fuelData[`additionalDetails`][`description`] = result.additionalDetails.description;
         this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
+        this.existingPhotos = result.additionalDetails.uploadedPhotos;
+        if(result.additionalDetails.uploadedPhotos != undefined && result.additionalDetails.uploadedPhotos.length > 0){
+          this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+        }
         setTimeout(() => {
           this.fillCountry();
         }, 2000);
       });
   }
-  getImages = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    for (let i = 0; i < this.fuelData.additionalDetails.uploadedPhotos.length; i++) {
-      this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles
-        (this.carrierID, this.fuelData.additionalDetails.uploadedPhotos[i]));
-      this.fuelEntryImages.push(this.image);
-    }
-  }
-  deleteImage(i: number) {
-    this.carrierID = this.apiService.getCarrierID();
-    this.awsUS.deleteFile(this.carrierID, this.fuelData.additionalDetails.uploadedPhotos[i]);
-    this.fuelData.additionalDetails.uploadedPhotos.splice(i, 1);
-    this.fuelEntryImages.splice(i, 1);
-    // this.apiService.getData('fuelEntries//updatePhotos/' + this.entryID + '/' + this.additionalDetails.uploadedPhotos).subscribe((result: any) => {
-    //   this.toastr.success('Image Deleted Successfully!');
-    // });
-  }
+   deleteImage(i: number) {
+  //   this.carrierID = this.apiService.getCarrierID();
+  //   this.awsUS.deleteFile(this.carrierID, this.fuelData.additionalDetails.uploadedPhotos[i]);
+     this.fuelData.additionalDetails.uploadedPhotos.splice(i, 1);
+     this.fuelEntryImages.splice(i, 1);
+ }
   updateFuelEntry() {
-
-    // if (this.fileName === '') {
-    //   this.imageError = 'Please Choose Image To Upload';
-    //   return;
-    // }
 
     this.hideErrors();
     if (this.fuelQtyUnit === 'gallon') {
@@ -384,12 +375,22 @@ export class AddFuelEntryComponent implements OnInit {
       this.fuelData.totalGallons = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
       this.fuelData.costPerGallon = +((this.fuelData.amountPaid / this.fuelData.totalGallons).toFixed(2));
     }
-
+     this.fuelData.additionalDetails.uploadedPhotos = this.existingPhotos;
     if (this.fuelData.fuelDate !== '') {
       //date in Y-m-d format 
       this.fuelData.fuelDate = this.fuelData.fuelDate.split('-').reverse().join('-');
     }
-    this.apiService.putData('fuelEntries', this.fuelData).subscribe({
+     // create form data instance
+     const formData = new FormData();
+
+     //append photos if any
+     for(let i = 0; i < this.uploadedPhotos.length; i++){
+       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+     } 
+ 
+     //append other fields
+     formData.append('data', JSON.stringify(this.fuelData));
+    this.apiService.putData('fuelEntries', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -409,9 +410,8 @@ export class AddFuelEntryComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        //  this.uploadFiles(); // upload selected files to bucket
         this.toaster.success('Fuel Entry Updated successfully');
-        // this.router.navigateByUrl('/fleet/expenses/fuel/list');
+        this.router.navigateByUrl('/fleet/expenses/fuel/list');
       },
     });
   }
