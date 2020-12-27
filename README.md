@@ -75,3 +75,10 @@ Set IAM policy
 
 ```
 
+## Debug App
+
+Make sure you install Debugger for Chrome extension via VS code extensions menu.
+
+Go to Debug menu and click play button  or press F5
+
+
