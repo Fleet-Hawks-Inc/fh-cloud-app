@@ -33,9 +33,9 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
   toDate: any = '';
   entryId = '';
   vehicles = [];
-  vehicleList: any;
-  tripList: any;
-  assetList: any;
+  vehicleList: any = {};
+  tripList: any = {};
+  assetList: any = {};
   countries = [];
   checked = false;
   isChecked = false;
