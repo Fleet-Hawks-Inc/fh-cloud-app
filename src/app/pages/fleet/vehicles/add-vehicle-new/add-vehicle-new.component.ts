@@ -68,39 +68,39 @@ vehicles= [];
   inspectionFormID = '';
   lifeCycle = {
     inServiceDate: '',
-    inServiceOdometer: 0,
-    estimatedServiceMonths: 0,
-    estimatedServiceMiles: 0,
+    inServiceOdometer: '',
+    estimatedServiceMonths: '',
+    estimatedServiceMiles: '',
     estimatedResaleValue: '',
     outOfServiceDate: '',
-    outOfServiceOdometer: 0,
+    outOfServiceOdometer: '',
   };
   specifications = {
-    height: 0,
+    height: '',
     heightUnit: '',
-    length: 0,
+    length: '',
     lengthUnit: '',
-    width: 0,
+    width: '',
     widthUnit: '',
     interiorVolume: '',
     passangerVolume: '',
-    groundClearnce: 0,
+    groundClearnce: '',
     groundClearnceUnit: '',
-    bedLength: 0,
-    bedLengthUnit: '',
+    badLength: '',
+    badLengthUnit: '',
     cargoVolume: '',
     curbWeight: '',
     grossVehicleWeightRating: '',
     iftaReporting: false,
     towingCapacity: '',
     maxPayload: '',
-    EPACity: 0,
-    EPACombined: 0,
-    EPAHighway: 0,
+    EPACity: '',
+    EPACombined: '',
+    EPAHighway: '',
   };
   insurance = {
     dateOfIssue: '',
-    premiumAmount: 0,
+    premiumAmount: '',
     premiumCurrency: '',
     vendorID: '',
     dateOfExpiry: '',
@@ -111,13 +111,13 @@ vehicles= [];
   };
   fluid = {
     fuelType: '',
-    fuelTankOneCapacity: 0,
+    fuelTankOneCapacity: '',
     fuelQuality: '',
-    fuelTankTwoCapacity: 0,
-    oilCapacity: 0,
+    fuelTankTwoCapacity: '',
+    oilCapacity: '',
   };
   wheelsAndTyres = {
-    numberOfTyres: 0,
+    numberOfTyres: '',
     driveType: '',
     brakeSystem: '',
     wheelbase: '',
@@ -136,7 +136,7 @@ vehicles= [];
     engineBrand: '',
     aspiration: '',
     blockType: '',
-    bore: 0,
+    bore: '',
     camType: '',
     stroke: '',
     valves: '',
@@ -379,8 +379,8 @@ vehicles= [];
         passangerVolume: this.specifications.passangerVolume,
         groundClearnce: this.specifications.groundClearnce,
         groundClearnceUnit: this.specifications.groundClearnceUnit,
-        bedLength: this.specifications.bedLength,
-        bedLengthUnit: this.specifications.bedLengthUnit,
+        badLength: this.specifications.badLength,
+        badLengthUnit: this.specifications.badLengthUnit,
         cargoVolume: this.specifications.cargoVolume,
         curbWeight: this.specifications.curbWeight,
         grossVehicleWeightRating: this.specifications.grossVehicleWeightRating,
@@ -564,7 +564,6 @@ vehicles= [];
           this.uploadedPhotos.push(files[i])
       }
     }
-    console.log("photo", this.uploadedPhotos)
   }
   /*
    * Uploading files which selected
@@ -624,8 +623,8 @@ vehicles= [];
           passangerVolume: result.specifications.passangerVolume,
           groundClearnce: result.specifications.groundClearnce,
           groundClearnceUnit: result.specifications.groundClearnceUnit,
-          bedLength: result.specifications.bedLength,
-          bedLengthUnit: result.specifications.bedLengthUnit,
+          badLength: result.specifications.badLength,
+          badLengthUnit: result.specifications.badLengthUnit,
           cargoVolume: result.specifications.cargoVolume,
           curbWeight: result.specifications.curbWeight,
           grossVehicleWeightRating: result.specifications.grossVehicleWeightRating,
@@ -796,8 +795,8 @@ vehicles= [];
         passangerVolume: this.specifications.passangerVolume,
         groundClearnce: this.specifications.groundClearnce,
         groundClearnceUnit: this.specifications.groundClearnceUnit,
-        bedLength: this.specifications.bedLength,
-        bedLengthUnit: this.specifications.bedLengthUnit,
+        badLength: this.specifications.badLength,
+        badLengthUnit: this.specifications.badLengthUnit,
         cargoVolume: this.specifications.cargoVolume,
         curbWeight: this.specifications.curbWeight,
         grossVehicleWeightRating: this.specifications.grossVehicleWeightRating,
