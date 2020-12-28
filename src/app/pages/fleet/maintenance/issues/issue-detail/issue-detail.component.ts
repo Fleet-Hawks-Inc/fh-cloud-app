@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import {AwsUploadService} from '../../../../../services';
-import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { AwsUploadService } from '../../../../../services';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-issue-detail',
@@ -10,7 +10,9 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./issue-detail.component.css']
 })
 export class IssueDetailComponent implements OnInit {
-
+  photoSlides = [];
+  docSlides = [];
+  Asseturl = this.apiService.AssetUrl;
   public issueID;
   issueName: string;
   unitID: string;
@@ -36,12 +38,12 @@ export class IssueDetailComponent implements OnInit {
   docs: SafeResourceUrl;
   public issueImages = [];
   public issueDocs = [];
-  pdfSrc: string;
+  pdfSrc: any;
   constructor(private apiService: ApiService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private toastr: ToastrService,
-              private domSanitizer: DomSanitizer, private awsUS: AwsUploadService) { }
+    private router: Router,
+    private route: ActivatedRoute,
+    private toastr: ToastrService,
+    private domSanitizer: DomSanitizer, private awsUS: AwsUploadService) { }
 
   ngOnInit() {
     this.issueID = this.route.snapshot.params[`issueID`];
@@ -50,12 +52,12 @@ export class IssueDetailComponent implements OnInit {
     this.fetchContactList();
     this.fetchAssetList();
   }
-    fetchVehicleList() {
+  fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
     });
   }
- 
+
   fetchContactList() {
     this.apiService.getData('contacts/get/list').subscribe((result: any) => {
       this.contactList = result;
@@ -67,70 +69,36 @@ export class IssueDetailComponent implements OnInit {
     });
   }
   editIssue = () => {
-      this.router.navigateByUrl('/fleet/maintenance/issues/edit/' + this.issueID);
-      }
+    this.router.navigateByUrl('/fleet/maintenance/issues/edit/' + this.issueID);
+  }
   fetchIssue() {
     // this.spinner.show(); // loader init
     this.apiService
-    .getData('issues/' + this.issueID)
-    .subscribe((result: any) => {
-      result = result.Items[0];
-      this.issueID = this.issueID;
-      this.issueName = result.issueName;
-      this.unitID = result.unitID;
-      this.currentStatus = result.currentStatus;
-      this.unitType = result.unitType;
-      this.reportedDate = result.reportedDate;
-      this.description = result.description;
-      this.odometer = result.odometer;
-      this.reportedBy = result.reportedBy;
-      this.assignedTo = result.assignedTo;
-      this.uploadedPhotos = result.uploadedPhotos;
-      this.uploadedDocs = result.uploadedDocs;
-      setTimeout(() => {
-        this.getImages();
-        this.getDocuments();
-       }, 1500);
-    });
+      .getData('issues/' + this.issueID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+        this.issueID = this.issueID;
+        this.issueName = result.issueName;
+        this.unitID = result.unitID;
+        this.currentStatus = result.currentStatus;
+        this.unitType = result.unitType;
+        this.reportedDate = result.reportedDate;
+        this.description = result.description;
+        this.odometer = result.odometer;
+        this.reportedBy = result.reportedBy;
+        this.assignedTo = result.assignedTo;
+
+        if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
+          this.photoSlides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+        }
+
+        if (result.uploadedDocs != undefined && result.uploadedDocs.length > 0) {
+          this.docSlides = result.uploadedDocs.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+        }
+      });
   }
-  getImages = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles
-      (this.carrierID, this.uploadedPhotos[i]));
-      this.issueImages.push(this.image);
-    }
-  }
-  deleteImage(i: number) {
-    this.carrierID =  this.apiService.getCarrierID();
-    this.awsUS.deleteFile(this.carrierID, this.uploadedPhotos[i]);
-    this.uploadedPhotos.splice(i, 1);
-    this.issueImages.splice(i, 1);
-    this.updateIssue();
-    this.toastr.success('Image Deleted Successfully!');
-    // this.apiService.getData(`issues/updatePhotos?issueID=${this.issueID}&uploadedPhotos=${this.uploadedPhotos}`).subscribe((result: any) => {
-    //   this.toastr.success('Image Deleted Successfully!');
-    // });
-  }
-  getDocuments = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    for (let i = 0; i < this.uploadedDocs.length; i++) {
-      this.docs = this.domSanitizer.bypassSecurityTrustResourceUrl(
-              await this.awsUS.getFiles(this.carrierID, this.uploadedDocs[i]));
-      this.issueDocs.push(this.docs);
-    }
-  }
-  deleteDoc(i: number) {
-    this.carrierID =  this.apiService.getCarrierID();
-    this.awsUS.deleteFile(this.carrierID, this.uploadedDocs[i]);
-    this.uploadedDocs.splice(i, 1);
-    this.issueDocs.splice(i, 1);
-    this.updateIssue();
-    this.toastr.success('Document Deleted Successfully!');
-    // this.apiService.getData(`issues/updateDocs?issueID=${this.issueID}&uploadedDocs=${this.uploadedDocs}`).subscribe((result: any) => {
-    //   this.toastr.success('Document Deleted Successfully!');
-    // });
-  }
+
+
   deleteIssue(issueID) {
     this.apiService
       .deleteData('issues/' + issueID)
@@ -148,19 +116,16 @@ export class IssueDetailComponent implements OnInit {
   }
   resolveIssue() {
     window.localStorage.setItem('vehicleLocalID', this.unitID);
-  
+
     const unit = {
       unitID: this.unitID,
       unitType: this.unitType,
+    }
+
+    window.localStorage.setItem('unit', JSON.stringify(unit));
+    this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
   }
-  
-  window.localStorage.setItem('unit', JSON.stringify(unit));
-  this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
-  }
-  setPDFSrc(val) {
-    this.pdfSrc = '';
-    this.pdfSrc = val;
-  }
+
   updateIssue() {
     const data = {
       issueID: this.issueID,
@@ -177,9 +142,20 @@ export class IssueDetailComponent implements OnInit {
       uploadedDocs: this.uploadedDocs
     };
     this.apiService.putData('issues/', data).
-  subscribe({
-    complete : () => {
+      subscribe({
+        complete: () => {
+        }
+      });
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
-  });
   }
 }
