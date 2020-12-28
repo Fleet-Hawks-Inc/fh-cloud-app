@@ -1,13 +1,13 @@
 <section class="body">
     <!-- start: header -->
-    <app-header></app-header>
+    <!-- <app-header></app-header> -->
   
     <!-- end: header -->
   
     <div class="inner-wrapper">
       <!-- start: sidebar -->
-      <app-sidebar></app-sidebar>
-      <!-- end: sidebar -->
+      <!-- <app-sidebar></app-sidebar> -->
+      <!-- end: sidebar --> 
   
       <section role="main" class="content-body pt-0 pr-0 pl-0">
           <header class="page-header">
@@ -432,6 +432,7 @@
                                       </div>
                                   </div>
                                   <div class="col-lg-5 offset-lg-1"></div>
+                                  
                               </div>
                               <!-- <div class="col-lg-5 offset-lg-1">
                                   <div class="row mt-3">
@@ -574,6 +575,11 @@
                                                   >Empty Miles ($)</label>
                                                   <input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles" type="text" class="form-control" >
                                               </div>
+                                              <div class="col-lg-10">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2"
+                                                >Calculate Empty Miles for a Dispatch After</label>
+                                                <input [(ngModel)]="driverData.paymentDetails.calculateMiles" name="paymentDetails.calculateMiles" type="text" class="form-control" >
+                                            </div>
                                           </div>
                                            <div class="row">
                                            <div class="col-lg-10">

@@ -50,10 +50,10 @@ export class ServiceProgramDetailComponent implements OnInit {
       complete: () => { },
       error: () => { },
       next: (result: any) => {
-        console.log(result);
         this.programs = result.Items;
         this.vehicles = this.programs[0]['vehicles'];
         this.tasks = this.programs[0]['serviceScheduleDetails'];
+        
         this.spinner.hide(); // loader hide
       },
     });
@@ -78,11 +78,10 @@ export class ServiceProgramDetailComponent implements OnInit {
    * Update Service Program
   */
   updateServiceProgram() {
-      // console.log('this.programs', this.programs);
+      
       let newProgram = Object.assign({}, ...this.programs);
       delete newProgram.carrierID;
       delete newProgram.timeModified;
-      // console.log('newProgram', newProgram);
       
       this.apiService.putData('servicePrograms', newProgram).subscribe({
         complete: () => { },
@@ -93,7 +92,7 @@ export class ServiceProgramDetailComponent implements OnInit {
                 const path = val.path;
                 // We Can Use This Method
                 const key = val.message.match(/'([^']+)'/)[1];
-                console.log(key);
+                
                 val.message = val.message.replace(/'.*'/, 'This Field');
                 this.errors[key] = val.message;
               })
@@ -116,7 +115,7 @@ export class ServiceProgramDetailComponent implements OnInit {
   }
 
   throwErrors() {
-    console.log(this.errors);
+    
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
@@ -138,11 +137,9 @@ export class ServiceProgramDetailComponent implements OnInit {
   }
   
   editTask(task, i) {
-    console.log('edittask', task);
     this.Title = 'Edit';
     $('#editServiceScheduleModal').modal('show');
-
-    console.log('programs', this.programs);
+    
     this.programData['serviceTask'] = task.serviceTask;
     this.programData['repeatByTime'] = task.repeatByTime;
     this.programData['repeatByTimeUnit'] = task.repeatByTimeUnit;
@@ -163,20 +160,20 @@ export class ServiceProgramDetailComponent implements OnInit {
       .subscribe((result: any) => {
         this.allVehicles = [];
         this.updateVehicles(result.Items, this.programs[0].vehicles);
-        // console.log('allVehicle', this.allVehicles);
+        
       });
   }
 
   updateVehicles(vehiclesArr, serviceArr) {
     vehiclesArr.filter(element => {
       if (!serviceArr.includes(element.vehicleID)) {
-        // console.log('not includes');
+        
         this.allVehicles.push(element);
       }
     });
   }
   addServiceProgram() {
-    // console.log('prog', this.programData);
+    
     this.programs[0].serviceScheduleDetails.push(this.programData);
     this.updateServiceProgram();
     $('#editServiceScheduleModal').modal('hide');
@@ -185,7 +182,7 @@ export class ServiceProgramDetailComponent implements OnInit {
   addVehicle() {
     this.vehicleData.filter(element => {
       if (!this.programs[0].vehicles.includes(element)) {
-        // console.log('element', element);
+        
         this.programs[0].vehicles.push(element);
         $('#addVehicleModal').modal('hide');
         this.fetchAllVehicles();

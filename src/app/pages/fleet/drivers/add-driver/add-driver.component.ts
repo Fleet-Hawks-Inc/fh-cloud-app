@@ -22,6 +22,7 @@ declare var $: any;
   styleUrls: ['./add-driver.component.css'],
 })
 export class AddDriverComponent implements OnInit {
+  Asseturl = this.apiService.AssetUrl;
   pageTitle: string;
   lastElement;
   hideNextBtn: boolean = true;
@@ -196,7 +197,7 @@ export class AddDriverComponent implements OnInit {
     this.fetchAllCitiesIDs(); // fetch all cities Ids with name
 
     this.fetchDocuments();
-
+    
     $(document).ready(() => {
       this.form = $('#driverForm, #groupForm').validate();
     });
@@ -294,18 +295,22 @@ export class AddDriverComponent implements OnInit {
       });
   }
 
-  getStates(id: any, oid = null) {
-    console.log('this.driverData.address[oid].countryName', oid);
-    console.log('this.countriesObject[id]', this.countriesObject[id]);
-    this.driverData.address[oid].countryName = this.countriesObject[id];
+  async getStates(id: any, oid = null) {
+    if(oid != null) {
+      this.driverData.address[oid].countryName = this.countriesObject[id];
+    }
+    
     this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
   }
 
-  getCities(id: any, oid = null) {
-    this.driverData.address[oid].stateName = this.statesObject[id];
+  async getCities(id: any, oid = null) {
+    if(oid != null) {
+      this.driverData.address[oid].stateName = this.statesObject[id];
+    }
+    
     this.apiService.getData('cities/state/' + id)
       .subscribe((result: any) => {
         this.cities = result.Items;
@@ -349,32 +354,13 @@ export class AddDriverComponent implements OnInit {
    * Selecting files before uploading
    */
   selectDocuments(event, i) {
-    console.log('event', i);
+    
     let files = [...event.target.files];
 
     if(this.uploadedDocs[i] == undefined){
       this.uploadedDocs[i] = files;
-      // this.uploadedDocs[i].pu
-      // alert('if');
     }
-    else{
-      alert('else');
-    }
-    console.log("driverdata", this.driverData);
-    // for (let j = 0; j < files.length; j++) {
-    //     this.uploadedDocs[i].push(files)
-    //   }
-    // console.log("driverdata", this.driverData.documentDetails)
-    // } else {
-    //   this.uploadedPhotos = [];
-    //   const reader = new FileReader();
-    //   reader.onload = e => this.driverProfileSrc = reader.result;
-    //   reader.readAsDataURL(files[0]);
-    //   for (let i = 0; i < files.length; i++) {
-    //     this.uploadedPhotos.push(files[i])
-    //   }
-    // }
-    // console.log("driverdata", this.driverData)
+    
   }
   selectPhoto(event) {
     let files = [...event.target.files];
@@ -660,15 +646,15 @@ export class AddDriverComponent implements OnInit {
         this.driverData['citizenship'] = result.citizenship;
         this.driverData['assignedVehicle'] = result.assignedVehicle;
         this.driverData['groupID'] = result.groupID;
-        this.driverProfileSrc = result.driverImage;
+        this.driverProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.driverImage}`;
+        
         this.driverData['gender'] = result.gender;
         this.driverData['workEmail'] = result.workEmail;
         this.driverData['workPhone'] = result.workPhone;
 
-        
         for (let i = 0; i < result.address.length; i++) {
-          this.getStates(result.address[i].countryID);
-          this.getCities(result.address[i].stateID);
+          await this.getStates(result.address[i].countryID);
+          await this.getCities(result.address[i].stateID);
           this.newAddress.push({
             addressType: result.address[i].addressType,
             countryID: result.address[i].countryID,
@@ -686,6 +672,7 @@ export class AddDriverComponent implements OnInit {
             }
           })
         }
+       
         this.driverData.address = this.newAddress;
         for (let i = 0; i < result.documentDetails.length; i++) {
           this.newDocuments.push({
@@ -697,9 +684,13 @@ export class AddDriverComponent implements OnInit {
             issueDate: result.documentDetails[i].issueDate,
             expiryDate: result.documentDetails[i].expiryDate,
           });
-          this.driverData.documentDetails = this.newDocuments;
-
+          if(result.documentDetails[i].uploadedDocs != undefined && result.documentDetails[i].uploadedDocs.length > 0){
+            result.documentDetails[i].uploadedDocs = result.documentDetails[i].uploadedDocs.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+          }
         }
+        
+        this.driverData.documentDetails = this.newDocuments;
+
         this.driverData.crossBorderDetails['ACI_ID'] = result.crossBorderDetails.ACI_ID;
         this.driverData.crossBorderDetails['ACE_ID'] = result.crossBorderDetails.ACE_ID;
         this.driverData.crossBorderDetails['fast_ID'] = result.crossBorderDetails.fast_ID;
@@ -708,6 +699,7 @@ export class AddDriverComponent implements OnInit {
         this.driverData.paymentDetails['paymentType'] = result.paymentDetails.paymentType;
         this.driverData.paymentDetails['loadedMiles'] = result.paymentDetails.loadedMiles;
         this.driverData.paymentDetails['emptyMiles'] = result.paymentDetails.emptyMiles;
+        this.driverData.paymentDetails['calculateMiles'] = result.paymentDetails.calculateMiles;
         this.driverData.paymentDetails['loadPayPercentage'] = result.paymentDetails.loadPayPercentage;
         this.driverData.paymentDetails['loadPayPercentageOf'] = result.paymentDetails.loadPayPercentageOf;
         this.driverData.paymentDetails['rate'] = result.paymentDetails.rate;
@@ -750,7 +742,28 @@ export class AddDriverComponent implements OnInit {
       delete element['userLocation'];
     }
     this.driverData['driverID'] = this.driverID;
-    this.apiService.putData('drivers', this.driverData).subscribe({
+    
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedPhotos.length; i++){
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append docs if any
+    for(let j = 0; j < this.uploadedDocs.length; j++){
+      for (let k = 0; k < this.uploadedDocs[j].length; k++) {
+        let file = this.uploadedDocs[j][k];
+        formData.append(`uploadedDocs-${j}`, file);  
+      }
+      
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.driverData));
+
+    this.apiService.putData('drivers', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -827,7 +840,7 @@ export class AddDriverComponent implements OnInit {
         },
       });
     } catch (err) {
-      console.log('inside catch block');
+      
       // this.hasError = true;
       // this.Error = err.message || 'Error during login';
     }
