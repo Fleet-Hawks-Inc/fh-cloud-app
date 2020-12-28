@@ -31,7 +31,7 @@ export class AddIssueComponent implements OnInit {
   currentStatus = 'OPEN';
   reportedDate: NgbDateStruct;
   description = '';
-  odometer = '';
+  odometer: number;
   reportedBy = '';
   assignedTo = '';
   carrierID;
