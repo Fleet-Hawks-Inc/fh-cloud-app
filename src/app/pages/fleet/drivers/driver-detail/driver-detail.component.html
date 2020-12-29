@@ -1,12 +1,7 @@
 <section class="body">
-    <!-- start: header -->
-    <!-- <app-header></app-header> -->
-    <!-- end: header -->
-  
+    
     <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <!-- <app-sidebar></app-sidebar> -->
-      <!-- end: sidebar -->
+      
       <section role="main" class="content-body pr-0 pl-0 pt-0">
         <header class="page-header">
            <div class="row pr-4 pl-2" style="padding-top:10px;">
@@ -894,7 +889,7 @@
                                             <div class="col-lg-6 p-2 bor_half">{{item.expiryDate}}</div>
                                         </div>
                                         <div *ngFor="let doc of item.uploadedDocs; let i = index;" >
-                                          <a href="{{Asseturl}}/{{carrierID}}/{{doc}}" target="_blank">{{doc}}</a>
+                                          <a href="{{Asseturl}}/{{carrierID}}/{{doc}}" target="_blank">Doc-{{i + 1}}</a>
                                         </div>
                                     </div>
                                 

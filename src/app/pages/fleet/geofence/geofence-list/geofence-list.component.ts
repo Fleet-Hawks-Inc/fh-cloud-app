@@ -23,6 +23,7 @@ export class GeofenceListComponent implements OnInit {
   title = 'Geofence List';
   geofences = [];
   dropdownList = [];
+  geofenceTypes: any;
   selectedItems = [];
   dropdownSettings: IDropdownSettings;
   defaultBindingsList = [
@@ -48,7 +49,7 @@ export class GeofenceListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchGeofences();
-    
+    this.fetchGeofenceTypes();
     this.dropdownList = [
       { item_id: 1, item_text: 'Mumbai' },
       { item_id: 2, item_text: 'Bangaluru' },
@@ -114,6 +115,13 @@ export class GeofenceListComponent implements OnInit {
         if(this.suggestedGeofences.length == 0){
           this.geofenceID = '';
         }
+      });
+  }
+
+  fetchGeofenceTypes() {
+    this.apiService.getData('geofenceTypes')
+      .subscribe((result: any) => {
+        this.geofenceTypes = result.Items;
       });
   }
 

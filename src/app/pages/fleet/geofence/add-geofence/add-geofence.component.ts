@@ -22,7 +22,7 @@ export class AddGeofenceComponent implements OnInit {
       cords: []
     }
   };
-  geofenceTypes;
+  geofenceTypes: any;
   geofenceTypeData = {};
   getGeofenceID;
   public marker;
@@ -141,12 +141,12 @@ export class AddGeofenceComponent implements OnInit {
   addGeofenceType() {
     this.apiService.postData('geofenceTypes', this.geofenceTypeData).subscribe({
       complete: () => { },
-      error: (err: any) => {
-        from(err.error)
+       error: (err: any) => {
+        from(err.error) 
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
@@ -161,7 +161,8 @@ export class AddGeofenceComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success('Type Added successfully');
-
+        $('#addGeofenceCategoryModal').modal('hide');
+        this.fetchGeofenceTypes();
       },
     });
   }
@@ -170,24 +171,20 @@ export class AddGeofenceComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.spinner.show();
-    this.apiService.postData('geofences', this.geofenceData)
-      .pipe(tap(v => {
-        console.log(v)
-      }))
-      .subscribe({
+    
+    this.apiService.postData('geofences', this.geofenceData).subscribe({
       complete: () => { },
-      error: (err: any) => {
-        from(err.error)
+       error: (err: any) => {
+        from(err.error) 
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/'.*'/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-               this.throwErrors();
-               this.spinner.hide();
+              this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -204,12 +201,11 @@ export class AddGeofenceComponent implements OnInit {
   }
 
   throwErrors() {
-    console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+          .addClass('error')
       });
     // this.vehicleForm.showErrors(this.errors);
   }
@@ -297,26 +293,22 @@ export class AddGeofenceComponent implements OnInit {
   this.hasSuccess = false;
   this.apiService.putData('geofences', this.geofenceData).subscribe({
     complete: () => { },
-    error: (err) => {
-      from(err.error)
-        .pipe(
-          map((val: any) => {
-            const path = val.path;
-            // We Can Use This Method
-            const key = val.message.match(/'([^']+)'/)[1];
-            console.log(key);
-            val.message = val.message.replace(/'.*'/, 'This Field');
-            this.errors[key] = val.message;
-          })
-        )
-        .subscribe({
-          complete: () => {
-            this.throwErrors();
-          },
-          error: () => { },
-          next: () => { },
-        });
-    },
+    error: (err: any) => {
+     from(err.error) 
+       .pipe(
+         map((val: any) => {
+           val.message = val.message.replace(/".*"/, 'This Field');
+           this.errors[val.context.label] = val.message;
+         })
+       )
+       .subscribe({
+         complete: () => {
+           this.throwErrors();
+         },
+         error: () => { },
+         next: () => { },
+       });
+   },
     next: (res) => {
       this.response = res;
       this.hasSuccess = true;

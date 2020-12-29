@@ -281,9 +281,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
         'colvis',
         'excel',
       ],
-      colReorder: {
-        fixedColumnsLeft: 1
-      },
+      colReorder: {},
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.drivers = resp['Items'];

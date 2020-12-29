@@ -20,12 +20,14 @@ export class ServiceProgramDetailComponent implements OnInit {
   private vehicles;
   private programID;
   private tasks;
+  allTasks = [];
   programData = {};
   vehicleData = [];
   errors: any;
   form;
   vehiclesObject: any = {};
-
+  tasksObjects: any = {};
+  
   constructor(
     private spinner: NgxSpinnerService,
     private apiService: ApiService,
@@ -38,7 +40,8 @@ export class ServiceProgramDetailComponent implements OnInit {
     this.fetchProgramByID();
     this.fetchAllVehiclesIDs();
     this.fetchAllVehicles();
-
+    this.fetchTasks();
+    this.fetchTasksByIDs();
     $(document).ready(() => {
       this.form = $('#vehicleForm, #taskForm').validate();
     });
@@ -53,7 +56,7 @@ export class ServiceProgramDetailComponent implements OnInit {
         this.programs = result.Items;
         this.vehicles = this.programs[0]['vehicles'];
         this.tasks = this.programs[0]['serviceScheduleDetails'];
-        
+        console.log("tasks", this.tasks);
         this.spinner.hide(); // loader hide
       },
     });
@@ -191,4 +194,23 @@ export class ServiceProgramDetailComponent implements OnInit {
     this.vehicleData = [];
     this.updateServiceProgram();
   }
+
+  fetchTasks() {
+    this.apiService.getData('tasks').subscribe({
+      error: () => {},
+      next: (result: any) => {
+       this.allTasks = result.Items;
+      },
+    });
+  }
+
+  fetchTasksByIDs() {
+    this.apiService.getData('tasks/get/list').subscribe({
+      error: () => {},
+      next: (result: any) => {
+       this.tasksObjects = result;
+      },
+    });
+  }
+
 }

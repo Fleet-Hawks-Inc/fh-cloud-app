@@ -1,28 +1,39 @@
 <section class="body">
-   <!-- start: header -->
-   <app-header></app-header>
-   <!-- end: header -->
-
+   
    <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <app-sidebar></app-sidebar>
-      <!-- end: sidebar -->
+      
       <section role="main" class="content-body pl-0 pr-0 pt-0">
          <header class="page-header pr-5">
             <form class="form-horizontal" method="get">
                <div class="row pr-1 mr-1" style="padding-top:10px;">
-                  <div class="col-md-2 col-lg-2">
-                     <div class="input-group input-group-md mb-3">
+                  <div class="col-md-2 col-lg-3">
+                     <div class="input-group input-group-md">
                         <input type="text" autocomplete="off" name="driverName" [(ngModel)]="driverName"
-                           class="form-control" (input)="getSuggestions($event.target.value)">
+                          placeholder="Search Driver" class="form-control" (input)="getSuggestions($event.target.value)">
                      </div>
-                     <div *ngFor="let suggestedDriver of suggestedDrivers" style="cursor: pointer;"
-                        (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)">
-                        {{ suggestedDriver.firstName }} {{ suggestedDriver.lastName }}
+                     <div *ngIf="suggestedDrivers?.length > 0" class="result-suggestions">
+                        <ul>
+                           <li *ngFor="let suggestedDriver of suggestedDrivers" style="cursor: pointer;"
+                           (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)"
+                           >{{ suggestedDriver.firstName }} {{ suggestedDriver.lastName }}</li>
+                        </ul>
                      </div>
                   </div>
-                  <div class="col-md-3 col-lg-3">
-                     <div class="btn-group flex-wrap" style="min-width:190px;">
+                  <div class="col-md-2 col-lg-2">
+                     <ng-select
+                        [(ngModel)]="currentStatus" 
+                        name="currentStatus"
+                        placeholder="Select Type"
+                        class="form-control populate">
+                       
+                        <ng-option value="All">All</ng-option>
+                        <ng-option value="On Duty">On Duty</ng-option>
+                        <ng-option value="Off Duty">Off Duty</ng-option>
+                        <ng-option value="Sleeper">Sleeper</ng-option>
+                        <ng-option value="Driving">Driving</ng-option>
+                        
+                  </ng-select>
+                     <!-- <div class="btn-group flex-wrap" style="min-width:190px;">
                         <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Search by Duty Status <span class="caret"></span></button>
                         <div class="dropdown-menu dutystatwd" role="menu">
                            <a class="dropdown-item text-1" [routerLink]="">All</a>
@@ -31,7 +42,7 @@
                            <a class="dropdown-item text-1" [routerLink]="">Sleeper</a>
                            <a class="dropdown-item text-1" [routerLink]="">Driving</a>
                         </div>
-                     </div>
+                     </div> -->
                   </div>
 
                   <div class="col-md-2  col-lg-2">
