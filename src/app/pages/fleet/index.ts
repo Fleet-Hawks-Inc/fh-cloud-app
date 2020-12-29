@@ -1,5 +1,4 @@
 export * from './vehicles/add-vehicle-new/add-vehicle-new.component';
-export * from './vehicles/edit-vehicle-new/edit-vehicle-new.component';
 export * from './vehicles/vehicle-list/vehicle-list.component';
 
 export * from './fleet-manager/user-list/user-list.component';

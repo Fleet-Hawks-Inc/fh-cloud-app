@@ -114,7 +114,7 @@ export class AddAssetsComponent implements OnInit {
    * Get all models from api
    */
   getModels(id) {
-  
+
     this.apiService
       .getData(`vehicleModels/manufacturer/${id}`)
       .subscribe((result: any) => {

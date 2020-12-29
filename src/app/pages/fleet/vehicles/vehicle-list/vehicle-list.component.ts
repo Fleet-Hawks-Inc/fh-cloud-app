@@ -95,16 +95,6 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
 
-  // deleteVehicle(vehicleId) {
-  //   this.apiService
-  //     .deleteData('vehicles/' + vehicleId)
-  //     .subscribe((result: any) => {
-  //       this.toastr.success('Vehicle Deleted Successfully!');
-  //       this.fetchVehicles();
-  //     });
-  // }
-
-
   /**
    * change the view of summary
    */

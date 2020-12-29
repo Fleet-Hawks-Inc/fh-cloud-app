@@ -5,8 +5,8 @@ import { AwsUploadService } from '../../../../../services';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
-import { escapeLeadingUnderscores } from 'typescript';
 import Constants from '../../../constants';
+
 @Component({
   selector: 'app-fuel-entry-details',
   templateUrl: './fuel-entry-details.component.html',
@@ -15,6 +15,7 @@ import Constants from '../../../constants';
 export class FuelEntryDetailsComponent implements OnInit {
 
   title = 'Fuel Entry';
+  Asseturl = this.apiService.AssetUrl;
   fuelList;
   /********** Form Fields ***********/
   fuelData = {
@@ -35,7 +36,7 @@ export class FuelEntryDetailsComponent implements OnInit {
        deductFromPay: false,
     additionalDetails: {
           avgGVW: '',
-          odometer: '',
+          odometer: 0,
           description: '',
           uploadedPhotos: [],
         }
@@ -44,8 +45,9 @@ export class FuelEntryDetailsComponent implements OnInit {
   vehicleList: any = {};
   assetList: any = {};
   tripList: any = {};
- 
+  vendorList: any = {};
   public fuelEntryImages = [];
+  existingPhotos = [];
   tripID = '';
   image;
   timeCreated: '';
@@ -84,19 +86,18 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.fetchFuelEntry();
     this.fetchAssetList();
     this.fetchTripList();
-    
+    this.fetchVendorList();
     this.carrierID = this.apiService.getCarrierID();
     this.fetchVehicleList();
-  }
-  fetchVendors(ID) {
-    this.apiService.getData('vendors/' + ID).subscribe((result: any) => {
-      this.vendors = result.Items;
-      this.vendorName = this.vendors[0].vendorName;
-    });
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
+    });
+  }
+  fetchVendorList() {
+    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+      this.vendorList = result;
     });
   }
   fetchAssetList() {
@@ -115,12 +116,11 @@ export class FuelEntryDetailsComponent implements OnInit {
     let sumCostPerGallon = 0;
     this.apiService.getData(`fuelEntries/unit/` + ID).subscribe((result: any) => {
       this.vehicleData = result.Items;
-
     });
     setTimeout(() => {
       sortedArray = _.orderBy(this.vehicleData, ['additionalDetails.odometer'], ['desc']);
-
-      if(sortedArray.length < 3){
+     
+      if(sortedArray.length < 2){
         this.MPG = 0;
         this.costPerMile = 0;
       }
@@ -158,7 +158,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     });
     setTimeout(() => {
       sortedArray = _.orderBy(this.ReeferData, ['additionalDetails.odometer'], ['desc']);
-
+  
       if(sortedArray.length < 2){
         this.MPG = 0;
         this.costPerMile = 0;
@@ -188,7 +188,8 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.apiService
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
-        result = result.Items[0];      
+        result = result.Items[0];    
+        this.carrierID = result.carrierID;  
         this.fuelData[`entryID`] = this.entryID;
         this.fuelData[`currency`] = result.currency,
         this.fuelData[`unitType`] = result.unitType;
@@ -206,26 +207,24 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData[`fuelDate`] = result.fuelDate;
         this.fuelData[`fuelTime`] = result.fuelTime;
         this.fuelData[`fuelType`] = result.fuelType;
-
         this.fuelData[`paidBy`] = result.paidBy;
         this.fuelData[`paymentMode`] = result.paymentMode;
         this.fuelData[`reference`] = result.reference;
         this.fuelData[`reimburseToDriver`] = result.reimburseToDriver;
         this.fuelData[`deductFromPay`] = result.deductFromPay;
-
-
         this.fuelData[`vendorID`] = result.vendorID;
         this.fuelData[`countryID`] = result.countryID;
         this.fuelData[`stateID`] = result.stateID;
         this.fuelData[`cityID`] = result.cityID;
         this.fuelData[`tripID`] = result.tripID;
-
         this.fuelData[`additionalDetails`][`avgGVW`] =  result.additionalDetails.avgGVW;
         this.fuelData[`additionalDetails`][`odometer`] = result.additionalDetails.odometer;
         this.fuelData[`additionalDetails`][`description`] = result.additionalDetails.description;
         this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
-        this.getImages();
-        this.fetchVendors(result.vendorID);
+        this.existingPhotos = result.additionalDetails.uploadedPhotos;
+        if(result.additionalDetails.uploadedPhotos != undefined && result.additionalDetails.uploadedPhotos.length > 0){
+          this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+        }
         if(result.unitType === Constants.VEHICLE){
           this.fetchAllVehicles(result.unitID);
         }
@@ -234,25 +233,13 @@ export class FuelEntryDetailsComponent implements OnInit {
         }
       });
      
-  }
-  getImages = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    for (let i = 0; i < this.fuelData.additionalDetails.uploadedPhotos.length; i++) {
-      this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles
-        (this.carrierID, this.fuelData.additionalDetails.uploadedPhotos[i]));
-      this.fuelEntryImages.push(this.image);
-    }
-  }
+  } 
   deleteImage(i: number) {
-    this.carrierID =  this.apiService.getCarrierID();
-    this.awsUS.deleteFile(this.carrierID, this.fuelData.additionalDetails.uploadedPhotos[i]);
+    // this.carrierID =  this.apiService.getCarrierID();
+   // this.awsUS.deleteFile(this.carrierID, this.fuelData.additionalDetails.uploadedPhotos[i]);
     this.fuelData.additionalDetails.uploadedPhotos.splice(i, 1);
     this.fuelEntryImages.splice(i, 1);
-   // this.updateFuelEntry();
     this.toastr.success('Image Deleted Successfully!');
-   // this.apiService.getData('fuelEntries//updatePhotos/' + this.entryID + '/' + this.additionalDetails.uploadedPhotos).subscribe((result: any) => {
-   //   this.toastr.success('Image Deleted Successfully!');
-   // });
   }
   deleteFuelEntry(entryID) {
     this.apiService
@@ -261,8 +248,5 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.toastr.success('Fuel Entry Deleted Successfully!');
         this.router.navigateByUrl('/fleet/expenses/fuel/list');
       });
-  }
-  updateFuelEntry() {
-    this.apiService.putData('fuelEntries', this.fuelData).subscribe();
   }
 }

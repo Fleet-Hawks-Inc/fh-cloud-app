@@ -68,25 +68,25 @@ vehicles= [];
   inspectionFormID = '';
   lifeCycle = {
     inServiceDate: '',
-    inServiceOdometer: 0,
-    estimatedServiceMonths: 0,
-    estimatedServiceMiles: 0,
+    inServiceOdometer: '',
+    estimatedServiceMonths: '',
+    estimatedServiceMiles: '',
     estimatedResaleValue: '',
     outOfServiceDate: '',
-    outOfServiceOdometer: 0,
+    outOfServiceOdometer: '',
   };
   specifications = {
-    height: 0,
+    height: '',
     heightUnit: '',
-    length: 0,
+    length: '',
     lengthUnit: '',
-    width: 0,
+    width: '',
     widthUnit: '',
     interiorVolume: '',
     passangerVolume: '',
-    groundClearnce: 0,
+    groundClearnce: '',
     groundClearnceUnit: '',
-    bedLength: 0,
+    bedLength: '',
     bedLengthUnit: '',
     cargoVolume: '',
     curbWeight: '',
@@ -94,13 +94,13 @@ vehicles= [];
     iftaReporting: false,
     towingCapacity: '',
     maxPayload: '',
-    EPACity: 0,
-    EPACombined: 0,
-    EPAHighway: 0,
+    EPACity: '',
+    EPACombined: '',
+    EPAHighway: '',
   };
   insurance = {
     dateOfIssue: '',
-    premiumAmount: 0,
+    premiumAmount: '',
     premiumCurrency: '',
     vendorID: '',
     dateOfExpiry: '',
@@ -111,13 +111,13 @@ vehicles= [];
   };
   fluid = {
     fuelType: '',
-    fuelTankOneCapacity: 0,
+    fuelTankOneCapacity: '',
     fuelQuality: '',
-    fuelTankTwoCapacity: 0,
-    oilCapacity: 0,
+    fuelTankTwoCapacity: '',
+    oilCapacity: '',
   };
   wheelsAndTyres = {
-    numberOfTyres: 0,
+    numberOfTyres: '',
     driveType: '',
     brakeSystem: '',
     wheelbase: '',
@@ -136,7 +136,7 @@ vehicles= [];
     engineBrand: '',
     aspiration: '',
     blockType: '',
-    bore: 0,
+    bore: '',
     camType: '',
     stroke: '',
     valves: '',
@@ -510,8 +510,10 @@ vehicles= [];
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.hasError = true;
+              this.Error = 'Please see the errors';
             },
-            error: () => { },
+            error: () => {},
             next: () => { },
           });
       },
@@ -564,7 +566,6 @@ vehicles= [];
           this.uploadedPhotos.push(files[i])
       }
     }
-    console.log("photo", this.uploadedPhotos)
   }
   /*
    * Uploading files which selected

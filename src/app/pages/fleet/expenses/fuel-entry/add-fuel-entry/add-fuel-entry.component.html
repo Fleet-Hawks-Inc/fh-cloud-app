@@ -188,31 +188,31 @@
                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-2">Payment Details</label>
                     </div>
                     <div class="col-lg-5 offset-lg-1">
-                       <div class="form-group row">
+                       <div class="row">
                           <div class="col-lg-5">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Paid By</label>
-                             <ng-select placeholder="Select Payer" name="paidBy" [(ngModel)]="fuelData.paidBy">
-                               
-                                   <ng-option value="Person 1">Person 1</ng-option>
-                                   <ng-option value="Person 2">Person 2</ng-option>
-                                   <ng-option value="Person 3">Person 3</ng-option>
-                                   <ng-option value="Person 4">Person 4</ng-option>
-                                   <ng-option value="Person 5">Person 5</ng-option>
-                               
-                             </ng-select>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Paid By</label>                            
+                             <ng-select placeholder="Select Payer" name="paidBy" [(ngModel)]="fuelData.paidBy" >                               
+                              <ng-option *ngFor="let driver of drivers"  value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</ng-option>                            
+                          
+                        </ng-select>
                           </div>
                           <div class="col-lg-5">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Payment Mode</label>
-                             <ng-select placeholder="Select Payment Mode" name="paymentMode" [(ngModel)]="fuelData.paymentMode">
-                           
+                             <ng-select placeholder="Select Payment Mode" name="paymentMode" [(ngModel)]="fuelData.paymentMode">                           
                                    <ng-option value="Cash">Cash</ng-option>
                                    <ng-option value="Check">Check</ng-option>
                                    <ng-option value="Credit Card">Credit Card</ng-option>
                                    <ng-option value="EFT">EFT</ng-option>
-                               
+                                   <ng-option value="FuelCard">Fuel Card</ng-option>
                              </ng-select>
                           </div>
                        </div>
+                       <div class="row" *ngIf="fuelData.paymentMode === 'FuelCard'">
+                        <div class="col-lg-5 offset-lg-5">
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Card Number</label>
+                           <input type="text" class="form-control" >
+                        </div>
+                     </div>
                     </div>
                     <div class="col-lg-5 offset-lg-1">
                        <div class="row">
@@ -281,7 +281,7 @@
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vendor</label>
                              <ng-select  placeholder="Select Vendor" name="vendorID" [(ngModel)]="fuelData.vendorID">
                               
-                                  <ng-option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.vendorName}}</ng-option>
+                                  <ng-option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
                               
                              </ng-select>
                           </div>
@@ -325,7 +325,7 @@
                              </ng-select>
                           </div>
                        </div>
-                       <div class="form-group row" id="attachPhotoLine">
+                       <div class="row" id="attachPhotoLine">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Attach Photo</label>
                              <input (change)="selectDocuments($event, 'uploadedPhotos')" name="additionalDetails.uploadedPhotos" type="file" multiple class="form-control border-0 p-0"> 
@@ -337,10 +337,10 @@
                        <div class="row" *ngIf = "fuelEntryImages?.length">
                         <div class="col-lg-6"  *ngFor="let photo of fuelEntryImages; let i=index">
                            <div class="vehicle-photo-box">
-                              <img [src]="photo" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
+                              <img src="{{photo}}" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
                               <hr class="m-3">
                               <div class="row">
-                                 <div class="col-lg-8">Image {{i}}</div>
+                                 <div class="col-lg-8">Image {{i+1}}</div>
                                  <div class="col-lg-4 text-right">
                                     <i class="fas fa-times text-danger" (click)="deleteImage(i)"></i>
                                  </div>
@@ -353,7 +353,7 @@
                        <div class="row pt-2">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Odometer Reading at Time of Fuelling(miles)</label>
-                             <input class="form-control" type="text" name="odometer" [(ngModel)] ="fuelData.additionalDetails.odometer">
+                             <input class="form-control" type="number" name="odometer" [(ngModel)] ="fuelData.additionalDetails.odometer">
                              <span *ngIf="LastOdometerMiles"> Last Odometer Miles {{LastOdometerMiles}}</span>
                           </div>
                        </div>

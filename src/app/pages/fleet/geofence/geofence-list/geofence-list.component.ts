@@ -37,7 +37,7 @@ export class GeofenceListComponent implements OnInit {
   geofenceID = '';
   type = '';
   geofenceName = '';
-
+  geofencesTypes: any = {};
 
 
   constructor(
@@ -49,6 +49,7 @@ export class GeofenceListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchGeofences();
+
     this.fetchGeofenceTypes();
     this.dropdownList = [
       { item_id: 1, item_text: 'Mumbai' },
@@ -70,7 +71,11 @@ export class GeofenceListComponent implements OnInit {
       itemsShowLimit: 3,
       allowSearchFilter: true
     };
+
+    this.fetchTypesNameByIDs();
+
   }
+
   onItemSelect(item: any) {
     console.log(item);
   }
@@ -93,8 +98,6 @@ export class GeofenceListComponent implements OnInit {
   
             }
           }
-          console.log('new_cords', new_cords);
-          // console.log(new_cords);
           this.map = this.LeafletMap.initGeoFenceMap();
           const poly = L.polygon(new_cords).addTo(this.map);
           this.map.fitBounds(poly.getBounds());
@@ -154,10 +157,18 @@ export class GeofenceListComponent implements OnInit {
       this.apiService
       .getData(`geofences/isDeleted/${geofenceID}/${value}`)
       .subscribe((result: any) => {
-        console.log('result', result);
         this.fetchGeofences();
       });
     }
+  }
+
+  fetchTypesNameByIDs() {
+    this.apiService.getData('geofenceTypes/get/list').subscribe({
+      error: () => {},
+      next: (result: any) => {
+        this.geofencesTypes = result;
+      }
+    });
   }
 
   checkboxCount = () => {
@@ -191,16 +202,7 @@ export class GeofenceListComponent implements OnInit {
           })
       }
     }
-    //  /******** Clear DataTable ************/
-    //  if ($.fn.DataTable.isDataTable('#datatable-default')) {
-    //   $('#datatable-default').DataTable().clear().destroy();
-    // }
-    // /******************************/
-
-    // this.apiService.deleteData('geofences/' + geofenceID)
-    //   .subscribe((result: any) => {
-    //     this.fetchGeofences();
-    //   })
+    
   }
 
   initDataTable() {
