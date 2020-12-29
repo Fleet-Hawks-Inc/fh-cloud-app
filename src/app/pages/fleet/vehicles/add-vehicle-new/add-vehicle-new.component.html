@@ -509,10 +509,10 @@
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Bed Length</label>
                                         <div class="row">
                                            <div class="col-lg-6 pr-0">
-                                              <input type="number" class="form-control" name="specifications.badLength" [(ngModel)]="specifications.badLength">
+                                              <input type="number" class="form-control" name="specifications.bedLength" [(ngModel)]="specifications.bedLength">
                                            </div>
                                            <div class="col-lg-6 pl-0">
-                                              <ng-select class="form-control populate" name="specifications.badLengthUnit" [(ngModel)]="specifications.badLengthUnit">
+                                              <ng-select class="form-control populate" name="specifications.bedLengthUnit" [(ngModel)]="specifications.bedLengthUnit">
                                                  <ng-option value="Feet">Feet</ng-option>
                                                  <ng-option value="Centimeters">Centimeters</ng-option>
                                                  <ng-option value="Inches">Inches</ng-option>
@@ -721,7 +721,9 @@
                                       </ng-select>
                                      </div>
                                      <div class="col-lg-2  mar-top-37">
-                                        <a routerLink="" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                       <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
+                                       class="btn btn-sm btn-success modal-with-form"><i
+                                          class="fas fa-plus"></i></a>
                                      </div>
                                   </div>
                                </div>
@@ -1056,7 +1058,9 @@
                                       </ng-select>
                                      </div>
                                      <div class="col-lg-2  mar-top-37">
-                                     <a href="#addVendorModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                       <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
+                                       class="btn btn-sm btn-success modal-with-form"><i
+                                          class="fas fa-plus"></i></a>
                                      </div>
                                   </div>
                                   <div class="col-lg-10">
@@ -1125,7 +1129,9 @@
                                       </ng-select>
                                      </div>
                                      <div class="col-lg-2  mar-top-37">
-                                     <a href="#addVendorModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                       <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
+                                       class="btn btn-sm btn-success modal-with-form"><i
+                                          class="fas fa-plus"></i></a>
                                      </div>
                                   </div>
                                   <div class="row">
@@ -1285,27 +1291,25 @@
                          </div>
                       </div>
                    </div>
-                </div>
-                <!-- SETTINGS -->
-            </form>
-             <div class="form-group row">
-                   <div class="col-lg-12 pr-5 text-right pb-4">
-                      <button *ngIf="activeTab != 1" type="button" (click)="previous()" class="btn btn-default mr-2 mt-4">Previous</button>
-                      <a *ngIf="activeTab != 10" [routerLink]="" (click)="next()" class="btn btn-success mt-4">Next</a>
-                      <button type="button" *ngIf="activeTab == 10" class="btn btn-default mr-2 mt-4"  (click)="cancel()" >Cancel</button> 
-                       <a *ngIf="activeTab == 10 && !vehicleID" [routerLink]="" (click)="addVehicle()" class="btn btn-success mt-4">Save</a>
-                       <a *ngIf="activeTab == 10 && vehicleID" [routerLink]="" (click)="updateVehicle()" class="btn btn-success mt-4">Update</a>
+                   <div class="form-group row">
+                     <div class="col-lg-12">
+                       <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
+                       <p class="text text-success" *ngIf="hasSuccess">
+                         {{ Success }}
+                       </p>
+                     </div>
                    </div>
-             </div>
-             <div class="form-group row">
-                <div class="col-lg-12">
-                  <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
-                  <p class="text text-success" *ngIf="hasSuccess">
-                    {{ Success }}
-                  </p>
                 </div>
-              </div>
- 
+                <div class="form-group row mt-3">
+                  <div class="col-lg-12 pr-5 text-right pb-4">
+                     <button *ngIf="activeTab != 1" type="button" (click)="previous()" class="btn btn-default mr-2 mt-4">Previous</button>
+                     <a *ngIf="activeTab != 10" [routerLink]="" (click)="next()" class="btn btn-success mt-4">Next</a>
+                     <button type="button" *ngIf="activeTab == 10" class="btn btn-default mr-2 mt-4"  (click)="cancel()" >Cancel</button> 
+                      <a *ngIf="activeTab == 10 && !vehicleID" [routerLink]="" (click)="addVehicle()" class="btn btn-success mt-4">Save</a>
+                      <a *ngIf="activeTab == 10 && vehicleID" [routerLink]="" (click)="updateVehicle()" class="btn btn-success mt-4">Update</a>
+                  </div>
+            </div>
+            </form>
           </div>
        </div>
     </section>

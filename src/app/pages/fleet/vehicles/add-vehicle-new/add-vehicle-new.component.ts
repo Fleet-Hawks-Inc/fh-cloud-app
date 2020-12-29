@@ -86,8 +86,8 @@ vehicles= [];
     passangerVolume: '',
     groundClearnce: '',
     groundClearnceUnit: '',
-    badLength: '',
-    badLengthUnit: '',
+    bedLength: '',
+    bedLengthUnit: '',
     cargoVolume: '',
     curbWeight: '',
     grossVehicleWeightRating: '',
@@ -379,8 +379,8 @@ vehicles= [];
         passangerVolume: this.specifications.passangerVolume,
         groundClearnce: this.specifications.groundClearnce,
         groundClearnceUnit: this.specifications.groundClearnceUnit,
-        badLength: this.specifications.badLength,
-        badLengthUnit: this.specifications.badLengthUnit,
+        bedLength: this.specifications.bedLength,
+        bedLengthUnit: this.specifications.bedLengthUnit,
         cargoVolume: this.specifications.cargoVolume,
         curbWeight: this.specifications.curbWeight,
         grossVehicleWeightRating: this.specifications.grossVehicleWeightRating,
@@ -510,8 +510,10 @@ vehicles= [];
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.hasError = true;
+              this.Error = 'Please see the errors';
             },
-            error: () => { },
+            error: () => {},
             next: () => { },
           });
       },
@@ -623,8 +625,8 @@ vehicles= [];
           passangerVolume: result.specifications.passangerVolume,
           groundClearnce: result.specifications.groundClearnce,
           groundClearnceUnit: result.specifications.groundClearnceUnit,
-          badLength: result.specifications.badLength,
-          badLengthUnit: result.specifications.badLengthUnit,
+          bedLength: result.specifications.bedLength,
+          bedLengthUnit: result.specifications.bedLengthUnit,
           cargoVolume: result.specifications.cargoVolume,
           curbWeight: result.specifications.curbWeight,
           grossVehicleWeightRating: result.specifications.grossVehicleWeightRating,
@@ -796,8 +798,8 @@ vehicles= [];
         passangerVolume: this.specifications.passangerVolume,
         groundClearnce: this.specifications.groundClearnce,
         groundClearnceUnit: this.specifications.groundClearnceUnit,
-        badLength: this.specifications.badLength,
-        badLengthUnit: this.specifications.badLengthUnit,
+        bedLength: this.specifications.bedLength,
+        bedLengthUnit: this.specifications.bedLengthUnit,
         cargoVolume: this.specifications.cargoVolume,
         curbWeight: this.specifications.curbWeight,
         grossVehicleWeightRating: this.specifications.grossVehicleWeightRating,
