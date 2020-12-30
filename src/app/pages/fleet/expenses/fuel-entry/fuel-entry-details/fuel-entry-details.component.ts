@@ -223,7 +223,7 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
         this.existingPhotos = result.additionalDetails.uploadedPhotos;
         if(result.additionalDetails.uploadedPhotos != undefined && result.additionalDetails.uploadedPhotos.length > 0){
-          this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+          this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
         if(result.unitType === Constants.VEHICLE){
           this.fetchAllVehicles(result.unitID);
@@ -249,4 +249,10 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.router.navigateByUrl('/fleet/expenses/fuel/list');
       });
   }
+   // delete uploaded images and documents
+ delete(name: string){
+  this.apiService.deleteData(`fuelEntries/uploadDelete/${this.entryID}/${name}`).subscribe((result: any) => {
+    this.fetchFuelEntry();
+  });
+}
 }
