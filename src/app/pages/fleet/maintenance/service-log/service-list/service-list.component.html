@@ -240,13 +240,15 @@
                                                            </td>
                                                           <td>{{item.completionDate}}<br><span *ngIf="item?.vehicleID" class="font-size-12">{{item.odometer}} miles</span></td>
                                                           <td>
-                                                              <span title="Service Task" *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index">{{task.taskName}}, </span><br>
-                                                               <div *ngIf="item?.selectedIssues">
-                                                                    <a *ngFor="let issue of item.selectedIssues;" href="javascript:;" class="text-info font-size-12" title="Issue"> {{issuesObject[issue]}}</a><br>
+                                                              <span title="Service Task" *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index">{{task.taskName}}, <br></span>
+                                                               <div *ngIf="item?.selectedIssues.length > 0">
+                                                                    <a *ngFor="let issue of item.selectedIssues;" href="javascript:;" class="text-info font-size-12" title="Issue"> {{issuesObject[issue]}} <br></a>
                                                                </div>
-                                                               <a href="javascript:;" class="text-info font-size-12" title="Vendor"> {{vendorsObject[item.vendorID]}}</a></td>
-                                                          <td>$ {{item.allServiceParts.total + item.allServiceTasks.total}}</td>  
+                                                               <a href="javascript:;" class="text-info font-size-12" title="Vendor"> {{vendorsObject[item.vendorID]}}</a>
+                                                            </td>
+                                                          <td>$  {{ (item.allServiceParts.total ? item.allServiceParts.total : 0 + item.allServiceTasks.total ? item.allServiceTasks.total : 0).toFixed(2) }} </td>  
                                                           <td>
+                                                             
                                                             <div class="dropdown dropright">
                                                                 <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                    <i class="fas fa-ellipsis-v"></i>
