@@ -328,4 +328,11 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
       return false;
     }
   }
+
+  sendEmailNotification(value) {
+    this.apiService.getData(`reminders/send/email-notification/${value.reminderID}?status=${value.reminderTasks.reminderStatus}`).subscribe((result) => {
+      console.log('result')
+      console.log(result)
+    });
+  }
 }
