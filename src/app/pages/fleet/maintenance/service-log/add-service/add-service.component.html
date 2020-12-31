@@ -1,12 +1,7 @@
 <section class="body">
-   <!-- start: header -->
-   <app-header></app-header>
-   <!-- end: header -->
-
+   
    <div class="inner-wrapper">
-       <!-- start: sidebar -->
-       <app-sidebar></app-sidebar>
-       <!-- end: sidebar -->
+      
 
        <section role="main" class="content-body pt-0 pl-0">
            <header class="page-header">
@@ -88,7 +83,7 @@
                                 <div class="col-lg-10" data-select2-id="118">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor ID</label>
                                    <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;">
-                                       <ng-option *ngFor="let vendor of vendors;" value="{{vendor.vendorID}}">{{vendor.firstName}} {{vendor.lastName}}</ng-option>
+                                       <ng-option *ngFor="let vendor of vendors;" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
                                           
                                    </ng-select>
                                 </div>
@@ -244,7 +239,7 @@
                                 <div class="col-lg-10" data-select2-id="14">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Parts</label>
                                    <ng-select [items]="inventory" [(ngModel)]="selectedParts" name="selectedParts" bindLabel="name" 
-                                   (add)="addParts()" [multiple]=true (clear)="clearTaks('parts')" style="width: 100%;"></ng-select>
+                                   (add)="addParts()" [multiple]=true (clear)="clearTaks('parts')" (remove)="removeParts($event)" style="width: 100%;"></ng-select>
                                    
                                 </div>
                              </div>
@@ -275,8 +270,8 @@
                                          <td>{{part.description}}</td>
                                          <td><input type="text" [(ngModel)]="part.quantity" name="quantity{{j}}" (blur)="calculateParts()" value="0.00" class="form-control"></td>
                                          <td><input type="text" [(ngModel)]="part.rate" name="rate{{j}}" value="0.00" (blur)="calculateParts()" class="form-control"></td>
-                                         <td><input type="text" [(ngModel)]="part.partCost" name="partCost{{j}}" value="0.00" class="form-control"></td>
-                                         <td><i (click)="remove('parts', j)" class="far fa-trash-alt"></i></td>
+                                         <td><input readonly type="text" [(ngModel)]="part.partCost" name="partCost{{j}}" value="0.00" class="form-control"></td>
+                                         <td><i (click)="remove('parts', part, j)" class="far fa-trash-alt"></i></td>
                                       </tr>
                                    </tbody>
                                 </table>

@@ -557,3 +557,27 @@ html.fixed .content-body {
 .ng-select.error .ng-select-container {
     border-color: #a94442;
 }
+.result-suggestions {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+}
+.result-suggestions ul {
+    list-style: none;
+    padding: 4px;
+}
+.result-suggestions ul li {
+    margin-bottom: 0.5rem;
+}
+.result-suggestions ul li:last-child {
+    margin-bottom: 0;
+}
+#addDriverVehicleModal .inner-wrapper header.page-header {
+    display: none;
+}
+#addDriverVehicleModal .inner-wrapper {
+    padding-top: 0;
+}
+#addDriverVehicleModal .content-body {
+    margin: 0;;
+}

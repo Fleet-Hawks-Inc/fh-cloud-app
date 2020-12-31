@@ -147,17 +147,16 @@ export class AddServiceComponent implements OnInit {
     formData.append('data', JSON.stringify(this.serviceData));
     this.apiService.postData('serviceLogs', formData, true).subscribe({
       complete: () => { },
-      error: (err: any) => {
-        from(err.error)
+       error: (err: any) => {
+        from(err.error) 
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/'.*'/, 'This Field');
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              this.spinner.hide(); // loader hide
               this.throwErrors();
             },
             error: () => { },
@@ -359,6 +358,19 @@ export class AddServiceComponent implements OnInit {
     }
   }
 
+  addParts() {
+    
+    this.inventory.forEach(element => {
+      if (element.name === this.selectedParts[this.selectedParts.length - 1].name) {
+        this.serviceData.allServiceParts.servicePartsList.push({
+          partID: element.itemID,
+          partNumber: element.partNumber,
+          description: element.description,
+        });
+      }
+      
+    });
+  }
 
   async addTasks() {
     let remindID;
@@ -407,8 +419,8 @@ export class AddServiceComponent implements OnInit {
     taskList.splice(index, 1);
   }
 
-  remove(arr, data, i) {
-    
+  remove(arr: any, data: any, i) {
+    console.log('data', data);
     if (arr === 'tasks') {
       let remindersList = this.reminders;
       remindersList.findIndex(item => {
@@ -416,9 +428,13 @@ export class AddServiceComponent implements OnInit {
           item.buttonShow = !item.buttonShow;
         }});
       this.serviceData.allServiceTasks.serviceTaskList.splice(i, 1);
-      this.totalLabors -= data.laborCost;
+      // this.totalLabors -= data.laborCost;
+      this.selectedTasks = this.selectedTasks.filter( elem => elem.taskName != data.taskName)
+      this.calculateTasks();
     } else {
       this.serviceData.allServiceParts.servicePartsList.splice(i, 1);
+      this.selectedParts = this.selectedParts.filter( elem => elem.itemID != data.partID);
+      this.calculateParts();
     }
   }
 
@@ -432,10 +448,34 @@ export class AddServiceComponent implements OnInit {
   }
 
   removeTasks(item) {
+    
     this.serviceData.allServiceTasks.serviceTaskList.filter(s => {
+        if (s.taskName === item.label) {
+          let index = this.serviceData.allServiceTasks.serviceTaskList.indexOf(s);
+          this.serviceData.allServiceTasks.serviceTaskList.splice(index, 1);
+          this.totalLabors -= s.laborCost; 
+          // this.calculateTasks();
+        }
+        if(this.totalLabors === 0) {
+          this.serviceData.allServiceTasks['discountPercent'] = 0;
+          this.serviceData.allServiceTasks['taxPercent'] = 0;
+          this.serviceData.allServiceTasks['total'] = 0;
+        }
+    });
+  }
+
+  removeParts(item) {
+    this.serviceData.allServiceParts.servicePartsList.filter(s => {
       if (s.taskName === item.label) {
-        let index = this.serviceData.allServiceTasks.serviceTaskList.indexOf(s);
-        this.serviceData.allServiceTasks.serviceTaskList.splice(index, 1);
+        let index = this.serviceData.allServiceParts.servicePartsList.indexOf(s);
+        this.serviceData.allServiceParts.servicePartsList.splice(index, 1);
+        // this.totalLabors -= s.laborCost; 
+        this.calculateTasks();
+      }
+      if(this.totalLabors === 0) {
+        this.serviceData.allServiceParts['discountPercent'] = 0;
+        this.serviceData.allServiceParts['taxPercent'] = 0;
+        this.serviceData.allServiceParts['total'] = 0;
       }
   });
   }
@@ -521,22 +561,6 @@ export class AddServiceComponent implements OnInit {
     this.serviceData.allServiceParts['total'] -= discountAmount;
     this.serviceData.allServiceParts['total'] += taxAmount;
   }
-
-
-
-  addParts() {
-    
-    this.inventory.forEach(element => {
-      if (element.name === this.selectedParts[this.selectedParts.length - 1].name) {
-        this.serviceData.allServiceParts.servicePartsList.push({
-          partNumber: element.partNumber,
-          description: element.description,
-        });
-      }
-      
-    });
-  }
-
 
 
   fetchServiceByID() {
