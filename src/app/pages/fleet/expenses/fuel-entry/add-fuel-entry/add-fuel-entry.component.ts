@@ -354,7 +354,7 @@ export class AddFuelEntryComponent implements OnInit {
         this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
         this.existingPhotos = result.additionalDetails.uploadedPhotos;
         if(result.additionalDetails.uploadedPhotos != undefined && result.additionalDetails.uploadedPhotos.length > 0){
-          this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+          this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
         setTimeout(() => {
           this.fillCountry();
@@ -423,6 +423,11 @@ export class AddFuelEntryComponent implements OnInit {
     });
   }
 
-
+ // delete uploaded images and documents
+ delete(name: string){
+  this.apiService.deleteData(`fuelEntries/uploadDelete/${this.entryID}/${name}`).subscribe((result: any) => {
+    this.fetchFuelEntry();
+  });
+}
 
 }

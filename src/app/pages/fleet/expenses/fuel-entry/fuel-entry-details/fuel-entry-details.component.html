@@ -13,7 +13,7 @@
                  <div class="btn-group flex-wrap mr-2">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                       <a class="modal-with-form dropdown-item text-1" href="#fuelCardTransaction">View Fuel Card Transaction Data</a>
+                       <!-- <a class="modal-with-form dropdown-item text-1" href="#fuelCardTransaction">View Fuel Card Transaction Data</a> -->
                        <a class="dropdown-item text-1"  routerLink="/fleet/expenses/fuel/edit/{{entryID }}">Edit</a>
                        <a class="modal-with-form dropdown-item text-1" href="javascript:;" (click)="deleteFuelEntry(entryID)">Delete</a>
                     </div>
@@ -141,12 +141,12 @@
                                  <div class="row" >
                                     <div class="col-lg-6"  *ngFor="let photo of fuelEntryImages; let i=index">
                                        <div class="vehicle-photo-box">
-                                          <img [src]="photo" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
+                                          <img src="{{photo.path}}" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
                                           <hr class="m-3">
                                           <div class="row">
                                              <div class="col-lg-8">Image {{i+1}}</div>
                                              <div class="col-lg-4 text-right">
-                                                <i class="fas fa-times text-danger" (click)="deleteImage(i)"></i>
+                                                <i class="fas fa-times text-danger"  (click)="delete(photo.name)"></i>
                                              </div>
                                           </div>
                                        </div>
@@ -207,43 +207,7 @@
                        </footer>
                     </section>
                  </div>
-                 <!--   edit photo -->
-                 <div id="editPhoto" class="modal-block modal-block-primary mfp-hide">
-                    <section class="card">
-                       <header class="card-header">
-                          <h2 class="card-title">Edit Photo</h2>
-                       </header>
-                       <div class="card-body text-dark">
-                          <form>
-                             <div class="form-row">
-                                <div class="form-group col-lg-12">
-                                   <label class="control-label font-weight-bold">Old Name of Photo</label>
-                                </div>
-                             </div>
-                             <div class="form-row">
-                                <div class="form-group col-lg-12">
-                                   <label class="control-label font-weight-bold">Name</label>
-                                   <input type="text" class="form-control"  >
-                                </div>
-                             </div>
-                             <div class="form-row">
-                                <div class="form-group col-lg-12">
-                                   <label class="control-label font-weight-bold">Description</label>
-                                   <textarea class="form-control" rows="3"></textarea>
-                                </div>
-                             </div>
-                          </form>
-                       </div>
-                       <footer class="card-footer">
-                          <div class="row">
-                             <div class="col-md-12 text-right">
-                                <button class="btn btn-success modal-confirm">Save</button>
-                                <button class="btn btn-default modal-dismiss">Cancel</button>
-                             </div>
-                          </div>
-                       </footer>
-                    </section>
-                 </div>
+               
                  </form>
               </div>
            </div>

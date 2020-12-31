@@ -34,6 +34,7 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
   issuesObject: any = {};
   assetsObject: any = {};
 
+  tasks = [];
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
@@ -47,11 +48,13 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit() {
     this.fetchLogs();
+    this.fetchTasks();
     this.fetchAllVehiclesIDs();
     this.fetchAllVendorsIDs();
     this.fetchAllIssuesIDs();
     this.fetchAllAssetsIDs();
     this.initDataTable();
+    
   }
 
   getSuggestions(value) {
@@ -96,6 +99,16 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
         this.assetsObject = result;
       });
+  }
+
+  /*
+   * Get all tasks from api
+   */
+  fetchTasks() {
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      console.log('tasks', result);
+      this.tasks = result.Items;
+    });
   }
 
   fetchLogs() {

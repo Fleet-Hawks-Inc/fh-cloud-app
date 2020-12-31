@@ -89,11 +89,11 @@ export class IssueDetailComponent implements OnInit {
         this.assignedTo = result.assignedTo;
 
         if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
-          this.photoSlides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+          this.issueImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
 
         if (result.uploadedDocs != undefined && result.uploadedDocs.length > 0) {
-          this.docSlides = result.uploadedDocs.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+          this.issueDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
       });
   }
@@ -157,5 +157,11 @@ export class IssueDetailComponent implements OnInit {
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
+  }
+  // delete uploaded image or document
+  delete(type: string,name: string){
+    this.apiService.deleteData(`issues/uploadDelete/${this.issueID}/${type}/${name}`).subscribe((result: any) => {     
+      this.fetchIssue();
+    });
   }
 }

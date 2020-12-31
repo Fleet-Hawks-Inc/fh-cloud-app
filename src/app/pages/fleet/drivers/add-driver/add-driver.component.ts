@@ -299,7 +299,7 @@ export class AddDriverComponent implements OnInit {
     if(oid != null) {
       this.driverData.address[oid].countryName = this.countriesObject[id];
     }
-    
+   
     this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
         this.states = result.Items;
@@ -372,19 +372,6 @@ export class AddDriverComponent implements OnInit {
     
   }
 
-  /*
-   * Uploading files which selected
-   */
-  uploadFiles = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
-      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
-    });
-  }
-
-  getImages = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-  }
 
   public searchLocation() {
     let target;
@@ -506,7 +493,6 @@ export class AddDriverComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.uploadFiles(); // upload selected files to bucket
         this.toastr.success('Driver added successfully');
         this.router.navigateByUrl('/fleet/drivers/list');
 
@@ -655,22 +641,47 @@ export class AddDriverComponent implements OnInit {
         for (let i = 0; i < result.address.length; i++) {
           await this.getStates(result.address[i].countryID);
           await this.getCities(result.address[i].stateID);
-          this.newAddress.push({
-            addressType: result.address[i].addressType,
-            countryID: result.address[i].countryID,
-            countryName: result.address[i].countryName,
-            stateID: result.address[i].stateID,
-            stateName: result.address[i].stateName,
-            cityID: result.address[i].cityID,
-            cityName: result.address[i].cityName,
-            zipCode: result.address[i].zipCode,
-            address1: result.address[i].address1,
-            address2: result.address[i].address2,
-            geoCords: { 
-              lat: result.address[i].geoCords.lat, 
-              lng: result.address[i].geoCords.lng
-            }
-          })
+          if (result.address[i].manual) {
+            this.newAddress.push({
+              addressType: result.address[i].addressType,
+              countryID: result.address[i].countryID,
+              countryName: result.address[i].countryName,
+              stateID: result.address[i].stateID,
+              stateName: result.address[i].stateName,
+              cityID: result.address[i].cityID,
+              cityName: result.address[i].cityName,
+              zipCode: result.address[i].zipCode,
+              address1: result.address[i].address1,
+              address2: result.address[i].address2,
+              geoCords: { 
+                lat: result.address[i].geoCords.lat, 
+                lng: result.address[i].geoCords.lng
+              },
+              manual: result.address[i].manual
+            })
+          } else {
+            
+            let newUserAddress = `${result.address[i].address1} ${result.address[i].address2}, ${result.address[i].cityName}, ${result.address[i].stateName}, ${result.address[i].countryName} ${result.address[i].zipCode}`;
+            this.newAddress.push({
+              addressType: result.address[i].addressType,
+              countryID: result.address[i].countryID,
+              countryName: result.address[i].countryName,
+              stateID: result.address[i].stateID,
+              stateName: result.address[i].stateName,
+              cityID: result.address[i].cityID,
+              cityName: result.address[i].cityName,
+              zipCode: result.address[i].zipCode,
+              address1: result.address[i].address1,
+              address2: result.address[i].address2,
+              geoCords: { 
+                lat: result.address[i].geoCords.lat, 
+                lng: result.address[i].geoCords.lng
+              },
+              userLocation: newUserAddress
+              
+            })
+          }
+         
         }
        
         this.driverData.address = this.newAddress;
@@ -784,7 +795,7 @@ export class AddDriverComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        // this.uploadFiles(); // upload selected files to bucket
+        
         this.toastr.success('Driver updated successfully');
         this.router.navigateByUrl('/fleet/drivers/list');
 
