@@ -45,6 +45,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   citiesObject: any = {};
   vehiclesObject: any = {};
   cyclesObject: any = {};
+  groupssObject:any = {}
 
   driverID = '';
   driverName = '';
@@ -55,6 +56,27 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
+
+  hideShow = {
+    name: true,
+    dutyStatus: true,
+    location: true,
+    currCycle: true,
+    currVehicle: true,
+    assets: true,
+    contact: true,
+    dl: true,
+    document: true,
+    status: true,
+    groupID: false,
+    citizenship: false,
+    address: false,
+    paymentType: false,
+    sin: false,
+    contractStart: false,
+    homeTerminal: false,
+    fastNumber: false
+  }
 
   private destroy$ = new Subject();
   constructor(
@@ -67,6 +89,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit(): void {
     
+    // this.hideShowColumn();
     this.fetchAllDocumentsTypes();
     this.fetchDrivers();
     this.fetchAllStatesIDs();
@@ -74,7 +97,9 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.fetchAllCyclesIDs();
     this.fetchAllCountriesIDs();
     this.fetchAllCitiesIDs();
+    this.fetchAllGrorups();
     this.initDataTable();
+    
 
     $(document).ready(() => {
       setTimeout(() => {
@@ -187,10 +212,16 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
 
   fetchAllCountriesIDs() {
-
     this.apiService.getData('countries/get/list')
     .subscribe((result: any) => {
       this.countriesObject = result;
+    });
+  }
+
+  fetchAllGrorups() {
+    this.apiService.getData('groups/get/list')
+    .subscribe((result: any) => {
+      this.groupssObject = result;
     });
   }
 
@@ -271,27 +302,34 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       pageLength: this.pageLength,
       serverSide: true,
       processing: true,
-
       order: [],
       columnDefs: [ //sortable false
-        { "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "orderable": false },
+        { "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,], "orderable": false },
       ],
-      dom: 'Bfrtip',
-      buttons: [
-        'colvis',
-        'excel',
-      ],
+      dom: 'lrtip',
       colReorder: {
         fixedColumnsLeft: 1
       },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.drivers = resp['Items'];
+          // let fetchedDrivers = resp['Items'].map(function(v){ return v.driverID; });
+          for (let i = 0; i < current.drivers.length; i++) {
+            const element = current.drivers[i];
+            element.address = {};
+            this.apiService.getData(`addresses/driver/${element.driverID}`).subscribe((result: any) => {
+              element.address = result['Items'][0];
+            });
+          }
+          console.log('element')
+          console.log(current.drivers)
+          
           if (resp['LastEvaluatedKey'] !== undefined) {
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].driverID;
           } else {
             this.lastEvaluatedKey = '';
           }
+          
           callback({
             recordsTotal: current.totalRecords,
             recordsFiltered: current.totalRecords,
@@ -322,5 +360,127 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else {
       return false;
     }
+  }
+
+  hideShowColumn() {
+    //for headers
+    if(this.hideShow.name == false) {
+      $('.col1').css('display','none');
+    } else {
+      $('.col1').css('display','');
+    }
+
+    if(this.hideShow.dutyStatus == false) {
+      $('.col2').css('display','none');
+    } else {
+      $('.col2').css('display','');
+    }
+
+    if(this.hideShow.location == false) {
+      $('.col18').css('display','none');
+    } else {
+      $('.col18').css('display','');
+    }
+
+    if(this.hideShow.currCycle == false) {
+      $('.col11').css('display','none');
+    } else {
+      $('.col11').css('display','');
+    }
+
+    if(this.hideShow.currVehicle == false) {
+      $('.col12').css('display','none');
+    } else {
+      $('.col12').css('display','');
+    }
+
+    if(this.hideShow.assets == false) {
+      $('.col13').css('display','none');
+    } else {
+      $('.col13').css('display','');
+    }
+
+    if(this.hideShow.contact == false) {
+      $('.col14').css('display','none');
+    } else {
+      $('.col14').css('display','');
+    }
+
+    if(this.hideShow.dl == false) {
+      $('.col15').css('display','none');
+    } else {
+      $('.col15').css('display','');
+    }
+
+    if(this.hideShow.document == false) {
+      $('.col16').css('display','none');
+    } else {
+      $('.col16').css('display','');
+    }
+
+    if(this.hideShow.status == false) {
+      $('.col17').css('display','none');
+    } else {
+      $('.col17').css('display','');
+    }
+
+    //extra columns
+    if(this.hideShow.groupID == false) {
+      $('.col3').css('display','none');
+    } else { 
+      $('.col3').removeClass('extra');
+      $('.col3').css('display','');
+    }
+
+    if(this.hideShow.citizenship == false) {
+      $('.col4').css('display','none');
+    } else { 
+      $('.col4').removeClass('extra');
+      $('.col4').css('display','');
+    }
+
+    if(this.hideShow.address == false) {
+      $('.col5').css('display','none');
+    } else { 
+      $('.col5').removeClass('extra');
+      $('.col5').css('display','');
+    }
+    
+    if(this.hideShow.paymentType == false) {
+      $('.col6').css('display','none');
+    } else { 
+      $('.col6').removeClass('extra');
+      $('.col6').css('display','');
+    }
+
+    if(this.hideShow.sin == false) {
+      $('.col7').css('display','none');
+    } else { 
+      $('.col7').removeClass('extra');
+      $('.col7').css('display','');
+    }
+
+    if(this.hideShow.contractStart == false) {
+      $('.col8').css('display','none');
+    } else { 
+      $('.col8').removeClass('extra');
+      $('.col8').css('display','');
+    }
+
+    if(this.hideShow.homeTerminal == false) {
+      $('.col9').css('display','none');
+    } else { 
+      $('.col9').removeClass('extra');
+      $('.col9').css('display','');
+    }
+
+    if(this.hideShow.fastNumber == false) {
+      $('.col10').css('display','none');
+    } else { 
+      $('.col10').removeClass('extra');
+      $('.col10').css('display','');
+    }
+    
+
   }
 }
