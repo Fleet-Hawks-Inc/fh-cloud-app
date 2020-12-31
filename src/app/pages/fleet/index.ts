@@ -18,7 +18,6 @@ export * from './assets/asset-detail/asset-detail.component';
 
 export * from './expenses/fuel-entry/add-fuel-entry/add-fuel-entry.component';
 export * from './expenses/fuel-entry/fuel-entry-list/fuel-entry-list.component';
-export * from './expenses/fuel-entry/edit-fuel-entry/edit-fuel-entry.component';
 export * from './expenses/fuel-entry/fuel-entry-details/fuel-entry-details.component';
 export * from './expenses/tickets/add-ticket/add-ticket.component';
 export * from './expenses/tickets/edit-ticket/edit-ticket.component';
