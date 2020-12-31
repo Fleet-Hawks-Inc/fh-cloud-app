@@ -10,6 +10,8 @@ import { HereMapService } from "../../../../../services/here-map.service";
   styleUrls: ['./service-detail.component.css']
 })
 export class ServiceDetailComponent implements OnInit {
+  Asseturl = this.apiService.AssetUrl;
+
   private logID;
   programs;
   logsData: any;
@@ -42,6 +44,8 @@ export class ServiceDetailComponent implements OnInit {
   partsTaxPercent: number;
   partsTotal: number;
 
+  photos: any = [];
+  docs: any = [];
   constructor(
       private spinner: NgxSpinnerService,
       private apiService: ApiService,
@@ -65,7 +69,7 @@ export class ServiceDetailComponent implements OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        this.logsData = result.Items;
+        this.logsData = result.Items[0];
         result = result.Items[0];
         
         this.vehicle = result.vehicleID;
@@ -92,7 +96,11 @@ export class ServiceDetailComponent implements OnInit {
         this.partsTaxAmount = result.allServiceParts.taxAmount;
         this.partsTaxPercent = result.allServiceParts.taxPercent;
         this.partsTotal = result.allServiceParts.total;
-        this.spinner.hide(); // loader hide
+        
+        if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+          this.photos = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+        }
+
       },
     });
   }

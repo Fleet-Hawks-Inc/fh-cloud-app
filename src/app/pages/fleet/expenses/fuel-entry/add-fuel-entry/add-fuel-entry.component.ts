@@ -65,6 +65,7 @@ export class AddFuelEntryComponent implements OnInit {
   vendors = [];
   vehicles = [];
   assets = [];
+  drivers = [];
   reeferArray = [];
   trips = [];
   fuelEntryImages = [];
@@ -107,6 +108,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.fetchTrips();
     this.fetchCountries();
     this.fetchAssets();
+    this.fetchDrivers();
     this.entryID = this.route.snapshot.params[`entryID`];
     if (this.entryID) {
       this.title = 'Edit Fuel Entry';
@@ -142,6 +144,11 @@ export class AddFuelEntryComponent implements OnInit {
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
+    });
+  }
+  fetchDrivers() {
+    this.apiService.getData('drivers').subscribe((result: any) => {
+      this.drivers = result.Items;
     });
   }
   fetchAssets() {
@@ -347,7 +354,7 @@ export class AddFuelEntryComponent implements OnInit {
         this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
         this.existingPhotos = result.additionalDetails.uploadedPhotos;
         if(result.additionalDetails.uploadedPhotos != undefined && result.additionalDetails.uploadedPhotos.length > 0){
-          this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+          this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
         setTimeout(() => {
           this.fillCountry();
@@ -416,6 +423,11 @@ export class AddFuelEntryComponent implements OnInit {
     });
   }
 
-
+ // delete uploaded images and documents
+ delete(name: string){
+  this.apiService.deleteData(`fuelEntries/uploadDelete/${this.entryID}/${name}`).subscribe((result: any) => {
+    this.fetchFuelEntry();
+  });
+}
 
 }

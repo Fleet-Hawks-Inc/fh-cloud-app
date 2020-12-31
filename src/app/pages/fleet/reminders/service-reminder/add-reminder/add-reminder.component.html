@@ -37,7 +37,7 @@
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                     Vehicle</label>
                                  <ng-select [(ngModel)]="reminderData.reminderIdentification"
-                                    name="reminderIdentification">
+                                    name="reminderIdentification" placeholder="Select vehicle to add reminder">
                                    
                                        <ng-option *ngFor="let item of vehicles" value="{{item.vehicleID}}">
                                           {{item.vehicleIdentification}}</ng-option>
@@ -50,7 +50,7 @@
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed
                                     Users/Groups</label>
-                                 <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers"
+                                 <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers"  placeholder="Select user(s)/group(s) to send Email"
                                     name="reminderData.subscribers" style="width: 100%;">
                                     <optgroup label="Select User">
                                        <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}
@@ -80,7 +80,7 @@
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                     Service Tasks</label>
-                                    <ng-select [(ngModel)]="reminderData.reminderTasks.task"
+                                    <ng-select [(ngModel)]="reminderData.reminderTasks.task"  placeholder="Select service task to perform on vehicle"
                                     name="task" style="width: 100%;">
                                     <optgroup label="Select Service Task">
                                        <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
@@ -120,7 +120,7 @@
                                        <label
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer
                                           Miles</label>
-                                       <input [(ngModel)]="reminderData.reminderTasks.odometer"
+                                       <input [(ngModel)]="reminderData.reminderTasks.odometer" placeholder="Miles to repeat service task"
                                           name="odometer" type="number" class="form-control">
                                     </div>
                                  </div>

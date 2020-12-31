@@ -1,13 +1,7 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-  
+    
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-  
+       
         <section role="main" class="content-body pt-0 pr-0 pl-0">
             <header class="page-header pr-5 service-log-header">
             
@@ -19,135 +13,22 @@
                                 class="form-control" (input)="getSuggestions($event.target.value)"
                                 placeholder="Search by Vehicle Name"/>
                             </div>
-                            <div *ngFor="let suggestedUnit of suggestedVehicles" style="cursor: pointer"
-                                (click)="setVehicle(suggestedUnit.vehicleID, suggestedUnit.vehicleIdentification)">
-                                {{ suggestedUnit.vehicleIdentification }}
-                            </div>
+                            <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
+                                <ul>
+                                   <li *ngFor="let suggestedUnit of suggestedVehicles" style="cursor: pointer"
+                                   (click)="setVehicle(suggestedUnit.vehicleID, suggestedUnit.vehicleIdentification)"
+                                   > {{ suggestedUnit.vehicleIdentification }}</li>
+                                </ul>
+                             </div>
+                            
                         </div>
 
                         <div class="col-md-2  col-lg-2">
-                            <select data-plugin-selectTwo class="form-control populate">
-                                <optgroup label="Search Service Task">
-                                    <option value="">A/C Compressor Replacement</option>
-                                    <option value="">A/C Condenser Replacement</option>
-                                    <option value="">A/C Diagnosis</option>
-                                    <option value="">A/C Evaporator Replacement</option>
-                                    <option value="">A/C Inspection</option>
-                                    <option value="">A/C Recharge</option>
-                                    <option value="">Air Brake System Valve Inspection</option>
-                                    <option value="">Air Cleaner Inspection</option>
-                                    <option value="">Air Compressor Inspection</option>
-                                    <option value="">Air Dryer Desiccant Replacement</option>
-                                    <option value="">Air Dryer Inspection</option>
-                                    <option value="">Air Filter Replacement</option>
-            
-                                    <option value="">Alcohol Evaporator Cleaning</option>
-                                    <option value="">Alternator Replacement</option>
-                                    <option value="">Automatic Drain Valve Inspection</option>
-                                    <option value="">Axle Lubricant and Filter Replacement</option>
-                                    <option value="">Ball Joint Replacement</option>
-                                    <option value="">Battery Inspection</option>
-                                    <option value="">Battery-Powered HVAC System Inspection</option>
-                                    <option value="">Battery Replacement</option>
-                                    <option value="">Brake Caliper Replacement</option>
-                                    <option value="">Brake Camshaft Bracket Lubrication</option>
-                                    <option value="">Brake Inspection</option>
-                                    <option value="">Brake Pad(s) Replacement</option>
-            
-                                    <option value="">Brake Rotor Replacement</option>
-                                    <option value="">Brake Slack Adjuster Lubrication</option>
-                                    <option value="">Cabin Air FIlter Replacement</option>
-                                    <option value="">Cab Shock Absorber Bracket Torque Check</option>
-                                    <option value="">Car Wash</option>
-                                    <option value="">Catalytic Converter Replacement</option>
-                                    <option value="">Charging and Starting System Inspection</option>
-                                    <option value="">Charging System Diagnosis</option>
-                                    <option value=""> Clutch Hydraulic Fluid Level Check</option>
-                                    <option value="">Clutch Hydraulic Fluid Replacement</option>
-                                    <option value="">Clutch Release Bearing Lubrication</option>
-                                    <option value="">Coolant Flush</option>
-            
-                                    <option value="">Cooling System Fluid Level Inspection</option>
-                                    <option value="">Clutch Hydraulic Fluid Replacement</option>
-                                    <option value="">Door Window Motor/Regulator Replacement</option>
-                                    <option value="">Drag Link Inspection</option>
-                                    <option value="">Drive Axle Assembly Fluid Replacement</option>
-                                    <option value="">Driveline Inspection</option>
-                                    <option value="">Driveline Lubrication</option>
-                                    <option value="">Engine Air Filter Replacement</option>
-                                    <option value="">Engine Belt Inspection</option>
-                                    <option value="">Engine Coolant Drain & Refill</option>
-                                    <option value="">Engine Coolant Replacement</option>
-                                    <option value="">Engine/Drive Belt(s) Inspection</option>
-            
-            
-                                    <option value="">Engine/Drive Belt(s) Replacement</option>
-                                    <option value="">Engine Oil & Filter Replacement</option>
-                                    <option value="">Exhaust Manifold Replacement</option>
-                                    <option value="">Exhaust System Inspection</option>
-                                    <option value="">Factory Scheduled Maintenance</option>
-                                    <option value="">Fan Clutch Inspection</option>
-                                    <option value="">Fifth Wheel Inspection</option>
-                                    <option value="">Fifth Wheel Lubrication</option>
-                                    <option value="">Fuel Filter Replacement</option>
-                                    <option value="">Fuel Injector Replacement</option>
-                                    <option value="">Fuel Pump Replacement</option>
-                                    <option value=""> Fuel/Water Separator Filter Replacement</option>
-            
-                                    <option value="">Head Gasket(s) Replacement</option>
-                                    <option value="">Heater Blower Motor Replacement</option>
-                                    <option value="">Heater Control Valve Replacement</option>
-                                    <option value="">Heater Core Replacement</option>
-                                    <option value="">Heater Hose Replacement</option>
-                                    <option value="">Ignition Coil Replacement</option>
-                                    <option value="">Intake Manifold Gasket Replacement</option>
-                                    <option value="">Knuckle Pin Lubrication</option>
-                                    <option value="">Mirror Folding Check</option>
-                                    <option value="">Oil Change</option>
-                                    <option value="">Oil & Filter Change</option>
-                                    <option value=""> Oil Pump Replacement</option>
-            
-                                    <option value="">Other Maintenance</option>
-                                    <option value="">Oxygen Sensor Replacement</option>
-                                    <option value="">Power Steering Fluid and Filter Replacement</option>
-                                    <option value="">Power Steering Fluid Level Inspection</option>
-                                    <option value="">Power Steering Gear Lubrication</option>
-                                    <option value="">Power Steering Hose Replacement</option>
-                                    <option value="">Power Steering Pump Replacement</option>
-                                    <option value="">Pressure Relief Cap Inspection</option>
-                                    <option value="">Radiator Repair</option>
-                                    <option value="">Resurface Rotors</option>
-                                    <option value=""> Rotate Tires</option>
-                                    <option value="">Rotor Replacement</option>
-            
-                                    <option value="">Spark Plug Replacement</option>
-                                    <option value="">Spark Plugs Replacement</option>
-                                    <option value="">Starter Replacement</option>
-                                    <option value="">Steer Axle Hub Cap Vent Plug Inspection</option>
-                                    <option value="">Suspension Inspection</option>
-                                    <option value="">Suspension U-Bolt Torque Check</option>
-                                    <option value="">Thermostat Replacement</option>
-                                    <option value="">Tie Rod End Replacement</option>
-                                    <option value="">Tie Rod Inspection</option>
-                                    <option value="">Tire Check</option>
-                                    <option value="">Tire Replacement</option>
-                                    <option value="">Tire Rotation</option>
-            
-                                    <option value="">Tire Service</option>
-                                    <option value="">Trailer Cable Inspection</option>
-                                    <option value="">Transfer Case Fluid Replacement</option>
-                                    <option value="">Transmission Filter Replacement</option>
-                                    <option value="">Transmission Fluid Drain & Refill</option>
-                                    <option value="">Transmission Fluid Level Inspection</option>
-                                    <option value="">Transmission Fluid Replacement</option>
-                                    <option value=""> Transmission Replacement</option>
-                                    <option value="">Water Pump Replacement</option>
-                                    <option value="">Wheel Alignment</option>
-                                    <option value=""> Wheel Bearing Replacement</option>
-                                    <option value="">Wheel Nut Check</option>
-                                    <option value="">Windshield Wiper(s) Replacement</option>
-                                </optgroup>
-                            </select>
+                            <ng-select placeholder="Select Task" class="form-control populate">
+                                <ng-option *ngFor="let item of tasks;" value="{{item.taskID}}">
+                                    <div title="{{item.taskName}}">{{item.taskName}}</div>
+                                </ng-option>
+                            </ng-select>
                         </div>
 
                         <div class="col-md-2 col-lg-2 pl-2">
@@ -240,13 +121,15 @@
                                                            </td>
                                                           <td>{{item.completionDate}}<br><span *ngIf="item?.vehicleID" class="font-size-12">{{item.odometer}} miles</span></td>
                                                           <td>
-                                                              <span title="Service Task" *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index">{{task.taskName}}, </span><br>
-                                                               <div *ngIf="item?.selectedIssues">
-                                                                    <a *ngFor="let issue of item.selectedIssues;" href="javascript:;" class="text-info font-size-12" title="Issue"> {{issuesObject[issue]}}</a><br>
+                                                              <span title="Service Task" *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index">{{task.taskName}}, <br></span>
+                                                               <div *ngIf="item?.selectedIssues.length > 0">
+                                                                    <a *ngFor="let issue of item.selectedIssues;" href="javascript:;" class="text-info font-size-12" title="Issue"> {{issuesObject[issue]}} <br></a>
                                                                </div>
-                                                               <a href="javascript:;" class="text-info font-size-12" title="Vendor"> {{vendorsObject[item.vendorID]}}</a></td>
-                                                          <td>$ {{item.allServiceParts.total + item.allServiceTasks.total}}</td>  
+                                                               <a href="javascript:;" class="text-info font-size-12" title="Vendor"> {{vendorsObject[item.vendorID]}}</a>
+                                                            </td>
+                                                          <td>$  {{ (item.allServiceParts.total ? item.allServiceParts.total : 0 + item.allServiceTasks.total ? item.allServiceTasks.total : 0).toFixed(2) }} </td>  
                                                           <td>
+                                                             
                                                             <div class="dropdown dropright">
                                                                 <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                    <i class="fas fa-ellipsis-v"></i>

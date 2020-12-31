@@ -45,6 +45,10 @@ export class DriverDetailComponent implements OnInit {
   documents: any;
 
   liceIssueSate: any;
+  liceIssueCountry: any;
+  liceWCB: any;
+  liceHealthCare: any;
+  liceVehicleType: any
   licenceExpiry: any;
   liceMedicalCardRenewal: any;
   liceContractStart: any;
@@ -54,6 +58,7 @@ export class DriverDetailComponent implements OnInit {
   paymentType: any;
   loadedMiles: any;
   emptyMiles: any;
+  calculateMiles: any;
   sinNumber: any;
   loadPayPercentage: any;
   loadPayPercentageOf: any;
@@ -76,9 +81,10 @@ export class DriverDetailComponent implements OnInit {
   
   cycleObjects: any = {};
   yardsObjects: any = {};
-  statesObject: any;
-  countriesObject: any;
-  citiesObject: any;
+  statesObject: any = {};
+  countriesObject: any = {};
+  citiesObject: any = {};
+  groupsObjects: any = {};
 
   docs = [];
 
@@ -104,6 +110,7 @@ export class DriverDetailComponent implements OnInit {
     this.fetchAllCountriesIDs();
     this.fetchAllStatesIDs();
     this.fetchAllCitiesIDs();
+    this.fetchGroupsbyIDs();
   }
 
    /**
@@ -141,8 +148,12 @@ export class DriverDetailComponent implements OnInit {
           this.documents = this.driverData.documentDetails
           
           this.liceIssueSate = this.driverData.licenceDetails.issuedState;
+          this.liceIssueCountry = this.driverData.licenceDetails.issuedCountry;
           this.licenceExpiry = this.driverData.licenceDetails.licenceExpiry;
           this.liceMedicalCardRenewal = this.driverData.licenceDetails.medicalCardRenewal;
+          this.liceWCB = this.driverData.licenceDetails.WCB;
+          this.liceHealthCare = this.driverData.licenceDetails.healthCare;
+          this.liceVehicleType = this.driverData.licenceDetails.vehicleType;
           this.liceContractStart = this.driverData.licenceDetails.contractStart;
           this.liceContractEnd = this.driverData.licenceDetails.contractEnd;
           this.liceDOB = this.driverData.licenceDetails.DOB;
@@ -150,6 +161,7 @@ export class DriverDetailComponent implements OnInit {
           this.paymentType = this.driverData.paymentDetails.paymentType;
           this.loadedMiles = this.driverData.paymentDetails.loadedMiles;
           this.emptyMiles = this.driverData.paymentDetails.emptyMiles;
+          this.calculateMiles = this.driverData.paymentDetails.calculateMiles;
           this.sinNumber = this.driverData.paymentDetails.SIN_Number;
           this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
           this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;
@@ -170,10 +182,10 @@ export class DriverDetailComponent implements OnInit {
           this.emerEmail = this.driverData.emergencyDetails.email;
           this.emerRelationship = this.driverData.emergencyDetails.relationship;
 
-          console.log('Driver detail', this.driverData);
+          
         }
       }, (err) => {
-        console.log('Driver detail', err);
+        
       });
   }
 
@@ -181,6 +193,13 @@ export class DriverDetailComponent implements OnInit {
     this.apiService.getData('cycles/get/list')
       .subscribe((result: any) => {
         this.cycleObjects = result;
+      });
+  }
+
+  fetchGroupsbyIDs() {
+    this.apiService.getData('groups/get/list')
+      .subscribe((result: any) => {
+        this.groupsObjects = result;
       });
   }
 
@@ -195,7 +214,6 @@ export class DriverDetailComponent implements OnInit {
     this.apiService.getData('states/get/list')
       .subscribe((result: any) => {
         this.statesObject = result;
-        console.log("ffff", this.statesObject['a1f50920-8979-11ea-94e8-ddabdd2e57f0'])
       });
   }
 

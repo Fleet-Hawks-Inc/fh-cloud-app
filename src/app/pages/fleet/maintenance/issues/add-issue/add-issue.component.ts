@@ -31,7 +31,7 @@ export class AddIssueComponent implements OnInit {
   currentStatus = 'OPEN';
   reportedDate: NgbDateStruct;
   description = '';
-  odometer = '';
+  odometer: number;
   reportedBy = '';
   assignedTo = '';
   carrierID;
@@ -249,33 +249,16 @@ hideErrors() {
 
       if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
         this.allImages = result.uploadedPhotos;
-        this.issueImages = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+        this.issueImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
       }
 
       if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
         this.alldocs = result.uploadedDocs;
-        this.issueDocs = result.uploadedDocs.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+        this.issueDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
       }
     });
   this.spinner.hide();
 }
-
-deleteFile(i:number, fileType) {
-  let fileName = '';
-  if(fileType == 'document') {
-    fileName = this.alldocs[i];
-    this.deletedDocs.push(fileName);
-    this.issueDocs.splice(i, 1);
-    this.existingDocs.splice(i, 1);
-
-  } else if(fileType == 'image'){
-    fileName = this.allImages[i];
-    this.deletedImages.push(fileName);
-    this.issueImages.splice(i, 1);
-    this.existingPhotos.splice(i, 1);
-  }
-}
-
 setPDFSrc(val) {
   let pieces = val.split(/[\s.]+/);
   let ext = pieces[pieces.length-1];
@@ -297,24 +280,6 @@ setSrcValue(){
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-
-    if(this.deletedImages.length > 0) {
-      for (let i = 0; i < this.deletedImages.length; i++) {
-        const element = this.deletedImages[i];
-        this.apiService.getData('uploaded-file/delete/'+element).subscribe((result: any) => {
-          console.log('Image Deleted Successfully!');
-        });
-      }
-    }
-
-    if(this.deletedDocs.length > 0) {
-      for (let i = 0; i < this.deletedDocs.length; i++) {
-        const element = this.deletedDocs[i];
-        this.apiService.getData('uploaded-file/delete/'+element).subscribe((result: any) => {
-          console.log('Doc Deleted Successfully!');
-        });
-      }
-    }
 
     const data = {
       issueID: this.issueID,
@@ -370,6 +335,13 @@ setSrcValue(){
         this.toaster.success('Issue Updated Successfully');
         this.router.navigateByUrl('/fleet/maintenance/issues/list');
       }
+    });
+  }
+
+  // delete uploaded images and documents
+  delete(type: string,name: string){
+    this.apiService.deleteData(`issues/uploadDelete/${this.issueID}/${type}/${name}`).subscribe((result: any) => {
+      this.fetchIssueByID();
     });
   }
 }

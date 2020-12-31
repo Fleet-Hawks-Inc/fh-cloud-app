@@ -307,9 +307,6 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
         { "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,], "orderable": false },
       ],
       dom: 'lrtip',
-      colReorder: {
-        fixedColumnsLeft: 1
-      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.drivers = resp['Items'];

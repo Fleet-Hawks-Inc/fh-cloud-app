@@ -141,161 +141,13 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
   someClickHandler(info: any): void {
     this.message = info.id + ' - ' + info.firstName;
   }
-  // dataTableOptions = () => {
-  //   this.allOptions = { // All list options
-  //     pageLength: 10,
-  //     processing: true,
-  //     // select: {
-  //     //     style:    'multi',
-  //     //     selector: 'td:first-child'
-  //     // },
-  //     dom: 'Bfrtip',
-  //     // Configure the buttons
-  //     buttons: [
-  //        {
-  //             extend: 'colvis',
-  //             columns: ':not(.noVis)'
-  //         }
-  //     ],
-  //     colReorder: true,
-  //     columnDefs: [
-  //       {
-  //           targets: 1,
-  //           className: 'noVis'
-  //       },
-  //       {
-  //           targets: 2,
-  //           className: 'noVis'
-  //       },
-  //       {
-  //           targets: 3,
-  //           className: 'noVis'
-  //       },
-  //       {
-  //           targets: 4,
-  //           className: 'noVis'
-  //       },
-  //       {
-  //           targets: 8,
-  //           className: 'noVis'
-  //       },
-        
-  //   ],
-  //   "fnDrawCallback": function(oSettings) {
-  //       if ($('.dataTables_wrapper tbody tr').length <= 10) {
-  //           $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
-  //       }
-  //   }
-  //   };
-
-  //   this.reeferOptions = { // Reefer list options
-  //     pageLength: 10,
-  //     processing: true,
-  //     dom: 'Bfrtip',
-  //     // Configure the buttons
-  //     buttons: [
-  //        {
-  //             extend: 'colvis',
-  //             columns: ':not(.noVis)'
-  //         }
-  //     ],
-  //     colReorder: {
-  //       fixedColumnsLeft: 1
-  //     },
-  //     columnDefs: [
-  //       {
-  //           targets: 0,
-  //           className: 'noVis'
-  //       },
-  //       {
-  //           targets: 1,
-  //           className: 'noVis'
-  //       },
-  //       {
-  //           targets: 2,
-  //           className: 'noVis'
-  //       },
-  //       {
-  //           targets: 3,
-  //           className: 'noVis'
-  //       },
-  //       {
-  //           targets: 4,
-  //           className: 'noVis'
-  //       },
-  //       {
-  //           targets: 9,
-  //           className: 'noVis'
-  //       }
-  //   ],
-  //   "fnDrawCallback": function(oSettings) {
-  //       if ($('.dataTables_wrapper tbody tr').length <= 10) {
-  //           $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
-  //       }
-  //   }
-  //   };
-
-  //   this.dryboxOptions = this.flatbedOptions = this.curtainOptions = { // Reefer list options
-  //     pageLength: 10,
-  //     processing: true,
-  //     dom: 'Bfrtip',
-  //     // Configure the buttons
-  //     buttons: [
-  //        {
-  //             extend: 'colvis',
-  //             columns: ':not(.noVis)'
-  //         }
-  //     ],
-  //     colReorder: {
-  //       fixedColumnsLeft: 1
-  //     },
-  //     columnDefs: [
-  //         {
-  //             targets: 0,
-  //             className: 'noVis'
-  //         },
-  //         {
-  //             targets: 1,
-  //             className: 'noVis'
-  //         },
-  //         {
-  //             targets: 2,
-  //             className: 'noVis'
-  //         },
-  //         {
-  //             targets: 3,
-  //             className: 'noVis'
-  //         },
-  //         {
-  //             targets: 8,
-  //             className: 'noVis'
-  //         }
-  //     ],
-  //     "fnDrawCallback": function(oSettings) {
-  //       if ($('.dataTables_wrapper tbody tr').length <= 10) {
-  //           $('.dataTables_paginate .previous, .dataTables_paginate .next').hide();
-  //       }
-  //   }
-  //   };
-  // }
+  
 
   fetchAssets = () => {
-    // this.allData = [];
-    // this.autoCarrier = [];
-    // this.beverageRack = [];
-    // this.flatbed = [];
-    // this.controlledTemp = [];
-    // this.gondola = [];
-    // this.hopper = [];
-    // this.horseTrailer = [];
-    // this.liveStock = [];
-    // this.lowboy = [];
-    // this.stake = [];
-    // this.stepDeck = [];
-    // this.tanker = [];
+   
     this.totalRecords = 0;
     this.spinner.show(); // loader init
-    // this.apiService.getData(`assets?assetID=${this.assetID}&status=${this.currentStatus}`).subscribe({
+   
       this.apiService.getData(`assets`).subscribe({
       complete: () => {},
       error: () => {},
@@ -305,33 +157,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
           if (result.Items[i].isDeleted === 0) {
             // this.allData.push(result.Items[i]);
             this.totalRecords += 1
-            // if (result.Items[i].assetDetails.assetType === 'TC') {
-            //   this.autoCarrier.push(result.Items[i]);
-            // } else if (result.Items[i].assetDetails.assetType === 'BI') {
-            //   this.beverageRack.push(result.Items[i]);
-            // } else if (result.Items[i].assetDetails.assetType === 'FT' || result.Items[i].assetDetails.assetType === 'FR' ||
-            //            result.Items[i].assetDetails.assetType === 'FH' || result.Items[i].assetDetails.assetType === 'FN') {
-            //   this.flatbed.push(result.Items[i]);
-            // } else if (result.Items[i].assetDetails.assetType === 'RT' || result.Items[i].assetDetails.assetType === 'TW') {
-            //   this.controlledTemp.push(result.Items[i]);
-            // } else if (result.Items[i].assetDetails.assetType === 'RG' || result.Items[i].assetDetails.assetType === 'RO') {
-            //   this.gondola.push(result.Items[i]);
-            // } else if (result.Items[i].assetDetails.assetType === 'HC' || result.Items[i].assetDetails.assetType === 'HP' ||
-            //           result.Items[i].assetDetails.assetType === 'HO') {
-            //   this.hopper.push(result.Items[i]);
-            // } else if (result.Items[i].assetDetails.assetType === 'HE') {
-            //   this.horseTrailer.push(result.Items[i]);
-            // } else if (result.Items[i].assetDetails.assetType === 'Livestock') {
-            //   this.liveStock.push(result.Items[i]);
-            // } else if (result.Items[i].assetDetails.assetType === 'Lowboy') {
-            //   this.lowboy.push(result.Items[i]);
-            // } else if (result.Items[i].assetDetails.assetType === 'Stake') {
-            //   this.stake.push(result.Items[i]);
-            // } else if (result.Items[i].assetDetails.assetType === 'Step Deck') {
-            //   this.stepDeck.push(result.Items[i]);
-            // } else {
-            //   this.tanker.push(result.Items[i]);
-            // }
+            
           }
         }
       },
@@ -362,26 +188,6 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 
-
-  editAsset = () => {
-    if (this.assetCheckCount === 1) {
-      this.router.navigateByUrl('/fleet/assets/edit/' + this.selectedAssetID);
-    } else {
-      this.toastr.error('Please select only one asset!');
-    }
-  }
-  deleteAssetOld = () => {
-    const selectedAssets = this.allData.filter(product => product.checked).map(p => p.assetID);
-    if (selectedAssets && selectedAssets.length > 0) {
-      for (const i of selectedAssets) {
-        this.apiService.deleteData('assets/' + i).subscribe((result: any) => {
-          this.fetchAssets();
-          this.toastr.success('Assets Deleted Successfully!');
-        });
-
-      }
-    }
-  }
 
   mapShow() {
     this.mapView = true;
@@ -419,34 +225,6 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
     // this.headCheckbox = false;
   }
 
-
-  // Count Checkboxes
-  // checkboxCount = (arr) => {
-  //   this.assetCheckCount = 0;
-  //   arr.forEach(item => {
-  //     console.log('item', item);
-  //     console.log('array', arr);
-  //     if (item.checked === true) {
-  //       this.selectedAssetID = item.assetID;
-  //       this.assetCheckCount = this.assetCheckCount + 1;
-  //       console.log('check', arr.length, this.assetCheckCount)
-  //       if (arr.length === this.assetCheckCount) {
-  //         this.headCheckbox = true;
-  //       }
-  //     } else {
-  //       this.headCheckbox = false;
-  //     }
-  //   });
-  // }
-
-  // checked-unchecked all checkboxes
-  // checkuncheckall = (ev) => {
-  //   if (ev.target.checked === true) {
-  //     this.isChecked = true;
-  //   } else {
-  //     this.isChecked = false;
-  //   }
-  // }
 
   initDataTable() {
     let current = this;

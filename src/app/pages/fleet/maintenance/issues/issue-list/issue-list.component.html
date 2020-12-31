@@ -17,7 +17,7 @@
                                 class="form-control" (input)="getSuggestions($event.target.value)"
                                 placeholder="Search Issues by Vehicle / Unit" />
                         </div>
-                        <div *ngFor="let suggestedUnit of suggestedUnits" style="cursor: pointer"
+                        <div *ngFor="let suggestedUnit of suggestedUnits" class="suggestionClass"
                             (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)">
                             {{ suggestedUnit.unitName }}
                         </div>

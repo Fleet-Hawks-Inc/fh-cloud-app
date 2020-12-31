@@ -1,12 +1,7 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-  
+    
     <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <app-sidebar></app-sidebar>
-      <!-- end: sidebar -->
+      
       <section role="main" class="content-body pr-0 pl-0 pt-0">
         <header class="page-header">
            <div class="row pr-4 pl-2" style="padding-top:10px;">
@@ -786,29 +781,29 @@
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACE ID:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{aceID}}</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{aceID ? aceID : '-'}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACI ID:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{aciID}}</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{aciID ? aciID : '-'}}</div>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast ID:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{fastID}}</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{fastID ? fastID : '-'}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast Expiry Date:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{fastExpiry}}</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{fastExpiry ? fastExpiry : '-'}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Citizenship:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{citizenship}}</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{countriesObject[citizenship]}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CSA:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{csa}}</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{csa ? csa : false}}</div>
                                     </div>
                                     <div class="row m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Work Phone:</div>
@@ -820,7 +815,7 @@
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Group:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{group}}</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{groupsObjects[group]}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -830,7 +825,7 @@
                            <div class="row">
                                  <div class="col-lg-12 font-weight-bold text-4 text-dark">Address Details</div>
                            </div>
-                            <div id="address_div" [style.width]="address.length > 1 ? '50%' : '100%'" *ngFor="let item of address;">
+                            <div id="address_div" style="float: left;" [style.width]="address.length > 1 ? '50%' : '100%'" *ngFor="let item of address;">
                                 <div class="row m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address:</div>
                                     <div class="col-lg-6 p-2 bor_half">{{item.address1}} {{item.address2}}</div>
@@ -894,7 +889,7 @@
                                             <div class="col-lg-6 p-2 bor_half">{{item.expiryDate}}</div>
                                         </div>
                                         <div *ngFor="let doc of item.uploadedDocs; let i = index;" >
-                                          <a href="{{Asseturl}}/{{carrierID}}/{{doc}}" target="_blank">{{doc}}</a>
+                                          <a href="{{Asseturl}}/{{carrierID}}/{{doc}}" target="_blank">Doc-{{i + 1}}</a>
                                         </div>
                                     </div>
                                 
@@ -909,9 +904,21 @@
                                             <div class="col-lg-12 font-weight-bold text-4 text-dark">Licence Details</div>
                                         </div>
                                         <div class="row  m-0">
-                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issued State:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{liceIssueSate}}</div>
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issued Region:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{statesObject[liceIssueSate]}}, {{countriesObject[liceIssueCountry]}}</div>
                                         </div>
+                                        <div class="row  m-0">
+                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">WCB:</div>
+                                          <div class="col-lg-6 p-2 bor_half">{{liceWCB ? liceWCB : '-'}}</div>
+                                      </div>
+                                      <div class="row  m-0">
+                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Health Care:</div>
+                                             <div class="col-lg-6 p-2 bor_half">{{liceHealthCare ? liceHealthCare : '-'}}</div>
+                                       </div>
+                                       <div class="row  m-0">
+                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Vehicle Type:</div>
+                                          <div class="col-lg-6 p-2 bor_half">{{liceVehicleType ? liceVehicleType : '-'}}</div>
+                                    </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Licence Expiration:</div>
                                             <div class="col-lg-6 p-2 bor_half">{{licenceExpiry}}</div>
@@ -922,11 +929,11 @@
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract End Date:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{liceContractEnd}}</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{liceContractEnd ? liceContractEnd : '-'}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Medical Card Renewal:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{liceMedicalCardRenewal}}</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{liceMedicalCardRenewal ? liceMedicalCardRenewal : '-'}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Birth Date:</div>
@@ -980,7 +987,7 @@
                                        
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Calculate Empty Miles for a Dispatch After:</div>
-                                            <div class="col-lg-6 p-2 bor_half">4556</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{calculateMiles}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -997,7 +1004,7 @@
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Remarks:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{hosRemarks}}</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{hosRemarks ? hosRemarks : '-'}}</div>
                                 </div>
                                 <div class="row  m-0" *ngIf="hosPcAllowed">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Personal Conveyance (PC):</div>

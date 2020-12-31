@@ -139,6 +139,7 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.suggestedVehicles = [];
   }
 
+
   /**
    * change the view of summary
    */

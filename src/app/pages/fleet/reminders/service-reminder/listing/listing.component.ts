@@ -10,7 +10,7 @@ declare var $: any;
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
-
+import { AbsoluteValuePipe } from '../../../pipes/absolute-value.pipe';
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
@@ -48,7 +48,7 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
   searchServiceTask = '';
   filterStatus: string;
   inServiceOdometer: string;
-
+ myMath = 'Math';
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';

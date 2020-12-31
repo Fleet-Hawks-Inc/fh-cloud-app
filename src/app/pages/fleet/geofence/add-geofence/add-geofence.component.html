@@ -1,14 +1,7 @@
 <section class="body">
-  <!-- start: header -->
-  <app-header></app-header>
-
-  <!-- end: header -->
-
+  
   <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <app-sidebar></app-sidebar>
-    <!-- end: sidebar -->
-
+    
     <section role="main" class="content-body pl-0 pt-0">
       <header class="page-header pr-5">
          <div class="row pr-1 mr-1" style="padding-top:10px;">
@@ -47,7 +40,7 @@
                         <div class="row">
                            <div class="col-lg-12">
                               <input type="text" class="form-control"  [(ngModel)]="geofenceData.geofence.type"
-                              name="type" hidden>
+                              name="geofence.type" hidden>
                            </div>
                         </div>
                      </div>
@@ -82,13 +75,13 @@
                              <div class="row">
                                 <div class="col-lg-11">
                                    <ng-select
+                                      data-plugin-selectTwo
                                       class="form-control populate" name="geofenceType" [(ngModel)]="geofenceData.geofenceType">
-                                      <ng-option *ngFor="let item of geofenceTypes;" 
-                                             value="{{item.typeID}}"
-                                         > {{item.geofenceType}}
-
+                                       <ng-option *ngFor="let item of geofenceTypes;" 
+                                          value="{{item.typeID}}"
+                                       > {{item.geofenceType}}
                                        </ng-option>
-                                    </ng-select>
+                                   </ng-select>
                                 </div>
                                 <div class="col-lg-1 pl-0">
                                    <a data-target="#addGeofenceCategoryModal" data-toggle="modal"  class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
@@ -144,8 +137,8 @@
                <div class="form-row">
                   <div class="form-group col-md-12">
                      <label class="font-weight-bold control-label">Geofence Type</label>
-                     <input [(ngModel)]="geofenceTypeData.geofenceType"
-                     name="geofenceType" type="text" class="form-control">
+                     <input [(ngModel)]="geofenceTypeData.geofenceType" name="geofenceType" type="text" class="form-control">
+
                   </div>
                </div>
                <div class="form-row">
