@@ -19,6 +19,7 @@ declare var $: any;
   styleUrls: ['./add-vehicle-new.component.css'],
 })
 export class AddVehicleNewComponent implements OnInit {
+  showDriverModal: boolean = false
   title = 'Add Vehicle';
   Asseturl = this.apiService.AssetUrl;
   activeTab = 1;

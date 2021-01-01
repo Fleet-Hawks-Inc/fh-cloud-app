@@ -12,7 +12,11 @@ import {DriverComponent} from './popups/driver/driver.component';
 import {VehicleComponent} from './popups/vehicle/vehicle.component';
 // DataTable
 import { DataTablesModule } from 'angular-datatables';
-
+import { AddDriverComponent} from '../pages/fleet/drivers/add-driver/add-driver.component'
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgbDate, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AddVehicleNewComponent } from '../pages/fleet/vehicles/add-vehicle-new/add-vehicle-new.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 @NgModule({
   imports: [
     CommonModule,
@@ -20,7 +24,10 @@ import { DataTablesModule } from 'angular-datatables';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
-    DataTablesModule
+    DataTablesModule,
+    NgSelectModule,
+    NgbModule,
+    SlickCarouselModule
   ],
   declarations: [
     SidebarComponent,
@@ -29,8 +36,9 @@ import { DataTablesModule } from 'angular-datatables';
     FixedRightSidebarComponent,
     AddressBookComponent,
     DriverComponent,
-    VehicleComponent
-
+    VehicleComponent,
+    AddDriverComponent,
+    AddVehicleNewComponent
   ],
   exports: [
     CommonModule,

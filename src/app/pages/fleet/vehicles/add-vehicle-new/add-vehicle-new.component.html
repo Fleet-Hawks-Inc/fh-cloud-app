@@ -1,18 +1,7 @@
 <section class="body">
 
-  <!-- start: header -->
-  <!-- <app-header></app-header> -->
-
-
-   <!-- end: header -->
-
-
   <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <!-- <app-sidebar></app-sidebar> -->
-    <!-- end: sidebar -->
-
-
+   
 
       <section role="main" class="content-body pt-0 pr-0 pl-0">
          <header class="page-header">
@@ -185,7 +174,7 @@
                                           </ng-select>
                                        </div>
                                        <div class="col-lg-2  mar-top-37">
-                                          <button type="button" class="btn btn-sm btn-success"><i
+                                          <button data-toggle="modal" data-dismiss="modal" data-target="#addDriverModal" (click)="showDriverModal = true;" type="button" class="btn btn-sm btn-success"><i
                                                 class="fas fa-plus"></i></button>
                                        </div>
                                        <div class="col-lg-10">
@@ -1969,4 +1958,23 @@
          </div>
       </div>
    </div>
+</div>
+
+
+<!-- Add Driver MODAL -->
+<div class="modal fade" id="addDriverModal" tabindex="-1" role="dialog" aria-labelledby="addDriverModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 98%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Driver</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark address-book__driver">
+                <app-add-driver *ngIf="showDriverModal"></app-add-driver>
+            </div>
+        </div>
+    </div>
 </div>

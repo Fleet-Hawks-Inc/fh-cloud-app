@@ -23,7 +23,7 @@ const routes: Routes = [
 ];
 @NgModule({
   declarations: [
-    AddVehicleNewComponent,
+    // AddVehicleNewComponent,
     EditVehicleNewComponent,
     VehicleListComponent,
     VehicleDetailComponent,
