@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./unsaved-changes.component.css']
 })
 export class UnsavedChangesComponent implements OnInit {
-  public onClose: Subject<boolean>;
+  public onClose: Subject<boolean>; 
   
   constructor(private modalService: NgbModal, public activeModal: NgbActiveModal) { }
 
