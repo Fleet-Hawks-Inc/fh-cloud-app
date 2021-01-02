@@ -24,7 +24,7 @@ const routes: Routes = [
   declarations: [
 
     // AddVehicleNewComponent,
-    EditVehicleNewComponent,
+    // EditVehicleNewComponent,
 
     VehicleListComponent,
     VehicleDetailComponent,
