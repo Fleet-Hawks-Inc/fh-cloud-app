@@ -225,11 +225,13 @@
                                         <div class="col-lg-10">
                                            <label class="control-label font-weight-bold text-lg-right pt-2"
                                               >Address Type</label>
-                                           <ng-select [(ngModel)]="item.addressType" name="address[{{i}}].addressType" data-plugin-selectTwo class="form-control populate">
+                                           <ng-select 
+                                           [(ngModel)]="item.addressType" name="address[{{i}}].addressType" 
+                                           class="form-control populate">
                                               
-                                                 <ng-option value="Work">Work</ng-option>
-                                                 <ng-option value="Home">Home</ng-option>
-                                                 <ng-option value="Office">Office</ng-option>
+                                                 <!-- <ng-option value="Work">Work</ng-option> -->
+                                                 <ng-option selected value="Home">Home</ng-option>
+                                                 <!-- <ng-option value="Office">Office</ng-option> -->
                                               
                                            </ng-select>
                                         </div>
@@ -258,8 +260,8 @@
                                    </div>
                                    <div class="col-lg-2 mar-top-37">
                                       <a class="btn btn-dark mr-2" (click)="clearUserLocation(i);">Clear</a> 
-                                      <a *ngIf="i == 0;" (click)="addAddress();" class="btn btn-success" href="javascript:;"
-                                         ><i class="fa fa-plus fa-fw"></i></a>
+                                      <!-- <a *ngIf="i == 0;" (click)="addAddress();" class="btn btn-success" href="javascript:;"
+                                         ><i class="fa fa-plus fa-fw"></i></a> -->
                                       <a *ngIf="i != 0;" (click)="remove('address', i)" class="btn btn-success" href="javascript:;"
                                          ><i class="fa fa-minus fa-fw"></i></a>
                                    </div>
@@ -839,7 +841,7 @@
           </div>
        </section>
       
-       <!-- <div class="modal fade" id="addDriverVehicleModal" tabindex="-1" role="dialog" aria-labelledby="addDriverVehicleModal" aria-hidden="true">
+       <div class="modal fade" id="addDriverVehicleModal" tabindex="-1" role="dialog" aria-labelledby="addDriverVehicleModal" aria-hidden="true">
           <div class="modal-dialog" style="max-width: 98%;" role="document">
                <div class="modal-content">
                <div class="modal-header">
@@ -853,7 +855,7 @@
                </div>
             </div>
          </div>
-      </div> -->
+      </div>
 
       <div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal" aria-hidden="true">
          <div class="modal-dialog" style="max-width: 600px;" role="document">

@@ -360,7 +360,6 @@ export class AddDriverComponent implements OnInit {
     if(this.uploadedDocs[i] == undefined){
       this.uploadedDocs[i] = files;
     }
-    
   }
   selectPhoto(event) {
     let files = [...event.target.files];
