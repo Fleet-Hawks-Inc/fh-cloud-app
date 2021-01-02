@@ -27,11 +27,10 @@ import {
   AddContactRenewComponent,
   ContactRenewDetailComponent,
   AddGeofenceComponent,
-  EditGeofenceComponent,
+  // EditGeofenceComponent,
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
-  EditAssetComponent,
 
   AddInventoryComponent,
   InventoryListComponent,
@@ -66,11 +65,11 @@ const COMPONENTS = [
   AddContactRenewComponent,
   ContactRenewDetailComponent,
   AddGeofenceComponent,
-  EditGeofenceComponent,
+  // EditGeofenceComponent,
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
-  EditAssetComponent,
+  // EditAssetComponent,
 
 
   AddInventoryComponent,
