@@ -31,6 +31,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
   unitID = '';
   unitName = '';
   issueName = '';
+  issueStatus = '';
   suggestedUnits = [];
 
   totalRecords = 20;
@@ -143,7 +144,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('issues/fetch-records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+        current.apiService.getDatatablePostData('issues/fetchRecords?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.issues = resp['Items'];
           if (resp['LastEvaluatedKey'] !== undefined) {
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].issueID;
@@ -186,7 +187,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   searchFilter() {
-    if (this.unitID !== '' || this.issueName !== '') {
+    if (this.unitID !== '' || this.issueName !== '' || this.issueStatus !== '') {
       this.rerender('reset');
     } else {
       return false;
@@ -194,10 +195,11 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   resetFilter() {
-    if (this.unitID !== '' || this.issueName !== '') {
+    if (this.unitID !== '' || this.issueName !== '' || this.issueStatus !== '') {
       this.unitID = '';
       this.unitName = '';
       this.issueName = '';
+      this.issueStatus = '';
       this.rerender();
     } else {
       return false;
