@@ -202,8 +202,7 @@ export class FuelEntryDetailsComponent implements OnInit {
       this.map.setCenter({
         lat: lat,
         lng: lng
-      });
-      markers.setData('hello');
+      });     
     });
    
   }
