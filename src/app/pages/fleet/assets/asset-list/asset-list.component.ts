@@ -61,7 +61,25 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
   Error: string = '';
   Success: string = '';
 
+  hideShow = {
+    assetName: true,
+    type: true,
+    plateNo: true,
+    lastLocation: true,
+    year: true,
+    make: true,
+    model: true,
+    ownership: true,
+    status: true,
+    group: false,
+    aceID: false,
+    aciID: false,
+    gvwr: false,
+    gawr: false,
+  }
+
   message: any;
+  groupsList:any = {};
   // dtTrigger = new Subject();
 
   suggestedAssets = [];
@@ -86,6 +104,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
       // this.dataTableOptions();
       this.fetchAssets();
       this.fetchAllAssetTypes();
+      this.fetchGroups();
       this.initDataTable();
       // $(document).ready(() => {
       //   setTimeout(() => {
@@ -111,6 +130,12 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.assetID = assetID;
 
     this.suggestedAssets = [];
+  }
+
+  fetchGroups() {
+    this.apiService.getData('groups/get/list').subscribe((result: any) => {
+      this.groupsList = result;
+    });
   }
 
   someClickHandler(info: any): void {
@@ -212,16 +237,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0],"orderable": false},
-        {"targets": [1],"orderable": false},
-        {"targets": [2],"orderable": false},
-        {"targets": [3],"orderable": false},
-        {"targets": [4],"orderable": false},
-        {"targets": [5],"orderable": false},
-        {"targets": [6],"orderable": false},
-        {"targets": [7],"orderable": false},
-        {"targets": [8],"orderable": false},
-        {"targets": [9],"orderable": false},
+        {"targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14],"orderable": false},
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
@@ -286,6 +302,99 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
       // this.spinner.hide();
     } else {
       return false;
+    }
+  }
+
+  hideShowColumn() {
+    //for headers
+    if(this.hideShow.assetName == false) {
+      $('.col1').css('display','none');
+    } else {
+      $('.col1').css('display','');
+    }
+
+    if(this.hideShow.type == false) {
+      $('.col2').css('display','none');
+    } else {
+      $('.col2').css('display','');
+    }
+
+    if(this.hideShow.plateNo == false) {
+      $('.col3').css('display','none');
+    } else {
+      $('.col3').css('display','');
+    }
+
+    if(this.hideShow.lastLocation == false) {
+      $('.col4').css('display','none');
+    } else {
+      $('.col4').css('display','');
+    }
+
+    if(this.hideShow.year == false) {
+      $('.col5').css('display','none');
+    } else {
+      $('.col5').css('display','');
+    }
+
+    if(this.hideShow.make == false) {
+      $('.col6').css('display','none');
+    } else {
+      $('.col6').css('display','');
+    }
+
+    if(this.hideShow.model == false) {
+      $('.col7').css('display','none');
+    } else {
+      $('.col7').css('display','');
+    }
+
+    if(this.hideShow.ownership == false) {
+      $('.col8').css('display','none');
+    } else {
+      $('.col8').css('display','');
+    }
+
+    if(this.hideShow.status == false) {
+      $('.col9').css('display','none');
+    } else {
+      $('.col9').css('display','');
+    }
+
+    //extra columns
+    if(this.hideShow.group == false) {
+      $('.col10').css('display','none');
+    } else { 
+      $('.col10').removeClass('extra');
+      $('.col10').css('display','');
+    }
+
+    if(this.hideShow.aceID == false) {
+      $('.col11').css('display','none');
+    } else { 
+      $('.col11').removeClass('extra');
+      $('.col11').css('display','');
+    }
+
+    if(this.hideShow.aciID == false) {
+      $('.col12').css('display','none');
+    } else { 
+      $('.col12').removeClass('extra');
+      $('.col12').css('display','');
+    }
+    
+    if(this.hideShow.gvwr == false) {
+      $('.col13').css('display','none');
+    } else { 
+      $('.col13').removeClass('extra');
+      $('.col13').css('display','');
+    }
+
+    if(this.hideShow.gawr == false) {
+      $('.col14').css('display','none');
+    } else { 
+      $('.col14').removeClass('extra');
+      $('.col14').css('display','');
     }
   }
 
