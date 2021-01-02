@@ -55,10 +55,8 @@
                                         <div class="col-lg-10" *ngIf="unitType ==='vehicle'">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Vehicle</label>
-                                            <ng-select placeholder="Select Vehicle" name="unitID" [(ngModel)]="unitID">
-                                               
-                                                <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
-                                                
+                                            <ng-select placeholder="Select Vehicle" name="unitID" [(ngModel)]="unitID">                                               
+                                                <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>                                                
                                             </ng-select>
                                         </div>
                                         <div class="col-lg-10" *ngIf="unitType ==='asset'">
@@ -74,7 +72,7 @@
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Issue Name</label>
-                                         <input type="text"  class="form-control" id="issueName" name="issueName" [(ngModel)]="issueName" required="">
+                                         <input type="text"  class="form-control" id="issueName" name="issueName" [(ngModel)]="issueName" placeholder="Enter issue name eg. brake issue">
                                        </div>
                                     </div>
                                     <div class="row pt-2">
@@ -91,8 +89,9 @@
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Description</label>
-                                            <textarea [(ngModel)]="description" name="description" class="form-control" rows="3"></textarea>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
+                                            <textarea [(ngModel)]="description" name="description" class="form-control" rows="3" placeholder="Enter description of the issue"></textarea>
                                         </div>
                                     </div>
 
@@ -102,7 +101,7 @@
                                         <div class="col-lg-10">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer(miles)</label>
-                                            <input [(ngModel)]="odometer" name="odometer" type="number" class="form-control">
+                                            <input [(ngModel)]="odometer" name="odometer" type="number" class="form-control" placeholder="Enter odometer miles at which issue is reported. eg. 10000">
                                         </div>
                                     </div>
                                     <div class="row pt-2">
@@ -120,13 +119,10 @@
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned
-                                                To</label>
-                                            <ng-select [(ngModel)]="assignedTo" name="assignedTo">
-                                               
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To</label>
+                                            <ng-select [(ngModel)]="assignedTo" name="assignedTo" placeholder="Assign the issue">                                               
                                                     <ng-option value="Operator">Operator</ng-option>
-                                                    <ng-option value="Technician">Technician</ng-option>
-                                            
+                                                    <ng-option value="Technician">Technician</ng-option>                                            
                                             </ng-select>
                                         </div>
                                     </div>
