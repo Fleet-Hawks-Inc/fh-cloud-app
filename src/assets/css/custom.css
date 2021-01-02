@@ -1644,6 +1644,7 @@ text-decoration: underline;
   font-size: 40px !important;
 }
 
+
 /*--Incidents Css--*/
 .incident-tabs.nav-tabs li {
     padding: 0
@@ -1846,8 +1847,6 @@ html.fixed .reports-wrapper {
 }
 
 
-
-
 .table-scroll-y {
   display: block;
 }
@@ -1908,6 +1907,10 @@ table.dataTable thead th, table.dataTable thead td {
 /*drop down icon on asset page*/
 .toggleright::after{margin-top: 8px !important; float: right !important; color:#999;}
 
+
+/* Page body colro ligh grey class */
+.pagebody{background: #ecedf0 !important;}
+
 /* placeholder classes */
 ::-webkit-input-placeholder { /* Edge */
   color: e1e1e1 !important;
@@ -1926,4 +1929,16 @@ table.dataTable thead th, table.dataTable thead td {
 /* Optional label color */
 .optional-label-color {
   color: e1e1e1 !important;
+}
+
+.suggestionClass {
+  cursor: pointer;
+  color: black;
+  background-color: white;
+  z-index: 99999;
+  padding-left: 5px;
+}
+.suggestionClass:hover{
+  background-color: #e1e1e1;
+
 }

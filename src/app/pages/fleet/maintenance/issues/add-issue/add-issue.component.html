@@ -102,7 +102,7 @@
                                         <div class="col-lg-10">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer(miles)</label>
-                                            <input [(ngModel)]="odometer" name="odometer" type="text" class="form-control">
+                                            <input [(ngModel)]="odometer" name="odometer" type="number" class="form-control">
                                         </div>
                                     </div>
                                     <div class="row pt-2">
@@ -152,13 +152,13 @@
                                     <div class="row mt-2" *ngIf = 'issueImages?.length'>
                                         <div class="col-lg-5" *ngFor="let photo of issueImages;let i= index">
                                            <div class="vehicle-photo-box">
-                                              <img [src]="photo" width="100%" class="img-fluid"
+                                              <img src="{{photo.path}}" width="100%" class="img-fluid"
                                                  style="height: 180px; object-fit: cover;">
                                               <hr class="m-3">
                                               <div class="row">
                                                  <div class="col-lg-8">Image {{i+1}}</div>
                                                  <div class="col-lg-4 text-right">
-                                                    <i class="fas fa-times text-danger" (click)="deleteImage(i)"></i>
+                                                    <i class="fas fa-times text-danger"  (click)="delete('image',photo.name)"></i>
                                                    
                                                  </div>
                                               </div>
@@ -190,10 +190,10 @@
                                               </div>
                                               <hr class="solid mt-2">
                                               <div class="row mb-1" *ngFor="let doc of issueDocs;let d= index">
-                                                 <div class="col-lg-9" >Document {{d+1}}</div> 
+                                                 <div class="col-lg-9" ><a href="{{doc.path}}" targer="_blank">Document {{d+1}}</a> </div> 
                                                  <div class="col-lg-3 text-right">
-                                                     <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc)" data-toggle="modal" data-target="#viewDocModal"></i>
-                                                    <a href="javascript:;" (click)="deleteDoc(i)" class="modal-with-form"><i
+                                                     <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>
+                                                    <a href="javascript:;"  (click)="delete('doc',doc.name)" class="modal-with-form"><i
                                                           class="fas fa-times text-danger"></i></a>
                                                  </div>
                                               </div>
@@ -231,8 +231,9 @@
              <div class="form-row">
                 <div class="form-group col-md-12">
                    <div>
-                      <embed [src]="pdfSrc"
-                      frameborder="0" width="100%" height="400px">
+                      <iframe [src]='pdfSrc'
+                      frameborder="0" width="100%" height="400px"> </iframe>
+
                    </div>
                 </div>
              </div>

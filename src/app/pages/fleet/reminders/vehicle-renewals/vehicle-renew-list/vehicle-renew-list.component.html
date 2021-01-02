@@ -18,7 +18,7 @@
                                 [(ngModel)]="vehicleIdentification" class="form-control"
                                 (input)="getSuggestions($event.target.value)" />
                         </div>
-                        <div *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer" (click)="
+                        <div *ngFor="let suggestedVehicle of suggestedVehicles" class="suggestionClass" (click)="
                             setVehicle(
                               suggestedVehicle.vehicleID,
                               suggestedVehicle.vehicleIdentification
@@ -120,7 +120,7 @@
                                                 <button type="button" class="btn p-0" data-toggle="dropdown"><i
                                                         class="fas fa-ellipsis-v"></i></button>
                                                 <div class="dropdown-menu" role="menu">
-                                                    <a class="dropdown-item text-1" href="#">Send Notifications</a>
+                                                    <a class="dropdown-item text-1" href="javascript:;" (click)="sendEmailNotification(item)">Send Notifications</a>
                                                     <a routerLink="/fleet/reminders/vehicle-renewals/edit/{{item.reminderID }}"
                                                         class="dropdown-item text-1">Edit</a>
                                                     <a href="javascript:;" class="dropdown-item text-1"

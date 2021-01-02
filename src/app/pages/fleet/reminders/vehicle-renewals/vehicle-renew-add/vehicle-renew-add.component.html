@@ -178,13 +178,13 @@
                <div class="form-row">
                  <div class="form-group col-lg-12">
                    <label class="control-label font-weight-bold">Group Name</label>
-                   <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"> 
+                   <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control" placeholder="Add group name"> 
                  </div>
                </div>
                <div class="form-row">
                   <div class="form-group col-lg-12">
                     <label class="control-label font-weight-bold">Group Members</label>
-                    <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers"
+                    <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers" placeholder="Add users in the group"
                     style="width: 100%;">
                     <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}
                     </ng-option>
@@ -195,8 +195,8 @@
                  <div class="form-group col-lg-12">
                    <div class="row">
                      <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Description</label>
-                        <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment"></textarea>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp;<span class="text-1 optional-label-color">(optional)</span></label>
+                        <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment" placeholder="Add description"></textarea>
                      </div>
                    </div>
                  </div>

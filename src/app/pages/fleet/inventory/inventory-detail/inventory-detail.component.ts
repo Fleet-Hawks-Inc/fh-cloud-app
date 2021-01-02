@@ -9,9 +9,12 @@ declare var $: any;
   styleUrls: ['./inventory-detail.component.css']
 })
 export class InventoryDetailComponent implements OnInit {
+  Asseturl = this.apiService.AssetUrl;
+
     /**
    * form props
    */
+  carrierID: string;
   itemID = '';
   partNumber = '';
   cost = '';
@@ -35,7 +38,8 @@ export class InventoryDetailComponent implements OnInit {
   notes = '';
   photos = [];
   documents = [];
-
+  uploadedPhotos = [];
+  uploadedDocs = [];
   vendors = {};
   itemGroups = {};
   warehouses = {};
@@ -72,7 +76,7 @@ export class InventoryDetailComponent implements OnInit {
   getInventory() {
     this.apiService.getData('items/' + this.itemID).subscribe((result: any) => {
       result = result.Items[0];
-
+      this.carrierID = result.carrierID;
       this.partNumber = result.partNumber;
       this.cost = result.cost;
       this.costUnit = result.costUnit;
@@ -93,7 +97,23 @@ export class InventoryDetailComponent implements OnInit {
       this.days = result.days;
       this.time = result.time;
       this.notes = result.notes;
+      this.uploadedPhotos = result.uploadedPhotos;
+      this.uploadedDocs = result.uploadedDocs;
+      if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+        this.photos = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+      }
+
+      
+      if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
+        this.documents = result.uploadedDocs.map(x => ({path:`${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+      }
+
     });
   }
 
+  delete(type: string,name: string){
+    this.apiService.deleteData(`items/uploadDelete/${this.itemID}/${type}/${name}`).subscribe((result: any) => {
+      this.getInventory();
+    });
+  }
 }

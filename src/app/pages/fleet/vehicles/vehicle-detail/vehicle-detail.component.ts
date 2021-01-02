@@ -20,6 +20,8 @@ export class VehicleDetailComponent implements OnInit {
   vehicleManufacturersList: any  = {};
   groupsList: any = {};
   statesList : any = {};
+  vendors = {};
+
   vehicleID = '';
   vehicleIdentification = '';
   vehicleType = '';
@@ -201,8 +203,16 @@ export class VehicleDetailComponent implements OnInit {
     this.fetchVehicleModelList();
     this.fetchVehicleManufacturerList();
     this.fetchGroupsList();
+    this.fetchVendorsList();
 
   }
+
+  fetchVendorsList() {
+    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+      this.vendors = result;
+    });
+  }
+
   fetchGroupsList() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groupsList = result;

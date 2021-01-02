@@ -95,11 +95,10 @@
                                     </div>
                                     <hr class="solid mt-2">
                                     <div class="row" *ngFor="let doc of issueDocs;let d= index">
-                                       <div class="col-lg-9">Document {{d+1}}</div> 
+                                       <div class="col-lg-9"><a href="{{doc.path}}" target="_blank">Document {{d+1}}</a></div> 
                                        <div class="col-lg-3 text-right">
-                                          <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc)" data-toggle="modal" data-target="#viewDocModal"></i>
-                                          <a href="javascript:;" (click)="deleteDoc(i)" class="modal-with-form"><i
-                                                class="fas fa-times text-danger"></i></a>
+                                          <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>
+                                          <i class="fas fa-times text-danger"  (click)="delete('doc',doc.name)"></i>
                                        </div>
                                     </div>
                                  </div>
@@ -137,31 +136,17 @@
                                           <!-- <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo<input type="file" class="hidden_input"></div> -->
                                        </div>
                                     </div>
-                                    <hr class="solid mt-3">
+                                    <hr class="solid mt-3"> 
                                     <div class="row">
                                        <div class="col-lg-6" *ngFor="let photo of issueImages;let i= index">
                                           <div class="vehicle-photo-box">
-                                             <img [src]="photo" width="100%" class="img-fluid"
+                                             <img src="{{photo.path}}" width="100%" class="img-fluid"
                                                 style="height: 180px; object-fit: cover;">
                                              <hr class="m-3">
                                              <div class="row">
                                                 <div class="col-lg-8">Image {{i+1}}</div>
                                                 <div class="col-lg-4 text-right">
-                                                   <!-- <i class="fas fa-times text-danger" (click)="deleteImage(i)"></i> -->
-                                                   <div class="btn-group flex-wrap mx-2">
-                                                      <button type="button"
-                                                         class="btn btn-default btn-xs dropdown-toggle"
-                                                         data-toggle="dropdown" aria-expanded="false"><span
-                                                            class="caret"></span></button>
-                                                      <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-
-                                                         <a class="modal-with-form dropdown-item text-1"
-                                                         routerLink="/fleet/maintenance/issues/edit/{{issueID }}" href="javascript:;">Edit</a>
-                                                         <a class="modal-with-form dropdown-item text-1"
-                                                            href="javascript:;" (click)="deleteImage(i)">Delete</a>
-                                                      </div>
-                                                   </div>
+                                                   <i class="fas fa-times text-danger"  (click)="delete('image',photo.name)"></i>
                                                 </div>
                                              </div>
                                           </div>
@@ -173,45 +158,7 @@
 
                         </div>
                      </div>
-                  </form>
-                  <!--   edit photo -->
-                  <div id="editPhoto" class="modal-block modal-block-primary mfp-hide">
-                     <section class="card">
-                        <header class="card-header">
-                           <h2 class="card-title">Edit Photo <span class="modal-dismiss pull-right"><i
-                                    class="fas fa-times text-danger"></i></span></h2>
-                        </header>
-                        <div class="card-body text-dark">
-                           <form>
-                              <div class="form-row">
-                                 <div class="form-group col-lg-12">
-                                    <label class="control-label font-weight-bold">Old Name of Photo</label>
-                                 </div>
-                              </div>
-                              <div class="form-row">
-                                 <div class="form-group col-lg-12">
-                                    <label class="control-label font-weight-bold">Name</label>
-                                    <input type="text" class="form-control">
-                                 </div>
-                              </div>
-                              <div class="form-row">
-                                 <div class="form-group col-lg-12">
-                                    <label class="control-label font-weight-bold">Description</label>
-                                    <textarea class="form-control" rows="3"></textarea>
-                                 </div>
-                              </div>
-                           </form>
-                        </div>
-                        <footer class="card-footer">
-                           <div class="row">
-                              <div class="col-md-12 text-right">
-                                 <button class="btn btn-default modal-dismiss">Cancel</button>
-                                 <button class="btn btn-success modal-confirm">Save</button>
-                              </div>
-                           </div>
-                        </footer>
-                     </section>
-                  </div>
+                  </form>               
                   <!-- VIEW DOCUMENT MODAL -->
                   <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel" aria-hidden="true">
                      <div class="modal-dialog" role="document">
@@ -226,8 +173,7 @@
                               <div class="form-row">
                                  <div class="form-group col-md-12">
                                     <div>
-                                       <embed [src]="pdfSrc"
-                                       frameborder="0" width="100%" height="400px">
+                                       <iframe [src]='pdfSrc' frameborder="0" width="100%" height="400px"> </iframe>
                                     </div>
                                  </div>
                               </div>

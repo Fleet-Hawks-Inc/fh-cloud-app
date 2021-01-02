@@ -17,7 +17,7 @@
                                 [(ngModel)]="vehicleIdentification" class="form-control"
                                 (input)="getSuggestions($event.target.value)" />
                         </div>
-                        <div *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer" (click)="
+                        <div *ngFor="let suggestedVehicle of suggestedVehicles" class="suggestionClass" (click)="
                         setVehicle(
                           suggestedVehicle.vehicleID,
                           suggestedVehicle.vehicleIdentification
@@ -107,7 +107,9 @@
                                                 Day(s) or {{item.reminderTasks.odometer}} miles</span>
                                         </td>
                                         <td>
-                                            <span>{{item.reminderTasks.remainingDays}} Days from now</span><br>
+                                            <span *ngIf="item.reminderTasks.remainingDays > 0">{{item.reminderTasks.remainingDays}} Days from now</span>
+                                            <span *ngIf= "0 > item.reminderTasks.remainingDays">{{item.reminderTasks.remainingDays | absoluteValue}} Days ago</span>
+                                            <br>
                                             {{item.reminderTasks.remainingMiles}} miles from now
                                         </td>
                                         <td>{{item.lastCompleted}}</td>
@@ -128,9 +130,9 @@
                                                     <a class="dropdown-item text-1" href="javascript:;"
                                                         (click)="resolveReminder(item.reminderIdentification)">Enter
                                                         Service</a>
-                                                    <a class="dropdown-item text-1" href="#">Send Notifications</a>
+                                                    <a class="dropdown-item text-1" href="javascript:;" (click)="sendEmailNotification(item)">Send Notifications</a>
                                                     <a routerLink="/fleet/reminders/service-reminder/edit/{{item.reminderID }}"
-                                                        class="dropdown-item text-1">Edit</a>
+                                                        class="dropdown-item text-1">Edit</a> 
                                                     <a href="javascript:;" class="dropdown-item text-1"
                                                         (click)="deleteReminder(item.reminderID)">Delete</a>
                                                 </div>

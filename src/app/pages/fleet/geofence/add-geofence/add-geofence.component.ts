@@ -139,6 +139,9 @@ export class AddGeofenceComponent implements OnInit {
 
 
   addGeofenceType() {
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.hideErrors();
     this.apiService.postData('geofenceTypes', this.geofenceTypeData).subscribe({
       complete: () => { },
        error: (err: any) => {
@@ -171,7 +174,6 @@ export class AddGeofenceComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.spinner.show();
-    
     this.apiService.postData('geofences', this.geofenceData).subscribe({
       complete: () => { },
        error: (err: any) => {
@@ -190,6 +192,7 @@ export class AddGeofenceComponent implements OnInit {
             next: () => { },
           });
       },
+      
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
@@ -235,7 +238,7 @@ export class AddGeofenceComponent implements OnInit {
       .getData('geofences/' + this.getGeofenceID)
       .subscribe((result: any) => {
         result = result.Items[0];
-
+        console.log('result', result);
         this.geofenceData['geofenceID'] = this.getGeofenceID;
         this.geofenceData['geofenceName'] = result.geofenceName;
         this.geofenceData['location'] = result.location;
@@ -260,7 +263,7 @@ export class AddGeofenceComponent implements OnInit {
           this.mapControls(this.map);
           polylayer.on('pm:update', (e) => {
             const layer = e.layer;
-            
+            console.log("pm:update", layer);
             const polyEdit = layer.toGeoJSON();
             this.geofenceData.geofence.type = polyEdit.geometry.type;
             this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
@@ -268,14 +271,14 @@ export class AddGeofenceComponent implements OnInit {
   
           polylayer.on('pm:drag', (e) => {
             const layer = e.layer;
-            // console.log("pm:drag", layer);
+            console.log("pm:drag", layer);
             const polyEdit = layer.toGeoJSON();
             this.geofenceData.geofence.type = polyEdit.geometry.type;
             this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
           });
           polylayer.on('pm:remove', (e) => {
             const layer = e.layer;
-
+            console.log("pm:remove", layer);
             const polyEdit = layer.toGeoJSON();
             this.geofenceData.geofence.type = '';
             this.geofenceData.geofence.cords[0] = [];

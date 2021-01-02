@@ -12,4 +12,5 @@ export class HealthcheckComponent implements OnInit {
   ngOnInit() {
   }
 
+
 }

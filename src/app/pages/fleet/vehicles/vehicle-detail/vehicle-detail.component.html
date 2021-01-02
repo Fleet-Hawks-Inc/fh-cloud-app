@@ -1386,8 +1386,8 @@
                             Bed Length:
                           </div>
                           <div class="col-lg-7 p-2 border-box">
-                            {{ specifications.badLength }}
-                            {{ specifications.badLengthUnit }}
+                            {{ specifications.bedLength }}
+                            {{ specifications.bedLengthUnit }}
                           </div>
                         </div>
                       </div>
@@ -1502,7 +1502,7 @@
                             Insurance Vendor:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ insurance.vendorID }}
+                            {{ vendors[insurance.vendorID] }}
                           </div>
                         </div>
                         <div class="row m-0">
@@ -2020,7 +2020,7 @@
                             Purchase Vendor:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ purchase.purchaseVendorID }}
+                            {{ vendors[purchase.purchaseVendorID] }}
                           </div>
                         </div>
                         <div class="row m-0">
@@ -2111,7 +2111,7 @@
                             Loan Vendor:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ loan.loanVendorID }}
+                            {{ vendors[loan.loanVendorID] }}
                           </div>
                         </div>
                         <div class="row m-0">

@@ -254,4 +254,15 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
       });
     }
   }
+
+  sendEmailNotification(value) {
+    if(value.reminderTasks.reminderStatus !== undefined && value.reminderTasks.reminderStatus !== '') {
+      this.apiService.getData(`reminders/send/email-notification/${value.reminderID}?type=contact&status=${value.reminderTasks.reminderStatus}`).subscribe((result) => {
+        this.toastr.success('Email sent successfully');
+      });
+    } else {
+      this.toastr.error('Contact renewal is upto date');
+      return false;
+    }
+  }
 }

@@ -6,7 +6,6 @@ import {HttpClientModule} from '@angular/common/http';
 import {SharedModule} from '../../../shared/shared.module';
 
 import {AddVehicleNewComponent} from './add-vehicle-new/add-vehicle-new.component';
-import {EditVehicleNewComponent} from './edit-vehicle-new/edit-vehicle-new.component';
 import {VehicleListComponent} from './vehicle-list/vehicle-list.component';
 import {SlickCarouselModule} from 'ngx-slick-carousel';
 import { VehicleDetailComponent } from './vehicle-detail/vehicle-detail.component';
@@ -23,8 +22,10 @@ const routes: Routes = [
 ];
 @NgModule({
   declarations: [
+
     // AddVehicleNewComponent,
     EditVehicleNewComponent,
+
     VehicleListComponent,
     VehicleDetailComponent,
   ],

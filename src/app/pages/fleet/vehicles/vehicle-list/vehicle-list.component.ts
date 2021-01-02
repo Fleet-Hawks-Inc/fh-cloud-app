@@ -30,21 +30,48 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
   groupsList: any = {};
   vehicleModelList: any = {};
   vehicleManufacturersList: any = {};
+  serviceProgramsList:any = {};
+  driversList:any = {};
+  vendorsList:any = {};
   currentView = 'list';
-
 
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
 
-  constructor(private apiService: ApiService, private hereMap: HereMapService, private toastr: ToastrService) {}
+  hideShow = {
+    vin: true,
+    vehicleName: true,
+    vehicleType: true,
+    make: true,
+    model: true,
+    lastLocation: true,
+    trip: true,
+    plateNo: true,
+    fuelType: true,
+    status: true,
+    group: true,
+    ownership: true,
+    driver: false,
+    serviceProgram: false,
+    serviceDate: false,
+    insuranceVendor: false,
+    insuranceAmount: false,
+    engineSummary: false,
+    primaryMeter: false,
+    fuelUnit: false,
+  }
 
+  constructor(private apiService: ApiService, private hereMap: HereMapService, private toastr: ToastrService) {}
 
   ngOnInit() {
     this.fetchGroups();
     this.fetchVehicles();
     this.fetchVehicleModelList();
     this.fetchVehicleManufacturerList();
+    this.fetchDriversList();
+    this.fetchServiceProgramsList();
+    this.fetchVehiclesList();
     this.initDataTable();
     $(document).ready(() => {
       setTimeout(() => {
@@ -77,6 +104,24 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.vehicleManufacturersList = result;
     });
   }
+  fetchDriversList() {
+    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+      this.driversList = result;
+    });
+  }
+
+  fetchServiceProgramsList() {
+    this.apiService.getData('servicePrograms/get/list').subscribe((result: any) => {
+      this.serviceProgramsList = result;
+    });
+  }
+
+  fetchVehiclesList() {
+    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+      this.vendorsList = result;
+    });
+  }
+  
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe({
       complete: () => {},
@@ -93,16 +138,6 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
 
     this.suggestedVehicles = [];
   }
-
-
-  // deleteVehicle(vehicleId) {
-  //   this.apiService
-  //     .deleteData('vehicles/' + vehicleId)
-  //     .subscribe((result: any) => {
-  //       this.toastr.success('Vehicle Deleted Successfully!');
-  //       this.fetchVehicles();
-  //     });
-  // }
 
 
   /**
@@ -135,7 +170,7 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        { "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12], "orderable": false },
+        { "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "orderable": false },
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
@@ -208,6 +243,138 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.toastr.success('Vehicle Deleted Successfully!');
       });
+    }
+  }
+
+  hideShowColumn() {
+    //for headers
+    if(this.hideShow.vin == false) {
+      $('.col1').css('display','none');
+    } else {
+      $('.col1').css('display','');
+    }
+
+    if(this.hideShow.vehicleName == false) {
+      $('.col2').css('display','none');
+    } else {
+      $('.col2').css('display','');
+    }
+
+    if(this.hideShow.vehicleType == false) {
+      $('.col3').css('display','none');
+    } else {
+      $('.col3').css('display','');
+    }
+
+    if(this.hideShow.make == false) {
+      $('.col4').css('display','none');
+    } else {
+      $('.col4').css('display','');
+    }
+
+    if(this.hideShow.model == false) {
+      $('.col5').css('display','none');
+    } else {
+      $('.col5').css('display','');
+    }
+
+    if(this.hideShow.lastLocation == false) {
+      $('.col6').css('display','none');
+    } else {
+      $('.col6').css('display','');
+    }
+
+    if(this.hideShow.trip == false) {
+      $('.col7').css('display','none');
+    } else {
+      $('.col7').css('display','');
+    }
+
+    if(this.hideShow.plateNo == false) {
+      $('.col8').css('display','none');
+    } else {
+      $('.col8').css('display','');
+    }
+
+    if(this.hideShow.fuelType == false) {
+      $('.col9').css('display','none');
+    } else {
+      $('.col9').css('display','');
+    }
+
+    if(this.hideShow.status == false) {
+      $('.col10').css('display','none');
+    } else {
+      $('.col10').css('display','');
+    }
+
+    if(this.hideShow.group == false) {
+      $('.col11').css('display','none');
+    } else {
+      $('.col11').css('display','');
+    }
+
+    if(this.hideShow.ownership == false) {
+      $('.col12').css('display','none');
+    } else {
+      $('.col12').css('display','');
+    }
+
+    //extra columns
+    if(this.hideShow.driver == false) {
+      $('.col13').css('display','none');
+    } else { 
+      $('.col13').removeClass('extra');
+      $('.col13').css('display','');
+    }
+
+    if(this.hideShow.serviceProgram == false) {
+      $('.col14').css('display','none');
+    } else { 
+      $('.col14').removeClass('extra');
+      $('.col14').css('display','');
+    }
+
+    if(this.hideShow.serviceDate == false) {
+      $('.col15').css('display','none');
+    } else { 
+      $('.col15').removeClass('extra');
+      $('.col15').css('display','');
+    }
+    
+    if(this.hideShow.insuranceVendor == false) {
+      $('.col16').css('display','none');
+    } else { 
+      $('.col16').removeClass('extra');
+      $('.col16').css('display','');
+    }
+
+    if(this.hideShow.insuranceAmount == false) {
+      $('.col17').css('display','none');
+    } else { 
+      $('.col17').removeClass('extra');
+      $('.col17').css('display','');
+    }
+
+    if(this.hideShow.engineSummary == false) {
+      $('.col18').css('display','none');
+    } else { 
+      $('.col18').removeClass('extra');
+      $('.col18').css('display','');
+    }
+
+    if(this.hideShow.primaryMeter == false) {
+      $('.col19').css('display','none');
+    } else { 
+      $('.col19').removeClass('extra');
+      $('.col19').css('display','');
+    }
+
+    if(this.hideShow.fuelUnit == false) {
+      $('.col20').css('display','none');
+    } else { 
+      $('.col20').removeClass('extra');
+      $('.col20').css('display','');
     }
   }
 }
