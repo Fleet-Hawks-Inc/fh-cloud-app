@@ -7,7 +7,7 @@
           </header>
           <div class="row text-dark">
              <div class="col pr-0 pb-3">
-                <form id="driverForm" class="form-horizontal form-bordered bg-white" method="get" name="form" >
+                <form id="driverForm" class="form-horizontal form-bordered bg-white" #driverForm="ngForm" (ngSubmit)="onSubmit(driverForm)" >
                    <div class="p-2 pt-4">
                       <ul class="nav nav-tabs top-tabs" id="driver-tabs" role="tablist">
                          <li class="nav-item">
@@ -829,7 +829,7 @@
                           <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
                          <button type="button"  *ngIf="currentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
                          <a href="javascript:;" (click)="nextStep()"  *ngIf="currentTab != 7" class="btn btn-success btnNext">Next</a>
-                         <a href="javascript:;" *ngIf="currentTab == 7 && !driverID" (click)="addDriver()" class="btn btn-success">Submit</a>
+                         <button type="submit" *ngIf="currentTab == 7 && !driverID" class="btn btn-success">Submit</button>
                          <a href="javascript:;" *ngIf="currentTab == 7 && driverID" (click)="updateDriver()" class="btn btn-success">Update</a>
   
                       </div>

@@ -12,9 +12,10 @@ import {SharedModule} from '../../../shared/shared.module';
 import { DataTablesModule } from 'angular-datatables';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
 
 const routes: Routes = [
-  { path: 'add', component: AddDriverComponent },
+  { path: 'add', component: AddDriverComponent, canDeactivate: [unsavedChangesGuard] },
   { path: 'edit/:driverID', component: AddDriverComponent },
   { path: 'list', component: DriverListComponent },
   { path: 'detail/:driverID', component: DriverDetailComponent}
@@ -37,6 +38,6 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule
   ],
-
+  providers: [unsavedChangesGuard]
 })
 export class DriversModule {}

@@ -54,6 +54,8 @@ import { AlertDetailComponent } from './pages/alerts/alert-detail/alert-detail.c
 import { AlertListComponent } from './pages/alerts/alert-list/alert-list.component';
 import { AlertTypeDetailComponent } from './pages/alerts/alert-type-detail/alert-type-detail.component';
 import { ErrorComponent } from './error/error.component';
+import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component';
+import { unsavedChangesGuard } from './guards/unsaved-changes.guard';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -79,7 +81,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AlertDetailComponent,
     AlertListComponent,
     AlertTypeDetailComponent,
-    ErrorComponent
+    ErrorComponent,
+    UnsavedChangesComponent
   ],
   imports: [
     AmplifyAngularModule,

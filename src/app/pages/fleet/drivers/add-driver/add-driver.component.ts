@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { from, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, EMPTY, from, Subject, throwError } from 'rxjs';
 import { ApiService } from '../../../../services';
 import { Auth } from 'aws-amplify';
 import { HereMapService } from '../../../../services';
@@ -13,6 +13,11 @@ import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from '
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Location } from '@angular/common';
+import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
+import { NgForm } from '@angular/forms';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
+import { resolve } from 'url';
 
 declare var $: any;
 
@@ -21,7 +26,10 @@ declare var $: any;
   templateUrl: './add-driver.component.html',
   styleUrls: ['./add-driver.component.css'],
 })
-export class AddDriverComponent implements OnInit {
+export class AddDriverComponent implements CanComponentDeactivate {
+  @ViewChild('driverForm',null) driverForm: NgForm;
+  isLeave: BehaviorSubject<boolean> = new BehaviorSubject(true);
+
   Asseturl = this.apiService.AssetUrl;
   pageTitle: string;
   lastElement;
@@ -160,6 +168,7 @@ export class AddDriverComponent implements OnInit {
               private ngbCalendar: NgbCalendar,
               private domSanitizer: DomSanitizer,
               private location: Location,
+              private modalService: NgbModal,
               private dateAdapter: NgbDateAdapter<string>,
               private router: Router) {
       this.selectedFileNames = new Map<any, any>();
@@ -168,6 +177,18 @@ export class AddDriverComponent implements OnInit {
       this.birthDateMinLimit = {year: 1960, month: 1, day: 1};
       
     }
+  
+    /**
+     * Unsaved Changes
+     */
+    canLeave(): boolean {
+    if(this.driverForm.dirty) {
+      this.modalService.open(UnsavedChangesComponent);
+      return false;
+      // return window.confirm('are you sure?');
+    }
+    return true;
+  };
 
 
   get today() {
@@ -433,8 +454,8 @@ export class AddDriverComponent implements OnInit {
   }
 
 
-  async addDriver() {
-
+  async onSubmit() {
+    
     this.hasError = false;
     this.hasSuccess = false;
     // this.register();

@@ -174,7 +174,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   ],
   providers: [NgSelectConfig, ɵs,
     {provide: NgbDateAdapter, useClass: CustomAdapter},
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},
   ],
 })
 export class FleetModule {}
