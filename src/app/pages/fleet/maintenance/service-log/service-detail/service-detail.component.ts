@@ -3,7 +3,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiService } from '../../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { HereMapService } from "../../../../../services/here-map.service";
-
+import * as moment from 'moment';
 @Component({
   selector: 'app-service-detail',
   templateUrl: './service-detail.component.html',
@@ -20,6 +20,7 @@ export class ServiceDetailComponent implements OnInit {
   vehicle: any;
   assetID: any;
   completionDate: any;
+  startDate: any;
   odometer: any;
   reference: any;
   vendorID: any;
@@ -70,6 +71,7 @@ export class ServiceDetailComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.logsData = result.Items[0];
+        console.log('fdf', this.logsData)
         result = result.Items[0];
         
         this.vehicle = result.vehicleID;
@@ -79,6 +81,7 @@ export class ServiceDetailComponent implements OnInit {
         this.odometer = result.odometer;
         this.reference = result.reference;
         this.description = result.description;
+        this.startDate = result.timeCreated;
         this.allServiceTasks = result.allServiceTasks.serviceTaskList;
         this.allServiceParts = result.allServiceParts.servicePartsList;
 
