@@ -9,14 +9,15 @@
       <!-- end: sidebar -->
 
       <section role="main" class="content-body pt-0 pl-0">
-         <header class="page-header">
-            <div class="row pr-5 pl-2" style="padding-top:10px;">
+         <header class="page-header pr-5">
+            <div class="row pr-1 mr-1" style="padding-top:10px;">
+               
                <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                  {{pageTitle}}
+                  <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
                </div>
-               <div class="col-md-8  col-lg-8 text-right">
-                  <a routerLink="/fleet/reminders/contact-renewals/list" class="btn btn-default btn-sm mx-2"
-                     style="color:black;"><i class="fas fa-list"></i> Contact Renewals</a>
+               
+               <div class="col-md-8  col-lg-8 text-right pr-1">
+                  <a routerLink="/fleet/reminders/contact-renewals/list" class="btn btn-default btn-sm" style="color:black;"><i class="fas fa-list"></i> Contact Renewals</a>
                </div>
             </div>
          </header>
@@ -36,7 +37,7 @@
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                     Contact</label>
                                  <ng-select [(ngModel)]="reminderData.reminderIdentification"
-                                    name="reminderIdentification">
+                                    name="reminderIdentification" placeholder="Select cotact">
 
                                     <ng-option *ngFor="let contact of contacts" value="{{contact.contactID}}">
                                        {{contact.firstName}}</ng-option>
@@ -49,9 +50,10 @@
                            <div class="row pt-2">
                              <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed
-                                    Users/Groups</label>
+                                    Users/Groups&nbsp;<span
+                                    class="text-1 optional-label-color">(optional)</span></label>
                                  <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers"
-                                    style="width: 100%;">
+                                    style="width: 100%;" placeholder="Select user(s)/ group(s) to send email">
                                     <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}
                                     </ng-option>
                                     <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}
@@ -78,7 +80,7 @@
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                     Renewal Type</label>
                                     <ng-select [(ngModel)]="reminderData.reminderTasks.task"
-                                    name="task" style="width: 100%;">
+                                    name="task" style="width: 100%;" placeholder="Select renewal type">
                                     <optgroup label="Select Service Task">
                                        <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
                                        </ng-option>
@@ -93,17 +95,15 @@
                            <div class="row pt-2">
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Date</label>
-                                 <input class="form-control" placeholder="dd-mm-yyyy"
-                                    name="dueDate"
+                                 <input class="form-control" placeholder="dd-mm-yyyy" name="dueDate"
                                     [(ngModel)]="reminderData.reminderTasks.dueDate" (click)="d.toggle()" ngbDatepicker
                                     #d="ngbDatepicker" />
                               </div>
                               <div class="col-lg-5">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time
-                                    (Reminder of Due Soon)</label>
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)</label>
                                  <div class="row">
-                                    <div class="col-lg-4 pr-0">
-                                       <input type="number" class="form-control" [(ngModel)]="time" name="time">
+                                    <div class="col-lg-4">
+                                       <input type="number" class="form-control" [(ngModel)]="time" name="time" placeholder="eg. 2,3,4..">
                                     </div>
                                     <div class="col-lg-8 pl-0">
                                        <ng-select [(ngModel)]="timeType" name="timeType">
@@ -121,7 +121,7 @@
                      </div>
                      <div class="form-group row pt-2">
                         <div class="col-lg-11 text-right">
-                           <button type="button" class="btn btn-default mr-1" (click)="cancel()">Cancel</button>
+                           <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
                            <a href="javascript:;" *ngIf="!reminderID" (click)="addRenewal()"
                               class="btn btn-success">Save</a>
                            <a href="javascript:;" *ngIf="reminderID" (click)="updateRenewal()"
@@ -154,13 +154,14 @@
                   <label
                   class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Name</label>
                <input [(ngModel)]="serviceTask.taskName"
-                  name="taskName" type="text" class="form-control">
+                  name="taskName" type="text" class="form-control" placeholder="Enter name of the renewal type">
                 </div>
              </div>
              <div class="row mt-2">
                <div class="col-lg-12">
                  <label
-                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Type Description</label>              
+                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Type Description&nbsp;<span
+                 class="text-1 optional-label-color">(optional)</span></label>              
                  <textarea class="form-control" rows="3" [(ngModel)]="serviceTask.description" name="description"></textarea>
                </div>
             </div>
@@ -190,13 +191,14 @@
                <div class="form-row">
                  <div class="form-group col-lg-12">
                    <label class="control-label font-weight-bold">Group Name</label>
-                   <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"> 
+                   <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control" placeholder="Enter group name"> 
                  </div>
                </div>
                <div class="form-row">
                   <div class="form-group col-lg-12">
-                    <label class="control-label font-weight-bold">Group Members</label>
-                    <ng-select [multiple]="true" [(ngModel)]="groupMembers" name="groupMembers"
+                    <label class="control-label font-weight-bold">Group Members&nbsp;<span
+                     class="text-1 optional-label-color">(optional)</span></label>
+                    <ng-select [multiple]="true" [(ngModel)]="groupMembers" name="groupMembers" placeholder="Select group members"
                     style="width: 100%;">
                     <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}
                     </ng-option>
@@ -207,8 +209,9 @@
                  <div class="form-group col-lg-12">
                    <div class="row">
                      <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Description</label>
-                        <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment"></textarea>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp;<span
+                           class="text-1 optional-label-color">(optional)</span></label>
+                        <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment" placeholder="Enter group description"></textarea>
                      </div>
                    </div>
                  </div>

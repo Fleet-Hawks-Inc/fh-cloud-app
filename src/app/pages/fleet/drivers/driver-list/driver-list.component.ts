@@ -35,8 +35,9 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   driverCheckCount;
   selectedDriverID;
   drivers = [];
-  dtOptions: DataTables.Settings = {};
+
   dtTrigger: Subject<any> = new Subject();
+  dtOptions: any = {};
 
 
   statesObject: any = {};
@@ -44,12 +45,39 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   citiesObject: any = {};
   vehiclesObject: any = {};
   cyclesObject: any = {};
+  groupssObject:any = {}
 
   driverID = '';
   driverName = '';
   dutyStatus = '';
   suggestedDrivers = [];
   homeworld: Observable<{}>;
+
+  totalRecords = 20;
+  pageLength = 10;
+  lastEvaluatedKey = '';
+
+  hideShow = {
+    name: true,
+    dutyStatus: true,
+    location: true,
+    currCycle: true,
+    currVehicle: true,
+    assets: true,
+    contact: true,
+    dl: true,
+    document: true,
+    status: true,
+    groupID: false,
+    citizenship: false,
+    address: false,
+    paymentType: false,
+    sin: false,
+    contractStart: false,
+    homeTerminal: false,
+    fastNumber: false
+  }
+
   private destroy$ = new Subject();
   constructor(
     private apiService: ApiService,
@@ -61,65 +89,17 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit(): void {
     
+    // this.hideShowColumn();
     this.fetchAllDocumentsTypes();
-
-    forkJoin([
-      this.fetchDrivers(),
-      this.fetchAddress(),
-      this.fetchAllStatesIDs(),
-      this.fetchAllVehiclesIDs(),
-      this.fetchAllCyclesIDs(),
-      this.fetchAllCountriesIDs(),
-      this.fetchAllCitiesIDs()
-    ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        complete: () => {
-          this.initDataTable();
-        },
-        error: () => { },
-        next: ([
-          drivers,
-          addresses,
-          statesIds,
-          vehcilesIds,
-          cycleIds,
-          countryIds,
-          citiesIds
-        ]: any) => {
-          let newArr = [];
-          // tslint:disable-next-line: prefer-for-of
-          for (let i = 0; i < addresses.Items.length; i++) {
-            // tslint:disable-next-line: prefer-for-of
-            for (let j = 0; j < drivers.Items.length; j++) {
-              if (addresses.Items[i].entityID === drivers.Items[j].driverID) {
-                drivers.Items[j].addressDetails = {
-                  address1: addresses.Items[i].address1,
-                  address2: addresses.Items[i].address2,
-                  addressID: addresses.Items[i].addressID,
-                  addressType: addresses.Items[i].addressType,
-                  cityID: addresses.Items[i].cityID,
-                  countryID: addresses.Items[i].countryID,
-                  geoCords: addresses.Items[i].geoCords,
-                  stateID: addresses.Items[i].stateID,
-                  zipCode: addresses.Items[i].zipCode,
-                };
-              }
-            }
-          }
-          for (const iterator of drivers.Items) {
-            if (iterator.isDeleted === 0) {
-              this.drivers.push(iterator);
-            }
-          }
-          this.statesObject = statesIds;
-          this.vehiclesObject = vehcilesIds;
-          this.cyclesObject = cycleIds;
-          this.countriesObject = countryIds;
-          this.citiesObject = citiesIds;
-        }
-      });
-
+    this.fetchDrivers();
+    this.fetchAllStatesIDs();
+    this.fetchAllVehiclesIDs();
+    this.fetchAllCyclesIDs();
+    this.fetchAllCountriesIDs();
+    this.fetchAllCitiesIDs();
+    this.fetchAllGrorups();
+    this.initDataTable();
+    
 
     $(document).ready(() => {
       setTimeout(() => {
@@ -137,10 +117,15 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
+  rerender(status=''): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
       dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
@@ -185,7 +170,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   getSuggestions(value) {
     this.apiService
-      .getData(`drivers/suggestion/${value}`)
+      .getData(`drivers/get/suggestions/${value}`)
       .subscribe((result) => {
         this.suggestedDrivers = result.Items;
         if (this.suggestedDrivers.length === 0) {
@@ -194,113 +179,74 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       });
   }
 
-  setDriver(driverID, driverName) {
-    this.driverName = driverName;
+  setDriver(driverID, firstName, lastName) {
+    this.driverName = firstName+' '+lastName;
     this.driverID = driverID;
 
     this.suggestedDrivers = [];
   }
 
   fetchDrivers() {
-    // this.spinner.show(); // loader init
-    // let character = this.apiService.getData('drivers');
-    // let characterHomeworld = this.apiService.getData('addresses');
 
-    // forkJoin([character, characterHomeworld]).subscribe(results => {
-    //   console.log("results", results);
-    // });
-
-    //  this.apiService.getData('drivers')
-    //     .pipe(mergeMap(character => this.apiService.getData('addresses'))).subscribe( res => {
-    //       console.log('homeworld', this.homeworld);
-    //     });
-    //   console.log('homeworld', this.homeworld);
-    // this.apiService.getData(`drivers`).pipe(
-    //   mergeMap(resp => {
-    //     console.log("resp", resp);
-    //     return this.apiService.getData(`addresses`).pipe(
-    //       map(countResp => {
-    //         console.log("countResp", countResp);
-    //       })
-    //     )
-    //   })
-    // ).subscribe(res => {
-    //   console.log("drivers", res);
-    // })
-    return this.apiService.getData(`drivers?driverID=${this.driverID}&dutyStatus=${this.dutyStatus}`);
-    // .subscribe({
-    //   complete: () => {
-    //     this.initDataTable();
-    //   },
-    //   error: () => { },
-    //   next: (result: any) => {
-    //     // console.log(result);
-    //     // console.log(result.Items);
-
-    //     for (const iterator of result.Items) {
-    //       if (iterator.isDeleted === 0) {
-    //         this.drivers.push(iterator);
-    //       }
-    //     }
-
-    //     // console.log(result);
-
-    //     this.drivers = result.Items;
-
-    //     //  console.log('drivers', this.drivers);
-
-
-    //     // this.drivers = result.Items;
-
-
-    //     // for (let i = 0; i < result.Items.length; i++) {
-    //     //   // console.log(result.Items[i].isDeleted);
-    //     //   if (result.Items[i].isDeleted === 0) {
-    //     //     this.drivers.push(result.Items[i]);
-    //     //   }
-    //     // }
-
-    //     //  this.spinner.hide(); // loader hide
-
-    //   },
-    // });
+    this.apiService.getData('drivers')
+    .subscribe({
+      complete: () => {
+        this.initDataTable();
+      },
+      error: () => { },
+      next: (result: any) => {
+        // console.log(result);
+        // console.log(result.Items);
+        this.totalRecords = result.Count;
+      },
+    });
   }
 
   fetchAllStatesIDs() {
-    return this.apiService.getData('states/get/list');
-    // .subscribe((result: any) => {
-    //   this.statesObject = result;
-    // });
+    this.apiService.getData('states/get/list')
+    .subscribe((result: any) => {
+      this.statesObject = result;
+    });
+
   }
 
 
   fetchAllCountriesIDs() {
-    return this.apiService.getData('countries/get/list');
-    // .subscribe((result: any) => {
-    //   this.countriesObject = result;
-    // });
+    this.apiService.getData('countries/get/list')
+    .subscribe((result: any) => {
+      this.countriesObject = result;
+    });
+  }
+
+  fetchAllGrorups() {
+    this.apiService.getData('groups/get/list')
+    .subscribe((result: any) => {
+      this.groupssObject = result;
+    });
   }
 
   fetchAllCitiesIDs() {
-    return this.apiService.getData('cities/get/list');
-    // .subscribe((result: any) => {
-    //   this.citiesObject = result;
-    // });
+    this.apiService.getData('cities/get/list')
+    .subscribe((result: any) => {
+      this.citiesObject = result;
+    });
   }
 
   fetchAllVehiclesIDs() {
-    return this.apiService.getData('vehicles/get/list');
-    // .subscribe((result: any) => {
-    //   this.vehiclesObject = result;
-    // });
+    this.apiService.getData('vehicles/get/list')
+    .subscribe((result: any) => {
+      this.vehiclesObject = result;
+    });
   }
 
   fetchAllCyclesIDs() {
-    return this.apiService.getData('cycles/get/list');
-    // .subscribe((result: any) => {
-    //   this.cyclesObject = result;
-    // });
+    this.apiService.getData('cycles/get/list')
+    .subscribe((result: any) => {
+      this.cyclesObject = result;
+    });
+    
   }
+
 
   checkboxCount = () => {
     this.driverCheckCount = 0;
@@ -335,25 +281,203 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
 
   deactivateDriver(item, driverID) {
+
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
         .getData(`drivers/isDeleted/${driverID}/${item.isDeleted}`)
         .subscribe((result: any) => {
+          this.rerender();
           this.toastr.success('Driver deleted successfully!');
-          this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
-          this.fetchDrivers();
-        }, err => {});
+          // this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
+        }, err => {
+         
+        });
     }
   }
 
   initDataTable() {
-    this.dtOptions = {
-      searching: false,
-      dom: 'Bfrtip', // lrtip to hide search field
+    let current = this;
+    this.dtOptions = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
       processing: true,
-      
-     
+      order: [],
+      columnDefs: [ //sortable false
+        { "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,], "orderable": false },
+      ],
+      dom: 'lrtip',
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+          current.drivers = resp['Items'];
+          // let fetchedDrivers = resp['Items'].map(function(v){ return v.driverID; });
+          for (let i = 0; i < current.drivers.length; i++) {
+            const element = current.drivers[i];
+            element.address = {};
+            this.apiService.getData(`addresses/driver/${element.driverID}`).subscribe((result: any) => {
+              element.address = result['Items'][0];
+            });
+          }
+          console.log('element')
+          console.log(current.drivers)
+          
+          if (resp['LastEvaluatedKey'] !== undefined) {
+            this.lastEvaluatedKey = resp['LastEvaluatedKey'].driverID;
+          } else {
+            this.lastEvaluatedKey = '';
+          }
+          
+          callback({
+            recordsTotal: current.totalRecords,
+            recordsFiltered: current.totalRecords,
+            data: []
+          });
+        });
+      }
+
     };
   }
 
+  searchFilter() {
+    if(this.driverID !== '' || this.dutyStatus !== '') {
+      this.rerender('reset');
+    } else {
+      return false;
+    }
+  }
+
+  resetFilter() {
+    if(this.driverID !== '' || this.dutyStatus !== '') {
+      // this.spinner.show();
+      this.driverID = '';
+      this.dutyStatus = '';
+      this.driverName = '';
+      this.rerender();
+      // this.spinner.hide();
+    } else {
+      return false;
+    }
+  }
+
+  hideShowColumn() {
+    //for headers
+    if(this.hideShow.name == false) {
+      $('.col1').css('display','none');
+    } else {
+      $('.col1').css('display','');
+    }
+
+    if(this.hideShow.dutyStatus == false) {
+      $('.col2').css('display','none');
+    } else {
+      $('.col2').css('display','');
+    }
+
+    if(this.hideShow.location == false) {
+      $('.col18').css('display','none');
+    } else {
+      $('.col18').css('display','');
+    }
+
+    if(this.hideShow.currCycle == false) {
+      $('.col11').css('display','none');
+    } else {
+      $('.col11').css('display','');
+    }
+
+    if(this.hideShow.currVehicle == false) {
+      $('.col12').css('display','none');
+    } else {
+      $('.col12').css('display','');
+    }
+
+    if(this.hideShow.assets == false) {
+      $('.col13').css('display','none');
+    } else {
+      $('.col13').css('display','');
+    }
+
+    if(this.hideShow.contact == false) {
+      $('.col14').css('display','none');
+    } else {
+      $('.col14').css('display','');
+    }
+
+    if(this.hideShow.dl == false) {
+      $('.col15').css('display','none');
+    } else {
+      $('.col15').css('display','');
+    }
+
+    if(this.hideShow.document == false) {
+      $('.col16').css('display','none');
+    } else {
+      $('.col16').css('display','');
+    }
+
+    if(this.hideShow.status == false) {
+      $('.col17').css('display','none');
+    } else {
+      $('.col17').css('display','');
+    }
+
+    //extra columns
+    if(this.hideShow.groupID == false) {
+      $('.col3').css('display','none');
+    } else { 
+      $('.col3').removeClass('extra');
+      $('.col3').css('display','');
+    }
+
+    if(this.hideShow.citizenship == false) {
+      $('.col4').css('display','none');
+    } else { 
+      $('.col4').removeClass('extra');
+      $('.col4').css('display','');
+    }
+
+    if(this.hideShow.address == false) {
+      $('.col5').css('display','none');
+    } else { 
+      $('.col5').removeClass('extra');
+      $('.col5').css('display','');
+    }
+    
+    if(this.hideShow.paymentType == false) {
+      $('.col6').css('display','none');
+    } else { 
+      $('.col6').removeClass('extra');
+      $('.col6').css('display','');
+    }
+
+    if(this.hideShow.sin == false) {
+      $('.col7').css('display','none');
+    } else { 
+      $('.col7').removeClass('extra');
+      $('.col7').css('display','');
+    }
+
+    if(this.hideShow.contractStart == false) {
+      $('.col8').css('display','none');
+    } else { 
+      $('.col8').removeClass('extra');
+      $('.col8').css('display','');
+    }
+
+    if(this.hideShow.homeTerminal == false) {
+      $('.col9').css('display','none');
+    } else { 
+      $('.col9').removeClass('extra');
+      $('.col9').css('display','');
+    }
+
+    if(this.hideShow.fastNumber == false) {
+      $('.col10').css('display','none');
+    } else { 
+      $('.col10').removeClass('extra');
+      $('.col10').css('display','');
+    }
+    
+
+  }
 }

@@ -3,6 +3,7 @@ import {ApiService} from '../../../../services/api.service';
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-orders-list',
@@ -18,15 +19,14 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
   dtTrigger: Subject<any> = new Subject();
 
   orders = [];
-  lastEvaluated = {
-    value1: '',
-    value2: ''
-  };
+  lastEvaluatedKey = '';
   orderFiltr = {
     searchValue: '',
     startDate: '',
     endDate: '',
-    category: ''
+    category: '',
+    start: '',
+    end: ''
   };
   totalRecords = 20;
   pageLength = 10;
@@ -41,7 +41,7 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
   invoicedOrdersCount = 0;
   partiallyPaidOrdersCount = 0;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
     this.fetchOrders();
@@ -70,10 +70,10 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-
+        this.totalRecords = result.Count; 
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
-          if(element.isDeleted === '0') {
+          if(element.isDeleted === 0) {
             this.allordersCount = this.allordersCount+1;
             this.totalRecords = this.allordersCount; 
             if(element.orderStatus == 'confirmed') {
@@ -137,10 +137,7 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
 
     }
 
-    current.lastEvaluated = {
-      value1: '',
-      value2: ''
-    }
+    current.lastEvaluatedKey = '';
     current.initDataTable(tabType, 'reload');
   }
 
@@ -149,10 +146,7 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
     let current = this;
     
     if(tabType !== 'all') {
-      this.lastEvaluated = {
-        value1: '',
-        value2: ''
-      };
+      this.lastEvaluatedKey = ''
     }
 
     if(tabType === 'all') {
@@ -161,20 +155,8 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.serviceUrl = 'orders/fetch-records/'+tabType + "?recLimit="+this.allordersCount+"&value1=";
     }
 
-    if(filters === 'yes') {
-      let startDatee:any = '';
-      let endDatee:any = '';
-      // if(this.tripsFiltr.startDate !== ''){
-      //   startDatee = new Date(this.tripsFiltr.startDate).getTime();
-      // }
-      // if(this.tripsFiltr.endDate !== ''){
-      //   endDatee = new Date(this.tripsFiltr.endDate+" 00:00:00").getTime();
-      // }
-      this.orderFiltr.category = 'orderNumber';
-      this.serviceUrl = this.serviceUrl+'&filter=true&searchValue='+this.orderFiltr.searchValue+"&startDate="+startDatee+"&endDate="+endDatee+"&category="+this.orderFiltr.category+"&value1=";
-    }
-
-    // console.log(this.serviceUrl);
+    // this.orderFiltr.category = 'orderNumber';
+    this.serviceUrl = this.serviceUrl+'&filter=true&searchValue='+this.orderFiltr.searchValue+"&startDate="+this.orderFiltr.start+"&endDate="+this.orderFiltr.end +"&category="+this.orderFiltr.category+"&value1=";
 
     if (check !== '') {
       current.rerender();
@@ -188,38 +170,21 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       dom: 'lrtip',
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0],"orderable": false},
-        {"targets": [1],"orderable": false},
-        {"targets": [2],"orderable": false},
-        {"targets": [3],"orderable": false},
-        {"targets": [4],"orderable": false},
-        {"targets": [5],"orderable": false},
-        {"targets": [6],"orderable": false},
-        {"targets": [7],"orderable": false},
+        {"targets": [0,1,2,3,4,5,6,7],"orderable": false},
       ],
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData(this.serviceUrl +current.lastEvaluated.value1 + 
-        '&value2=' + current.lastEvaluated.value2, dataTablesParameters).subscribe(resp => {
+        current.apiService.getDatatablePostData(this.serviceUrl +current.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           this.orders = resp['Items'];
 
           if (resp['LastEvaluatedKey'] !== undefined) {
             if (resp['LastEvaluatedKey'].carrierID !== undefined) {
-              current.lastEvaluated = {
-                value1: resp['LastEvaluatedKey'].orderID,
-                value2: resp['LastEvaluatedKey'].carrierID
-              }
+              current.lastEvaluatedKey = resp['LastEvaluatedKey'].orderID
             } else {
-              current.lastEvaluated = {
-                value1: resp['LastEvaluatedKey'].orderID,
-                value2: ''
-              }
+              current.lastEvaluatedKey = ''
             }
 
           } else {
-            current.lastEvaluated = {
-              value1: '',
-              value2: ''
-            }
+            current.lastEvaluatedKey = ''
           }
 
           callback({
@@ -238,8 +203,50 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
     $("#categorySelect").text(type);
   }
 
-  filterTrips() {
-    this.totalRecords = this.allordersCount;
-    this.initDataTable('all', 'reload','yes');
+  filterOrders() { 
+    if(this.orderFiltr.searchValue !== '' || this.orderFiltr.startDate !== '' 
+    || this.orderFiltr.endDate !== '' || this.orderFiltr.category !== '') {
+      let sdate;
+      let edate;
+      if(this.orderFiltr.startDate !== ''){
+        sdate = this.orderFiltr.startDate.split('-');
+        if(sdate[0] < 10) {
+          sdate[0] = '0'+sdate[0]
+        }
+        this.orderFiltr.start = sdate[2]+'-'+sdate[1]+'-'+sdate[0];
+      }
+      if(this.orderFiltr.endDate !== ''){
+        edate = this.orderFiltr.endDate.split('-');
+        if(edate[0] < 10) {
+          edate[0] = '0'+edate[0]
+        }
+        this.orderFiltr.end = edate[2]+'-'+edate[1]+'-'+edate[0];
+      }
+      this.pageLength = this.allordersCount;
+      this.totalRecords = this.allordersCount;
+      this.orderFiltr.category = 'orderNumber';
+
+      this.initDataTable('all', 'reload','yes');
+    }
+  }
+
+  resetFilter() {
+    if(this.orderFiltr.startDate !== '' || this.orderFiltr.endDate !== '' || this.orderFiltr.searchValue !== '') {
+      this.spinner.show();
+      this.orderFiltr = {
+        searchValue: '',
+        startDate: '',
+        endDate: '',
+        category: '',
+        start: '',
+        end: ''
+      };
+      $("#categorySelect").text('Search by category');
+      this.pageLength = 10;
+      this.initDataTable('all', 'reload','yes');
+      this.spinner.hide();
+    } else {
+      return false;
+    }
   }
 }

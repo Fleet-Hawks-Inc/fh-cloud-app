@@ -19,10 +19,8 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
 
-  quotes;
-  lastEvaluated = {
-    value1: '',
-  };
+  quotes = [];
+  lastEvaluatedKey = '';
   quoteSearch = {
     searchValue: '',
     startDate: '',
@@ -41,7 +39,7 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit() {
     this.fetchQuotes();
-    this.initDataTable('all')
+    this.initDataTable()
   }
 
   fetchQuotes = () => {
@@ -67,25 +65,9 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
       });
   }
 
-  initDataTable(filters:any = '') {
+  initDataTable() {
     let current = this;
-    
     this.serviceUrl = 'quotes/fetch-records'+ "?value1=";
-
-    // if(filters === 'yes') {
-    //   let startDatee:any = '';
-    //   let endDatee:any = '';
-    //   // if(this.tripsFiltr.startDate !== ''){
-    //   //   startDatee = new Date(this.tripsFiltr.startDate).getTime();
-    //   // }
-    //   // if(this.tripsFiltr.endDate !== ''){
-    //   //   endDatee = new Date(this.tripsFiltr.endDate+" 00:00:00").getTime();
-    //   // }
-    //   // this.quoteSearch.category = 'orderNumber';
-    //   this.serviceUrl = this.serviceUrl+'&filter=true&searchValue='+this.quoteSearch.searchValue+"&startDate="+startDatee+"&endDate="+endDatee;
-    // }
-    // console.log(this.serviceUrl);
-
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
       pageLength: current.pageLength,
@@ -94,35 +76,18 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
       dom: 'lrtip',
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0],"orderable": false},
-        {"targets": [1],"orderable": false},
-        {"targets": [2],"orderable": false},
-        {"targets": [3],"orderable": false},
-        {"targets": [4],"orderable": false},
-        {"targets": [5],"orderable": false},
-        {"targets": [6],"orderable": false},
-        {"targets": [7],"orderable": false},
-        {"targets": [8],"orderable": false},
-        {"targets": [9],"orderable": false},
-        {"targets": [10],"orderable": false},
-        {"targets": [11],"orderable": false},
+        {"targets": [0,1,2,3,4,5,6,7,8,9,10,11],"orderable": false},
       ],
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData(this.serviceUrl +current.lastEvaluated.value1 +'&searchValue='+this.quoteSearch.searchValue+
+        current.apiService.getDatatablePostData(this.serviceUrl +current.lastEvaluatedKey +'&searchValue='+this.quoteSearch.searchValue+
         "&startDate="+this.quoteSearch.start+"&endDate="+this.quoteSearch.end , dataTablesParameters).subscribe(resp => {
           this.quotes = resp['Items'];
           // console.log('resp')
           // console.log(resp)
           if (resp['LastEvaluatedKey'] !== undefined) {
-            
-            current.lastEvaluated = {
-              value1: resp['LastEvaluatedKey'].quoteID,
-            }
-
+            current.lastEvaluatedKey = resp['LastEvaluatedKey'].quoteID
           } else {
-            current.lastEvaluated = {
-              value1: '',
-            }
+            current.lastEvaluatedKey = ''
           }
 
           callback({
@@ -143,10 +108,15 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
+  rerender(status=''): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
       dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
@@ -178,7 +148,7 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
         this.quoteSearch.end = endDate[2]+'-'+endDate[1]+'-'+endDate[1];
       }
       
-      this.rerender();
+      this.rerender('reset');
     } else {
       return false;
     }

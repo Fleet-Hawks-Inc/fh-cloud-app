@@ -34,16 +34,21 @@ export class AssetDetailComponent implements OnInit {
   manufacturer: string;
   model: string;
   length: string;
+  lengthUnit: string;
   axle: string;
   GAWR: string;
+  GAWR_Unit: string;
   GVWR: string;
+  GVWR_Unit: string;
   ownerShip: string;
   remarks: string;
 
   dateOfIssue: string;
   dateOfExpiry: string;
   premiumAmount: string;
+  premiumCurrency: string;
   reminderBefore: string;
+  reminderBeforeUnit: string;
   vendor: string;
   
   devices;
@@ -137,26 +142,57 @@ export class AssetDetailComponent implements OnInit {
           this.year =  this.assetData.assetDetails.year;
           this.manufacturer =  this.assetData.assetDetails.manufacturer;
           this.model =  this.assetData.assetDetails.model;
-          this.length =  this.assetData.assetDetails.length + ' ' + this.assetData.assetDetails.lengthUnit;
-          this.axle =  this.assetData.assetDetails.axle;
-          this.GAWR =  this.assetData.assetDetails.GAWR + ' ' + this.assetData.assetDetails.GAWR_Unit;
-          this.GVWR =  this.assetData.assetDetails.GVWR + ' ' + this.assetData.assetDetails.GVWR_Unit;
+          if (this.assetData.assetDetails.length != undefined || this.assetData.assetDetails.length != null) {
+            this.length =  this.assetData.assetDetails.length + ' ' + this.assetData.assetDetails.lengthUnit;
+          }
+          if (this.assetData.assetDetails.lengthUnit != undefined || this.assetData.assetDetails.lengthUnit != null) {
+            this.lengthUnit =   this.assetData.assetDetails.lengthUnit;
+          }
+          if (this.assetData.assetDetails.axle != undefined || this.assetData.assetDetails.axle != null) {
+            this.axle =  this.assetData.assetDetails.axle;
+          }
+          if (this.assetData.assetDetails.GAWR != undefined || this.assetData.assetDetails.GAWR != null) {
+            this.GAWR =  this.assetData.assetDetails.GAWR;
+          }
+          if (this.assetData.assetDetails.GAWR_Unit != undefined || this.assetData.assetDetails.GAWR_Unit != null) {
+            this.GAWR_Unit =  this.assetData.assetDetails.GAWR_Unit;
+          }
+          if (this.assetData.assetDetails.GVWR != undefined || this.assetData.assetDetails.GVWR != null) {
+            this.GVWR =  this.assetData.assetDetails.GVWR
+          }
+          if (this.assetData.assetDetails.GVWR_Unit != undefined || this.assetData.assetDetails.GVWR_Unit != null) {
+            this.GVWR_Unit =  this.assetData.assetDetails.GVWR_Unit
+          }
           this.ownerShip =  this.assetData.assetDetails.ownerShip;
           this.remarks =  this.assetData.assetDetails.remarks;
 
-          this.dateOfIssue =  this.assetData.insuranceDetails.dateOfIssue;
-          this.dateOfExpiry =  this.assetData.insuranceDetails.dateOfExpiry;
-          this.premiumAmount =  this.assetData.insuranceDetails.premiumAmount + ' ' + this.assetData.insuranceDetails.premiumCurrency;
-          this.reminderBefore =  this.assetData.insuranceDetails.reminderBefore + ' ' + 
-                                      this.assetData.insuranceDetails.reminderBeforeUnit;
-          this.vendor = this.assetData.insuranceDetails.vendor;
+          if (this.assetData.insuranceDetails.dateOfIssue != undefined || this.assetData.insuranceDetails.dateOfIssue != null) {
+            this.dateOfIssue =  this.assetData.insuranceDetails.dateOfIssue;
+          }
+          if (this.assetData.insuranceDetails.dateOfExpiry != undefined || this.assetData.insuranceDetails.dateOfExpiry != null) {
+            this.dateOfExpiry =  this.assetData.insuranceDetails.dateOfExpiry;
+          }
+          if (this.assetData.insuranceDetails.premiumAmount != undefined || this.assetData.insuranceDetails.premiumAmount != null) {
+            this.premiumAmount =  this.assetData.insuranceDetails.premiumAmount;
+          }
+          if (this.assetData.insuranceDetails.premiumCurrency != undefined || this.assetData.insuranceDetails.premiumCurrency != null) {
+            this.premiumCurrency =  this.assetData.insuranceDetails.premiumCurrency;
+          }
+          if (this.assetData.insuranceDetails.reminderBefore != undefined || this.assetData.insuranceDetails.reminderBefore != null) {
+            this.reminderBefore =  this.assetData.insuranceDetails.reminderBefore;
+          }
+          if (this.assetData.insuranceDetails.reminderBeforeUnit != undefined || this.assetData.insuranceDetails.reminderBeforeUnit != null) {
+            this.reminderBeforeUnit =  this.assetData.insuranceDetails.reminderBeforeUnit;
+          }
+          if (this.assetData.insuranceDetails.vendor != undefined || this.assetData.insuranceDetails.vendor != null) {
+            this.vendor = this.assetData.insuranceDetails.vendor;
+          }                           
+          
           
           // this.getImages();
           this.spinner.hide(); // loader hide
         }
-      }, (err) => {
-        
-      });
+      }, (err) => {});
   }
 
   fetchDeviceInfo = () => {
@@ -166,9 +202,7 @@ export class AssetDetailComponent implements OnInit {
         if (result) {
           this.deviceData = result['Items'];
         }
-      }, (err) => {
-       
-      });
+      }, (err) => {});
   }
 
   fetchAllStatesIDs() {

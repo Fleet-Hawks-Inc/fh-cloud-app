@@ -6,6 +6,8 @@ import { HereMapService } from '../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { mergeMap, takeUntil } from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Console } from 'console';
 
 declare var $: any;
 @Component({
@@ -34,9 +36,11 @@ export class AddressBookComponent implements OnInit {
   manualAddress1: boolean;
   dtOptions: DataTables.Settings = {};
   wsib: false;
+  updateButton: boolean = false;
   addresses = [];
   // Customer Object
   customerData = {
+    entityType: 'customer',
     address: [{
       addressType: '',
       countryID: '',
@@ -58,6 +62,7 @@ export class AddressBookComponent implements OnInit {
   
   // Broker Object
   brokerData = {
+    entityType: 'broker',
     address: [{
       addressType: '',
       countryID: '',
@@ -79,6 +84,7 @@ export class AddressBookComponent implements OnInit {
 
   // Vendor Object
   vendorData = {
+    entityType: 'vendor',
     address: [{
       addressType: '',
       countryID: '',
@@ -122,6 +128,7 @@ export class AddressBookComponent implements OnInit {
 
   // Shipper Object
   shipperData = {
+    entityType: 'shipper',
     address: [{
       addressType: '',
       countryID: '',
@@ -143,6 +150,7 @@ export class AddressBookComponent implements OnInit {
 
   // Consignee Object
   consigneeData = {
+    entityType: 'consignee',
     address: [{
       addressType: '',
       countryID: '',
@@ -164,6 +172,7 @@ export class AddressBookComponent implements OnInit {
 
   // fcCompany Object
   fcCompanyData = {
+    entityType: 'factoring company',
     address: [{
       addressType: '',
       countryID: '',
@@ -185,6 +194,7 @@ export class AddressBookComponent implements OnInit {
 
    // Staff Object
    staffData = {
+    entityType: 'staff',
     paymentDetails: {},
     address: [{
       addressType: '',
@@ -203,8 +213,10 @@ export class AddressBookComponent implements OnInit {
       }
     }],
     userAccount: {},
-    additionalContact: {}
   };
+
+  userDetailData: any;
+  userDetailTitle: string;
 
   public searchTerm = new Subject<string>();
   public searchResults: any;
@@ -216,9 +228,13 @@ export class AddressBookComponent implements OnInit {
   Success: string = '';
   private destroy$ = new Subject();
   errors = {};
+  newAddress = [];
+
+  showDriverModal: boolean = false;
   constructor(
             private apiService: ApiService,
             private toastr: ToastrService,
+            private modalService: NgbModal,
             private HereMap: HereMapService)
   { }
 
@@ -266,7 +282,8 @@ export class AddressBookComponent implements OnInit {
           this.fcCompanies = fcCompanies.Items,
           this.allData = [...this.customers, ...this.drivers, ...this.brokers, ...this.vendors,
                             ...this.carriers, ...this.shippers, ...this.receivers, ...this.staffs, ...this.fcCompanies];                           
-          this.countries = countries;
+          this.countries = countries.Items;
+          
           this.addresses = addresses;
         }
       });
@@ -287,6 +304,13 @@ export class AddressBookComponent implements OnInit {
     });
   }
 
+  openDetail(targetModal, data) {
+    $('.modal').modal('hide');
+    this.userDetailTitle = data.firstName;
+    const modalRef = this.modalService.open(targetModal);
+    this.userDetailData = data;
+    console.log("this.userDetailData", this.userDetailData);
+  }
   remove(data, i) {
     data.address.splice(i, 1);
   }
@@ -420,13 +444,48 @@ export class AddressBookComponent implements OnInit {
       });
   }
 
-  async checkUserExist(phone: number, email: string){
-    this.addresses.forEach(element => {
-      if( element.email === email || element.phone === phone) {
-        console.log('exists');
-      } else {
-        console.log('not exists');
-      }
+  removeAddressFields(arr) {
+    delete arr['carrierID'];
+    delete arr['timeModified'];
+    arr.address.forEach(element => {
+      delete element['addressID'];
+      delete element['email'];
+      delete element['entityID'];
+      delete element['entityType'];
+      delete element['name'];
+      delete element['phone'];
+    });
+  }
+
+  updateCustomer() {
+   
+    this.hideErrors();
+    this.removeAddressFields(this.customerData);
+    this.removeUserLocation(this.customerData.address)
+    this.apiService.putData('customers', this.customerData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        $('#addCustomerModal').modal('hide');
+        this.toastr.success('Customer updated successfully');
+      },
     });
   }
 
@@ -434,33 +493,65 @@ export class AddressBookComponent implements OnInit {
   async addBroker() {
     this.hideErrors();
     this.removeUserLocation(this.brokerData.address);
-    let result = await this.checkUserExist(this.brokerData['workPhone'], this.brokerData['workEmail'])
+    
     this.apiService.postData('brokers', this.brokerData).
-      subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          this.response = res;
-          this.hasSuccess = true;
-          $('#addBrokerModal').modal('hide');
-          this.toastr.success('Customer Added Successfully');
-        }
-      });
+    subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        $('#addBrokerModal').modal('hide');
+        this.toastr.success('Customer Added Successfully');
+      }
+    });
+  }
+
+  updateBroker() {
+   
+    this.hideErrors();
+    this.removeAddressFields(this.brokerData);
+    this.removeUserLocation(this.brokerData.address)
+    this.apiService.putData('brokers', this.brokerData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        $('#addBrokerModal').modal('hide');
+        this.toastr.success('Broker updated successfully');
+      },
+    });
   }
 
   // Add Vendor
@@ -490,12 +581,45 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           this.vendorData = {
+            entityType: '',
             address: []
           };
           $('#addVendorModal').modal('hide');
           this.toastr.success('Vendor Added Successfully');
         }
       });
+  }
+
+  updateVendor() {
+   
+    this.hideErrors();
+    this.removeAddressFields(this.vendorData);
+    this.removeUserLocation(this.vendorData.address)
+    this.apiService.putData('vendors', this.vendorData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        $('#addVendorModal').modal('hide');
+        this.toastr.success('Vendor updated successfully');
+      },
+    });
   }
 
   // Add Carrier
@@ -563,6 +687,39 @@ export class AddressBookComponent implements OnInit {
       });
   }
 
+  updateShipper() {
+   
+    this.hideErrors();
+    this.removeAddressFields(this.shipperData);
+    this.removeUserLocation(this.shipperData.address)
+    this.apiService.putData('shippers', this.shipperData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        $('#addShipperModal').modal('hide');
+        this.toastr.success('Shipper updated successfully');
+      },
+    });
+  }
+
+
   // Add Consignee
   addConsignee() {
     this.hideErrors();
@@ -593,6 +750,38 @@ export class AddressBookComponent implements OnInit {
           this.toastr.success('Consignee Added Successfully');
         }
       });
+  }
+
+  updateConsignee() {
+   
+    this.hideErrors();
+    this.removeAddressFields(this.consigneeData);
+    this.removeUserLocation(this.consigneeData.address)
+    this.apiService.putData('receivers', this.consigneeData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        $('#addConsigneeModal').modal('hide');
+        this.toastr.success('Consignee updated successfully');
+      },
+    });
   }
 
   // Add FC Company
@@ -627,6 +816,38 @@ export class AddressBookComponent implements OnInit {
       });
   }
 
+  updateFCompany() {
+   
+    this.hideErrors();
+    this.removeAddressFields(this.fcCompanyData);
+    this.removeUserLocation(this.fcCompanyData.address)
+    this.apiService.putData('factoringCompanies', this.fcCompanyData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        $('#addFCModal').modal('hide');
+        this.toastr.success('Company updated successfully');
+      },
+    });
+  }
+
   // Add addStaff
   addStaff() {
     this.hideErrors();
@@ -659,6 +880,37 @@ export class AddressBookComponent implements OnInit {
       });
   }
 
+  updateStaff() {
+   
+    this.hideErrors();
+    this.removeAddressFields(this.staffData);
+    this.removeUserLocation(this.staffData.address)
+    this.apiService.putData('staffs', this.staffData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        $('#addStaffModal').modal('hide');
+        this.toastr.success('Staff updated successfully');
+      },
+    });
+  }
 
   throwErrors() {
     console.log(this.errors);
@@ -764,12 +1016,151 @@ export class AddressBookComponent implements OnInit {
 
   initDataTable() {
     this.dtOptions = {
+      "pageLength": 10,
       searching: false,
-      dom: 'Bfrtip', // lrtip to hide search field
       processing: true,
       
-     
     };
+  }
+
+  assignAddressToUpdate(entityAddresses: any) {
+    
+    for (let i = 0; i < entityAddresses.length; i++) {
+      this.newAddress.push({
+        addressType: entityAddresses[i].addressType,
+        countryID: entityAddresses[i].countryID,
+        countryName: entityAddresses[i].countryName,
+        stateID: entityAddresses[i].stateID,
+        stateName: entityAddresses[i].stateName,
+        cityID: entityAddresses[i].cityID,
+        cityName: entityAddresses[i].cityName,
+        zipCode: entityAddresses[i].zipCode,
+        address1: entityAddresses[i].address1,
+        address2: entityAddresses[i].address2,
+      })
+    }
+    return this.newAddress;
+  }
+
+  deactivateCustomer(item, userID) {
+    if (confirm("Are you sure you want to delete?") === true) {
+      this.apiService
+      .getData(`customers/isDeleted/${userID}/${item.isDeleted}`)
+      .subscribe((result: any) => {
+        this.customers = this.customers.filter(u => u.customerID !== item.customerID);
+      });
+    }
+  }
+
+  deactivateDriver(item, userID) {
+    if (confirm("Are you sure you want to delete?") === true) {
+      this.apiService
+      .getData(`drivers/isDeleted/${userID}/${item.isDeleted}`)
+      .subscribe((result: any) => {
+        this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
+      });
+    }
+  }
+
+  deactivateBroker(item, userID) {
+    if (confirm("Are you sure you want to delete?") === true) {
+      this.apiService
+      .getData(`brokers/isDeleted/${userID}/${item.isDeleted}`)
+      .subscribe((result: any) => {
+        this.brokers = this.brokers.filter(u => u.brokerID !== item.brokerID);
+      });
+    }
+  }
+
+  deactivateVendor(item, userID) {
+    if (confirm("Are you sure you want to delete?") === true) {
+      this.apiService
+      .getData(`vendors/isDeleted/${userID}/${item.isDeleted}`)
+      .subscribe((result: any) => {
+        this.vendors = this.vendors.filter(u => u.vendorID !== item.vendorID);
+      });
+    }
+  }
+
+  deactivateShipper(item, userID) {
+    if (confirm("Are you sure you want to delete?") === true) {
+      this.apiService
+      .getData(`shippers/isDeleted/${userID}/${item.isDeleted}`)
+      .subscribe((result: any) => {
+        this.shippers = this.shippers.filter(u => u.shipperID !== item.shipperID);
+      });
+    }
+  }
+  deactivateReceiver(item, userID) {
+    if (confirm("Are you sure you want to delete?") === true) {
+      this.apiService
+      .getData(`receivers/isDeleted/${userID}/${item.isDeleted}`)
+      .subscribe((result: any) => {
+        this.receivers = this.receivers.filter(u => u.receiverID !== item.receiverID);
+      });
+    }
+  }
+
+  deactivateStaff(item, userID) {
+    if (confirm("Are you sure you want to delete?") === true) {
+      this.apiService
+      .getData(`staffs/isDeleted/${userID}/${item.isDeleted}`)
+      .subscribe((result: any) => {
+        this.staffs = this.staffs.filter(u => u.staffID !== item.staffID);
+      });
+    }
+  }
+
+  deactivateCompany(item, userID) {
+    if (confirm("Are you sure you want to delete?") === true) {
+      this.apiService
+      .getData(`factoringCompanies/isDeleted/${userID}/${item.isDeleted}`)
+      .subscribe((result: any) => {
+        this.fcCompanies = this.fcCompanies.filter(u => u.factoringCompanyID !== item.factoringCompanyID);
+      });
+    }
+  }
+
+  editUser(type: string, item: any) {
+    this.updateButton = true;
+    $('.modal').modal('hide');
+    if(type === 'customer') {
+      $('#addCustomerModal').modal('show');
+      this.customerData = item;
+      let result = this.assignAddressToUpdate(item.address)
+      this.customerData.address = result;
+    } else if(type === 'broker') {
+      $('#addBrokerModal').modal('show');
+      this.brokerData = item;
+      let result = this.assignAddressToUpdate(item.address)
+      this.brokerData.address = result;
+    } else if(type === 'vendor') {
+      $('#addVendorModal').modal('show');
+      this.vendorData = item;
+      let result = this.assignAddressToUpdate(item.address)
+      this.vendorData.address = result;
+    } else if(type === 'shipper') {
+      $('#addShipperModal').modal('show');
+      this.shipperData = item;
+      let result = this.assignAddressToUpdate(item.address)
+      this.shipperData.address = result;
+    } else if(type === 'consignee') {
+      $('#addConsigneeModal').modal('show');
+      this.consigneeData = item;
+      let result = this.assignAddressToUpdate(item.address)
+      this.consigneeData.address = result;
+    } else if(type === 'staff') {
+      $('#addStaffModal').modal('show');
+      this.staffData = item;
+      let result = this.assignAddressToUpdate(item.address)
+      this.staffData.address = result;
+    } else if(type === 'Factoring Company') {
+      $('#addStaffModal').modal('show');
+      this.fcCompanyData = item;
+      let result = this.assignAddressToUpdate(item.address)
+      this.fcCompanyData.address = result;
+    } 
+    
   }
 
 }

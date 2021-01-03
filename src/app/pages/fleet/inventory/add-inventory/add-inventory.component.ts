@@ -3,6 +3,8 @@ import { ApiService } from "../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
 import { map } from "rxjs/operators";
 import { from } from "rxjs";
+import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
 declare var $: any;
 
 @Component({
@@ -11,6 +13,7 @@ declare var $: any;
   styleUrls: ["./add-inventory.component.css"],
 })
 export class AddInventoryComponent implements OnInit {
+  Asseturl = this.apiService.AssetUrl;
   /**
    * form props
    */
@@ -41,7 +44,12 @@ export class AddInventoryComponent implements OnInit {
   vendors = [];
   itemGroups = [];
   warehouses = [];
-
+  existingPhotos = [];
+  existingDocs = [];
+  uploadedPhotos = [];
+  uploadedDocs = [];
+  public inventoryDocs = [];
+  public inventoryImages = [];
   /**
    * group props
    */
@@ -63,7 +71,7 @@ export class AddInventoryComponent implements OnInit {
   warehoseForm = "";
   hasWarehouseSuccess = false;
   warehouseSuccess: string = "";
-
+  pdfSrc: any;
   countries = [];
   states = [];
   cities = [];
@@ -79,7 +87,9 @@ export class AddInventoryComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private domSanitizer: DomSanitizer,
+    private toastr: ToastrService,
   ) {
     this.itemID = this.route.snapshot.params["itemID"];
     console.log(this.itemID);
@@ -95,6 +105,23 @@ export class AddInventoryComponent implements OnInit {
       this.groupForm = $("#groupForm").validate();
       this.warehoseForm = $("#warehoseForm").validate();
     });
+  }
+
+   /*
+   * Selecting files before uploading
+   */
+  selectDocuments(event, obj) {
+    let files = [...event.target.files];
+
+    if (obj === 'uploadedDocs') {
+      for (let i = 0; i < files.length; i++) {
+        this.uploadedDocs.push(files[i])
+      }
+    } else {
+      for (let i = 0; i < files.length; i++) {
+          this.uploadedPhotos.push(files[i])
+      }
+    }
   }
 
   getInventory() {
@@ -121,9 +148,25 @@ export class AddInventoryComponent implements OnInit {
       this.days = result.days;
       this.time = result.time;
       this.notes = result.notes;
+      this.existingPhotos = result.uploadedPhotos;
+      this.existingDocs = result.uploadedDocs;
+      if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+       // this.allImages = result.uploadedPhotos;
+        this.inventoryImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+      }
+
+      if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
+       // this.alldocs = result.uploadedDocs;
+        this.inventoryDocs = result.uploadedDocs.map(x => ({path:`${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+      }
     });
   }
-
+  /*Delete upload */
+  delete(type: string,name: string){
+    this.apiService.deleteData(`items/uploadDelete/${this.itemID}/${type}/${name}`).subscribe((result: any) => {
+      this.getInventory();
+    });
+  }
   ngOnInit() {
     this.fetchVendors();
     this.fetchItemGroups();
@@ -207,7 +250,23 @@ export class AddInventoryComponent implements OnInit {
       notes: this.notes,
     };
 
-    this.apiService.postData("items", data).subscribe({
+     // create form data instance
+     const formData = new FormData();
+
+     //append photos if any
+     for(let i = 0; i < this.uploadedPhotos.length; i++){
+       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+     }
+ 
+     //append docs if any
+     for(let j = 0; j < this.uploadedDocs.length; j++){
+       formData.append('uploadedDocs', this.uploadedDocs[j]);
+     }
+ 
+     //append other fields
+     formData.append('data', JSON.stringify(data));
+
+    this.apiService.postData("items", formData, true).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
@@ -346,10 +405,27 @@ export class AddInventoryComponent implements OnInit {
       days: this.days,
       time: this.time,
       notes: this.notes,
+      uploadedPhotos: this.existingPhotos,
+      uploadedDocs: this.existingDocs
     };
+   
+     // create form data instance
+     const formData = new FormData();
 
-    // console.log(data);return false;
-    this.apiService.putData("items", data).subscribe({
+     //append photos if any
+     for(let i = 0; i < this.uploadedPhotos.length; i++){
+       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+     }
+ 
+     //append docs if any
+     for(let j = 0; j < this.uploadedDocs.length; j++){
+       formData.append('uploadedDocs', this.uploadedDocs[j]);
+     }
+ 
+     //append other fields
+     formData.append('data', JSON.stringify(data));
+
+    this.apiService.putData("items", formData, true).subscribe({
       complete: () => {},
       error: (err) => {
         this.hasError = true;
@@ -357,8 +433,8 @@ export class AddInventoryComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        this.hasSuccess = true;
-        this.Success = "Inventory updated successfully";
+        this.toastr.success('Inventory Updated Successfully');
+        this.router.navigateByUrl('/fleet/inventory/list');
       },
     });
   }
@@ -407,5 +483,19 @@ export class AddInventoryComponent implements OnInit {
         this.fetchWarehouses();
       },
     });
+  }
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+  
+  setSrcValue(){
+    this.pdfSrc = '';
   }
 }

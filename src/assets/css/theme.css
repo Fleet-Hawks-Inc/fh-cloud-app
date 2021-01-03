@@ -163,10 +163,7 @@ a:active {
 }
 /* Layout Base - Flexbox supported */
 @media only screen and (min-width: 768px) {
-	html.flexbox,
-	html.flexboxlegacy {
-		/* Tab Navigation */
-	}
+	
 
 	html.flexbox .inner-wrapper,
 	html.flexboxlegacy .inner-wrapper {
@@ -5693,7 +5690,7 @@ html.sidebar-light:not(.dark) ul.nav-main li .nav-children li a:hover, html.side
 
 .btn-default:hover, .btn-default:active, .btn-default:focus {
 	color: #333;
-	background-color: #e6e6e6;
+	background-color: #ffffff;
 	border-color: #adadad;
 }
 

@@ -32,9 +32,17 @@ export class AddAssetsComponent implements OnInit {
     uploadedPhotos: [],
     uploadedDocs: []
   };
+  
+  allAssets = [];
+  groupData = {
+    groupType : 'assets'
+  };
+
   vendors = [];
   manufacturers = [];
   models = [];
+  groups = [];
+
   response: any = '';
   hasError = false;
   hasSuccess = false;
@@ -62,6 +70,8 @@ export class AddAssetsComponent implements OnInit {
     this.fetchVendors();
     this.fetchCountries(); // fetch countries
     this.fetchAllAssetTypes();
+    this.fetchGroups();
+    this.fetchAssets();
 
     this.assetID = this.route.snapshot.params['assetID'];
     if (this.assetID) {
@@ -103,9 +113,8 @@ export class AddAssetsComponent implements OnInit {
   /*
    * Get all models from api
    */
-  getModels(event) {
-    this.spinner.show(); // loader init
-    const id = event.target.options[event.target.options.selectedIndex].id;
+  getModels(id) {
+
     this.apiService
       .getData(`vehicleModels/manufacturer/${id}`)
       .subscribe((result: any) => {
@@ -118,9 +127,7 @@ export class AddAssetsComponent implements OnInit {
    * Add new asset
    */
   addAsset() {
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    
     this.hideErrors();
     this.apiService.postData('assets', this.assetsData).subscribe({
       complete: () => { },
@@ -147,14 +154,14 @@ export class AddAssetsComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.uploadFiles(); // upload selected files to bucket
-        this.toastr.success('Asset added successfully');
+        this.toastr.success('Asset added successfully.');
         this.router.navigateByUrl('/fleet/assets/list');
       },
     });
   }
 
   throwErrors() {
-    console.log(this.errors);
+    
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
@@ -186,6 +193,7 @@ export class AddAssetsComponent implements OnInit {
         result = result.Items[0];
         this.assetsData['assetID'] = this.assetID;
         this.assetsData['assetIdentification'] = result.assetIdentification;
+        this.assetsData['groupID'] = result.groupID;
         this.assetsData['VIN'] = result.VIN;
         this.assetsData['assetDetails']['assetType'] = result.assetDetails.assetType;
         this.assetsData['assetDetails']['year'] = result.assetDetails.year;
@@ -249,7 +257,7 @@ export class AddAssetsComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.toastr.success('Asset updated successfully');
+        this.toastr.success('Asset updated successfully.');
         this.router.navigateByUrl('/fleet/assets/list');
         this.Success = '';
       },
@@ -304,6 +312,51 @@ export class AddAssetsComponent implements OnInit {
       });
   }
 
+  
+  fetchGroups() {
+    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
+      this.groups = result.Items;
+    });
+  }
+
+  
+  fetchAssets() {
+    this.apiService.getData('assets')
+      .subscribe((result: any) => {
+        this.allAssets = result.Items;
+      });
+  }
+  
+  addGroup() {
+    this.apiService.postData('groups', this.groupData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.fetchGroups();
+        this.toastr.success('Group added successfully.');
+        $('#addGroupModal').modal('hide');
+
+
+      },
+    });
+  }
 
   getStates() {
     this.spinner.show(); // loader init

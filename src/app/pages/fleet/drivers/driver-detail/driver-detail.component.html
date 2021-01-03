@@ -1,17 +1,12 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-  
+    
     <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <app-sidebar></app-sidebar>
-      <!-- end: sidebar -->
+      
       <section role="main" class="content-body pr-0 pl-0 pt-0">
         <header class="page-header">
            <div class="row pr-4 pl-2" style="padding-top:10px;">
-              <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                 Driver Profile
+              <div class="col-md-4 col-lg-4">
+               <h4 class="text-4 mt-0 mb-0 text-dark">Driver Profile</h4>
               </div>
               <div class="col-md-8  col-lg-8 text-right pr-5">
                  <a routerLink="/fleet/drivers/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Drivers List</a>
@@ -26,7 +21,7 @@
                     <div class="row">
                        <div class="col-lg-3 col-xl-3  mb-xl-0 pr-0">
                           <div class="thumb-info">
-                             <img src="assets/img/pp.jpg" class="rounded img-fluid" alt="John Doe">
+                             <img [src]="profile" class="rounded img-fluid" alt="">
                              <div class="thumb-info-title">
                                 <span class="thumb-info-inner">{{driverName}}</span>
                              </div>
@@ -726,4 +721,347 @@
     </div>
 </section>
 
-<app-driver></app-driver>
+<div class="modal fade" id="driverOtherDetailsModal" tabindex="-1" role="dialog" aria-labelledby="driverOtherDetailsModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 950px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Driver Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="m-2">
+                    <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                        <li class="nav-item active"> <a class="nav-link active" id="basicDriverDetails-tab" data-toggle="tab" href="#basicDriverDetails" role="tab" aria-controls="basicDriverDetails" aria-selected="false">Basic Details</a> </li>
+                        <li class="nav-item"> <a class="nav-link" id="addressDriverDetails-tab" data-toggle="tab" href="#addressDriverDetails" role="tab" aria-controls="addressDriverDetails" aria-selected="false">Address</a> </li>
+                        <li class="nav-item"> <a class="nav-link" id="documentDriverDetails-tab" data-toggle="tab" href="#documentDriverDetails" role="tab" aria-controls="documentDriverDetails" aria-selected="false">Document Details</a> </li>
+                        <li class="nav-item"> <a class="nav-link" id="paymentDriverDetails-tab" data-toggle="tab" href="#paymentDriverDetails" role="tab" aria-controls="paymentDriverDetails" aria-selected="false">Payment & Licence Details</a> </li>
+                        <li class="nav-item"> <a class="nav-link" id="DriverhosDriverDetails-tab" data-toggle="tab" href="#DriverhosDriverDetails" role="tab" aria-controls="DriverhosDriverDetails" aria-selected="false">HOS Compliance</a> </li>
+                        <li class="nav-item"> <a class="nav-link" id="emergencyDriverDetails-tab" data-toggle="tab" href="#emergencyDriverDetails" role="tab" aria-controls="emergencyDriverDetails" aria-selected="false">Emergency Contact</a> </li>
+                    </ul>
+                </div>
+                <form>
+                    <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
+                        <!-- Basic -->
+                        <div class="tab-pane fade show active" id="basicDriverDetails" role="tabpanel" aria-labelledby="basicDriverDetails-tab">
+                            <div class="row">
+                                <div class="col-lg-12 font-weight-bold text-4 text-dark">Basic Details</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="row m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Type:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{driverType}}</div>
+                                    </div>
+                                    <div class="row m-0" *ngIf="employeeId">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Employee ID:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{employeeId}}</div>
+                                    </div>
+                                    <div class="row m-0" *ngIf="companyId">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Company ID:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{companyId}}</div>
+                                    </div>
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Status:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{driverStatus}}</div>
+                                    </div>
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">User Name:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{userName}}</div>
+                                    </div>
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Name:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{driverName}}</div>
+                                    </div>
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Gender:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{gender}}</div>
+                                    </div>
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACE ID:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{aceID ? aceID : '-'}}</div>
+                                    </div>
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACI ID:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{aciID ? aciID : '-'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast ID:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{fastID ? fastID : '-'}}</div>
+                                    </div>
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast Expiry Date:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{fastExpiry ? fastExpiry : '-'}}</div>
+                                    </div>
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Citizenship:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{countriesObject[citizenship]}}</div>
+                                    </div>
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CSA:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{csa ? csa : false}}</div>
+                                    </div>
+                                    <div class="row m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Work Phone:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{workPhone}}</div>
+                                    </div>
+                                    <div class="row m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Work Email:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{workEmail}}</div>
+                                    </div>
+                                    <div class="row  m-0">
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Group:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{groupsObjects[group]}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ADDRESS -->
+                        <div class="tab-pane fade" id="addressDriverDetails" role="tabpanel" aria-labelledby="addressDriverDetails-tab">
+                           <div class="row">
+                                 <div class="col-lg-12 font-weight-bold text-4 text-dark">Address Details</div>
+                           </div>
+                            <div id="address_div" style="float: left;" [style.width]="address.length > 1 ? '50%' : '100%'" *ngFor="let item of address;">
+                                <div class="row m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{item.address1}} {{item.address2}}</div>
+                                </div>
+                                <div class="row m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address Type:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{item.addressType}}</div>
+                                </div>
+                                <div class="row  m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">City:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{item.cityName}}</div>
+                                </div>
+                                <div class="row  m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Zipcode:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{item.zipCode}}</div>
+                                </div>
+                                <div class="row  m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">State:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{item.stateName}}</div>
+                                </div>
+                                <div class="row  m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Country:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{item.countryName}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Document -->
+                        <div class="tab-pane fade" id="documentDriverDetails" role="tabpanel" aria-labelledby="documentDriverDetails-tab">
+                           <div class="row">
+                              <div class="col-lg-12 font-weight-bold text-4 text-dark">Document Details</div>
+                          </div>
+                            <div class="row m-0">
+                              <div [style.width]="documents.length > 1 ? '50%' : '100%'" *ngFor="let item of documents;">
+                                        
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Document Type:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{item.documentType}}</div>
+                                        </div>
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Document Number:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{item.document}}</div>
+                                        </div>
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Authority:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{item.issuingAuthority}}</div>
+                                        </div>
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Country:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{countriesObject[item.issuingCountry]}}</div>
+                                        </div>
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing State:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{statesObject[item.issuingState]}}</div>
+                                        </div>
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issue Date:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{item.issueDate}}</div>
+                                        </div>
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Expiry Date:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{item.expiryDate}}</div>
+                                        </div>
+                                        <div *ngFor="let doc of item.uploadedDocs; let i = index;" >
+                                          <a href="{{Asseturl}}/{{carrierID}}/{{doc}}" target="_blank">Doc-{{i + 1}}</a>
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                        </div>
+                        <!-- Payment -->
+                        <div class="tab-pane fade" id="paymentDriverDetails" role="tabpanel" aria-labelledby="paymentDriverDetails-tab">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div id="license_div">
+                                        <div class="row">
+                                            <div class="col-lg-12 font-weight-bold text-4 text-dark">Licence Details</div>
+                                        </div>
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issued Region:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{statesObject[liceIssueSate]}}, {{countriesObject[liceIssueCountry]}}</div>
+                                        </div>
+                                        <div class="row  m-0">
+                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">WCB:</div>
+                                          <div class="col-lg-6 p-2 bor_half">{{liceWCB ? liceWCB : '-'}}</div>
+                                      </div>
+                                      <div class="row  m-0">
+                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Health Care:</div>
+                                             <div class="col-lg-6 p-2 bor_half">{{liceHealthCare ? liceHealthCare : '-'}}</div>
+                                       </div>
+                                       <div class="row  m-0">
+                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Vehicle Type:</div>
+                                          <div class="col-lg-6 p-2 bor_half">{{liceVehicleType ? liceVehicleType : '-'}}</div>
+                                    </div>
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Licence Expiration:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{licenceExpiry}}</div>
+                                        </div>
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract Start Date:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{liceContractStart}}</div>
+                                        </div>
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract End Date:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{liceContractEnd ? liceContractEnd : '-'}}</div>
+                                        </div>
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Medical Card Renewal:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{liceMedicalCardRenewal ? liceMedicalCardRenewal : '-'}}</div>
+                                        </div>
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Birth Date:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{liceDOB}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div id="payment_div">
+                                        <div class="row">
+                                            <div class="col-lg-12 font-weight-bold text-4 text-dark">Payment Details</div>
+                                        </div>
+                                        <div class="row m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Default Payment Type:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{paymentType}}</div>
+                                        </div>
+                                        <div class="row  m-0" *ngIf="loadedMiles">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Loaded Miles:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{loadedMiles}}</div>
+                                        </div>
+                                        <div class="row  m-0" *ngIf="emptyMiles">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Empty Miles:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{emptyMiles}}</div>
+                                        </div>
+                                        <div class="row  m-0" *ngIf="loadPayPercentage">
+                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Load Pay Percentage:</div>
+                                          <div class="col-lg-6 p-2 bor_half">{{loadPayPercentage}}</div>
+                                      </div>
+                                      <div class="row  m-0" *ngIf="loadPayPercentageOf">
+                                       <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Load Pay Percentage Of:</div>
+                                       <div class="col-lg-6 p-2 bor_half">{{loadPayPercentageOf}}</div>
+                                   </div>
+                                        <div class="row  m-0">
+                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">SIN Number:</div>
+                                          <div class="col-lg-6 p-2 bor_half">{{sinNumber}}</div>
+                                      </div>
+                                      <div class="row  m-0">
+                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Local Tax:</div>
+                                          <div class="col-lg-6 p-2 bor_half">{{localTax}}</div>
+                                       </div>
+                                       <div class="row  m-0">
+                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Federal Tax:</div>
+                                          <div class="col-lg-6 p-2 bor_half">{{federalTax}}</div>
+                                       </div>
+                                       <div class="row  m-0">
+                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Pay Period:</div>
+                                          <div class="col-lg-6 p-2 bor_half">{{payPeriod}}</div>
+                                       </div>
+                                       
+                                       
+                                       
+                                        <div class="row  m-0">
+                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Calculate Empty Miles for a Dispatch After:</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{calculateMiles}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="DriverhosDriverDetails" role="tabpanel" aria-labelledby="DriverhosDriverDetails-tab">
+                            <div id="compliance_div">
+                                <div class="row">
+                                    <div class="col-lg-12 font-weight-bold text-4 text-dark">Compliance Details</div>
+                                </div>
+                                <div class="row m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Status:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{hosStatus}}</div>
+                                </div>
+                                <div class="row  m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Remarks:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{hosRemarks ? hosRemarks : '-'}}</div>
+                                </div>
+                                <div class="row  m-0" *ngIf="hosPcAllowed">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Personal Conveyance (PC):</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{hosPcAllowed}}</div>
+                                </div>
+                                <div class="row  m-0" *ngIf="hosYmAllowed">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Yard Move (YM):</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{hosYmAllowed}}</div>
+                                </div>
+                                <div class="row  m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Type:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{hosType}}</div>
+                                </div>
+                                
+                             <div class="row  m-0">
+                              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Hos Cycle:</div>
+                              <div class="col-lg-6 p-2 bor_half">{{cycleObjects[hosCycle]}}</div>
+                          </div>
+                          <div class="row  m-0">
+                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
+                           <div class="col-lg-6 p-2 bor_half">{{yardsObjects[homeTerminal]}}</div>
+                       </div>
+                                
+                                
+                                
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="emergencyDriverDetails" role="tabpanel" aria-labelledby="emergencyDriverDetails-tab">
+                            <div id="emergency_div">
+                                <div class="row">
+                                    <div class="col-lg-12 font-weight-bold text-4 text-dark">Emergency Contact Details</div>
+                                </div>
+                                <div class="row m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Name:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{emerName ? emerName : '-'}}</div>
+                                </div>
+                                <div class="row  m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Relationship:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{emerRelationship ? emerRelationship : '-'}}</div>
+                                </div>
+                                <div class="row  m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Phone:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{emerPhone ? emerPhone : '-'}}</div>
+                                </div>
+                                <div class="row  m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Email:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{emerEmail ? emerEmail : '-'}}</div>
+                                </div>
+                                <div class="row  m-0">
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{emergencyAddress ? emergencyAddress : '-'}} </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

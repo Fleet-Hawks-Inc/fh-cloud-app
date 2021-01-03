@@ -45,7 +45,7 @@ export class AddServiceComponent implements OnInit {
   Success: string = '';
 
   serviceData = {
-    unitType: '',
+    unitType: 'vehicle',
     vehicleID: '',
     assetID: '',
     allServiceTasks: {
@@ -54,10 +54,10 @@ export class AddServiceComponent implements OnInit {
     allServiceParts: {
       servicePartsList : []
     },
-    uploadedDocuments : [],
-    uploadedPhotos: [],
     selectedIssues: []
   };
+  uploadedPhotos = [];
+    uploadedDocs = [];
   totalLabors = 0;
   totalQuantity = 0;
   totalPartsPrice = 0;
@@ -117,7 +117,6 @@ export class AddServiceComponent implements OnInit {
     }     
      this.localReminderUnitID = JSON.parse(window.localStorage.getItem('reminderUnitID'));
      if(this.localReminderUnitID) {
-       console.log('this.localReminderUnitID.unitID',this.localReminderUnitID.unitID);
       this.serviceData.vehicleID =   this.localReminderUnitID.unitID;
       this.getVehicleIssues(this.localReminderUnitID.unitID);
       this.serviceData.unitType = 'vehicle';
@@ -129,25 +128,35 @@ export class AddServiceComponent implements OnInit {
    * Add new asset
    */
   addService() {
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
-    this.hideErrors();
-    console.log('this.serviceLogs', this.serviceData);
     
-    this.apiService.postData('serviceLogs', this.serviceData).subscribe({
+    this.hideErrors();
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedPhotos.length; i++){
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append docs if any
+    for(let j = 0; j < this.uploadedDocs.length; j++){
+      formData.append('uploadedDocs', this.uploadedDocs[j]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.serviceData));
+    this.apiService.postData('serviceLogs', formData, true).subscribe({
       complete: () => { },
-      error: (err: any) => {
-        from(err.error)
+       error: (err: any) => {
+        from(err.error) 
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/'.*'/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              this.spinner.hide(); // loader hide
               this.throwErrors();
             },
             error: () => { },
@@ -156,7 +165,6 @@ export class AddServiceComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        this.uploadFiles(); // upload selected files to bucket
         this.toastr.success('Log added successfully');
         this.router.navigateByUrl('/fleet/maintenance/service-log/list');
       },
@@ -168,14 +176,12 @@ export class AddServiceComponent implements OnInit {
     } 
   }
 
-  
   throwErrors() {
-    console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+          .addClass('error')
       });
     // this.vehicleForm.showErrors(this.errors);
   }
@@ -192,7 +198,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   selectIssues($event, ids) {
-    console.log($event.target.checked);
+    
     if($event.target.checked) {
       this.selectedIssues.push(ids);
     } else {
@@ -211,7 +217,7 @@ export class AddServiceComponent implements OnInit {
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
       this.groups = result.Items;
-      // console.log('groups', this.groups)
+      
     });
   }
 
@@ -229,7 +235,6 @@ export class AddServiceComponent implements OnInit {
   fetchVendors() {
     this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
-      // console.log('vendors', this.vendors)
     });
   }
 
@@ -256,7 +261,6 @@ export class AddServiceComponent implements OnInit {
    */
   fetchAssetByID(id) {
     this.apiService.getData(`assets/${id}`).subscribe(async (result: any) => {
-      console.log('assets status', result);
       this.serviceData['unitStatus'] = await result.Items[0].assetDetails.currentStatus;
     });
   }
@@ -267,7 +271,6 @@ export class AddServiceComponent implements OnInit {
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
-      // console.log('assets', this.assets);
     });
   }
 
@@ -300,10 +303,7 @@ export class AddServiceComponent implements OnInit {
     this.apiService.getData('items').subscribe((result: any) => {
       result = result.Items;
       this.inventory = result;
-      console.log('invertory', this.inventory);
-      // for (const iterator of result) {
-      //   this.inventory.push(iterator.name);
-      // }
+      
     });
   }
   
@@ -314,18 +314,15 @@ export class AddServiceComponent implements OnInit {
     this.fetchVehicleByID(vehicleID);
     this.apiService.getData(`issues/vehicle/${vehicleID}`).subscribe((result: any) => {
       this.issues = result.Items;
-      console.log('this.issues', this.issues);
     });
   }
 
   getAssetIssues(id) {
     const assetID = id;
-    console.log('assetID', assetID);
     this.getReminders(assetID);
     this.fetchAssetByID(assetID);
     this.apiService.getData(`issues/asset/${assetID}`).subscribe((result: any) => {
       this.issues = result.Items;
-      // console.log('asset issues', this.issues);
     });
   }
 
@@ -339,7 +336,6 @@ export class AddServiceComponent implements OnInit {
             element.buttonShow = false;
           }
       });
-      console.log("reminder", this.reminders);
     });
   }
 
@@ -347,43 +343,41 @@ export class AddServiceComponent implements OnInit {
    * Selecting files before uploading
    */
   selectDocuments(event, obj) {
-    this.selectedFiles = event.target.files;
+    let files = [...event.target.files];
+
     if (obj === 'uploadedDocs') {
-      //this.assetsData.uploadedDocs = [];
-      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-        const randomFileGenerate = this.selectedFiles[i].name.split('.');
-        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-        this.serviceData.uploadedDocuments.push(fileName);
+      this.uploadedDocs = [];
+      for (let i = 0; i < files.length; i++) {
+        this.uploadedDocs.push(files[i])
       }
     } else {
-      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-        const randomFileGenerate = this.selectedFiles[i].name.split('.');
-        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-
-        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-        this.serviceData.uploadedPhotos.push(fileName);
+      this.uploadedPhotos = [];
+      for (let i = 0; i < files.length; i++) {
+          this.uploadedPhotos.push(files[i])
       }
     }
   }
-  /*
-   * Uploading files which selected
-   */
-  uploadFiles = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
-      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
+
+  addParts() {
+    
+    this.inventory.forEach(element => {
+      if (element.name === this.selectedParts[this.selectedParts.length - 1].name) {
+        this.serviceData.allServiceParts.servicePartsList.push({
+          partID: element.itemID,
+          partNumber: element.partNumber,
+          description: element.description,
+        });
+      }
+      
     });
   }
 
-
   async addTasks() {
-    console.log('value', this.selectedTasks);
     let remindID;
     let newSchedule;
     
     for (let remind of this.reminders) {
-      // console.log('remind', remind);
+      
       if (remind.reminderTasks.task === this.selectedTasks[this.selectedTasks.length - 1].taskID) {
         remindID = remind.reminderID;
         newSchedule = `Every ${remind.reminderTasks.odometer} Miles`;
@@ -392,7 +386,6 @@ export class AddServiceComponent implements OnInit {
         newSchedule = ' ';
       }
     }
-    console.log('sss', this.serviceData.allServiceTasks.serviceTaskList);
     
     this.serviceData.allServiceTasks.serviceTaskList.push({
       taskName: this.selectedTasks[this.selectedTasks.length - 1].taskName,
@@ -403,10 +396,10 @@ export class AddServiceComponent implements OnInit {
   }
 
   async addListedTasks(data) {
-    // console.log('data', data);
+    
     data.buttonShow = !data.buttonShow;
     let result = await this.fetchTaskbyID(data.reminderTasks.task);
-    console.log('task', result);
+    
     let task = result.Items[0].taskName;
     let ID = result.Items[0].taskID;
     this.selectedTasks.push(task);
@@ -416,19 +409,18 @@ export class AddServiceComponent implements OnInit {
       reminderID: data.reminderID,
       schedule: `Every ${data.reminderTasks.odometer} Miles`,
     });
-    console.log('this.serviceData.allServiceTasks.serviceTaskList', this.serviceData.allServiceTasks.serviceTaskList);
   }
 
   removeListedTasks(data) {
-    console.log('data', data);
+    
     data.buttonShow = !data.buttonShow;
     let taskList = this.serviceData.allServiceTasks.serviceTaskList;
     let index = taskList.findIndex(item => item.taskID === data.reminderTasks.task);
     taskList.splice(index, 1);
   }
 
-  remove(arr, data, i) {
-    console.log('remove', data, i);
+  remove(arr: any, data: any, i) {
+    console.log('data', data);
     if (arr === 'tasks') {
       let remindersList = this.reminders;
       remindersList.findIndex(item => {
@@ -436,9 +428,13 @@ export class AddServiceComponent implements OnInit {
           item.buttonShow = !item.buttonShow;
         }});
       this.serviceData.allServiceTasks.serviceTaskList.splice(i, 1);
-      this.totalLabors -= data.laborCost;
+      // this.totalLabors -= data.laborCost;
+      this.selectedTasks = this.selectedTasks.filter( elem => elem.taskName != data.taskName)
+      this.calculateTasks();
     } else {
       this.serviceData.allServiceParts.servicePartsList.splice(i, 1);
+      this.selectedParts = this.selectedParts.filter( elem => elem.itemID != data.partID);
+      this.calculateParts();
     }
   }
 
@@ -452,16 +448,36 @@ export class AddServiceComponent implements OnInit {
   }
 
   removeTasks(item) {
-    console.log("remove item", item)
+    
     this.serviceData.allServiceTasks.serviceTaskList.filter(s => {
-      console.log("s", s)
+        if (s.taskName === item.label) {
+          let index = this.serviceData.allServiceTasks.serviceTaskList.indexOf(s);
+          this.serviceData.allServiceTasks.serviceTaskList.splice(index, 1);
+          this.totalLabors -= s.laborCost; 
+          // this.calculateTasks();
+        }
+        if(this.totalLabors === 0) {
+          this.serviceData.allServiceTasks['discountPercent'] = 0;
+          this.serviceData.allServiceTasks['taxPercent'] = 0;
+          this.serviceData.allServiceTasks['total'] = 0;
+        }
+    });
+  }
+
+  removeParts(item) {
+    this.serviceData.allServiceParts.servicePartsList.filter(s => {
       if (s.taskName === item.label) {
-        let index = this.serviceData.allServiceTasks.serviceTaskList.indexOf(s);
-        console.log("index", index)
-        this.serviceData.allServiceTasks.serviceTaskList.splice(index, 1);
+        let index = this.serviceData.allServiceParts.servicePartsList.indexOf(s);
+        this.serviceData.allServiceParts.servicePartsList.splice(index, 1);
+        // this.totalLabors -= s.laborCost; 
+        this.calculateTasks();
+      }
+      if(this.totalLabors === 0) {
+        this.serviceData.allServiceParts['discountPercent'] = 0;
+        this.serviceData.allServiceParts['taxPercent'] = 0;
+        this.serviceData.allServiceParts['total'] = 0;
       }
   });
-    console.log('allServiceTasks', this.serviceData.allServiceTasks);
   }
 
   
@@ -524,7 +540,6 @@ export class AddServiceComponent implements OnInit {
     let countAmount = 0;
     let quantity = this.serviceData.allServiceParts.servicePartsList;
     quantity.forEach(element => {
-      console.log('element',  element);
       if (element.quantity !== '' && element.rate !== '' ) {
         countQuantity += (parseFloat(element.quantity) || 0) ;
         element.partCost = (parseFloat(element.quantity) || 0) * (parseFloat(element.rate) || 0);
@@ -548,31 +563,13 @@ export class AddServiceComponent implements OnInit {
   }
 
 
-
-  addParts() {
-    console.log('parts', this.selectedParts);
-    this.inventory.forEach(element => {
-      if (element.name === this.selectedParts[this.selectedParts.length - 1].name) {
-        console.log('this.inventory[i].name', element.name)
-        console.log('this.selectedParts[this.selectedParts.length - 1]', this.selectedParts[this.selectedParts.length - 1].name)
-        this.serviceData.allServiceParts.servicePartsList.push({
-          partNumber: element.partNumber,
-          description: element.description,
-        });
-      }
-      
-    });
-  }
-
-
-
   fetchServiceByID() {
     // this.spinner.show(); // loader init
     this.apiService
       .getData('serviceLogs/' + this.logID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('log', result);
+        
         this.serviceData['logID'] = this.logID;
         this.serviceData['unitType'] = result.unitType;
         if (result.vehicleID) {
@@ -661,29 +658,41 @@ export class AddServiceComponent implements OnInit {
    * Update Service Log
   */
  updateService() {
-  console.log('serviceLogs', this.serviceData);
-  this.apiService.putData('serviceLogs', this.serviceData).subscribe({
+   this.hideErrors();
+  // create form data instance
+  const formData = new FormData();
+
+  //append photos if any
+  for(let i = 0; i < this.uploadedPhotos.length; i++){
+    formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+  }
+
+  //append docs if any
+  for(let j = 0; j < this.uploadedDocs.length; j++){
+    formData.append('uploadedDocs', this.uploadedDocs[j]);
+  }
+
+  //append other fields
+  formData.append('data', JSON.stringify(this.serviceData));
+  this.apiService.putData('serviceLogs', formData, true).subscribe({
     complete: () => { },
-    error: (err) => {
-      from(err.error)
-        .pipe(
-          map((val: any) => {
-            const path = val.path;
-            // We Can Use This Method
-            const key = val.message.match(/'([^']+)'/)[1];
-            console.log(key);
-            val.message = val.message.replace(/'.*'/, 'This Field');
-            this.errors[key] = val.message;
-          })
-        )
-        .subscribe({
-          complete: () => {
-            this.throwErrors();
-          },
-          error: () => { },
-          next: () => { },
-        });
-    },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/'.*'/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.spinner.hide(); // loader hide
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
     next: (res) => {
       this.response = res;
       this.hasSuccess = true;

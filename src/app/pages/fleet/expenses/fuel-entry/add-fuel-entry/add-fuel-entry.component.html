@@ -10,12 +10,12 @@
     <!-- end: sidebar -->
 
     <section role="main" class="content-body pl-0">
-      <header class="page-header pl-2">
-         <div class="row pr-5 " style="padding-top:10px;">
-            <div class="col-md-6 col-lg-6 font-weight-bold text-4 text-dark pt-1">
-               {{title}}
+      <header class="page-header pr-5">
+         <div class="row pr-1 mr-1" style="padding-top:10px;">
+            <div class="col-md-6 col-lg-6 font-weight-bold text-4 text-dark">
+               <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{title}}</h4>
             </div>
-            <div class="col-md-6  col-lg-6 text-right pr-4">                               
+            <div class="col-md-6  col-lg-6 text-right pr-1">
                <a [routerLink]="['/fleet', 'expenses','fuel', 'list']"  class="btn btn-default btn-sm"><i class="fas fa-list"></i> Fuel Entry List</a>
             </div>
          </div>
@@ -38,10 +38,11 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-9">
                                   <div class="btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn btn-outline btn-fleet mr-2" [class.active]="fuelData.unitType === 'vehicle'" style="width:110px;" (click) = "onChangeUnitType('vehicle')">
+                                    <label class="btn btn-outline btn-fleet mr-2 mb-2" [class.active]="fuelData.unitType === 'vehicle'" style="width:110px;" (click) = "onChangeUnitType('vehicle')">
                                       <input type="radio" name="unitType" [(ngModel)]="fuelData.unitType"
                                          id="fuel_unit_vehicle"  checked hidden value="vehicle" > Vehicle </label>
-                                    <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="fuelData.unitType === 'reefer'" (click) = "onChangeUnitType('reefer')">
+                                   
+                                         <label class="btn btn-outline btn-fleet mb-2" style="width:110px;" [class.active]="fuelData.unitType === 'reefer'" (click) = "onChangeUnitType('reefer')">
                                       <input type="radio" name="unitType" [(ngModel)]="fuelData.unitType"
                                          id="fuel_unit_reefer"  hidden value="reefer" > Reefer </label>
                                   </div>
@@ -77,7 +78,7 @@
                           <div class="row">
                              <div class="col-lg-4">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Quantity</label>
-                                <input type="number" class="form-control" name="fuelQty" [(ngModel)]="fuelData.fuelQty" (change)="calculate()">
+                                <input type="number" class="form-control" name="fuelQty" [(ngModel)]="fuelData.fuelQty" (change)="calculate()" >
                              </div>
                              <div class="col-lg-2 qtumbtn px-0">
                                 <ng-select data-plugin-selectTwo class="form-control populate" name="fuelQtyUnit" [(ngModel)]="fuelQtyUnit" (change)="changeFuelUnit()">
@@ -161,14 +162,15 @@
                            
                           </div>
                           <div class="col-lg-5">
-                           <label class="control-label font-weight-bold font-bold text-lg-right">Fuel Time</label> 
+                           <label class="control-label font-weight-bold font-bold text-lg-right">Fuel Time&nbsp; <span
+                              class="text-1 optional-label-color">(optional)</span></label> 
                            <input type="time" class="form-control"  name="fuelTime" [(ngModel)]="fuelData.fuelTime">
                           </div>
                        </div>
                        <div class="row">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Type</label>
-                             <ng-select placeholder="Select Fuel" name="fuelType" [(ngModel)]="fuelData.fuelType">
+                             <ng-select placeholder="Select Fuel Type" name="fuelType" [(ngModel)]="fuelData.fuelType">
                                
                                    <ng-option value="Bio Diesel">Bio Diesel</ng-option>
                                    <ng-option value="Compressed Natural Gas">Compressed Natural Gas</ng-option>
@@ -182,42 +184,43 @@
                        </div>
                     </div>
                  </div>
-                 <div class="form-group row">
+                 <div class="form-group row pb-4">
                     <div class="col-lg-12">
                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-2">Payment Details</label>
                     </div>
                     <div class="col-lg-5 offset-lg-1">
-                       <div class="form-group row">
+                       <div class="row">
                           <div class="col-lg-5">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Paid By</label>
-                             <ng-select placeholder="Select Payer" name="paidBy" [(ngModel)]="fuelData.paidBy">
-                               
-                                   <ng-option value="Person 1">Person 1</ng-option>
-                                   <ng-option value="Person 2">Person 2</ng-option>
-                                   <ng-option value="Person 3">Person 3</ng-option>
-                                   <ng-option value="Person 4">Person 4</ng-option>
-                                   <ng-option value="Person 5">Person 5</ng-option>
-                               
-                             </ng-select>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Paid By</label>                            
+                             <ng-select placeholder="Select Payer" name="paidBy" [(ngModel)]="fuelData.paidBy" >                               
+                              <ng-option *ngFor="let driver of drivers"  value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</ng-option>                            
+                          
+                        </ng-select>
                           </div>
                           <div class="col-lg-5">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Payment Mode</label>
-                             <ng-select placeholder="Select Payment Mode" name="paymentMode" [(ngModel)]="fuelData.paymentMode">
-                           
+                             <ng-select placeholder="Select Payment Mode" name="paymentMode" [(ngModel)]="fuelData.paymentMode">                           
                                    <ng-option value="Cash">Cash</ng-option>
                                    <ng-option value="Check">Check</ng-option>
                                    <ng-option value="Credit Card">Credit Card</ng-option>
                                    <ng-option value="EFT">EFT</ng-option>
-                               
+                                   <ng-option value="FuelCard">Fuel Card</ng-option>
                              </ng-select>
                           </div>
                        </div>
+                       <div class="row" *ngIf="fuelData.paymentMode === 'FuelCard'">
+                        <div class="col-lg-5 offset-lg-5">
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Card Number</label>
+                           <input type="text" class="form-control" >
+                        </div>
+                     </div>
                     </div>
                     <div class="col-lg-5 offset-lg-1">
                        <div class="row">
                           <div class="col-lg-10">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reference</label>
-                             <input type="text" class="form-control" name="reference" [(ngModel)]="fuelData.reference" >
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Reference&nbsp; <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                             <input type="text" class="form-control" name="reference" [(ngModel)]="fuelData.reference" placeholder="Enter Reference Number" >
                           </div>
                        </div>
                        <div class="row mt-2">
@@ -236,7 +239,7 @@
                        </div>
                     </div>
                  </div>
-                 <div class="form-group row">
+                 <div class="form-group row pb-4">
                     <div class="col-lg-12">
                        <label class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-2">Fuel Stop Details</label>
                     </div>
@@ -280,7 +283,7 @@
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vendor</label>
                              <ng-select  placeholder="Select Vendor" name="vendorID" [(ngModel)]="fuelData.vendorID">
                               
-                                  <ng-option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.vendorName}}</ng-option>
+                                  <ng-option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
                               
                              </ng-select>
                           </div>
@@ -288,14 +291,15 @@
                     </div>
                  </div>
                  
-                 <div class="form-group row">
+                 <div class="form-group row pb-4">
                   <div class="col-lg-12">
                       <label class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-2">Add Trip ID</label>
                    </div>
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row pt-2">
                           <div class="col-lg-10">
-                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Select Trip ID</label>
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Select Trip ID&nbsp; <span
+                              class="text-1 optional-label-color">(optional)</span></label>
                            <ng-select  placeholder="Select Trip" name="tripID" [(ngModel)]="fuelData.tripID">
                               
                               <ng-option *ngFor = "let trip of trips" value="{{trip.tripID}}">{{trip.tripNo}}</ng-option>
@@ -306,15 +310,16 @@
                     </div>
                   
                 </div>
-                 <div class="form-group row">
+                 <div class="form-group row pb-4">
                     <div class="col-lg-12">
                        <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional Details</label>
                     </div>
                     <div class="col-lg-5 offset-lg-1">
                        <div class="row pt-2">
                           <div class="col-lg-10">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Average Gross Vehicle Weight</label>
-                             <ng-select placeholder="Select Average Gross Vehicle Weight" name="avgGVW" [(ngModel)] ="fuelData.additionalDetails.avgGVW">
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Average Gross Vehicle Weight&nbsp; <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                             <ng-select placeholder="Average Gross Vehicle Weight" name="avgGVW" [(ngModel)] ="fuelData.additionalDetails.avgGVW">
                                
                                    <ng-option value="10-15,000 lbs">10-15,000 lbs</ng-option>
                                    <ng-option value="15-20,000 lbs">15-20,000 lbs</ng-option>
@@ -324,10 +329,10 @@
                              </ng-select>
                           </div>
                        </div>
-                       <div class="form-group row" id="attachPhotoLine">
+                       <div class="row" id="attachPhotoLine">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Attach Photo</label>
-                             <input (change)="selectDocuments($event, 'uploadedPhotos')" name="additionalDetails.uploadedPhotos" type="file" multiple class="form-control p-0"> 
+                             <input (change)="selectDocuments($event, 'uploadedPhotos')" name="additionalDetails.uploadedPhotos" type="file" multiple class="form-control border-0 p-0"> 
                            </div>
                           <div class="col-lg-2  mar-top-37">
                           </div>
@@ -336,12 +341,13 @@
                        <div class="row" *ngIf = "fuelEntryImages?.length">
                         <div class="col-lg-6"  *ngFor="let photo of fuelEntryImages; let i=index">
                            <div class="vehicle-photo-box">
-                              <img [src]="photo" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
+                              <img src="{{photo.path}}" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
                               <hr class="m-3">
                               <div class="row">
-                                 <div class="col-lg-8">Image {{i}}</div>
+                                 <div class="col-lg-8">Image {{i+1}}</div>
                                  <div class="col-lg-4 text-right">
-                                    <i class="fas fa-times text-danger" (click)="deleteImage(i)"></i>
+                                    <i class="fas fa-times text-danger"  (click)="delete(photo.name)"></i>
+                                    <!-- <i class="fas fa-times text-danger"  (click)=" deleteImage(i)"></i> -->
                                  </div>
                               </div>
                            </div>
@@ -352,14 +358,15 @@
                        <div class="row pt-2">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Odometer Reading at Time of Fuelling(miles)</label>
-                             <input class="form-control" type="text" name="odometer" [(ngModel)] ="fuelData.additionalDetails.odometer">
+                             <input class="form-control" type="number" name="odometer" [(ngModel)] ="fuelData.additionalDetails.odometer">
                              <span *ngIf="LastOdometerMiles"> Last Odometer Miles {{LastOdometerMiles}}</span>
                           </div>
                        </div>
                        <div class="row pt-2">
                           <div class="col-lg-10">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Description</label>
-                             <textarea class="form-control" rows="3" name="description" [(ngModel)] ="fuelData.additionalDetails.description"></textarea>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Description&nbsp; <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                             <textarea class="form-control" rows="3" name="description" [(ngModel)] ="fuelData.additionalDetails.description" placeholder="Add description "></textarea>
                           </div>
                        </div>
                     </div>

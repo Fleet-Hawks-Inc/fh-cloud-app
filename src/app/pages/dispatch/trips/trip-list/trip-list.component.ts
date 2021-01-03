@@ -100,7 +100,9 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     searchValue: '',
     startDate: '',
     endDate: '',
-    category: ''
+    category: '',
+    start: '',
+    end: ''
   };
 
   statesObject: any = {};
@@ -416,26 +418,13 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0],"orderable": false},
-        {"targets": [1],"orderable": false},
-        {"targets": [2],"orderable": false},
-        {"targets": [3],"orderable": false},
-        {"targets": [4],"orderable": false},
-        {"targets": [5],"orderable": false},
-        {"targets": [6],"orderable": false},
-        {"targets": [7],"orderable": false},
-        {"targets": [8],"orderable": false},
-        {"targets": [9],"orderable": false},
-        {"targets": [10],"orderable": false},
-        {"targets": [11],"orderable": false},
-        {"targets": [12],"orderable": false},
-        {"targets": [13],"orderable": false},
+        {"targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],"orderable": false},
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData(current.serviceUrl + current.lastEvaluated.value1 +
-          '&searchValue=' + this.tripsFiltr.searchValue + "&startDate=" + this.tripsFiltr.startDate + 
-          "&endDate=" + this.tripsFiltr.endDate + "&category=" + this.tripsFiltr.category, dataTablesParameters).subscribe(resp => {
+          '&searchValue=' + this.tripsFiltr.searchValue + "&startDate=" + this.tripsFiltr.start + 
+          "&endDate=" + this.tripsFiltr.end + "&category=" + this.tripsFiltr.category, dataTablesParameters).subscribe(resp => {
             current.fetchTrips(resp)
             if (resp['LastEvaluatedKey'] !== undefined) {
               if (resp['LastEvaluatedKey'].carrierID !== undefined) {
@@ -473,10 +462,15 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
+  rerender(status=''): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
       dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
@@ -485,8 +479,46 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
   filterTrips() {
     if(this.tripsFiltr.searchValue !== '' || this.tripsFiltr.startDate !== '' 
     || this.tripsFiltr.endDate !== '' || this.tripsFiltr.category !== '') {
+
+      let sdate;
+      let edate;
+      if(this.tripsFiltr.startDate !== ''){
+        sdate = this.tripsFiltr.startDate.split('-');
+        if(sdate[0] < 10) {
+          sdate[0] = '0'+sdate[0]
+        }
+        this.tripsFiltr.start = sdate[2]+'-'+sdate[1]+'-'+sdate[0];
+      }
+      if(this.tripsFiltr.endDate !== ''){
+        edate = this.tripsFiltr.endDate.split('-');
+        if(edate[0] < 10) {
+          edate[0] = '0'+edate[0]
+        }
+        this.tripsFiltr.end = edate[2]+'-'+edate[1]+'-'+edate[0];
+      }
+      this.pageLength = this.allTripsCount;
       this.totalRecords = this.allTripsCount;
       this.initDataTable('all', 'reload', 'yes');
+    } else {
+      return false;
+    }
+  }
+
+  resetFilter() {
+    if(this.tripsFiltr.startDate !== '' || this.tripsFiltr.endDate !== '' || this.tripsFiltr.searchValue !== '') {
+      this.spinner.show();
+      this.tripsFiltr = {
+        searchValue: '',
+        startDate: '',
+        endDate: '',
+        category: '',
+        start: '',
+        end: ''
+      };
+      $("#categorySelect").text('Search by category');
+      this.pageLength = 10;
+      this.rerender();
+      this.spinner.hide();
     } else {
       return false;
     }
@@ -503,10 +535,15 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       typeText = 'Trip Type';
     } else if (type === 'OrderNo') {
       typeText = 'Order Number';
+    } else if(type === 'TripType') {
+      typeText = 'Trip Type';
+    } else if(type === 'OrderNo') {
+      typeText = 'Order Number';
     } else {
       typeText = type;
     }
-
+    
+    // this.tripsFiltr.category = 'tripNo';
     $("#categorySelect").text(typeText);
   }
 
@@ -553,7 +590,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   fetchAllDriverIDs() {
-    this.apiService.getData('drivers/get/list')
+    this.apiService.getData('drivers/get/username-list')
       .subscribe((result: any) => {
         this.driversObject = result;
       });

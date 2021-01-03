@@ -1,20 +1,17 @@
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner>
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-  
+    
     <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <app-sidebar></app-sidebar>
-      <!-- end: sidebar -->
-  
+      
       <section role="main" class="content-body pl-0 pr-0 pt-0">
         <header class="page-header">
            <div class="row pr-5 " style="padding-top:10px;">
               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
                  Asset Details                    
               </div>
+              <div class="col-md-8  col-lg-8 text-right pr-5">
+               <a routerLink="/fleet/assets/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Assets List</a>
+            </div>
            </div>
         </header>
         <div class="row">
@@ -60,19 +57,19 @@
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Length</td>
-                                             <td class="text-capitalize">{{length}}</td>
+                                             <td class="text-capitalize">{{length ? length : '-'}} {{lengthUnit}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Axles</td>
-                                             <td class="text-capitalize">{{axle}}</td>
+                                             <td class="text-capitalize">{{axle ? axle : '-'}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">GVWR</td>
-                                             <td class="text-capitalize">{{GAWR}}</td>
+                                             <td class="text-capitalize">{{GAWR ? GAWR : '-'}} {{GAWR_Unit}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">GAWR</td>
-                                             <td class="text-capitalize">{{GVWR}}</td>
+                                             <td class="text-capitalize">{{GVWR ? GVWR : '-'}} {{GVWR_Unit}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Ownership</td>
@@ -82,10 +79,11 @@
                                              <td class="back-color-gray font-weight-bold">
                                                 Notes
                                              </td>
-                                             <td class="text-capitalize">{{remarks}}</td>
+                                             <td class="text-capitalize">{{remarks ? remarks : '-'}}</td>
                                           </tr>
                                        </tbody>
                                     </table>
+                                    
                               <!-- <table class="table table-bordered table-responsive-lg" *ngFor="let item of assetData">
                                  <tbody>
                                     <tr>
@@ -149,25 +147,25 @@
                                <tbody>
                                   <tr>
                                      <td width="40%" class="back-color-gray font-weight-bold">Date of Issue</td>
-                                     <td  width="60%">{{dateOfIssue}} </td>
+                                     <td  width="60%">{{dateOfIssue ? dateOfIssue : '-'}} </td>
                                   </tr>
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Date of Expiry</td>
-                                     <td>{{dateOfExpiry}}</td>
+                                     <td>{{dateOfExpiry ? dateOfExpiry : '-'}}</td>
                                   </tr>
                                   
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Premium Amount</td>
-                                     <td>{{premiumAmount}}</td>
+                                     <td>{{premiumAmount ? premiumAmount : '-'}} {{premiumCurrency}}</td>
                                   </tr>
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Reminder Before Expiry</td>
-                                     <td class="text-capitalize">{{reminderBefore}}</td>
+                                     <td class="text-capitalize">{{reminderBefore ? reminderBefore : ''}} {{reminderBeforeUnit ? reminderBeforeUnit : '-'}}</td>
                                   </tr>
                                   
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Vendor</td>
-                                     <td class="text-capitalize">{{vendor}}</td>
+                                     <td class="text-capitalize">{{vendor ? vendor : '-'}}</td>
                                   </tr>
                                </tbody>
                             </table>

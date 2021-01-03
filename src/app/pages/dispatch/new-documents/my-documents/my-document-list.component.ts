@@ -8,13 +8,24 @@ import { v4 as uuidv4 } from 'uuid';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import { Auth } from 'aws-amplify';
 declare var $: any;
+import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
+import * as moment from "moment";
+
 
 @Component({
   selector: 'app-my-document-list',
   templateUrl: './my-document-list.component.html',
   styleUrls: ['./my-document-list.component.css']
 })
-export class MyDocumentListComponent implements OnInit {
+export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit {
+
+  @ViewChild(DataTableDirective, { static: false })
+  dtElement: DataTableDirective;
+
+  dtOptions: any = {};
+  dtTrigger: Subject<any> = new Subject();
+
   public documents = [];
   trips;
   currentUser;
@@ -25,7 +36,6 @@ export class MyDocumentListComponent implements OnInit {
   docs: SafeResourceUrl;
   public documentsDocs = [];
   selectedFiles: FileList;
-  private dtTrigger: Subject<any> = new Subject();
   selectedFileNames: Map<any, any>;
   documentMode: string = 'Manual';
   documentPrefix: string;
@@ -41,6 +51,21 @@ export class MyDocumentListComponent implements OnInit {
   documentData = {
     uploadedDocs: []
   };
+
+  totalRecords = 20;
+  pageLength = 10;
+  serviceUrl = '';
+  filterValues = {
+    docID: '',
+    searchValue: '',
+    startDate: '',
+    endDate: '',
+    start: <any> '',
+    end: <any> ''
+  };
+  lastEvaluatedKey = '';
+  suggestions = [];
+
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -53,6 +78,7 @@ export class MyDocumentListComponent implements OnInit {
   ngOnInit() {
     this.fetchDocuments();
     this.getCurrentuser();
+    this.initDataTable();
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
@@ -60,13 +86,15 @@ export class MyDocumentListComponent implements OnInit {
 
   fetchDocuments = () => {
     // this.spinner.show(); // loader init
+    this.totalRecords = 0;
     this.apiService.getData('documents').subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         for (let i = 0; i < result.Items.length; i++) {
           if (result.Items[i].isDeleted === 0) {
-            this.documents.push(result.Items[i]);
+            // this.documents.push(result.Items[i]);
+            this.totalRecords += 1 ;
           }
         }
         // this.spinner.hide(); // loader hide
@@ -78,44 +106,6 @@ export class MyDocumentListComponent implements OnInit {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
     console.log(this.currentUser)
-  }
-
-  dataTableOptions = () => {
-    this.allOptions = { // All list options
-      pageLength: 10,
-      processing: true,
-      // select: {
-      //     style:    'multi',
-      //     selector: 'td:first-child'
-      // },
-      dom: 'Bfrtip',
-      // Configure the buttons
-      buttons: [
-         {
-              extend: 'colvis',
-              columns: ':not(.noVis)'
-          }
-      ],
-      colReorder: true,
-      columnDefs: [
-        {
-            targets: 1,
-            className: 'noVis'
-        },
-        {
-            targets: 2,
-            className: 'noVis'
-        },
-        {
-            targets: 3,
-            className: 'noVis'
-        },
-        {
-            targets: 4,
-            className: 'noVis'
-        },
-    ],
-    };
   }
 
   addDocument() {
@@ -132,7 +122,6 @@ export class MyDocumentListComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              // this.spinner.hide(); // loader hide
               this.throwErrors();
             },
             error: () => { },
@@ -261,5 +250,172 @@ export class MyDocumentListComponent implements OnInit {
         this.fetchDocuments();
       });
     }
+  }
+
+  initDataTable() {
+    let current = this;
+    this.dtOptions = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: current.pageLength,
+      serverSide: true,
+      processing: true,
+      order: [],
+      buttons: [
+        {
+          extend: 'colvis',
+          columns: ':not(.noVis)'
+        }
+      ],
+      columnDefs: [
+        {
+          targets: 0,
+          className: 'noVis',
+          "orderable": false
+        },
+        {
+          targets: 1,
+          className: 'noVis',
+          "orderable": false
+        },
+        {
+          targets: 2,
+          className: 'noVis',
+          "orderable": false
+        },
+        {
+          targets: 3,
+          className: 'noVis',
+          "orderable": false
+        },
+        {
+          targets: 4,
+          className: 'noVis',
+          "orderable": false
+        },
+        {
+          targets: 5,
+          "orderable": false
+        },
+        {
+          targets: 6,
+          "orderable": false
+        },
+        {
+          targets: 7,
+          "orderable": false
+        },
+      ],
+      dom: 'Bfrtip',
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('documents/fetch-records?value1=' + current.lastEvaluatedKey +
+          '&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start + 
+          "&to=" + this.filterValues.end, dataTablesParameters).subscribe(resp => {
+            current.documents = resp['Items'];
+            // console.log(resp)
+            if (resp['LastEvaluatedKey'] !== undefined) {
+              current.lastEvaluatedKey = resp['LastEvaluatedKey'].docID
+            } else {
+              current.lastEvaluatedKey = ''
+            }
+
+            callback({
+              recordsTotal: current.totalRecords,
+              recordsFiltered: current.totalRecords,
+              data: []
+            });
+          });
+      }
+    };
+  }
+
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+
+  rerender(status=''): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
+
+  searchFilter() {
+    if(this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
+      if(this.filterValues.startDate !== '') {
+        let start = this.filterValues.startDate.split('-').reverse().join('-');
+        this.filterValues.start = moment(start+' 00:00:01').format("X");
+        this.filterValues.start = this.filterValues.start*1000;
+      }
+      if(this.filterValues.endDate !== '') {
+        let end = this.filterValues.endDate.split('-').reverse().join('-');
+        this.filterValues.end = moment(end+' 23:59:59').format("X");
+        this.filterValues.end = this.filterValues.end*1000;
+      }
+      this.pageLength = this.totalRecords;
+      this.rerender('reset');
+    } else {
+      return false;
+    }
+  }
+
+  resetFilter() {
+    if(this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
+      // this.spinner.show();
+      this.filterValues = {
+        docID: '',
+        searchValue: '',
+        startDate: '',
+        endDate: '',
+        start: <any> '',
+        end: <any> ''
+      };
+      this.pageLength = 10;
+      this.rerender();
+      // this.spinner.hide();
+    } else {
+      return false;
+    }
+  }
+
+  getSuggestions(searchvalue='') {
+    this.suggestions = [];
+    if(searchvalue !== '') {
+      this.apiService.getData('documents/get/suggestions/'+searchvalue).subscribe({
+        complete: () => {},
+        error: () => { },
+        next: (result: any) => {
+          this.suggestions = [];
+          for (let i = 0; i < result.Items.length; i++) {
+            const element = result.Items[i];
+  
+            let obj = {
+              id: element.docID,
+              name: element.documentNumber
+            };
+            this.suggestions.push(obj)
+          }
+        }
+      })
+    }    
+  }
+
+  searchSelectedRoute(document) {
+    this.filterValues.docID = document.id;
+    this.filterValues.searchValue = document.name;
+    this.suggestions = [];
+
+    // this.rerender('reset');
   }
 }

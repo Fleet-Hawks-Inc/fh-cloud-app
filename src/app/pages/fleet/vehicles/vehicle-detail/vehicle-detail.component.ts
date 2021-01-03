@@ -9,6 +9,9 @@ declare var $: any;
   styleUrls: ['./vehicle-detail.component.css'],
 })
 export class VehicleDetailComponent implements OnInit {
+  slides = [];
+  Asseturl = this.apiService.AssetUrl;
+
   /**
    * Vehicle Prop
    */
@@ -17,6 +20,8 @@ export class VehicleDetailComponent implements OnInit {
   vehicleManufacturersList: any  = {};
   groupsList: any = {};
   statesList : any = {};
+  vendors = {};
+
   vehicleID = '';
   vehicleIdentification = '';
   vehicleType = '';
@@ -45,39 +50,39 @@ export class VehicleDetailComponent implements OnInit {
   inspectionFormID = '';
   lifeCycle = {
     inServiceDate: '',
-    inServiceOdometer: '',
-    estimatedServiceMonths: '',
-    estimatedServiceMiles: '',
+    inServiceOdometer: 0,
+    estimatedServiceMonths: 0,
+    estimatedServiceMiles: 0,
     estimatedResaleValue: '',
     outOfServiceDate: '',
-    outOfServiceOdometer: '',
+    outOfServiceOdometer: 0,
   };
   specifications = {
-    height: '',
+    height: 0,
     heightUnit: '',
-    length: '',
+    length: 0,
     lengthUnit: '',
-    width: '',
+    width: 0,
     widthUnit: '',
     interiorVolume: '',
     passangerVolume: '',
-    groundClearnce: '',
+    groundClearnce: 0,
     groundClearnceUnit: '',
-    badLength: '',
-    badLengthUnit: '',
+    bedLength: 0,
+    bedLengthUnit: '',
     cargoVolume: '',
     curbWeight: '',
     grossVehicleWeightRating: '',
     iftaReporting: false,
     towingCapacity: '',
     maxPayload: '',
-    EPACity: '',
-    EPACombined: '',
-    EPAHighway: '',
+    EPACity: 0,
+    EPACombined: 0,
+    EPAHighway: 0,
   };
   insurance = {
     dateOfIssue: '',
-    premiumAmount: '',
+    premiumAmount: 0,
     premiumCurrency: '',
     vendorID: '',
     dateOfExpiry: '',
@@ -88,13 +93,13 @@ export class VehicleDetailComponent implements OnInit {
   };
   fluid = {
     fuelType: '',
-    fuelTankOneCapacity: '',
+    fuelTankOneCapacity: 0,
     fuelQuality: '',
-    fuelTankTwoCapacity: '',
-    oilCapacity: '',
+    fuelTankTwoCapacity: 0,
+    oilCapacity: 0,
   };
   wheelsAndTyres = {
-    numberOfTyres: '',
+    numberOfTyres: 0,
     driveType: '',
     brakeSystem: '',
     wheelbase: '',
@@ -113,7 +118,7 @@ export class VehicleDetailComponent implements OnInit {
     engineBrand: '',
     aspiration: '',
     blockType: '',
-    bore: '',
+    bore: 0,
     camType: '',
     stroke: '',
     valves: '',
@@ -123,7 +128,7 @@ export class VehicleDetailComponent implements OnInit {
     fuelIndication: '',
     fuelQuality: '',
     maxHP: '',
-    maxTorque: '',
+    maxTorque: 0,
     readlineRPM: '',
     transmissionSummary: '',
     transmissionType: '',
@@ -134,7 +139,7 @@ export class VehicleDetailComponent implements OnInit {
     purchaseVendorID: '',
     warrantyExpirationDate: '',
     purchasePrice: '',
-    purchasePriceCurrency: '', 
+    purchasePriceCurrency: '',
     warrantyExpirationMeter: '',
     purchaseDate: '',
     purchaseComments: '',
@@ -156,14 +161,13 @@ export class VehicleDetailComponent implements OnInit {
     notes: '',
   };
   settings = {
-    primaryMeter: '',
-    fuelUnit: '',
+    primaryMeter: 'miles',
+    fuelUnit: 'gallons(USA)',
     hardBreakingParams: 0,
     hardAccelrationParams: 0,
     turningParams: 0,
-    measurmentUnit: '',
+    measurmentUnit: 'imperial',
   };
-
 
   issues = [];
   reminders = [];
@@ -173,6 +177,15 @@ export class VehicleDetailComponent implements OnInit {
   servicePrograms = [];
   serviceHistory = [];
   devices = [];
+
+  slideConfig = {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dots: true,
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 1500,
+  };
   
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
@@ -190,8 +203,16 @@ export class VehicleDetailComponent implements OnInit {
     this.fetchVehicleModelList();
     this.fetchVehicleManufacturerList();
     this.fetchGroupsList();
+    this.fetchVendorsList();
 
   }
+
+  fetchVendorsList() {
+    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+      this.vendors = result;
+    });
+  }
+
   fetchGroupsList() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groupsList = result;
@@ -311,8 +332,8 @@ export class VehicleDetailComponent implements OnInit {
           passangerVolume: result.specifications.passangerVolume,
           groundClearnce: result.specifications.groundClearnce,
           groundClearnceUnit: result.specifications.groundClearnceUnit,
-          badLength: result.specifications.badLength,
-          badLengthUnit: result.specifications.badLengthUnit,
+          bedLength: result.specifications.bedLength,
+          bedLengthUnit: result.specifications.bedLengthUnit,
           cargoVolume: result.specifications.cargoVolume,
           curbWeight: result.specifications.curbWeight,
           grossVehicleWeightRating:
@@ -412,6 +433,10 @@ export class VehicleDetailComponent implements OnInit {
           turningParams: result.settings.turningParams,
           measurmentUnit: result.settings.measurmentUnit,
         };
+
+        if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+          this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+        }
 
         $('#hardBreakingParametersValue').html(
           this.settings.hardBreakingParams

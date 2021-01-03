@@ -22,10 +22,9 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
   dtTrigger: Subject<any> = new Subject();
 
   events = [];
-  lastEvaluated = {
-    value1: '',
-  };
-  totalRecords = 10;
+  lastEvaluatedKey = '';
+  totalRecords = 20;
+  pageLength = 10;
   coachingStatus = [
     {
       value:'open',
@@ -68,10 +67,9 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
   ngOnInit(): void {
     this.fetchevents();
     this.fetchVehicles();
-    this.initDataTable();
-
     this.fetchAllVehiclesIDs();
-    this.fetchAllDriverIDs()
+    this.fetchAllDriverIDs();
+    this.initDataTable();
   }
 
   ngAfterViewInit(): void {
@@ -83,10 +81,15 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
+  rerender(status=''): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
       dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
@@ -119,33 +122,23 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
     let current = this;
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
-      pageLength: 10,
+      pageLength: this.pageLength ,
       serverSide: true,
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0],"orderable": false},
-        {"targets": [1],"orderable": false},
-        {"targets": [2],"orderable": false},
-        {"targets": [3],"orderable": false},
-        {"targets": [4],"orderable": false},
-        {"targets": [5],"orderable": false},
-        {"targets": [6],"orderable": false},
+        {"targets": [0,1,2,3,4,5,6],"orderable": false},
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('safety/eventLogs/fetch-records?lastEvaluatedValue1='+this.lastEvaluated.value1
+        current.apiService.getDatatablePostData('safety/eventLogs/fetch-records?lastEvaluatedValue1='+this.lastEvaluatedKey
         +'&vehicle='+this.filterValue.vehicleID+"&driver="+this.filterValue.driverID+"&from="+this.filterValue.filterDateStart+"&to="+this.filterValue.filterDateEnd+"&event=critical", dataTablesParameters).subscribe(resp => {
           
           current.getEventDetail(resp['Items']);
           if(resp['LastEvaluatedKey'] !== undefined){
-            this.lastEvaluated = {
-              value1 : resp['LastEvaluatedKey'].eventID,
-            }
+            current.lastEvaluatedKey = resp['LastEvaluatedKey'].eventID;
           } else {
-            this.lastEvaluated = {
-              value1 : '',
-            }
+            current.lastEvaluatedKey = '';
           }
           callback({
             recordsTotal: current.totalRecords,
@@ -206,15 +199,14 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
       if(this.filterValue.date !== '') {
         this.filterValue.filterDateStart = moment(this.filterValue.date+' 00:00:01').format("X");
         this.filterValue.filterDateEnd = moment(this.filterValue.date+' 23:59:59').format("X");
-        console.log('this.filterValue')
-        console.log(this.filterValue)
+        // console.log('this.filterValue')
+        // console.log(this.filterValue)
 
         this.filterValue.filterDateStart = this.filterValue.filterDateStart*1000;
         this.filterValue.filterDateEnd = this.filterValue.filterDateEnd*1000;
-
       }
     }
-    this.rerender();
+    this.rerender('reset');
   }
 
   fetchevents() {
@@ -250,7 +242,7 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.filterValue.driverName = data.name;
     this.suggestions = [];
 
-    this.rerender();
+    this.rerender('reset');
   }
 
   resetFilter() {

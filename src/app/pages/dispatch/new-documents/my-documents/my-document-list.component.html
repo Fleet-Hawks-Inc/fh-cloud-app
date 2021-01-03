@@ -1,10 +1,7 @@
 <section class="body">
-
     <!-- start: header -->
     <app-header></app-header>
     <!-- end: header -->
-
-
 
     <div class="inner-wrapper">
         <!-- start: sidebar -->
@@ -12,75 +9,71 @@
         <!-- end: sidebar -->
         <section role="main" class="content-body p-0">
             <header class="page-header pr-5">
-               
                 <div class="row px-2 pt-2">
-                     <div class="col-md-2 col-lg-2">
-                         <div class="input-group input-group-md mb-3">
-                            <select data-plugin-selecttwo="" class="form-control populate">
-                               <optgroup label="">
-                                  <option value="1" data-select2-id="260">Document 1</option>
-                                  <option value="2">Document 2</option>
-                                  <option value="2">Document 3</option>
-                                  <option value="2">Document 4</option>
-                                  <option value="2">Document 5</option>
-                               </optgroup>
-                            </select>
-                         </div>
-                     </div>
-                     <div class="col-lg-3 col-md-3">
-                         <div class="input-daterange input-group" >
+                    <div class="col-md-2 col-lg-2">
+                        <div class="input-group input-group-md mb-3">
+                            <input type="text" class="form-control" [(ngModel)]="filterValues.searchValue" name="searchValue"
+                            (input)="getSuggestions($event.target.value)" autocomplete="off" placeholder="Search Document#">
+                        </div>
+                        <div *ngFor="let data of suggestions" style="cursor: pointer" (click)="searchSelectedRoute(data)">
+                            {{ data.name }}
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <div class="input-daterange input-group">
                             <span class="input-group-prepend">
-                            <span class="input-group-text">
-                            <i class="fas fa-calendar-alt"></i>
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
                             </span>
-                            </span>
-                            <input data-plugin-datepicker="" type="text" class="form-control" name="start">
+                            <input 
+                                [(ngModel)]="filterValues.startDate" name="fromDate" 
+                                type="text" 
+                                placeholder="DD-MM-YYYY"
+                                (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                class="form-control" autocomplete="off"> 
                             <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                            to
+                                to
                             </span>
-                            <input data-plugin-datepicker="" type="text" class="form-control" name="end">
-                         </div>
-                     </div>
-                     <div class="col-lg-2">
-                         
-                         <select data-plugin-selecttwo="" class="form-control populate">
-                            <optgroup label="">
-                               <option value="1">Last 1 Week</option>
-                               <option value="2">Last 1 Month</option>
-                               <option value="2">Year to Date</option>
-                               <option value="2">Previous Year to Date</option>
-                               <option value="2">Date Range</option>
-                            </optgroup>
-                         </select>
-                      </div>
-                     <div class="col-md-1  col-lg-1">
-                         <button type="submit" class="btn btn-sm btn-success">Search</button>
-                      </div>
-                      <div class="col-lg-4">
-                         <div class="btn-group flex-wrap pull-right mt-1">
-                             <button type="button" class="btn btn-success btn-sm dropdown-toggle " data-toggle="dropdown"
+                            <input 
+                                [(ngModel)]="filterValues.endDate" name="toDate" 
+                                type="text" 
+                                placeholder="DD-MM-YYYY"
+                                (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                                class="form-control" autocomplete="off"> 
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                        <button type="button" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">Search</button>
+                        <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="btn-group flex-wrap pull-right mt-1">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle " data-toggle="dropdown"
                                 aria-expanded="false">Actions<span class="caret"></span></button>
-                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a class="dropdown-item text-1 modal-with-form" href="#editDocumentModal">Edit</a>
-                                <a class="dropdown-item text-1" href="#">Delete</a>
                                 <a class="dropdown-item text-1" href="#">Print</a>
                                 <a class="dropdown-item text-1" href="">Export</a>
                                 <a class="dropdown-item text-1 modal-with-form" href="#emailForm">Email</a>
-                             </div>
-                         </div>
-                         <a data-toggle="modal" data-target="#addSequenceModal" href="javascript:;" class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i class="fas fa-plus"></i> Add Document</a>
-                         <button type="button" class="mb-1 mt-1 mr-1 btn btn-success pull-right btn-sm"><i class="fas fa-download"></i> Download</button>
-                         <!-- <a href="#emailForm" class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i class="fas fa-envelope"></i> Email</a> -->
-                          
-                      </div>
-                 </div>
-               <div class="right-wrapper text-right">
-                  
-                  
-               </div>
+                            </div>
+                        </div>
+                        <a data-toggle="modal" data-target="#addSequenceModal" href="javascript:;"
+                            class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i
+                                class="fas fa-plus"></i> Add Document</a>
+                        <button type="button" class="mb-1 mt-1 mr-1 btn btn-success pull-right btn-sm"><i
+                                class="fas fa-download"></i> Download</button>
+                        <!-- <a href="#emailForm" class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i class="fas fa-envelope"></i> Email</a> -->
+
+                    </div>
+                </div>
+                <div class="right-wrapper text-right">
+
+
+                </div>
             </header>
             <div class="row text-dark">
+
                <div class="col">
                   <section class="card">
                      
@@ -129,89 +122,55 @@
                                                  </div>
                                              </td>
                                          </tr>
-                                         <!-- <tr>
-                                             <td><input type="checkbox"></td>
-                                             <td>674</td>
-                                             <td>#5434</td>
-                                             <td class="p-0"><img src="assets/img/documents/png.png" class="document-type-image"></td>                                                <td>document1</td>
-                                             <td>document1.png</td>
-                                             <td>05/27/2020 02:49 AM</td>
-                                             <td>This document was uploaded......</td>
-                                            
-                                         </tr>
-                                         <tr>
-                                             <td><input type="checkbox"></td>
-                                             <td>356</td>
-                                             <td>#5434</td>
-                                             <td class="p-0"><img src="assets/img/documents/pdf.png" class="document-type-image"></td>                                                <td>document-3</td>
-                                             <td>document3.pdf</td>
-                                             <td>05/4/2020 02:49 AM</td>
-                                             <td>This document was uploaded......</td>
-                                            
-                                         </tr>
-                                         <tr>
-                                             <td><input type="checkbox"></td>
-                                             <td>34</td>
-                                             <td>#5434</td>
-                                             <td class="p-0"><img src="assets/img/documents/jpg.png" class="document-type-image"></td>                                                <td>byhyh </td>
-                                             <td>hfhfhf.jpg</td>
-                                             <td>05/2/2020 02:49 AM</td>
-                                             <td>This document was uploaded......</td>
-                                            
-                                         </tr> -->
-                                     </tbody>
-                                 </table>
-                                <div *ngIf="!documents?.length > 0" class="alert alert-info m-0 text-center" role="alert">
-                                    No records found
-                                    
-                                 </div>
-                                 
-                            <!-- email modal Form -->
-                                 <div id="emailForm" class="modal-block modal-block-primary mfp-hide">
-                                     <section class="card">
-                                         <header class="card-header">
-                                             <h2 class="card-title">Email Document</h2>
-                                         </header>
-                                         <div class="card-body">
-                                             <form>
-                                                 <div class="form-row">
-                                                     <div class="form-group col-lg-12">
-                                                         <label for="inputEmail4">To</label>
-                                                         <input type="email" class="form-control" id="inputEmail4" >
-                                                     </div>
-                                                     <div class="form-group col-lg-12 mb-3">
-                                                         <label for="inputPassword4">Subject</label>
-                                                         <input type="text" class="form-control" id="inputPassword4" >
-                                                     </div>
-                                                 </div>
-                                                 <div class="form-group">
-                                                     <label for="inputAddress">Body</label>
-                                                     <textarea class="form-control" rows="3" id="texteditor"></textarea>
-                                                 </div>
-                                                 <div class="form-group">
-                                                     <div class="checkbox-custom">
-                                                         <input type="checkbox" name="terms" id="w1-terms">
-                                                         <label for="w1-terms">Send a copy of this email to me.</label>
-                                                     </div>
-                                                 </div>
-                                             </form>
-                                         </div>
-                                         <footer class="card-footer">
-                                             <div class="row">
-                                                 <div class="col-md-12 text-right">
-                                                     <button class="btn btn-success modal-confirm">Send</button>
-                                                     <button class="btn btn-default modal-dismiss">Cancel</button>
-                                                 </div>
-                                             </div>
-                                         </footer>
-                                     </section>
-                                 </div>
-                     </div>
+                                         </tbody> 
+</table>
 
-                  </section>
-               </div>
+                            <!-- email modal Form -->
+                            <div id="emailForm" class="modal-block modal-block-primary mfp-hide">
+                                <section class="card">
+                                    <header class="card-header">
+                                        <h2 class="card-title">Email Document</h2>
+                                    </header>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="form-row">
+                                                <div class="form-group col-lg-12">
+                                                    <label for="inputEmail4">To</label>
+                                                    <input type="email" class="form-control" id="inputEmail4">
+                                                </div>
+                                                <div class="form-group col-lg-12 mb-3">
+                                                    <label for="inputPassword4">Subject</label>
+                                                    <input type="text" class="form-control" id="inputPassword4">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputAddress">Body</label>
+                                                <textarea class="form-control" rows="3" id="texteditor"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="checkbox-custom">
+                                                    <input type="checkbox" name="terms" id="w1-terms">
+                                                    <label for="w1-terms">Send a copy of this email to me.</label>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <footer class="card-footer">
+                                        <div class="row">
+                                            <div class="col-md-12 text-right">
+                                                <button class="btn btn-success modal-confirm">Send</button>
+                                                <button class="btn btn-default modal-dismiss">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                </section>
+                            </div>
+                        </div>
+
+                    </section>
+                </div>
             </div>
-         </section>
+        </section>
     </div>
 
 
@@ -220,7 +179,8 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="addSequenceModal" tabindex="-1" role="dialog" aria-labelledby="addSequenceModalLabel" aria-hidden="true">
+<div class="modal fade" id="addSequenceModal" tabindex="-1" role="dialog" aria-labelledby="addSequenceModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" style="max-width: 600px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -278,13 +238,15 @@
             </div>
             <div class="modal-footer">
                 <button (click)="saveDocumentMode()" data-dismiss="modal" data-toggle="modal" data-target="#addDocumentModal" type="button" class="btn btn-success">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
+            
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="addDocumentModal" tabindex="-1" role="dialog" aria-labelledby="addDocumentModalLabel" aria-hidden="true">
+<div class="modal fade" id="addDocumentModal" tabindex="-1" role="dialog" aria-labelledby="addDocumentModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" style="max-width: 600px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -294,10 +256,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal"
-                method="get"
-                name="form"
-                id="form_">
+                <form class="form-horizontal" method="get" name="form" id="form_">
                     <div class="form-row">
                         <div class="form-group col-lg-12">
                             <label for="">Document#</label>
@@ -306,8 +265,7 @@
                         </div>
                         <div class="form-group col-lg-12">
                             <label for="">Select Trip ID</label>
-                            <select [(ngModel)]="documentData.tripID"
-                            name="tripID" class="form-control">
+                            <select [(ngModel)]="documentData.tripID" name="tripID" class="form-control">
                                 <option>#7876</option>
                                 <option>#7877</option>
                                 <option>#7878</option>
@@ -317,6 +275,7 @@
                             </select>
                         </div>
                         <div class="form-group col-lg-12">
+
                             <label for="">Document Type</label>
                             <select [(ngModel)]="documentData.docType"
                             name="docType" class="form-control">
@@ -325,24 +284,30 @@
                                 <option>Fuel Receipts</option>
                                 <option>Load Confirmation</option>
                             </select>
+
+                            <label for="">Document#</label>
+                            <input [(ngModel)]="documentData.documentNumber" name="documentNumber" type="text"
+                                class="form-control">
+
                         </div>
                         <div class="form-group col-lg-12">
                             <label for="">Document Name</label>
-                            <input [(ngModel)]="documentData.documentName"
-                            name="documentName" type="text" class="form-control" >
+                            <input [(ngModel)]="documentData.documentName" name="documentName" type="text"
+                                class="form-control">
                         </div>
                         <div class="form-group col-lg-12 mb-3">
                             <label for="">Choose File</label>
-                            <input (change)="selectDocuments($event)" type="file" class="form-control" >
-                            <span>	
-                                Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, gif, png, bmp, tif, tiff).
+                            <input (change)="selectDocuments($event)" type="file" class="form-control">
+                            <span>
+                                Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, gif, png, bmp, tif,
+                                tiff).
                                 The maximum file size can be 15MB or less.</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputAddress">Description</label>
-                        <textarea [(ngModel)]="documentData.description"
-                        name="description" class="form-control" rows="3" id="textareaDefault"></textarea>
+                        <textarea [(ngModel)]="documentData.description" name="description" class="form-control"
+                            rows="3" id="textareaDefault"></textarea>
                     </div>
                 </form>
             </div>
@@ -354,9 +319,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-

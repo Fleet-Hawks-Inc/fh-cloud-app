@@ -86,37 +86,47 @@
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-4 text-lg-right pt-2 text-underline">Source Location</label>
                                             </div>
-                                            <div class="col-lg-10">
+                                            <!-- <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Select Source</label>
-                                                <select class="form-control" [(ngModel)]="sourceInformation.sourceLocationID"
+                                                <select class="form-control" [(ngModel)]="sourceLocationID"
                                                 name="sourceLocationID">
                                                 <option *ngFor="let location of locations" value="{{ location.locationID }}">{{ location.locationName }}</option>
                                                 </select>
                                             </div>
-                                            <div class="col-lg-2"> <a href="#addLocationModal" class="btn btn-sm btn-success mar-top-37 modal-with-form"><i class="fas fa-plus"></i></a> </div>
+                                            <div class="col-lg-2"> <a href="#addLocationModal" class="btn btn-sm btn-success mar-top-37 modal-with-form"><i class="fas fa-plus"></i></a> </div> -->
 
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold pt-2 text-lg-right">Address</label>
-                                                <input type="text" class="form-control" name="sourceAddress" [(ngModel)]="sourceInformation.sourceAddress"> </div>
-                                            <div class="col-lg-5">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2"> Country</label>
-                                                <select class="form-control countrySelect" name="sourceCountryID"
-                                                [(ngModel)]="sourceInformation.sourceCountryID" type="source">
-                                                <option class="text-capitalize" *ngFor="let country of countries" value="{{ country.countryID }}">{{ country.countryName }}</option>
-                                                </select>
+                                                <input name="sourceInformation.sourceAddress"
+                                                    [(ngModel)]="sourceInformation.sourceAddress"
+                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off">
+
+                                                <ul class="p-0 m-0 text-left map-search__results bg-white"
+                                                    *ngIf="searchResults">
+                                                    <li *ngFor="let item of searchResults;">
+                                                        <a href="javascript:;"
+                                                            (click)="assignLocation('source', item.address.label)"
+                                                            title="{{item.address.label}}">{{item.address.label}}</a>
+                                                    </li>
+                                                </ul>
                                             </div>
+                                                <div class="col-lg-5">
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2"> Country</label>
+                                                    <input name="sourceInformation.sourceCountry"
+                                                        [(ngModel)]="sourceInformation.sourceCountry"
+                                                        class="form-control">
+                                                </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2"> State</label>
-                                                <select class="form-control stateSelect" name="sourceStateID" 
-                                                [(ngModel)]="sourceInformation.sourceStateID" type="source">
-                                                    <option class="text-capitalize" *ngFor="let state of sourceStates" value="{{ state.stateID }}" >{{ state.stateName }}</option>
-                                                </select>
+                                                <input name="sourceInformation.sourceState"
+                                                        [(ngModel)]="sourceInformation.sourceState"
+                                                        class="form-control">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2"> City</label>
-                                                <select class="form-control" name="sourceCityID" [(ngModel)]="sourceInformation.sourceCityID">
-                                                    <option class="text-capitalize" *ngFor="let city of sourceCities" value="{{ city.cityID }}">{{ city.cityName }}</option>
-                                                </select>
+                                                <input name="sourceInformation.sourceCity"
+                                                        [(ngModel)]="sourceInformation.sourceCity"
+                                                        class="form-control">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Zip Code</label>
@@ -130,41 +140,47 @@
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-4 text-lg-right pt-2 text-underline">Destination Location</label>
                                             </div>
-                                            <div class="col-lg-10">
+                                            <!-- <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Select Destination</label>
                                                 <select class="form-control" name="destinationLocationID"
                                                 [(ngModel)]="destinationInformation.destinationLocationID"> 
                                                 <option *ngFor="let location of locations" value="{{ location.locationID }}">{{ location.locationName }}</option>
                                                 </select>
                                             </div>
-                                            <div class="col-lg-2"> <a href="#addLocationModal" class="btn btn-sm btn-success mar-top-37 modal-with-form"><i class="fas fa-plus"></i></a> </div>
+                                            <div class="col-lg-2"> <a href="#addLocationModal" class="btn btn-sm btn-success mar-top-37 modal-with-form"><i class="fas fa-plus"></i></a> </div> -->
 
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold pt-2 text-lg-right">Address</label>
-                                                <input type="text" class="form-control" 
-                                                name="destinationAddress"
-                                                [(ngModel)]="destinationInformation.destinationAddress"> 
+                                                <input name="destinationInformation.destinationAddress"
+                                                    [(ngModel)]="destinationInformation.destinationAddress"
+                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off">
+
+                                                <ul class="p-0 m-0 text-left map-search__results bg-white"
+                                                    *ngIf="searchResults">
+                                                    <li *ngFor="let item of searchResults;">
+                                                        <a href="javascript:;"
+                                                            (click)="assignLocation('destination', item.address.label)"
+                                                            title="{{item.address.label}}">{{item.address.label}}</a>
+                                                    </li>
+                                                </ul>
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2"> Country</label>
-                                                <select class="form-control countrySelect" name="destinationCountryID"
-                                                [(ngModel)]="destinationInformation.destinationCountryID" type="destination">
-                                                    <option class="text-capitalize" *ngFor="let country of countries" value="{{ country.countryID }}">{{ country.countryName }}</option>
-                                                </select>
+                                                <input name="destinationInformation.destinationCountry"
+                                                        [(ngModel)]="destinationInformation.destinationCountry"
+                                                        class="form-control">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2"> State</label>
-                                                <select class="form-control stateSelect" name="destinationStateID"
-                                                [(ngModel)]="destinationInformation.destinationStateID" type="destination">
-                                                    <option class="text-capitalize" *ngFor="let state of destinationStates" value="{{ state.stateID }}" >{{ state.stateName }}</option>
-                                                </select>
+                                                <input name="destinationInformation.destinationState"
+                                                        [(ngModel)]="destinationInformation.destinationState"
+                                                        class="form-control">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2"> City</label>
-                                                <select class="form-control" name="destinationCityID"
-                                                [(ngModel)]="destinationInformation.destinationCityID">
-                                                    <option class="text-capitalize" *ngFor="let city of destinationCities" value="{{ city.cityID }}">{{ city.cityName }}</option>
-                                                </select>
+                                                <input name="destinationInformation.destinationCity"
+                                                        [(ngModel)]="destinationInformation.destinationCity"
+                                                        class="form-control">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Zip Code</label>
@@ -174,15 +190,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <input type="text" hidden="" name="miles" [(ngModel)]="routeData.miles" value="1060"/>
+
                                 <div class="row text-dark mt-4">
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-10">
                                                 <div class="checkbox-custom checkbox-default">
                                                     <input type="checkbox" id="recurringBtn" 
-                                                    name="recurringRoute" 
-                                                    [(ngModel)]="sourceInformation.recurring.recurringRoute" value="yes">
+                                                    name="recurring.recurringRoute" 
+                                                    [(ngModel)]="recurring.recurringRoute" value="yes">
                                                     <label class="control-label font-weight-bold" for="recurringBtn">Recurring Route?</label>
                                                 </div>
                                             </div>
@@ -191,19 +207,19 @@
                                                     <div class="col-lg-4">
                                                         <div class="radio">
                                                             <label for="dailyRecurringRadioBtn" class="btn btn-LTL active font-weight-bold reccRoute {{ dailyClass }}" style="width:120px;">
-                                                                <input type="radio" checked="" hidden="" [(ngModel)]="sourceInformation.recurring.recurringType" name="recurringType" id="dailyRecurringRadioBtn" value="daily">Daily</label>
+                                                                <input type="radio" checked="" hidden="" [(ngModel)]="recurring.recurringType" name="recurringType" id="dailyRecurringRadioBtn" value="daily">Daily</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="radio">
                                                             <label for="weeklyRecurringRadioBtn" class="btn btn-LTL font-weight-bold reccRoute {{ weekClass }}" style="width:120px;">
-                                                                <input type="radio" hidden="" [(ngModel)]="sourceInformation.recurring.recurringType" name="recurringType" id="weeklyRecurringRadioBtn" value="weekly">Weekly</label>
+                                                                <input type="radio" hidden="" [(ngModel)]="recurring.recurringType" name="recurringType" id="weeklyRecurringRadioBtn" value="weekly">Weekly</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="radio">
                                                             <label for="biweeklyRecurringRadioBtn" class="btn btn-LTL font-weight-bold reccRoute {{ biClass }}" style="width:120px;">
-                                                                <input type="radio" hidden="" [(ngModel)]="sourceInformation.recurring.recurringType" name="recurringType" id="biweeklyRecurringRadioBtn" value="biweekly">Biweekly</label>
+                                                                <input type="radio" hidden="" [(ngModel)]="recurring.recurringType" name="recurringType" id="biweeklyRecurringRadioBtn" value="biweekly">Biweekly</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -214,7 +230,7 @@
                                                     <div class="col-lg-10">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Recurring Date</label>
                                                         <input 
-                                                            [(ngModel)]="sourceInformation.recurring.recurringDate" name="recurringDate" 
+                                                            [(ngModel)]="recurring.recurringDate" name="recurringDate" 
                                                             type="text" 
                                                             placeholder="DD-MM-YYYY"
                                                             (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
@@ -226,7 +242,7 @@
                                                         <div class="checkbox-custom checkbox-default mt-2">
                                                             <input type="checkbox" id="sunday" 
                                                             name="sunday" 
-                                                            [(ngModel)]="sourceInformation.recurring.sunday" class="daysChecked">
+                                                            [(ngModel)]="recurring.sunday" class="daysChecked">
                                                             <label class="control-label font-weight-bold" for="sunday">Sunday</label>
                                                         </div>
                                                     </div>
@@ -234,7 +250,7 @@
                                                         <div class="checkbox-custom checkbox-default mt-2">
                                                             <input type="checkbox" id="monday" 
                                                             name="monday" 
-                                                            [(ngModel)]="sourceInformation.recurring.monday" 
+                                                            [(ngModel)]="recurring.monday" 
                                                              class="daysChecked">
                                                             <label class="control-label font-weight-bold" for="monday">Monday</label>
                                                         </div>
@@ -243,7 +259,7 @@
                                                         <div class="checkbox-custom checkbox-default mt-2">
                                                             <input type="checkbox" id="tuesday" 
                                                             name="tuesday" 
-                                                            [(ngModel)]="sourceInformation.recurring.tuesday" 
+                                                            [(ngModel)]="recurring.tuesday" 
                                                              class="daysChecked">
                                                             <label class="control-label font-weight-bold" for="tuesday">Tuesday</label>
                                                         </div>
@@ -252,7 +268,7 @@
                                                         <div class="checkbox-custom checkbox-default mt-2">
                                                             <input type="checkbox" id="wednesday" 
                                                             name="wednesday" 
-                                                            [(ngModel)]="sourceInformation.recurring.wednesday" class="daysChecked">
+                                                            [(ngModel)]="recurring.wednesday" class="daysChecked">
                                                             <label class="control-label font-weight-bold" for="wednesday">Wednesday</label>
                                                         </div>
                                                     </div>
@@ -263,7 +279,7 @@
                                                         <div class="checkbox-custom checkbox-default mt-2">
                                                             <input type="checkbox" id="thursday" 
                                                             name="thursday" 
-                                                            [(ngModel)]="sourceInformation.recurring.thursday" class="daysChecked">
+                                                            [(ngModel)]="recurring.thursday" class="daysChecked">
                                                             <label class="control-label font-weight-bold" for="thursday">Thursday</label>
                                                         </div>
                                                     </div>
@@ -271,15 +287,15 @@
                                                         <div class="checkbox-custom checkbox-default mt-2">
                                                             <input type="checkbox" id="friday" 
                                                             name="friday" 
-                                                            [(ngModel)]="sourceInformation.recurring.friday" class="daysChecked">
+                                                            [(ngModel)]="recurring.friday" class="daysChecked">
                                                             <label class="control-label font-weight-bold" for="friday">Friday</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <div class="checkbox-custom checkbox-default mt-2">
                                                             <input type="checkbox" id="saturday" 
-                                                            name="sourceInformation.recurring.saturday" 
-                                                            [(ngModel)]="sourceInformation.recurring.saturday" class="daysChecked">
+                                                            name="recurring.saturday" 
+                                                            [(ngModel)]="recurring.saturday" class="daysChecked">
                                                             <label class="control-label font-weight-bold" for="saturday">Saturday</label>
                                                         </div>
                                                     </div>
@@ -293,7 +309,7 @@
                                                 <div class="checkbox-custom checkbox-default">
                                                     <input type="checkbox" id="routeCheckBtn"
                                                     name="destinationStop" 
-                                                    [(ngModel)]="destinationInformation.stop.destinationStop" value="yes">
+                                                    [(ngModel)]="destinationStop" value="yes">
                                                     <label class="control-label font-weight-bold" for="routeCheckBtn">Add Stop(s)</label>
                                                 </div>
                                             </div>
@@ -303,8 +319,6 @@
                                 <div class="row mt-4" style="display: none;" id="routeMapDiv">
                                     <div class="col-lg-6">
                                         <div class="mapclass vehiclemain" id="map_view">
-                                            <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9554789.297079882!2d-87.05246668116078!3d45.94972493605082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d7c63ba5%3A0x323555502ab4c477!2sToronto%2C%20ON%2C%20Canada!5e0!3m2!1sen!2sin!4v1581586600641!5m2!1sen!2sin" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen=""></iframe> -->
-                                            <!-- <div id="map" class="mapclassmain" style="height: 600px;"><div style="position: relative; width: 100%; height: 100%; overflow: hidden; -webkit-tap-highlight-color: transparent;"><div style="z-index: 0; width: 100%; height: 100%; position: absolute; touch-action: none;"><div style="position: absolute; height: 100%; width: 100%; z-index: 0; background-color: transparent;"><canvas style="position: absolute; top: 0px; left: 0px; background-color: rgb(255, 255, 255);" width="0" height="0"></canvas><div style="position: absolute; width: 0px; height: 0px; z-index: 1;"></div><div style="position: absolute; width: 0px; height: 0px; z-index: 0;"></div></div></div><div class="H_imprint" style="position: absolute; bottom: 0px; right: 0px; left: 0px; z-index: 1; direction: ltr; pointer-events: none; user-select: none; font: 11px &quot;Lucida Grande&quot;, Arial, Helvetica, sans-serif;"><div class="H_logo" style="margin: 0px 0px 16px 16px; display: inline-block;"><svg height="40" viewBox="0 0 47 40" width="47" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="m45.2054149 8.82876345.6003191.40637037-.2240425.6914074-.4490426 1.38570368c-.1024468.3148889-.6998936 1.9596297-2.43 3.5918519l-.017234.0163704c-.188617.1887407-.3801064.3659259-.5467021.5084444l-.4605319.4285185-.486383.4516296-.1407447-.0702963c-.7257447.4583704-1.4926596.7886667-2.2796809.9831852l.5840426.5864445-.6769149.6817778-2.052766 2.0636296-.169468.1704444-.019149.0192593-2.3821276 2.3958518c-.4902128.8493334-1.1202128 1.6331852-1.8497873 2.3111112-.6031915.6047407-1.2504255 1.1054814-1.935 1.4954814l-.4777659.4805186-4.3247873 4.3506666-.0296808.0298519-.0315958.0269629-2.1532978 1.8171111-.2661702.2253334h-.3485107-3.8948936l-3.968617 3.9914815-1.3547873 1.3616296-.6769148.6808148-.6769149-.6808148-1.3538298-1.3616296-4.80925535-4.837926-3.2687234-3.2875555-1.63436171-1.6437778h2.3112766 4.62255319 2.67223407l-4.71063832-4.7368148-.6769149-.6808148.6769149-.6808148 4.93851062-4.9650371.6769149-.6798518.6769149.6808148 2.7296809 2.7454074c.9363829-.8820741 2.1485106-1.4685185 3.4037234-1.6562963.278617-1.4694815 1.0187234-2.834963 2.168617-3.9885926.5696808-.572 1.1843617-1.0438519 1.8335106-1.4107407l.2901064-.2917778 4.3094681-4.31985187c.5830851-1.0582963 1.4256383-1.78918519 2.0364893-2.12718519l.4471277-.24748148c.3829787-.7617037.9047872-1.47622222 1.5539362-2.12622222 1.510851-1.51666667 3.3165957-2.31881482 5.22-2.31881482.0871276 0 .1752127.00192593.2594681.00577778 1.9484042.06933334 3.8441489.97933334 5.4775532 2.62792593.1512765.15022222.3303191.34859259.5361702.5797037l.0526595.05874074c.1120213.12518519.2345745.26192593.370532.40733334l1.2657446 1.36066666.6328724.67985185-.6548936.65866667-.2508511.25325926zm-27.9288192 22.17414815h-9.57446804l4.78723404 4.8148148zm23.1864894-21.70422223c-.9220213 1.38666663-2.5180851 3.63037033-4.1984042 1.94133333l4.2510638-4.27651851c-.3810638-.41022222-.6711702-.754-.8923404-.97740741-2.2921277-2.31207407-4.8743617-2.34192593-6.8984043-.312-1.3528723 1.35681481-1.7071277 2.91007407-1.313617 4.38533332l-1.332766-1.52629628c-.385851.21474074-2.0182979 1.65918518-.7937234 3.84703708l-1.5252127-1.274963-2.0240426 2.0299259 2.7344681 2.7502222c-2.1121277-1.6861481-4.3889362-1.5205185-6.2157447.312-1.9560638 1.9615556-1.8181915 4.3381482-.3532979 6.293926l-.295851-.2946667c-1.9321277-1.9432593-4.0318085-1.2576296-5.0706383-.2128148-.8023405.8079259-1.2944681 1.9191852-1.0924468 2.6905185l-4.195532-4.2187407-2.22893613 2.2408148 8.25893613 8.3065185h4.4339362l-2.9767021-2.9938519c-.5893908-.6029568-.9604155-1.0987731-1.1531529-1.5232627-.3182349-.7008886-.1504161-1.2073234.3230465-1.680515.7334043-.7318519 1.583617-.2763704 3.0829787 1.2277777l2.9412766 2.9562963 2.2164894-2.2292592-2.7909575-2.8060741c2.0125532 1.5291852 4.4224468 1.612 6.5728724-.545037 1.3567021-1.2653334 1.7425532-2.4565185 1.7425532-2.4565185l-1.6755319-1.1314815c-.9229788 1.3866666-2.5152128 3.6361481-4.195532 1.9461481l4.2606383-4.2851852 2.655 2.6712593 2.3160639-2.3294074-3.3223405-3.3424445c-1.5520212-1.5609629-.6328723-3.0275555.0124469-3.5793333.3025531.6442222.7448936 1.2624445 1.3078723 1.8296296 2.1485106 2.1676297 4.9260638 2.6038519 7.3685106.1550371 1.3567022-1.2643704 1.7425532-2.4565185 1.7425532-2.4565185zm-3.6564894-1.35537321-2.0211702 2.03377777c-.9890425-1.18251851-.9392553-1.81422222-.3245744-2.43051851.7439361-.7462963 1.4993617-.43044445 2.3457446.39674074zm-12.4879787 12.56088884c-.9890425-1.1825185-.9411702-1.819037-.3284042-2.4353333.7448936-.7462963 1.5003191-.4304444 2.3467021.3967408z" fill="#0f1621" fill-opacity=".7" style="fill: rgb(255, 255, 255); fill-opacity: 0.6;"></path><path d="m17.2765957 31.0029116-4.787234 4.8148148-4.78723404-4.8148148zm23.1864894-21.70422223 1.6755319 1.13148153s-.385851 1.1921481-1.7425532 2.4565185c-2.4424468 2.4488148-5.22 2.0125926-7.3685106-.1550371-.5629787-.5671851-1.0053192-1.1854074-1.3078723-1.8296296-.6453192.5517778-1.5644681 2.0183704-.0124469 3.5793333l3.3223405 3.3424445-2.3160639 2.3294074-2.655-2.6712593-4.2606383 4.2851852c1.6803192 1.69 3.2725532-.5594815 4.195532-1.9461481l1.6755319 1.1314815s-.3858511 1.1911851-1.7425532 2.4565185c-2.1504256 2.157037-4.5603192 2.0742222-6.5728724.545037l2.7909575 2.8060741-2.2164894 2.2292592-2.9412766-2.9562963c-1.4993617-1.5041481-2.3495744-1.9596296-3.0829787-1.2277777-.4734626.4731916-.6412814.9796264-.3230465 1.680515.1927374.4244896.5637621.9203059 1.1531529 1.5232627l2.9767021 2.9938519h-4.4339362l-8.25893613-8.3065185 2.22893613-2.2408148 4.195532 4.2187407c-.2020213-.7713333.2901063-1.8825926 1.0924468-2.6905185 1.0388298-1.0448148 3.1385106-1.7304445 5.0706383.2128148l.295851.2946667c-1.4648936-1.9557778-1.6027659-4.3323704.3532979-6.293926 1.8268085-1.8325185 4.103617-1.9981481 6.2157447-.312l-2.7344681-2.7502222 2.0240426-2.0299259 1.5252127 1.274963c-1.2245745-2.1878519.4078724-3.63229634.7937234-3.84703708l1.332766 1.52629628c-.3935107-1.47525925-.0392553-3.02851851 1.313617-4.38533332 2.0240426-2.02992593 4.6062766-2.00007407 6.8984043.312.2211702.22340741.5112766.56718519.8923404.97740741l-4.2510638 4.27651851c1.6803191 1.689037 3.2763829-.5546667 4.1984042-1.94133333zm-16.1444681 11.20551563 2.0182979-2.0385925c-.846383-.8271852-1.6018085-1.1430371-2.3467021-.3967408-.612766.6162963-.6606383 1.2528148.3284042 2.4353333zm12.4879787-12.56088884c-.8463829-.82718519-1.6018085-1.14303704-2.3457446-.39674074-.6146809.61629629-.6644681 1.248.3245744 2.43051851z" fill="#fff" fill-opacity=".3" style="fill: rgb(15, 22, 33); fill-opacity: 0.3;"></path></g></svg></div><div class="H_copyright" style="right: 0px; bottom: 0px; position: absolute; background-color: rgba(255, 255, 255, 0.8); color: rgb(15, 22, 33); padding: 2px 16px;"><a target="_blank" href="https://legal.here.com/en/terms/serviceterms/us" style="color: inherit; margin: 0px 8px; text-decoration: none; pointer-events: all;">Terms of use</a><span style="margin: 0px 8px;">© 1987–2020 HERE</span></div></div><div class="H_ui"><div class="H_l_top H_l_left"><div class="H_l_anchor H_l_horizontal"></div><div class="H_l_anchor H_l_vertical"></div></div><div class="H_l_top H_l_right"><div class="H_l_anchor H_l_horizontal"></div><div class="H_l_anchor H_l_vertical"></div></div><div class="H_l_bottom H_l_left"><div class="H_l_anchor H_l_vertical"></div><div class="H_l_anchor H_l_horizontal"><div class="H_ctl H_el"><div class="H_btn H_el" title="Choose view"><svg xmlns="http://www.w3.org/2000/svg" class="H_icon" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M6.7,14.6 L4.5,16 L12,20.6 L19.5,16 L17.3,14.6 L19.1,13.5 L23,16 L12,23 L1,16 L4.9,13.5 L6.7,14.6 Z M12,2 L23,9 L12,16 L1,9 L12,2 Z"></path></svg></div><div class="H_overlay H_el"><div class="H_rdo H_el"><div class="H_rdo_title H_el">Choose view</div><div class="H_rdo_buttons H_el"><div class="H_btn H_el">Map view</div><div class="H_btn H_el">Satellite</div></div></div><div class="H_separator H_el"></div><div class="H_grp H_el"><div class="H_btn H_el H_active">Traffic conditions</div><div class="H_btn H_el H_active">Show traffic incidents</div></div></div></div><div class="H_ctl H_el H_zoom H_grp"><div class="H_btn H_el" title="Zoom out"><svg version="1.1" class="H_icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve"><path d="m5 10.6h14v2.8h-14z"></path></svg></div><div class="H_btn H_el" title="Zoom in"><svg version="1.1" class="H_icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve"><g><path d="m5 10.6h5.6v-5.6h2.8v5.6h5.6v2.8h-5.6v5.6h-2.8v-5.6h-5.6v-2.8z"></path></g></svg></div></div><div class="H_ctl H_el H_scalebar" title="Change to miles" style="direction: ltr;"><svg height="12" version="1.1" xmlns="http://www.w3.org/2000/svg"><polyline style="fill:none; stroke:white; stroke-width:4" points="2,2 2,10 98,10 98,2"></polyline><polyline style="fill:none; stroke:black; stroke-width:2" points="2,2 2,10 98,10 98,2"></polyline></svg><div style="padding: 0 0 0 10px"></div></div></div></div><div class="H_l_bottom H_l_right"><div class="H_l_anchor H_l_vertical"></div><div class="H_l_anchor H_l_horizontal"></div></div><div class="H_l_anchor H_l_top H_l_center H_l_horizontal" style="margin-left: 0px;"></div><div class="H_l_anchor H_l_left H_l_middle H_l_vertical" style="margin-top: 0px;"></div><div class="H_l_anchor H_l_right H_l_middle H_l_vertical" style="margin-top: 0px;"></div><div class="H_l_anchor H_l_bottom H_l_center H_l_horizontal" style="margin-left: 0px;"></div></div></div></div> -->
                                             <div id="map" class=""></div>
                                         </div>
                                     </div>
@@ -315,9 +329,9 @@
                                                 <div class="row">
                                                     <div class="col-lg-4 text-center">
                                                         <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
-                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">Regina, SK</p>
-                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">SDG 320, Canada</p>
-                                                        <p class="mb-0 text-4 font-weight-normal text-dark">20/15/2020 11:55 AM</p>
+                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">{{ sourceInformation.sourceAddress }}</p>
+                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">{{ sourceInformation.sourceCity }}, {{ sourceInformation.sourceState }}</p>
+                                                        <p class="mb-0 text-4 font-weight-normal text-dark">{{ sourceInformation.sourceCountry }}</p>
                                                     </div>
                                                     <div class="col-lg-4 text-center pt-3">
                                                         <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
@@ -325,9 +339,9 @@
                                                     </div>
                                                     <div class="col-lg-4 text-center">
                                                         <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination</p>
-                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">Surrey, BC</p>
-                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">VKM 1R1, Canada</p>
-                                                        <p class="mb-0 text-4 font-weight-normal text-dark">21/15/2020 09:55 PM</p>
+                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">{{ destinationInformation.destinationAddress }}</p>
+                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">{{ destinationInformation.destinationCity }}, {{ destinationInformation.destinationState }}</p>
+                                                        <p class="mb-0 text-4 font-weight-normal text-dark">{{ destinationInformation.destinationCountry }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="wizard-progress">
@@ -378,24 +392,27 @@
                                                                     </td>
                                                                     <td width="5%"></td>
                                                                 </tr>
-                                                                <tr> 
-                                                                    <td><span class="badge badge-dark mt-2">1</span></td>
+                                                                <tr *ngFor="let data of stop; let i = index;">
+                                                                    
+                                                                    <td><span
+                                                                            class="badge badge-dark mt-2">{{i + 1}}</span>
+                                                                    </td>
                                                                     <td>
                                                                         <div class="row">
                                                                             <div class="col-lg-10">
-                                                                                <select class="form-control" name="stopLocation"
-                                                                                [(ngModel)]="destinationInformation.stop.stopLocation">
-                                                                                    <option *ngFor="let location of locations" value="{{ location.locationID }}">{{ location.locationName }}</option>
-                                                                                </select>
+                                                                                <input name="stopName_{{i}}"
+                                                                                    [(ngModel)]="stop[i].stopName" [value]="data.stopName"
+                                                                                    class="form-control">
                                                                             </div>
-                                                                            <div class="col-lg-1"> <a href="#addLocationModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
-                                                                        <input type="text" class="form-control" placeholder="Notes"name="stopNotes"
-                                                                        [(ngModel)]="destinationInformation.stop.stopNotes"> 
+                                                                        <input type="text" class="form-control"
+                                                                            placeholder="Notes" name="stopNotes_{{i}}"
+                                                                            [(ngModel)]="data.stopNotes">
                                                                     </td>
-                                                                    <td><span class="fas fa-trash-alt pt-2"></span></td>
+                                                                    <td *ngIf="i >= 2"><span (click)="removeStops(i)"
+                                                                            class="fas fa-trash-alt pt-2"></span></td>
                                                                 </tr>
                                                             </thead>
                                                         </table>
@@ -403,7 +420,9 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-lg-12 text-right">
-                                                        <button type="button" id="addStop" class="btn btn-sm btn-default"><i class="fas fa-plus"></i> Add More Stops</button>
+                                                        <a (click)="addStops()" id="addStop"
+                                                            class="btn btn-sm btn-default"><i class="fas fa-plus"></i>
+                                                            Add More Stops</a>
                                                     </div>
                                                 </div>
                                             </div>
