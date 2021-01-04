@@ -212,8 +212,6 @@ export class AddAssetsComponent implements OnInit {
       uploadedDocs: this.uploadedDocs
     };
 
-    console.log('data')
-    console.log(data)
     // create form data instance
     const formData = new FormData();
 
