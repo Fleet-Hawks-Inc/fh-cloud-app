@@ -199,14 +199,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
      * Unsaved Changes
      */
     canLeave(): boolean {
-      console.log(this.modalService.hasOpenModals());
       if (this.driverForm.dirty) {
         if (!this.modalService.hasOpenModals()) {
-          this.modalService.open(UnsavedChangesComponent);
+          this.modalService.open(UnsavedChangesComponent, { size: 'sm' });
         }
         return false;
-        // return false;
-        // return window.confirm('are you sure?');
       }
       this.modalServiceOwn.triggerRedirect.next(true);
       this.takeUntil$.next();

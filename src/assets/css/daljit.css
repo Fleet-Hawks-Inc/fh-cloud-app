@@ -492,6 +492,9 @@ html.fixed .content-body {
 .modal .modal-dialog {
     max-width: 900px;
 }
+.modal .modal-dialog.modal-sm {
+    max-width: 500px;
+}
 .modal .modal-header{
     background: #f6f6f6;
     border-radius: 5px 5px 0 0 !important;
