@@ -31,14 +31,15 @@
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset
 												Name/Number</label>
 											<input type="text" [(ngModel)]="assetsData.assetIdentification"
-												name="assetIdentification" class="form-control">
+												name="assetIdentification" class="form-control" placeholder="eg. XYZ,123 etc.">
 										</div>
 										<div class="col-lg-10">
 											<label
-												class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right">Group</label>
+												class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right">Group&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
 
 
-											<ng-select class="form-control populate" [(ngModel)]="assetsData.groupID"
+											<ng-select class="form-control populate" [(ngModel)]="assetsData.groupID" placeholder="Select group for asset"
 												name="groupID">
 
 												<ng-option *ngFor="let group of groups" value="{{group.groupID}}">
@@ -61,7 +62,7 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">VIN</label>
-											<input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
+											<input type="text" [(ngModel)]="assetsData.VIN" name="VIN" placeholder="Enter VIN number of the asset"
 												class="form-control">
 										</div>
 									</div>
@@ -81,7 +82,7 @@
 												Type</label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.assetType"
 												name="assetDetails.assetType" class="form-control populate"
-												id="assetType">
+												id="assetType" placeholder="Select asset type">
 
 												<ng-option *ngFor="let type of allAssetTypes;" value="{{type.code}}">
 													{{type.description}}</ng-option>
@@ -92,8 +93,7 @@
 											<label class="control-label font-weight-bold text-lg-right pt-2">Asset
 												Status</label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.currentStatus"
-												name="assetDetails.currentStatus" data-plugin-selectTwo
-												class="form-control populate">
+												name="assetDetails.currentStatus" placeholder="Select asset status">
 
 												<ng-option value="Active">Active</ng-option>
 												<ng-option value="Inactive">InActive</ng-option>
@@ -118,7 +118,7 @@
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Year</label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.year"
 												name="assetDetails.year"
-												class="form-control populate">
+												class="form-control populate" placeholder="Select year">
 
 												<ng-option value="2020">2020</ng-option>
 												<ng-option value="2019">2019</ng-option>
@@ -135,7 +135,7 @@
 											<ng-select 
 												[(ngModel)]="assetsData.assetDetails.manufacturer"
 												name="assetDetails.manufacturer" class="form-control"
-												(change)="getModels($event)">
+												(change)="getModels($event)" placeholder="Select asset make">
 												<ng-option *ngFor="let item of manufacturers"
 													id="{{item.manufacturerID}}" value="{{item.manufacturerID}}">{{item.name}}
 												</ng-option>
@@ -144,7 +144,7 @@
 										<div class="col-lg-3 pl-0">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Model</label>
-											<ng-select [(ngModel)]="assetsData.assetDetails.model"
+											<ng-select [(ngModel)]="assetsData.assetDetails.model" placeholder="Select asset model"
 												name="assetDetails.model" class="form-control">
 												<ng-option *ngFor="let val of models" value="{{val.modelID}}">{{val.name}}
 												</ng-option>
@@ -154,16 +154,16 @@
 									<div class="row mt-2">
 										<div class="col-lg-5">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Length</label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Length&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
 											<div class="row">
 												<div class="col-lg-6">
 													<input [(ngModel)]="assetsData.assetDetails.length"
-														name="assetDetails.length" type="number" class="form-control">
+														name="assetDetails.length" type="number" class="form-control" placeholder="eg. 10,20 etc.">
 												</div>
 												<div class="col-lg-6 pl-0">
 													<ng-select [(ngModel)]="assetsData.assetDetails.lengthUnit"
-														name="assetDetails.lengthUnit" data-plugin-selectTwo
-														class="form-control populate">
+														name="assetDetails.lengthUnit" placeholder="Select unit">
 
 														<ng-option value="Feet">Feet</ng-option>
 														<ng-option value="Meters">Meters</ng-option>
@@ -174,11 +174,10 @@
 										</div>
 										<div class="col-lg-5">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Axles</label>
-											<ng-select [(ngModel)]="assetsData.assetDetails.axle"
-												name="assetDetails.axle" data-plugin-selectTwo
-												class="form-control populate">
-
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Axles&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
+											<ng-select [(ngModel)]="assetsData.assetDetails.axle" placeholder="Select Axles"
+												name="assetDetails.axle">
 												<ng-option value="1">1</ng-option>
 												<ng-option value="2">2</ng-option>
 												<ng-option value="3">3</ng-option>
@@ -189,28 +188,28 @@
 												<ng-option value="8">8</ng-option>
 												<ng-option value="9">9</ng-option>
 												<ng-option value="10">10</ng-option>
-
 											</ng-select>
 										</div>
 									</div>
 									<div class="row mt-2">
 										<div class="col-lg-5">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">GVWR</label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">GVWR<i
+												class="fas fa-exclamation-circle" data-toggle="tooltip"
+												data-placement="top" title="The Gross Vehicle Weight Rating is basically the maximum total safe weight of your vehicle"></i>&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
 											<div class="row">
 												<div class="col-lg-6">
 													<input [(ngModel)]="assetsData.assetDetails.GVWR"
-														name="assetDetails.GVWR" type="text" class="form-control">
+														name="assetDetails.GVWR" type="text" class="form-control" >
 												</div>
 												<div class="col-lg-6 pl-0">
 													<ng-select [(ngModel)]="assetsData.assetDetails.GVWR_Unit"
 														name="assetDetails.GVWR_Unit"
 														(change)="gwr($event.target.value, 'GVWR_Unit')"
-														data-plugin-selectTwo class="form-control populate">
-
+														data-plugin-selectTwo class="form-control populate" placeholder="Select unit">
 														<ng-option value="Pounds">Pounds</ng-option>
 														<ng-option value="Kilograms">Kilograms</ng-option>
-
 													</ng-select>
 												</div>
 											</div>
@@ -218,7 +217,10 @@
 
 										<div class="col-lg-5">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">GAWR</label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">GAWR<i
+												class="fas fa-exclamation-circle" data-toggle="tooltip"
+												data-placement="top" title="The Gross Axle Weight Rating is a unit that is applied to all kinds of vehicles esp vehicles that have multiple axles"></i>&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
 											<div class="row">
 												<div class="col-lg-6">
 													<input [(ngModel)]="assetsData.assetDetails.GAWR"
@@ -226,9 +228,9 @@
 												</div>
 												<div class="col-lg-6 pl-0">
 													<ng-select [(ngModel)]="assetsData.assetDetails.GAWR_Unit"
-														name="assetDetails.GAWR_Unit" data-plugin-selectTwo
+														name="assetDetails.GAWR_Unit" 
 														class="form-control populate"
-														(change)="gwr($event.target.value, 'GAWR_Unit')">
+														(change)="gwr($event.target.value, 'GAWR_Unit')" placeholder="Select unit">
 
 														<ng-option value="Pounds">Pounds</ng-option>
 														<ng-option value="Kilograms">Kilograms</ng-option>
@@ -245,9 +247,10 @@
 									<div class="row">
 										<div class="col-lg-5">
 											<label
-												class="control-label font-weight-bold text-lg-right pt-2">Ownership</label>
+												class="control-label font-weight-bold text-lg-right pt-2">Ownership&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.ownerShip"
-												name="assetDetails.ownerShip" data-plugin-selectTwo
+												name="assetDetails.ownerShip" placeholder="Select ownership"
 												class="form-control populate">
 
 												<ng-option value="Owned">Owned</ng-option>
@@ -257,8 +260,6 @@
 
 											</ng-select>
 										</div>
-
-
 									</div>
 									<div class="row mt-2">
 										<div class="col-lg-5">
@@ -266,7 +267,7 @@
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
 												Country</label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.licenceCountryID"
-												name="assetDetails.licenceCountryID" (change)="getStates()"
+												name="assetDetails.licenceCountryID" (change)="getStates()" placeholder="Select country"
 												class="form-control populate">
 												<ng-option *ngFor="let country of countries"
 													value="{{country.countryID}}">
@@ -280,7 +281,7 @@
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
 												State/Province</label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.licenceStateID"
-												name="assetDetails.licenceStateID" class="form-control populate">
+												name="assetDetails.licenceStateID" class="form-control populate" placeholder="Select state">
 												<ng-option *ngFor="let state of states" value="{{state.stateID}}">
 													{{state.stateName}}
 												</ng-option>
@@ -293,16 +294,17 @@
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
 												Plate Number</label>
-											<input [(ngModel)]="assetsData.assetDetails.licencePlateNumber"
+											<input [(ngModel)]="assetsData.assetDetails.licencePlateNumber" placeholder="Enter licence plate number of asset"
 												name="assetDetails.licencePlateNumber" class="form-control" type="text">
 										</div>
 									</div>
 									<div class="row mt-2">
 										<div class="col-lg-10">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes</label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
 											<textarea [(ngModel)]="assetsData.assetDetails.remarks"
-												name="assetDetails.remarks" class="form-control" rows="3"></textarea>
+												name="assetDetails.remarks" class="form-control" rows="3" placeholder="Enter notes about asset"></textarea>
 										</div>
 									</div>
 								</div>
@@ -318,7 +320,8 @@
 									<div class="row ">
 										<div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Date of
-												Issue</label>
+												Issue&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
 											<input [(ngModel)]="assetsData.insuranceDetails.dateOfIssue"
 												name="insuranceDetails.dateOfIssue" type="text" placeholder="DD/MM/YYYY"
 												(click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
@@ -326,21 +329,19 @@
 										</div>
 										<div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Premium
-												Amount</label>
+												Amount&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
 											<div class="row">
 												<div class="col-lg-6">
 													<input [(ngModel)]="assetsData.insuranceDetails.premiumAmount"
-														name="insuranceDetails.premiumAmount" type="text"
+														name="insuranceDetails.premiumAmount" type="text" placeholder="eg. 100,200"
 														class="form-control">
 												</div>
 												<div class="col-lg-6 pl-0">
 													<ng-select [(ngModel)]="assetsData.insuranceDetails.premiumCurrency"
-														name="insuranceDetails.premiumCurrency" data-plugin-selectTwo
-														class="form-control populate">
-
+														name="insuranceDetails.premiumCurrency" placeholder="Select currency">
 														<ng-option value="USD">USD</ng-option>
 														<ng-option value="CAD">CAD</ng-option>
-
 													</ng-select>
 												</div>
 											</div>
@@ -349,7 +350,8 @@
 									<div class="row pt-2">
 										<div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Date of
-												Expiry</label>
+												Expiry&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
 											<input [(ngModel)]="assetsData.insuranceDetails.dateOfExpiry"
 												name="insuranceDetails.dateOfExpiry" placeholder="DD/MM/YYYY"
 												(click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" type="text"
@@ -357,18 +359,18 @@
 										</div>
 										<div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Reminder
-												Before Expiry</label>
+												Before Expiry&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
 											<div class="row">
 												<div class="col-lg-6"><input
 														[(ngModel)]="assetsData.insuranceDetails.reminderBefore"
-														name="insuranceDetails.reminderBefore" type="number"
+														name="insuranceDetails.reminderBefore" type="number" placeholder="eg. 5,10"
 														class="form-control">
 												</div>
 												<div class="col-lg-6 pl-0">
 													<ng-select
 														[(ngModel)]="assetsData.insuranceDetails.reminderBeforeUnit"
-														name="insuranceDetails.reminderBeforeUnit" data-plugin-selectTwo
-														class="form-control populate">
+														name="insuranceDetails.reminderBeforeUnit" placeholder="Select unit">
 
 														<ng-option value="Day(s)">Day(s)</ng-option>
 														<ng-option value="Week(s)">Week(s)</ng-option>
@@ -384,9 +386,10 @@
 									<div class="row">
 										<div class="col-lg-10">
 											<label
-												class="control-label font-weight-bold text-lg-right pt-2">Vendor</label>
+												class="control-label font-weight-bold text-lg-right pt-2">Vendor&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
 											<ng-select [(ngModel)]="assetsData.insuranceDetails.vendor"
-												name="insuranceDetails.vendor" data-plugin-selectTwo
+												name="insuranceDetails.vendor" placeholder="Select vendor"
 												class="form-control populate">
 												<ng-option *ngFor="let vendor of vendors" value="{{vendor.vendorID}}">
 													{{vendor.companyName}}
@@ -412,8 +415,9 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">ACI
-												ID</label>
-											<input [(ngModel)]="assetsData.crossBorderDetails.ACI_ID" name="ACI_ID"
+												ID&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
+											<input [(ngModel)]="assetsData.crossBorderDetails.ACI_ID" name="ACI_ID" placeholder="Enter ACI ID of the asset"
 												type="text" class="form-control">
 										</div>
 
@@ -424,8 +428,9 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">ACE
-												ID</label>
-											<input [(ngModel)]="assetsData.crossBorderDetails.ACE_ID" name="ACE_ID"
+												ID&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
+											<input [(ngModel)]="assetsData.crossBorderDetails.ACE_ID" name="ACE_ID" placeholder="Enter ACE ID of the asset"
 												type="text" class="form-control">
 										</div>
 
@@ -537,12 +542,13 @@
 						<div class="form-row">
 							<div class="form-group col-lg-12 mb-0">
 								<label class="control-label font-weight-bold">Group Name</label>
-								<input [(ngModel)]="groupData.groupName" name="groupName" type="text"
+								<input [(ngModel)]="groupData.groupName" name="groupName" type="text" placeholder="Enter group name"
 									class="form-control">
 							</div>
 							<div class="form-group col-lg-12">
-								<label class="control-label font-weight-bold">Group Members</label>
-								<ng-select [multiple]=true [(ngModel)]="groupData.groupMembers" name="groupMembers"
+								<label class="control-label font-weight-bold">Group Members&nbsp;<span
+									class="text-1 optional-label-color">(optional)</span></label>
+								<ng-select [multiple]=true [(ngModel)]="groupData.groupMembers" name="groupMembers" placeholder="Select group members"
 									style="width: 100%;">
 									<ng-option *ngFor="let item of allAssets;" value={{item.assetID}}>
 										{{item.assetIdentification}}</ng-option>
@@ -554,9 +560,10 @@
 								<div class="row">
 									<div class="col-lg-12">
 										<label
-											class="control-label font-weight-bold text-lg-right pt-2">Description</label>
+											class="control-label font-weight-bold text-lg-right pt-2">Descriptio&nbsp; <span
+											class="text-1 optional-label-color">(optional)</span></label>
 										<textarea [(ngModel)]="groupData.description" name="description"
-											class="form-control" rows="4" id="comment"></textarea>
+											class="form-control" rows="4" id="comment" placeholder="Enter group description"></textarea>
 									</div>
 								</div>
 							</div>

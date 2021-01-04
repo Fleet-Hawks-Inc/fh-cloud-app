@@ -229,6 +229,8 @@ export class AddressBookComponent implements OnInit {
   private destroy$ = new Subject();
   errors = {};
   newAddress = [];
+
+  showDriverModal: boolean = false;
   constructor(
             private apiService: ApiService,
             private toastr: ToastrService,

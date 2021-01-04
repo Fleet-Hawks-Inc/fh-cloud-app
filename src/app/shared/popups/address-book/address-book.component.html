@@ -15,7 +15,7 @@
                         </button>
                         <div class="dropdown-menu" role="menu"> 
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" (click)="updateButton = false;" href="javascript:;">Customer</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addDriverModal" (click)="updateButton = false;" href="javascript:;">Driver</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addDriverModal" (click)="showDriverModal = true;" href="javascript:;">Driver</a> 
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addBrokerModal" (click)="updateButton = false;" href="javascript:;">Broker</a> 
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addVendorModal" (click)="updateButton = false;" href="javascript:;">Vendor</a> 
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCarrierModal" (click)="updateButton = false;" href="javascript:;">Carrier</a> 
@@ -67,7 +67,7 @@
                                 <tbody>
                                     <tr *ngFor="let item of allData;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" 
-                                            title="{{item.entityType}}">{{item.entityType}}</span></td>{{item}}
+                                            title="{{item.entityType}}">{{item.entityType}}</span></td>
                                         <td>{{item.firstName}} {{item.lastName}}</td>
                                         <td>{{item.workEmail}}</td>
                                         <td>{{item.workPhone}}</td>
@@ -1072,6 +1072,23 @@
     </div>
 </div>
 
+<!-- Add Driver MODAL -->
+<div class="modal fade" id="addDriverModal" tabindex="-1" role="dialog" aria-labelledby="addDriverModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 98%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Driver</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark address-book__driver">
+                <app-add-driver *ngIf="showDriverModal"></app-add-driver>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Add Broker MODAL -->
 <div class="modal fade" id="addBrokerModal" tabindex="-1" role="dialog" aria-labelledby="addBrokerModal"

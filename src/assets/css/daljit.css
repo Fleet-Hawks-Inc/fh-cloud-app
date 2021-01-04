@@ -581,3 +581,15 @@ html.fixed .content-body {
 #addDriverVehicleModal .content-body {
     margin: 0;;
 }
+.address-item.open .address-inner {
+    display: block;
+}
+.address-book__driver .inner-wrapper {
+    padding-top: 0 !important;
+}
+.address-book__driver .inner-wrapper .content-body {
+    margin: 0;
+}
+.address-book__driver .inner-wrapper .page-header {
+    display: none;
+}
