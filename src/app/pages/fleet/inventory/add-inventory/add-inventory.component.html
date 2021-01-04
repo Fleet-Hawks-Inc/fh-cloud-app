@@ -39,6 +39,7 @@
                         name="partNumber"
                         [(ngModel)]="partNumber"
                         class="form-control"
+                        placeholder="Enter inventory part number eg. 123AZ"
                       />
                     </div>
                   </div>
@@ -53,6 +54,7 @@
                         [(ngModel)]="name"
                         type="text"
                         class="form-control"
+                        placeholder="Enter inventory part name eg. tires"
                       />
                     </div>
                   </div>
@@ -62,21 +64,22 @@
                         class="control-label font-weight-bold text-lg-right pt-2"
                         >Category</label
                       >
-                      <select
+                      <ng-select
                         data-plugin-selectTwo
                         class="form-control populate"
                         name="categoryID"
                         [(ngModel)]="categoryID"
+                        placeholder="Enter inventory category of inventory part"
                       >
                         <optgroup label="Select Category">
-                          <option
+                          <ng-option
                             *ngFor="let group of itemGroups"
                             value="{{ group.groupID }}"
                           >
                             {{ group.groupName }}
-                          </option>
+                          </ng-option>
                         </optgroup>
-                      </select>
+                      </ng-select>
                     </div>
                     <div class="col-lg-2 mar-top-37">
                       <a
@@ -101,23 +104,25 @@
                             class="form-control"
                             name="cost"
                             [(ngModel)]="cost"
+                            placeholder="Unit cost"
                           />
                         </div>
                         <div class="col-lg-6 pl-0">
-                          <select
+                          <ng-select
                             name="costUnit"
                             [(ngModel)]="costUnit"
                             data-plugin-selectTwo
                             class="form-control populate"
+                            placeholder="Select unit"
                           >
                             <optgroup label="Select Unit">
-                              <option value="Each">Each</option>
-                              <option value="Gallon">Gallon</option>
-                              <option value="Quart">Quart</option>
-                              <option value="Set">Set</option>
-                              <option value="Tube">Tube</option>
+                              <ng-option value="Each">Each</ng-option>
+                              <ng-option value="Gallon">Gallon</ng-option>
+                              <ng-option value="Quart">Quart</ng-option>
+                              <ng-option value="Set">Set</ng-option>
+                              <ng-option value="Tube">Tube</ng-option>
                             </optgroup>
-                          </select>
+                          </ng-select>
                         </div>
                       </div>
                     </div>
@@ -131,6 +136,7 @@
                         class="form-control"
                         name="quantity"
                         [(ngModel)]="quantity"
+                        placeholder="Enter quantity"
                       />
                     </div>
                   </div>
@@ -138,13 +144,15 @@
                     <div class="col-lg-10">
                       <label
                         class="control-label font-weight-bold text-lg-right pt-2"
-                        >Description</label
+                        >Description&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label
                       >
                       <textarea
                         class="form-control"
                         rows="4"
                         name="description"
                         [(ngModel)]="description"
+                        placeholder="Enter description of the inventory part"
                       ></textarea>
                     </div>
                   </div>
@@ -173,21 +181,22 @@
                       <label class="control-label pt-2 font-weight-bold"
                         >Select Warehouse</label
                       >
-                      <select
+                      <ng-select
                         name="warehouseID"
                         [(ngModel)]="warehouseID"
                         data-plugin-selectTwo
                         class="form-control populate"
+                      placeholder="Select warehouse"
                       >
                         <optgroup label="Select">
-                          <option
+                          <ng-option
                             *ngFor="let warehouse of warehouses"
                             value="{{ warehouse.warehouseID }}"
                           >
                             {{ warehouse.warehouseName }}
-                          </option>
+                          </ng-option>
                         </optgroup>
-                      </select>
+                      </ng-select>
                     </div>
                     <div class="col-lg-2 mar-top-37">
                       <a
@@ -204,19 +213,22 @@
                         <div class="col-lg-4">
                           <label
                             class="control-label font-weight-bold text-lg-right pt-2"
-                            >Aisle</label
+                            >Aisle&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span></label
                           >
                         </div>
                         <div class="col-lg-4">
                           <label
                             class="control-label font-weight-bold text-lg-right pt-2"
-                            >Row</label
+                            >Row&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span></label
                           >
                         </div>
                         <div class="col-lg-4">
                           <label
                             class="control-label font-weight-bold text-lg-right pt-2"
-                            >Bin</label
+                            >Bin&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span></label
                           >
                         </div>
                       </div>
@@ -227,6 +239,7 @@
                             class="form-control"
                             name="aisle"
                             [(ngModel)]="aisle"
+                            placeholder="Aisle number"
                           />
                         </div>
                         <div class="col-lg-4">
@@ -235,6 +248,7 @@
                             class="form-control"
                             name="row"
                             [(ngModel)]="row"
+                            placeholder="Row number"
                           />
                         </div>
                         <div class="col-lg-4">
@@ -243,6 +257,7 @@
                             class="form-control"
                             name="bin"
                             [(ngModel)]="bin"
+                            placeholder="Bin number"
                           />
                         </div>
                       </div>
@@ -254,21 +269,22 @@
                         class="control-label font-weight-bold text-lg-right pt-2"
                         >Vendor</label
                       >
-                      <select
+                      <ng-select
                         data-plugin-selectTwo
                         class="form-control populate"
                         name="warehouseVendorID"
                         [(ngModel)]="warehouseVendorID"
+                        placeholder="Select vendor"
                       >
                         <optgroup label="Select Vendor">
-                          <option
+                          <ng-option
                             *ngFor="let vendor of vendors"
                             value="{{ vendor.vendorID }}"
                           >
                             {{ vendor.companyName }}
-                          </option>
+                          </ng-option>
                         </optgroup>
-                      </select>
+                      </ng-select>
                     </div>
                     <div class="col-lg-2 mar-top-37">
                       <a
@@ -285,13 +301,15 @@
                       <div class="col-lg-3">
                         <label
                           class="control-label font-weight-bold text-lg-right pt-2"
-                          >Quantity</label
+                          >Quantity&nbsp; <span
+                          class="text-1 optional-label-color">(optional)</span></label
                         >
                         <input
                           type="number"
                           class="form-control"
                           name="trackingQuantity"
                           [(ngModel)]="trackingQuantity"
+                          placeholder="Tracking quantity"
                         />
                       </div>
                     </div>
@@ -299,25 +317,29 @@
                       <div class="col-lg-3">
                         <label
                           class="control-label font-weight-bold text-lg-right pt-2"
-                          >Reorder Point</label
+                          >Reorder Point&nbsp;<span
+                          class="text-1 optional-label-color">(opt)</span></label
                         >
                         <input
                           type="number"
                           class="form-control"
                           name="reorderPoint"
                           [(ngModel)]="reorderPoint"
+                          placeholder="Reorder point"
                         />
                       </div>
                       <div class="col-lg-3 mx-4">
                         <label
                           class="control-label font-weight-bold text-lg-right pt-2"
-                          >Reorder Quantity</label
+                          >Reorder Qty&nbsp; <span
+                          class="text-1 optional-label-color">(opt)</span></label
                         >
                         <input
                           type="number"
                           class="form-control"
                           name="reorderQuality"
                           [(ngModel)]="reorderQuality"
+                          placeholder="Reorder quantity"
                         />
                       </div>
                       <!-- <div class="col-lg-3">
@@ -329,34 +351,38 @@
                       <div class="col-lg-3">
                         <label
                           class="control-label font-weight-bold text-lg-right pt-2"
-                          >Lead Time</label
+                          >Lead Time&nbsp; <span
+                          class="text-1 optional-label-color">(opt)</span></label
                         >
                         <input
                           type="number"
                           class="form-control"
                           name="leadTime"
                           [(ngModel)]="leadTime"
+                          placeholder="Lead time"
                         />
                       </div>
                       <div class="col-lg-6 mx-4">
                         <label class="font-weight-bold text-lg-right pt-2"
-                          >Preferred Vendor</label
+                          >Preferred Vendor&nbsp; <span
+                          class="text-1 optional-label-color">(optional)</span></label
                         >
-                        <select
+                        <ng-select
                           data-plugin-selectTwo
                           class="form-control populate"
                           name="preferredVendorID"
                           [(ngModel)]="preferredVendorID"
+                          placeholder="Select preferred vendor"
                         >
                           <optgroup label="Select">
-                            <option
+                            <ng-option
                               *ngFor="let vendor of vendors"
                               value="{{ vendor.vendorID }}"
                             >
                               {{ vendor.companyName }}
-                            </option>
+                            </ng-option>
                           </optgroup>
-                        </select>
+                        </ng-select>
                       </div>
                       <div class="col-lg-2 mar-top-37 pl-0">
                         <a
@@ -391,25 +417,29 @@
                         <div class="col-lg-4">
                           <label
                             class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2"
-                            >Days</label
+                            >Days&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span></label
                           >
                           <input
                             type="number"
                             class="form-control"
                             name="days"
                             [(ngModel)]="days"
+                            placeholder="Warranty days"
                           />
                         </div>
                         <div class="col-lg-4">
                           <label
                             class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2"
-                            >Time</label
+                            >Time&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span></label
                           >
                           <input
                             type="number"
                             class="form-control"
                             name="time"
                             [(ngModel)]="time"
+                            placeholder="Warranty time"
                           />
                         </div>
                       </div>
@@ -418,13 +448,15 @@
                         <div class="col-lg-12">
                           <label
                             class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2"
-                            >Notes</label
+                            >Notes&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span></label
                           >
                           <textarea
                             class="form-control"
                             rows="3"
                             name="notes"
                             [(ngModel)]="notes"
+                            placeholder="Enter notes about warranty of inventory part"
                           ></textarea>
                         </div>
                       </div>
@@ -561,6 +593,7 @@
                 class="form-control"
                 [(ngModel)]="groupName"
                 name="groupName"
+                placeholder="Enter category name"
               />
             </div>
           </div>
@@ -570,14 +603,15 @@
                 <div class="col-lg-12">
                   <label
                     class="control-label font-weight-bold text-lg-right pt-2"
-                    >Description</label
+                    >Description&nbsp; <span
+                    class="text-1 optional-label-color">(optional)</span></label
                   >
                   <textarea
                     class="form-control"
                     rows="2"
                     id="comment"
                     [(ngModel)]="groupDescription"
-                    name="groupDescription"
+                    name="groupDescription" placeholder="Enter item category description"
                   ></textarea>
                 </div>
               </div>
@@ -603,7 +637,7 @@
           [routerLink]=""
           (click)="addGroup()"
         >
-          Submit
+          Save
         </button>
       </div>
     </div>
@@ -639,7 +673,7 @@
               <label class="control-label font-weight-bold"
                 >Warehouse Name</label
               >
-              <input type="text" class="form-control"  name="warehouseName"
+              <input type="text" class="form-control"  name="warehouseName" placeholder="Enter warehouse name"
               [(ngModel)]="warehouseName"/>
             </div>
           </div>
@@ -654,37 +688,39 @@
                     class="control-label font-weight-bold text-lg-right pt-2"
                     >Select Country</label
                   >
-                  <select
+                  <ng-select
                   data-plugin-selectTwo
                   class="form-control populate"
                   name="countryID"
                   [(ngModel)]="countryID"
                   (change)="getStates()"
+                  placeholder="Select country"
                 >
                   <optgroup label="Select Country">
-                    <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
+                    <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
 
                   </optgroup>
-                </select>
+                </ng-select>
                 </div>
                 <div class="col-lg-6">
                   <label
                     class="control-label font-weight-bold text-lg-right pt-2"
                     >Select State</label
                   >
-                  <select
+                  <ng-select
                   data-plugin-selectTwo
                   class="form-control populate"
                   name="stateID"
                   [(ngModel)]="stateID"
                   (change)="getCities()"
+                  placeholder="Select state"
                 >
                   <optgroup label="Select State">
                     
-                         <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
+                         <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
                      
                   </optgroup>
-                </select>
+                </ng-select>
                 </div>
               </div>
               <div class="row">
@@ -693,17 +729,18 @@
                     class="control-label font-weight-bold text-lg-right pt-2"
                     >Select City</label
                   >
-                  <select
+                  <ng-select
                   data-plugin-selectTwo
                   class="form-control populate"
                   name="cityID"
                   [(ngModel)]="cityID"
+                  placeholder="Select city"
                 >
                   <optgroup label="Select City">
-                    <option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
+                    <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
 
                   </optgroup>
-                </select>
+                </ng-select>
                 </div>
                 <div class="col-lg-6">
                   <label
@@ -711,7 +748,7 @@
                     >ZIP Code</label
                   >
                   <input type="text" class="form-control"  name="zipCode"
-                  [(ngModel)]="zipCode"/>
+                  [(ngModel)]="zipCode" placeholder="Enter zip code"/>
                 </div>
               </div>
               <div class="row">
@@ -721,7 +758,7 @@
                     >Street Address</label
                   >
                   <input type="text" class="form-control"  name="address"
-                  [(ngModel)]="address"/>
+                  [(ngModel)]="address" placeholder="Enter street address"/>
                 </div>
               </div>
             </div>
@@ -741,7 +778,7 @@
           Close
         </button>
         <button type="button" class="btn btn-success" [routerLink]=""
-        (click)="addWarehouse()">Submit</button>
+        (click)="addWarehouse()">Save</button>
       </div>
     </div>
   </div>
