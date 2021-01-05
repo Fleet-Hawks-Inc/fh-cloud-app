@@ -6,10 +6,11 @@ import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { v4 as uuidv4 } from 'uuid';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { NgxSpinnerService } from 'ngx-spinner'; 
 import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 import { HttpClient } from '@angular/common/http';
+import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-assets',
@@ -17,6 +18,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./add-assets.component.css'],
 })
 export class AddAssetsComponent implements OnInit {
+  Asseturl = this.apiService.AssetUrl;
   allAssetTypes: any;
   public assetID;
   selectedFiles: FileList;
@@ -26,9 +28,41 @@ export class AddAssetsComponent implements OnInit {
   form;
   quantumSelected = '';
   assetsData = {
-    assetDetails: {},
-    insuranceDetails: {},
-    crossBorderDetails: {},
+    assetIdentification: '',
+    groupID: '',
+    VIN: '',
+    assetDetails: {
+      assetType: '',
+      currentStatus: '',
+      year: '',
+      manufacturer: '',
+      model: '',
+      length: '',
+      lengthUnit: '',
+      axle: '',
+      GVWR: '',
+      GVWR_Unit: '',
+      GAWR: '',
+      GAWR_Unit: '',
+      ownerShip: '',
+      licenceCountryID: '',
+      licenceStateID: '',
+      licencePlateNumber: '',
+      remarks: '',
+    },
+    insuranceDetails: {
+      dateOfIssue: '',
+      premiumAmount: '',
+      premiumCurrency: '',
+      dateOfExpiry: '',
+      reminderBefore: '',
+      reminderBeforeUnit: '',
+      vendor: ''
+    },
+    crossBorderDetails: {
+      ACI_ID: '',
+      ACE_ID: ''
+    },
     uploadedPhotos: [],
     uploadedDocs: []
   };
@@ -53,11 +87,18 @@ export class AddAssetsComponent implements OnInit {
   carrierID: any;
   private states;
   private countries;
-  
+
+  uploadedPhotos = [];
+  uploadedDocs = [];
+  existingPhotos = [];
+  existingDocs = [];
+  assetsImages = []
+  assetsDocs = [];
+  pdfSrc:any = '';
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private awsUS: AwsUploadService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
-              private toastr: ToastrService, private spinner: NgxSpinnerService) {
+              private toastr: ToastrService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer) {
       this.selectedFileNames = new Map<any, any>();
   }
 
@@ -129,7 +170,65 @@ export class AddAssetsComponent implements OnInit {
   addAsset() {
     
     this.hideErrors();
-    this.apiService.postData('assets', this.assetsData).subscribe({
+
+    const data = {
+      assetID: this.assetID,
+      assetIdentification: this.assetsData.assetIdentification,
+      groupID: this.assetsData.groupID,
+      VIN: this.assetsData.VIN,
+      assetDetails:{
+        assetType: this.assetsData.assetDetails.assetType,
+        year: this.assetsData.assetDetails.year,
+        manufacturer: this.assetsData.assetDetails.manufacturer,
+        model: this.assetsData.assetDetails.model,
+        length: this.assetsData.assetDetails.length,
+        lengthUnit: this.assetsData.assetDetails.lengthUnit,
+        axle: this.assetsData.assetDetails.axle,
+        GVWR: this.assetsData.assetDetails.GVWR,
+        GVWR_Unit: this.assetsData.assetDetails.GVWR_Unit,
+        GAWR: this.assetsData.assetDetails.GAWR,
+        GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
+        ownerShip: this.assetsData.assetDetails.ownerShip,
+        currentStatus: this.assetsData.assetDetails.currentStatus,
+        licenceCountryID: this.assetsData.assetDetails.licenceCountryID,
+        licenceStateID: this.assetsData.assetDetails.licenceStateID,
+        licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,
+        remarks: this.assetsData.assetDetails.remarks
+      },
+      insuranceDetails: {
+        dateOfIssue: this.assetsData.insuranceDetails.dateOfIssue,
+        premiumAmount: this.assetsData.insuranceDetails.premiumAmount,
+        premiumCurrency: this.assetsData.insuranceDetails.premiumCurrency,
+        dateOfExpiry: this.assetsData.insuranceDetails.dateOfExpiry,
+        reminderBefore: this.assetsData.insuranceDetails.reminderBefore,
+        reminderBeforeUnit: this.assetsData.insuranceDetails.reminderBeforeUnit,
+        vendor: this.assetsData.insuranceDetails.vendor
+      },
+      crossBorderDetails:{
+        ACE_ID: this.assetsData.crossBorderDetails.ACE_ID,
+        ACI_ID: this.assetsData.crossBorderDetails.ACI_ID
+      },
+      uploadedPhotos: this.uploadedPhotos,
+      uploadedDocs: this.uploadedDocs
+    };
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedPhotos.length; i++){
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append docs if any
+    for(let j = 0; j < this.uploadedDocs.length; j++){
+      formData.append('uploadedDocs', this.uploadedDocs[j]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(data));
+
+    this.apiService.postData('assets', formData, true).subscribe({
       complete: () => { },
       error: (err) => {
         from(err.error)
@@ -153,7 +252,7 @@ export class AddAssetsComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        this.uploadFiles(); // upload selected files to bucket
+        //this.uploadFiles(); // upload selected files to bucket
         this.toastr.success('Asset added successfully.');
         this.router.navigateByUrl('/fleet/assets/list');
       },
@@ -223,6 +322,20 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData['insuranceDetails']['vendor'] = result.insuranceDetails.vendor;
         this.assetsData['crossBorderDetails']['ACE_ID'] = result.crossBorderDetails.ACE_ID;
         this.assetsData['crossBorderDetails']['ACI_ID'] = result.crossBorderDetails.ACI_ID;
+        this.existingPhotos = result.uploadedPhotos;
+        this.existingDocs = result.uploadedDocs;
+
+        if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+          this.assetsImages = result.uploadedPhotos.map(x => ({
+            path: `${this.Asseturl}/${result.carrierID}/${x}`, 
+            name: x,
+          }));
+        }
+  
+        if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
+          this.assetsDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+        }
+
         this.spinner.hide(); // loader hide
       });
 
@@ -233,7 +346,67 @@ export class AddAssetsComponent implements OnInit {
   updateAsset() {
     this.hasError = false;
     this.hasSuccess = false;
-    this.apiService.putData('assets', this.assetsData).subscribe({
+
+    const data = {
+      assetID: this.assetID,
+      assetIdentification: this.assetsData.assetIdentification,
+      groupID: this.assetsData.groupID,
+      VIN: this.assetsData.VIN,
+      assetDetails:{
+        assetType: this.assetsData.assetDetails.assetType,
+        year: this.assetsData.assetDetails.year,
+        manufacturer: this.assetsData.assetDetails.manufacturer,
+        model: this.assetsData.assetDetails.model,
+        length: this.assetsData.assetDetails.length,
+        lengthUnit: this.assetsData.assetDetails.lengthUnit,
+        axle: this.assetsData.assetDetails.axle,
+        GVWR: this.assetsData.assetDetails.GVWR,
+        GVWR_Unit: this.assetsData.assetDetails.GVWR_Unit,
+        GAWR: this.assetsData.assetDetails.GAWR,
+        GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
+        ownerShip: this.assetsData.assetDetails.ownerShip,
+        currentStatus: this.assetsData.assetDetails.currentStatus,
+        licenceCountryID: this.assetsData.assetDetails.licenceCountryID,
+        licenceStateID: this.assetsData.assetDetails.licenceStateID,
+        licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,
+        remarks: this.assetsData.assetDetails.remarks
+      },
+      insuranceDetails: {
+        dateOfIssue: this.assetsData.insuranceDetails.dateOfIssue,
+        premiumAmount: this.assetsData.insuranceDetails.premiumAmount,
+        premiumCurrency: this.assetsData.insuranceDetails.premiumCurrency,
+        dateOfExpiry: this.assetsData.insuranceDetails.dateOfExpiry,
+        reminderBefore: this.assetsData.insuranceDetails.reminderBefore,
+        reminderBeforeUnit: this.assetsData.insuranceDetails.reminderBeforeUnit,
+        vendor: this.assetsData.insuranceDetails.vendor
+      },
+      crossBorderDetails:{
+        ACE_ID: this.assetsData.crossBorderDetails.ACE_ID,
+        ACI_ID: this.assetsData.crossBorderDetails.ACI_ID
+      },
+      uploadedPhotos: this.existingPhotos,
+      uploadedDocs: this.existingDocs
+    };
+
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append docs if any
+    for (let j = 0; j < this.uploadedDocs.length; j++) {
+      formData.append('uploadedDocs', this.uploadedDocs[j]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(data));
+
+    this.apiService.putData('assets/', formData, true).subscribe({
+    // this.apiService.putData('assets', this.assetsData).subscribe({
       complete: () => { },
       error: (err) => {
         from(err.error)
@@ -266,35 +439,52 @@ export class AddAssetsComponent implements OnInit {
   /*
    * Selecting files before uploading
    */
+  // selectDocuments(event, obj) {
+  //   this.selectedFiles = event.target.files;
+  //   if (obj === 'uploadedDocs') {
+  //     //this.assetsData.uploadedDocs = [];
+  //     for (let i = 0; i <= this.selectedFiles.item.length; i++) {
+  //       const randomFileGenerate = this.selectedFiles[i].name.split('.');
+  //       const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
+  //       this.selectedFileNames.set(fileName, this.selectedFiles[i]);
+  //       this.assetsData.uploadedDocs.push(fileName);
+  //     }
+  //   } else {
+  //     for (let i = 0; i <= this.selectedFiles.item.length; i++) {
+  //       const randomFileGenerate = this.selectedFiles[i].name.split('.');
+  //       const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
+
+  //       this.selectedFileNames.set(fileName, this.selectedFiles[i]);
+  //       this.assetsData.uploadedPhotos.push(fileName);
+  //     }
+  //   }
+  // }
+
   selectDocuments(event, obj) {
-    this.selectedFiles = event.target.files;
+    let files = [...event.target.files];
+
     if (obj === 'uploadedDocs') {
-      //this.assetsData.uploadedDocs = [];
-      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-        const randomFileGenerate = this.selectedFiles[i].name.split('.');
-        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-        this.assetsData.uploadedDocs.push(fileName);
+      this.uploadedDocs = [];
+      for (let i = 0; i < files.length; i++) {
+        this.uploadedDocs.push(files[i])
       }
     } else {
-      for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-        const randomFileGenerate = this.selectedFiles[i].name.split('.');
-        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-
-        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-        this.assetsData.uploadedPhotos.push(fileName);
-      }
+      this.uploadedPhotos = [];
+      for (let i = 0; i < files.length; i++) {
+          this.uploadedPhotos.push(files[i])
+      } 
     }
   }
+  
   /*
    * Uploading files which selected
    */
-  uploadFiles = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
-      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
-    });
-  }
+  // uploadFiles = async () => {
+  //   this.carrierID = await this.apiService.getCarrierID();
+  //   this.selectedFileNames.forEach((fileData: any, fileName: string) => {
+  //     this.awsUS.uploadFile(this.carrierID, fileName, fileData);
+  //   });
+  // }
 
   // Changing gvwr/gawr values
   gwr(value, el) {
@@ -365,5 +555,23 @@ export class AddAssetsComponent implements OnInit {
       .subscribe((result: any) => {
         this.states = result.Items;
       });
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
+  // delete uploaded images and documents 
+  delete(type: string,name: string){
+    this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
+      this.fetchAssetByID();
+    });
   }
 }

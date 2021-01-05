@@ -16,6 +16,7 @@ declare var $: any;
   styleUrls: ['./asset-detail.component.css']
 })
 export class AssetDetailComponent implements OnInit {
+  Asseturl = this.apiService.AssetUrl;
   image;
   docs: SafeResourceUrl;
   public assetsImages = [];
@@ -57,6 +58,9 @@ export class AssetDetailComponent implements OnInit {
   errors = {};
 
   statesObject: any = {};
+  uploadedDocs = [];
+  uploadedPhotos = [];
+  pdfSrc:any = '';
 
   messageStatus: boolean = true;
   // Charts
@@ -188,8 +192,16 @@ export class AssetDetailComponent implements OnInit {
             this.vendor = this.assetData.insuranceDetails.vendor;
           }                           
           
-          
-          // this.getImages();
+          if(this.assetData.uploadedPhotos != undefined && this.assetData.uploadedPhotos.length > 0){
+            this.assetsImages = this.assetData.uploadedPhotos.map(x => ({
+              path: `${this.Asseturl}/${this.assetData.carrierID}/${x}`, 
+              name: x,
+            }));
+          }
+
+          if(this.assetData.uploadedDocs != undefined && this.assetData.uploadedDocs.length > 0){
+            this.assetsDocs = this.assetData.uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.assetData.carrierID}/${x}`, name: x}));
+          }
           this.spinner.hide(); // loader hide
         }
       }, (err) => {});
@@ -308,4 +320,21 @@ export class AssetDetailComponent implements OnInit {
     this.errors = {};
   }
 
+  // delete uploaded images and documents 
+  delete(type: string,name: string){
+    this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
+      this.fetchAsset();
+    });
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
 }
