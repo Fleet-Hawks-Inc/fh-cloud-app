@@ -17,11 +17,38 @@
     <section role="main" class="content-body">
       <header class="page-header pr-5">
 
-        <div class="row pr-1 mr-1" style="padding-top:10px;">
-          <div class="col-md-2 col-lg-2">
-             <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">Inventory Overview</h4>
+        <div class="row px-2" style="padding-top: 10px">
+            <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-sm mb-3">
+                <input autocomplete="off" type="text" name="unitName" [(ngModel)]="unitName"
+                    class="form-control" (input)="getSuggestions($event.target.value)"
+                    placeholder="Search items by name" />
+            </div>
+            <div *ngFor="let suggestedUnit of suggestedUnits" class="suggestionClass"
+                (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)">
+                {{ suggestedUnit.unitName }}
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-sm mb-3">
+                <input type="text" name="issueName" [(ngModel)]="issueName" class="form-control"
+                    placeholder="Search by category" />
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+          <div class="input-group input-group-sm mb-3">
+              <input type="text" name="issueName" [(ngModel)]="issueName" class="form-control"
+                  placeholder="Search by vendor" />
           </div>
-          <div class="col-md-10 col-lg-10 text-right pr-1">
+      </div>
+        <div class="col-md-2 col-lg-2">
+            <button type="submit" (click)="searchFilter()"
+                class="btn btn-sm btn-success mr-2">Search</button>
+            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+        </div>
+          
+        <div class="col-md-4 col-lg-4 text-right pr-3 page-buttons">
+    
             <div class="btn-group flex-wrap" style="min-width:190px;">
               <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
               <div class="dropdown-menu dutystatwd" role="menu">
@@ -68,8 +95,8 @@
              <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm" style="color: white"><i class="fas fa-plus"></i> Add Inventory</a>
           </div>
        </div>
-
-
+    
+    
       </header>
 
       <div class="routing-overview__wrapper">
