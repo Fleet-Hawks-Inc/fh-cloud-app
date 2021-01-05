@@ -1,10 +1,3 @@
-<style>
-    table{
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-</style>
 <section class="body">
 	<!-- start: header -->
 	<app-header></app-header>
@@ -89,124 +82,125 @@
 				<div class="col pr-0">
 					<section class="card">
 						<div class="card-body">
-							<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-								class="row-border hover table table-bordered table-striped mb-0">
-								<thead>
-									<tr>
-										<th style="min-width: 50px !important;">Date</th>
-										<th>Time</th>
-										<th>Card Number</th>
-										<th>Driver ID</th>
-										<th>Driver Name</th>
-										<th>Unit#</th>
-										<th>Sub-Fleet</th>
-										<th>Hub Miles</th>
-										<th>Odometer Miles</th>
-										<th>Trip No</th>
-										<th>Invoice</th>
-										<th>T/S Code</th>
-										<th>In Dir</th>
-										<th>T/S Name</th>
-										<th>T/S City</th>
-										<th>ST</th>
-										<th>Total Invoice</th>
-										<th>Fee</th>
-										<th>PPU</th>
-										<th>Fuel_UOM</th>
-										<th>Fuel_CUR</th>
-										<th>RFuel_UOM</th>
-										<th>RFuel_CUR</th>
-										<th>Oil_CUR</th>
-										<th>Add_CUR</th>
-										<th>Cash Adv</th>
-										<th>Tax</th>
-										<!-- <th>Amount</th>
-										<th>RFuel_UOM</th>
-										<th>RFuel_CUR</th>
-										<th>Oil_CUR</th>
-										<th>Add_CUR</th>
-										<th>Cash Adv</th>
-										<th>Tax</th> -->
-										<th>Amount Billed</th>
-										<th>Svc Bill</th>
-										<th>Chain</th>
-										<th>Ambest</th>
-										<th>MPU</th>
-										<th>Actions</th>
-									</tr>
-								</thead>
-								<tbody *ngIf="fuelList.length > 0">
-									<tr *ngFor="let fuelEntry of fuelList" style="cursor: pointer;">
-										<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
-											fuelEntry.fuelDate | date:'dd-MM-yyyy' }}</td>
-										<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
-											fuelEntry.fuelTime }}</td>
-										<td>Card Number</td>
-										<td>Driver ID</td>
-										<td>Driver Name</td>
-										<td>
-											<span
-												*ngIf="fuelEntry.unitType === 'vehicle'">{{vehicleList[fuelEntry.unitID]}}</span>
-											<span
-												*ngIf="fuelEntry.unitType === 'reefer'">{{assetList[fuelEntry.unitID]}}</span>
-										</td>
-										<td>Sub-Fleet</td>
-										<td>Hub Miles</td>
-										<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
-											fuelEntry.additionalDetails.odometer }}</td>
-										<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
-											tripList[fuelEntry.tripID]}}</td>
-										<td>Invoice</td>
-										<td>T/S Code</td>
-										<td>In Dir</td>
-										<td>T/S Name</td>
-										<td>T/S City</td>
-										<td>ST</td>
-										<td>Total Invoice</td>
-										<td>Fee</td>
-										<td>PPU</td>
-										<td>Fuel_UOM</td>
-										<td>Fuel_CUR</td>
-										<td>RFuel_UOM</td>
-										<td>RFuel_CUR</td>
-										<td>Oil_CUR</td>
-										<td>Add_CUR</td>
-										<td>Cash Adv</td>
-										<td>Tax</td>
-										<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
-											fuelEntry.amountPaid}}</td>
-										<!-- <td>RFuel_UOM</td>
-										<td>RFuel_CUR</td>
-										<td>Oil_CUR</td>
-										<td>Add_CUR</td>
-										<td>Cash Adv</td>
-										<td>Tax</td>
-										<td>Amount Billed</td> -->
-										<td>Svc Bill</td>
-										<td>Chain</td>
-										<td>Ambest</td>
-										<td>MPU</td>
-										<td>
-											<div class="btn-group flex-wrap">
-												<button type="button" class="mb-1 mt-1 mr-1 btn"
-													data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-												<div class="dropdown-menu" role="menu">
-													<a routerLink="/fleet/expenses/fuel/edit/{{fuelEntry.entryID }}"
-														class="dropdown-item text-1">Edit</a>
-													<button type="button" class="dropdown-item text-1"
-														(click)="deleteFuelEntry(fuelEntry.entryID)">Delete</button>
+							<div class="table-responsive">
+								<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+									class="row-border hover table table-bordered table-striped mb-0">
+									<thead>
+										<tr>
+											<th style="min-width: 50px !important;">Date</th>
+											<th>Time</th>
+											<th>Card Number</th>
+											<th>Driver ID</th>
+											<th>Driver Name</th>
+											<th>Unit#</th>
+											<th>Sub-Fleet</th>
+											<th>Hub Miles</th>
+											<th>Odometer Miles</th>
+											<th>Trip No</th>
+											<th>Invoice</th>
+											<th>T/S Code</th>
+											<th>In Dir</th>
+											<th>T/S Name</th>
+											<th>T/S City</th>
+											<th>ST</th>
+											<th>Total Invoice</th>
+											<th>Fee</th>
+											<th>PPU</th>
+											<th>Fuel_UOM</th>
+											<th>Fuel_CUR</th>
+											<th>RFuel_UOM</th>
+											<th>RFuel_CUR</th>
+											<th>Oil_CUR</th>
+											<th>Add_CUR</th>
+											<th>Cash Adv</th>
+											<th>Tax</th>
+											<!-- <th>Amount</th>
+											<th>RFuel_UOM</th>
+											<th>RFuel_CUR</th>
+											<th>Oil_CUR</th>
+											<th>Add_CUR</th>
+											<th>Cash Adv</th>
+											<th>Tax</th> -->
+											<th>Amount Billed</th>
+											<th>Svc Bill</th>
+											<th>Chain</th>
+											<th>Ambest</th>
+											<th>MPU</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody *ngIf="fuelList.length > 0">
+										<tr *ngFor="let fuelEntry of fuelList" style="cursor: pointer;">
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
+												fuelEntry.fuelDate | date:'dd-MM-yyyy' }}</td>
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
+												fuelEntry.fuelTime }}</td>
+											<td>Card Number</td>
+											<td>Driver ID</td>
+											<td>Driver Name</td>
+											<td>
+												<span
+													*ngIf="fuelEntry.unitType === 'vehicle'">{{vehicleList[fuelEntry.unitID]}}</span>
+												<span
+													*ngIf="fuelEntry.unitType === 'reefer'">{{assetList[fuelEntry.unitID]}}</span>
+											</td>
+											<td>Sub-Fleet</td>
+											<td>Hub Miles</td>
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
+												fuelEntry.additionalDetails.odometer }}</td>
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
+												tripList[fuelEntry.tripID]}}</td>
+											<td>Invoice</td>
+											<td>T/S Code</td>
+											<td>In Dir</td>
+											<td>T/S Name</td>
+											<td>T/S City</td>
+											<td>ST</td>
+											<td>Total Invoice</td>
+											<td>Fee</td>
+											<td>PPU</td>
+											<td>Fuel_UOM</td>
+											<td>Fuel_CUR</td>
+											<td>RFuel_UOM</td>
+											<td>RFuel_CUR</td>
+											<td>Oil_CUR</td>
+											<td>Add_CUR</td>
+											<td>Cash Adv</td>
+											<td>Tax</td>
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
+												fuelEntry.amountPaid}}</td>
+											<!-- <td>RFuel_UOM</td>
+											<td>RFuel_CUR</td>
+											<td>Oil_CUR</td>
+											<td>Add_CUR</td>
+											<td>Cash Adv</td>
+											<td>Tax</td>
+											<td>Amount Billed</td> -->
+											<td>Svc Bill</td>
+											<td>Chain</td>
+											<td>Ambest</td>
+											<td>MPU</td>
+											<td>
+												<div class="btn-group flex-wrap">
+													<button type="button" class="mb-1 mt-1 mr-1 btn"
+														data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+													<div class="dropdown-menu" role="menu">
+														<a routerLink="/fleet/expenses/fuel/edit/{{fuelEntry.entryID }}"
+															class="dropdown-item text-1">Edit</a>
+														<button type="button" class="dropdown-item text-1"
+															(click)="deleteFuelEntry(fuelEntry.entryID)">Delete</button>
+													</div>
 												</div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-								<tbody *ngIf="fuelList.length === 0">
-									<tr>
-										<td colspan="33" class="no-data-available">No records found</td>
-									</tr>
-								<tbody>
-							</table>
-
+											</td>
+										</tr>
+									</tbody>
+									<tbody *ngIf="fuelList.length === 0">
+										<tr>
+											<td colspan="33" class="no-data-available">No records found</td>
+										</tr>
+									<tbody>
+								</table>
+							</div>
 						</div>
 					</section>
 
