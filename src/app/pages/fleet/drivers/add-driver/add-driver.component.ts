@@ -362,9 +362,13 @@ export class AddDriverComponent implements OnInit {
   selectDocuments(event, i) {
     
     let files = [...event.target.files];
-    this.uploadedDocs[i] = [];
+    
+    if(this.uploadedDocs[i] == undefined) {
       this.uploadedDocs[i] = files;
+    }
+      
   }
+  
   selectPhoto(event) {
     let files = [...event.target.files];
     const reader = new FileReader();
@@ -708,7 +712,6 @@ export class AddDriverComponent implements OnInit {
             this.assetsDocs[i] = result.documentDetails[i].uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
           }
         }
-        this.uploadedDocs = this.assetsDocs;
         
         this.driverData.documentDetails = this.newDocuments;
 

@@ -3,12 +3,6 @@
    .extra {
       display: none;
    }
-
-   table{
-      display: inline-block;
-      overflow-x: auto;
-      white-space: nowrap;
-   }
 </style>
 <section class="body">
   
@@ -98,7 +92,7 @@
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
                            <label><input type="checkbox" [(ngModel)]="hideShow.aciID"
-                              name="aciID" (change)="hideShowColumn()">ACI ID</label>
+                              name="aciID" (change)="hideShowColumn()"> ACI ID</label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
                            <label><input type="checkbox" [(ngModel)]="hideShow.gvwr"
@@ -106,7 +100,7 @@
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
                            <label><input type="checkbox" [(ngModel)]="hideShow.gawr"
-                              name="gawr" (change)="hideShowColumn()">GAWR </label>
+                              name="gawr" (change)="hideShowColumn()"> GAWR </label>
                         </a>
                      </div>
                   </div>
@@ -217,67 +211,69 @@
       <!-- LIST VIEW OF ASSETS  -->
       <div id="list_view" *ngIf="listView">
          <div class="p-2">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
-               <thead>
-                  <tr>
-                     <th class="col1">Asset Name/Number</th>
-                     <th class="col2">Type</th>                                          
-                     <th class="col3">Plate Number</th>
-                     <th class="col4">Last Known Location</th>                                          
-                     <th class="col5">Year</th>
-                     <th class="col6">Make</th>
-                     <th class="col7">Model</th>
-                     <th class="col8">Ownership</th>
-                     <th class="col9">Status</th>
-                     <th class="col10 extra">Group</th>
-                     <th class="col11 extra">ACE ID</th>
-                     <th class="col12 extra">ACI ID</th>
-                     <th class="col13 extra">GVWR</th>
-                     <th class="col14 extra">GAWR</th>
-                     <th>Actions</th>
-                  </tr> 
-               </thead>
+            <div class="table-responsive">
+               <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
+                  <thead>
+                     <tr>
+                        <th class="col1">Asset Name/Number</th>
+                        <th class="col2">Type</th>                                          
+                        <th class="col3">Plate Number</th>
+                        <th class="col4">Last Known Location</th>                                          
+                        <th class="col5">Year</th>
+                        <th class="col6">Make</th>
+                        <th class="col7">Model</th>
+                        <th class="col8">Ownership</th>
+                        <th class="col9">Status</th>
+                        <th class="col10 extra">Group</th>
+                        <th class="col11 extra">ACE ID</th>
+                        <th class="col12 extra">ACI ID</th>
+                        <th class="col13 extra">GVWR</th>
+                        <th class="col14 extra">GAWR</th>
+                        <th>Actions</th>
+                     </tr> 
+                  </thead>
 
 
-               <tbody *ngIf="allData.length > 0">
-                  <tr class="cursorpoint" *ngFor="let item of allData;let i = index">
+                  <tbody *ngIf="allData.length > 0">
+                     <tr class="cursorpoint" *ngFor="let item of allData;let i = index">
 
 
-                     <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
-                     <td *ngIf="hideShow.type">{{assetTypesObects[item.assetDetails.assetType]}}</td>                                          
-                     <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
-                     <td *ngIf="hideShow.lastLocation" >Live Location</td>
-                     <td *ngIf="hideShow.year" >{{item.assetDetails.year}}</td>
-                     <td *ngIf="hideShow.make" >{{item.assetDetails.manufacturer}}</td>
-                     <td *ngIf="hideShow.model" >{{item.assetDetails.model}}</td>
-                     <td *ngIf="hideShow.ownership" >{{item.assetDetails.ownerShip}}</td>
-                     <td *ngIf="hideShow.status"><span class="badge badge-dark p-1 text-uppercase">{{item.assetDetails.currentStatus}}</span></td>
-                     <!-- extra columns -->
-                     <td *ngIf="hideShow.group" >{{groupsList[item.groupID]}}</td>
-                     <td *ngIf="hideShow.aceID" >{{item.crossBorderDetails.ACE_ID}}</td>
-                     <td *ngIf="hideShow.aciID" >{{item.crossBorderDetails.ACI_ID}}</td>
-                     <td *ngIf="hideShow.gvwr" >{{item.assetDetails.GVWR}} {{item.assetDetails.GVWR_Unit}}</td>
-                     <td *ngIf="hideShow.gawr" >{{item.assetDetails.GAWR}} {{item.assetDetails.GAWR_Unit}}</td>
+                        <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
+                        <td *ngIf="hideShow.type">{{assetTypesObects[item.assetDetails.assetType]}}</td>                                          
+                        <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
+                        <td *ngIf="hideShow.lastLocation" >Live Location</td>
+                        <td *ngIf="hideShow.year" >{{item.assetDetails.year}}</td>
+                        <td *ngIf="hideShow.make" >{{item.assetDetails.manufacturer}}</td>
+                        <td *ngIf="hideShow.model" >{{item.assetDetails.model}}</td>
+                        <td *ngIf="hideShow.ownership" >{{item.assetDetails.ownerShip}}</td>
+                        <td *ngIf="hideShow.status"><span class="badge badge-dark p-1 text-uppercase">{{item.assetDetails.currentStatus}}</span></td>
+                        <!-- extra columns -->
+                        <td *ngIf="hideShow.group" >{{groupsList[item.groupID]}}</td>
+                        <td *ngIf="hideShow.aceID" >{{item.crossBorderDetails.ACE_ID}}</td>
+                        <td *ngIf="hideShow.aciID" >{{item.crossBorderDetails.ACI_ID}}</td>
+                        <td *ngIf="hideShow.gvwr" >{{item.assetDetails.GVWR}} {{item.assetDetails.GVWR_Unit}}</td>
+                        <td *ngIf="hideShow.gawr" >{{item.assetDetails.GAWR}} {{item.assetDetails.GAWR_Unit}}</td>
 
-                     <td>
-                        <div class="dropdown dropright">
-                           <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <i class="fas fa-ellipsis-v"></i>
-                           </button>
-                           <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                              <a class="dropdown-item" routerLink="/fleet/assets/edit/{{item.assetID}}">Edit</a>
-                              <a class="dropdown-item" href="javascript:;" (click)="deactivateAsset(item.isDeleted, item.assetID)">Delete</a>
+                        <td>
+                           <div class="dropdown dropright">
+                              <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                 <i class="fas fa-ellipsis-v"></i>
+                              </button>
+                              <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                 <a class="dropdown-item" routerLink="/fleet/assets/edit/{{item.assetID}}">Edit</a>
+                                 <a class="dropdown-item" href="javascript:;" (click)="deactivateAsset(item.isDeleted, item.assetID)">Delete</a>
+                              </div>
                            </div>
-                         </div>
-                     </td>
-                  </tr>
-               </tbody>
-               <tbody *ngIf="allData.length === 0">
-                  <tr>
-                      <td colspan="15" class="no-data-available">No records found.</td>
-                  </tr>
-              <tbody>
-            </table>
+                        </td>
+                     </tr>
+                  </tbody>
+                  <tbody *ngIf="allData.length === 0">
+                     <tr>
+                        <td colspan="15" class="no-data-available">No records found.</td>
+                     </tr>
+               <tbody>
+               </table>
+            </div>
          </div>
       </div>
    </section>
