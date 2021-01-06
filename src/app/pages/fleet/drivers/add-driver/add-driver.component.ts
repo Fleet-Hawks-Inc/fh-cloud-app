@@ -50,7 +50,7 @@ export class AddDriverComponent implements OnInit {
     groupType : 'drivers'
   };
 
-  driverAddress = {
+  driverAddress = {   
     address: [],
   };
   driverData = {
@@ -84,7 +84,7 @@ export class AddDriverComponent implements OnInit {
     }],
     crossBorderDetails: {},
     paymentDetails: {},
-    licenceDetails: {},
+    licenceDetails: {DOB: ''},
     hosDetails: {},
     emergencyDetails: {},
   };
@@ -438,7 +438,10 @@ export class AddDriverComponent implements OnInit {
     this.hasSuccess = false;
     // this.register();
     this.hideErrors();
-   
+    if (this.driverData.licenceDetails.DOB !== '') {
+      //date in Y-m-d format 
+      this.driverData.licenceDetails.DOB = this.driverData.licenceDetails.DOB.split('-').reverse().join('-');
+    }
     if (this.driverData.address[0].countryName !== '' || this.driverData.address[0].stateName !== '' || this.driverData.address[0].cityName !== '') {
       for (let i = 0; i < this.driverData.address.length; i++) {
         const element = this.driverData.address[i];
@@ -727,7 +730,7 @@ export class AddDriverComponent implements OnInit {
         this.driverData.licenceDetails['contractStart'] = result.licenceDetails.contractStart;
         this.driverData.licenceDetails['contractEnd'] = result.licenceDetails.contractEnd;
         this.driverData.licenceDetails['vehicleType'] = result.licenceDetails.vehicleType;
-        this.driverData.licenceDetails['DOB'] = result.licenceDetails.DOB;
+        this.driverData.licenceDetails['DOB'] = result.licenceDetails.DOB.split('-').reverse().join('-');
         this.driverData.hosDetails['hosStatus'] = result.hosDetails.hosStatus;
         this.driverData.hosDetails['type'] = result.hosDetails.type;
         this.driverData.hosDetails['hosRemarks'] = result.hosDetails.hosRemarks;
@@ -747,6 +750,10 @@ export class AddDriverComponent implements OnInit {
     //this.spinner.show(); // loader init
     // this.register();
     this.hideErrors();
+    if (this.driverData.licenceDetails.DOB !== '') {
+      //date in Y-m-d format 
+      this.driverData.licenceDetails.DOB = this.driverData.licenceDetails.DOB.split('-').reverse().join('-');
+    }
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
       delete element['userLocation'];

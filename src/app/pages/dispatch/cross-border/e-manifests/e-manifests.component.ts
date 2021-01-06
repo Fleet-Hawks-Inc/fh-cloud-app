@@ -17,6 +17,10 @@ export class EManifestsComponent implements OnInit {
  countries = [];
  ACEList = [];
  ACIList = [];
+ vehiclesList: any = {};
+  assetsList: any = {};
+  driversList: any = {};
+  consigneesList: any = {};
    constructor(  private apiService: ApiService,
     private route: Router,
     private spinner: NgxSpinnerService,
@@ -26,6 +30,33 @@ export class EManifestsComponent implements OnInit {
     this.fetchCountries();
     this.ACEEntries();
     this.ACIEntries();
+    this.fetchVehiclesList();
+    this.fetchAssetsList();
+    this.fetchDriversList();
+    this.fetchConsigneesList();
+  }
+  fetchVehiclesList() {
+    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+      this.vehiclesList = result;
+    });
+  }
+  fetchAssetsList() {
+    this.apiService.getData('assets/get/list').subscribe((result: any) => {
+      this.assetsList = result;
+
+    });
+  }
+  fetchDriversList() {
+    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+      this.driversList = result;
+      console.log('this.driversList ',this.driversList );
+    });
+  }
+  fetchConsigneesList() {
+    this.apiService.getData('receivers/get/list').subscribe((result: any) => {
+      this.consigneesList = result;
+      console.log('this.consigneesList ',this.consigneesList );
+    });
   }
   fetchCountries() {
     this.apiService.getData('countries').subscribe((result: any) => {
@@ -33,15 +64,13 @@ export class EManifestsComponent implements OnInit {
     });
   }
   ACEEntries() {
+    this.spinner.show(); // loader init
     this.apiService.getData('ACEeManifest').subscribe({
-      complete: () => {
-        this.initDataTable();
-      },
+      complete: () => {},
       error: () => { },
       next: (result: any) => {
-        console.log(result);
         this.ACEList = result.Items;
-        console.log('ACE data', this.ACEList);
+        console.log('drivers',this.ACEList[0].drivers);
       },
     });
   }
@@ -61,7 +90,6 @@ export class EManifestsComponent implements OnInit {
       },
       error: () => { },
       next: (result: any) => {
-        console.log(result);
         this.ACIList = result.Items;
         console.log('ACI data', this.ACIList);
       },

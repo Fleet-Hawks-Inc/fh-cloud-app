@@ -15,7 +15,7 @@
                         <div class="input-group input-group-sm mb-3">
                             <input autocomplete="off" type="text" name="unitName" [(ngModel)]="unitName"
                                 class="form-control" (input)="getSuggestions($event.target.value)"
-                                placeholder="Search Issues by Vehicle / Unit" />
+                                placeholder="Search issues by vehicle/asset" />
                         </div>
                         <div *ngFor="let suggestedUnit of suggestedUnits" class="suggestionClass"
                             (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)">

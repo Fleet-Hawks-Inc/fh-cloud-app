@@ -361,6 +361,7 @@ export class AddFuelEntryComponent implements OnInit {
         this.fuelData[`additionalDetails`][`odometer`] = result.additionalDetails.odometer;
         this.fuelData[`additionalDetails`][`description`] = result.additionalDetails.description;
         this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
+        this.fuelData[`timeCreated`] = result.timeCreated;
         this.existingPhotos = result.additionalDetails.uploadedPhotos;
         if(result.additionalDetails.uploadedPhotos != undefined && result.additionalDetails.uploadedPhotos.length > 0){
           this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
