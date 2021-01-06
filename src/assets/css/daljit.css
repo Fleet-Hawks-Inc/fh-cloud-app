@@ -584,3 +584,10 @@ html.fixed .content-body {
 #addDriverVehicleModal .content-body {
     margin: 0;;
 }
+.order-accordian .card {
+    margin: 0;
+}
+.order-accordian .card-header .btn {
+    width: 100%;
+    text-align: left;
+}
