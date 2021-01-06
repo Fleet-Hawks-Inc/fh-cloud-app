@@ -55,10 +55,8 @@
                                         <div class="col-lg-10" *ngIf="unitType ==='vehicle'">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Vehicle</label>
-                                            <ng-select placeholder="Select Vehicle" name="unitID" [(ngModel)]="unitID">
-                                               
-                                                <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
-                                                
+                                            <ng-select placeholder="Select Vehicle" name="unitID" [(ngModel)]="unitID">                                               
+                                                <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>                                                
                                             </ng-select>
                                         </div>
                                         <div class="col-lg-10" *ngIf="unitType ==='asset'">
@@ -74,7 +72,7 @@
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Issue Name</label>
-                                         <input type="text"  class="form-control" id="issueName" name="issueName" [(ngModel)]="issueName" required="">
+                                         <input type="text"  class="form-control" id="issueName" name="issueName" [(ngModel)]="issueName" placeholder="Enter issue name eg. brake issue">
                                        </div>
                                     </div>
                                     <div class="row pt-2">
@@ -91,8 +89,9 @@
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Description</label>
-                                            <textarea [(ngModel)]="description" name="description" class="form-control" rows="3"></textarea>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
+                                            <textarea [(ngModel)]="description" name="description" class="form-control" rows="3" placeholder="Enter description of the issue"></textarea>
                                         </div>
                                     </div>
 
@@ -102,7 +101,7 @@
                                         <div class="col-lg-10">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer(miles)</label>
-                                            <input [(ngModel)]="odometer" name="odometer" type="number" class="form-control">
+                                            <input [(ngModel)]="odometer" name="odometer" type="number" class="form-control" placeholder="Enter odometer miles at which issue is reported. eg. 10000">
                                         </div>
                                     </div>
                                     <div class="row pt-2">
@@ -120,13 +119,10 @@
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned
-                                                To</label>
-                                            <ng-select [(ngModel)]="assignedTo" name="assignedTo">
-                                               
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To</label>
+                                            <ng-select [(ngModel)]="assignedTo" name="assignedTo" placeholder="Assign the issue">                                               
                                                     <ng-option value="Operator">Operator</ng-option>
-                                                    <ng-option value="Technician">Technician</ng-option>
-                                            
+                                                    <ng-option value="Technician">Technician</ng-option>                                            
                                             </ng-select>
                                         </div>
                                     </div>
@@ -177,7 +173,6 @@
                                         <div class="col-lg-2  mar-top-37">
                                             <!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
                                         </div>
-
                                     </div>
                                     <div class="row mt-2" *ngIf="issueDocs?.length">
                                         <div class="col-lg-10">
@@ -190,10 +185,10 @@
                                               </div>
                                               <hr class="solid mt-2">
                                               <div class="row mb-1" *ngFor="let doc of issueDocs;let d= index">
-                                                 <div class="col-lg-9" ><a href="{{doc.path}}" targer="_blank">Document {{d+1}}</a> </div> 
+                                                 <div class="col-lg-9" ><a href="{{doc.path}}" target="_blank">Document {{d+1}}</a> </div> 
                                                  <div class="col-lg-3 text-right">
                                                      <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>
-                                                    <a href="javascript:;"  (click)="delete('doc',doc.name)" class="modal-with-form"><i
+                                                    <a href="javascript:;" (click)="delete('doc',doc.name)" class="modal-with-form"><i
                                                           class="fas fa-times text-danger"></i></a>
                                                  </div>
                                               </div>

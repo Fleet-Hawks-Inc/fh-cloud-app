@@ -25,8 +25,10 @@ export class AddFuelEntryComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   public entryID;
   /********** Form Fields ***********/
+
   fuelData = {
     unitType: 'vehicle',
+    unitID: '',
     currency: 'USD',
     fuelQtyAmt: 0,
     fuelQty: 0,
@@ -37,9 +39,16 @@ export class AddFuelEntryComponent implements OnInit {
     amountPaid: 0,
     costPerGallon: 0,
     fuelDate: '',
+    fuelTime: '',
+    fuelType: '',
     totalGallons: 0,
     countryID: '',
     stateID: '',
+    cityID: '',
+    tripID: '',
+    vendorID : '',
+    paidBy: '',
+    paymentMode: '',
     reimburseToDriver: false,
     deductFromPay: false,
     additionalDetails: {
@@ -47,9 +56,9 @@ export class AddFuelEntryComponent implements OnInit {
       odometer: 0,
       description: '',
        uploadedPhotos: [],
-    },
-   // uploadedPhotos: []
+    }
   };
+
   fuelQtyUnit = 'gallon';
   DEFFuelQtyUnit = 'gallon';
   costPerUnit = 0;
@@ -362,8 +371,6 @@ export class AddFuelEntryComponent implements OnInit {
       });
   }
    deleteImage(i: number) {
-  //   this.carrierID = this.apiService.getCarrierID();
-  //   this.awsUS.deleteFile(this.carrierID, this.fuelData.additionalDetails.uploadedPhotos[i]);
      this.fuelData.additionalDetails.uploadedPhotos.splice(i, 1);
      this.fuelEntryImages.splice(i, 1);
  }

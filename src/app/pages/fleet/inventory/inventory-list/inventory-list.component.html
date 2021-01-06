@@ -1,3 +1,9 @@
+<style>
+  .extra {
+     display: none;
+  }
+</style>
+
 <section class="body">
   <!-- start: header -->
   <app-header></app-header>
@@ -11,17 +17,86 @@
     <section role="main" class="content-body">
       <header class="page-header pr-5">
 
-        <div class="row pr-1 mr-1" style="padding-top:10px;">
-          <div class="col-md-2 col-lg-2">
-             <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">Inventory Overview</h4>
+        <div class="row px-2" style="padding-top: 10px">
+            <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-sm mb-3">
+                <input autocomplete="off" type="text" name="unitName" [(ngModel)]="unitName"
+                    class="form-control" (input)="getSuggestions($event.target.value)"
+                    placeholder="Search items by name" />
+            </div>
+            <div *ngFor="let suggestedUnit of suggestedUnits" class="suggestionClass"
+                (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)">
+                {{ suggestedUnit.unitName }}
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-sm mb-3">
+                <input type="text" name="issueName" [(ngModel)]="issueName" class="form-control"
+                    placeholder="Search by category" />
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+          <div class="input-group input-group-sm mb-3">
+              <input type="text" name="issueName" [(ngModel)]="issueName" class="form-control"
+                  placeholder="Search by vendor" />
           </div>
-          <div class="col-md-10 col-lg-10 text-right pr-1">
+      </div>
+        <div class="col-md-2 col-lg-2">
+            <button type="submit" (click)="searchFilter()"
+                class="btn btn-sm btn-success mr-2">Search</button>
+            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+        </div>
+          
+        <div class="col-md-4 col-lg-4 text-right pr-3 page-buttons">
+    
+            <div class="btn-group flex-wrap" style="min-width:190px;">
+              <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
+              <div class="dropdown-menu dutystatwd" role="menu">
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.part" name="part" (change)="hideShowColumn()"> Part# </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.name" name="name" (change)="hideShowColumn()"> Name </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.category" name="category" (change)="hideShowColumn()">
+                    Category </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.vendor" name="vendor" (change)="hideShowColumn()">
+                    Vendor </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.quantity" name="quantity" (change)="hideShowColumn()"> Quantity </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.onHand" name="onHand" (change)="hideShowColumn()"> On Hand </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.unitCost" name="unitCost" (change)="hideShowColumn()"> Unit Cost </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.warehouse" name="warehouse" (change)="hideShowColumn()">
+                    Warehouse Details </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.warranty" name="warranty" (change)="hideShowColumn()"> Warranty Days and Time
+                  </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.reorderPoint" name="reorderPoint" (change)="hideShowColumn()"> Reorder Point </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.reorderQuantity" name="reorderQuantity" (change)="hideShowColumn()"> Reorder Quality </label>
+                </a>
+              </div>
+            </div>
             <a [routerLink]="" (click)="openTransferModal()" class="modal-with-form btn btn-success btn-sm mr-2"><i class="fas fa-exchange-alt"></i> Transfer</a>
              <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm" style="color: white"><i class="fas fa-plus"></i> Add Inventory</a>
           </div>
        </div>
-
-
+    
+    
       </header>
 
       <div class="routing-overview__wrapper">
@@ -43,67 +118,83 @@
                 </div>
                 <div class="tab-content border-0 p-0" id="myTabContent">
                   <div class="tab-pane show active" id="einv" role="tabpanel" aria-labelledby="all-tab">
-                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
-                      <thead>
-                        <tr>
-                          <th width="5%">Part#</th>
-                          <th width="20%">Name</th>
-                          <th width="10%">Category</th>
-                          <th width="20%">Vendor</th>
-                          <th width="5%">Quantity</th>
-                          <th width="10%">On Hand</th>
-                          <th width="10%">Unit Cost</th>
-                          <th width="15%">Warehouse Details</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
+                    <div class="table-responsive">
+                      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
+                        <thead>
+                          <tr>
+                            <th class="col1">Part#</th>
+                            <th class="col2">Name</th>
+                            <th class="col3">Category</th>
+                            <th class="col4">Vendor</th>
+                            <th class="col5">Quantity</th>
+                            <th class="col6">On Hand</th>
+                            <th class="col7">Unit Cost</th>
+                            <th class="col8">Warehouse Details</th>
+                            <th class="col9 extra">Warranty Days and Time</th>
+                            <th class="col10 extra">Reorder Point</th>
+                            <th class="col11 extra">Reorder Quality</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
 
-                      <tbody *ngIf="items.length > 0">
-                        <tr class="cursorpoint" *ngFor="let item of items; let i = index">
-                          <td routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                            {{ partNo[i]}}
+                        <tbody *ngIf="items.length > 0">
+                          <tr class="cursorpoint" *ngFor="let item of items; let i = index">
+                            <td *ngIf="hideShow.part"routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{ partNo[i]}}
 
+                            </td>
+                            <td *ngIf="hideShow.name" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{item.name}}
+                            </td>
+                            <td *ngIf="hideShow.category" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{itemGroups[item.categoryID]}}
+                            </td>
+                            <td *ngIf="hideShow.vendor" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{vendors[item.preferredVendorID]}}
+                            </td>
+                            <td *ngIf="hideShow.quantity" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{item.quantity}}
+                            </td>
+                            <td *ngIf="hideShow.onHand" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              234
+                            </td>
+                            <td *ngIf="hideShow.unitCost" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              $ {{item.cost}}
+                            </td>
+                            <td *ngIf="hideShow.warehouse" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{warehouses[item.warehouseID]}}
+                            </td>
+                            <!-- extra columns -->
+                            <td *ngIf="hideShow.warranty" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{item.days}} and {{item.time}}
+                            </td>
+                            <td *ngIf="hideShow.reorderPoint" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{item.reorderPoint}}
+                            </td>
+                            <td *ngIf="hideShow.reorderQuantity" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{item.reorderQuality}}
+                            </td>
+
+                            <td>
+                              <div class="dropdown dropright">
+                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                    <a class="dropdown-item" routerLink="/fleet/inventory/edit/{{item.itemID}}">Edit</a>
+                                    <a href="javascript:;" class="dropdown-item" (click)="deleteItem(item.itemID)">Delete</a>
+                                </div>
+                              </div>
                           </td>
-                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                            {{item.name}}
-                          </td>
-                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                            {{itemGroups[item.categoryID]}}
-                          </td>
-                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                            {{vendors[item.preferredVendorID]}}
-                          </td>
-                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                            {{item.quantity}}
-                          </td>
-                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                            234
-                          </td>
-                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                            $ {{item.cost}}
-                          </td>
-                          <td  routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                            {{warehouses[item.warehouseID]}}
-                          </td>
-                          <td class="border-0">
-                            <div class="dropdown dropright">
-                               <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="fas fa-ellipsis-v"></i>
-                               </button>
-                               <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                  <a class="dropdown-item" routerLink="/fleet/inventory/edit/{{item.itemID}}">Edit</a>
-                                  <a href="javascript:;" class="dropdown-item" (click)="deleteItem(item.itemID)">Delete</a>
-                               </div>
-                             </div>
-                         </td>
-                        </tr>
-                      </tbody>
-                      <tbody *ngIf="items.length === 0">
-                        <tr>
-                          <td colspan="9" class="no-data-available">No records found</td>
-                        </tr>
-                      <tbody>
-                    </table>
+                          </tr>
+                        </tbody>
+                        <tbody *ngIf="items.length === 0">
+                          <tr>
+                            <td colspan="9" class="no-data-available">No records found</td>
+                          </tr>
+                        <tbody>
+                      </table>
+                    </div>
                   </div>
 
                   <div class="tab-pane fade" id="rinv" role="tabpanel" aria-labelledby="reefer-tab">

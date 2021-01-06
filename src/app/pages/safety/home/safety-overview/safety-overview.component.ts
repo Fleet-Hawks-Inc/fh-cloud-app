@@ -6,10 +6,7 @@ import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { v4 as uuidv4 } from 'uuid';
-import * as moment from "moment";
-import { letterSpacing } from 'html2canvas/dist/types/css/property-descriptors/letter-spacing';
-import { ENODEV } from 'constants';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-safety-overview',

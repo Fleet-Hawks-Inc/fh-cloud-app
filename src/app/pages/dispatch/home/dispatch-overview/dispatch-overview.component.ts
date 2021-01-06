@@ -54,6 +54,21 @@ export class DispatchOverviewComponent implements OnInit {
   tripChartLegend;
   tripChartData = [];
 
+  tripsMonths = {
+    jan: 0,
+    feb: 0,
+    march: 0,
+    april: 0,
+    may: 0,
+    june: 0,
+    july: 0,
+    aug: 0,
+    sept: 0,
+    oct: 0,
+    nov: 0,
+    dec: 0
+  }
+  tripGraphData = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService) { }
@@ -120,12 +135,14 @@ export class DispatchOverviewComponent implements OnInit {
           if(element.isDeleted === 0 && element.tripStatus === 'planned'){
             for (let j = 0; j < element.tripPlanning.length; j++) {
               const element2 = element.tripPlanning[j];
-              let pickDate = element2.date.split("-");
-              var dateOne = new Date(pickDate[0], pickDate[1]-1, pickDate[2]);
-              if (todayDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0) && element2.type === "Pickup") { 
-                  pickupObj.todPickupCount = pickupObj.todPickupCount+1;
-              } else if(tomorrowDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0) && element2.type === "Pickup"){
-                  pickupObj.tomPickupCount = pickupObj.tomPickupCount+1;
+              if(element2.date != '' && element2.date != undefined) {
+                let pickDate = element2.date.split("-");
+                var dateOne = new Date(pickDate[0], pickDate[1]-1, pickDate[2]);
+                if (todayDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0) && element2.type === "Pickup") { 
+                    pickupObj.todPickupCount = pickupObj.todPickupCount+1;
+                } else if(tomorrowDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0) && element2.type === "Pickup"){
+                    pickupObj.tomPickupCount = pickupObj.tomPickupCount+1;
+                }
               }
             }
             resolve(pickupObj);
@@ -157,11 +174,45 @@ export class DispatchOverviewComponent implements OnInit {
       })
   }
 
-  fetchAllTrips() {
+  fetchAllTrips() { 
     this.spinner.show();
     this.apiService.getData('trips/active/all').
       subscribe((result: any) => {
-        // result = result.Items[0];
+        for (let i = 0; i < result.Items.length; i++) {
+          const element = result.Items[i];
+          if(element.dateCreated !== '' && element.dateCreated !== undefined) {
+            let tripDate = element.dateCreated.split('-');
+            let tripMonth = tripDate[1];
+            if(tripMonth == '1' || tripMonth == '01') {
+              this.tripsMonths.jan += 1;
+            } else if(tripMonth == '2' || tripMonth == '02') {
+              this.tripsMonths.feb += 1;
+            } else if(tripMonth == '3' || tripMonth == '03') {
+              this.tripsMonths.march += 1;
+            } else if(tripMonth == '4' || tripMonth == '04') {
+              this.tripsMonths.april += 1;
+            } else if(tripMonth == '5' || tripMonth == '05') {
+              this.tripsMonths.may += 1;
+            } else if(tripMonth == '6' || tripMonth == '06') {
+              this.tripsMonths.june += 1;
+            } else if(tripMonth == '7' || tripMonth == '07') {
+              this.tripsMonths.july += 1;
+            } else if(tripMonth == '8' || tripMonth == '08') {
+              this.tripsMonths.aug += 1;
+            } else if(tripMonth == '9' || tripMonth == '09') {
+              this.tripsMonths.sept += 1;
+            } else if(tripMonth == '10') {
+              this.tripsMonths.oct += 1;
+            } else if(tripMonth == '11') {
+              this.tripsMonths.nov += 1;
+            } else if(tripMonth == '12') {
+              this.tripsMonths.dec += 1;
+            }
+          }
+        }
+
+        this.tripGraphData = Object.keys(this.tripsMonths).map(key => this.tripsMonths[key]);
+        this.initTripsGraph();
         this.totalTripsCount = result.Count;
         this.spinner.hide();
       })
@@ -353,9 +404,7 @@ export class DispatchOverviewComponent implements OnInit {
         backgroundColor: '#9c9ea1',
         borderColor: '#9c9ea1',
         borderWidth: 1,
-        data: [
-           15,85,45,64,15,74,15,1,69,25,45,15,16,18,84,58,
-        ],
+        data: this.tripGraphData,
      }
     ];
   }

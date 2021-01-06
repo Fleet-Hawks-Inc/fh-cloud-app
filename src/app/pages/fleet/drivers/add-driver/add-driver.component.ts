@@ -155,7 +155,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   getcurrentDate: any;
   birthDateMinLimit: any;
   uploadedPhotos = [];
-    uploadedDocs = [];
+
+  uploadedDocs = [];
+  existingPhotos = [];
+  existingDocs = [];
+  assetsImages = []
+  assetsDocs = [];
+  pdfSrc:any = '';
 
   constructor(private apiService: ApiService,
               private httpClient: HttpClient,
@@ -398,12 +404,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   selectDocuments(event, i) {
 
     let files = [...event.target.files];
-
-    if(this.uploadedDocs[i] == undefined){
+    
+    if(this.uploadedDocs[i] == undefined) {
       this.uploadedDocs[i] = files;
     }
 
   }
+  
   selectPhoto(event) {
     let files = [...event.target.files];
     const reader = new FileReader();
@@ -728,6 +735,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
         this.driverData.address = this.newAddress;
         for (let i = 0; i < result.documentDetails.length; i++) {
+          let docmnt = []
+          if(result.documentDetails[i].uploadedDocs != undefined && result.documentDetails[i].uploadedDocs.length > 0){
+            docmnt = result.documentDetails[i].uploadedDocs;
+          }
+          
           this.newDocuments.push({
             documentType: result.documentDetails[i].documentType,
             document: result.documentDetails[i].document,
@@ -736,9 +748,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             issuingState: result.documentDetails[i].issuingState,
             issueDate: result.documentDetails[i].issueDate,
             expiryDate: result.documentDetails[i].expiryDate,
+            uploadedDocs: docmnt
           });
           if(result.documentDetails[i].uploadedDocs != undefined && result.documentDetails[i].uploadedDocs.length > 0){
-            result.documentDetails[i].uploadedDocs = result.documentDetails[i].uploadedDocs.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+            this.assetsDocs[i] = result.documentDetails[i].uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
           }
         }
 
@@ -798,13 +811,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     // create form data instance
     const formData = new FormData();
-
-    //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-    }
-
-    //append docs if any
     for(let j = 0; j < this.uploadedDocs.length; j++){
       for (let k = 0; k < this.uploadedDocs[j].length; k++) {
         let file = this.uploadedDocs[j][k];
@@ -898,8 +904,27 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       // this.Error = err.message || 'Error during login';
     }
   }
+
   ngOnDestroy(): void {
     this.takeUntil$.next();
     this.takeUntil$.complete();
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
+  // delete uploaded images and documents 
+  delete(type: string,name: string, index:string){
+    this.apiService.deleteData(`drivers/uploadDelete/${this.driverID}/${type}/${name}/${index}`).subscribe((result: any) => {
+      this.fetchDriverByID();
+    });
   }
 }
