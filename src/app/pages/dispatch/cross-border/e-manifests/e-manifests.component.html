@@ -56,9 +56,6 @@
                   <li class="nav-item">
                      <a class="nav-link" id="aci-emanifest-tab"  (click)= "activeDiv = 'aci'" data-toggle="tab" href="#aci-emanifest" role="tab" aria-controls="aci-emanifest" aria-selected="false">ACI eManifest</a>
                   </li>
-                  <!-- <li class="nav-item">
-                     <a class="nav-link" id="csaFast-tab" data-toggle="tab" href="#csaFast" role="tab" aria-controls="csaFast" aria-selected="false">CSA/FAST Shipment</a>
-                  </li> -->
                </ul>
             <div class="row">
                <div class="col">
@@ -85,12 +82,12 @@
                                     <tr *ngFor = "let aceManifest of ACEList;">                                       
                                        <td  routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}{{aceManifest.tripNumber}}</td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}</td>                                          
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let driver of aceManifest.drivers; let i = index;">{{driversList[driver]}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let driver of aceManifest.drivers;">{{driversList[driver]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">
                                           {{vehiclesList[aceManifest.truck.truckID]}}
                                        </td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let trailer of aceManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.SCAC}}{{shipment.shipmentControlNumber}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.SCAC}}{{shipment.shipmentControlNumber}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.type}}</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{consigneesList[shipment.consigneeID]}}</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span class="badge badge-dark p-1">{{aceManifest.currentStatus}}</span></td>
@@ -124,14 +121,14 @@
                                  </thead>
                                  <tbody>
                                     <tr *ngFor = "let aciManifest of ACIList;">                                       
-                                       <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>
+                                       <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.CCC}}{{aciManifest.tripNumber}}</td>
                                         <td>{{aciManifest.CCC}}</td>                                          
-                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let driver of aciManifest.drivers">{{driver.firstName}}</span></td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let driver of aciManifest.drivers">{{driversList[driver]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">
-                                          <!-- {{aciManifest.truck.number}} -->
+                                          {{vehiclesList[aciManifest.truck.truckID]}}
                                        </td>
-                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let trailer of aciManifest.trailers">{{trailer.number}}</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let trailer of aciManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.shipmentType}}</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">Diamond, Detroit</td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span class="badge badge-dark p-1">{{aciManifest.currentStatus}}</span></td>
@@ -143,18 +140,6 @@
                                           </div>
                                         </div></td>                                       
                                     </tr> 
-                                    
-                                 </tbody>
-                              </table>
-                           </div>
-                           <div class="tab-pane" id="csaFast" role="tabpanel" aria-labelledby="csaFast-tab">
-                               <table class="table table-bordered table-striped mb-0 simple-table">
-                          
-                                 <tbody>
-                                    <tr>
-                                       <td width="5%"><p>CSA FAST</p></td>
-                                    </tr>
-
                                     
                                  </tbody>
                               </table>

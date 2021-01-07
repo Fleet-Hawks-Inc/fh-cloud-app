@@ -129,7 +129,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                            <h4 class="m-0 ">Truck on <b> #1234984545</b></h4>
+                            <h4 class="m-0 ">Truck</h4>
                             <div class=" pull-right">
                                 <button class="btn btn-success btn-sm"> Set IIT Status</button>
                             </div>
@@ -173,7 +173,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                            <h4 class="m-0 ">Trailers on <b> #1234984545</b></h4>
+                            <h4 class="m-0 ">Trailers</h4>
                             <div class=" pull-right">
                                 <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm mr-1"> Set IIT Status</a>
                                 <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Trailer</a>
@@ -231,7 +231,7 @@
                                         <th>Fast Id</th>
                                         <th>Travel Documents</th>
                                         <th>Type</th>
-                                        <th>Address</th>
+                                        <!-- <th>Address</th> -->
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -243,7 +243,7 @@
                                         <td>{{driver.fastCardNumber}}</td>
                                         <td><span *ngFor= "let document of driver.travelDocuments">{{document.number}},</span></td>
                                         <td>Driver</td>
-                                        <td>Address</td>
+                                        <!-- <td>Address</td> -->
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
                                         </td>
@@ -255,7 +255,7 @@
                                         <td>{{passenger.fastCardNumber}}</td>
                                         <td><span *ngFor= "let document of passenger.travelDocuments">{{document.number}},</span></td>
                                         <td>Passenger</td>
-                                        <td>Address</td>
+                                        <!-- <td>Address</td> -->
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
                                         </td>
@@ -301,10 +301,11 @@
                                         <td></td>
                                         <td>{{shipment.type}}</td>
                                         <td>
-                                            32Street, Alberta,Canada
+                                           {{shipment.shipper.name}}<br>{{shipment.shipper.address.addressLine}} {{shipment.shipper.address.city}} {{shipment.shipper.address.stateProvince}} {{shipment.shipper.address.postalCode}}
                                         </td>
                                         <td>
-                                            78Ave 180 street, Surrey,Canada
+                                            {{shipment.consignee.name}}<br>{{shipment.consignee.address.addressLine}} {{shipment.consignee.address.city}} {{shipment.consignee.address.stateProvince}} {{shipment.consignee.address.postalCode}}
+
                                         </td>
                                         <td>{{shipment.commodities.totalCommodities}}</td>
                                         <td>{{shipment.totalQuantity}}</td>

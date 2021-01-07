@@ -49,13 +49,11 @@ export class EManifestsComponent implements OnInit {
   fetchDriversList() {
     this.apiService.getData('drivers/get/list').subscribe((result: any) => {
       this.driversList = result;
-      console.log('this.driversList ',this.driversList );
     });
   }
   fetchConsigneesList() {
     this.apiService.getData('receivers/get/list').subscribe((result: any) => {
       this.consigneesList = result;
-      console.log('this.consigneesList ',this.consigneesList );
     });
   }
   fetchCountries() {
@@ -70,7 +68,6 @@ export class EManifestsComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         this.ACEList = result.Items;
-        console.log('drivers',this.ACEList[0].drivers);
       },
     });
   }
@@ -91,7 +88,6 @@ export class EManifestsComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         this.ACIList = result.Items;
-        console.log('ACI data', this.ACIList);
       },
     });
   }

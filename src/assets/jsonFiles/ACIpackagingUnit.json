@@ -1,0 +1,602 @@
+[
+	{
+		"code": "PLL",
+		"name": "Air Pallet"
+	},
+	{
+		"code": "AMM",
+		"name": "Ammo Pack"
+	},
+	{
+		"code": "BAG",
+		"name": "Bag"
+	},
+	{
+		"code": "BAL",
+		"name": "Bale"
+	},
+	{
+		"code": "BDG",
+		"name": "Banding"
+	},
+	{
+		"code": "BRG",
+		"name": "Barge"
+	},
+	{
+		"code": "BBL",
+		"name": "Barrel"
+	},
+	{
+		"code": "BSK",
+		"name": "Basket or hamper"
+	},
+	{
+		"code": "BEM",
+		"name": "Beam"
+	},
+	{
+		"code": "BLT",
+		"name": "Belting"
+	},
+	{
+		"code": "BIN",
+		"name": "Bin"
+	},
+	{
+		"code": "BIC",
+		"name": "Bing Chest"
+	},
+	{
+		"code": "BOB",
+		"name": "Bobbin"
+	},
+	{
+		"code": "BOT",
+		"name": "Bottle"
+	},
+	{
+		"code": "BOX",
+		"name": "Box"
+	},
+	{
+		"code": "BXI",
+		"name": "Box, with inner container"
+	},
+	{
+		"code": "BRC",
+		"name": "Bracing"
+	},
+	{
+		"code": "BXT",
+		"name": "Bucket"
+	},
+	{
+		"code": "BKG",
+		"name": "Bulk Bag"
+	},
+	{
+		"code": "BDL",
+		"name": "Bundle"
+	},
+	{
+		"code": "CAB",
+		"name": "Cabinet"
+	},
+	{
+		"code": "CAG",
+		"name": "Cage"
+	},
+	{
+		"code": "CAN",
+		"name": "Can"
+	},
+	{
+		"code": "CCS",
+		"name": "Can Case"
+	},
+	{
+		"code": "CBY",
+		"name": "Carboy"
+	},
+	{
+		"code": "CLD",
+		"name": "Car Load, Rail"
+	},
+	{
+		"code": "CAR",
+		"name": "Carrier"
+	},
+	{
+		"code": "CTN",
+		"name": "Carton"
+	},
+	{
+		"code": "CAS",
+		"name": "Case"
+	},
+	{
+		"code": "CSK",
+		"name": "Cask"
+	},
+	{
+		"code": "CHE",
+		"name": "Cheeses"
+	},
+	{
+		"code": "CHS",
+		"name": "Chest"
+	},
+	{
+		"code": "COL",
+		"name": "Coil"
+	},
+	{
+		"code": "CON",
+		"name": "Cones"
+	},
+	{
+		"code": "CNX",
+		"name": "Connex"
+	},
+	{
+		"code": "CNT",
+		"name": "Container"
+	},
+	{
+		"code": "CND",
+		"name": "Container, Engine"
+	},
+	{
+		"code": "CNA",
+		"name": "Container, Household Goods, Wood"
+	},
+	{
+		"code": "CNB",
+		"name": "Container, Military Airlift"
+	},
+	{
+		"code": "CNF",
+		"name": "Container, Multiwall on Warehouse Pallet"
+	},
+	{
+		"code": "CNC",
+		"name": "Container, Navy Cargo"
+	},
+	{
+		"code": "CBC",
+		"name": "Containers of Bulk Cargo"
+	},
+	{
+		"code": "COR",
+		"name": "Core"
+	},
+	{
+		"code": "CRF",
+		"name": "Corner Reinforcement"
+	},
+	{
+		"code": "CRD",
+		"name": "Cradle"
+	},
+	{
+		"code": "CRT",
+		"name": "Crate"
+	},
+	{
+		"code": "CUB",
+		"name": "Cube"
+	},
+	{
+		"code": "CYL",
+		"name": "Cylinder"
+	},
+	{
+		"code": "DRK",
+		"name": "Double-length Rack"
+	},
+	{
+		"code": "DSK",
+		"name": "Double-length Skid"
+	},
+	{
+		"code": "DTB",
+		"name": "Double-length Tote Bin"
+	},
+	{
+		"code": "DRM",
+		"name": "Drum"
+	},
+	{
+		"code": "DBK",
+		"name": "Dry Bulk"
+	},
+	{
+		"code": "DUF",
+		"name": "Duffle Bag"
+	},
+	{
+		"code": "EPR",
+		"name": "Edge Protection"
+	},
+	{
+		"code": "EGG",
+		"name": "Egg Crating"
+	},
+	{
+		"code": "ENV",
+		"name": "Envelopes"
+	},
+	{
+		"code": "FIR",
+		"name": "Firkin"
+	},
+	{
+		"code": "FSK",
+		"name": "Flask"
+	},
+	{
+		"code": "FLO",
+		"name": "Flo-Bin"
+	},
+	{
+		"code": "FWR",
+		"name": "Forward Reel"
+	},
+	{
+		"code": "FRM",
+		"name": "Frame"
+	},
+	{
+		"code": "GOH",
+		"name": "Garments on Hangers"
+	},
+	{
+		"code": "HRK",
+		"name": "Half-Standard Rack"
+	},
+	{
+		"code": "HTB",
+		"name": "Half-Standard Tote Bin"
+	},
+	{
+		"code": "HPR",
+		"name": "Hamper"
+	},
+	{
+		"code": "HED",
+		"name": "Heads of Beef"
+	},
+	{
+		"code": "HGH",
+		"name": "Hogshead"
+	},
+	{
+		"code": "HPT",
+		"name": "Hopper Truck"
+	},
+	{
+		"code": "TLD",
+		"name": "Intermodal Trailer/Container Load (Rail)"
+	},
+	{
+		"code": "JAR",
+		"name": "Jar"
+	},
+	{
+		"code": "JUG",
+		"name": "Jug"
+	},
+	{
+		"code": "KEG",
+		"name": "Keg"
+	},
+	{
+		"code": "KIT",
+		"name": "Kit"
+	},
+	{
+		"code": "KRK",
+		"name": "Knockdown Rack"
+	},
+	{
+		"code": "KTB",
+		"name": "Knockdown Tote Bin"
+	},
+	{
+		"code": "LIF",
+		"name": "Lifts"
+	},
+	{
+		"code": "LVN",
+		"name": "Lift Van"
+	},
+	{
+		"code": "SBC",
+		"name": "Liner Bag Dry"
+	},
+	{
+		"code": "FLX",
+		"name": "Liner Bag Liquid"
+	},
+	{
+		"code": "LNR",
+		"name": "Liners"
+	},
+	{
+		"code": "LID",
+		"name": "Lip/Top"
+	},
+	{
+		"code": "LBK",
+		"name": "Liquid Bulk"
+	},
+	{
+		"code": "LOG",
+		"name": "Log"
+	},
+	{
+		"code": "LSE",
+		"name": "Loose"
+	},
+	{
+		"code": "LUG",
+		"name": "Lug"
+	},
+	{
+		"code": "MSV",
+		"name": "Military Sealift Command Van"
+	},
+	{
+		"code": "MLV",
+		"name": "Military Van"
+	},
+	{
+		"code": "MIX",
+		"name": "Mixed Container Types"
+	},
+	{
+		"code": "MXD",
+		"name": "Mixed Type Pack"
+	},
+	{
+		"code": "MRP",
+		"name": "Multi-Roll Pack"
+	},
+	{
+		"code": "NOL",
+		"name": "Noil"
+	},
+	{
+		"code": "HRB",
+		"name": "On Hanger or Rack in Boxes"
+	},
+	{
+		"code": "WHE",
+		"name": "On Own Wheel"
+	},
+	{
+		"code": "OVW",
+		"name": "Overwrap"
+	},
+	{
+		"code": "PKG",
+		"name": "Package"
+	},
+	{
+		"code": "PCK",
+		"name": "Packed - not otherwise specified"
+	},
+	{
+		"code": "PAL",
+		"name": "Pail"
+	},
+	{
+		"code": "PLT",
+		"name": "Pallet"
+	},
+	{
+		"code": "PAT",
+		"name": "Pallet - 2 Way"
+	},
+	{
+		"code": "PAF",
+		"name": "Pallet - 4 Way"
+	},
+	{
+		"code": "PRT",
+		"name": "Partitioning"
+	},
+	{
+		"code": "PCE",
+		"name": "Piece"
+	},
+	{
+		"code": "PCS",
+		"name": "Pieces"
+	},
+	{
+		"code": "PIR",
+		"name": "Pims"
+	},
+	{
+		"code": "PLN",
+		"name": "Pipeline"
+	},
+	{
+		"code": "PRK",
+		"name": "Pipe Rack"
+	},
+	{
+		"code": "PLF",
+		"name": "Platform"
+	},
+	{
+		"code": "PLC",
+		"name": "Primary Lift Container"
+	},
+	{
+		"code": "POV",
+		"name": "Private Vehicle"
+	},
+	{
+		"code": "QTR",
+		"name": "Quarter of Beef"
+	},
+	{
+		"code": "RCK",
+		"name": "Rack"
+	},
+	{
+		"code": "RAL",
+		"name": "Rail (Semiconductor)"
+	},
+	{
+		"code": "REL",
+		"name": "Reel"
+	},
+	{
+		"code": "RFT",
+		"name": "Reinforcement"
+	},
+	{
+		"code": "RVR",
+		"name": "Reverse Reel"
+	},
+	{
+		"code": "ROL",
+		"name": "Roll"
+	},
+	{
+		"code": "SAK",
+		"name": "Sack"
+	},
+	{
+		"code": "SVN",
+		"name": "Sea Van"
+	},
+	{
+		"code": "SPR",
+		"name": "Separator/Divider"
+	},
+	{
+		"code": "SHT",
+		"name": "Sheet"
+	},
+	{
+		"code": "SHK",
+		"name": "Shook"
+	},
+	{
+		"code": "SHW",
+		"name": "Shrink Wrapped"
+	},
+	{
+		"code": "SID",
+		"name": "Side of Beef"
+	},
+	{
+		"code": "SKD",
+		"name": "Skid"
+	},
+	{
+		"code": "SKE",
+		"name": "Skid, elevating or lift truck"
+	},
+	{
+		"code": "SLV",
+		"name": "Sleeve"
+	},
+	{
+		"code": "SLP",
+		"name": "Slip Sheet"
+	},
+	{
+		"code": "SPI",
+		"name": "Spin Cylinders"
+	},
+	{
+		"code": "SPL",
+		"name": "Spool"
+	},
+	{
+		"code": "SCS",
+		"name": "Suitcase"
+	},
+	{
+		"code": "TNK",
+		"name": "Tank"
+	},
+	{
+		"code": "TKR",
+		"name": "Tank Car"
+	},
+	{
+		"code": "TKT",
+		"name": "Tank Truck"
+	},
+	{
+		"code": "TRC",
+		"name": "Tierce"
+	},
+	{
+		"code": "TBN",
+		"name": "Tote Bin"
+	},
+	{
+		"code": "TTC",
+		"name": "Tote Can"
+	},
+	{
+		"code": "TRY",
+		"name": "Tray"
+	},
+	{
+		"code": "TRI",
+		"name": "Triwall Box"
+	},
+	{
+		"code": "TRU",
+		"name": "Truck"
+	},
+	{
+		"code": "TRK",
+		"name": "Trunk and Chest"
+	},
+	{
+		"code": "TSS",
+		"name": "Trunk, Salesmen Sample"
+	},
+	{
+		"code": "TUB",
+		"name": "Tub"
+	},
+	{
+		"code": "TBE",
+		"name": "Tube"
+	},
+	{
+		"code": "UNT",
+		"name": "Unit"
+	},
+	{
+		"code": "UNP",
+		"name": "Unpacked"
+	},
+	{
+		"code": "VPK",
+		"name": "Van Pack"
+	},
+	{
+		"code": "VEH",
+		"name": "Vehicles"
+	},
+	{
+		"code": "WLC",
+		"name": "Wheeled Carrier"
+	},
+	{
+		"code": "WRP",
+		"name": "Wrapped"
+	}
+]

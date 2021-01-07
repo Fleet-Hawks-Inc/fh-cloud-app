@@ -209,6 +209,7 @@ export class NewAceManifestComponent implements OnInit {
     if (this.entryID) {
       this.title = 'Edit ACE e-Manifest';
       this.fetchACEEntry();
+      this.getDocStates();
     } else {
       this.title = 'Add ACE e-Manifest';
     }
@@ -245,7 +246,6 @@ export class NewAceManifestComponent implements OnInit {
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
-      console.log('assets', this.assets);
     });
   }
   fetchDrivers() {
@@ -257,6 +257,12 @@ export class NewAceManifestComponent implements OnInit {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
     });
+  }
+  fetchCountries() {
+    this.apiService.getData('countries')
+      .subscribe((result: any) => {
+        this.countries = result.Items;
+      });
   }
   fetchShippers(){
   this.apiService.getData('shippers').subscribe((result:any)=> {
@@ -297,12 +303,16 @@ addTrailerSeal(i){
   });
   this.addTrailerBtn = true;
 
-  if (this.assetsArray.length >= 3) {
+  if (this.assetsArray.length >= 9999) {
     this.addTrailerBtn = false;
   }
   else {
     this.addTrailerBtn = true;
   }
+}
+deleteTrailer(i: number) {
+  this.assetsArray.splice(i, 1);
+  this.addTrailerBtn = true;
 }
   addShipment() {
     this.shipments.push({
@@ -357,19 +367,22 @@ addTrailerSeal(i){
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   } 
-  deleteTrailer(i: number) {
-    this.assetsArray.splice(i, 1);
-    this.addTrailerBtn = true;
-  }
+
   addMarksAndNumbers(s,i){
     this.shipments[s].commodities[i].marksAndNumbers.push({markNumber: ''});
   }
-  getStatesDoc(i, j) {
+  getStatesDoc(i, j) { //document issuing states
     const countryID = this.passengers[i].travelDocuments[j].country;
     this.apiService.getData('states/country/' + countryID)
       .subscribe((result: any) => {
         this.passengerDocStates = result.Items;
       });
+  }
+  getDocStates(){
+    this.apiService.getData('states')
+    .subscribe((result: any) => {
+      this.passengerDocStates = result.Items;
+    });
   }
   addMorePassenger() {
     this.passengers.push({
@@ -402,18 +415,11 @@ addTrailerSeal(i){
     this.passengers[p].travelDocuments.splice(i, 1);
   } 
  
-  deleteCommodity(i: number, s: number) {
-    this.shipments[s].commodities.splice(i, 1);
-  }
+  
   addPassenger() {
    
   }
-  fetchCountries() {
-    this.apiService.getData('countries')
-      .subscribe((result: any) => {
-        this.countries = result.Items;
-      });
-  }
+ 
   addCommodity(i) {
     this.shipments[i].commodities.push({
       loadedOn: {
@@ -439,25 +445,15 @@ addTrailerSeal(i){
     });
     // console.log('commodity', this.commodities);
   }
+  deleteCommodity(i: number, s: number) {
+    this.shipments[s].commodities.splice(i, 1);
+  }
   getStates() {
-    const countryID = '8e8a0700-8979-11ea-94e8-ddabdd2e57f0';
-    this.apiService.getData('states/country/' + countryID)
+    this.apiService.getData('states/getCanadianStates')
       .subscribe((result: any) => {
         this.states = result.Items;
       });
   }
-  // fillCountry() {
-  //   this.apiService
-  //     .getData('states/' + this.fuelData.stateID)
-  //     .subscribe((result: any) => {
-  //       result = result.Items[0];
-  //       this.fuelData.countryID = result.countryID;
-  //     });
-
-  //   setTimeout(() => {
-  //     this.getStates();
-  //   }, 2000);
-  // }
 
   addACEManifest() {
     const data = {
@@ -537,9 +533,9 @@ addTrailerSeal(i){
           this.assetsArray = result.trailers;
           this.passengers = result.passengers;
           this.shipments = result.shipments       
-          // setTimeout(() => {
-          //   this.fillCountry();
-          // }, 2000);
+          setTimeout(() => {
+            this.getStates();
+          }, 2000);
       });
   }
   updateACEManifest() {
