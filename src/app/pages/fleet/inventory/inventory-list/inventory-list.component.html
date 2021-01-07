@@ -18,34 +18,44 @@
       <header class="page-header pr-5">
 
         <div class="row px-2" style="padding-top: 10px">
-            <div class="col-md-2 col-lg-2">
+          <div class="col-md-2 col-lg-2">
             <div class="input-group input-group-sm mb-3">
-                <input autocomplete="off" type="text" name="unitName" [(ngModel)]="unitName"
-                    class="form-control" (input)="getSuggestions($event.target.value)"
+                <input autocomplete="off" type="text" name="itemName" [(ngModel)]="itemName"
+                    class="form-control" (input)="getItemSuggestions($event.target.value)"
                     placeholder="Search items by name" />
             </div>
-            <div *ngFor="let suggestedUnit of suggestedUnits" class="suggestionClass"
-                (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)">
-                {{ suggestedUnit.unitName }}
+            <div *ngFor="let suggestedItem of suggestedItems" class="suggestionClass"
+                (click)="setItem(suggestedItem.itemID, suggestedItem.itemName)">
+                {{ suggestedItem.itemName }}
             </div>
-        </div>
-        <div class="col-md-2 col-lg-2">
-            <div class="input-group input-group-sm mb-3">
-                <input type="text" name="issueName" [(ngModel)]="issueName" class="form-control"
-                    placeholder="Search by category" />
-            </div>
-        </div>
-        <div class="col-md-2 col-lg-2">
-          <div class="input-group input-group-sm mb-3">
-              <input type="text" name="issueName" [(ngModel)]="issueName" class="form-control"
-                  placeholder="Search by vendor" />
           </div>
-      </div>
-        <div class="col-md-2 col-lg-2">
-            <button type="submit" (click)="searchFilter()"
-                class="btn btn-sm btn-success mr-2">Search</button>
-            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
-        </div>
+          <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-sm mb-3">
+                <input autocomplete="off" type="text" name="companyName" [(ngModel)]="companyName"
+                    class="form-control" (input)="getVendorSuggestions($event.target.value)"
+                    placeholder="Search items by vendor" />
+            </div>
+            <div *ngFor="let suggestedVendor of suggestedVendors" class="suggestionClass"
+                (click)="setVendor(suggestedVendor.vendorID, suggestedVendor.companyName)">
+                {{ suggestedVendor.companyName }}
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-sm mb-3">
+                <input autocomplete="off" type="text" name="groupName" [(ngModel)]="groupName"
+                    class="form-control" (input)="getItemGroupSuggestions($event.target.value)"
+                    placeholder="Search items by category" />
+            </div>
+            <div *ngFor="let suggestedItemGroup of suggestedItemGroups" class="suggestionClass"
+                (click)="setItemGroup(suggestedItemGroup.itemGroupID, suggestedItemGroup.groupName)">
+                {{ suggestedItemGroup.groupName }}
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2">
+              <button type="submit" (click)="searchFilter()"
+                  class="btn btn-sm btn-success mr-2">Search</button>
+              <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+          </div>
           
         <div class="col-md-4 col-lg-4 text-right pr-3 page-buttons">
     
@@ -56,7 +66,7 @@
                   <label><input type="checkbox" [(ngModel)]="hideShow.part" name="part" (change)="hideShowColumn()"> Part# </label>
                 </a>
                 <a class="dropdown-item text-1" href="javascript:;">
-                  <label><input type="checkbox" [(ngModel)]="hideShow.name" name="name" (change)="hideShowColumn()"> Name </label>
+                  <label><input type="checkbox" [(ngModel)]="hideShow.name" name="name" (change)="hideShowColumn()"> Item Name </label>
                 </a>
                 <a class="dropdown-item text-1" href="javascript:;">
                   <label><input type="checkbox" [(ngModel)]="hideShow.category" name="category" (change)="hideShowColumn()">
@@ -144,7 +154,7 @@
 
                             </td>
                             <td *ngIf="hideShow.name" routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                              {{item.name}}
+                              {{item.itemName}}
                             </td>
                             <td *ngIf="hideShow.category" routerLink="/fleet/inventory/detail/{{item.itemID}}">
                               {{itemGroups[item.categoryID]}}

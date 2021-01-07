@@ -14,7 +14,7 @@
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
                             <input type="text" autocomplete="off" name="vehicleIdentification"
-                                [(ngModel)]="vehicleIdentification" class="form-control"
+                                [(ngModel)]="vehicleIdentification" class="form-control" placeholder="Search vehicle"
                                 (input)="getSuggestions($event.target.value)" />
                         </div>
                         <div *ngFor="let suggestedVehicle of suggestedVehicles" class="suggestionClass" (click)="
@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="col-md-2 col-lg-2">
-                        <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100%;">
+                        <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100%;" placeholder="Search task">
                             <optgroup label="Select Service Task">
                                 <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
                                 </ng-option>
