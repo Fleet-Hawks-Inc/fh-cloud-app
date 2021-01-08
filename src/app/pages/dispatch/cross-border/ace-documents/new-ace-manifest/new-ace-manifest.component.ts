@@ -192,8 +192,8 @@ export class NewAceManifestComponent implements OnInit {
         weightUnit: '',
         marksAndNumbers: [{markNumber: ''}], 
         c4LineReleaseNumber: '',
-        harmonizedCode: 0,
-        value: 0,
+        harmonizedCode: '',
+        value: '',
         countryOfOrigin: '',
         hazmatDetails: {
           unCode: '',
@@ -338,8 +338,8 @@ deleteTrailer(i: number) {
         weightUnit: '',
         marksAndNumbers: [{markNumber: ''}],
         c4LineReleaseNumber: '',
-        harmonizedCode: 0,
-        value: 0,
+        harmonizedCode: '',
+        value: '',
         countryOfOrigin: '',
         hazmatDetails: {
           unCode: '',
@@ -415,11 +415,6 @@ deleteTrailer(i: number) {
     this.passengers[p].travelDocuments.splice(i, 1);
   } 
  
-  
-  addPassenger() {
-   
-  }
- 
   addCommodity(i) {
     this.shipments[i].commodities.push({
       loadedOn: {
@@ -433,8 +428,8 @@ deleteTrailer(i: number) {
       weightUnit: '',
       marksAndNumbers: [{markNumber: ''}],
       c4LineReleaseNumber: '',
-      harmonizedCode: 0,
-      value: 0,
+      harmonizedCode: '',
+      value: '',
       countryOfOrigin: '',
       hazmatDetails: {
         unCode: '',

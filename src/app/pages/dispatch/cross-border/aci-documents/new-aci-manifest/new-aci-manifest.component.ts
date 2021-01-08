@@ -526,8 +526,8 @@ export class NewAciManifestComponent implements OnInit {
 
   addACIManifest() {
     const data = {
-      CCC: this.CCC,
-      tripNumber: this.tripNumber,
+      CCC: this.CCC.toUpperCase().replace(/o/gi, "0").replace(/i/gi,"1"),
+      tripNumber: this.tripNumber.toUpperCase().replace(/o/gi, "0").replace(/i/gi,"1"),
       portOfEntry: this.portOfEntry,
       subLocation: this.subLocation,
       estimatedArrivalDate: this.estimatedArrivalDate,
@@ -548,13 +548,12 @@ export class NewAciManifestComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/'.*'/, 'This Field');
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              // this.spinner.hide(); // loader hide
               this.throwErrors();
             },
             error: () => { },
@@ -571,7 +570,24 @@ export class NewAciManifestComponent implements OnInit {
     });
   }
   throwErrors() {
-    this.form.showErrors(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label');
+      });
+    this.errors = {};
   } 
 
   fetchACIEntry() {
@@ -605,8 +621,8 @@ export class NewAciManifestComponent implements OnInit {
   updateACIManifest()  {
     const data = {
       entryID: this.entryID,
-      CCC: this.CCC,
-      tripNumber: this.tripNumber,
+      CCC: this.CCC.toUpperCase().replace(/o/gi, "0").replace(/i/gi,"1"),
+      tripNumber: this.tripNumber.toUpperCase().replace(/o/gi, "0").replace(/i/gi,"1"),
       portOfEntry: this.portOfEntry,
       subLocation: this.subLocation,
       estimatedArrivalDate: this.estimatedArrivalDate,
@@ -628,13 +644,12 @@ export class NewAciManifestComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/'.*'/, 'This Field');
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              // this.spinner.hide(); // loader hide
               this.throwErrors();
             },
             error: () => { },

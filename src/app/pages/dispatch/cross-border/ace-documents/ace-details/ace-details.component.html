@@ -32,7 +32,7 @@
             <div class="btn-group btn-group1 flex-wrap">
                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                 <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                    <a class="dropdown-item text-1" href="">Edit</a>
+                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{aceManifest.entryID }}" class="dropdown-item text-1">Edit</a>
                     <a class="dropdown-item text-1" href="">Print</a>
                     <a class="dropdown-item text-1" href="">Fax</a>
                     <a class="dropdown-item text-1" href="">Email</a>
@@ -129,7 +129,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                            <h4 class="m-0 ">Truck</h4>
+                            <h4 class="m-0 ">Truck on<b>{{tripNumber}}</b></h4>
                             <div class=" pull-right">
                                 <button class="btn btn-success btn-sm"> Set IIT Status</button>
                             </div>
@@ -159,7 +159,6 @@
                                         <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}},</span></td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -173,7 +172,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                            <h4 class="m-0 ">Trailers</h4>
+                            <h4 class="m-0 ">Trailers on <b>{{tripNumber}}</b></h4>
                             <div class=" pull-right">
                                 <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm mr-1"> Set IIT Status</a>
                                 <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Trailer</a>
@@ -201,7 +200,7 @@
                                         <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}},</span></td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
+                                            <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -272,7 +271,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                            <h4 class="m-0 ">ACE Shipments <b> #1234984545</b></h4>
+                            <h4 class="m-0 ">ACE Shipments on <b>{{tripNumber}}</b></h4>
                             <div class=" pull-right">
                                 <button class="btn btn-success btn-sm"> Set Shipment Status</button>
                                 <!-- <button class="btn btn-success btn-sm"> Send to CBP</button> -->
@@ -311,7 +310,7 @@
                                         <td>{{shipment.totalQuantity}}</td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
+                                            <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->
                                             <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Edit</a> -->
                                         </td>
                                     </tr>

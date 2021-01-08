@@ -17,7 +17,7 @@
             <a href="javascript:;"(click)="sendCBSAFn()" class="btn btn-success btn-sm mr-1" style="color:white;"> Send to CBSA</a>
             <div class="btn-group btn-group1 flex-wrap mr-1">
                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Set Status<span class="caret"></span></button>
-                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                <div class="dropdown-menu" role="menu" x-plACIment="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                     <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Draft')">Draft</a>
                     <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Cancelled')">Cancelled</a>
                     <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Transmitted to CBSA')">Transmitted to CBSA</a>
@@ -32,7 +32,7 @@
             </div>
             <div class="btn-group btn-group1 flex-wrap">
                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
-                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                <div class="dropdown-menu" role="menu" x-plACIment="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                     <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"> Edit</a>
                     <a class="dropdown-item text-1" href="">Print</a>
                     <a class="dropdown-item text-1" href="">Fax</a>
@@ -42,7 +42,7 @@
             </div>
         </div>
         </header>
-        <div class="ace-main__wrapper p-4 bg-white">
+        <div class="ACI-main__wrapper p-4 bg-white">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -107,7 +107,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                            <h4 class="m-0 ">ACE eManifest History</h4>
+                            <h4 class="m-0 ">ACI eManifest History</h4>
                             <div class=" pull-right">
                                 <button type="button" data-toggle="modal" data-target="#statusModal" class="btn btn-sm btn-success">View All History</button>
                             </div>
@@ -146,7 +146,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                            <h4 class="m-0 ">Truck on <b> #1234984545</b></h4>
+                            <h4 class="m-0 ">Truck on <b> {{tripNumber}}</b></h4>
                             <div class=" pull-right">
                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm"> Set Cargo Exemption</a>
                             </div>
@@ -172,7 +172,7 @@
                                         <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}},</span></td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
+                                            
                                         </td>
                                     </tr>
                                 </tbody>
@@ -186,7 +186,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                            <h4 class="m-0 ">Trailers on <b> #1234984545</b></h4>
+                            <h4 class="m-0 ">Trailers on <b> {{tripNumber}}</b></h4>
                             <div class=" pull-right">
                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}" class="btn btn-success btn-sm mr-1"> Set Cargo Exemption</a>
                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Trailer</a>
@@ -215,7 +215,7 @@
                                         <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}},</span></td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
+                                            
                                         </td>
                                     </tr>
                                 </tbody>
@@ -280,11 +280,11 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                            <h4 class="m-0 ">ACE Shipments <b> #1234984545</b></h4>
+                            <h4 class="m-0 ">ACI Shipments <b> {{tripNumber}}</b></h4>
                             <div class=" pull-right">
                                 <div class="btn-group btn-group1 flex-wrap mr-1">
                                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Set Status<span class="caret"></span></button>
-                                    <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                    <div class="dropdown-menu" role="menu" x-plACIment="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                                         <a class="dropdown-item text-1" href="">Draft</a>
                                         <a class="dropdown-item text-1" href="">Cancelled</a>
                                         <a class="dropdown-item text-1" href="">Transmitted to CBSA</a>
@@ -335,7 +335,7 @@
                                         <td>{{shipment.loadedOn.type}} [{{shipment.loadedOn.number}}]</td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
+                                           
                                         </td>
                                     </tr>
                                 </tbody>
@@ -349,7 +349,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                            <h4 class="m-0 ">Containers on ACE eManifest <b> #1234984545</b></h4>
+                            <h4 class="m-0 ">Containers on ACI eManifest <b> {{tripNumber}}</b></h4>
                             <div class=" pull-right">
                                 <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Container</button>
                             </div>
@@ -372,7 +372,7 @@
                                         
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Remove</a>
+                                            
                                         </td>
                                     </tr>
                                 </tbody>
@@ -386,7 +386,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                            <h4 class="m-0 ">Comments about ACE eManifest <b> #1234984545</b></h4>
+                            <h4 class="m-0 ">Comments about ACI eManifest <b> {{tripNumber}}</b></h4>
                             <div class=" pull-right">
                                 <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Comment</button>
                             </div>
