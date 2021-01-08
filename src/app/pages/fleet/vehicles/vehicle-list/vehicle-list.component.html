@@ -21,7 +21,7 @@
                     <div class="row px-2" style="padding-top: 10px">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
-                                <input type="text" autocomplete="off" name="vehicleIdentification"
+                                <input type="text" autocomplete="off" name="vehicleIdentification" placeholder="Search vehicle"
                                     [(ngModel)]="vehicleIdentification" class="form-control"
                                     (input)="getSuggestions($event.target.value)" />
                             </div>
@@ -36,7 +36,7 @@
                         </div>
 
                         <div class="col-md-2 col-lg-2">
-                            <select data-plugin-selectTwo [(ngModel)]="currentStatus" name="currentStatus"
+                            <select data-plugin-selectTwo [(ngModel)]="currentStatus" name="currentStatus" placeholder="Select Type"
                                 class="form-control populate">
                                 <optgroup label="Select Status">
                                     <option value="">All</option>
