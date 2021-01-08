@@ -17,11 +17,48 @@
     <section role="main" class="content-body">
       <header class="page-header pr-5">
 
-        <div class="row pr-1 mr-1" style="padding-top:10px;">
+        <div class="row px-2" style="padding-top: 10px">
           <div class="col-md-2 col-lg-2">
-             <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">Inventory Overview</h4>
+            <div class="input-group input-group-sm mb-3">
+                <input autocomplete="off" type="text" name="itemName" [(ngModel)]="itemName"
+                    class="form-control" (input)="getItemSuggestions($event.target.value)"
+                    placeholder="Search items by name" />
+            </div>
+            <div *ngFor="let suggestedItem of suggestedItems" class="suggestionClass"
+                (click)="setItem(suggestedItem.itemID, suggestedItem.itemName)">
+                {{ suggestedItem.itemName }}
+            </div>
           </div>
-          <div class="col-md-10 col-lg-10 text-right pr-1">
+          <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-sm mb-3">
+                <input autocomplete="off" type="text" name="companyName" [(ngModel)]="companyName"
+                    class="form-control" (input)="getVendorSuggestions($event.target.value)"
+                    placeholder="Search items by vendor" />
+            </div>
+            <div *ngFor="let suggestedVendor of suggestedVendors" class="suggestionClass"
+                (click)="setVendor(suggestedVendor.vendorID, suggestedVendor.companyName)">
+                {{ suggestedVendor.companyName }}
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-sm mb-3">
+                <input autocomplete="off" type="text" name="groupName" [(ngModel)]="groupName"
+                    class="form-control" (input)="getItemGroupSuggestions($event.target.value)"
+                    placeholder="Search items by category" />
+            </div>
+            <div *ngFor="let suggestedItemGroup of suggestedItemGroups" class="suggestionClass"
+                (click)="setItemGroup(suggestedItemGroup.itemGroupID, suggestedItemGroup.groupName)">
+                {{ suggestedItemGroup.groupName }}
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2">
+              <button type="submit" (click)="searchFilter()"
+                  class="btn btn-sm btn-success mr-2">Search</button>
+              <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+          </div>
+          
+        <div class="col-md-4 col-lg-4 text-right pr-3 page-buttons">
+    
             <div class="btn-group flex-wrap" style="min-width:190px;">
               <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
               <div class="dropdown-menu dutystatwd" role="menu">
@@ -29,7 +66,7 @@
                   <label><input type="checkbox" [(ngModel)]="hideShow.part" name="part" (change)="hideShowColumn()"> Part# </label>
                 </a>
                 <a class="dropdown-item text-1" href="javascript:;">
-                  <label><input type="checkbox" [(ngModel)]="hideShow.name" name="name" (change)="hideShowColumn()"> Name </label>
+                  <label><input type="checkbox" [(ngModel)]="hideShow.name" name="name" (change)="hideShowColumn()"> Item Name </label>
                 </a>
                 <a class="dropdown-item text-1" href="javascript:;">
                   <label><input type="checkbox" [(ngModel)]="hideShow.category" name="category" (change)="hideShowColumn()">
@@ -68,8 +105,8 @@
              <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm" style="color: white"><i class="fas fa-plus"></i> Add Inventory</a>
           </div>
        </div>
-
-
+    
+    
       </header>
 
       <div class="routing-overview__wrapper">
@@ -117,7 +154,7 @@
 
                             </td>
                             <td *ngIf="hideShow.name" routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                              {{item.name}}
+                              {{item.itemName}}
                             </td>
                             <td *ngIf="hideShow.category" routerLink="/fleet/inventory/detail/{{item.itemID}}">
                               {{itemGroups[item.categoryID]}}
