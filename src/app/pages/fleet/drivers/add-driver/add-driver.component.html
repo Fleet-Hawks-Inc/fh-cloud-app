@@ -7,7 +7,7 @@
           </header>
           <div class="row text-dark">
              <div class="col pr-0 pb-3">
-                <form id="driverForm" class="form-horizontal form-bordered bg-white" method="get" name="form" >
+                <form id="driverForm" class="form-horizontal form-bordered bg-white" #driverForm="ngForm" (ngSubmit)="onSubmit(driverForm)" >
                    <div class="p-2 pt-4">
                       <ul class="nav nav-tabs top-tabs" id="driver-tabs" role="tablist">
                          <li class="nav-item">
@@ -351,7 +351,7 @@
                                         <div class="col-lg-10">
                                            <label class="control-label font-weight-bold text-lg-right pt-2">
                                            Document Type</label>
-                                           <ng-select [(ngModel)]="document.documentType" name="document.documentType{{i}}" placeholder="Select document type">
+                                           <ng-select [(ngModel)]="document.documentType" [attr.name]="'documentDetails['+i+'].documentType'" [ngModelOptions]="{standalone: true}" placeholder="Select document type">
                                               
                                             	<ng-option *ngFor = "let documentType of documentTypeList" [value]="documentType.code">{{documentType.description}}</ng-option>
                                               
@@ -364,13 +364,13 @@
                                         <div class="row"  style="align-items: flex-end;">
                                            <div class="col-lg-5">
                                               <label class="control-label font-weight-bold text-lg-right pt-2">Document#</label>
-                                              <input [(ngModel)]="document.document" name="document.document{{i}}" type="text" class="form-control" placeholder="Enter the document number">
+                                              <input [(ngModel)]="document.document" [attr.name]="'documentDetails['+i+'].document'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Enter the document number">
                                            </div>
                                            <div class="col-lg-5">
                                               <label class="control-label font-weight-bold text-lg-right pt-2"
                                                  >Issuing Authority&nbsp; <span
                                                  class="text-1 optional-label-color">(optional)</span></label>
-                                              <input [(ngModel)]="document.issuingAuthority" name="document.issuingAuthority{{i}}" type="text" class="form-control" placeholder="Select licence issuing authority">
+                                              <input [(ngModel)]="document.issuingAuthority" [attr.name]="'documentDetails['+i+'].issuingAuthority'" [ngModelOptions]="{standalone: true}"  type="text" class="form-control" placeholder="Select licence issuing authority">
                                            </div>
                                            <div class="col-lg-1">
                                               <a href="javascript:;" *ngIf="i === 0;" (click)="addDocument()" id="add-document" class="btn btn-success"><i class="fa fa-plus"></i></a>
@@ -384,7 +384,7 @@
                                         <div class="col-lg-5">
                                            <label class="control-label font-weight-bold text-lg-right pt-2">
                                            Issuing Country</label>
-                                           <ng-select (change)="getStates($event, i)"  [(ngModel)]="document.issuingCountry" name="document.issuingCountry{{i}}" class="form-control populate" placeholder="Select the issuing country">
+                                           <ng-select (change)="getStates($event, i)"  [(ngModel)]="document.issuingCountry" [attr.name]="'documentDetails['+i+'].issuingCountry'" [ngModelOptions]="{standalone: true}" class="form-control populate" placeholder="Select the issuing country">
                                              
                                                <ng-option class="text-capitalize" *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
                                               
@@ -393,7 +393,7 @@
                                         <div class="col-lg-5">
                                            <label class="control-label font-weight-bold text-lg-right pt-2">
                                            Issuing State </label>
-                                           <ng-select (change)="getCities($event, i)" [(ngModel)]="document.issuingState" name="document.issuingState{{i}}"  placeholder="Select issuing state">
+                                           <ng-select (change)="getCities($event, i)" [(ngModel)]="document.issuingState" [attr.name]="'documentDetails['+i+'].issuingState'" [ngModelOptions]="{standalone: true}"   placeholder="Select issuing state">
                                               
                                                 <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
                                               
@@ -408,12 +408,11 @@
                                            Issue Date</label>
                                           <input
                                                [(ngModel)]="document.issueDate"
-                                               name="document.issueDate{{i}}"
                                                (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
                                                type="text"
                                                class="form-control"
                                                placeholder="Select issued date of the document"
-                                               
+                                               [attr.name]="'documentDetails['+i+'].issueDate'" [ngModelOptions]="{standalone: true}"
                                           >
                                         </div>
                                         <div class="col-5">
@@ -421,7 +420,7 @@
                                              class="text-1 optional-label-color">(optional)</span></label>
                                            <input
                                                [(ngModel)]="document.expiryDate"
-                                               name="document.expiryDate{{i}}"
+                                               [attr.name]="'documentDetails['+i+'].expiryDate'" [ngModelOptions]="{standalone: true}"
                                                (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" placeholder="Select expiry date of the document"
                                                type="text" class="form-control" >
                                         </div>
@@ -431,9 +430,28 @@
                                       <div class="row">
                                           <div class="col-lg-10">
                                               <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Document</label>
-                                              <input class="form-control p-0"												[(ngModel)]="document.uploadedDocs"
+                                              <input class="form-control p-0"
                                                   name="document.uploadedDocs{{i}}" (change)="selectDocuments($event, i)" type="file" multiple
                                               >
+                                          </div>
+                                          <div class="col-lg-10 mt-2">
+                                             <div class="vehicle-common-box p-3">
+                                                <div class="row">
+                                                   <div class="col-lg-6"><label
+                                                         class="control-label font-weight-bold text-3">Document(s)</label></div>
+                                                   <div class="col-lg-6 text-right">
+                                                   </div>
+                                                </div>
+                                                <hr class="solid mt-2">
+                                                <div class="row mb-1" *ngFor="let doc of assetsDocs[i];let d= index">
+                                                   <div class="col-lg-9" ><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal" (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div> 
+                                                   <div class="col-lg-3 text-right">
+                                                         <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>
+                                                      <a href="javascript:;" (click)="delete('doc',doc.name, i)" class="modal-with-form"><i
+                                                            class="fas fa-times text-danger"></i></a>
+                                                   </div>
+                                                </div>
+                                             </div>
                                           </div>
                                       </div>
                                   </div>
@@ -861,7 +879,7 @@
                           <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
                          <button type="button"  *ngIf="currentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
                          <a href="javascript:;" (click)="nextStep()"  *ngIf="currentTab != 7" class="btn btn-success btnNext">Next</a>
-                         <a href="javascript:;" *ngIf="currentTab == 7 && !driverID" (click)="addDriver()" class="btn btn-success">Submit</a>
+                         <button type="submit" *ngIf="currentTab == 7 && !driverID" class="btn btn-success">Submit</button>
                          <a href="javascript:;" *ngIf="currentTab == 7 && driverID" (click)="updateDriver()" class="btn btn-success">Update</a>
   
                       </div>
@@ -937,3 +955,32 @@
     </div>
   </section>
   
+<!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-row">
+					<div class="form-group col-md-12">
+						<div>
+							<iframe [src]='pdfSrc' frameborder="0" width="100%" height="400px"> </iframe>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default"
+					data-dismiss="modal">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>

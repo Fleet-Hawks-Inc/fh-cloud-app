@@ -53,6 +53,19 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   lastEvaluatedKey = '';
   partNo = [1,2,3,4,5,6,7,8,9,10];
 
+  /**
+   * search props
+   */
+  itemID = '';
+  itemName = '';
+  itemGroupID = '';
+  groupName = '';
+  vendorID = ''
+  companyName = '';
+  suggestedVendors = [];
+  suggestedItems = [];
+  suggestedItemGroups = [];
+
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) {}
 
   ngOnInit() {
@@ -63,6 +76,61 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
     this.initDataTable();
   }
 
+  getVendorSuggestions(value) {
+    this.apiService
+      .getData(`vendors/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedVendors = result.Items;
+        if(this.suggestedVendors.length == 0){
+          this.vendorID = '';
+        }
+      });
+  }
+
+  setVendor (vendorID, companyName) {
+    this.companyName = companyName;
+    this.vendorID = vendorID;
+    this.suggestedVendors = [];
+  }
+
+  getItemSuggestions(value) {
+    this.apiService
+      .getData(`items/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedItems = result.Items;
+        if(this.suggestedItems.length == 0){
+          this.itemID = '';
+        }
+      });
+  }
+
+  setItem (itemID, itemName) {
+    this.itemName = itemName;
+    this.itemID = itemID;
+    this.suggestedItems = [];
+  }
+
+  getItemGroupSuggestions(value) {
+    this.apiService
+      .getData(`itemGroups/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedItemGroups = result.Items;
+        if(this.suggestedItemGroups.length == 0){
+          this.itemGroupID = '';
+        }
+      });
+  }
+
+  setItemGroup (itemGroupID, groupName) {
+    this.groupName = groupName;
+    this.itemGroupID = itemGroupID;
+    this.suggestedItemGroups = [];
+  }
+  
+  
+  resetFilter(){
+    this.itemID = this.itemName = this.itemGroupID = this.groupName =  this.vendorID = this.companyName = '';
+  }
 
   fetchVendors(){
     this.apiService.getData(`vendors/get/list`).subscribe((result) => {

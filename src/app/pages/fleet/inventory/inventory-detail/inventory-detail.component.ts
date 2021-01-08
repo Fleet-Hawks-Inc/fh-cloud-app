@@ -20,7 +20,7 @@ export class InventoryDetailComponent implements OnInit {
   cost = '';
   costUnit = '';
   quantity = '';
-  name = '';
+  itemName = '';
   description = '';
   categoryID = '';
   warehouseID = '';
@@ -81,7 +81,7 @@ export class InventoryDetailComponent implements OnInit {
       this.cost = result.cost;
       this.costUnit = result.costUnit;
       this.quantity = result.quantity;
-      this.name = result.name;
+      this.itemName = result.itemName;
       this.description = result.description;
       this.categoryID = result.categoryID;
       this.warehouseID = result.warehouseID;

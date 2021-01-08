@@ -12,6 +12,7 @@ import { HereMapService } from '../../../../services';
 import { environment } from '../../../../../environments/environment.prod';
 import {NgbTimeStruct, NgbDatepickerConfig} from '@ng-bootstrap/ng-bootstrap';
 import { element } from 'protractor';
+import { NgForm } from '@angular/forms';
 declare var $: any;
 declare var H: any;
 @Component({
@@ -21,6 +22,7 @@ declare var H: any;
 })
 export class AddOrdersComponent implements OnInit {
   public getOrderID;
+  orderForm: NgForm;
   pageTitle = 'Add Order';
   private readonly search: any;
   public searchTerm = new Subject<string>();
@@ -86,6 +88,8 @@ export class AddOrdersComponent implements OnInit {
     driverUnload: '',
   }
   orderData = {
+    orderMode: 'FTL',
+    tripType: 'Regular',
     shipperInfo: [],
     receiverInfo: [],
     freightDetails: {},
@@ -159,6 +163,8 @@ export class AddOrdersComponent implements OnInit {
     let target;
     this.searchTerm.pipe(
       map((e: any) => {
+        $('.map-search__results').hide();
+        $(e.target).closest('div').addClass('show-search__result');
         target = e;
         return e.target.value;
       }),
@@ -347,8 +353,7 @@ export class AddOrdersComponent implements OnInit {
     this.getAllCords = [];
  }
 
-  selectedCustomer(customerID) {
-    console.log('customer', customerID);
+  selectedCustomer(customerID: any) {
     this.apiService.getData(`customers/${customerID}`).subscribe((result: any) => {
       this.customerSelected = result.Items;
       console.log('customer', this.customerSelected);
@@ -405,35 +410,50 @@ export class AddOrdersComponent implements OnInit {
   }
   
 
+  onChangeUnitType(type: string, value: any) {
+    if(type === 'order') {
+      this.orderData['orderMode'] = value;
+    } else {
+      this.orderData['tripType'] = value;
+    }
+    
+  }
+
   
   onSubmit() {
     console.log("order", this.orderData);
-    this.apiService.postData('orders', this.orderData).
-    subscribe({
-      complete : () => {},
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/'.*'/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              // this.spinner.hide(); // loader hide
-              this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
-        this.Success = 'Order Added successfully';
-      }
-    });
+    if(this.orderForm.valid) {
+      console.log('valid');
+      this.apiService.postData('orders', this.orderData).
+      subscribe({
+        complete : () => {},
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/'.*'/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                // this.spinner.hide(); // loader hide
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.hasSuccess = true;
+          this.Success = 'Order Added successfully';
+        }
+      });
+    } else {
+      console.log('not valid');
+    }
+    
   }
   throwErrors() {
     this.form.showErrors(this.errors);
@@ -517,7 +537,8 @@ export class AddOrdersComponent implements OnInit {
       console.log(this.receiverCurrent.dropOffLocation);
       console.log("orders", this.orderData);
     }
-    this.searchResults = false;
+    $('div').removeClass('show-search__result');
+    // this.searchResults = false;
   }
 
   editList(elem, item, i) {

@@ -274,7 +274,7 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   fetchAllDriverIDs() {
-    this.apiService.getData('drivers/get/list')
+    this.apiService.getData('drivers/get/username-list')
       .subscribe((result: any) => {
         this.driversObject = result;
       });
