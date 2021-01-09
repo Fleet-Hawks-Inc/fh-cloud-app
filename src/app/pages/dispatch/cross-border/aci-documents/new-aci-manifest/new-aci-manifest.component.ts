@@ -328,7 +328,6 @@ export class NewAciManifestComponent implements OnInit {
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
-      console.log('vehicles in init', this.vehicles);
     });
   }
   // TRUCK DATA
@@ -541,7 +540,6 @@ export class NewAciManifestComponent implements OnInit {
        shipments: this.shipments,
        currentStatus: 'DRAFT'
     };
-    console.log('Data', data);
     this.apiService.postData('ACIeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -595,7 +593,6 @@ export class NewAciManifestComponent implements OnInit {
       .getData('ACIeManifest/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('Fetched Data', result);
         this.timeCreated = result.timeCreated;
         this.entryID = this.entryID;
           this.CCC = result.CCC,
@@ -637,7 +634,6 @@ export class NewAciManifestComponent implements OnInit {
        currentStatus: 'DRAFT',
       timeCreated: this.timeCreated
     };
-    console.log('Data', data);
     this.apiService.putData('ACIeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {

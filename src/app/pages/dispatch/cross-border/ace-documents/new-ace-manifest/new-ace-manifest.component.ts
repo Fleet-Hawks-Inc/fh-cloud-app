@@ -438,7 +438,6 @@ deleteTrailer(i: number) {
         contactEmail: ''
       }
     });
-    // console.log('commodity', this.commodities);
   }
   deleteCommodity(i: number, s: number) {
     this.shipments[s].commodities.splice(i, 1);
@@ -464,7 +463,6 @@ deleteTrailer(i: number) {
       shipments: this.shipments, 
       currentStatus: 'DRAFT'
     }; 
-    console.log('Added Data', data);
     this.apiService.postData('ACEeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -549,7 +547,6 @@ deleteTrailer(i: number) {
       shipments: this.shipments, 
       currentStatus: 'DRAFT'
     };
-    console.log('Updated Data', data);
     this.apiService.putData('ACEeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {

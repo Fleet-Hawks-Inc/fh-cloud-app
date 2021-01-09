@@ -55,7 +55,6 @@ export class AceDetailsComponent implements OnInit {
        this.drivers = result.drivers;
        this.passengers = result.passengers;
        this.shipments = result.shipments;
-       this.entryID = this.entryID;
       });
   }
 
@@ -68,8 +67,7 @@ export class AceDetailsComponent implements OnInit {
   sendCBPFn(){
     this.apiService
     .getData('ACEeManifest/CBPdetails/' + this.entryID)
-    .subscribe((result: any) => {     
-      console.log('result',result);
+    .subscribe((result: any) => { 
     });
  
   }

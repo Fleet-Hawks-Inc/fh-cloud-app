@@ -19,8 +19,8 @@ export class AciDetailsComponent implements OnInit {
   subLocation: string;
   estimatedArrivalDateTime: string;
   estimatedArrivalTimeZone: string;
+  truck:any = {};
   drivers = [];
-  truck: any;
   shipmentType: string;
   tripNumber: string;
   CCC: string;
@@ -37,7 +37,7 @@ export class AciDetailsComponent implements OnInit {
   hasSuccess = false;
   Error = '';
   Success = '';
-   
+  
   constructor(private apiService: ApiService, private route: ActivatedRoute,private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -98,8 +98,7 @@ export class AciDetailsComponent implements OnInit {
   sendCBSAFn(){
     this.apiService
     .getData('ACIeManifest/CBSAdetails/' + this.entryID)
-    .subscribe((result: any) => {     
-      console.log('result',result);
+    .subscribe((result: any) => { 
     });
  
   }
