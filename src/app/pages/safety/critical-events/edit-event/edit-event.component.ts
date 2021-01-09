@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { from } from 'rxjs';
+import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -8,6 +8,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import * as moment from "moment";
 import { map } from 'rxjs/operators';
+import { HereMapService } from '../../../../services';
+import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-edit-event',
@@ -15,7 +18,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./edit-event.component.css']
 })
 export class EditEventComponent implements OnInit {
-
+  Asseturl = this.apiService.AssetUrl;
   errors = {};
   event = {
     eventID: '',
@@ -23,7 +26,7 @@ export class EditEventComponent implements OnInit {
     eventDate: '',
     eventTime: '',
     location: '',
-    username: '',
+    assignedUsername: '',
     driverUsername: '',
     vehicleID: '',
     severity: '',
@@ -93,9 +96,20 @@ export class EditEventComponent implements OnInit {
   eventData = {};
   eventID = '';
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private toastr: ToastrService,
-    private spinner: NgxSpinnerService, private router: Router, private route: ActivatedRoute) {
+  pdfSrc:any = '';
+  uploadedVideos = [];
+  uploadedDocs = [];
+  eventDocs = [];
+  eventVideos = [];
+  existingDocs = [];
+  existingVideos = [];
 
+  public searchResults: any;
+  private readonly search: any;
+  public searchTerm = new Subject<string>();
+
+  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private toastr: ToastrService,
+    private spinner: NgxSpinnerService, private router: Router, private route: ActivatedRoute, private hereMap: HereMapService, private domSanitizer: DomSanitizer) {
     this.selectedFileNames = new Map<any, any>();
   }
 
@@ -106,6 +120,7 @@ export class EditEventComponent implements OnInit {
     this.fetchDrivers();
     this.fetchUsers();
     this.fetchTrips();
+    this.searchLocation();
   }
 
   fetchVehicles() {
@@ -131,8 +146,6 @@ export class EditEventComponent implements OnInit {
   fetchUsers() {
     this.apiService.getData('users/fetch/records')
       .subscribe((result: any) => {
-        console.log('users');
-        console.log(result.Items)
         result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
         this.users = result.Items;
       })
@@ -151,8 +164,6 @@ export class EditEventComponent implements OnInit {
   }
 
   updateEvent() {
-    // console.log('this.event')
-    // console.log(this.event)
     this.spinner.show();
     this.hideErrors();
 
@@ -162,7 +173,26 @@ export class EditEventComponent implements OnInit {
     timestamp = moment(date+' '+ this.event.eventTime).format("X");
     this.event.date = timestamp*1000;
 
-    this.apiService.putData('safety/eventLogs', this.event).subscribe({
+    this.event.documentID = this.existingDocs;
+    this.event.incidentVideodocumentID = this.existingVideos;
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append videos if any
+    for(let i = 0; i < this.uploadedVideos.length; i++){
+        formData.append('uploadedVideos', this.uploadedVideos[i]);
+    }
+
+    //append docs if any
+    for(let j = 0; j < this.uploadedDocs.length; j++){
+        formData.append('uploadedDocs', this.uploadedDocs[j]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.event));
+
+    this.apiService.putData('safety/eventLogs', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -184,15 +214,14 @@ export class EditEventComponent implements OnInit {
           });
       },
       next: (res) => {
-        this.uploadFiles();
         this.spinner.hide();
         this.toastr.success('Critical event updated successfully');
+        this.router.navigateByUrl('/safety/critical-events');
       },
     });
   }
 
   throwErrors() {
-    console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
@@ -212,56 +241,109 @@ export class EditEventComponent implements OnInit {
     this.errors = {};
   }
 
-  uploadFiles = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
-      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
-    });
-  }
-
-  selectDocuments(event, obj) {
-    this.selectedFiles = event.target.files;
-    if (obj === 'document') {
-      for (let i = 0; i < this.selectedFiles.item.length; i++) {
-        const randomFileGenerate = this.selectedFiles[i].name.split('.');
-        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-        this.event.documentID.push(fileName);
-      }
-    } else {
-      for (let i = 0; i < this.selectedFiles.item.length; i++) {
-        const randomFileGenerate = this.selectedFiles[i].name.split('.');
-        const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-        this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-        this.event.incidentVideodocumentID.push(fileName);
-      }
-    }
-  }
-
   fetchEventDetail() {
     this.spinner.show();
     this.apiService.getData('safety/eventLogs/details/' + this.eventID)
       .subscribe((result: any) => {
-        // let date = moment(result.Items[0].date).format("DD MMM YYYY hh:mm a")
-
         this.event.eventID = result.Items[0].eventID;
         this.event.eventDate = moment(result.Items[0].date).format("DD-MM-YYYY");
         this.event.eventTime = moment(result.Items[0].date).format("HH:mm");
         this.event.location = result.Items[0].location;
-        this.event.username = result.Items[0].username;
+        this.event.assignedUsername = result.Items[0].assignedUsername;
         this.event.driverUsername = result.Items[0].driverUsername;
         this.event.vehicleID = result.Items[0].vehicleID;
         this.event.severity = result.Items[0].severity;
         this.event.tripID = result.Items[0].tripID;
         this.event.remarks = result.Items[0].remarks;
         this.event.criticalityType = result.Items[0].criticalityType;
-        this.event.documentID = result.Items[0].documentID;
-        this.event.incidentVideodocumentID = result.Items[0].incidentVideodocumentID;
         this.event.coachingStatus = result.Items[0].coachingStatus;
-        // this.event.timeCreated = result.Items[0].timeCreated;
-
+        this.existingDocs = result.Items[0].documentID;
+        this.existingVideos = result.Items[0].incidentVideodocumentID;
+        if(result.Items[0].documentID.length > 0 && result.Items[0].documentID != undefined) {
+          this.eventDocs = result.Items[0].documentID.map(x => ({path: `${this.Asseturl}/${result.Items[0].carrierID}/${x}`, name: x}));
+        } else {
+          this.eventDocs = []
+        }
+        if(result.Items[0].incidentVideodocumentID.length > 0 && result.Items[0].incidentVideodocumentID != undefined) {
+          this.eventVideos = result.Items[0].incidentVideodocumentID.map(x => ({path: `${this.Asseturl}/${result.Items[0].carrierID}/${x}`, name: x}));
+        } else {
+          this.eventVideos = [];
+        }
+        this.event['timeCreated'] = result.Items[0].timeCreated;
         this.spinner.hide();
       })
+  }
+
+  public searchLocation() {
+    let target;
+    this.searchTerm.pipe(
+      map((e: any) => {
+        $('.map-search__results').hide();
+        $(e.target).closest('div').addClass('show-search__result');
+        target = e;
+        return e.target.value;
+      }),
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(term => {
+        return this.hereMap.searchEntries(term);
+      }),
+      catchError((e) => {
+        return throwError(e);
+      }),
+    ).subscribe(res => {
+      this.searchResults = res;
+    });
+  }
+
+  async assignLocation(label) {
+    this.event.location = label;
+    this.searchResults = false;
+    $('div').removeClass('show-search__result');
+  }
+
+  /*
+    * Selecting files before uploading
+    */
+  selectDocuments(event, obj) {
+    let files = [...event.target.files];
+
+    if (obj === 'uploadedDocs') {
+      this.uploadedDocs = [];
+      for (let i = 0; i < files.length; i++) {
+        this.uploadedDocs.push(files[i])
+      }
+    } else {
+      this.uploadedVideos = [];
+      for (let i = 0; i < files.length; i++) {
+        this.uploadedVideos.push(files[i])
+      }
+    }
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length - 1];
+    this.pdfSrc = '';
+    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
+  // delete uploaded videos and documents
+  delete(type: string, name: string) {
+    this.apiService.deleteData(`safety/eventLogs/uploadDelete/${this.eventID}/${type}/${name}`).subscribe((result: any) => {
+      this.fetchEventDetail();
+      let alertmsg = '';
+      if (type == 'doc') {
+        alertmsg = 'Document';
+      } else {
+        alertmsg = 'Video';
+      }
+      this.toastr.success(alertmsg + ' Deleted Successfully');
+    });
   }
 }
 
