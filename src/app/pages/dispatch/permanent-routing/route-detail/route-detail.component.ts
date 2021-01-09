@@ -22,11 +22,11 @@ export class RouteDetailComponent implements OnInit {
   routeName = '';
   notes     = '';
   stopInformation = [];
-  assetName = '';
-  driverName  = '';
-  coDriverName = '';
-  VehicleName = '';
-  recurringType = '';
+  assetName = '-';
+  driverName  = '-';
+  coDriverName = '-';
+  VehicleName = '-';
+  recurringType = '-';
 
   sourceAddress = '';
   sourceCountryName = '';
@@ -38,13 +38,14 @@ export class RouteDetailComponent implements OnInit {
   destinationStateName = '';
   destinationCityName = '';
   destinationZipcode = '';
+  newCoords = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, 
     private spinner: NgxSpinnerService,private route: ActivatedRoute, private hereMap: HereMapService) {}
 
   ngOnInit() {
     this.routeID    = this.route.snapshot.params['routeID']; 
-    this.mapShow();
+    // this.mapShow();
     this.fetchRoute();
   }
 
@@ -53,22 +54,21 @@ export class RouteDetailComponent implements OnInit {
     this.apiService.getData('routes/' + this.routeID).
       subscribe(async (result: any) => {
         result = result.Items[0];
-        // console.log("route", result);
         this.routeNo   = result.routeNo;
-        // console.log(result);
         this.routeName = result.routeName;
         this.notes     = result.notes;
 
         if(result.stops != undefined){
           this.stopInformation = result.stops;
+
+          if (result.stops.length > 1) {
+            this.getCoords(result.stops);
+          }
+          this.mapShow();
         }
 
-        if(result.recurring.recurringType != undefined){
-          if(result.recurring.recurringType == ''){
-            this.recurringType = '-';
-          } else{
-            this.recurringType = result.recurring.recurringType;
-          }
+        if(result.recurring.recurringType != undefined && result.recurring.recurringType !== ''){
+          this.recurringType = result.recurring.recurringType;
         }
 
         if(result.sourceInformation.sourceAddress != '' && result.sourceInformation.sourceAddress != undefined){
@@ -146,10 +146,22 @@ export class RouteDetailComponent implements OnInit {
 
   
   mapShow() {
-    // this.mapView = true;
-    // setTimeout(() => {
-      this.hereMap.mapInit();
-    // }, 100);
+    this.hereMap.mapInit();
+  }
+
+  /**
+   * pass trips coords to show on the map
+   * @param data
+   */
+  async getCoords(data) {
+    this.spinner.show();
+    await Promise.all(data.map(async item => {
+      let result = await this.hereMap.geoCode(item.stopName);
+      this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
+    }));
+    this.hereMap.calculateRoute(this.newCoords);
+    this.spinner.hide();
+    this.newCoords = [];
   }
   
 }

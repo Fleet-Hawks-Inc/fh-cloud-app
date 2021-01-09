@@ -23,14 +23,12 @@
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-md mb-3">
-                            <select class="form-control" name="severity" [(ngModel)]="filterData.severity">
-                                <option value="">Select severity</option>
-                                <option value="high">High severity</option>
-                                <option value="medium">Medium severity</option>
-                                <option value="low">Low severity</option>
-                            </select>
-                        </div>
+                        <ng-select [(ngModel)]="filterData.severity" name="severity"
+                            placeholder="Search by severity">
+                            <ng-option class="text-capitalize" value="high">High severity</ng-option>
+                            <ng-option class="text-capitalize" value="medium">Medium severity</ng-option>
+                            <ng-option class="text-capitalize" value="low">Low severity</ng-option>
+                        </ng-select>
                     </div>
                     <div class="col-md-3 col-lg-3">
                         <div class="input-daterange input-group" data-plugin-datepicker="">

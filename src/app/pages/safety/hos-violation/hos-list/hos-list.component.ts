@@ -54,7 +54,7 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   filterData = {
     searchValue: '',
-    severity: '',
+    severity: null,
     startDate: '',
     endDate: '',
     start: '',
@@ -228,7 +228,7 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.spinner.show();
       this.filterData = {
         searchValue: '',
-        severity: '',
+        severity: null,
         startDate: '',
         endDate: '',
         start: '',

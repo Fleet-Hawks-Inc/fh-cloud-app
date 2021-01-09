@@ -32,21 +32,22 @@
                         </div>
                     </div>
                     <div class="col-md-2  col-lg-2">
-                        <div class="btn-group flex-wrap">
-                            <button type="button" class="mb-1 mr-1 btn btn-default btn-sm dropdown-toggle"
-                                data-toggle="dropdown" id="searchVehicle">Search by Vehicle <span class="caret"></span></button>
-                            <div class="dropdown-menu" role="menu">
-                                <a class="dropdown-item text-1" href="javascript:;" *ngFor="let vehicle of vehicles" (click)="searchFilter($event, 'vehicle' , vehicle.vehicleID)" >{{ vehicle.vehicleIdentification }}</a>
-                            </div>
-                        </div>
+                        <ng-select [(ngModel)]="filterValue.vehicleID" name="vehicleID"
+                            placeholder="Search by Vehicle">
+                            <ng-option class="text-capitalize" *ngFor="let vehicle of vehicles"
+                                value="{{ vehicle.vehicleID }}">{{ vehicle.vehicleIdentification }}</ng-option>
+                        </ng-select>
                     </div>
 
-                    <div class="col-md-1  col-lg-1">
+                    <div class="col-md-2  col-lg-2">
+                        <a href="javascript:;" (click)="searchEvents()"
+                            class="btn btn-success btn-sm mr-1" style="color:white;"> Search
+                        </a>
                         <a href="javascript:;" (click)="resetFilter()"
-                            class="btn btn-success btn-sm mr-5" style="color:white;"> Reset
+                            class="btn btn-success btn-sm" style="color:white;"> Reset
                         </a>
                     </div>
-                    <div class="col-md-5 col-lg-5">
+                    <div class="col-md-4 col-lg-4">
                         <a href="#fetchEventModal" class="modal-with-form btn btn-success btn-sm mx-2 "
                             style="color:white;"><i class="fas fa-download"></i> Fetch Event</a>
 

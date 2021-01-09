@@ -214,7 +214,12 @@ export class IncidentListComponent implements OnInit {
       $(".navtabs").removeClass('active');
       $("#allSafetyIncidents-tab").addClass('active');
     }
-    this.rerender('reset');
+  }
+
+  searchEvent() {
+    if(this.filterValue.date !== '' || this.filterValue.driverName !== '') {
+      this.rerender('reset');
+    }
   }
 
   fetchevents() {
@@ -276,8 +281,6 @@ export class IncidentListComponent implements OnInit {
     this.filterValue.driverID = data.userName;
     this.filterValue.driverName = data.name;
     this.suggestions = [];
-
-    this.rerender('reset');
   }
 
   resetFilter() {
