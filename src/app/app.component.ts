@@ -3,7 +3,7 @@ import {Router, Event, NavigationStart, NavigationEnd, NavigationError, Navigati
 import { DOCUMENT } from '@angular/common';
 import {delay} from 'rxjs/operators';
 import {HttpLoadingService} from './services';
-
+declare var $: any;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -85,4 +85,5 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
   ngAfterContentChecked(): void {
     this.changeDetector.detectChanges();
   }
+
 }

@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../../../../services/api.service';
+import { ApiService } from '../../../../services/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { from, Subject, throwError } from 'rxjs';
-import {AwsUploadService} from '../../../../services/aws-upload.service';
+import { AwsUploadService } from '../../../../services/aws-upload.service';
 import { v4 as uuidv4 } from 'uuid';
-import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { GoogleMapsService } from '../../../../services/google-maps.service';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { HereMapService } from '../../../../services';
 import { environment } from '../../../../../environments/environment.prod';
-import {NgbTimeStruct, NgbDatepickerConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbTimeStruct, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { element } from 'protractor';
 import { NgForm } from '@angular/forms';
 declare var $: any;
@@ -29,7 +29,7 @@ export class AddOrdersComponent implements OnInit {
   public searchResults: any;
   public searchResults1: any;
   public readonly apiKey = environment.mapConfig.apiKey;
-  time: NgbTimeStruct = {hour: 13, minute: 30, second: 30};
+  time: NgbTimeStruct = { hour: 13, minute: 30, second: 30 };
   seconds = false;
   meridian = true;
   spinners = false;
@@ -38,56 +38,24 @@ export class AddOrdersComponent implements OnInit {
   fuelSurcharge: any = 0;
   accessorialFee: any = 0;
   accessorialDeduction: any = 0;
-  totalMiles: any;
-  subTotal: any;
-  totalAmount: any;
+  totalMiles: any = 0;
+  subTotal: any = 0;
+  totalAmount: any = 0;
   discount: any = 0;
+  tax: any = 0;
   shipperList = [];
   receiverList = [];
-  
+
   shipperLocation;
   receiverLocation;
-  mergedArray;
+  mergedArray = [];
   getAllCords = [];
   googleCords = [];
   form;
   visibleIndex = 0;
   customerSelected;
   orderMode: string = 'FTL';
-  
-  shipperCurrent = {
-    shipperID: '',
-    pickupLocation: '',
-    pickupDate: '',
-    pickupTime: '',
-    pickupInstruction: '',
-    contactPerson: '',
-    phone: '',
-    BOL: '',
-    reference: '',
-    notes: '',
-    minTemprature: '',
-    minTempratureUnit: '',
-    maxTemprature: '',
-    maxTempratureUnit: '',
-    driverLoad: '',
-  }
-  receiverCurrent = {
-    receiverID: '',
-    dropOffLocation: '',
-    dropOffDate: '',
-    dropOffTime: '',
-    dropOffInstruction: '',
-    contactPerson: '',
-    phone: '',
-    reference: '',
-    notes: '',
-    minTemprature: '',
-    minTempratureUnit: '',
-    maxTemprature: '',
-    maxTempratureUnit: '',
-    driverUnload: '',
-  }
+
   orderData = {
     orderMode: 'FTL',
     tripType: 'Regular',
@@ -100,7 +68,20 @@ export class AddOrdersComponent implements OnInit {
       accessorialFee: [],
       accessorialDeduction: {}
     },
-    taxesInfo: {},
+    taxesInfo: [
+      {
+        name: 'GST',
+        amount: '5'
+      },
+      {
+        name: 'PST',
+        amount: '5'
+      },
+      {
+        name: 'HST',
+        amount: '0'
+      },
+    ],
     discount: {},
     milesInfo: {}
   };
@@ -114,13 +95,14 @@ export class AddOrdersComponent implements OnInit {
   origin: any;
   destination: any;
   allLoadTypes = [
-    {name: 'hazMat'},
-    {name: 'oversize load'},
-    {name: 'reefer'},
-    {name: 'tanker'},
+    { name: 'hazMat' },
+    { name: 'oversize load' },
+    { name: 'reefer' },
+    { name: 'tanker' },
   ]
   loadTypeData = [];
-  
+
+  showUpdate: boolean = false;
   shippersReceivers = [{
     shippers: {
       shipperID: '',
@@ -130,9 +112,15 @@ export class AddOrdersComponent implements OnInit {
       pickupInstruction: '',
       contactPerson: '',
       phone: '',
-      BOL: '',
       reference: '',
       notes: '',
+      commodity: [{
+        name: '',
+        quantity: '',
+        quantityUnit: '',
+        weight: '',
+        weightUnit: '',
+      }],
       minTemprature: '',
       minTempratureUnit: '',
       maxTemprature: '',
@@ -149,6 +137,13 @@ export class AddOrdersComponent implements OnInit {
       phone: '',
       reference: '',
       notes: '',
+      commodity: [{
+        name: '',
+        quantity: '',
+        quantityUnit: '',
+        weight: '',
+        weightUnit: '',
+      }],
       minTemprature: '',
       minTempratureUnit: '',
       maxTemprature: '',
@@ -158,12 +153,12 @@ export class AddOrdersComponent implements OnInit {
   }];
 
   accessFees = [{
-      type: '',
-      amount: '',
-      currency: ''
+    type: '',
+    amount: '',
+    currency: ''
   }];
 
-  accessDeduction = [{
+  accessDeductions = [{
     type: '',
     amount: '',
     currency: ''
@@ -178,6 +173,8 @@ export class AddOrdersComponent implements OnInit {
 
   shippersObjects: any = {};
   receiversObjects: any = {};
+  singleDatePickerOptions;
+
   constructor(
     private apiService: ApiService,
     private domSanitizer: DomSanitizer,
@@ -188,11 +185,14 @@ export class AddOrdersComponent implements OnInit {
     private HereMap: HereMapService,
     private route: ActivatedRoute,
     private config: NgbDatepickerConfig
-  ) { 
+  ) {
     const current = new Date();
-    config.minDate = { year: current.getFullYear(), month: 
-    current.getMonth() + 1, day: current.getDate() };
+    config.minDate = {
+      year: current.getFullYear(), month:
+        current.getMonth() + 1, day: current.getDate()
+    };
     config.outsideDays = 'hidden';
+    
   }
 
   get today() {
@@ -205,8 +205,11 @@ export class AddOrdersComponent implements OnInit {
     this.searchLocation();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
+
     $(document).ready(() => {
       this.form = $('#form_').validate();
+
+      this.timpickerInit();
     });
 
     this.getOrderID = this.route.snapshot.params['orderID'];
@@ -221,6 +224,9 @@ export class AddOrdersComponent implements OnInit {
   //   console.log(label);
   //   this.orderData.shipperInfo['pickupLocation'] = label;
   // }
+  timpickerInit() {
+   
+  }
   public searchLocation() {
     let target;
     this.searchTerm.pipe(
@@ -245,31 +251,34 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async saveShipper(i) {
-    
+
     let location = this.shippersReceivers[i].shippers.pickupLocation;
-    
+
     let geoCodeResponse;
     let platform = new H.service.Platform({
       'apikey': this.apiKey,
     });
     const service = platform.getSearchService();
-    let result = await service.geocode({ q: location })
-    result.items.forEach((res) => {
-      geoCodeResponse = res;
-    });
+    if (location !== '') {
+      let result = await service.geocode({ q: location });
+      result.items.forEach((res) => {
+        geoCodeResponse = res;
+      });
+    }
+
+    
     let currentShipper: any = {
       shipperID: this.shippersReceivers[i].shippers.shipperID,
       pickupLocation: this.shippersReceivers[i].shippers.pickupLocation,
-      locationDateTime: this.shippersReceivers[i].shippers.pickupDate + ' ' +
-        this.shippersReceivers[i].shippers.pickupTime['hour'] + ':' +
-        this.shippersReceivers[i].shippers.pickupTime['minute'] + ':' +
-        this.shippersReceivers[i].shippers.pickupTime['second'],
+      dateAndTime: this.shippersReceivers[i].shippers.pickupDate + ' ' +
+        this.shippersReceivers[i].shippers.pickupTime,
       pickupInstruction: this.shippersReceivers[i].shippers.pickupInstruction,
       contactPerson: this.shippersReceivers[i].shippers.contactPerson,
       phone: this.shippersReceivers[i].shippers.phone,
-      BOL: this.shippersReceivers[i].shippers.BOL,
+      // BOL: this.shippersReceivers[i].shippers.BOL,
       reference: this.shippersReceivers[i].shippers.reference,
       notes: this.shippersReceivers[i].shippers.notes,
+      commodity: this.shippersReceivers[i].shippers.commodity,
       minTemprature: this.shippersReceivers[i].shippers.notes,
       minTempratureUnit: this.shippersReceivers[i].shippers.minTempratureUnit,
       maxTemprature: this.shippersReceivers[i].shippers.maxTemprature,
@@ -278,18 +287,19 @@ export class AddOrdersComponent implements OnInit {
       position: geoCodeResponse.position.lng + ',' + geoCodeResponse.position.lat
     }
     // this.orderData.shipperInfo.push(currentShipper);
-    if(this.finalShippersReceivers[i] == undefined) {
+    if (this.finalShippersReceivers[i] == undefined) {
       this.finalShippersReceivers[i].shippers = [];
-    } else if(this.finalShippersReceivers[i].shippers == undefined) {
+    } else if (this.finalShippersReceivers[i].shippers == undefined) {
       this.finalShippersReceivers[i].shippers = [];
     }
     this.finalShippersReceivers[i].shippers.push(currentShipper);
-    console.log('finalShippersReceivers', this.finalShippersReceivers)
+    
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
-    this.emptyShipper();
+    this.emptyShipper(i);
     this.shipperReceiverMerge();
   }
 
+  
   async saveReceiver(i) {
     let location = this.shippersReceivers[i].receivers.dropOffLocation;
     let geoCodeResponse;
@@ -304,79 +314,86 @@ export class AddOrdersComponent implements OnInit {
     let currentReceiver: any = {
       receiverID: this.shippersReceivers[i].receivers.receiverID,
       dropOffLocation: this.shippersReceivers[i].receivers.dropOffLocation,
-      locationDateTime: this.shippersReceivers[i].receivers.dropOffDate + ' ' +
-                        this.shippersReceivers[i].receivers.dropOffTime['hour'] + ':' +
-                        this.shippersReceivers[i].receivers.dropOffTime['minute'] + ':' +
-                        this.shippersReceivers[i].receivers.dropOffTime['second'],
+      dateAndTime: this.shippersReceivers[i].receivers.dropOffDate + ' ' +
+        this.shippersReceivers[i].receivers.dropOffTime,
       dropOffInstruction: this.shippersReceivers[i].receivers.dropOffInstruction,
       contactPerson: this.shippersReceivers[i].receivers.contactPerson,
       phone: this.shippersReceivers[i].receivers.phone,
       reference: this.shippersReceivers[i].receivers.reference,
       notes: this.shippersReceivers[i].receivers.notes,
+      commodity: this.shippersReceivers[i].receivers.commodity,
       minTemprature: this.shippersReceivers[i].receivers.notes,
       minTempratureUnit: this.shippersReceivers[i].receivers.minTempratureUnit,
       maxTemprature: this.shippersReceivers[i].receivers.maxTemprature,
       maxTempratureUnit: this.shippersReceivers[i].receivers.maxTempratureUnit,
       driverUnload: this.shippersReceivers[i].receivers.driverUnload,
-      position: geoCodeResponse.position.lng + ',' +  geoCodeResponse.position.lat
+      position: geoCodeResponse.position.lng + ',' + geoCodeResponse.position.lat
     }
     // this.orderData.receiverInfo.push(currentReceiver);
-    if(this.finalShippersReceivers[i] == undefined) {
-      console.log("first")
+    if (this.finalShippersReceivers[i] == undefined) {
       this.finalShippersReceivers[i].receivers = [];
-    } 
-    if(this.finalShippersReceivers[i].receivers == undefined) {
-      console.log("second")
+    }
+    if (this.finalShippersReceivers[i].receivers == undefined) {
       this.finalShippersReceivers[i].receivers = [];
     }
     this.finalShippersReceivers[i].receivers.push(currentReceiver);
-    console.log('finalShippersReceivers', this.finalShippersReceivers)
+    
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     this.shipperReceiverMerge();
-    // this.emptyReceiver()
-   
+    this.emptyShipper(i);
+
   }
 
-  shipperReceiverMerge () {
-    this.mergedArray = this.finalShippersReceivers[0].shippers.concat(this.finalShippersReceivers[0].receivers);
+  shipperReceiverMerge() {
+    this.mergedArray = [];
+    this.finalShippersReceivers.forEach(item => {
+        item.shippers.forEach(elem => {
+          this.mergedArray.push(elem)
+        });
+        item.receivers.forEach(elem => {
+          this.mergedArray.push(elem)
+        });
+    })
+    // this.mergedArray = this.finalShippersReceivers[0].shippers.concat(this.finalShippersReceivers[0].receivers);
     //console.log("this.orderData", this.orderData);
-    console.log("mergedArray", this.mergedArray);
     this.mergedArray.sort((a, b) => {
-      return new Date(a.locationDateTime).valueOf() - new Date(b.locationDateTime).valueOf();
+     return new Date(a.dateAndTime).valueOf() - new Date(b.dateAndTime).valueOf();
     });
+    
   }
 
-  emptyShipper() {
-    this.shipperCurrent.shipperID = '';
-    this.shipperCurrent.pickupLocation = '';
-    this.shipperCurrent.pickupDate = '';
-    this.shipperCurrent.pickupInstruction = '';
-    this.shipperCurrent.contactPerson = '';
-    this.shipperCurrent.phone = '';
-    this.shipperCurrent.BOL = '';
-    this.shipperCurrent.reference = '';
-    this.shipperCurrent.notes = '';
-    this.shipperCurrent.notes = '';
-    this.shipperCurrent.minTempratureUnit = '';
-    this.shipperCurrent.maxTemprature = '';
-    this.shipperCurrent.maxTempratureUnit = '';
-    this.shipperCurrent.driverLoad = '';
+  emptyShipper(i) {
+    this.shippersReceivers[i].shippers['shipperID'] = '';
+    this.shippersReceivers[i].shippers['pickupLocation'] = '';
+    this.shippersReceivers[i].shippers['pickupDate'] = '';
+    this.shippersReceivers[i].shippers['pickupTime'] = '';
+    this.shippersReceivers[i].shippers['pickupInstruction'] = '';
+    this.shippersReceivers[i].shippers['contactPerson'] = '';
+    this.shippersReceivers[i].shippers['phone'] = '';
+    this.shippersReceivers[i].shippers['BOL'] = '';
+    this.shippersReceivers[i].shippers['reference'] = '';
+    this.shippersReceivers[i].shippers['notes'] = '';
+    this.shippersReceivers[i].shippers['notes'] = '';
+    this.shippersReceivers[i].shippers['minTempratureUnit'] = '';
+    this.shippersReceivers[i].shippers['maxTemprature'] = '';
+    this.shippersReceivers[i].shippers['maxTempratureUnit'] = '';
+    this.shippersReceivers[i].shippers['driverLoad'] = '';
   }
 
-  emptyReceiver() {
-    this.receiverCurrent.receiverID = '';
-    this.receiverCurrent.dropOffLocation = '';
-    this.receiverCurrent.dropOffDate = '';
-    this.receiverCurrent.dropOffInstruction = '';
-    this.receiverCurrent.contactPerson = '';
-    this.receiverCurrent.phone = '';
-    this.receiverCurrent.reference = '';
-    this.receiverCurrent.notes = '';
-    this.receiverCurrent.notes = '';
-    this.receiverCurrent.minTempratureUnit = '';
-    this.receiverCurrent.maxTemprature = '';
-    this.receiverCurrent.maxTempratureUnit = '';
-    this.receiverCurrent.driverUnload = '';
+  emptyReceiver(i) {
+    this.shippersReceivers[i].receivers['receiverID'] = '';
+    this.shippersReceivers[i].receivers['dropOffLocation'] = '';
+    this.shippersReceivers[i].receivers['dropOffDate'] = '';
+    this.shippersReceivers[i].receivers['dropOffInstruction'] = '';
+    this.shippersReceivers[i].receivers['contactPerson'] = '';
+    this.shippersReceivers[i].receivers['phone'] = '';
+    this.shippersReceivers[i].receivers['reference'] = '';
+    this.shippersReceivers[i].receivers['notes'] = '';
+    this.shippersReceivers[i].receivers['notes'] = '';
+    this.shippersReceivers[i].receivers['minTempratureUnit'] = '';
+    this.shippersReceivers[i].receivers['maxTemprature'] = '';
+    this.shippersReceivers[i].receivers['maxTempratureUnit'] = '';
+    this.shippersReceivers[i].receivers['driverUnload'] = '';
   }
 
   /*
@@ -385,7 +402,6 @@ export class AddOrdersComponent implements OnInit {
   fetchCustomers() {
     this.apiService.getData('customers').subscribe((result: any) => {
       this.customers = result.Items;
-      console.log('customers', this.customers);
     });
   }
 
@@ -395,7 +411,6 @@ export class AddOrdersComponent implements OnInit {
   fetchShippersByIDs() {
     this.apiService.getData('shippers/get/list').subscribe((result: any) => {
       this.shippersObjects = result;
-      console.log('shippersObjects', this.shippersObjects);
     });
   }
   /*
@@ -404,7 +419,6 @@ export class AddOrdersComponent implements OnInit {
   fetchShippers() {
     this.apiService.getData('shippers').subscribe((result: any) => {
       this.shippers = result.Items;
-      console.log('shippers', this.shippers);
     });
   }
 
@@ -414,7 +428,6 @@ export class AddOrdersComponent implements OnInit {
   fetchReceiversByIDs() {
     this.apiService.getData('receivers/get/list').subscribe((result: any) => {
       this.receiversObjects = result;
-      console.log('receiversObjects', this.receiversObjects);
     });
   }
 
@@ -424,54 +437,97 @@ export class AddOrdersComponent implements OnInit {
   fetchReceivers() {
     this.apiService.getData('receivers').subscribe((result: any) => {
       this.receivers = result.Items;
-      console.log('receivers', this.receivers);
     });
   }
+
+  getTimeFormat(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
+
   getMiles(value) {
-    console.log('calculateBy', value);
     this.orderData.milesInfo['calculateBy'] = value;
-    if (this.mergedArray) {
+    
+    if (this.mergedArray !== undefined) {
       this.mergedArray.forEach(element => {
         this.getAllCords.push(element.position);
       });
-    }
-    if (value === 'google') {
-      this.mergedArray.forEach(element => {
-        let cords = element.position.split(',');
-        this.googleCords.push(`${cords[1]},${cords[0]}`);
-      });
+      if (value === 'google') {
+        this.mergedArray.forEach(element => {
+          let cords = element.position.split(',');
+          this.googleCords.push(`${cords[1]},${cords[0]}`);
+        });
 
-      if (this.googleCords.length === 2) {
-        this.origin = this.googleCords[0];
-        this.destination = this.googleCords[1];
+        if (this.googleCords.length === 2) {
+          this.origin = this.googleCords[0];
+          this.destination = this.googleCords[1];
+        } else {
+          this.origin = this.googleCords[0];
+          this.destination = this.googleCords.shift();
+        }
+
+        this.google.googleDistance([this.origin], [this.googleCords.join('|')]).subscribe(res => {
+          
+          this.orderData.milesInfo['totalMiles'] = res;
+        });
+      } else if (value === 'pcmiles') {
+        this.google.pcMiles.next(true);
+        this.google.pcMilesDistance(this.getAllCords.join(';')).subscribe(res => {
+          
+          this.orderData.milesInfo['totalMiles'] = res;
+        });
       } else {
-        this.origin = this.googleCords[0];
-        this.destination = this.googleCords.shift();
+        this.orderData.milesInfo['totalMiles'] = '';
       }
-      
-      this.google.googleDistance([this.origin], [this.googleCords.join('|')]).subscribe(res => {
-        console.log('res', res);
-        this.orderData.milesInfo['totalMiles'] =  res;
-      });
-    } else if (value === 'pcmiles') {
-      this.google.pcMiles.next(true);
-      this.google.pcMilesDistance(this.getAllCords.join(';')).subscribe(res => {
-        console.log('res', res);
-        this.orderData.milesInfo['totalMiles'] =  res;
-      });
-    } else {
-      this.orderData.milesInfo['totalMiles'] =  '';
+      this.getAllCords = [];
     }
-    this.getAllCords = [];
- }
+  }
 
   selectedCustomer(customerID: any) {
     this.apiService.getData(`customers/${customerID}`).subscribe((result: any) => {
       this.customerSelected = result.Items;
-      console.log('customer', this.customerSelected);
     });
   }
 
+  addCommodity(arr, parentIndex) {
+    
+    if(arr === 'shipper') {
+      this.shippersReceivers[parentIndex].shippers.commodity.push(
+        {
+          name: '',
+          quantity: '',
+          quantityUnit: '',
+          weight: '',
+          weightUnit: '',
+        }
+      )
+    } else {
+      this.shippersReceivers[parentIndex].receivers.commodity.push(
+        {
+          name: '',
+          quantity: '',
+          quantityUnit: '',
+          weight: '',
+          weightUnit: '',
+        }
+      )
+    }
+  }
+
+  removeCommodity(obj: string, parentIndex:number, i: number) {
+    
+    if (obj === 'shipper') {
+      this.shippersReceivers[parentIndex].shippers.commodity.splice(i, 1);
+    } else {
+      this.shippersReceivers[parentIndex].receivers.commodity.splice(i, 1);
+    }
+  }
   addShipper() {
     // this.orderData.shipperInfo.push({
     //   shipperID: '',
@@ -519,11 +575,14 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.visibleIndex = ind;
     }
+    setTimeout(() => {
+      this.timpickerInit();
+    }, 200);
   }
-  
+
 
   onChangeUnitType(type: string, value: any) {
-    if(type === 'order') {
+    if (type === 'order') {
       this.orderData['orderMode'] = value;
     } else {
       this.orderData['tripType'] = value;
@@ -536,41 +595,40 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  
+
   onSubmit() {
     console.log("order", this.orderData);
     this.hideErrors();
-    if(this.orderForm.valid) {
-      return;
+    if (this.orderForm.valid) {
       this.apiService.postData('orders', this.orderData).
-      subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.label] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          this.response = res;
-          this.hasSuccess = true;
-          this.Success = 'Order Added successfully';
-        }
-      });
-    } 
-    
+        subscribe({
+          complete: () => { },
+          error: (err: any) => {
+            from(err.error)
+              .pipe(
+                map((val: any) => {
+                  val.message = val.message.replace(/".*"/, 'This Field');
+                  this.errors[val.context.label] = val.message;
+                })
+              )
+              .subscribe({
+                complete: () => {
+                  this.throwErrors();
+                },
+                error: () => { },
+                next: () => { },
+              });
+          },
+          next: (res) => {
+            this.response = res;
+            this.hasSuccess = true;
+            this.Success = 'Order Added successfully';
+          }
+        });
+    }
+
   }
-  
+
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
@@ -592,8 +650,8 @@ export class AddOrdersComponent implements OnInit {
     this.errors = {};
   }
 
-  remove(data, i ){
-    if(data === 'shipper') {
+  remove(data, i) {
+    if (data === 'shipper') {
       // this.orderData.shipperInfo.splice(i, 1);
     } else {
       // this.orderData.receiverInfo.splice(i, 1);
@@ -603,53 +661,83 @@ export class AddOrdersComponent implements OnInit {
   taxCalculate(value) {
     console.log(value);
   }
-  amountCalculate(i) {
+  calculateAmount() {
+    this.freightFee = this.orderData.charges.freightFee['amount'];
+    this.fuelSurcharge = this.orderData.charges.fuelSurcharge['amount'];
+    let sum = 0;
+    console.log('accessFees', this.accessFees)
+    this.accessFees.forEach(item => {
+      console.log('item', item.amount)
+      sum += (parseFloat(item.amount) || 0);
+    })
+
+    this.accessDeductions.forEach(item => {
+      sum -= (parseFloat(item.amount) || 0);
+    })
+
+    sum += (parseFloat(this.freightFee) || 0) + (parseFloat(this.fuelSurcharge) || 0);
+    console.log('subTotal', sum)
+    this.subTotal = sum;
+
+    let totalTax = 0; 
+    this.orderData.taxesInfo.forEach(elem => {
+      totalTax += ( parseFloat(elem.amount) || 0)
+    })
     
-    if(this.orderData.charges.freightFee['amount'] !== '' && this.orderData.charges.freightFee['amount'] !== undefined){
-      this.freightFee = `${this.orderData.charges.freightFee['amount']}`;
-    } else {
-      this.freightFee = 0;
+    this.tax = ( this.subTotal * totalTax ) / 100;
+
+    let discountAmount = (parseFloat(this.orderData.discount['amount']) || 0 );
+    let discountUnit = this.orderData.discount['unit'];
+    if(discountUnit === 'percentage') {
+      this.discount = (this.subTotal * discountAmount ) / 100;
     }
-    if(this.orderData.charges.fuelSurcharge['amount'] !== '' && this.orderData.charges.fuelSurcharge['amount'] !== undefined){
-      this.fuelSurcharge = `${this.orderData.charges.fuelSurcharge['amount']}`;
-    } else {
-      this.fuelSurcharge = 0;
-    }
-    if(this.orderData.charges.accessorialFee['amount'] !== '' && this.orderData.charges.accessorialFee['amount'] !== undefined){
-      this.accessorialFee = `${this.orderData.charges.accessorialFee['amount']}`;
-    } else {
-      this.accessorialFee = 0;
-    }
-    if(this.orderData.charges.accessorialDeduction['amount'] !== '' && this.orderData.charges.accessorialDeduction['amount'] !== undefined){
-      this.accessorialDeduction = `${this.orderData.charges.accessorialDeduction['amount']}`;
-    } else {
-      this.accessorialDeduction = 0;
-    }
-    this.subTotal = parseFloat(this.freightFee) + parseFloat(this.fuelSurcharge) 
-                    + parseFloat(this.accessorialFee) - parseFloat(this.accessorialDeduction);
+    this.totalAmount = this.subTotal - this.discount - this.tax;
+    console.log('totalTax', totalTax)
+    // if (this.orderData.charges.freightFee['amount'] !== '' && this.orderData.charges.freightFee['amount'] !== undefined) {
+    //   this.freightFee = `${this.orderData.charges.freightFee['amount']}`;
+    // } else {
+    //   this.freightFee = 0;
+    // }
+    // if (this.orderData.charges.fuelSurcharge['amount'] !== '' && this.orderData.charges.fuelSurcharge['amount'] !== undefined) {
+    //   this.fuelSurcharge = `${this.orderData.charges.fuelSurcharge['amount']}`;
+    // } else {
+    //   this.fuelSurcharge = 0;
+    // }
+    // if (this.orderData.charges.accessorialFee['amount'] !== '' && this.orderData.charges.accessorialFee['amount'] !== undefined) {
+    //   this.accessorialFee = `${this.orderData.charges.accessorialFee['amount']}`;
+    // } else {
+    //   this.accessorialFee = 0;
+    // }
+    // if (this.orderData.charges.accessorialDeduction['amount'] !== '' && this.orderData.charges.accessorialDeduction['amount'] !== undefined) {
+    //   this.accessorialDeduction = `${this.orderData.charges.accessorialDeduction['amount']}`;
+    // } else {
+    //   this.accessorialDeduction = 0;
+    // }
+    // this.subTotal = parseFloat(this.freightFee) + parseFloat(this.fuelSurcharge)
+    //   + parseFloat(this.accessorialFee) - parseFloat(this.accessorialDeduction);
   }
 
   getLoadTypes(i, value: string, isChecked: boolean) {
     if (isChecked) {
-      if(this.loadTypeData.indexOf(value) !== -1) {}
+      if (this.loadTypeData.indexOf(value) !== -1) { }
       else {
         this.loadTypeData.push(value);
         this.orderData.additionalDetails['loadType'] = this.loadTypeData;
       }
     } else {
-      this.loadTypeData.splice(i , 1);
+      this.loadTypeData.splice(i, 1);
     }
   }
 
-  removeList(elem, i) {
+  removeList(elem, parentIndex, i) {
     if (elem === 'shipper') {
-      // this.orderData.shipperInfo.splice(i, 1);
+      this.finalShippersReceivers[parentIndex].shippers.splice(i, 1);
     } else {
-      // this.orderData.receiverInfo.splice(i, 1);
+      this.finalShippersReceivers[parentIndex].receivers.splice(i, 1);
     }
   }
 
-  discountCalculate(){
+  discountCalculate() {
     let discountUnit = this.orderData.discount['unit'];
     let discountAmount = this.orderData.discount['amount'];
     if (this.subTotal) {
@@ -668,148 +756,177 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[i].shippers.pickupLocation = label;
     } else {
       this.shippersReceivers[i].receivers.dropOffLocation = label;
-      // console.log(this.receiverCurrent.dropOffLocation);
-      console.log("orders", this.orderData);
     }
     $('div').removeClass('show-search__result');
-    // this.searchResults = false;
+    
   }
 
-  editList(elem, item, i) {
+  editList(elem, item, parentIndex, i) {
+    let j = parentIndex;
+    
     if (elem === 'shipper') {
       // let index = this.orderData.shipperInfo.indexOf(item);
       // console.log("index", index);
-      this.shipperCurrent.shipperID = item.shipperID;
-      this.shipperCurrent.pickupLocation = item.pickupLocation;
-      this.shipperCurrent.pickupDate = item.pickupDate;
-      this.shipperCurrent.pickupInstruction = item.pickupInstruction;
-      this.shipperCurrent.contactPerson = item.contactPerson;
-      this.shipperCurrent.phone = item.phone;
-      this.shipperCurrent.BOL = item.BOL;
-      this.shipperCurrent.reference = item.reference;
-      this.shipperCurrent.notes = item.notes;
-      this.shipperCurrent.minTempratureUnit = item.minTempratureUnit;
-      this.shipperCurrent.maxTemprature = item.maxTemprature;
-      this.shipperCurrent.maxTempratureUnit = item.maxTempratureUnit;
-      this.shipperCurrent.driverLoad = item.driverLoad;
+      let itemDateAndTime = item.dateAndTime.split(' ');
+      this.shippersReceivers[i].shippers['shipperID'] = item.shipperID;
+      this.shippersReceivers[i].shippers['pickupLocation'] = item.pickupLocation;
+      this.shippersReceivers[i].shippers['pickupDate'] = itemDateAndTime[0];
+      this.shippersReceivers[i].shippers['pickupTime'] = itemDateAndTime[1];
+      this.shippersReceivers[i].shippers['pickupInstruction'] = item.pickupInstruction;
+      this.shippersReceivers[i].shippers['contactPerson'] = item.contactPerson;
+      this.shippersReceivers[i].shippers['phone'] = item.phone;
+      this.shippersReceivers[i].shippers['commodity'] = item.commodity;
+      this.shippersReceivers[i].shippers['reference'] = item.reference;
+      this.shippersReceivers[i].shippers['notes'] = item.notes;
+      this.shippersReceivers[i].shippers['minTempratureUnit'] = item.minTempratureUnit;
+      this.shippersReceivers[i].shippers['maxTemprature'] = item.maxTemprature;
+      this.shippersReceivers[i].shippers['maxTempratureUnit'] = item.maxTempratureUnit;
+      this.shippersReceivers[i].shippers['driverLoad'] = item.driverLoad;
       this.visibleIndex = i;
+      this.showUpdate = true;
     }
   }
 
+  updateShipperReceiver(obj, item, i) {
+    if(obj === 'shipper') {
+      let itemIndex = this.finalShippersReceivers[i].shippers.findIndex(elem => elem.shipperID == item.shipperID);
+      this.finalShippersReceivers[i].shippers[itemIndex] = item;
+  
+      // this.showUpdate = false;
+      // this.visibleIndex = -1;
+    }
+   
+  }
 
 
 
   /***************
    * For Edit Orders
   */
- fetchOrderByID(){
-  this.apiService
-  .getData('orders/' + this.getOrderID)
-  .subscribe((result: any) => {
-    result = result.Items[0];
-    console.log(result);
-    this.orderData['customerID'] = result.customerID;
-    this.orderData['additionalContact'] = result.additionalContact;
-    this.orderData['creationDate'] = result.creationDate;
-    this.orderData['csa'] = result.csa;
-    this.orderData['ctpat'] = result.ctpat;
-    this.orderData['customerPO'] = result.customerPO;
-    this.orderData['email'] = result.email;
-    this.orderData['orderMode'] = result.orderMode;
-    this.orderData['orderNumber'] = result.orderNumber;
-    this.orderData['phone'] = result.phone;
-    this.orderData['reference'] = result.reference;
-    this.orderData['remarks'] = result.remarks;
-    this.orderData.milesInfo['totalMiles'] = result.totalMiles;
-    this.orderData['tripType'] = result.tripType;
+  fetchOrderByID() {
+    this.apiService
+      .getData('orders/' + this.getOrderID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+        console.log(result);
+        this.orderData['customerID'] = result.customerID;
+        this.orderData['additionalContact'] = result.additionalContact;
+        this.orderData['creationDate'] = result.creationDate;
+        this.orderData['csa'] = result.csa;
+        this.orderData['ctpat'] = result.ctpat;
+        this.orderData['customerPO'] = result.customerPO;
+        this.orderData['email'] = result.email;
+        this.orderData['orderMode'] = result.orderMode;
+        this.orderData['orderNumber'] = result.orderNumber;
+        this.orderData['phone'] = result.phone;
+        this.orderData['reference'] = result.reference;
+        this.orderData['remarks'] = result.remarks;
+        this.orderData.milesInfo['totalMiles'] = result.totalMiles;
+        this.orderData['tripType'] = result.tripType;
 
-    this.orderData.additionalDetails['dropTrailer'] = result.additionalDetails.dropTrailer;
-    this.loadTypeData = result.additionalDetails.loadType;
-    
-    this.orderData.charges.accessorialDeduction['amount'] = result.charges.accessorialDeduction.amount;
-    this.orderData.charges.accessorialDeduction['type'] = result.charges.accessorialDeduction.type;
-    this.orderData.charges.accessorialDeduction['unit'] = result.charges.accessorialDeduction.unit;
-    this.orderData.charges.accessorialFee['amount'] = result.charges.accessorialFee.amount;
-    this.orderData.charges.accessorialFee['currency'] = result.charges.accessorialFee.currency;
-    this.orderData.charges.accessorialFee['type'] = result.charges.accessorialFee.type;
-    this.orderData.charges.freightFee['amount'] = result.charges.freightFee.amount;
-    this.orderData.charges.freightFee['currency'] = result.charges.freightFee.currency;
-    this.orderData.charges.freightFee['type'] = result.charges.freightFee.type;
-    this.orderData.charges.fuelSurcharge['amount'] = result.charges.fuelSurcharge.amount;
-    this.orderData.charges.fuelSurcharge['currency'] = result.charges.fuelSurcharge.currency;
-    this.orderData.charges.fuelSurcharge['type'] = result.charges.fuelSurcharge.type;
+        this.orderData.additionalDetails['dropTrailer'] = result.additionalDetails.dropTrailer;
+        this.loadTypeData = result.additionalDetails.loadType;
 
-    // this.amountCalculate();
-    this.discountCalculate();
-    
-  });
- }
+        this.orderData.charges.accessorialDeduction['amount'] = result.charges.accessorialDeduction.amount;
+        this.orderData.charges.accessorialDeduction['type'] = result.charges.accessorialDeduction.type;
+        this.orderData.charges.accessorialDeduction['unit'] = result.charges.accessorialDeduction.unit;
+        this.orderData.charges.accessorialFee['amount'] = result.charges.accessorialFee.amount;
+        this.orderData.charges.accessorialFee['currency'] = result.charges.accessorialFee.currency;
+        this.orderData.charges.accessorialFee['type'] = result.charges.accessorialFee.type;
+        this.orderData.charges.freightFee['amount'] = result.charges.freightFee.amount;
+        this.orderData.charges.freightFee['currency'] = result.charges.freightFee.currency;
+        this.orderData.charges.freightFee['type'] = result.charges.freightFee.type;
+        this.orderData.charges.fuelSurcharge['amount'] = result.charges.fuelSurcharge.amount;
+        this.orderData.charges.fuelSurcharge['currency'] = result.charges.fuelSurcharge.currency;
+        this.orderData.charges.fuelSurcharge['type'] = result.charges.fuelSurcharge.type;
 
- addAccordian() {
-   let allFields = {
-    shippers: {
-      shipperID: '',
-      pickupLocation: '',
-      pickupDate: '',
-      pickupTime: '',
-      pickupInstruction: '',
-      contactPerson: '',
-      phone: '',
-      BOL: '',
-      reference: '',
-      notes: '',
-      minTemprature: '',
-      minTempratureUnit: '',
-      maxTemprature: '',
-      maxTempratureUnit: '',
-      driverLoad: '',
-    },
-    receivers: {
-      receiverID: '',
-      dropOffLocation: '',
-      dropOffDate: '',
-      dropOffTime: '',
-      dropOffInstruction: '',
-      contactPerson: '',
-      phone: '',
-      reference: '',
-      notes: '',
-      minTemprature: '',
-      minTempratureUnit: '',
-      maxTemprature: '',
-      maxTempratureUnit: '',
-      driverUnload: '',
-    }
+        // this.amountCalculate();
+        this.discountCalculate();
+
+      });
   }
-  this.shippersReceivers.push(allFields)
-  this.finalShippersReceivers.push({
-    shippers: [],
-    receivers: []
-  })
 
- }
+  addAccordian() {
+    let allFields = {
+      shippers: {
+        shipperID: '',
+        pickupLocation: '',
+        pickupDate: '',
+        pickupTime: '',
+        pickupInstruction: '',
+        contactPerson: '',
+        phone: '',
+        reference: '',
+        notes: '',
+        commodity: [{
+          name: '',
+          quantity: '',
+          quantityUnit: '',
+          weight: '',
+          weightUnit: '',
+        }],
+        minTemprature: '',
+        minTempratureUnit: '',
+        maxTemprature: '',
+        maxTempratureUnit: '',
+        driverLoad: '',
+      },
+      receivers: {
+        receiverID: '',
+        dropOffLocation: '',
+        dropOffDate: '',
+        dropOffTime: '',
+        dropOffInstruction: '',
+        contactPerson: '',
+        phone: '',
+        reference: '',
+        notes: '',
+        commodity: [{
+          name: '',
+          quantity: '',
+          quantityUnit: '',
+          weight: '',
+          weightUnit: '',
+        }],
+        minTemprature: '',
+        minTempratureUnit: '',
+        maxTemprature: '',
+        maxTempratureUnit: '',
+        driverUnload: '',
+      }
+    }
+    this.shippersReceivers.push(allFields)
+    this.finalShippersReceivers.push({
+      shippers: [],
+      receivers: []
+    })
 
- removeAccordian() {
-   this.shippersReceivers.splice(-1, 1);
- }
+  }
 
- addAccessFee(value: string) {
-   if(value === 'accessFee') {
+  removeAccordian() {
+    this.shippersReceivers.splice(-1, 1);
+  }
+
+  addAccessFee(value: string) {
+    if (value === 'accessFee') {
       this.accessFees.push({
         type: '',
         amount: '',
         currency: ''
-    })
-   } else {
-    this.accessDeduction.push({
+      })
+    } else {
+      this.accessDeductions.push({
         type: '',
         amount: '',
         currency: ''
-    })
-   }
-  
-    console.log("accesssFee", this.accessFees);
-    console.log("accessDeduction", this.accessDeduction);
- }
+      })
+    }
 
+  }
+
+  accordianChange() {
+    setTimeout(() => {
+      this.timpickerInit();
+    }, 200);
+  }
 }
