@@ -105,7 +105,6 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
-    console.log(this.currentUser)
   }
 
   addDocument() {

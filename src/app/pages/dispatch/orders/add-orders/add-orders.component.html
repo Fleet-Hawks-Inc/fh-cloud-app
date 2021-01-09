@@ -17,8 +17,9 @@
                   <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
                </div>
                <div class="col-md-8 col-lg-8 text-right pr-1">
-                  <!-- <a class="btn btn-success btn-sm modal-with-form" href="#bolTemplateModal">Create BOL</a>  --><a
-                     href="all-orders.php" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Orders</a>
+                  <!-- <a class="btn btn-success btn-sm modal-with-form" href="#bolTemplateModal">Create BOL</a>  -->
+                  <a routerLink="/dispatch/orders" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
+                     Orders</a>
                </div>
             </div>
          </header>
@@ -36,12 +37,17 @@
                            </div>
                            <div class="col-lg-6">
                               <div class="btn-group-toggle" data-toggle="buttons">
-                                 <label class="btn btn-outline btn-fleet mr-2" [class.active]="orderData.orderMode === 'FTL'" style="width:110px;" (click) = "onChangeUnitType('order', 'FTL')">
-                                   <input type="radio" [(ngModel)]="orderData.orderMode" name="orderMode" checked hidden value="FTL" > FTL </label>
-                                 <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="orderData.orderMode === 'LTL'" (click) = "onChangeUnitType('order', 'LTL')">
-                                   <input type="radio" [(ngModel)]="orderData.orderMode" name="orderMode"
-                                        hidden value="LTL" > LTL </label>
-                               </div>
+                                 <label class="btn btn-outline btn-fleet mr-2"
+                                    [class.active]="orderData.orderMode === 'FTL'" style="width:110px;"
+                                    (click)="onChangeUnitType('order', 'FTL')">
+                                    <input type="radio" [(ngModel)]="orderData.orderMode" name="orderMode" checked
+                                       hidden value="FTL"> FTL </label>
+                                 <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
+                                    [class.active]="orderData.orderMode === 'LTL'"
+                                    (click)="onChangeUnitType('order', 'LTL')">
+                                    <input type="radio" [(ngModel)]="orderData.orderMode" name="orderMode" hidden
+                                       value="LTL"> LTL </label>
+                              </div>
                               <!-- <label class="d-inline mr-3">
                                  <input [(ngModel)]="orderData.orderMode" type="radio" name="mode" value="FTL">FTL
                               </label>
@@ -58,12 +64,17 @@
                            </div>
                            <div class="col-lg-6">
                               <div class="btn-group-toggle" data-toggle="buttons">
-                                 <label class="btn btn-outline btn-fleet mr-2" [class.active]="orderData.tripType === 'Regular'" style="width:110px;" (click) = "onChangeUnitType('trip', 'Regular')">
-                                   <input type="radio" [(ngModel)]="orderData.tripType" name="tripType" checked hidden value="Regular" > Regular </label>
-                                 <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="orderData.tripType === 'Outsourced'" (click) = "onChangeUnitType('trip', 'Outsourced')">
-                                   <input type="radio" [(ngModel)]="orderData.tripType" name="tripType"
-                                        hidden value="Outsourced" > Outsourced </label>
-                               </div>
+                                 <label class="btn btn-outline btn-fleet mr-2"
+                                    [class.active]="orderData.tripType === 'Regular'" style="width:110px;"
+                                    (click)="onChangeUnitType('trip', 'Regular')">
+                                    <input type="radio" [(ngModel)]="orderData.tripType" name="tripType" checked hidden
+                                       value="Regular"> Regular </label>
+                                 <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
+                                    [class.active]="orderData.tripType === 'Outsourced'"
+                                    (click)="onChangeUnitType('trip', 'Outsourced')">
+                                    <input type="radio" [(ngModel)]="orderData.tripType" name="tripType" hidden
+                                       value="Outsourced"> Outsourced </label>
+                              </div>
                               <!-- <label class="d-inline mr-3">
                                  <input [(ngModel)]="orderData.tripType" type="radio" name="tripType"
                                     value="Regular">Regular
@@ -86,21 +97,21 @@
                            <div class="col-lg-10">
                               <label
                                  class="control-label font-weight-semibold labelmt text-3 text-dark">Customer</label>
-                              <ng-select (change)="selectedCustomer($event)" [(ngModel)]="orderData.customerID" name="customerID" #customerID="ngModel"
-                                 required customerID class="form-control">
-                                    <ng-option *ngFor="let customer of customers" value="{{customer.customerID}}">
-                                       {{customer.firstName}} {{customer.lastName}}
-                                    </ng-option>
+                              <ng-select (change)="selectedCustomer($event)" [(ngModel)]="orderData.customerID"
+                                 name="customerID" #customerID="ngModel" required customerID class="form-control">
+                                 <ng-option *ngFor="let customer of customers" value="{{customer.customerID}}">
+                                    {{customer.firstName}} {{customer.lastName}}
+                                 </ng-option>
                               </ng-select>
                               <span class="text-danger"
                                  *ngIf="(customerID.touched || orderForm.submitted) && customerID.errors?.required">
                                  This Field is required
                               </span>
                            </div>
-                           <div class="col-lg-2 mar-top-37"> 
-                              <a class="btn btn-success btn-sm" data-toggle="modal"
-                                 data-target="#addCustomerModal"><i class="fas fa-plus"></i>
-                              </a> 
+                           <div class="col-lg-2 mar-top-37">
+                              <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#addCustomerModal"><i
+                                    class="fas fa-plus"></i>
+                              </a>
                            </div>
                            <div class="col-lg-10 mt-4" *ngIf="customerSelected">
                               <div class="" style="border: 0.4px solid #e1e2e3; border-radius: 0px 0px 15px 15px;">
@@ -126,8 +137,7 @@
                                                    class=" font-weight-bold">Phone:</span> {{item.workPhone}}</label>
                                           </div>
                                           <div class="col-lg-6">
-                                             <label class="control-label"><span
-                                                   class=" font-weight-bold">City:</span>
+                                             <label class="control-label"><span class=" font-weight-bold">City:</span>
                                                 {{item.address[0].cityName}}</label>
                                           </div>
                                           <div class="col-lg-6">
@@ -146,8 +156,8 @@
                                                 {{item.workEmail}}</label>
                                           </div>
                                           <div class="col-lg-6">
-                                             <label class="control-label"><span
-                                                   class=" font-weight-bold">Fax:</span> --</label>
+                                             <label class="control-label"><span class=" font-weight-bold">Fax:</span>
+                                                --</label>
                                           </div>
                                        </div>
 
@@ -241,21 +251,72 @@
 
                   <div class="form-group row">
                      <div class="col-lg-12 mb-4 mb-lg-0">
-                        <div class="accordion" id="accordion1"
-                           style="border:0.5px solid #333;border-radius: 10px; box-shadow: 2px 5px 5px #d1d1d1;">
-                           <div class="card card-default mb-1">
-                              <div class="card-header bg-light" id="collapse1HeadingOne">
-                                 <h4 class="card-title m-0"><a
-                                       class="accordion-toggle carcursor font-weight-bold text-4 text-dark"
-                                       data-toggle="collapse" data-target="#collapse1One" aria-expanded="true"
-                                       aria-controls="collapse1One">
-                                       Shipper-Receiver </a> </h4>
-                              </div>
-                              <div id="collapse1One" class="collapse" aria-labelledby="collapse1HeadingOne">
-                                 <div class="card-body">
+                        <div *ngFor="let item of shippersReceivers; let i = index;"
+                           style="border:0.5px solid #333;border-radius: 10px; box-shadow: 2px 5px 5px #d1d1d1;"
+                           class="mb-2 order-accordian">
+                           <ngb-accordion [closeOthers]="true" activeIds="static-0">
+                              <ngb-panel id="static-{{i}}">
+                                 <ng-template ngbPanelTitle>
+                                    <h4 class="card-title m-0"><a
+                                          class="accordion-toggle carcursor font-weight-bold text-4 text-dark">
+                                          Shipper-Receiver </a> </h4>
+                                 </ng-template>
+                                 <ng-template ngbPanelContent>
+                                    <div class="row">
+                                       <div class="col-6">
+                                          <div class="shipper__listing" *ngIf="finalShippersReceivers[i].shippers?.length > 0">
+                                             <h4 class="mt-0 text-dark font-weight-bold text-4">Shippers</h4>
+                                             <table class="table">
+                                                <tbody>
+                  
+                                                   <tr *ngFor="let item of finalShippersReceivers[i].shippers; let j = index;">
+                                                      <td>
+                                                         {{shippersObjects[item.shipperID]}}
+                                                      </td>
+                                                      <td>
+                                                         {{item.pickupLocation}}
+                                                      </td>
+                                                      <td>
+                                                         {{item.locationDateTime}}
+                                                      </td>
+                                                      <td>
+                                                         <i (click)="editList('shipper', item, j)" class="fa fa-edit fa-fw"></i>
+                                                         <i (click)="removeList('shipper', j)" class="fa fa-trash fa-fw"></i>
+                                                      </td>
+                                                   </tr>
+                  
+                                                </tbody>
+                                             </table>
+                                          </div>
+                                       </div>
+                                       <div class="col-6">
+                                          <div class="shipper__listing" *ngIf="finalShippersReceivers[i].receivers?.length > 0">
+                                             <h4 class="mt-0 text-dark font-weight-bold text-4">Receivers</h4>
+                                             <table class="table">
+                                                <tbody>
+                  
+                                                   <tr *ngFor="let item of finalShippersReceivers[i].receivers; let i = index;">
+                                                      <td>
+                                                         {{receiversObjects[item.receiverID]}}
+                                                      </td>
+                                                      <td>
+                                                         {{item.dropOffLocation}}
+                                                      </td>
+                                                      <td>
+                                                         {{item.locationDateTime}}
+                                                      </td>
+                                                      <td>
+                                                         <i class="fa fa-edit fa-fw"></i>
+                                                         <i (click)="removeList('receiver', i)" class="fa fa-trash fa-fw"></i>
+                                                      </td>
+                                                   </tr>
+                  
+                                                </tbody>
+                                             </table>
+                                          </div>
+                                       </div>
+                                    </div>
                                     <div class="form-group row divderrel">
-                                       <!-- <div class="midledriver">
-                                             </div> -->
                                        <p class="mb-1 mt-1 mr-1 midleicon btn btn-default"><i
                                              class="fas fa-arrow-circle-right"></i></p>
                                        <div class="col-lg-6">
@@ -267,8 +328,8 @@
                                                    <label (click)="toggleAccordian(i)"
                                                       class="text-dark text-5 font-weight-bold">Shipper
                                                       <!-- <span *ngIf="i != 0;" (click)="remove('shipper', i)" class="minus-sign btn btn-success btn-sm">
-                                                              <i class="fas fa-minus fa-fw d-block m-0"></i>
-                                                           </span>  -->
+                                                            <i class="fas fa-minus fa-fw d-block m-0"></i>
+                                                         </span>  -->
                                                    </label>
                                                    <div class="" *ngIf="visibleIndex === i">
                                                       <div class="row">
@@ -278,18 +339,15 @@
                                                                for="inputDefault">Shipper</label>
                                                          </div>
                                                          <div class="col-lg-6 col-md-12">
-                                                            <select [(ngModel)]="shipperCurrent.shipperName"
-                                                               name="shipperName" #shipperName="ngModel" required
-                                                               shipperName class="form-control">
-                                                               <optgroup label="">
-                                                                  <option value="Manjot" data-select2-id="6">Manjot
-                                                                  </option>
-                                                                  <option value="Heera">Heera</option>
-                                                                  <option value="Sagar">Sagar</option>
-                                                               </optgroup>
-                                                            </select>
+                                                            <ng-select [(ngModel)]="item.shippers.shipperID"
+                                                               name="shipperID" #shipperID="ngModel" required
+                                                               shipperID class="form-control">
+                                                              
+                                                                  <ng-option *ngFor="let item of shippers" value="{{item.shipperID}}">{{item.companyName}}</ng-option>
+                                                              
+                                                            </ng-select>
                                                             <span class="text-danger"
-                                                               *ngIf="(shipperName.touched || orderForm.submitted) && shipperName.errors?.required">
+                                                               *ngIf="(shipperID.touched || orderForm.submitted) && shipperID.errors?.required">
                                                                This Field is required
                                                             </span>
                                                          </div>
@@ -305,16 +363,15 @@
                                                          </div>
 
                                                          <div class="col-lg-6">
-                                                            <input [(ngModel)]="shipperCurrent.pickupLocation"
+                                                            <input [(ngModel)]="item.shippers.pickupLocation"
                                                                name="pickupLocation" (keyup)="searchTerm.next($event);"
                                                                class="form-control" #pickupLocation="ngModel" required
                                                                pickupLocation tabindex="-1" aria-hidden="true">
 
-                                                            <ul class="p-0 m-0 text-left map-search__results bg-white"
-                                                               *ngIf="searchResults">
+                                                            <ul class="p-0 m-0 text-left map-search__results bg-white">
                                                                <li *ngFor="let item of searchResults;">
                                                                   <a href="javascript:;"
-                                                                     (click)="assignLocation('shipper', item.address.label)"
+                                                                     (click)="assignLocation(i, 'shipper', item.address.label)"
                                                                      title="{{item.address.label}}">{{item.address.label}}</a>
                                                                </li>
                                                             </ul>
@@ -335,7 +392,7 @@
                                                          </div>
                                                          <div class="col-lg-3">
                                                             <div class="input-group">
-                                                               <input [(ngModel)]="shipperCurrent.pickupDate"
+                                                               <input [(ngModel)]="item.shippers.pickupDate"
                                                                   name="pickupDate" type="text" (click)="d.toggle()"
                                                                   ngbDatepicker #d="ngbDatepicker" #pickupDate="ngModel"
                                                                   required pickupDate placeholder=""
@@ -348,13 +405,13 @@
                                                          </div>
                                                          <div class="col-lg-3">
                                                             <div class="input-group">
-                                                               <ngb-timepicker [(ngModel)]="shipperCurrent.pickupTime"
+                                                               <ngb-timepicker [(ngModel)]="item.shippers.pickupTime"
                                                                   name="pickupTime" type="text" class="" placeholder=""
                                                                   #pickupTime="ngModel" required pickupTime
                                                                   [meridian]="meridian" [spinners]="spinners"
                                                                   [seconds]="seconds"></ngb-timepicker>
                                                                <!-- <input [(ngModel)]="item.pickupTime"
-                                                                 name="item.pickupTime{{i}}" type="text" class="form-control" placeholder="hour:minute"  #pickupTime="ngModel" required pickupTime id="timepicker2"> -->
+                                                               name="item.pickupTime{{i}}" type="text" class="form-control" placeholder="hour:minute"  #pickupTime="ngModel" required pickupTime id="timepicker2"> -->
                                                             </div>
                                                             <span class="text-danger"
                                                                *ngIf="(orderForm.submitted) && pickupTime.errors?.required">
@@ -362,7 +419,7 @@
                                                             </span>
                                                          </div>
                                                          <!-- <div class="col-lg-3 mt-1">
-                                                           </div> -->
+                                                         </div> -->
                                                       </div>
                                                       <div class="row mt-3">
                                                          <div class="col-lg-3 labelalign">
@@ -371,7 +428,7 @@
                                                                for="inputDefault">Pickup Instruction</label>
                                                          </div>
                                                          <div class="col-lg-6">
-                                                            <textarea [(ngModel)]="shipperCurrent.pickupInstruction"
+                                                            <textarea [(ngModel)]="item.shippers.pickupInstruction"
                                                                name="pickupInstruction" class="form-control" rows="3"
                                                                id="textareaDefault"
                                                                style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
@@ -386,7 +443,7 @@
                                                                for="inputDefault">Contact Person at PickUp</label>
                                                          </div>
                                                          <div class="col-lg-6">
-                                                            <input [(ngModel)]="shipperCurrent.contactPerson"
+                                                            <input [(ngModel)]="item.shippers.contactPerson"
                                                                name="contactPerson" type="text" class="form-control"
                                                                id="inputDefault">
                                                          </div>
@@ -400,7 +457,7 @@
                                                                for="inputDefault">Phone</label>
                                                          </div>
                                                          <div class="col-lg-6">
-                                                            <input [(ngModel)]="shipperCurrent.phone" name="phone"
+                                                            <input [(ngModel)]="item.shippers.phone" name="phone"
                                                                type="text" class="form-control" id="inputDefault">
                                                          </div>
                                                          <div class="col-lg-3 mt-1">
@@ -413,7 +470,7 @@
                                                                for="inputDefault">BOL</label>
                                                          </div>
                                                          <div class="col-lg-6">
-                                                            <input [(ngModel)]="shipperCurrent.BOL" name="BOL"
+                                                            <input [(ngModel)]="item.shippers.BOL" name="BOL"
                                                                type="file" />
                                                          </div>
                                                          <div class="col-lg-3 mt-1">
@@ -426,7 +483,7 @@
                                                                for="inputDefault">Reference</label>
                                                          </div>
                                                          <div class="col-lg-6">
-                                                            <input [(ngModel)]="shipperCurrent.reference"
+                                                            <input [(ngModel)]="item.shippers.reference"
                                                                name="reference" type="text" class="form-control"
                                                                id="inputDefault">
                                                          </div>
@@ -440,7 +497,7 @@
                                                                for="inputDefault">Notes</label>
                                                          </div>
                                                          <div class="col-lg-6">
-                                                            <input [(ngModel)]="shipperCurrent.notes" name="notes"
+                                                            <input [(ngModel)]="item.shippers.notes" name="notes"
                                                                type="text" class="form-control" id="inputDefault">
                                                          </div>
                                                          <div class="col-lg-3 mt-1">
@@ -453,12 +510,12 @@
                                                                for="inputDefault">Temperature Required</label>
                                                          </div>
                                                          <div class="col-lg-3">
-                                                            <input [(ngModel)]="shipperCurrent.minTemprature"
+                                                            <input [(ngModel)]="item.shippers.minTemprature"
                                                                name="minTemprature" type="text" class="form-control"
                                                                placeholder="From" id="inputDefault">
                                                          </div>
                                                          <div class="col-lg-2">
-                                                            <select [(ngModel)]="shipperCurrent.minTempratureUnit"
+                                                            <select [(ngModel)]="item.shippers.minTempratureUnit"
                                                                name="minTempratureUnit" data-plugin-selecttwo=""
                                                                class="form-control populate" data-select2-id="10"
                                                                tabindex="-1" aria-hidden="true">
@@ -482,12 +539,12 @@
                                                                for="inputDefault">&nbsp;</label>
                                                          </div>
                                                          <div class="col-lg-3">
-                                                            <input [(ngModel)]="shipperCurrent.maxTemprature"
+                                                            <input [(ngModel)]="item.shippers.maxTemprature"
                                                                name="maxTemprature" type="text" class="form-control"
                                                                placeholder="To" id="inputDefault">
                                                          </div>
                                                          <div class="col-lg-2">
-                                                            <select [(ngModel)]="shipperCurrent.maxTempratureUnit"
+                                                            <select [(ngModel)]="item.shippers.maxTempratureUnit"
                                                                name="maxTempratureUnit" data-plugin-selecttwo=""
                                                                class="form-control populate" data-select2-id="13"
                                                                tabindex="-1" aria-hidden="true">
@@ -509,7 +566,7 @@
                                                          </div>
                                                          <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
                                                             <div class="radio-custom">
-                                                               <input [(ngModel)]="shipperCurrent.driverLoad"
+                                                               <input [(ngModel)]="item.shippers.driverLoad"
                                                                   name="driverLoad" type="radio" value="yes"
                                                                   id="loadyes" checked="">
                                                                <label for="radioExample1">Yes</label>
@@ -517,7 +574,7 @@
                                                          </div>
                                                          <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
                                                             <div class="radio-custom">
-                                                               <input [(ngModel)]="shipperCurrent.driverLoad"
+                                                               <input [(ngModel)]="item.shippers.driverLoad"
                                                                   name="driverLoad" type="radio" value="no" id="loadno">
                                                                <label for="radioExample2">No</label>
                                                             </div>
@@ -525,7 +582,7 @@
                                                       </div>
 
                                                       <div class="divcenter mt-2">
-                                                         <p class="mb-1"><a href="javascript:;" (click)="saveShipper()"
+                                                         <p class="mb-1"><a href="javascript:;" (click)="saveShipper(i)"
                                                                class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Save</a></p>
                                                       </div>
                                                    </div>
@@ -550,8 +607,8 @@
                                                    <label (click)="toggleAccordian(i)"
                                                       class="text-dark text-5 font-weight-bold">Receiver
                                                       <!-- <span *ngIf="i != 0;" (click)="remove('receiver', i)" class="minus-sign btn btn-success btn-sm">
-                                                              <i class="fas fa-minus fa-fw d-block m-0"></i>
-                                                           </span> -->
+                                                            <i class="fas fa-minus fa-fw d-block m-0"></i>
+                                                         </span> -->
                                                    </label>
                                                    <div class="" *ngIf="visibleIndex === i">
                                                       <div class="row">
@@ -561,19 +618,14 @@
                                                                for="inputDefault">Receiver</label>
                                                          </div>
                                                          <div class="col-lg-6 col-md-12">
-                                                            <select [(ngModel)]="receiverCurrent.receiverName"
-                                                               name="receiverName" #receiverName="ngModel" required
-                                                               receiverName class="form-control" data-select2-id="16"
+                                                            <ng-select [(ngModel)]="item.receivers.receiverID"
+                                                               name="receiverID" #receiverID="ngModel" required
+                                                               receiverID class="form-control" data-select2-id="16"
                                                                tabindex="-1" aria-hidden="true">
-                                                               <optgroup label="">
-                                                                  <option value="Manjot" data-select2-id="18">Manjot
-                                                                  </option>
-                                                                  <option value="Heera">Heera</option>
-                                                                  <option value="Sagar">Sagar</option>
-                                                               </optgroup>
-                                                            </select>
+                                                               <ng-option *ngFor="let item of receivers;" value="{{item.receiverID}}">{{item.companyName}}</ng-option>
+                                                            </ng-select>
                                                             <span class="text-danger"
-                                                               *ngIf="(orderForm.submitted) && receiverName.errors?.required">
+                                                               *ngIf="(orderForm.submitted) && receiverID.errors?.required">
                                                                This Field is required
                                                             </span>
                                                          </div>
@@ -588,28 +640,20 @@
                                                                for="inputDefault">Drop Off Location</label>
                                                          </div>
                                                          <div class="col-lg-6">
-                                                            <input [(ngModel)]="receiverCurrent.dropOffLocation"
+                                                            <input [(ngModel)]="item.receivers.dropOffLocation"
                                                                name="dropOffLocation" #dropOffLocation="ngModel"
                                                                required dropOffLocation
                                                                (keyup)="searchTerm.next($event);" class="form-control"
                                                                tabindex="-1" aria-hidden="true">
 
-                                                            <ul class="p-0 m-0 text-left map-search__results bg-white"
-                                                               *ngIf="searchResults1">
-                                                               <li *ngFor="let item of searchResults1;">
+                                                            <ul class="p-0 m-0 text-left map-search__results bg-white">
+                                                               <li *ngFor="let item of searchResults;">
                                                                   <a href="javascript:;"
-                                                                     (click)="assignLocation('receiver', item.address.label)"
+                                                                     (click)="assignLocation(i, 'receiver', item.address.label)"
                                                                      title="{{item.address.label}}">{{item.address.label}}</a>
                                                                </li>
                                                             </ul>
-                                                            <!-- <select [(ngModel)]="item.dropOffLocation"
-                                                              name="item.dropOffLocation{{i}}" #dropOffLocation="ngModel" required dropOffLocation class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
-                                                                 <optgroup label="">
-                                                                    <option value="Calgary, Alberta" data-select2-id="21">Calgary, Alberta</option>
-                                                                    <option value="Delta, BC">Delta, BC</option>
-                                                                    <option value="Winnipeg, Manitoba">Winnipeg, Manitoba</option>
-                                                                 </optgroup>
-                                                              </select> -->
+                                                            
                                                             <span class="text-danger"
                                                                *ngIf="(orderForm.submitted) && dropOffLocation.errors?.required">
                                                                This Field is required
@@ -626,7 +670,7 @@
                                                          </div>
                                                          <div class="col-lg-3">
                                                             <div class="input-group">
-                                                               <input [(ngModel)]="receiverCurrent.dropOffDate"
+                                                               <input [(ngModel)]="item.receivers.dropOffDate"
                                                                   name="dropOffDate" (click)="d.toggle()" ngbDatepicker
                                                                   #d="ngbDatepicker" #dropOffDate="ngModel" required
                                                                   dropOffDate type="text" placeholder=""
@@ -639,7 +683,7 @@
                                                          </div>
                                                          <div class="col-lg-3">
                                                             <div class="input-group">
-                                                               <ngb-timepicker [(ngModel)]="receiverCurrent.dropOffTime"
+                                                               <ngb-timepicker [(ngModel)]="item.receivers.dropOffTime"
                                                                   name="dropOffTime" #dropOffTime="ngModel" required
                                                                   dropOffTime type="text" class="" placeholder=""
                                                                   [meridian]="meridian" [spinners]="spinners"
@@ -651,7 +695,7 @@
                                                             </span>
                                                          </div>
                                                          <!-- <div class="col-lg-3 mt-1">
-                                                           </div> -->
+                                                         </div> -->
                                                       </div>
                                                       <div class="row mt-3">
                                                          <div class="col-lg-3 labelalign">
@@ -660,7 +704,7 @@
                                                                for="inputDefault">Delivery Instruction</label>
                                                          </div>
                                                          <div class="col-lg-6">
-                                                            <textarea [(ngModel)]="receiverCurrent.dropOffInstruction"
+                                                            <textarea [(ngModel)]="item.receivers.dropOffInstruction"
                                                                name="dropOffInstruction" class="form-control" rows="3"
                                                                id="textareaDefault"
                                                                style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
@@ -675,7 +719,7 @@
                                                                for="inputDefault">Contact Person at Delivery</label>
                                                          </div>
                                                          <div class="col-lg-6">
-                                                            <input [(ngModel)]="receiverCurrent.contactPerson"
+                                                            <input [(ngModel)]="item.receivers.contactPerson"
                                                                name="contactPerson" type="text" class="form-control"
                                                                id="inputDefault">
                                                          </div>
@@ -689,7 +733,7 @@
                                                                for="inputDefault">Phone</label>
                                                          </div>
                                                          <div class="col-lg-6">
-                                                            <input [(ngModel)]="receiverCurrent.phone" name="phone"
+                                                            <input [(ngModel)]="item.receivers.phone" name="phone"
                                                                type="text" class="form-control" id="inputDefault">
                                                          </div>
                                                          <div class="col-lg-3 mt-1">
@@ -702,7 +746,7 @@
                                                                for="inputDefault">Reference</label>
                                                          </div>
                                                          <div class="col-lg-6">
-                                                            <input [(ngModel)]="receiverCurrent.reference"
+                                                            <input [(ngModel)]="item.receivers.reference"
                                                                name="reference" type="text" class="form-control"
                                                                id="inputDefault">
                                                          </div>
@@ -716,7 +760,7 @@
                                                                for="inputDefault">Notes</label>
                                                          </div>
                                                          <div class="col-lg-6">
-                                                            <input [(ngModel)]="receiverCurrent.notes" name="notes"
+                                                            <input [(ngModel)]="item.receivers.notes" name="notes"
                                                                type="text" class="form-control" id="inputDefault">
                                                          </div>
                                                          <div class="col-lg-3 mt-1">
@@ -730,12 +774,12 @@
                                                                for="inputDefault">Temperature Required</label>
                                                          </div>
                                                          <div class="col-lg-3">
-                                                            <input [(ngModel)]="receiverCurrent.minTemprature"
+                                                            <input [(ngModel)]="item.receivers.minTemprature"
                                                                name="minTemprature" type="text" class="form-control"
                                                                placeholder="From" id="inputDefault">
                                                          </div>
                                                          <div class="col-lg-2">
-                                                            <select [(ngModel)]="receiverCurrent.minTempratureUnit"
+                                                            <select [(ngModel)]="item.receivers.minTempratureUnit"
                                                                name="minTempratureUnit" data-plugin-selecttwo=""
                                                                class="form-control populate" data-select2-id="22"
                                                                tabindex="-1" aria-hidden="true">
@@ -756,12 +800,12 @@
                                                                for="inputDefault">&nbsp;</label>
                                                          </div>
                                                          <div class="col-lg-3">
-                                                            <input [(ngModel)]="receiverCurrent.maxTemprature"
+                                                            <input [(ngModel)]="item.receivers.maxTemprature"
                                                                name="maxTemprature" type="text" class="form-control"
                                                                placeholder="To" id="inputDefault">
                                                          </div>
                                                          <div class="col-lg-2">
-                                                            <select [(ngModel)]="receiverCurrent.maxTempratureUnit"
+                                                            <select [(ngModel)]="item.receivers.maxTempratureUnit"
                                                                name="maxTempratureUnit" data-plugin-selecttwo=""
                                                                class="form-control populate" data-select2-id="25"
                                                                tabindex="-1" aria-hidden="true">
@@ -783,7 +827,7 @@
                                                          </div>
                                                          <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
                                                             <div class="radio-custom">
-                                                               <input [(ngModel)]="receiverCurrent.driverUnload"
+                                                               <input [(ngModel)]="item.receivers.driverUnload"
                                                                   name="driverUnload" type="radio" value="yes"
                                                                   id="unloadyes" checked="">
                                                                <label for="radioExample1">Yes</label>
@@ -791,7 +835,7 @@
                                                          </div>
                                                          <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
                                                             <div class="radio-custom">
-                                                               <input [(ngModel)]="receiverCurrent.driverUnload"
+                                                               <input [(ngModel)]="item.receivers.driverUnload"
                                                                   name="driverUnload" type="radio" value="no"
                                                                   id="unloadno">
                                                                <label for="radioExample2">No</label>
@@ -802,7 +846,7 @@
                                                       <div class="divcenter mt-2">
                                                          <a href="javascript:;"
                                                             class="mb-1 mt-1 mr-1 btn btn-md btn-dark"
-                                                            (click)="saveReceiver()">Save</a>
+                                                            (click)="saveReceiver(i)">Save</a>
                                                       </div>
                                                    </div>
                                                 </section>
@@ -815,70 +859,19 @@
 
                                        </div>
                                     </div>
-                                 </div>
-                              </div>
-                           </div>
+                                 </ng-template>
+                              </ngb-panel>
+                           </ngb-accordion>
                         </div>
                      </div>
                   </div>
                   <div class="form-group row">
-                     <div class="col-lg-12 text-right"><button type="button" class="btn btn-success">Add More</button>
+                     <div class="col-lg-12 text-right">
+                        <button *ngIf="orderData.orderMode === 'LTL'" (click)="addAccordian()" type="button" class="btn btn-success">Add More</button>
+                        <button *ngIf="shippersReceivers.length > 1" (click)="removeAccordian()" type="button" class="btn btn-success">Remove</button>
                      </div>
                   </div>
-                  <div class="row">
-                     <div class="col-6">
-                        <div class="shipper__listing" *ngIf="orderData.shipperInfo?.length > 0">
-                           <h4 class="mt-0 text-dark font-weight-bold text-4">Shippers</h4>
-                           <table class="table">
-                              <tbody>
-
-                                 <tr *ngFor="let item of orderData.shipperInfo; let i = index;">
-                                    <td>
-                                       {{item.shipperName}}
-                                    </td>
-                                    <td>
-                                       {{item.pickupLocation}}
-                                    </td>
-                                    <td>
-                                       {{item.locationDateTime}}
-                                    </td>
-                                    <td>
-                                       <i (click)="editList('shipper', item, i)" class="fa fa-edit fa-fw"></i>
-                                       <i (click)="removeList('shipper', i)" class="fa fa-trash fa-fw"></i>
-                                    </td>
-                                 </tr>
-
-                              </tbody>
-                           </table>
-                        </div>
-                     </div>
-                     <div class="col-6">
-                        <div class="shipper__listing" *ngIf="orderData.receiverInfo?.length > 0">
-                           <h4 class="mt-0 text-dark font-weight-bold text-4">Receivers</h4>
-                           <table class="table">
-                              <tbody>
-
-                                 <tr *ngFor="let item of orderData.receiverInfo; let i = index;">
-                                    <td>
-                                       {{item.receiverName}}
-                                    </td>
-                                    <td>
-                                       {{item.dropOffLocation}}
-                                    </td>
-                                    <td>
-                                       {{item.locationDateTime}}
-                                    </td>
-                                    <td>
-                                       <i class="fa fa-edit fa-fw"></i>
-                                       <i (click)="removeList('receiver', i)" class="fa fa-trash fa-fw"></i>
-                                    </td>
-                                 </tr>
-
-                              </tbody>
-                           </table>
-                        </div>
-                     </div>
-                  </div>
+                 
 
 
 
@@ -1025,7 +1018,8 @@
                            </div>
                            <div class="col-lg-6">
                               <div class="checkbox-custom checkbox-default">
-                                 <input [(ngModel)]="orderData.additionalDetails.dropTrailer" name="dropTrailer"
+                                 <input (change)="checkTrailer($event.target.value)"
+                                    [(ngModel)]="orderData.additionalDetails.dropTrailer" name="dropTrailer"
                                     type="checkbox" id="droptrailer">
                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                     for="droptrailer">Drop Trailer</label>
@@ -1038,21 +1032,20 @@
 
 
 
-                        <div class="row mt-3">
+                        <div class="row mt-3" *ngIf="!orderData.additionalDetails.dropTrailer">
                            <div class="col-lg-3 labelalign">
                               <label class="control-label font-weight-semibold text-3 text-dark"
                                  for="inputDefault">Trailer Type</label>
                            </div>
                            <div class="col-lg-6">
-                              <select [disabled]="orderData.additionalDetails.dropTrailer"
-                                 [(ngModel)]="orderData.additionalDetails.trailerType" name="trailerType"
-                                 class="form-control populate" data-select2-id="49" tabindex="-1" aria-hidden="true">
-                                 <optgroup label="">
-                                    <option value="Refer" data-select2-id="51">Refer</option>
-                                    <option value="Dry Van">Dry Van</option>
-                                    <option value="Flat Bed">Flat Bed</option>
-                                 </optgroup>
-                              </select>
+                              <ng-select [(ngModel)]="orderData.additionalDetails.trailerType" name="trailerType"
+                                 class="form-control populate">
+
+                                 <ng-option value="Refer" data-select2-id="51">Refer</ng-option>
+                                 <ng-option value="Dry Van">Dry Van</ng-option>
+                                 <ng-option value="Flat Bed">Flat Bed</ng-option>
+
+                              </ng-select>
                            </div>
                            <div class="col-lg-3">
                            </div>
@@ -1133,22 +1126,22 @@
                                  for="inputDefault">Freight Fee</label>
                            </div>
                            <div class="col-lg-3 col-md-12">
-                              <select [(ngModel)]="orderData.charges.freightFee.type" name="type"
+                              <ng-select [(ngModel)]="orderData.charges.freightFee.type" name="type"
                                  data-plugin-selecttwo="" class="form-control populate" data-select2-id="52"
                                  tabindex="-1" aria-hidden="true">
-                                 <optgroup label="">
-                                    <option value="Flat Fee">Flat Fee</option>
-                                    <option value="Per Mile">Per Mile</option>
-                                    <option value="Bag">Bag</option>
-                                    <option value="Barrel">Barrel</option>
-                                    <option value="Basket">Basket</option>
-                                    <option value="Bin">Bin</option>
-                                    <option value="Box">Box</option>
-                                    <option value="Bucket">Bucket</option>
-                                    <option value="Can">Can</option>
-                                    <option value="Crate">Crate</option>
-                                 </optgroup>
-                              </select>
+
+                                 <ng-option value="Flat Fee">Flat Fee</ng-option>
+                                 <ng-option value="Per Mile">Per Mile</ng-option>
+                                 <ng-option value="Bag">Bag</ng-option>
+                                 <ng-option value="Barrel">Barrel</ng-option>
+                                 <ng-option value="Basket">Basket</ng-option>
+                                 <ng-option value="Bin">Bin</ng-option>
+                                 <ng-option value="Box">Box</ng-option>
+                                 <ng-option value="Bucket">Bucket</ng-option>
+                                 <ng-option value="Can">Can</ng-option>
+                                 <ng-option value="Crate">Crate</ng-option>
+
+                              </ng-select>
                            </div>
                            <div class="col-lg-2">
                               <div class="input-group mb-3">
@@ -1160,13 +1153,13 @@
                               </div>
                            </div>
                            <div class="col-lg-2">
-                              <select [(ngModel)]="orderData.charges.freightFee.currency" name="currency"
+                              <ng-select [(ngModel)]="orderData.charges.freightFee.currency" name="currency"
                                  class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
-                                 <optgroup label="">
-                                    <option value="CAD">CAD</option>
-                                    <option value="USD">USD</option>
-                                 </optgroup>
-                              </select>
+
+                                 <ng-option value="CAD">CAD</ng-option>
+                                 <ng-option value="USD">USD</ng-option>
+
+                              </ng-select>
                            </div>
                            <div class="col-lg-2">
                               <p class="text-right">$ <span [innerHTML]="freightFee">0.00</span> </p>
@@ -1179,21 +1172,21 @@
                                  for="inputDefault">Fuel Surcharge</label>
                            </div>
                            <div class="col-lg-3">
-                              <select [(ngModel)]="orderData.charges.fuelSurcharge.type" name="type"
+                              <ng-select [(ngModel)]="orderData.charges.fuelSurcharge.type" name="type"
                                  class="form-control populate" data-select2-id="55" tabindex="-1" aria-hidden="true">
-                                 <optgroup label="">
-                                    <option value="Flat Fee">Flat Fee</option>
-                                    <option value="Per Mile">Per Mile</option>
-                                    <option value="Bag">Bag</option>
-                                    <option value="Barrel">Barrel</option>
-                                    <option value="Basket">Basket</option>
-                                    <option value="Bin">Bin</option>
-                                    <option value="Box">Box</option>
-                                    <option value="Bucket">Bucket</option>
-                                    <option value="Can">Can</option>
-                                    <option value="Crate">Crate</option>
-                                 </optgroup>
-                              </select>
+
+                                 <ng-option value="Flat Fee">Flat Fee</ng-option>
+                                 <ng-option value="Per Mile">Per Mile</ng-option>
+                                 <ng-option value="Bag">Bag</ng-option>
+                                 <ng-option value="Barrel">Barrel</ng-option>
+                                 <ng-option value="Basket">Basket</ng-option>
+                                 <ng-option value="Bin">Bin</ng-option>
+                                 <ng-option value="Box">Box</ng-option>
+                                 <ng-option value="Bucket">Bucket</ng-option>
+                                 <ng-option value="Can">Can</ng-option>
+                                 <ng-option value="Crate">Crate</ng-option>
+
+                              </ng-select>
                            </div>
                            <div class="col-lg-2">
                               <div class="input-group mb-3">
@@ -1205,33 +1198,33 @@
                               </div>
                            </div>
                            <div class="col-lg-2">
-                              <select [(ngModel)]="orderData.charges.fuelSurcharge.currency" name="currency"
+                              <ng-select [(ngModel)]="orderData.charges.fuelSurcharge.currency" name="currency"
                                  class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
-                                 <optgroup label="">
-                                    <option value="CAD">CAD</option>
-                                    <option value="USD">USD</option>
-                                 </optgroup>
-                              </select>
+
+                                 <ng-option value="CAD">CAD</ng-option>
+                                 <ng-option value="USD">USD</ng-option>
+
+                              </ng-select>
                            </div>
                            <div class="col-lg-2">
                               <p class="text-right">$ <span [innerHTML]="fuelSurcharge">0.00 </span></p>
                            </div>
                         </div>
-                        <div class="row mt-3">
+                        <div class="row mt-3" *ngFor="let item of accessFees; let i = index;">
                            <div class="col-lg-3 labelalign">
                               <label class="control-label font-weight-semibold text-3 text-dark"
-                                 for="inputDefault">Accessorial Fee</label>
+                                 for="inputDefault"> Accessorial Fee</label>
                            </div>
                            <div class="col-lg-3">
-                              <select [(ngModel)]="orderData.charges.accessorialFee.type" name="type"
+                              <ng-select [(ngModel)]="item.type" name="type{{i}}"
                                  class="form-control populate" data-select2-id="58" tabindex="-1" aria-hidden="true">
-                                 <optgroup label="">
-                                    <option value="Stop Off" data-select2-id="60">Stop Off</option>
-                                    <option value="Lumper">Lumper</option>
-                                    <option value="Detention">Detention</option>
-                                    <option value="Tarp">Tarp</option>
-                                 </optgroup>
-                              </select>
+
+                                 <ng-option value="Stop Off" data-select2-id="60">Stop Off</ng-option>
+                                 <ng-option value="Lumper">Lumper</ng-option>
+                                 <ng-option value="Detention">Detention</ng-option>
+                                 <ng-option value="Tarp">Tarp</ng-option>
+
+                              </ng-select>
                            </div>
                            <div class="col-lg-2">
                               <div class="input-group mb-3">
@@ -1239,39 +1232,41 @@
                                     <span class="input-group-text pt-0 pb-0">$</span>
                                  </span>
                                  <input (keyup)="amountCalculate()"
-                                    [(ngModel)]="orderData.charges.accessorialFee.amount" name="amount" type="text"
+                                    [(ngModel)]="item.amount" name="amount{{i}}" type="text"
                                     class="form-control" placeholder="0.00">
                               </div>
                            </div>
                            <div class="col-lg-2">
-                              <select [(ngModel)]="orderData.charges.accessorialFee.currency" name="currency"
+                              <ng-select [(ngModel)]="item.currency" name="currency{{i}}"
                                  class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
-                                 <optgroup label="">
-                                    <option value="CAD">CAD</option>
-                                    <option value="USD">USD</option>
-                                 </optgroup>
-                              </select>
+
+                                 <ng-option value="CAD">CAD</ng-option>
+                                 <ng-option value="USD">USD</ng-option>
+
+                              </ng-select>
                            </div>
                            <div class="col-lg-2">
-                              <p class="text-right">$ <span [innerHTML]="accessorialFee">0.00 </span></p>
+                              <p class="text-right">$ <span>{{accessorialFee}} </span></p>
                            </div>
                         </div>
-                        <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Accessorial Fee</a>
-                        <div class="row mt-3">
+                        <a class="btn btn-success btn-sm" (click)="addAccessFee('accessFee')" href="javascript:;"><i class="fas fa-plus"></i> 
+                           Add Accessorial Fee</a>
+
+                        <div class="row mt-3" *ngFor="let item of accessDeduction; let i = index;" >
                            <div class="col-lg-3 labelalign">
                               <label class="control-label font-weight-semibold text-3 text-dark"
                                  for="inputDefault">Accessorial Deduction</label>
                            </div>
                            <div class="col-lg-3">
-                              <select [(ngModel)]="orderData.charges.accessorialDeduction.type" name="type"
+                              <ng-select [(ngModel)]="item.type" name="type{{i}}"
                                  class="form-control populate" data-select2-id="61" tabindex="-1" aria-hidden="true">
-                                 <optgroup label="">
-                                    <option value="Stop Off" data-select2-id="63">Stop Off</option>
-                                    <option value="Lumper">Lumper</option>
-                                    <option value="Detention">Detention</option>
-                                    <option value="Tarp">Tarp</option>
-                                 </optgroup>
-                              </select>
+
+                                 <ng-option value="Stop Off" data-select2-id="63">Stop Off</ng-option>
+                                 <ng-option value="Lumper">Lumper</ng-option>
+                                 <ng-option value="Detention">Detention</ng-option>
+                                 <ng-option value="Tarp">Tarp</ng-option>
+
+                              </ng-select>
                            </div>
                            <div class="col-lg-2">
                               <div class="input-group mb-3">
@@ -1279,25 +1274,25 @@
                                     <span class="input-group-text pt-0 pb-0">$</span>
                                  </span>
                                  <input (keyup)="amountCalculate()"
-                                    [(ngModel)]="orderData.charges.accessorialDeduction.amount" name="amount"
+                                    [(ngModel)]="item.amount" name="amount{{i}}"
                                     type="text" class="form-control" placeholder="0.00">
                               </div>
                            </div>
                            <div class="col-lg-2">
-                              <select [(ngModel)]="orderData.charges.accessorialDeduction.unit" name="unit"
+                              <ng-select [(ngModel)]="item.currency" name="currency{{i}}"
                                  data-plugin-selecttwo="" class="form-control populate" data-select2-id="52"
                                  tabindex="-1" aria-hidden="true">
-                                 <optgroup label="">
-                                    <option value="CAD">CAD</option>
-                                    <option value="USD">USD</option>
-                                 </optgroup>
-                              </select>
+
+                                 <ng-option value="CAD">CAD</ng-option>
+                                 <ng-option value="USD">USD</ng-option>
+
+                              </ng-select>
                            </div>
                            <div class="col-lg-2">
-                              <p class="text-right">$ <span [innerHTML]="accessorialDeduction">0.00 </span></p>
+                              <p class="text-right">$ <span [innerHTML]="accessorialDeduction">amount{{i}} </span></p>
                            </div>
                         </div>
-                        <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Accessorial
+                        <a class="btn btn-success btn-sm" href="javascript:;" (click)="addAccessFee('accessDeduct')"><i class="fas fa-plus"></i> Add Accessorial
                            Deduction</a>
 
                         <div class="row">
@@ -1308,23 +1303,17 @@
                                        1</label>
                                  </div>
                                  <div class="col-lg-2">
-                                    <input [(ngModel)]="orderData.taxesInfo.name" name="name" type="text"
-                                       class="form-control" value="GST">
+                                    <input type="text" class="form-control" value="GST">
                                  </div>
-                                 <div class="col-lg-2 pl-0">
-                                    <input [(ngModel)]="orderData.taxesInfo.amount" name="amount"
-                                       (keyup)="taxCalculate($event.target.value)" type="text" class="form-control"
-                                       value="13">
-                                 </div>
-                                 <div class="col-lg-2 pl-0">
-                                    <select (change)="taxCalculate($event.target.value)"
-                                       [(ngModel)]="orderData.taxesInfo.unit" name="unit" class="form-control populate">
-                                       <optgroup label="">
-                                          <option selected value="percentage">%</option>
-                                          <option value="CAD">CAD</option>
-                                          <option value="USD">USD</option>
-                                       </optgroup>
-                                    </select>
+                                 <div class="col-lg-2 pr-0 pl-0">
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" placeholder="0.00">
+                                       <span class="input-group-append">
+                                          <span class="input-group-text pt-0 pb-0">
+                                             %
+                                          </span>
+                                       </span>
+                                    </div>
                                  </div>
                               </div>
                               <div class="row mt-3">
@@ -1335,17 +1324,15 @@
                                  <div class="col-lg-2">
                                     <input type="text" class="form-control" value="PST">
                                  </div>
-                                 <div class="col-lg-2 pl-0">
-                                    <input type="text" class="form-control" value="5">
-                                 </div>
-                                 <div class="col-lg-2 pl-0">
-                                    <select data-plugin-selectTwo class="form-control populate">
-                                       <optgroup label="">
-                                          <option selected value="percentage">%</option>
-                                          <option value="CAD">CAD</option>
-                                          <option value="USD">USD</option>
-                                       </optgroup>
-                                    </select>
+                                 <div class="col-lg-2 pr-0 pl-0">
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" placeholder="0.00">
+                                       <span class="input-group-append">
+                                          <span class="input-group-text pt-0 pb-0">
+                                             %
+                                          </span>
+                                       </span>
+                                    </div>
                                  </div>
                               </div>
                               <div class="row mt-3">
@@ -1356,17 +1343,15 @@
                                  <div class="col-lg-2">
                                     <input type="text" class="form-control" value="HST">
                                  </div>
-                                 <div class="col-lg-2 pl-0">
-                                    <input type="text" class="form-control" value="0">
-                                 </div>
-                                 <div class="col-lg-2 pl-0">
-                                    <select data-plugin-selectTwo class="form-control populate">
-                                       <optgroup label="">
-                                          <option selected value="percentage">%</option>
-                                          <option value="CAD">CAD</option>
-                                          <option value="USD">USD</option>
-                                       </optgroup>
-                                    </select>
+                                 <div class="col-lg-2 pr-0 pl-0">
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" placeholder="0.00">
+                                       <span class="input-group-append">
+                                          <span class="input-group-text pt-0 pb-0">
+                                             %
+                                          </span>
+                                       </span>
+                                    </div>
                                  </div>
                               </div>
                               <div class="row mt-3">
@@ -1380,15 +1365,15 @@
                                        class="form-control" value="0">
                                  </div>
                                  <div class="col-lg-2 pl-0">
-                                    <select (change)="discountCalculate($event.target.value)"
+                                    <ng-select (change)="discountCalculate($event.target.value)"
                                        [(ngModel)]="orderData.discount.unit" name="unit" data-plugin-selectTwo
                                        class="form-control populate">
-                                       <optgroup label="">
-                                          <option selected value="percentage">%</option>
-                                          <option value="CAD">CAD</option>
-                                          <option value="USD">USD</option>
-                                       </optgroup>
-                                    </select>
+
+                                       <ng-option selected value="percentage">%</ng-option>
+                                       <ng-option value="CAD">CAD</ng-option>
+                                       <ng-option value="USD">USD</ng-option>
+
+                                    </ng-select>
                                  </div>
                               </div>
                            </div>
@@ -1439,35 +1424,26 @@
 
                         <div class="col-lg-12 bordall">
                            <h5 class="font-weight-semibold text-4 text-dark">Miles</h5>
-                           <h5 class="text-4 text-dark mb-3">Calculated Using</h5>
+                           <h5 *ngIf="orderData.orderMode === 'FTL'" class="text-4 text-dark mb-3">Calculated Using</h5>
 
 
                            <div class="col-lg-12 mb-3">
-                              <!-- <div class="btn-group-toggle" data-toggle="buttons">
-                                 <label class="btn btn-outline btn-fleet mr-2 mb-2" style="width:130px;">
-                                    <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
-                                       value="google"> Google Miles</label>
-                                 <br>
-                                 <label class="btn btn-outline btn-fleet mr-2 mb-2" style="width:130px;">
-                                    <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
-                                       value="pcmiles"> PC Miles</label>
-                                 <br>
-                                 <label class="btn btn-outline btn-fleet mr-2 mb-2 active" style="width:130px;">
-                                    <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
-                                       value="manual"> Manual</label>
-                              </div> -->
-                              <label class="d-block">
-                                 <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect"
-                                    type="radio" name="calculateMiles" value="google"> Google Miles
-                              </label>
-                              <label class="d-block">
-                                 <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect"
-                                    type="radio" name="calculateMiles" value="pcmiles"> PC Miles
-                              </label>
-                              <label class="d-block">
-                                 <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect"
-                                    type="radio" name="calculateMiles" value="manual"> Manual
-                              </label>
+
+                              <div class="btn-group-toggle btn-group-vertical" data-toggle="buttons">
+                                 <label *ngIf="orderData.orderMode === 'FTL'" class="btn btn-outline btn-fleet mr-2" [class.active]="calculateBy === 'google'"
+                                    style="width:110px;" (click)="getMiles('google')">
+                                    <input type="radio" [(ngModel)]="orderData.milesInfo.calculateBy" name="calculateBy"
+                                       checked hidden value="google"> Google Miles </label>
+                                 <label *ngIf="orderData.orderMode === 'FTL'" class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
+                                    [class.active]="calculateBy === 'pcmiles'" (click)="getMiles('pcmiles')">
+                                    <input type="radio" [(ngModel)]="orderData.milesInfo.calculateBy" name="calculateBy"
+                                       hidden value="pcmiles"> PC Miles </label>
+                                 <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
+                                    [class.active]="calculateBy === 'manual'" (click)="getMiles('manual')">
+                                    <input type="radio" [(ngModel)]="orderData.milesInfo.calculateBy" name="calculateBy"
+                                       hidden value="manual"> manual </label>
+                              </div>
+
                            </div>
 
 
@@ -1476,7 +1452,7 @@
                            <div class="col-lg-12 mb-3">
                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                  for="inputDefault">Total Miles</label>
-                              <input type="text" [(ngModel)]="orderData.totalMiles" name="totalMiles"
+                              <input type="text" [(ngModel)]="orderData.milesInfo.totalMiles" name="totalMiles"
                                  class="form-control">
                            </div>
                         </div>
@@ -1498,7 +1474,8 @@
 
                   <div class="form-group row">
                      <div class="col-lg-12">
-                        <a href="#" class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a>
+                        <a href="javascript:;" routerLink="dispatch/orders"
+                           class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a>
                         <button type="submit" class="btn btn-dark modal-confirm">Create Load</button>
                      </div>
                   </div>
