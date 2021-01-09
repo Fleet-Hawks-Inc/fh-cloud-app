@@ -13,7 +13,7 @@
         <div class="right-wrapper text-right pt-2 pr-2">
             <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default mr-1 btn-sm"><i
                         class="fas fa-list"></i> ACE Manifests</a>
-            <a href="javascript:;" class="btn btn-success btn-sm mr-1" style="color:white;" (click)="sendCBPFn()"> Send to CBP</a>
+           
             <div class="btn-group btn-group1 flex-wrap mr-1">
                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Set Status<span class="caret"></span></button>
                 <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -29,7 +29,7 @@
                     <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Released')">Released</a>
                 </div>
             </div>
-            <div class="btn-group btn-group1 flex-wrap">
+            <div class="btn-group btn-group1 flex-wrap mr-1">
                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                 <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                     <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="dropdown-item text-1">Edit</a>
@@ -39,6 +39,7 @@
                     <a class="dropdown-item text-1" href="">Export</a>
                 </div>
             </div>
+            <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" (click)="sendCBPFn()"> Send to CBP</a>
         </div>
         </header>
         <div class="ace-main__wrapper p-4 bg-white">
@@ -74,7 +75,7 @@
                               </tr>                        
                               <tr>
                                 <th width="40%" class="back-color-gray">Last Edited:</th>
-                                <td>June 3, 2020 By Demo User</td>
+                                <td>{{timeModified}} By Demo User</td>
                             </tr>
                           </tbody>
                          </table>
@@ -96,7 +97,7 @@
                             </div>
                         </div>
                         <div class="card-body border">
-                            <table class="table  table-responsive-md table-bordered table-striped mb-0" id="">
+                            <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
                                         <th>Sr.</th>
@@ -273,7 +274,7 @@
                         <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                             <h4 class="m-0 ">ACE Shipments on <b>{{tripNumber}}</b></h4>
                             <div class=" pull-right">
-                                <button class="btn btn-success btn-sm"> Set Shipment Status</button>
+                                <button class="btn btn-success btn-sm mr-1"> Set Shipment Status</button>
                                 <!-- <button class="btn btn-success btn-sm"> Send to CBP</button> -->
                                 <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Create New Shipment</a>
                             </div>
@@ -306,8 +307,8 @@
                                             {{shipment.consignee.name}}<br>{{shipment.consignee.address.addressLine}} {{shipment.consignee.address.city}} {{shipment.consignee.address.stateProvince}} {{shipment.consignee.address.postalCode}}
 
                                         </td>
-                                        <td>{{shipment.commodities.totalCommodities}}</td>
-                                        <td>{{shipment.totalQuantity}}</td>
+                                        <td>{{shipment.commodities.length}}</td>
+                                        <td><span *ngFor = "let commodity of shipment.commodities">{{commodity.quantity}}{{commodity.packagingUnit}},</span></td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->

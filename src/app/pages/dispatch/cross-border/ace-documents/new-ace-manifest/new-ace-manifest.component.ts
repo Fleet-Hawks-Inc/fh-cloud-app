@@ -98,15 +98,10 @@ export class NewAceManifestComponent implements OnInit {
  
   vehicles = [];
   assets = [];
-  trips = [];
   drivers = [];
   shippers = [];
   consignees = [];
   brokers = [];
-  data: string;
-  sendId: string;
-  companyKey: string;
-  operation: string;
   usPortOfArrival: string;
   estimatedArrivalDateTime: string;
   addTruckSealBtn = true;
@@ -117,16 +112,11 @@ export class NewAceManifestComponent implements OnInit {
   assetsArray = [
     {
       assetID: '',
-      sealNumbers: [{sealNumber:''}],
+      sealNumbers: [],
     }];
   addTrailerSealBtn = true;  
-  vehicleNumber: string;
-  vehicleType: string;
-  vinNumber: string;
-  LicencePlatenumber: string;
   truckSealDiv = false;
   truckIITDiv = false;  
-  ETA: string;
   estimatedArrivalDate: string;
   estimatedArrivalTime: string;
   driverArray = [];  
@@ -138,14 +128,14 @@ export class NewAceManifestComponent implements OnInit {
   Error = '';
   Success = '';
   USports: any = [];
+  addressStates:any = [];
+  addressCities: any = [];
   documentTypeList: any = [];
   shipmentTypeList: any = [];
   brokersList: any = [];
   timeList: any = [];
   tripNumber: string;
-  SCAC: string; 
-  
-  shipmentInput: string;
+  SCAC: string;  
   shipmentControlNumber: string;
   provinceOfLoading: string;
   states: any = [];
@@ -204,6 +194,13 @@ export class NewAceManifestComponent implements OnInit {
       }]
     }
   ];
+  usAddress = {
+    addressLine: '',
+    city: '',
+    state: '',
+    zipCode: ''
+    }
+  
   ngOnInit() {
     this.entryID = this.route.snapshot.params[`entryID`];
     if (this.entryID) {
@@ -221,6 +218,7 @@ export class NewAceManifestComponent implements OnInit {
     this.fetchConsignees();
     this.fetchBrokers();
     this.getStates();
+    this.getUSStates();
     this.httpClient.get('assets/USports.json').subscribe(data => {
       this.USports = data;
     });
@@ -248,6 +246,24 @@ export class NewAceManifestComponent implements OnInit {
       this.assets = result.Items;
     });
   }
+  getStates() {
+    this.apiService.getData('states/getCanadianStates')
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
+getUSStates(){
+  this.apiService.getData('states/getUSStates')
+  .subscribe((result: any) => {
+    this.addressStates = result.Items;
+  });
+}
+getAddressCities() { 
+  this.apiService.getData('cities/state/' + this.usAddress.state)
+    .subscribe((result: any) => {
+      this.addressCities = result.Items;
+    });
+}
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
       this.drivers = result.Items;
@@ -442,13 +458,7 @@ deleteTrailer(i: number) {
   deleteCommodity(i: number, s: number) {
     this.shipments[s].commodities.splice(i, 1);
   }
-  getStates() {
-    this.apiService.getData('states/getCanadianStates')
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
-  }
-
+ 
   addACEManifest() {
     const data = {
       SCAC: this.SCAC,
@@ -459,6 +469,7 @@ deleteTrailer(i: number) {
       truck: this.truck,
       trailers: this.assetsArray,
       drivers: this.driverArray,
+      usAddress: this.usAddress,
       passengers: this.passengers,
       shipments: this.shipments, 
       currentStatus: 'DRAFT'
@@ -525,9 +536,14 @@ deleteTrailer(i: number) {
           this.driverArray = result.drivers;
           this.assetsArray = result.trailers;
           this.passengers = result.passengers;
-          this.shipments = result.shipments       
+          this.shipments = result.shipments;
+          this.usAddress[`addressLine`] = result.usAddress.addressLine,
+          this.usAddress[`state`] = result.usAddress.state,
+          this.usAddress[`city`] = result.usAddress.city,
+          this.usAddress[`zipCode`] = result.usAddress.zipCode,
           setTimeout(() => {
             this.getStates();
+            this.getAddressCities();
           }, 2000);
       });
   }
@@ -545,7 +561,8 @@ deleteTrailer(i: number) {
       drivers: this.driverArray,
       passengers: this.passengers,
       shipments: this.shipments, 
-      currentStatus: 'DRAFT'
+      currentStatus: 'DRAFT',
+      usAddress: this.usAddress
     };
     this.apiService.putData('ACEeManifest', data).subscribe({
       complete: () => { },

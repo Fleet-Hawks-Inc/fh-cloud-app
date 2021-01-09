@@ -36,6 +36,7 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
   vehicleList: any = {};
   tripList: any = {};
   assetList: any = {};
+  driverList: any  = {};
   countries = [];
   checked = false;
   isChecked = false;
@@ -46,7 +47,6 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
   formattedFromDate: any = '';
   formattedToDate: any = '';
   fuelList = [];
-  // dtOptions: any = {};
   suggestedUnits = [];
   vehicleID = '';
   amount = '';
@@ -72,7 +72,8 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
     this.fetchAssetList();
     this.fetchCountries();
     this.fetchTripList();
-    this.initDataTable()
+    this.fetchDriverList();
+    this.initDataTable();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -128,9 +129,19 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       this.assetList = result;
     });
   }
+  fetchDriverList() {
+    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+      this.driverList = result;
+    });
+  }
   fetchTripList() {
     this.apiService.getData('trips/get/list').subscribe((result: any) => {
       this.tripList = result;
+    });
+  }
+  fetchCountries() {
+    this.apiService.getData('countries').subscribe((result: any) => {
+      this.countries = result.Items;
     });
   }
   fuelEntries() {
@@ -145,18 +156,7 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       },
     });
     this.unitID = '';
-  }
-  getVehicleName(ID) {
-    const vehicleName: any = this.vehicles.filter( (el) => {
-      return el.vehicleID === ID;
-    });
-    return vehicleName.vehicleName;
-  }
-  fetchCountries() {
-    this.apiService.getData('countries').subscribe((result: any) => {
-      this.countries = result.Items;
-    });
-  }
+  } 
   showTopValues() {
 
     const data = {
@@ -186,7 +186,7 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        { "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32], "orderable": false },
+        { "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12], "orderable": false },
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
