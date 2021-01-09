@@ -197,11 +197,10 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
       $("#searchVehicle").text(event.target.innerText);
     } else if(type === 'date') {
       if(this.filterValue.date !== '') {
-        this.filterValue.filterDateStart = moment(this.filterValue.date+' 00:00:01').format("X");
-        this.filterValue.filterDateEnd = moment(this.filterValue.date+' 23:59:59').format("X");
-        // console.log('this.filterValue')
-        // console.log(this.filterValue)
-
+        let date = this.filterValue.date;
+        let newdate = date.split('-').reverse().join('-');
+        this.filterValue.filterDateStart = moment(newdate+' 00:00:01').format("X");
+        this.filterValue.filterDateEnd = moment(newdate+' 23:59:59').format("X");
         this.filterValue.filterDateStart = this.filterValue.filterDateStart*1000;
         this.filterValue.filterDateEnd = this.filterValue.filterDateEnd*1000;
       }
@@ -218,6 +217,7 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   getSuggestions(searchvalue='') {
     if(searchvalue !== '') {
+      searchvalue = searchvalue.toLowerCase();
       this.apiService.getData('drivers/get/suggestions/'+searchvalue).subscribe({
         complete: () => {},
         error: () => { },
