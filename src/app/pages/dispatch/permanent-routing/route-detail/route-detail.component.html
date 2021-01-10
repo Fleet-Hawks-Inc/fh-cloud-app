@@ -1,33 +1,41 @@
-
+<style>
+    .mapclass {
+        height: 400px;
+    }
+</style>
 <section class="body">
     <!-- start: header -->
     <app-header></app-header>
     <!-- end: header -->
-  
+
     <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <app-sidebar></app-sidebar>
-      <!-- end: sidebar -->
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
 
         <section role="main" class="content-body">
             <header class="page-header pr-5">
-            
+
                 <div class="row pr-1 mr-1" style="padding-top:10px;">
                     <div class="col-md-2 col-lg-2">
-                       <h4 class="text-4 mt-0 mb-0 text-dark">{{ pageTitle }}</h4>
+                        <h4 class="text-4 mt-0 mb-0 text-dark">{{ pageTitle }}</h4>
                     </div>
                     <div class="col-md-10 col-lg-10 text-right pr-1">
-                        <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/quotes/add"><i class="fas fa-plus"></i> Estimate</a>
-                        <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/orders/add"><i class="fas fa-plus"></i> Order</a>
-                        <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/trips/add-trip"><i class="fas fa-plus"></i> Trip</a>
-                        <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" routerLink="/dispatch/routes/add-route"><i class="fas fa-plus"></i> Permanent Route</a>
+                        <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
+                            routerLink="/dispatch/quotes/add"><i class="fas fa-plus"></i> Estimate</a>
+                        <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
+                            routerLink="/dispatch/orders/add"><i class="fas fa-plus"></i> Order</a>
+                        <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
+                            routerLink="/dispatch/trips/add-trip"><i class="fas fa-plus"></i> Trip</a>
+                        <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;"
+                            routerLink="/dispatch/routes/add"><i class="fas fa-plus"></i> Permanent Route</a>
                     </div>
-                 </div>
+                </div>
 
             </header>
             <div class="routing-overview__wrapper m-3">
-            <div class="row">
-                <div class="col-3 pr-2 mb-4">
+                <div class="row">
+                    <div class="col-3 pr-2 mb-4">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
                                 <h4 class="m-0">Route#</h4>
@@ -37,8 +45,8 @@
                                 <i class="fas fa-route fa-fw text-dark" style="font-size:20px;"></i>
                             </div>
                         </div>
-                        </div>
-                        <div class="col-3 pl-2 mb-4">
+                    </div>
+                    <div class="col-3 pl-2 mb-4">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
                                 <h4 class="m-0">Route Name</h4>
@@ -48,9 +56,9 @@
                                 <i class="fas fa-route text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
                         </div>
-                        </div>
-                        
-                        <div class="col-3 pr-2 mb-4">
+                    </div>
+
+                    <div class="col-3 pr-2 mb-4">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
                                 <h4 class="m-0">Recuring</h4>
@@ -60,8 +68,8 @@
                                 <i class="far fa-clock text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
                         </div>
-                        </div>
-                        <div class="col-3 pl-2 mb-4">
+                    </div>
+                    <div class="col-3 pl-2 mb-4">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
                                 <h4 class="m-0">Notes</h4>
@@ -71,9 +79,9 @@
                                 <i class="far fa-file-alt text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
                         </div>
-                        </div>
-                        
-                        <div class="col-3 pr-2 mb-4">
+                    </div>
+
+                    <div class="col-3 pr-2 mb-4">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
                                 <h4 class="m-0">Vehicle</h4>
@@ -83,8 +91,8 @@
                                 <i class="fas fa-truck fa-fw text-dark" style="font-size:20px;"></i>
                             </div>
                         </div>
-                        </div>
-                        <div class="col-3 pl-2 mb-4">
+                    </div>
+                    <div class="col-3 pl-2 mb-4">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
                                 <h4 class="m-0">Asset</h4>
@@ -94,9 +102,9 @@
                                 <i class="fas fa-box text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
                         </div>
-                        </div>
-                        
-                        <div class="col-3 pr-2 mb-4">
+                    </div>
+
+                    <div class="col-3 pr-2 mb-4">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
                                 <h4 class="m-0">Driver</h4>
@@ -106,8 +114,8 @@
                                 <i class="far fa-user text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
                         </div>
-                        </div>
-                        <div class="col-3 pl-2 mb-4">
+                    </div>
+                    <div class="col-3 pl-2 mb-4">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
                                 <h4 class="m-0">Co-Driver</h4>
@@ -117,39 +125,42 @@
                                 <i class="far fa-user text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
                         </div>
-                        </div>
-                    
+                    </div>
 
-                        <div class="col-6 pl-2 mb-4">
+
+                    <div class="col-6 pl-2 mb-4">
                         <div class="bg-white p-3 d-flex text-dark">
                             <div class="grey-bg pull-left p-4" style="color: #979797;">
                                 <i class="fas fa-map-marker-alt text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
-                            
+
                             <div class="pull-left ml-3">
                                 <h4 class="m-0">Source Details</h4>
-                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ sourceAddress+' '+sourceCityName+' '+sourceStateName+' '+sourceCountryName+' '+sourceZipcode }}</h3>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ sourceAddress+' '+sourceCityName+'
+                                    '+sourceStateName+' '+sourceCountryName+' '+sourceZipcode }}</h3>
                             </div>
-                            
+
                         </div>
-                        </div>
-                        
-                        <div class="col-6 pl-2 mb-4">
+                    </div>
+
+                    <div class="col-6 pl-2 mb-4">
                         <div class="bg-white p-3 d-flex text-dark">
                             <div class="grey-bg pull-left p-4" style="color: #979797;">
                                 <i class="fas fa-map-marker-alt text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
-                            
+
                             <div class="pull-left ml-3">
                                 <h4 class="m-0">Destination Details</h4>
-                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ destinationAddress+' '+destinationCityName+' '+destinationStateName+' '+destinationCountryName+' '+destinationZipcode }}</h3>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ destinationAddress+'
+                                    '+destinationCityName+' '+destinationStateName+' '+destinationCountryName+'
+                                    '+destinationZipcode }}</h3>
                             </div>
-                            
+
                         </div>
-                        </div>
-                        
-                        
-                        <!-- <div class="col-12 pl-2 mb-4">
+                    </div>
+
+
+                    <!-- <div class="col-12 pl-2 mb-4">
                             <div class="bg-white p-3">
                                 <div class="mapclass vehiclemain" id="map_view">
                                     <div id="map" class=""></div>
@@ -157,27 +168,29 @@
                             </div>
                         </div> -->
 
-                        <div class="col-lg-12 pl-2 mb-4">
-                            <div class="mapclass vehiclemain" id="map_view">
-                                <div id="map" class=""></div>
-                            </div>
+                    <div class="col-lg-12 pl-2 mb-4">
+                        <div class="mapclass vehiclemain" id="map_view">
+                            <div id="map" class=""></div>
                         </div>
-                        
-                        
-                        <div class="col-12 pl-2 mb-4">
+                    </div>
+
+
+                    <div class="col-12 pl-2 mb-4">
                         <div class="bg-white p-3 d-flex text-dark">
                             <div class="grey-bg pull-left p-4" style="color: #979797;">
                                 <i class="fas fa-map-marker-alt text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
-                            
+
                             <div class="pull-left ml-3">
                                 <h4 class="m-0">Stop Details</h4>
-                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold" *ngFor="let data of stopInformation; let i=index;">Stop {{i+1}}: {{ data.stopName }}</h3>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold"
+                                    *ngFor="let data of stopInformation; let i=index;">Stop {{i+1}}: {{ data.stopName }}
+                                </h3>
                             </div>
-                            
+
                         </div>
-                        </div>
-            </div>
+                    </div>
+                </div>
             </div>
         </section>
     </div>

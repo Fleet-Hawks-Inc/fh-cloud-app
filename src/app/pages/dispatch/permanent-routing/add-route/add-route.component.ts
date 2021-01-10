@@ -363,17 +363,7 @@ export class AddRouteComponent implements OnInit {
       this.routeData.stops.splice(1, 1);
       this.routeData.stops.splice(1, 0, item);
     } else {
-      this.routeData.stops[index]['stopName'] = '';
-      
-      this.routeData.stops[index]['stopName'] = `${labelResult.title}`;
-
-      if(labelResult.address.houseNumber !== undefined) {
-        this.routeData.stops[index]['stopName'] += `${labelResult.address.houseNumber}`;
-      }
-
-      if(labelResult.address.street !== undefined) {
-        this.routeData.stops[index]['stopName'] += `${labelResult.address.street}`;
-      }
+      this.routeData.stops[index]['stopName'] = label;
     }
     this.searchResults = false;
     this.reinitMap();
@@ -471,10 +461,10 @@ export class AddRouteComponent implements OnInit {
         // show map route
         this.destinationStop = true;
         this.mapVisible = true;
-        this.mapShow()
         if (result.stops.length > 1) {
           this.getCoords(result.stops);
         }
+        this.mapShow()
 
         this.spinner.hide();
       })
@@ -550,7 +540,6 @@ export class AddRouteComponent implements OnInit {
   }
 
   reinitMap() {
-    this.mapVisible = true;
     if (this.routeData.stops.length > 1) {
       this.getCoords(this.routeData.stops);
     }
