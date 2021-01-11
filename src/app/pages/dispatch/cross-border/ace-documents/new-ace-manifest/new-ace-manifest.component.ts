@@ -94,6 +94,7 @@ export class NgbTimeStringAdapter extends NgbTimeAdapter<string> {
 })
 export class NewAceManifestComponent implements OnInit {
   public entryID;
+  sendId;
   title = 'Add ACE e-Manifest'; 
  
   vehicles = [];
@@ -526,6 +527,7 @@ deleteTrailer(i: number) {
       .subscribe((result: any) => {
         result = result.Items[0];
         this.entryID = this.entryID;
+        this.sendId = result.sendId;
         this.timeCreated =  result.timeCreated;
           this.SCAC = result.SCAC;
           this.tripNumber = result.tripNumber;
@@ -551,6 +553,7 @@ deleteTrailer(i: number) {
     const data = {
       entryID: this.entryID,
       timeCreated: this.timeCreated,
+      sendId: this.sendId,
       SCAC: this.SCAC,
       tripNumber: this.tripNumber,
       usPortOfArrival: this.usPortOfArrival,
