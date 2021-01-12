@@ -31,7 +31,7 @@
                       <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(7)"  [ngClass]="{'active': activeTab == 7}" >Engine & Transmission</a> </li>
                       <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(8)"  [ngClass]="{'active': activeTab == 8}" >Purchase</a> </li>
                       <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(9)" [ngClass]="{'active': activeTab == 9}" >Loan</a> </li>
-                      <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(10)" [ngClass]="{'active': activeTab == 10}">Settings</a> </li>
+                      <!-- <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(10)" [ngClass]="{'active': activeTab == 10}">Settings</a> </li> -->
                    </ul>
                 </div>
  
@@ -1631,7 +1631,7 @@
                          </div>
                       </div>
                       <!-- setting -->
-                      <div [ngClass]="{'show active': activeTab == 10}" class="tab-pane fade" id="vsettings" role="tabpanel" aria-labelledby="vsettings-tab">
+                      <!-- <div [ngClass]="{'show active': activeTab == 10}" class="tab-pane fade" id="vsettings" role="tabpanel" aria-labelledby="vsettings-tab">
                          <div>
                             <div class="row pt-3">
                                <div class="col-lg-5">
@@ -1727,7 +1727,7 @@
                                </div>
                             </div>
                          </div>
-                      </div>
+                      </div> -->
                    </div>
                    <div class="form-group row">
                      <div class="col-lg-12">
@@ -1741,10 +1741,10 @@
                 <div class="form-group row mt-3">
                   <div class="col-lg-12 pr-5 text-right pb-4">
                      <button *ngIf="activeTab != 1" type="button" (click)="previous()" class="btn btn-default mr-2 mt-4">Previous</button>
-                     <a *ngIf="activeTab != 10" [routerLink]="" (click)="next()" class="btn btn-success mt-4">Next</a>
-                     <button type="button" *ngIf="activeTab == 10" class="btn btn-default mr-2 mt-4"  (click)="cancel()" >Cancel</button> 
-                      <a *ngIf="activeTab == 10 && !vehicleID" [routerLink]="" (click)="addVehicle()" class="btn btn-success mt-4">Save</a>
-                      <a *ngIf="activeTab == 10 && vehicleID" [routerLink]="" (click)="updateVehicle()" class="btn btn-success mt-4">Update</a>
+                     <a *ngIf="activeTab != 9" [routerLink]="" (click)="next()" class="btn btn-success mt-4">Next</a>
+                     <button type="button" *ngIf="activeTab == 9" class="btn btn-default mr-2 mt-4"  (click)="cancel()" >Cancel</button> 
+                      <a *ngIf="activeTab == 9 && !vehicleID" [routerLink]="" (click)="addVehicle()" class="btn btn-success mt-4">Save</a>
+                      <a *ngIf="activeTab == 9 && vehicleID" [routerLink]="" (click)="updateVehicle()" class="btn btn-success mt-4">Update</a>
                   </div>
             </div>
             </form>
