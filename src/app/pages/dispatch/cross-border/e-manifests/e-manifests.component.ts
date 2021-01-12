@@ -136,7 +136,6 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
 
 
   initDataTable() {
-    console.log('hello');
     let current = this;
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
@@ -233,7 +232,6 @@ rerender(status = ''): void {
     });
   }
   initDataTableACI() {
-    console.log('hello ACI');
     let current = this;
     this.dtOptionsACI = { // All list options
       pagingType: 'full_numbers',

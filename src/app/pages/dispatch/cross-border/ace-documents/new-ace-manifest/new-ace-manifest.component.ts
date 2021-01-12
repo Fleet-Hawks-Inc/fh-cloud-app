@@ -138,6 +138,7 @@ export class NewAceManifestComponent implements OnInit {
   tripNumber: string;
   SCAC: string;  
   shipmentControlNumber: string;
+  currentStatus: string;
   provinceOfLoading: string;
   states: any = [];
   countries: any = [];
@@ -386,7 +387,10 @@ deleteTrailer(i: number) {
   } 
 
   addMarksAndNumbers(s,i){
-    this.shipments[s].commodities[i].marksAndNumbers.push({markNumber: ''});
+    if(this.shipments[s].commodities[i].marksAndNumbers.length <=3) {
+      this.shipments[s].commodities[i].marksAndNumbers.push({markNumber: ''});
+    }
+  
   }
   getStatesDoc(i, j) { //document issuing states
     const countryID = this.passengers[i].travelDocuments[j].country;
@@ -473,7 +477,7 @@ deleteTrailer(i: number) {
       usAddress: this.usAddress,
       passengers: this.passengers,
       shipments: this.shipments, 
-      currentStatus: 'DRAFT'
+      currentStatus: 'Draft'
     }; 
     this.apiService.postData('ACEeManifest', data).subscribe({
       complete: () => { },
@@ -539,6 +543,7 @@ deleteTrailer(i: number) {
           this.assetsArray = result.trailers;
           this.passengers = result.passengers;
           this.shipments = result.shipments;
+          this.currentStatus = result.currentStatus,
           this.usAddress[`addressLine`] = result.usAddress.addressLine,
           this.usAddress[`state`] = result.usAddress.state,
           this.usAddress[`city`] = result.usAddress.city,
@@ -564,7 +569,7 @@ deleteTrailer(i: number) {
       drivers: this.driverArray,
       passengers: this.passengers,
       shipments: this.shipments, 
-      currentStatus: 'DRAFT',
+      currentStatus: this.currentStatus,
       usAddress: this.usAddress
     };
     this.apiService.putData('ACEeManifest', data).subscribe({

@@ -130,48 +130,6 @@
                                  </div>
 
                               </div>
-                              <!-- <div class="row" *ngFor="let trailer of assetsArray; let t = index;">                                   
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Assign
-                                          Trailer</label>
-                                       <ng-select [(ngModel)]="trailer.assetId" name="trailer.assetId{{t}}" (change)="getAssetData($event,t)">
-                                          <ng-option *ngFor="let asset of assets" [value]="asset.assetID">
-                                             {{asset.assetIdentification}}</ng-option>
-                                       </ng-select>
-                                    </div>                                
-                                    <div class="col-lg-2 mar-top-37">
-                                       <a href="#addAssetModal" class="modal-with-form btn btn-sm btn-success"><i
-                                             class="fas fa-plus"></i></a>
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                          >Add Seal</label> 
-                                          <div class="row" >
-                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers1{{t}}" (change)="trailerSealArray(t)"  [(ngModel)]="trailer.sealNumbers1"></div>
-                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers2{{t}}" (change)="trailerSealArray(t)"  [(ngModel)]="trailer.sealNumbers2"></div>
-                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers3{{t}}"  (change)="trailerSealArray(t)" [(ngModel)]="trailer.sealNumbers3"></div>
-                                             <div class="col-lg-3"><input type="text" class="form-control" name="trailer.sealNumbers4{{t}}"  (change)="trailerSealArray(t)" [(ngModel)]="trailer.sealNumbers4"></div>
-                                          </div>                                     
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2"
-                                      >Add IIT</label>      
-                                       <ng-select >
-                                          <ng-option
-                                             value="CARRIER">Trip contains IIt's covered under 10.41(a) with carriers bond.</ng-option>
-                                             <ng-option
-                                             value="IMPORTER">Trip contains IIt's covered under 10.41(a) with importers bond.</ng-option>
-                                       </ng-select>                                
-                                    </div>                         
-                                    <div class="col-lg-10 text-right">
-                                       <button type="button"  (click)="deleteTrailer(t)" class="btn btn-sm btn-danger"> <i class="fas fa-times"></i></button>
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-lg-5">
-                                       <button type="button" *ngIf = "addTrailerBtn" class="btn btn-sm btn-success" (click)="addTrailer()">Add Trailer</button>
-                                    </div>
-                                 </div> -->
                            </div>
                         </div>
                         <!-- NEW ASSET DIV -->
@@ -550,16 +508,23 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Marks &
                                              Numbers</label>
                                           <div class="row">
-                                             <div class="col-lg-3"
-                                                *ngFor="let marks of commodity.marksAndNumbers; let j=index;">
-                                                <input type="text" class="form-control" name="marks{{j}}"
-                                                   [(ngModel)]='marks.markNumber'>
+                                             <div class="col-lg-12">
+                                                <div class="row">
+                                                   <div class="col-lg-3"
+                                                   *ngFor="let marks of commodity.marksAndNumbers; let j=index;">
+                                                   <input type="text" class="form-control" name="marks{{j}}"
+                                                      [(ngModel)]='marks.markNumber'>
+                                                </div>
+                                                </div>
                                              </div>
-                                             <div class="col-lg-1"><button type="button" class="btn btn-success btn-sm"
-                                                   (click)="addMarksAndNumbers(s,i)">
-                                                   <i class="fas fa-plus"></i></button></div>
+                                           
+                                           
+                                             
                                           </div>
                                        </div>
+                                       <div class="col-lg-2 mar-top-37"><button type="button" class="btn btn-success btn-sm"
+                                          (click)="addMarksAndNumbers(s,i)">
+                                          <i class="fas fa-plus"></i></button></div>
                                     </div>
                                  </div>
                                  <div class="col-lg-5">

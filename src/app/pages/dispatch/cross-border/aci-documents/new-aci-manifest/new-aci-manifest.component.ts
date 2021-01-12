@@ -538,7 +538,7 @@ export class NewAciManifestComponent implements OnInit {
        passengers: this.passengers,
        containers: this.containers,
        shipments: this.shipments,
-       currentStatus: 'DRAFT'
+       currentStatus: 'Draft'
     };
     this.apiService.postData('ACIeManifest', data).subscribe({
       complete: () => { },
@@ -595,6 +595,7 @@ export class NewAciManifestComponent implements OnInit {
         result = result.Items[0];
         this.timeCreated = result.timeCreated;
         this.entryID = this.entryID;
+        this.sendId = result.sendId;
           this.CCC = result.CCC,
           this.tripNumber = result.tripNumber,
           this.portOfEntry = result.portOfEntry,
@@ -618,6 +619,7 @@ export class NewAciManifestComponent implements OnInit {
   updateACIManifest()  {
     const data = {
       entryID: this.entryID,
+      sendId: this.sendId,
       CCC: this.CCC.toUpperCase().replace(/o/gi, "0").replace(/i/gi,"1"),
       tripNumber: this.tripNumber.toUpperCase().replace(/o/gi, "0").replace(/i/gi,"1"),
       portOfEntry: this.portOfEntry,
@@ -631,7 +633,7 @@ export class NewAciManifestComponent implements OnInit {
        passengers: this.passengers,
        containers: this.containers,
        shipments: this.shipments,
-       currentStatus: 'DRAFT',
+       currentStatus: this.currentStatus,
       timeCreated: this.timeCreated
     };
     this.apiService.putData('ACIeManifest', data).subscribe({
@@ -657,7 +659,6 @@ export class NewAciManifestComponent implements OnInit {
         this.hasSuccess = true;
         this.toastr.success('Manifest Updated Successfully');
         this.router.navigateByUrl('/dispatch/cross-border/eManifests');
-
       },
     });
   }
