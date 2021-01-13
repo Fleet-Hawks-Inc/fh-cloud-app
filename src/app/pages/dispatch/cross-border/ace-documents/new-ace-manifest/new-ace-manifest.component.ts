@@ -96,13 +96,19 @@ export class NewAceManifestComponent implements OnInit {
   public entryID;
   sendId;
   title = 'Add ACE e-Manifest'; 
- 
+  modalTitle = 'Add';
   vehicles = [];
   assets = [];
   drivers = [];
   shippers = [];
   consignees = [];
   brokers = [];
+  inbondTypesList: any = [];
+  foreignPortsList: any =[];
+  countriesList: any = [];
+  thirdPartiesList : any = [];
+  thirdPartyStates: any  = [];
+  thirdPartyCities: any = [];
   usPortOfArrival: string;
   estimatedArrivalDateTime: string;
   addTruckSealBtn = true;
@@ -113,7 +119,7 @@ export class NewAceManifestComponent implements OnInit {
   assetsArray = [
     {
       assetID: '',
-      sealNumbers: [],
+      sealNumbers: [{sealNumber: ''}],
     }];
   addTrailerSealBtn = true;  
   truckSealDiv = false;
@@ -145,26 +151,24 @@ export class NewAceManifestComponent implements OnInit {
   packagingUnitsList: any = [];
   addTrailerBtn = true;  
   timeCreated = '';
-  passengers = [{
-    firstName: '',
-    lastName: '',
-    gender: '',
-    dateOfBirth: '',
-    citizenshipCountry: '',
-    fastCardNumber: '',
-    travelDocuments: [{
-      type: '',
-      number: '',
-      country: '',
-      stateProvince: ''
-    }]
-  }];
+  passengers = [];
   passengerDocStates = [];
   shipments = [
     {
       type: '',
       shipmentControlNumber: '',
       provinceOfLoading: '',
+      goodsAstrayDateOfExit: '',
+      inBondDetails: {
+        type: '',
+        paperInBondNumber: '',
+        usDestination:'',
+        foreignDestination: '',
+        onwardCarrierScac: '',
+        irsNumber: '',
+        estimatedDepartureDate: '',
+        fda: '',
+       },
       SCAC: '', 
         shipperID: '',
         consigneeID: '',
@@ -172,6 +176,7 @@ export class NewAceManifestComponent implements OnInit {
           filerCode: '',
           portLocation: ''
          },
+         thirdParties:[],
       commodities: [{
         loadedOn: {
           type: '',
@@ -207,10 +212,13 @@ export class NewAceManifestComponent implements OnInit {
     this.entryID = this.route.snapshot.params[`entryID`];
     if (this.entryID) {
       this.title = 'Edit ACE e-Manifest';
+      this.modalTitle = 'Edit';
       this.fetchACEEntry();
       this.getDocStates();
+      this.getThirdPartyStatesCities(); // for edit purpose
     } else {
       this.title = 'Add ACE e-Manifest';
+      this.modalTitle = 'Add';
     }
     this.fetchVehicles();
     this.fetchAssets();
@@ -239,6 +247,18 @@ export class NewAceManifestComponent implements OnInit {
     this.httpClient.get('assets/ACEBrokersList.json').subscribe(data => {  
       this.brokersList = data;
     });
+    this.httpClient.get('assets/jsonFiles/ACEinbond-types.json').subscribe(data => {  
+      this.inbondTypesList = data;
+    });
+    this.httpClient.get('assets/jsonFiles/ACEforeignPorts.json').subscribe(data => {  
+      this.foreignPortsList = data;
+    });
+    this.httpClient.get('assets/jsonFiles/worldCountries.json').subscribe(data => {  
+      this.countriesList = data;
+    });
+    this.httpClient.get('assets/jsonFiles/ACEthirdPartyTypes.json').subscribe(data => {  
+      this.thirdPartiesList = data;
+    });
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
@@ -266,6 +286,43 @@ getAddressCities() {
       this.addressCities = result.Items;
     });
 }
+getThirdPartyStatesCities(){
+  this.apiService.getData('states')
+  .subscribe((result: any) => {
+    this.thirdPartyStates = result.Items;
+  });
+  this.apiService.getData('cities')
+  .subscribe((result: any) => {
+    this.thirdPartyCities = result.Items;
+  });
+}
+getThirdPartyStates(s,p){
+  const countryID = this.shipments[s].thirdParties[p].address.country;
+  this.apiService.getData('states/country/' + countryID)
+  .subscribe((result: any) => {
+    this.thirdPartyStates = result.Items;
+  });
+  }
+  getThirdPartyCities(s,p){
+    const stateID = this.shipments[s].thirdParties[p].address.stateProvince;
+    this.apiService.getData('cities/state/' + stateID)
+    .subscribe((result: any) => {
+      this.thirdPartyCities = result.Items;
+    });
+    }
+  getStatesDoc(i, j) { //document issuing states
+    const countryID = this.passengers[i].travelDocuments[j].country;
+    this.apiService.getData('states/country/' + countryID)
+      .subscribe((result: any) => {
+        this.passengerDocStates = result.Items;
+      });
+  }
+  getDocStates(){
+    this.apiService.getData('states')
+    .subscribe((result: any) => {
+      this.passengerDocStates = result.Items;
+    });
+  }
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
       this.drivers = result.Items;
@@ -337,6 +394,17 @@ deleteTrailer(i: number) {
       type: '',
       shipmentControlNumber: '',
       provinceOfLoading: '',
+      goodsAstrayDateOfExit: '',
+      inBondDetails: {
+        type: '',
+        paperInBondNumber: '',
+        usDestination:'',
+        foreignDestination: '',
+        onwardCarrierScac: '',
+        irsNumber: '',
+        estimatedDepartureDate: '',
+        fda: '',
+       },
       SCAC: '',     
       shipperID: '', 
         consigneeID: '', 
@@ -344,6 +412,19 @@ deleteTrailer(i: number) {
           filerCode: '',
           portLocation: ''
          },
+         thirdParties:[
+          {
+            type: '',
+            name:'',
+            address: {
+            addressLine: '',
+            city: '',
+            stateProvince: '',
+            country: '',
+            postalCode: '',
+            }
+            }
+         ],
       commodities: [{
         loadedOn: {
           type: '',
@@ -392,19 +473,7 @@ deleteTrailer(i: number) {
     }
   
   }
-  getStatesDoc(i, j) { //document issuing states
-    const countryID = this.passengers[i].travelDocuments[j].country;
-    this.apiService.getData('states/country/' + countryID)
-      .subscribe((result: any) => {
-        this.passengerDocStates = result.Items;
-      });
-  }
-  getDocStates(){
-    this.apiService.getData('states')
-    .subscribe((result: any) => {
-      this.passengerDocStates = result.Items;
-    });
-  }
+ 
   addMorePassenger() {
     this.passengers.push({
       firstName: '',
@@ -463,7 +532,23 @@ deleteTrailer(i: number) {
   deleteCommodity(i: number, s: number) {
     this.shipments[s].commodities.splice(i, 1);
   }
- 
+ addThirdParty(p){
+   if(this.shipments[p].thirdParties.length <= 21){
+   this.shipments[p].thirdParties.push({
+    type: '',
+    name:'',
+    address: {
+    addressLine: '',
+    city: '',
+    stateProvince: '',
+    country: '',
+    postalCode: '',
+    }
+    });}
+ }
+ deleteThirdParty(i: number, s: number) {
+  this.shipments[s].thirdParties.splice(i, 1);
+}
   addACEManifest() {
     const data = {
       SCAC: this.SCAC,

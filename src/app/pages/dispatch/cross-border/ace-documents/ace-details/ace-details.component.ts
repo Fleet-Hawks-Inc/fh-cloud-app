@@ -42,8 +42,7 @@ export class AceDetailsComponent implements OnInit {
        this.drivers = result.drivers;
        this.passengers = result.passengers;
        this.shipments = result.shipments;
-       this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a");
-       console.log('drivers',result);
+       this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a");      
       });
   }
 
