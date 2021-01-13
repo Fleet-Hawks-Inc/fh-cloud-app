@@ -142,19 +142,19 @@
                                 <div class="row mt-2">
                                     <div class="col-lg-10">
                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark">Customer PO#</label>
-                                        <input [(ngModel)]="orderData.customerPO" name="customerPO" type="text" class="form-control"> </div>
+                                        <input [(ngModel)]="orderData.customerPO" name="customerPO" type="text" class="form-control">{{orderData.customerPO}} </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-lg-10">
                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark">Reference</label>
-                                        <input [(ngModel)]="orderData.reference" name="reference" type="text" class="form-control"> </div>
+                                        <input [(ngModel)]="orderData.reference" name="reference" type="text" class="form-control">{{orderData.reference}} </div>
                                 </div>
                             </div>
                             <div class="col-lg-5 offset-lg-1">
                                 <div class="row">
                                     <div class="col-lg-10">
                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark">Order Number</label>
-                                        <input [(ngModel)]="orderData.orderNumber" name="orderNumber" type="text" class="form-control"> </div>
+                                             <input [(ngModel)]="orderData.orderNumber" name="orderNumber" type="text" class="form-control">{{orderData.orderNumber}} </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-lg-10">
@@ -171,23 +171,23 @@
                                 <div class="row mt-2">
                                     <div class="col-lg-5">
                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark">CSA</label>
-                                        <input [(ngModel)]="orderData.csa" name="csa" type="text" class="form-control"> </div>
+                                        <input [(ngModel)]="orderData.csa" name="csa" type="text" class="form-control">{{orderData.csa}} </div>
                                     <div class="col-lg-5">
                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark">C-TPAT</label>
-                                        <input [(ngModel)]="orderData.ctpat" name="ctpat" type="text" class="form-control"> </div>
+                                        <input [(ngModel)]="orderData.ctpat" name="ctpat" type="text" class="form-control">{{orderData.ctpat}} </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-lg-5">
                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark">Additonal Contact Name</label>
-                                        <input [(ngModel)]="orderData.additionalContact" name="additionalContact" type="text" class="form-control"> </div>
+                                        <input [(ngModel)]="orderData.additionalContact" name="additionalContact" type="text" class="form-control"> {{orderData.additionalContact}}</div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-lg-5">
                                         <label class="control-label font-weight-semibold labelmt text-3 text-dark">Phone</label>
-                                        <input [(ngModel)]="orderData.phone" name="phone" type="text" class="form-control"> </div>
+                                        <input [(ngModel)]="orderData.phone" name="phone" type="text" class="form-control"> {{orderData.phone}}</div>
                                     <div class="col-lg-5">
-                                        <label class="control-label font-weight-semibold labelmt text-3 text-dark">Email</label>
-                                        <input [(ngModel)]="orderData.email" name="email" type="text" class="form-control"> </div>
+                                        <label class="control-label font-weight-semibold labelmt text-3 text-dark">email</label>
+                                        <input [(ngModel)]="orderData.email" name="email" type="text" class="form-control"> {{orderData.email}}</div>
                                     <div class="col-lg-12 mt-2">
                                         <div class="checkbox-custom checkbox-default">
                                          <input [(ngModel)]="orderData.invoiceEmail" name="invoiceEmail" type="checkbox" name="terms" id="checkboxExample1">
@@ -298,7 +298,7 @@
                                        <div class="col-lg-6">
                                           <input [(ngModel)]="shipperCurrent.pickupLocation"
                                           name="pickupLocation" (keyup)="searchTerm.next($event);" class="form-control" #pickupLocation="ngModel" required pickupLocation tabindex="-1" aria-hidden="true">
-                                          
+                                          {{shipperCurrent.pickupLocation}}
                                           <ul class="p-0 m-0 text-left map-search__results bg-white" *ngIf="searchResults">
                                              <li *ngFor="let item of searchResults;">
                                                 <a href="javascript:;" (click)="assignLocation('shipper', item.address.label)" title="{{item.address.label}}">{{item.address.label}}</a>
@@ -320,6 +320,7 @@
                                           <div class="input-group">
                                              <input [(ngModel)]="shipperCurrent.pickupDate"
                                              name="pickupDate" type="text" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" #pickupDate="ngModel" required pickupDate placeholder="" class="form-control">
+                                             {{shipperCurrent.pickupDate}}
                                           </div>
                                           <span class="text-danger" *ngIf="(orderForm.submitted) && pickupDate.errors?.required">
                                              This Field is required
@@ -329,6 +330,7 @@
                                           <div class="input-group">
                                              <ngb-timepicker [(ngModel)]="shipperCurrent.pickupTime"
                                              name="pickupTime" type="text" class="" placeholder=""  #pickupTime="ngModel" required pickupTime [meridian]="meridian" [spinners]="spinners" [seconds]="seconds"></ngb-timepicker>
+                                                  {{shipperCurrent.pickupTime}}
                                              <!-- <input [(ngModel)]="item.pickupTime"
                                              name="item.pickupTime{{i}}" type="text" class="form-control" placeholder="hour:minute"  #pickupTime="ngModel" required pickupTime id="timepicker2"> -->
                                           </div>
@@ -346,6 +348,7 @@
                                        <div class="col-lg-6">
                                           <textarea [(ngModel)]="shipperCurrent.pickupInstruction"
                                           name="pickupInstruction" class="form-control" rows="3" id="textareaDefault" style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
+                                          {{shipperCurrent.pickupInstruction}}
                                        </div>
                                        <div class="col-lg-3">
                                        </div>
@@ -357,6 +360,7 @@
                                        <div class="col-lg-6">
                                           <input [(ngModel)]="shipperCurrent.contactPerson"
                                           name="contactPerson" type="text" class="form-control" id="inputDefault">
+                                          {{shipperCurrent.contactPerson}}
                                        </div>
                                        <div class="col-lg-3 mt-1">
                                        </div>
@@ -367,7 +371,9 @@
                                        </div>
                                        <div class="col-lg-6">
                                           <input [(ngModel)]="shipperCurrent.phone"
+
                                           name="phone" type="text" class="form-control" id="inputDefault">
+                                          {{shipperCurrent.phone}}
                                        </div>
                                        <div class="col-lg-3 mt-1">
                                        </div>
@@ -379,6 +385,7 @@
                                        <div class="col-lg-6">
                                           <input [(ngModel)]="shipperCurrent.BOL"
                                           name="BOL" type="file" />
+                                         
                                        </div>
                                        <div class="col-lg-3 mt-1">
                                        </div>
@@ -389,7 +396,9 @@
                                        </div>
                                        <div class="col-lg-6">
                                           <input [(ngModel)]="shipperCurrent.reference"
+                                          
                                           name="reference"  type="text" class="form-control" id="inputDefault">
+                                    {{shipperCurrent.reference}}
                                        </div>
                                        <div class="col-lg-3 mt-1">
                                        </div>
@@ -401,6 +410,7 @@
                                        <div class="col-lg-6">
                                           <input [(ngModel)]="shipperCurrent.notes"
                                           name="notes"  type="text" class="form-control" id="inputDefault">
+                                          {{shipperCurrent.notes}}
                                        </div>
                                        <div class="col-lg-3 mt-1">
                                        </div>
@@ -412,11 +422,13 @@
                                        <div class="col-lg-3">
                                           <input [(ngModel)]="shipperCurrent.minTemprature"
                                           name="minTemprature"  type="text" class="form-control" placeholder="From" id="inputDefault">
+                                          {{shipperCurrent.minTemprature}}
                                        </div>
                                        <div class="col-lg-2">
                                           <select [(ngModel)]="shipperCurrent.minTempratureUnit"
                                           name="minTempratureUnit" data-plugin-selecttwo="" class="form-control populate" data-select2-id="10" tabindex="-1" aria-hidden="true">
-                                             <optgroup label="">
+                                         {{shipperCurrent.minTempratureUnit}}
+                                          <optgroup label="">
                                                 <option value="°C" data-select2-id="12">°C</option>
                                                 <option value="°F">°F</option>
                                              </optgroup>
@@ -436,6 +448,7 @@
                                        <div class="col-lg-3">
                                           <input [(ngModel)]="shipperCurrent.maxTemprature"
                                           name="maxTemprature" type="text" class="form-control" placeholder="To" id="inputDefault">
+                                          {{shipperCurrent.maxTemprature}}
                                        </div>
                                        <div class="col-lg-2">
                                           <select [(ngModel)]="shipperCurrent.maxTempratureUnit"
@@ -458,6 +471,7 @@
                                           <div class="radio-custom">
                                              <input [(ngModel)]="shipperCurrent.driverLoad"
                                              name="driverLoad" type="radio" value="yes" id="loadyes" checked="">
+                                             
                                              <label for="radioExample1">Yes</label>
                                           </div>
                                        </div>
@@ -525,7 +539,7 @@
                                        <div class="col-lg-6">
                                           <input [(ngModel)]="receiverCurrent.dropOffLocation"
                                           name="dropOffLocation" #dropOffLocation="ngModel" required dropOffLocation (keyup)="searchTerm.next($event);" class="form-control" tabindex="-1" aria-hidden="true">
-                                          
+                                          {{receiverCurrent.dropOffLocation}}
                                           <ul class="p-0 m-0 text-left map-search__results bg-white" *ngIf="searchResults1">
                                              <li *ngFor="let item of searchResults1;">
                                                 <a href="javascript:;" (click)="assignLocation('receiver', item.address.label)" title="{{item.address.label}}">{{item.address.label}}</a>

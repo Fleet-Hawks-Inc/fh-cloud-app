@@ -1,3 +1,30 @@
+<style>
+  .cursor {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.vt {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: black;
+}
+
+.hl {
+  position: absolute;
+  height: 1px;
+  left: 0;
+  right: 0;
+  background: black;
+}
+</style>
 <section class="body">
   <!-- start: header -->
   <app-header></app-header>
@@ -13,23 +40,34 @@
         <div class="row pr-5 " style="padding-top:10px;">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}} </div>
           <div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Pdf Automation</a> </div>
+          
         </div>
       </header>
+    
       <div class="row">
 
-
+        <table>
+          <div class="cursor">
+          <div class="vt"></div>
+          <div class="hl"></div>
+        </div>
         <input type="file" id="myFile" size="50"/>
-        <canvas id="src" width="1000"  height="1000" #canva ></canvas>
-
+        <input type="file" id="uploadedfile" size="50" (load)="onpdfLoad()" />
+        
+       <canvas id="src" width="500"  height="500"  class="d-flex" style="cursor:crosshair" #pdfcanvas (mouseout)="mymouseout($event)" (mousedown)="mymousedown($event)" (mouseup)="mymouseup($event)" (mousemove)="mymousemove($event)" ></canvas>
+       <div id="json"> hi</div>
+      
+      </table>
+      
         <h1 id="a"></h1>
 
         <!-- Button trigger modal -->
 
         <div class="topcorner">
 
-          <div class="card" style="width: 18rem;" id="myDIV">
+          <div class="card" style="width: 18rem;" id="myDIV" contentEditable="true">
 
-            <a href="#" class="btn btn-primary">Submit</a>
+            <a href="#" class="btn btn-primary" (click)="myclick()" >Submit</a>
           </div>
 
         </div>
@@ -41,15 +79,54 @@
               <div class="modal-header">
 
                 <select name="industry" class="form-control" id="select" [(ngModel)]="selectOpt" >
-                  <option value="orderNumber">orderNumber</option>
-                  <option value="orderDate">orderDate</option>
-                  <option value="carrierName">carrierName</option>
-                  <option value="carrierAddress">carrierAddress </option>
-                  <option value="Email" disabled selected>Email </option>
+                  <option value="OrderNumber">OrderNumber</option>
+                  <option value="orderDate">OrderDate</option>
+                  <option value="carrierName">CarrierName</option>
+                  <option value="carrierAddress">CarrierAddress </option>
+                  <option value="Email" >Email </option>
                   <option value="Phone">Phone </option>
-                  <option value="totalAgreedAmount">totalAgreedAmount</option>
-                  <option value="shipperDetails">shipperDetails </option>
-                  <option value="consigneeDetails">consigneeDetails </option>
+                  <option value="totalAgreedAmount">TotalAgreedAmount</option>
+                  <option value="shipperDetails">ShipperDetails </option>
+
+                  <option value="pickupDate">pickupDate</option>
+                  <option value="pickupTime">pickupTime</option>
+                  <option value="pickupinstruction">pickupinstruction</option>
+                  <option value="phone">phone </option>
+                  <option value="BOL" >BOL </option>
+                  <option value="Phone">Phone </option>
+                  <option value="reference">reference</option>
+                  <option value="notes">notes </option>
+                  <option value="minTemprature">minTemprature </option>
+                  <option value="maxTemprature" >maxTemprature </option>
+                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  <option value="Reference">Reference </option>
+                  <option value="csa">csa </option>
+                  <option value="ctpat">ctpat </option>
+                  <option value="additionalcontactname">additionalcontactname </option>
+                  <option value="pickuplocation">pickuplocation </option>
+                  <option value="contactpersonatpickup">contactpersonatpickup </option>
+                  <option value="shipperphone">shipperphone </option>
+                  <option value="shippernotes">shippernotes </option>
+                  <option value="dropofflocation">dropofflocation </option>
+                  <option value="deliveryinstruction">deliveryinstruction </option>
+                  <option value="contactpersonatdelivery">contactpersonatdelivery </option>
+                  <option value="receiverphone">receiverphone </option>
+                  <option value="receiverreference">receiverreference </option>
+                  <option value="receivernotes">receivernotes </option>
+                
                 </select>
 
               </div>
@@ -58,7 +135,7 @@
 
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="fire">Save changes</button>
+                <button type="button" class="btn btn-primary" id="fire" (click)="mybutton()" >Save changes</button>
               </div>
             </div>
           </div>

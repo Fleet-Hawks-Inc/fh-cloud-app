@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { from, Subject, throwError } from 'rxjs';
@@ -12,6 +12,11 @@ import { HereMapService } from '../../../../services';
 import { environment } from '../../../../../environments/environment.prod';
 import {NgbTimeStruct, NgbDatepickerConfig} from '@ng-bootstrap/ng-bootstrap';
 import { element } from 'protractor';
+import { PdfAutomationService } from 'src/app/pages/automation/pdf-automation/pdf-automation.service';
+import { a, input } from 'aws-amplify';
+import { EventEmitter } from 'stream';
+import { Subscription }   from 'rxjs/Subscription';
+import { HttpClientModule } from '@angular/common/http';
 declare var $: any;
 declare var H: any;
 @Component({
@@ -20,6 +25,36 @@ declare var H: any;
   styleUrls: ['./add-orders.component.css']
 })
 export class AddOrdersComponent implements OnInit {
+  pdfObjectData;
+  OrderNumber;
+  OrderDate;
+  CarrierName;
+  CarrierAddress;
+  Email;
+  Phone;
+  TotalAgreedAmount;
+  ShipperDetails;
+  ConsigneeDetails;
+  CustomerPO;
+  Reference;
+  csa;
+  ctpat;
+  additionalcontactname;
+  pickuplocation;
+  pickupinstruction;
+  contactpersonatpickup;
+  shipperphone;
+  shipperreference;
+  shippernotes;
+  dropofflocation;
+  deliveryinstruction;
+  contactpersonatdelivery;
+  receiverphone;
+  receiverreference;
+  receivernotes;
+
+
+  pdfHeadData;
   public getOrderID;
   pageTitle = 'Add Order';
   private readonly search: any;
@@ -86,6 +121,33 @@ export class AddOrdersComponent implements OnInit {
     driverUnload: '',
   }
   orderData = {
+    orderNumber: '',
+    customerPO: '',
+    reference: '',
+    phone: '',
+    email:'',
+    Phone:'',
+  TotalAgreedAmount:'',
+  ShipperDetails:'',
+  ConsigneeDetails:'',
+  CustomerPO:'',
+  Reference:'',
+  csa:'',
+  ctpat:'',
+  additionalcontactname:'',
+  pickuplocation:'',
+  pickupinstruction:'',
+  contactpersonatpickup:'',
+  shipperphone:'',
+  shipperreference:'',
+  shippernotes:'',
+  dropofflocation:'',
+  deliveryinstruction:'',
+  contactpersonatdelivery:'',
+  receiverphone:'',
+  receiverreference:'',
+  receivernotes:'',
+
     shipperInfo: [],
     receiverInfo: [],
     freightDetails: {},
@@ -125,18 +187,145 @@ export class AddOrdersComponent implements OnInit {
     private google: GoogleMapsService,
     private HereMap: HereMapService,
     private route: ActivatedRoute,
-    private config: NgbDatepickerConfig
+    private config: NgbDatepickerConfig,
+    private pdfService: PdfAutomationService
   ) { 
     const current = new Date();
     config.minDate = { year: current.getFullYear(), month: 
     current.getMonth() + 1, day: current.getDate() };
     config.outsideDays = 'hidden';
+
+    this.subscription = this.pdfService.missionAnnounced$.subscribe((v) => {
+      this.OrderNumber = v['OrderNumber']
+      this.CarrierName = v['CarrierName']
+      this.CarrierAddress = v['CarrierAddress']
+      this.Email = v['Email']
+      this.Phone = v['Phone']
+      this.TotalAgreedAmount = v['TotalAgreedAmount']
+      this.ShipperDetails = v['ShipperDetails']
+      this.ConsigneeDetails = v['ConsigneeDetails']
+      this.CustomerPO = v['CustomerPO']
+      this.Reference = v['Reference']
+      this.csa= v['csa']
+      this.ctpat= v['ctpat']
+      this.additionalcontactname= v['additionalcontactname']
+      this.shipperCurrent.pickupLocation= v['pickuplocation']
+      this.pickupinstruction= v['pickupinstruction']
+      this.contactpersonatpickup= v['contactpersonatpickup']
+      this.shipperphone= v['shipperphone']
+      this.shipperreference= v['shipperreference']
+      this.shippernotes= v['shippernotes']
+      this.receiverCurrent.dropOffLocation= v['dropofflocation']
+      this.deliveryinstruction= v['deliveryinstruction']
+      this.contactpersonatdelivery= v['contactpersonatdelivery']
+      this.receiverphone= v['receiverphone']
+      this.receiverreference= v['receiverreference']
+      this.receivernotes= v['receivernotes']
+
+
+
+      
+     
+      this.shipperCurrent.pickupDate= v['pickupDate']
+      this.shipperCurrent.pickupTime= v['pickupTime']
+      this.shipperCurrent.pickupInstruction= v['pickupinstruction']
+      this.shipperCurrent.contactPerson= v['contactPerson']
+      this.shipperCurrent.phone= v['phone']
+      this.shipperCurrent.BOL= v['BOL']
+      this.shipperCurrent.reference= v['reference']
+      this.shipperCurrent.notes= v['notes']
+    
+    
+      
+    
+
+      console.log(this.OrderNumber,   this.CarrierName,   this.CarrierAddress,  this.Email, this.Phone,  this.TotalAgreedAmount, this.ShipperDetails )
+  
+      
+      
+    
+      
+      // OrderDate;
+      // CarrierName;
+      // CarrierAddress;
+      // Email;
+      // Phone;
+      // TotalAgreedAmount;
+      // ShipperDetails;
+      // ConsigneeDetails;
+     
+
+    
+     
+      
+      this.orderData.orderNumber = this.OrderNumber;
+      
+       this.orderData.customerPO = this.CustomerPO;
+       this.orderData.reference = this.ConsigneeDetails;
+      this.orderData.phone =  this.Phone;
+      this.orderData.email =  this.Email;
+      this.orderData.csa =  this.csa;
+      this.orderData.ctpat = this.ctpat;
+      this.orderData.additionalcontactname = this.additionalcontactname;
+      this.orderData.pickuplocation = this.pickuplocation;
+      this.orderData.pickupinstruction = this.pickupinstruction;
+      this.orderData.contactpersonatpickup = this.contactpersonatpickup;
+      this.orderData.shipperphone = this.shipperphone;
+      this.orderData.shipperreference = this.shipperreference;
+      this.orderData.shippernotes = this.shippernotes;
+      this.orderData.dropofflocation = this.dropofflocation;
+      this.orderData.deliveryinstruction = this.deliveryinstruction;
+      this.orderData.contactpersonatdelivery = this.contactpersonatdelivery;
+      this.orderData.receiverphone = this.receiverphone;
+      this.orderData.receiverreference = this.receiverreference;
+      this.orderData.receivernotes = this.receivernotes;
+      
+    
+     
+      
+
+
+
+      // console.log(this.pdfObjectData[0]+ this.pdfObjectData[1])
+    
+    });
+      
+  
   }
+
+
+
+  @Input() astronaut: string;
+  mission = '<no mission announced>';
+  confirmed = false;
+  announced = false;
+  subscription: Subscription;
+ 
+ 
+  confirm() {
+    // this.confirmed = true;
+    // this.pdfService.confirmMission(this.astronaut);
+    // console.log(this.mission);
+    
+  }
+ 
+
+  ngOnDestroy() {
+    // prevent memory leak when component destroyed
+    this.subscription.unsubscribe();
+  }
+
+
+
 
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
+ 
   ngOnInit() {
+    // this.pdfService.$isLoggedIn.subscribe
+    // console.log(a);
+    
     this.fetchCustomers();
     this.searchLocation();
     $(document).ready(() => {
@@ -150,7 +339,13 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.pageTitle = 'Add Order';
     }
+   
+    
   }
+
+
+   
+
   userLocation(label) {
     console.log(label);
     this.orderData.shipperInfo['pickupLocation'] = label;

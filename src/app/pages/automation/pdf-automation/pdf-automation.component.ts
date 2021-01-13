@@ -1,4 +1,9 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { HttpClient, JsonpClientBackend } from '@angular/common/http';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { functions } from 'lodash';
+import { createWorker } from 'tesseract.js';
+import { PdfAutomationService } from './pdf-automation.service';
+
 declare var Tesseract: any;
 declare var $: any;
 
@@ -10,33 +15,87 @@ declare var $: any;
 export class PdfAutomationComponent implements OnInit {
 
   public modalBody = '';
-  pageTitle = 'Pdf Automation';
-  @ViewChild('canva', { static: true })
-  canva: ElementRef<HTMLCanvasElement>;
+  $rect: any = {};
+  $text: any = {};
+  $ctx: any = {};
+  $srcContext: any = {};
+  $canvas: any = {};
+  $sitePersonel: any = {};
+  $cursorVT: any = {};
+  $cursorHL: any = {};
+  $val: any = [];
+  $head: any = [];
+
+  $rectn: any = [];
+  $res: any = [];
+  $pdfjson: any = {};
+  $xmin;
+  $xmax;
+  $ymin;
+  $ymax;
+  i = 0;
+  $rct: any = [];
+  postData = {
+    "u1": "1000",
+    "u2": "1100"
+  };
+
+  $jsonfile: any = {};
+
+
+
+
+
+  url = 'http://localhost:3000/api/v1/pdfautomation';
+
+
+  pageTitle = 'Pdf Annotation';
+  @ViewChild('pdfcanvas', { static: true })
+  pdfcanvas: ElementRef<HTMLCanvasElement>;
+
+
+
+  drag = false;
+
   private selectOpt;
-  constructor() {
+  constructor(private service: PdfAutomationService, private http: HttpClient) {
+
+
+    console.log("pdfservice called");
 
 
     $(() => {
-     // const canvas = document.getElementById('src');
-      const canvas = this.canva.nativeElement;
+      // const canvas = document.getElementById('src');
+
+      const canvas = this.pdfcanvas.nativeElement;
+      this.$canvas = canvas;
       const savebtn = document.getElementById('fire');
       const pdffile = document.getElementById('pdffile');
       const el = document.getElementById('myFile');
+      const uf = document.getElementById('uploadedfile');
+
       let text;
+      this.$text = text;
 
       const ctx = canvas.getContext('2d');
-      const rect: any = {};
+      this.$ctx = ctx;
+      const rect = {};
+      this.$rect = rect;
       let drag = false;
       const imageObj = null;
-      let renderTask;
+      let renderTask; 
+      const delay = ms => new Promise(res => setTimeout(res, ms));
 
-
-
+      const srcContext = canvas.getContext('2d');
+      this.$srcContext = srcContext;
+      this.$cursorVT = document.querySelector('.vt')
+      this.$cursorHL = document.querySelector('.hl')
+  
 
       el.onchange = () => {
         // var url = document.getElementById('myFile').value;
         const a = '/assets/demo1.pdf'
+
         // Loaded via <script> tag, create shortcut to access PDF.js exports.
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
 
@@ -44,6 +103,8 @@ export class PdfAutomationComponent implements OnInit {
         pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
 
         const loadingTask = pdfjsLib.getDocument(a);
+
+
         loadingTask.promise.then((pdf) => {
           console.log('PDF loaded');
 
@@ -52,13 +113,13 @@ export class PdfAutomationComponent implements OnInit {
           pdf.getPage(pageNumber).then(function (page) {
             console.log('Page loaded');
 
-            const scale = 1.5;
+            const scale = 2;
             const viewport = page.getViewport({ scale: scale });
 
             // Prepare canvas using PDF page dimensions
-           // const canvasShadowed = document.getElementById('src');
-           // const canvasShadowed = this.canva.nativeElement;
-            const  canvasShadowed = canvas;
+            // const canvasShadowed = document.getElementById('src');
+            // const canvasShadowed = this.canva.nativeElement;
+            const canvasShadowed = canvas;
             const context = canvasShadowed.getContext('2d');
 
             canvasShadowed.height = viewport.height;
@@ -74,7 +135,7 @@ export class PdfAutomationComponent implements OnInit {
               console.log('Page rendered');
             });
           });
-        },  (reason) => {
+        }, (reason) => {
           // PDF loading error
           console.error(reason);
         });
@@ -91,125 +152,111 @@ export class PdfAutomationComponent implements OnInit {
       // };
 
 
-      async function loadImage(url) {
-        return new Promise(r => { let i = new Image(); i.onload = (() => r(i)); i.src = url; });
-      }
+      uf.onchange = () => {
 
-      // todo, add parameters and change sourceImage to ImageData (getImageData from other canvas)
-      function cropImage(sourceImage, rect) {
-        // parameterize them
-        const left = rect.left;
-        const top = rect.top;
-        const width = rect.width;
-        const height = rect.height;
+        const a = '/assets/demo1.pdf'
 
-        const cropCanvas = document.createElement('canvas');
-        cropCanvas.width = width;
-        cropCanvas.height = height;
+        // Loaded via <script> tag, create shortcut to access PDF.js exports.
+        const pdfjsLib = window['pdfjs-dist/build/pdf'];
 
-        const context = cropCanvas.getContext('2d');
-        context.drawImage(sourceImage, left, top, width, height, 0, 0, width, height);
-        return cropCanvas;
-      }
-      function mouseDown(e) {
-        rect.startX = e.pageX - this.offsetLeft;
-        rect.startY = e.pageY - this.offsetTop;
-        console.log(rect.startX)
+        // The workerSrc property shall be specified.
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
 
-        drag = true;
+        const loadingTask = pdfjsLib.getDocument(a);
 
 
-      }
-      function onclick(e) {
-        console.log('works')
-      }
+        loadingTask.promise.then((pdf) => {
+          console.log('PDF loaded');
 
 
-      function mouseMove(e) {
-        if (drag) {
+          const pageNumber = 1;
+          pdf.getPage(pageNumber).then(function (page) {
+            console.log('Page loaded');
 
-          rect.w = (e.pageX - this.offsetLeft) - rect.startX;
-          rect.h = (e.pageY - this.offsetTop) - rect.startY;
-          ctx.strokeStyle = 'red';
-          // ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
-        }
+            const scale = 2;
+            const viewport = page.getViewport({ scale: scale });
 
 
+            const canvasShadowed = canvas;
+            const context = canvasShadowed.getContext('2d');
 
-      }
-      async function mouseUp() {
+            canvasShadowed.height = viewport.height;
+            canvasShadowed.width = viewport.width;
 
-        drag = false;
-
-        ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
-
-        console.log('mouseup working')
-        console.log(rect.startX, rect.startY, rect.w, rect.h)
-
-
-        //var canvas = document.getElementById('src');
-
-
-
-        const worker = Tesseract.TesseractWorker();
-       // const worker = Tesseract;
-        // const srcContext = document.getElementById('src').getContext('2d');
-        const srcContext = canvas.getContext('2d');
-
-        // let img = await loadImage('1.jpg');
-        // srcContext.drawImage(img, 0, 0);
-
-
-
-        const rct = { left: rect.startX, top: rect.startY, width: rect.w, height: rect.h };
-        console.log('rct' + rct);
-        const cropImgCanvas = cropImage(canvas, rct);//img
-
-        // just renderint to visualize - no need for actual crop
-
-        srcContext.rect(rct.left, rct.top, rct.width, rct.height);
-        srcContext.strokeStyle = '#FF0000';
-        srcContext.stroke();
-
-        // todo: pass the rect info and promise them all?
-        worker.recognize(cropImgCanvas)
-          .progress(progress => {
-            //console.log('progress:', progress);
-          }).then(result => {
-          // console.log('result:', result.text);
-          // document.getElementById('text').value = result.text;
-          // text = result.text
-          const sitePersonel: any = {};
-          const objects = []
-          sitePersonel.objects = objects;
-          console.log(sitePersonel);
-
-
-          const xmin = rct.left;
-          const ymin = rct.top;
-          const xmax = rct.width;
-          const ymax = rct.height;
-          const object = {
-            'text': result.text,
-            'xmin': xmin,
-            'xmax': xmax,
-            'ymin': ymin,
-            'ymax': ymax
-          }
-          text = result.text;
-          sitePersonel.objects.push(object);
-          console.log(sitePersonel);
-
-
-          console.log(JSON.stringify(sitePersonel));
-          // document.getElementById('input').value = text;
-          this.modalBody = text;
+            const renderContext = {
+              canvasContext: context,
+              viewport
+            };
+            renderTask = page.render(renderContext);
+            renderTask.promise.then(() => {
+              console.log('Page rendered');
+            });
+          });
+        }, (reason) => {
+          // PDF loading error
+          console.error(reason);
         });
-        this.modalBody = text;
-        // document.getElementById('input').value = text;
-        $('#exampleModal').modal('show')
 
+    
+        (async () => {
+          await delay(2500);
+        
+          const rectangles = [
+            {
+              left: 18,
+              top: 59,
+              width: 395,
+              height: 89,
+            },
+            {
+              left: 462,
+              top: 29,
+              width: 299,
+              height: 80,
+            },
+          ];
+         const worker = new Tesseract.TesseractWorker();
+
+        
+          for (let i = 0; i < rectangles.length; i++) {
+            const cropImgCanvas = this.cropImage(this.$canvas, rectangles[i]);//img
+            if (cropImgCanvas) {
+              console.log("crop successful");
+            }
+            else {
+              console.log("crop not successful");
+            }
+
+            // just renderint to visualize - no need for actual crop
+
+            this.$srcContext.rect(rectangles[i].left, rectangles[i].top, rectangles[i].width, rectangles[i].height);
+            this.$srcContext.strokeStyle = '#FF0000';
+            this.$srcContext.stroke();
+
+
+
+
+            worker.recognize(cropImgCanvas)
+              .progress(progress => {
+                //console.log('progress:', progress);
+              }).then(result => {
+                console.log('result:', result.text);
+                // document.getElementById('text').value = result.text;
+                // text = result.text
+
+
+              });
+
+
+          }
+        })();
+        
       }
+
+
+
+
+
 
 
       async function init() {
@@ -223,22 +270,6 @@ export class PdfAutomationComponent implements OnInit {
         // let img = await loadImage('1.jpg');
         // srcContext.drawImage(img, 0, 0);
 
-        canvas.addEventListener('mousedown', mouseDown, false);
-        canvas.addEventListener('mouseup', mouseUp, false);
-        canvas.addEventListener('mousemove', mouseMove, false);
-        $('#fire').on('click',  (e) => {
-
-          // Append the text to <p>
-
-          console.log('H1')
-          const para = document.createElement('P');
-          const h = document.createElement('h3');
-         // h.innerHTML = document.getElementById('select').value;
-          h.innerHTML = this.selectOpt;
-          para.innerHTML = text;
-          document.getElementById('myDIV').appendChild(h);
-          document.getElementById('myDIV').appendChild(para);
-        })
 
       }
 
@@ -250,7 +281,257 @@ export class PdfAutomationComponent implements OnInit {
     });
 
 
+
+
+
+
+
+
+
+
+
   }
+
+
+  cropImage(sourceImage, rect) {
+    if (!sourceImage) {
+      console.log("no image loaded")
+    }
+    else {
+      console.log("image loaded")
+    }
+    this.$rect = rect;
+    // parameterize them
+    const left = rect.left;
+    const top = rect.top;
+    const width = rect.width;
+    const height = rect.height;
+
+    const cropCanvas = document.createElement('canvas');
+    cropCanvas.width = width;
+    cropCanvas.height = height;
+
+    const context = cropCanvas.getContext('2d');
+    context.drawImage(sourceImage, left, top, width, height, 0, 0, width, height);
+    return cropCanvas;
+  }
+
+  mymousedown(e) {
+
+
+
+    console.log("mousedownworks" + this.$canvas.offsetLeft);
+    this.$rect.startX = e.pageX - this.$canvas.offsetLeft - 255;
+    this.$rect.startY = e.pageY - this.$canvas.offsetTop - 110;
+
+
+    this.drag = true;
+
+
+  }
+
+  mymouseup(e) {
+    console.log("mouseupworks");
+
+    this.drag = false;
+
+    this.$ctx.strokeRect(this.$rect.startX, this.$rect.startY, this.$rect.w, this.$rect.h);
+
+    console.log(this.$rect.startX, this.$rect.startY, this.$rect.w, this.$rect.h)
+
+
+    //var canvas = document.getElementById('src');
+
+
+
+    const worker = new Tesseract.TesseractWorker();
+    // const worker = Tesseract;
+    // const srcContext = document.getElementById('src').getContext('2d');
+
+
+    // let img = await loadImage('1.jpg');
+    // srcContext.drawImage(img, 0, 0);
+
+
+
+    const rct = { left: this.$rect.startX, top: this.$rect.startY, width: this.$rect.w, height: this.$rect.h };
+    console.log('rct' + rct);
+    const cropImgCanvas = this.cropImage(this.$canvas, rct);//img
+    if (cropImgCanvas) {
+      console.log("crop successful");
+    }
+    else {
+      console.log("crop not successful");
+    }
+
+    // just renderint to visualize - no need for actual crop
+
+    this.$srcContext.rect(rct.left, rct.top, rct.width, rct.height);
+    this.$srcContext.strokeStyle = '#FF0000';
+    this.$srcContext.stroke();
+
+    // todo: pass the rect info and promise them all?
+    worker.recognize(cropImgCanvas)
+      .progress(progress => {
+        //console.log('progress:', progress);
+      }).then(result => {
+        console.log('result:', result.text);
+        // document.getElementById('text').value = result.text;
+        // text = result.text
+
+        const objects = [{
+          "typeofDocument": "Order", // This will be static 
+          "nameOfDocument": "LightSpeed", // Docment Name
+          "carrierId": "carrierId"
+        }]
+        this.$sitePersonel.objects = objects;
+        console.log(this.$sitePersonel);
+
+
+        this.$xmin = rct.left;
+        this.$ymin = rct.top;
+        this.$xmax = rct.width;
+        this.$ymax = rct.height;
+
+        let i = 0;
+        var object = {
+
+          annotateInfo: [// CarrierId
+            result.text,
+            this.$xmin,
+            this.$xmax,
+            this.$ymin,
+            this.$ymax
+          ]
+        }
+
+
+
+        i = i + 1;
+        this.$text = result.text;
+        this.$sitePersonel.objects.push(object);
+        console.log(this.$sitePersonel);
+
+
+
+        // document.getElementById('input').value = text;
+        this.modalBody = this.$text;
+        console.log(JSON.stringify(this.$sitePersonel));
+        const value = JSON.stringify(this.$sitePersonel);
+
+
+        document.getElementById('json').innerHTML = value;
+      });
+
+    this.modalBody = this.$text;
+    // document.getElementById('input').value = text;
+    $('#exampleModal').modal('show')
+
+
+  }
+
+  mybutton() {
+    console.log('H1')
+
+
+    this.$jsonfile = {
+      "documentId": "RANDOM VALUE", //Random value generated
+      "typeofDocument": "Order", // This will be static 
+      "nameofDocument": "LighSpeed",
+      "carrierId": "carrierId",
+      "value": this.selectOpt,
+      "createDate": "",
+      "createdTime": "",
+   
+
+    };
+
+    let rct = "rct" + this.i;
+
+    this.$rectn.push();
+    this.$res.push(this.$xmin,
+      this.$xmax,
+      this.$ymin,
+      this.$ymax)
+
+
+    this.$jsonfile[rct] = [this.$xmin,
+    this.$xmax,
+    this.$ymin,
+    this.$ymax]
+
+    this.i++;
+
+    JSON.stringify(this.$jsonfile);
+    console.log(this.$jsonfile);
+
+
+
+
+
+
+
+
+
+
+
+    const para = document.createElement('P');
+    const h = document.createElement('h3');
+    // h.innerHTML = document.getElementById('select').value;
+    h.innerHTML = this.selectOpt;
+    para.innerHTML = this.$text;
+
+    this.$val.push(this.$text);
+    this.$head.push(this.selectOpt);
+    this.$pdfjson[this.selectOpt] = this.$text;
+
+    JSON.stringify(this.$pdfjson);
+    console.log(this.$pdfjson);
+
+
+
+
+    document.getElementById('myDIV').appendChild(h);
+    document.getElementById('myDIV').appendChild(para);
+  }
+
+  myclick(e) {
+    // this.http.post(this.url, this.$jsonfile).subscribe((data) => {
+    //   console.log(this.$jsonfile)
+    //   console.log("done");
+    // });
+    this.http.get(this.url + "/fgfd").subscribe((data : any) => {
+      console.log(this.$jsonfile)
+      console.log(data.Items[0].documentId);
+    });
+
+    console.log("this.$val" + JSON.stringify(this.$pdfjson));
+    this.service.missionAnnouncedSource.next(this.$pdfjson);
+  
+
+  }
+
+  mymouseout(e) {
+
+  }
+
+
+  mymousemove(e) {
+    this.$cursorVT.setAttribute('style', `left: ${e.clientX}px;`);
+    this.$cursorHL.setAttribute('style', `top: ${e.clientY}px;`);
+    if (this.drag) {
+
+      this.$rect.w = (e.pageX - this.$canvas.offsetLeft) - this.$rect.startX - 260;
+      this.$rect.h = (e.pageY - this.$canvas.offsetTop) - this.$rect.startY - 115;
+      this.$ctx.strokeStyle = 'red';
+      // ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
+    }
+    console.log("mousemove works");
+
+
+  }
+
+
 
   ngOnInit() {
   }
