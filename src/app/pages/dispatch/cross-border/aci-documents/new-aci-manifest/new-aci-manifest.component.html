@@ -545,11 +545,87 @@
                                           </div>
                                        </div>
                                     </div>
+                                    <!-- delivery destinations -->
+                                    <div class="row">
+                                       <div class="col-lg-12">
+                                          <label
+                                             class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Delivery Destinations(Name and address to which the goods will be delivered by the carrier, if different from the consignee)</label>
+                                       </div>
+                                    </div>
+                                       <div class="form-group row" *ngFor="let deliveryDestination of shipment.deliveryDestinations;let p = index">
+                                          <div class="col-lg-12 text-right">
+                                             <button type="button"  (click)="deleteDeliveryDestination(p,s)"
+                                                class="btn btn-sm btn-danger"> <i class="fas fa-times"></i></button>
+                                          </div>
+                                          <div class="col-lg-5 offset-lg-1">
+                                             <div class="row">                                            
+                                                <div class="col-lg-10">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Name</label>
+                                                   <input type="text" class="form-control" maxlength="60"
+                                                      name="deliveryDestination{{s}}.name{{p}}"
+                                                      [(ngModel)]="deliveryDestination.name">
+                                                </div>
+                                             </div>    
+                                             <div class="row">                                            
+                                                <div class="col-lg-10">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Contact Number</label>
+                                                   <input type="text" class="form-control" maxlength="60"
+                                                      name="deliveryDestination{{s}}.contactNumber{{p}}"
+                                                      [(ngModel)]="deliveryDestination.contactNumber">
+                                                </div>
+                                             </div>                                 
+                                          </div>
+                                          <div class="col-lg-5">
+                                             <div class="row">
+                                                <div class="col-lg-10">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Address</label>
+                                                   <input type="text" class="form-control"
+                                                      name="deliveryDestination{{s}}.address.addressLine{{p}}"
+                                                      [(ngModel)]="deliveryDestination.address.addressLine">
+                                                </div>
+                                                <div class="col-lg-5">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
+                                                   <ng-select name="deliveryDestination{{s}}.address.country{{p}}" (change)="getDeliveryDestinationStates(s,p)"
+                                                      [(ngModel)]="deliveryDestination.address.country">
+                                                      <ng-option *ngFor="let country of countries" [value]="country.countryID">
+                                                         {{country.countryName}}</ng-option>
+                                                         </ng-select>
+                                                </div>
+                                                <div class="col-lg-5">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">State</label>                                            
+                                                      <ng-select  name="deliveryDestination{{s}}.address.stateProvince{{p}}" [(ngModel)]="deliveryDestination.address.stateProvince" (change)="getDeliveryDestinationCities(s,p)">
+                                                         <ng-option *ngFor="let state of deliveryDestinationStates" [value]="state.stateID">
+                                                            {{state.stateName}}</ng-option>
+                                                      </ng-select>
+                                                </div>
+                                                <div class="col-lg-5">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">City</label>
+                                                      <ng-select  name="deliveryDestination{{s}}.address.city{{p}}" [(ngModel)]="deliveryDestination.address.city">
+                                                         <ng-option *ngFor="let city of deliveryDestinationCities" [value]="city.cityID">
+                                                            {{city.cityName}}</ng-option>
+                                                      </ng-select>
+                                                </div>
+                                                <div class="col-lg-5">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Zip Code/Postal Code</label>
+                                                   <input type="text" class="form-control"
+                                                      name="deliveryDestination{{s}}.address.postalCode{{p}}"
+                                                      [(ngModel)]="deliveryDestination.address.postalCode">
+                                                </div>
+                                             </div>
+                                          </div>
+         
+                                       </div>
+                                       <div class="form-group row">
+                                          <div class="col-lg-12 text-right">
+                                             <button type="button" (click)="addDeliveryDestination(s)"
+                                                class="btn btn-sm btn-success mr-1">Add Delivery Destination</button>
+                                          </div>
+                                       </div>
                                     <!-- notify parties -->
                                     <div class="row">
-                                       <div class="col-lg-5">
+                                       <div class="col-lg-12">
                                           <label
-                                             class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Notify Parties</label>
+                                             class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Notify Parties(Name and address of a party to be notified as specified in the contract of carriage or sales invoice.)</label>
                                        </div>
                                     </div>
                                        <div class="form-group row" *ngFor="let notifyParty of shipment.notifyParties;let p = index">
