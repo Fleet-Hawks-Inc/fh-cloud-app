@@ -54,7 +54,7 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   filterData = {
     searchValue: '',
-    severity: '',
+    severity: null,
     startDate: '',
     endDate: '',
     start: '',
@@ -167,18 +167,20 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.toastr.error('Please select atleast one filter');
       return false;
     }
-
+ 
     let start = <any> '';
     let end = <any> '';
     start = this.filterData.startDate;
     end = this.filterData.endDate;
 
     if(this.filterData.startDate !== '') {
+      start = start.split('-').reverse().join('-');
       start = moment(start+' 00:00:00').format("X")
       start = start*1000;
     }
 
     if(this.filterData.endDate !== '') {
+      end = end.split('-').reverse().join('-');
       end = moment(end+' 23:59:59').format("X");
       end = end*1000;
     }
@@ -226,7 +228,7 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.spinner.show();
       this.filterData = {
         searchValue: '',
-        severity: '',
+        severity: null,
         startDate: '',
         endDate: '',
         start: '',

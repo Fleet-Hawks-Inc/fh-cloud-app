@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { ApiService } from "../../../../services";
+import { ActivatedRoute, Router } from "@angular/router";
 declare var $: any;
+import { ToastrService } from "ngx-toastr";
 
 @Component({
-  selector: 'app-vehicle-detail',
-  templateUrl: './vehicle-detail.component.html',
-  styleUrls: ['./vehicle-detail.component.css'],
+  selector: "app-vehicle-detail",
+  templateUrl: "./vehicle-detail.component.html",
+  styleUrls: ["./vehicle-detail.component.css"],
 })
 export class VehicleDetailComponent implements OnInit {
   slides = [];
@@ -16,157 +17,157 @@ export class VehicleDetailComponent implements OnInit {
    * Vehicle Prop
    */
   driversList: any = {};
-  vehicleModelList:any = {};
-  vehicleManufacturersList: any  = {};
+  vehicleModelList: any = {};
+  vehicleManufacturersList: any = {};
   groupsList: any = {};
-  statesList : any = {};
+  statesList: any = {};
   vendors = {};
 
-  vehicleID = '';
-  vehicleIdentification = '';
-  vehicleType = '';
-  VIN = '';
-  year = '';
-  manufacturerID = '';
-  modelID = '';
-  plateNumber = '';
-  stateID = '';
-  driverID = '';
-  teamDriverID = '';
-  serviceProgramID = '';
-  primaryMeter = '';
-  repeatByTime = '';
-  repeatByTimeUnit = '';
-  reapeatbyOdometerMiles = '';
-  currentStatus = '';
-  ownership = '';
-  groupID = '';
-  aceID = '';
-  aciID = '';
-  vehicleColor = '';
-  bodyType = '';
-  bodySubType = '';
-  msrp = '';
-  inspectionFormID = '';
+  vehicleID = "";
+  vehicleIdentification = "";
+  vehicleType = "";
+  VIN = "";
+  year = "";
+  manufacturerID = "";
+  modelID = "";
+  plateNumber = "";
+  stateID = "";
+  driverID = "";
+  teamDriverID = "";
+  serviceProgramID = "";
+  primaryMeter = "";
+  repeatByTime = "";
+  repeatByTimeUnit = "";
+  reapeatbyOdometerMiles = "";
+  currentStatus = "";
+  ownership = "";
+  groupID = "";
+  aceID = "";
+  aciID = "";
+  vehicleColor = "";
+  bodyType = "";
+  bodySubType = "";
+  msrp = "";
+  inspectionFormID = "";
   lifeCycle = {
-    inServiceDate: '',
+    inServiceDate: "",
     inServiceOdometer: 0,
     estimatedServiceMonths: 0,
     estimatedServiceMiles: 0,
-    estimatedResaleValue: '',
-    outOfServiceDate: '',
+    estimatedResaleValue: "",
+    outOfServiceDate: "",
     outOfServiceOdometer: 0,
   };
   specifications = {
     height: 0,
-    heightUnit: '',
+    heightUnit: "",
     length: 0,
-    lengthUnit: '',
+    lengthUnit: "",
     width: 0,
-    widthUnit: '',
-    interiorVolume: '',
-    passangerVolume: '',
+    widthUnit: "",
+    interiorVolume: "",
+    passangerVolume: "",
     groundClearnce: 0,
-    groundClearnceUnit: '',
+    groundClearnceUnit: "",
     bedLength: 0,
-    bedLengthUnit: '',
-    cargoVolume: '',
-    curbWeight: '',
-    grossVehicleWeightRating: '',
+    bedLengthUnit: "",
+    cargoVolume: "",
+    curbWeight: "",
+    grossVehicleWeightRating: "",
     iftaReporting: false,
-    towingCapacity: '',
-    maxPayload: '',
+    towingCapacity: "",
+    maxPayload: "",
     EPACity: 0,
     EPACombined: 0,
     EPAHighway: 0,
   };
   insurance = {
-    dateOfIssue: '',
+    dateOfIssue: "",
     premiumAmount: 0,
-    premiumCurrency: '',
-    vendorID: '',
-    dateOfExpiry: '',
-    remiderEvery: '',
-    policyNumber: '',
+    premiumCurrency: "",
+    vendorID: "",
+    dateOfExpiry: "",
+    remiderEvery: "",
+    policyNumber: "",
     amount: 0,
-    amountCurrency: ''
+    amountCurrency: "",
   };
   fluid = {
-    fuelType: '',
+    fuelType: "",
     fuelTankOneCapacity: 0,
-    fuelQuality: '',
+    fuelQuality: "",
     fuelTankTwoCapacity: 0,
     oilCapacity: 0,
   };
   wheelsAndTyres = {
     numberOfTyres: 0,
-    driveType: '',
-    brakeSystem: '',
-    wheelbase: '',
-    rearAxle: '',
-    frontTyreType: '',
-    rearTyreType: '',
-    frontTrackWidth: '',
-    rearTrackWidth: '',
-    frontWheelDiameter: '',
-    rearWheelDiameter: '',
-    frontTyrePSI: '',
-    rearTyrePSI: '',
+    driveType: "",
+    brakeSystem: "",
+    wheelbase: "",
+    rearAxle: "",
+    frontTyreType: "",
+    rearTyreType: "",
+    frontTrackWidth: "",
+    rearTrackWidth: "",
+    frontWheelDiameter: "",
+    rearWheelDiameter: "",
+    frontTyrePSI: "",
+    rearTyrePSI: "",
   };
   engine = {
-    engineSummary: '',
-    engineBrand: '',
-    aspiration: '',
-    blockType: '',
+    engineSummary: "",
+    engineBrand: "",
+    aspiration: "",
+    blockType: "",
     bore: 0,
-    camType: '',
-    stroke: '',
-    valves: '',
-    compression: '',
-    cylinders: '',
-    displacement: '',
-    fuelIndication: '',
-    fuelQuality: '',
-    maxHP: '',
+    camType: "",
+    stroke: "",
+    valves: "",
+    compression: "",
+    cylinders: "",
+    displacement: "",
+    fuelIndication: "",
+    fuelQuality: "",
+    maxHP: "",
     maxTorque: 0,
-    readlineRPM: '',
-    transmissionSummary: '',
-    transmissionType: '',
-    transmissonBrand: '',
-    transmissionGears: '',
+    readlineRPM: "",
+    transmissionSummary: "",
+    transmissionType: "",
+    transmissonBrand: "",
+    transmissionGears: "",
   };
   purchase = {
-    purchaseVendorID: '',
-    warrantyExpirationDate: '',
-    purchasePrice: '',
-    purchasePriceCurrency: '',
-    warrantyExpirationMeter: '',
-    purchaseDate: '',
-    purchaseComments: '',
-    purchaseOdometer: '',
+    purchaseVendorID: "",
+    warrantyExpirationDate: "",
+    purchasePrice: "",
+    purchasePriceCurrency: "",
+    warrantyExpirationMeter: "",
+    purchaseDate: "",
+    purchaseComments: "",
+    purchaseOdometer: "",
   };
   loan = {
-    loanVendorID: '',
-    amountOfLoan: '',
-    aspiration: '',
-    annualPercentageRate: '',
-    downPayment: '',
-    dateOfLoan: '',
-    monthlyPayment: '',
-    firstPaymentDate: '',
-    numberOfPayments: '',
-    loadEndDate: '',
-    accountNumber: '',
-    generateExpenses: '',
-    notes: '',
+    loanVendorID: "",
+    amountOfLoan: "",
+    aspiration: "",
+    annualPercentageRate: "",
+    downPayment: "",
+    dateOfLoan: "",
+    monthlyPayment: "",
+    firstPaymentDate: "",
+    numberOfPayments: "",
+    loadEndDate: "",
+    accountNumber: "",
+    generateExpenses: "",
+    notes: "",
   };
   settings = {
-    primaryMeter: 'miles',
-    fuelUnit: 'gallons(USA)',
+    primaryMeter: "miles",
+    fuelUnit: "gallons(USA)",
     hardBreakingParams: 0,
     hardAccelrationParams: 0,
     turningParams: 0,
-    measurmentUnit: 'imperial',
+    measurmentUnit: "imperial",
   };
 
   issues = [];
@@ -186,11 +187,17 @@ export class VehicleDetailComponent implements OnInit {
     autoplay: true,
     autoplaySpeed: 1500,
   };
-  
-  constructor(private apiService: ApiService, private route: ActivatedRoute) {}
+
+  constructor(
+    private apiService: ApiService,
+    private route: ActivatedRoute,
+    private router: Router,
+
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
-    this.vehicleID = this.route.snapshot.params['vehicleID'];
+    this.vehicleID = this.route.snapshot.params["vehicleID"];
     this.getVehicle();
     this.fetchIssues();
     this.fetchReminders();
@@ -198,93 +205,108 @@ export class VehicleDetailComponent implements OnInit {
     this.fetchFuel();
     this.fetchServiceProgams();
     this.fetchServiceHistory();
-    this. fetchDriversList();
+    this.fetchDriversList();
     this.fetchStatesList();
     this.fetchVehicleModelList();
     this.fetchVehicleManufacturerList();
     this.fetchGroupsList();
     this.fetchVendorsList();
-
   }
 
   fetchVendorsList() {
-    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+    this.apiService.getData("vendors/get/list").subscribe((result: any) => {
       this.vendors = result;
     });
   }
 
   fetchGroupsList() {
-    this.apiService.getData('groups/get/list').subscribe((result: any) => {
+    this.apiService.getData("groups/get/list").subscribe((result: any) => {
       this.groupsList = result;
     });
   }
   fetchDriversList() {
-    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+    this.apiService.getData("drivers/get/list").subscribe((result: any) => {
       this.driversList = result;
     });
   }
   fetchStatesList() {
-    this.apiService.getData('states/get/list').subscribe((result: any) => {
+    this.apiService.getData("states/get/list").subscribe((result: any) => {
       this.statesList = result;
     });
   }
   fetchVehicleModelList() {
-    this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
-      this.vehicleModelList = result;
-    });
+    this.apiService
+      .getData("vehicleModels/get/list")
+      .subscribe((result: any) => {
+        this.vehicleModelList = result;
+      });
   }
   fetchVehicleManufacturerList() {
-    this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
-      this.vehicleManufacturersList = result;
-    });
+    this.apiService
+      .getData("manufacturers/get/list")
+      .subscribe((result: any) => {
+        this.vehicleManufacturersList = result;
+      });
   }
-  fetchServiceProgams(){
-    this.apiService.getData(`serviceLogs/vehicle/${this.vehicleID}`).subscribe((result) => {
-      this.serviceHistory = result.Items;
-    })
-  }
-
-  fetchServiceHistory(){
-    this.apiService.getData(`servicePrograms/vehicle/${this.vehicleID}`).subscribe((result) => {
-      this.servicePrograms = result.Items;
-    })
+  fetchServiceProgams() {
+    this.apiService
+      .getData(`serviceLogs/vehicle/${this.vehicleID}`)
+      .subscribe((result) => {
+        this.serviceHistory = result.Items;
+      });
   }
 
-
-  fetchInspectionForms(){
-    this.apiService.getData(`inspectionForms/vehicle/${this.vehicleID}`).subscribe((result) => {
-      this.inspectionForms = result.Items;
-    })
+  fetchServiceHistory() {
+    this.apiService
+      .getData(`servicePrograms/vehicle/${this.vehicleID}`)
+      .subscribe((result) => {
+        this.servicePrograms = result.Items;
+      });
   }
 
-  
-  fetchFuel(){
-    this.apiService.getData(`fuelEntries/vehicle/${this.vehicleID}`).subscribe((result) => {
-      this.fuelEntries = result.Items;
-    })
+  fetchInspectionForms() {
+    this.apiService
+      .getData(`inspectionForms/vehicle/${this.vehicleID}`)
+      .subscribe((result) => {
+        this.inspectionForms = result.Items;
+      });
   }
 
-  closeIssue(issueID){
-    this.apiService.getData(`issues/setStatus/${issueID}/CLOSE`).subscribe((result) => {
-      this.fetchIssues();
-    })
+  fetchFuel() {
+    this.apiService
+      .getData(`fuelEntries/vehicle/${this.vehicleID}`)
+      .subscribe((result) => {
+        this.fuelEntries = result.Items;
+      });
   }
 
-  fetchReminders(){
-    this.apiService.getData(`reminders/vehicle/${this.vehicleID}`).subscribe((result) => {
-      this.reminders = result.Items;
-    })
+  closeIssue(issueID) {
+    this.apiService
+      .getData(`issues/setStatus/${issueID}/CLOSE`)
+      .subscribe((result) => {
+        this.fetchIssues();
+      });
   }
 
-  fetchIssues(){
-    this.apiService.getData(`issues/vehicle/${this.vehicleID}`).subscribe((result) => {
-      this.issues = result.Items;
-    })
+  fetchReminders() {
+    this.apiService
+      .getData(`reminders/vehicle/${this.vehicleID}`)
+      .subscribe((result) => {
+        this.reminders = result.Items;
+      });
+  }
+
+  fetchIssues() {
+    this.apiService
+      .getData(`issues/vehicle/${this.vehicleID}`)
+      .subscribe((result) => {
+        this.issues = result.Items;
+      });
   }
 
   getVehicle() {
     this.apiService
-      .getData('vehicles/' + this.vehicleID)
+      .getData("vehicles/" + this.vehicleID)
       .subscribe((result: any) => {
         result = result.Items[0];
         this.vehicleIdentification = result.vehicleIdentification;
@@ -354,7 +376,7 @@ export class VehicleDetailComponent implements OnInit {
           remiderEvery: result.insurance.remiderEvery,
           policyNumber: result.insurance.policyNumber,
           amount: result.insurance.amount,
-          amountCurrency: result.insurance.amountCurrency
+          amountCurrency: result.insurance.amountCurrency,
         };
         this.fluid = {
           fuelType: result.fluid.fuelType,
@@ -434,17 +456,31 @@ export class VehicleDetailComponent implements OnInit {
           measurmentUnit: result.settings.measurmentUnit,
         };
 
-        if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
-          this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+        if (
+          result.uploadedPhotos != undefined &&
+          result.uploadedPhotos.length > 0
+        ) {
+          this.slides = result.uploadedPhotos.map(
+            (x) => `${this.Asseturl}/${result.carrierID}/${x}`
+          );
         }
 
-        $('#hardBreakingParametersValue').html(
+        $("#hardBreakingParametersValue").html(
           this.settings.hardBreakingParams
         );
-        $('#hardAccelrationParametersValue').html(
+        $("#hardAccelrationParametersValue").html(
           this.settings.hardAccelrationParams
         );
-        $('#turningParametersValue').html(this.settings.turningParams);
+        $("#turningParametersValue").html(this.settings.turningParams);
+      });
+  }
+
+  deleteVehicle() {
+    this.apiService
+      .deleteData("vehicles/" + this.vehicleID)
+      .subscribe((result: any) => {
+        this.toastr.success("Vehicle Deleted Successfully!");
+        this.router.navigateByUrl("/fleet/vehicles/list");
       });
   }
 }

@@ -23,6 +23,7 @@ export class AddVehicleNewComponent implements OnInit {
   title = 'Add Vehicle';
   Asseturl = this.apiService.AssetUrl;
   activeTab = 1;
+  modalImage = '';
   /**
    * Quantum prop
    */
@@ -215,7 +216,7 @@ vehicles= [];
   Error: string = '';
   Success: string = '';
 
-  slides = ['assets/img/truck.jpg' , 'assets/img/truck.jpg'];
+  slides = ['assets/img/truck.jpg'];
   slideConfig = {
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -1032,4 +1033,9 @@ vehicles= [];
           },
         });
       }
+
+    openImageModal(slide){
+      this.modalImage = slide;
+      $('#imageModal').modal('show');
+    }
 }

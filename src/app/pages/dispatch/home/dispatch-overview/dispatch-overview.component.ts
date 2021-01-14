@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 // import { EventActivitiesService } from '../../../../services/event-activities.service';
 import {forkJoin} from 'rxjs';
 declare var $: any;
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dispatch-overview',
@@ -30,7 +31,7 @@ export class DispatchOverviewComponent implements OnInit {
 
   response: any = '';
   hasError = false;
-  hasSuccess = false;
+  hasSuccess = false; 
   Error = '';
   Success = '';
   activityData = {
@@ -68,7 +69,39 @@ export class DispatchOverviewComponent implements OnInit {
     nov: 0,
     dec: 0
   }
+
+  aceMonths = {
+    jan: 0,
+    feb: 0,
+    march: 0,
+    april: 0,
+    may: 0,
+    june: 0,
+    july: 0,
+    aug: 0,
+    sept: 0,
+    oct: 0,
+    nov: 0,
+    dec: 0
+  }
+
+  aciMonths = {
+    jan: 0,
+    feb: 0,
+    march: 0,
+    april: 0,
+    may: 0,
+    june: 0,
+    july: 0,
+    aug: 0,
+    sept: 0,
+    oct: 0,
+    nov: 0,
+    dec: 0
+  }
   tripGraphData = [];
+  aceGraphData = [];
+  aciGraphData = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService) { }
@@ -290,8 +323,46 @@ export class DispatchOverviewComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('ACIeManifest').
       subscribe((result: any) => {
-        // result = result.Items[0];
+        let data = result.Items;
         this.aceManifestCount = result.Count;
+        if(result.Count > 0) {
+          for (let i = 0; i < data.length; i++) {
+            const element = data[i];
+
+            if(element.timeCreated != undefined && element.timeCreated != '') {
+              let check = moment(element.timeCreated);
+              let eventMonth = check.format('M');
+
+              if(eventMonth == '1' || eventMonth == '01') {
+                this.aceMonths.jan += 1;
+              } else if(eventMonth == '2' || eventMonth == '02') {
+                this.aceMonths.feb += 1;
+              } else if(eventMonth == '3' || eventMonth == '03') {
+                this.aceMonths.march += 1;
+              } else if(eventMonth == '4' || eventMonth == '04') {
+                this.aceMonths.april += 1;
+              } else if(eventMonth == '5' || eventMonth == '05') {
+                this.aceMonths.may += 1;
+              } else if(eventMonth == '6' || eventMonth == '06') {
+                this.aceMonths.june += 1;
+              } else if(eventMonth == '7' || eventMonth == '07') {
+                this.aceMonths.july += 1;
+              } else if(eventMonth == '8' || eventMonth == '08') {
+                this.aceMonths.aug += 1;
+              } else if(eventMonth == '9' || eventMonth == '09') {
+                this.aceMonths.sept += 1;
+              } else if(eventMonth == '10') {
+                this.aceMonths.oct += 1;
+              } else if(eventMonth == '11') {
+                this.aceMonths.nov += 1;
+              } else if(eventMonth == '12') {
+                this.aceMonths.dec += 1;
+              }
+            }
+          }
+          this.aceGraphData = Object.keys(this.aceMonths).map(key => this.aceMonths[key]);
+          this.initManifestGraph()
+        }
         this.spinner.hide();
       })
   }
@@ -300,8 +371,47 @@ export class DispatchOverviewComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('ACEeManifest').
       subscribe((result: any) => {
-        // result = result.Items[0];
+        let data = result.Items;
         this.aciManifestCount = result.Count;
+
+        if(result.Count > 0) {
+          for (let i = 0; i < data.length; i++) {
+            const element = data[i];
+
+            if(element.timeCreated != undefined && element.timeCreated != '') {
+              let check = moment(element.timeCreated);
+              let eventMonth = check.format('M');
+
+              if(eventMonth == '1' || eventMonth == '01') {
+                this.aciMonths.jan += 1;
+              } else if(eventMonth == '2' || eventMonth == '02') {
+                this.aciMonths.feb += 1;
+              } else if(eventMonth == '3' || eventMonth == '03') {
+                this.aciMonths.march += 1;
+              } else if(eventMonth == '4' || eventMonth == '04') {
+                this.aciMonths.april += 1;
+              } else if(eventMonth == '5' || eventMonth == '05') {
+                this.aciMonths.may += 1;
+              } else if(eventMonth == '6' || eventMonth == '06') {
+                this.aciMonths.june += 1;
+              } else if(eventMonth == '7' || eventMonth == '07') {
+                this.aciMonths.july += 1;
+              } else if(eventMonth == '8' || eventMonth == '08') {
+                this.aciMonths.aug += 1;
+              } else if(eventMonth == '9' || eventMonth == '09') {
+                this.aciMonths.sept += 1;
+              } else if(eventMonth == '10') {
+                this.aciMonths.oct += 1;
+              } else if(eventMonth == '11') {
+                this.aciMonths.nov += 1;
+              } else if(eventMonth == '12') {
+                this.aciMonths.dec += 1;
+              }
+            }
+          }
+          this.aciGraphData = Object.keys(this.aciMonths).map(key => this.aciMonths[key]);
+          this.initManifestGraph()
+        }
         this.spinner.hide();
       })
   }
@@ -352,9 +462,7 @@ export class DispatchOverviewComponent implements OnInit {
         backgroundColor: '#9c9ea1',
         borderColor: '#9c9ea1',
         borderWidth: 1,
-        data: [
-          15,85,45,15,16,18,84,58,64,15,74,15,1,69,25,45
-        ],
+        data: this.aceGraphData
       },
       {
         label: 'ACI',
@@ -362,9 +470,7 @@ export class DispatchOverviewComponent implements OnInit {
         backgroundColor: '#000',
         borderColor: '#000',
         borderWidth: 1,
-        data: [
-           15,85,45,64,15,74,15,1,69,25,45,15,16,18,84,58,
-        ],
+        data: this.aciGraphData
      }
     ];
   }

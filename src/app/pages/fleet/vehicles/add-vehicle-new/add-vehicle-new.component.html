@@ -31,7 +31,7 @@
                       <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(7)"  [ngClass]="{'active': activeTab == 7}" >Engine & Transmission</a> </li>
                       <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(8)"  [ngClass]="{'active': activeTab == 8}" >Purchase</a> </li>
                       <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(9)" [ngClass]="{'active': activeTab == 9}" >Loan</a> </li>
-                      <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(10)" [ngClass]="{'active': activeTab == 10}">Settings</a> </li>
+                      <!-- <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(10)" [ngClass]="{'active': activeTab == 10}">Settings</a> </li> -->
                    </ul>
                 </div>
  
@@ -170,7 +170,7 @@
                                      </div>
                                   </div>
                                </div>
-                               <div class="col-lg-5 offset-lg-1">
+                               <!-- <div class="col-lg-5 offset-lg-1">
                                   <div class="row">
                                      <div class="col-lg-7 text-center">
                                         <ngx-slick-carousel class="carousel"
@@ -184,12 +184,40 @@
                                         <div class="mt-3">
                                            <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
                                               <input (change)="selectDocuments($event, 'uploadedPhotos')" class="hidden_input1" name="uploadedPhotos" type="file" multiple >
-                                              <!-- {{selectedFiles}} -->
                                            </div>
                                         </div>
                                      </div>
                                   </div>
-                               </div>
+                               </div> -->
+                               <div class="col-lg-5 offset-lg-1">
+                                 <div class="row mt-4">                                    
+                                   <div class="col-lg-10">
+                                   <div width="80%" style="overflow-y: scroll;overflow-x:hidden;height:437px">                               
+                                     <div class="row">
+                                         <div class="col-lg-6" *ngFor="let slide of slides">
+                                             <div class="vehicle-photo-box mb-1">
+                                                 <a [routerLink]="" (click)=openImageModal(slide)><img class="img-fluid z-depth-1" style="cursor:pointer;height:138px!important;width:100%;" src="{{slide}}" alt="img"></a>
+                                                 <hr class="m-3">
+                                                 <div class="row">
+                                                     <div class="col-lg-10">Image</div>
+                                                     <div class="col-lg-2 text-right"> <i class="fas fa-times text-danger"></i> </div>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                                   </div>
+                                 </div>
+                                    <div class="row">
+                                       <div class="col-lg-10 text-center">
+                                          <div class="mt-3">
+                                             <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
+                                                <input (change)="selectDocuments($event, 'uploadedPhotos')" class="hidden_input1" name="uploadedPhotos" type="file" multiple >
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
                             </div>
                             <div class="row pt-3">
                                <div class="col-lg-10">
@@ -1631,7 +1659,7 @@
                          </div>
                       </div>
                       <!-- setting -->
-                      <div [ngClass]="{'show active': activeTab == 10}" class="tab-pane fade" id="vsettings" role="tabpanel" aria-labelledby="vsettings-tab">
+                      <!-- <div [ngClass]="{'show active': activeTab == 10}" class="tab-pane fade" id="vsettings" role="tabpanel" aria-labelledby="vsettings-tab">
                          <div>
                             <div class="row pt-3">
                                <div class="col-lg-5">
@@ -1727,7 +1755,7 @@
                                </div>
                             </div>
                          </div>
-                      </div>
+                      </div> -->
                    </div>
                    <div class="form-group row">
                      <div class="col-lg-12">
@@ -1741,10 +1769,10 @@
                 <div class="form-group row mt-3">
                   <div class="col-lg-12 pr-5 text-right pb-4">
                      <button *ngIf="activeTab != 1" type="button" (click)="previous()" class="btn btn-default mr-2 mt-4">Previous</button>
-                     <a *ngIf="activeTab != 10" [routerLink]="" (click)="next()" class="btn btn-success mt-4">Next</a>
-                     <button type="button" *ngIf="activeTab == 10" class="btn btn-default mr-2 mt-4"  (click)="cancel()" >Cancel</button> 
-                      <a *ngIf="activeTab == 10 && !vehicleID" [routerLink]="" (click)="addVehicle()" class="btn btn-success mt-4">Save</a>
-                      <a *ngIf="activeTab == 10 && vehicleID" [routerLink]="" (click)="updateVehicle()" class="btn btn-success mt-4">Update</a>
+                     <a *ngIf="activeTab != 9" [routerLink]="" (click)="next()" class="btn btn-success mt-4">Next</a>
+                     <button type="button" *ngIf="activeTab == 9" class="btn btn-default mr-2 mt-4"  (click)="cancel()" >Cancel</button> 
+                      <a *ngIf="activeTab == 9 && !vehicleID" [routerLink]="" (click)="addVehicle()" class="btn btn-success mt-4">Save</a>
+                      <a *ngIf="activeTab == 9 && vehicleID" [routerLink]="" (click)="updateVehicle()" class="btn btn-success mt-4">Update</a>
                   </div>
             </div>
             </form>
@@ -1840,3 +1868,28 @@
     </div>
  </div>
  </div>
+
+
+ <!-- Image modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg" role="document">
+      <!--Content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <!-- <h5 class="modal-title">Modal title</h5> -->
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+         </div>
+         <!--Body-->
+         <div class="modal-body mb-0 p-0">
+            <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+               <img class="embed-responsive-item" src="{{modalImage}}">
+            </div>
+         </div>
+         <!--Footer-->
+         <div class="modal-footer text-right">
+            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+      <!--/.Content-->
+   </div>
+</div>

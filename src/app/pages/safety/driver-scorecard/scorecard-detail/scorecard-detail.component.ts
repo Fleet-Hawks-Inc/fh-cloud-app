@@ -16,7 +16,7 @@ declare var $: any;
   styleUrls: ['./scorecard-detail.component.css']
 })
 export class ScorecardDetailComponent implements OnInit {
-
+  Asseturl = this.apiService.AssetUrl;
   drivers = [];
   eventData = {
     driver: {
@@ -26,7 +26,8 @@ export class ScorecardDetailComponent implements OnInit {
       workPhone: '',
       workEmail: '',
       cycleName: '',
-      homeTerminal: ''
+      homeTerminal: '',
+      driverImage: ''
     },
     compliance: 'NA',
     safetyScore: 'NA',
@@ -84,73 +85,67 @@ export class ScorecardDetailComponent implements OnInit {
     this.apiService.getData('drivers/'+this.driverID)
       .subscribe((result: any) => {
         result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-        // console.log('this.drivers')
-        // console.log(result.Items)
-        // for (let i = 0; i < result.Items.length; i++) {
-          const element = result.Items[0];
-          this.driverUsername = element.userName;
-          if (element.isDeleted === 0) {
-            
-            this.eventData.driver = element;
-            this.fetchCycle(element.hosDetails.hosCycle);
-            this.fetchHomeTerminal(element.hosDetails.homeTerminal);
-            
-            let eventtim = <any>'00:00:00';
-            this.apiService.getData('safety/eventLogs/fetch/driver/eventData/' + element.userName)
-              .subscribe((result1: any) => {
-                for (let j = 0; j < result1.Items.length; j++) {
-                  const element1 = result1.Items[j];
-                  if (element1.criticalityType === 'harshAcceleration') {
-                    this.eventData.harshAcceleration = this.eventData.harshAcceleration + 1;
-                  }
+        
+        const element = result.Items[0];
+        this.driverUsername = element.userName;
 
-                  if (element1.criticalityType === 'harshBrake') {
-                    this.eventData.harshBrake = this.eventData.harshBrake + 1;
-                  }
+        this.eventData.driver = element;
+        this.eventData.driver.driverImage = `${this.Asseturl}/${element.carrierID}/${element.driverImage}`;
+          
+        this.fetchCycle(element.hosDetails.hosCycle);
+        this.fetchHomeTerminal(element.hosDetails.homeTerminal);
+        
+        let eventtim = <any>'00:00:00';
+        this.apiService.getData('safety/eventLogs/fetch/driver/eventData/' + element.userName)
+          .subscribe((result1: any) => {
+            for (let j = 0; j < result1.Items.length; j++) {
+              const element1 = result1.Items[j];
+              if (element1.criticalityType === 'harshAcceleration') {
+                this.eventData.harshAcceleration = this.eventData.harshAcceleration + 1;
+              }
 
-                  if (element1.criticalityType === 'harshTurn') {
-                    this.eventData.harshTurn = this.eventData.harshTurn + 1;
-                  }
+              if (element1.criticalityType === 'harshBrake') {
+                this.eventData.harshBrake = this.eventData.harshBrake + 1;
+              }
 
-                  if (element1.criticalityType === 'rollingStop') {
-                    this.eventData.rollingStop = this.eventData.rollingStop + 1;
-                  }
+              if (element1.criticalityType === 'harshTurn') {
+                this.eventData.harshTurn = this.eventData.harshTurn + 1;
+              }
 
-                  if (element1.criticalityType === 'crashes') {
-                    this.eventData.crashes = this.eventData.crashes + 1;
-                  }
+              if (element1.criticalityType === 'rollingStop') {
+                this.eventData.rollingStop = this.eventData.rollingStop + 1;
+              }
 
-                  if (element1.criticalityType === 'overSpeedingStart' || element1.criticalityType === 'overSpeedingEnd') {
-                    if (element1.criticalityType === 'overSpeedingStart') {
-                      this.eventData.overSpeeding = this.eventData.overSpeeding + 1;
-                    }
+              if (element1.criticalityType === 'crashes') {
+                this.eventData.crashes = this.eventData.crashes + 1;
+              }
 
-                    this.eventData.distance = this.eventData.distance + parseFloat(element1.odometerReading);
-                    //subtract end time from start time
-                    var d = moment.duration(element1.evenEndTime).subtract(moment.duration(element1.eventStartTime))
-                    let newTime = moment.utc(d.as('milliseconds')).format("HH:mm:ss")
-
-                    //add total time of overspeeding i.e of criticality type overspeedingstart and end
-                    eventtim = moment.duration(eventtim).add(moment.duration(newTime));
-                    eventtim = moment.utc(eventtim.as('milliseconds')).format("HH:mm:ss");
-                    this.eventData.time = eventtim;
-                  }
+              if (element1.criticalityType === 'overSpeedingStart' || element1.criticalityType === 'overSpeedingEnd') {
+                if (element1.criticalityType === 'overSpeedingStart') {
+                  this.eventData.overSpeeding = this.eventData.overSpeeding + 1;
                 }
-                this.eventData.rank = this.eventData.harshAcceleration + this.eventData.harshBrake + this.eventData.rollingStop + this.eventData.crashes + this.eventData.overSpeeding;
-              })
-              
-          }
-          this.spinner.hide();
-          // console.log(this.eventData);
-        // }
+
+                this.eventData.distance = this.eventData.distance + parseFloat(element1.odometerReading);
+                //subtract end time from start time
+                var d = moment.duration(element1.evenEndTime).subtract(moment.duration(element1.eventStartTime))
+                let newTime = moment.utc(d.as('milliseconds')).format("HH:mm:ss")
+
+                //add total time of overspeeding i.e of criticality type overspeedingstart and end
+                eventtim = moment.duration(eventtim).add(moment.duration(newTime));
+                eventtim = moment.utc(eventtim.as('milliseconds')).format("HH:mm:ss");
+                this.eventData.time = eventtim;
+              }
+            }
+            this.eventData.rank = this.eventData.harshAcceleration + this.eventData.harshBrake + this.eventData.rollingStop + this.eventData.crashes + this.eventData.overSpeeding;
+          })
+            
+        this.spinner.hide();
       })
   }
 
   fetchCycle(cycleID) {
     this.apiService.getData('cycles/'+cycleID)
       .subscribe((result: any) => {
-          console.log('cycles');
-          console.log(result.Items)
           this.eventData.driver.cycleName = result.Items[0].cycleName;
       })
   }
@@ -158,8 +153,6 @@ export class ScorecardDetailComponent implements OnInit {
   fetchHomeTerminal(yardID) {
     this.apiService.getData('yards/'+yardID)
       .subscribe((result: any) => {
-          console.log('cycles');
-          console.log(result.Items)
           this.eventData.driver.homeTerminal = result.Items[0].yardName;
       })
   }
