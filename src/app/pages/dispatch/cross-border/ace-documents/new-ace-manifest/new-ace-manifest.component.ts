@@ -552,7 +552,7 @@ deleteTrailer(i: number) {
   addACEManifest() {
     const data = {
       SCAC: this.SCAC,
-      tripNumber: this.tripNumber,
+      tripNumber: this.SCAC+this.tripNumber,
       usPortOfArrival: this.usPortOfArrival,
       estimatedArrivalDate: this.estimatedArrivalDate,
       estimatedArrivalTime: this.estimatedArrivalTime,
@@ -619,7 +619,7 @@ deleteTrailer(i: number) {
         this.sendId = result.sendId;
         this.timeCreated =  result.timeCreated;
           this.SCAC = result.SCAC;
-          this.tripNumber = result.tripNumber;
+          this.tripNumber = result.tripNumber.substring(4,(result.tripNumber.length));
           this.usPortOfArrival = result.usPortOfArrival;
           this.estimatedArrivalDate = result.estimatedArrivalDate;
           this.estimatedArrivalTime = result.estimatedArrivalTime;
@@ -645,7 +645,7 @@ deleteTrailer(i: number) {
       timeCreated: this.timeCreated,
       sendId: this.sendId,
       SCAC: this.SCAC,
-      tripNumber: this.tripNumber,
+      tripNumber:this.SCAC+this.tripNumber,
       usPortOfArrival: this.usPortOfArrival,
       estimatedArrivalDate: this.estimatedArrivalDate,
       estimatedArrivalTime: this.estimatedArrivalTime,

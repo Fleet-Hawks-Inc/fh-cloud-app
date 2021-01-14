@@ -37,14 +37,10 @@
                                     <div class="row">
                                        <div class="col-lg-4 pr-0">
                                           <ng-select name="CCC" [(ngModel)]="CCC">
-                                             <ng-option value="SAVL">SAVL</ng-option>
-                                             <ng-option value="SXTF">SXTF</ng-option>
-                                             <ng-option value="THXL">THXL</ng-option>
-                                             <ng-option value="MLCM">MLCM</ng-option>
-                                             <ng-option value="BYTM">BYTM</ng-option>
-                                             <ng-option value="SWRR">SWRR</ng-option>
-                                             <ng-option value="CAYR">CAYR</ng-option>
-                                             <ng-option value="HYLD">HYLD</ng-option>
+                                             <ng-option value="1234">1234</ng-option>
+                                             <ng-option value="2342">2342</ng-option>
+                                             <ng-option value="9879">9879</ng-option>
+                                             <ng-option value="8765">8765</ng-option>
                                           </ng-select>
                                        </div>
                                        <div class="col-lg-8 pl-0">
@@ -370,25 +366,16 @@
                                                 <div class="row">
                                                    <div class="col-lg-4 pr-0">
                                                       <ng-select name="shipment.CCC{{s}}" [(ngModel)]="shipment.CCC">
-                                                         <ng-option value="SAVL">SAVL</ng-option>
-                                                         <ng-option value="SXTF">SXTF</ng-option>
-                                                         <ng-option value="THXL">THXL</ng-option>
-                                                         <ng-option value="MLCM">MLCM</ng-option>
-                                                         <ng-option value="BYTM">BYTM</ng-option>
-                                                         <ng-option value="SWRR">SWRR</ng-option>
-                                                         <ng-option value="CAYR">CAYR</ng-option>
-                                                         <ng-option value="HYLD">HYLD</ng-option>
+                                                         <ng-option value="1234">1234</ng-option>
+                                                         <ng-option value="2342">2342</ng-option>
+                                                         <ng-option value="9879">9879</ng-option>
+                                                         <ng-option value="8765">8765</ng-option>
                                                       </ng-select>
                                                    </div>
                                                    <div class="col-lg-8 pl-0">
                                                       <input type="text" class="form-control"
                                                          name="shipment.cargoControlNumber{{s}}"
-                                                         [(ngModel)]="shipment.cargoControlNumber"
-                                                         *ngIf="shipment.shipmentType[s] !=='PARS'">
-                                                      <input type="text" class="form-control"
-                                                         name="shipment.cargoControlNumber{{s}}"
-                                                         [(ngModel)]="shipment.cargoControlNumber" value="PARS"
-                                                         *ngIf="shipment.shipmentType[s] ==='PARS'">
+                                                         [(ngModel)]="shipment.cargoControlNumber">
                                                    </div>
                                                 </div>
                                              </div>
@@ -416,7 +403,9 @@
 
                                              <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Sub
-                                                   Location</label>
+                                                   Location<i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                      data-placement="top"
+                                                      title="Mandatory for inland destinations; optional for frontier ports."></i></label>
                                                 <ng-select name="shipment.subLocation{{s}}"
                                                    [(ngModel)]="shipment.subLocation">
                                                    <ng-option *ngFor="let subLocation of subLocationsList"
@@ -424,13 +413,20 @@
                                                       {{subLocation.name}}</ng-option>
                                                 </ng-select>
                                              </div>
-                                             <div class="col-lg-10">
+                                             <div class="col-lg-10" *ngIf="shipment.shipmentType === 'CSA'">
                                                 <label
                                                    class="control-label font-weight-bold text-lg-right pt-2">Importer
                                                    CSA Business Number</label>
                                                 <input type="text" class="form-control"
                                                    name="shipment.importerCsaBusinessNumber{{s}}"
                                                    [(ngModel)]="shipment.importerCsaBusinessNumber">
+                                             </div>
+                                             <div class="col-lg-10" *ngIf="shipment.shipmentType === 'CSA'">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Unique
+                                                   Consignment Reference Number</label>
+                                                <input type="text" class="form-control"
+                                                   name="shipment.uniqueConsignmentReferenceNumber{{s}}"
+                                                   [(ngModel)]="shipment.uniqueConsignmentReferenceNumber">
                                              </div>
                                           </div>
                                        </div>
@@ -503,7 +499,8 @@
                                                    of
                                                    Loading</label>
                                                 <ng-select name="shipment.cityOfLoading.stateProvince{{s}}"
-                                                   [(ngModel)]="shipment.cityOfLoading.stateProvince">
+                                                   [(ngModel)]="shipment.cityOfLoading.stateProvince"
+                                                   (change)="getLoadingCities(s)">
                                                    <ng-option *ngFor="let state of states" [value]="state.stateID">
                                                       {{state.stateName}}</ng-option>
                                                 </ng-select>
@@ -513,7 +510,7 @@
                                                    Loading</label>
                                                 <ng-select name="shipment.cityOfLoading.cityName{{s}}"
                                                    [(ngModel)]="shipment.cityOfLoading.cityName">
-                                                   <ng-option *ngFor="let city of cities" [value]="city.cityID">
+                                                   <ng-option *ngFor="let city of loadingCities" [value]="city.cityID">
                                                       {{city.cityName}}</ng-option>
                                                 </ng-select>
                                              </div>
@@ -522,6 +519,7 @@
                                                    of
                                                    Acceptance</label>
                                                 <ng-select name="shipment.cityOfAcceptance.stateProvince{{s}}"
+                                                   (change)="getAcceptanceCities(s)"
                                                    [(ngModel)]="shipment.cityOfAcceptance.stateProvince">
                                                    <ng-option *ngFor="let state of states" [value]="state.stateID">
                                                       {{state.stateName}}</ng-option>
@@ -532,20 +530,98 @@
                                                    Acceptance</label>
                                                 <ng-select name="shipment.cityOfAcceptance.cityName{{s}}"
                                                    [(ngModel)]="shipment.cityOfAcceptance.cityName">
-                                                   <ng-option *ngFor="let city of cities" [value]="city.cityID">
+                                                   <ng-option *ngFor="let city of acceptanceCities"
+                                                      [value]="city.cityID">
                                                       {{city.cityName}}</ng-option>
                                                 </ng-select>
                                              </div>
                                              <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Special
                                                    Instructions</label>
-                                                <textarea class="form-control" rows="3"
+                                                <textarea class="form-control" rows="3" minlength="1" maxlength="300"
                                                    name="shipment.specialInstructions{{s}}"
                                                    [(ngModel)]="shipment.specialInstructions"></textarea>
                                              </div>
                                           </div>
                                        </div>
                                     </div>
+                                    <!-- notify parties -->
+                                    <div class="row">
+                                       <div class="col-lg-5">
+                                          <label
+                                             class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Notify Parties</label>
+                                       </div>
+                                    </div>
+                                       <div class="form-group row" *ngFor="let notifyParty of shipment.notifyParties;let p = index">
+                                          <div class="col-lg-12 text-right">
+                                             <button type="button"  (click)="deleteNotifyParty(p,s)"
+                                                class="btn btn-sm btn-danger"> <i class="fas fa-times"></i></button>
+                                          </div>
+                                          <div class="col-lg-5 offset-lg-1">
+                                             <div class="row">                                            
+                                                <div class="col-lg-10">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Name</label>
+                                                   <input type="text" class="form-control" maxlength="60"
+                                                      name="notifyParty{{s}}.name{{p}}"
+                                                      [(ngModel)]="notifyParty.name">
+                                                </div>
+                                             </div>    
+                                             <div class="row">                                            
+                                                <div class="col-lg-10">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Contact Number</label>
+                                                   <input type="text" class="form-control" maxlength="60"
+                                                      name="notifyParty{{s}}.contactNumber{{p}}"
+                                                      [(ngModel)]="notifyParty.contactNumber">
+                                                </div>
+                                             </div>                                 
+                                          </div>
+                                          <div class="col-lg-5">
+                                             <div class="row">
+                                                <div class="col-lg-10">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Address</label>
+                                                   <input type="text" class="form-control"
+                                                      name="notifyParty{{s}}.address.addressLine{{p}}"
+                                                      [(ngModel)]="notifyParty.address.addressLine">
+                                                </div>
+                                                <div class="col-lg-5">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
+                                                   <ng-select name="notifyParty{{s}}.address.country{{p}}" (change)="getNotifyPartyStates(s,p)"
+                                                      [(ngModel)]="notifyParty.address.country">
+                                                      <ng-option *ngFor="let country of countries" [value]="country.countryID">
+                                                         {{country.countryName}}</ng-option>
+                                                         </ng-select>
+                                                </div>
+                                                <div class="col-lg-5">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">State</label>                                            
+                                                      <ng-select  name="notifyParty{{s}}.address.stateProvince{{p}}" [(ngModel)]="notifyParty.address.stateProvince" (change)="getNotifyPartyCities(s,p)">
+                                                         <ng-option *ngFor="let state of notifyPartyStates" [value]="state.stateID">
+                                                            {{state.stateName}}</ng-option>
+                                                      </ng-select>
+                                                </div>
+                                                <div class="col-lg-5">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">City</label>
+                                                      <ng-select  name="notifyParty{{s}}.address.city{{p}}" [(ngModel)]="notifyParty.address.city">
+                                                         <ng-option *ngFor="let city of notifyPartyCities" [value]="city.cityID">
+                                                            {{city.cityName}}</ng-option>
+                                                      </ng-select>
+                                                </div>
+                                                <div class="col-lg-5">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Zip Code/Postal Code</label>
+                                                   <input type="text" class="form-control"
+                                                      name="notifyParty{{s}}.address.postalCode{{p}}"
+                                                      [(ngModel)]="notifyParty.address.postalCode">
+                                                </div>
+                                             </div>
+                                          </div>
+         
+                                       </div>
+                                       <div class="form-group row">
+                                          <div class="col-lg-12 text-right">
+                                             <button type="button" (click)="addNotifyParty(s)"
+                                                class="btn btn-sm btn-success mr-1">Add Notify Party</button>
+                                          </div>
+                                       </div>
+                                    <!-- commodity div -->
                                     <div class="row mb-2">
                                        <div class="col-lg-6">
                                           <label
@@ -683,7 +759,7 @@
                         <!-- new div end -->
                         <div class="form-group row">
                            <div class="col-lg-12 text-right">
-                              <button type="button" onclick="goBack()" class="btn btn-default m-1">Cancel</button>
+                              <button type="button" (click)="cancel()" class="btn btn-default m-1">Cancel</button>
                               <button type="button" *ngIf="!entryID" (click)="addACIManifest()"
                                  class="btn btn-success">Save</button>
                               <button type="button" *ngIf="entryID" (click)="updateACIManifest()"
@@ -753,8 +829,8 @@
                               Citizenship</label>
                            <ng-select name="passenger.citizenshipCountry{{i}}"
                               [(ngModel)]="passenger.citizenshipCountry">
-                              <ng-option *ngFor="let country of countries" [value]="country.countryCode">
-                                 {{country.countryName}}</ng-option>
+                              <ng-option *ngFor="let country of countriesList" [value]="country.code">
+                                 {{country.name}}</ng-option>
                            </ng-select>
                         </div>
                         <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Fast Card#</label>
@@ -845,7 +921,7 @@
                      <div class="row">
                         <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Number</label>
                            <input type="text" class="form-control" name="container.number{{i}}"
-                              [(ngModel)]="container.number">
+                              [(ngModel)]="container.number" maxlength="14">
                         </div>
                         <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Loaded On</label>
                            <ng-select name="container.loadedOn.type{{i}}" [(ngModel)]="container.loadedOn.type">
@@ -900,13 +976,18 @@
                      </div>
                   </div>
                   <div class="form-group">
-                     <div class="row">
-                        <div class="col-lg-12"><button type="button" (click)="addContainer()"
-                              class="btn btn-success btn-sm mr-1">Add Container</button>
+                     <div class="row text-right">
+                        <div class="col-lg-12">
                            <button type="button" (click)="deleteContainer(i)" class="btn btn-sm btn-success"> Delete
                               Container</button>
                         </div>
                      </div>
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <div class="col-lg-12">
+                     <button type="button" (click)="addContainer()" class="btn btn-success btn-sm mr-1">Add
+                        Container</button>
                   </div>
                </div>
             </form>

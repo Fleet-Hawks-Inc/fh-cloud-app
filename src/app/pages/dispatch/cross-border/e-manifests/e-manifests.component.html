@@ -148,7 +148,7 @@
                                  </thead>
                                  <tbody>
                                     <tr *ngFor = "let aceManifest of ACEList;">                                       
-                                       <td  routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}{{aceManifest.tripNumber}}</td>
+                                       <td  routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.tripNumber}}</td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}</td>                                          
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let driver of aceManifest.drivers;">{{driversList[driver]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">
@@ -194,7 +194,7 @@
                                  </thead>
                                  <tbody>
                                     <tr *ngFor = "let aciManifest of ACIList;">                                       
-                                       <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.CCC}}{{aciManifest.tripNumber}}</td>
+                                       <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>
                                         <td>{{aciManifest.CCC}}</td>                                          
                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let driver of aciManifest.drivers">{{driversList[driver]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">
