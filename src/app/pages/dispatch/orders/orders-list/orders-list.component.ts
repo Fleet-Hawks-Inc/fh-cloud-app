@@ -4,7 +4,7 @@ import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-orders-list',
   templateUrl: './orders-list.component.html',
@@ -41,7 +41,9 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
   invoicedOrdersCount = 0;
   partiallyPaidOrdersCount = 0;
 
-  constructor(private apiService: ApiService, private spinner: NgxSpinnerService,) { }
+  constructor(private apiService: ApiService,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
     this.fetchOrders();
@@ -70,10 +72,11 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
+        console.log('result', result);
         this.totalRecords = result.Count; 
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
-          if(element.isDeleted === 0) {
+          //if(element.isDeleted === 0) {
             this.allordersCount = this.allordersCount+1;
             this.totalRecords = this.allordersCount; 
             if(element.orderStatus == 'confirmed') {
@@ -91,7 +94,7 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
             } else if(element.orderStatus == 'partiallyPaid') {
               this.partiallyPaidOrdersCount = this.partiallyPaidOrdersCount+1;
             }
-          }
+          // }
         }
       }
     });
@@ -150,13 +153,13 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
     }
 
     if(tabType === 'all') {
-      this.serviceUrl = 'orders/fetch-records/'+tabType+ "?value1=";
+      this.serviceUrl = 'orders/fetch-records/'+tabType;
     } else {
       this.serviceUrl = 'orders/fetch-records/'+tabType + "?recLimit="+this.allordersCount+"&value1=";
     }
 
     // this.orderFiltr.category = 'orderNumber';
-    this.serviceUrl = this.serviceUrl+'&filter=true&searchValue='+this.orderFiltr.searchValue+"&startDate="+this.orderFiltr.start+"&endDate="+this.orderFiltr.end +"&category="+this.orderFiltr.category+"&value1=";
+    this.serviceUrl = this.serviceUrl+'?filter=true&searchValue='+this.orderFiltr.searchValue+"&startDate="+this.orderFiltr.start+"&endDate="+this.orderFiltr.end +"&category="+this.orderFiltr.category+"&value1=";
 
     if (check !== '') {
       current.rerender();
@@ -175,13 +178,13 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData(this.serviceUrl +current.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           this.orders = resp['Items'];
-
+          console.log('this.orders', this.orders)
           if (resp['LastEvaluatedKey'] !== undefined) {
-            if (resp['LastEvaluatedKey'].carrierID !== undefined) {
+            // if (resp['LastEvaluatedKey'].carrierID !== undefined) {
               current.lastEvaluatedKey = resp['LastEvaluatedKey'].orderID
-            } else {
-              current.lastEvaluatedKey = ''
-            }
+            // } else {
+            //   current.lastEvaluatedKey = ''
+            // }
 
           } else {
             current.lastEvaluatedKey = ''
@@ -247,6 +250,20 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.spinner.hide();
     } else {
       return false;
+    }
+  }
+  
+
+  deactivateOrder(status: number, orderID: string) {
+
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.apiService
+        .getData(`orders/isDeleted/${orderID}/${status}`)
+        .subscribe((result: any) => {
+          this.rerender();
+          this.toastr.success('Order deleted successfully!');
+          
+        });
     }
   }
 }
