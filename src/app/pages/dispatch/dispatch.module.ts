@@ -55,17 +55,11 @@ import { AddLoadComponent } from './loads/add-load/add-load.component';
 import { AllDispatchComponent } from './dispatch/all-dispatch/all-dispatch.component';
 import { AddDispatchComponent } from './dispatch/add-dispatch/add-dispatch.component';
 import { DispatchPlannerComponent } from './dispatch/dispatch-planner/dispatch-planner.component';
-// import { AceManifestComponent } from './cross-border/ace-manifest/ace-manifest.component';
-// import { AciEmanifestComponent } from './cross-border/aci-emanifest/aci-emanifest.component';
 import { MyDocumentsComponent } from './documents/my-documents/my-documents.component';
 import { CompanyDocumentsComponent } from './new-documents/company-documents/company-documents.component';
 
-// import { AceShipmentComponent } from './cross-border/ace-documents/ace-shipment/ace-shipment.component';
-// import { AceCommodityComponent } from './cross-border/ace-documents/ace-commodity/ace-commodity.component';
 import { NewAceManifestComponent } from './cross-border/ace-documents/new-ace-manifest/new-ace-manifest.component';
 import { NewAciManifestComponent } from './cross-border/aci-documents/new-aci-manifest/new-aci-manifest.component';
-// import { AciShipmentComponent } from './cross-border/aci-documents/aci-shipment/aci-shipment.component';
-// import { AciCommodityComponent } from './cross-border/aci-documents/aci-commodity/aci-commodity.component';
 import { RouteListComponent } from './permanent-routing/route-list/route-list.component';
 import { AddRouteComponent } from './permanent-routing/add-route/add-route.component';
 import { EditRouteComponent } from './permanent-routing/edit-route/edit-route.component';
@@ -163,7 +157,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgSelectModule,
     HttpClientModule,
 
-    // NgxTagsInputModule,
 
     MatExpansionModule,
 
@@ -232,18 +225,11 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     DispatchPlannerComponent,
     AddDispatchComponent,
 
-    EManifestsComponent,
-    // AciEmanifestComponent,
+    EManifestsComponent,   
     NewAciManifestComponent,
-    // AciShipmentComponent,
-    // AciCommodityComponent,
-
     MyDocumentsComponent,
     CompanyDocumentsComponent,
 
-    // AceManifestComponent,
-    // AceShipmentComponent,
-    // AceCommodityComponent,
     NewAceManifestComponent,
     RouteListComponent,
     AddRouteComponent,
