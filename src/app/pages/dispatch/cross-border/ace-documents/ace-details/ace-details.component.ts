@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
-import { from, Subject, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 declare var $: any;
 
@@ -23,25 +22,13 @@ export class AceDetailsComponent implements OnInit {
   shipments = [];  
   passengers = [];
   result: any;
+  timeModified: any;
   constructor(private apiService: ApiService, private route: ActivatedRoute,private toastr: ToastrService) { }
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params['entryID'];
     this.fetchACEEntry();
-  }
-  modifyShipment() {
-
-    for (let i = 0; i < this.shipments.length; i++) {
-      let totalQty = 0;
-      for (let j = 0; j < this.shipments[i].commodities.length; j++) {
-        totalQty = totalQty + this.shipments[i].commodities[j].quantity;
-      }
-      this.shipments[i].commodities.push({
-        totalCommodities: this.shipments[i].commodities.length,
-        totalQuantity: totalQty
-      });
-    }
-  }
+  }  
   fetchACEEntry() {
     this.apiService
       .getData('ACEeManifest/details/' + this.entryID)
@@ -55,6 +42,7 @@ export class AceDetailsComponent implements OnInit {
        this.drivers = result.drivers;
        this.passengers = result.passengers;
        this.shipments = result.shipments;
+       this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a");      
       });
   }
 
