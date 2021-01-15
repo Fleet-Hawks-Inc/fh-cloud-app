@@ -153,7 +153,7 @@ const routes: Routes = [
       { path: 'trip-list', component: TripListComponent},
       { path: 'add-trip', component: AddTripComponent},
       { path: 'trip-details/:tripID', component: TripDetailComponent},
-      { path: 'edit-trip/:tripID', component: EditTripComponent},
+      { path: 'edit-trip/:tripID', component: AddTripComponent},
 
     ]
   },

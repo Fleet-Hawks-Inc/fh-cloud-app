@@ -529,6 +529,7 @@ export class AddRouteComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.spinner.hide();
+        this.router.navigateByUrl('/dispatch/routes/list');
         this.toastr.success('Route updated successfully');
       },
     })

@@ -10,8 +10,6 @@ declare var $: any;
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
-// import { _countGroupLabelsBeforeOption } from '@angular/material/core';
-
 
 @Component({
   selector: 'app-trip-list',
@@ -119,9 +117,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.fetchTripsCount()
-    // this.dummyInit();
     this.initDataTable('all');
-
     this.fetchAllStatesIDs();
     this.fetchAllVehiclesIDs();
     this.fetchAllCitiesIDs();
@@ -130,30 +126,17 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.fetchAllCarrierIDs();
     this.fetchAllDriverIDs();
     this.fetchAllOrderIDs();
-
-    // this.initPage();
   }
 
   async fetchTrips(result) {
     this.trips = [];
-    let current = this;
-    // console.log('in fetch trips')
-    // console.log(result)
     this.spinner.show();
 
     for (let i = 0; i < result.Items.length; i++) {
-      let locationArr = [];
-      let dropArr = [];
-
-      if (result.Items[i].isDeleted == '0') {
-        // result.Items[i].date = '';
-        result.Items[i].pickupCountry = '';
-        result.Items[i].pickupState = '';
-        result.Items[i].pickupCity = '';
+      if (result.Items[i].isDeleted == 0) {
+        result.Items[i].pickupLocation = '';
         result.Items[i].pickupTime = '';
-        result.Items[i].dropCountry = '';
-        result.Items[i].dropState = '';
-        result.Items[i].dropCity = '';
+        result.Items[i].dropLocation = '';
         result.Items[i].dropTime = '';
         result.Items[i].dropLocation = '';
         result.Items[i].driverUsername = '';
@@ -162,52 +145,22 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
         result.Items[i].carrierId = '';
 
         const element = result.Items[i];
-        // console.log('element')
-        // console.log(element)
-        let pickup;
         let drop;
         let planData;
 
         planData = result.Items[i].tripPlanning[0];
-        pickup = result.Items[i].tripPlanning[0].location;
-
-        result.Items[i].pickupCountry = pickup.countryID;
-        result.Items[i].pickupState = pickup.stateID;
-        result.Items[i].pickupCity = pickup.cityID;
-
-        let pdate = planData.date;
-        let newpdate = '';
-        if (pdate !== '' && pdate !== undefined) {
-          newpdate = pdate.split("-").reverse().join("-");
-        }
-
-        result.Items[i].pickupLocation = pickup.address1 + ', ' + pickup.address2 + ', ' + pickup.zipcode;
-        result.Items[i].pickupTime = newpdate + ' ' + planData.time;
+        result.Items[i].pickupLocation = planData.location;
+        result.Items[i].pickupTime = planData.pickupTime;
 
         let lastloc = result.Items[i].tripPlanning.length - 1
         drop = result.Items[i].tripPlanning[lastloc].location;
-
-        result.Items[i].dropCountry = drop.countryID;
-        result.Items[i].dropState = drop.stateID;
-        result.Items[i].dropCity = drop.cityID;
-
-        let ddate = result.Items[i].tripPlanning[lastloc].date;
-        let newddate = '';
-        if (ddate !== '' && ddate !== undefined) {
-          newddate = ddate.split("-").reverse().join("-");
-        }
-
-        result.Items[i].dropLocation = drop.address1 + ', ' + drop.address2 + ', ' + drop.zipcode;
-        result.Items[i].dropTime = newddate + ' ' + result.Items[i].tripPlanning[lastloc].time;
+        result.Items[i].dropLocation = drop;
+        result.Items[i].dropTime =result.Items[i].tripPlanning[lastloc].dropTime;
 
         if (planData.assetID !== '' && planData.assetID !== undefined) {
           for (let j = 0; j < planData.assetID.length; j++) {
             const astId = planData.assetID[j];
-            // this.fetchAssetDetail(astId, result.Items[i]);
-            // let assteName = this.assetsObject[astId]+', ';
             result.Items[i].assetId.push(astId)
-            // console.log('asset')
-            // console.log(result.Items[i].assetId)
           }
         }
 
@@ -222,10 +175,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
         if (planData.carrierID !== '' && planData.carrierID !== undefined) {
           result.Items[i].carrierId = planData.carrierID;
         }
-        // result.Items[i].dateCreated = element.dateCreated;
         this.trips.push(result.Items[i]);
-        // console.log('trip');
-        // console.log(this.trips)
       }
     }
 
@@ -268,21 +218,19 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   deleteTrip(tripID) {
-    this.spinner.show();
-    this.apiService.getData('trips/delete/' + tripID + '/1').subscribe({
-      complete: () => {
-        // this.initDataTable();
-      },
-      error: () => { },
-      next: (result: any) => {
-        // this.initDataTable();
-        // this.initDataTable();
-        this.spinner.hide();
-        this.hasSuccess = true;
-        // this.router.navigateByUrl('/dispatch/routes/route-list');
-        this.toastr.success('Trip deleted successfully');
-      }
-    })
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.spinner.show();
+      this.apiService.getData('trips/delete/' + tripID + '/1').subscribe({
+        complete: () => {},
+        error: () => { },
+        next: (result: any) => {
+          this.spinner.hide();
+          this.hasSuccess = true;
+          this.rerender();
+          this.toastr.success('Trip deleted successfully');
+        }
+      })
+    }
   }
 
   fetchTripDetail() {
@@ -322,7 +270,6 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
               const path = val.path;
               // We Can Use This Method
               const key = val.message.match(/"([^']+)"/)[1];
-              // console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[key] = val.message;
             })
@@ -339,8 +286,6 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
           });
       },
       next: (res) => {
-        // this.fetchTrips();
-
         this.spinner.hide();
         $("#tripStatusModal").modal('hide');
         this.toastr.success('Trip status updated successfully');
@@ -350,7 +295,6 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   throwErrors() {
-    // console.log(this.errors);
     this.form.showErrors(this.errors);
   }
 
@@ -401,12 +345,6 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.serviceUrl = "trips/fetch-records/" + tabType + "?recLimit=" + this.allTripsCount + "&value1=";
     }
 
-    // if (filters === 'yes') {
-    //   this.tripsFiltr.category = 'tripNo';
-    //   this.serviceUrl = this.serviceUrl + '&searchValue=' + this.tripsFiltr.searchValue + "&startDate=" + this.tripsFiltr.startDate + "&endDate=" + this.tripsFiltr.endDate + "&category=" + this.tripsFiltr.category + "&value1=";
-    // }
-    // console.log(this.serviceUrl);
-
     if (check !== '') {
       current.rerender();
     }
@@ -427,16 +365,9 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
           "&endDate=" + this.tripsFiltr.end + "&category=" + this.tripsFiltr.category, dataTablesParameters).subscribe(resp => {
             current.fetchTrips(resp)
             if (resp['LastEvaluatedKey'] !== undefined) {
-              if (resp['LastEvaluatedKey'].carrierID !== undefined) {
                 current.lastEvaluated = {
                   value1: resp['LastEvaluatedKey'].tripID,
                 }
-              } else {
-                current.lastEvaluated = {
-                  value1: resp['LastEvaluatedKey'].tripID,
-                }
-              }
-
             } else {
               current.lastEvaluated = {
                 value1: '',
@@ -543,7 +474,6 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       typeText = type;
     }
     
-    // this.tripsFiltr.category = 'tripNo';
     $("#categorySelect").text(typeText);
   }
 
