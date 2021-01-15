@@ -71,7 +71,7 @@ export class ServiceDetailComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.logsData = result.Items[0];
-        console.log('fdf', this.logsData)
+       
         result = result.Items[0];
         
         this.vehicle = result.vehicleID;
