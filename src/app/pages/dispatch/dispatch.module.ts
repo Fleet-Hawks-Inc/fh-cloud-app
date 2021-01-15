@@ -94,6 +94,7 @@ import { CalendarViewComponent } from './planner/calendar-view/calendar-view.com
 import { MapViewComponent } from './planner/map-view/map-view.component';
 import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
 
+
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -106,9 +107,9 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     if (value) {
       let date = value.split(this.DELIMITER);
       return {
-        day : parseInt(date[0], 10),
+        year : parseInt(date[2], 10),
         month : parseInt(date[1], 10),
-        year : parseInt(date[2], 10)
+        day : parseInt(date[0], 10)
       };
     }
     return null;
@@ -131,9 +132,10 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     if (value) {
       let date = value.split(this.DELIMITER);
       return {
-        day : parseInt(date[0], 10),
+        year : parseInt(date[2], 10),
         month : parseInt(date[1], 10),
-        year : parseInt(date[2], 10)
+        day : parseInt(date[0], 10),
+       
       };
     }
     return null;

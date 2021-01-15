@@ -591,3 +591,13 @@ html.fixed .content-body {
     width: 100%;
     text-align: left;
 }
+
+/* Order Page */
+.ngx-time-picker-container {
+    z-index: 99;
+}
+.ngx-time-picker-selection .arrow {
+    background: none;
+    width: auto;
+    height: auto;
+}
