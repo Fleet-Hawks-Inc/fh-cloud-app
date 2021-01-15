@@ -55,10 +55,10 @@
                                             <td class="back-color-gray font-weight-bold">Odometer</td>
                                             <td>{{odometer ? odometer : '-'}} miles</td>
                                          </tr>
-                                         <tr *ngIf="logsData?.selectedTasks">
+                                         <tr *ngIf="logsData?.selectedIssues">
                                             <td class="back-color-gray font-weight-bold">Resolved Issues</td>
                                             <td>
-                                               <a href="resolved-issue-details.php" *ngFor="">#6 window broken</a>
+                                               <a *ngFor="let item of logsData.selectedIssues" routerLink="/fleet/maintenance/issues/add">{{item}}</a>
                                              </td>
                                          </tr>
                                          <tr>

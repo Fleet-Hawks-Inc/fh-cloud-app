@@ -243,9 +243,9 @@
                         <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
                         <td *ngIf="hideShow.lastLocation" >Live Location</td>
                         <td *ngIf="hideShow.year" >{{item.assetDetails.year}}</td>
-                        <td *ngIf="hideShow.make" >{{item.assetDetails.manufacturer}}</td>
-                        <td *ngIf="hideShow.model" >{{item.assetDetails.model}}</td>
-                        <td *ngIf="hideShow.ownership" >{{item.assetDetails.ownerShip}}</td>
+                        <td *ngIf="hideShow.make" >{{manufacturersObjects[item.assetDetails.manufacturer]}}</td>
+                        <td *ngIf="hideShow.model" >{{modelsObjects[item.assetDetails.model]}}</td>
+                        <td *ngIf="hideShow.ownership" >{{item.assetDetails.ownerShip ? item.assetDetails.ownerShip : '-'}}</td>
                         <td *ngIf="hideShow.status"><span class="badge badge-dark p-1 text-uppercase">{{item.assetDetails.currentStatus}}</span></td>
                         <!-- extra columns -->
                         <td *ngIf="hideShow.group" >{{groupsList[item.groupID]}}</td>

@@ -90,6 +90,8 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
+  manufacturersObjects: any = {};
+  modelsObjects: any = {};
 
   constructor(
     private apiService: ApiService,
@@ -106,12 +108,8 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.fetchAllAssetTypes();
       this.fetchGroups();
       this.initDataTable();
-      // $(document).ready(() => {
-      //   setTimeout(() => {
-      //     $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
-      //   }, 2000);
-
-      // });
+      this.fetchManufacturesByIDs();
+      this.fetchManufacturesByIDs();
   }
 
   getSuggestions(value) {
@@ -135,6 +133,18 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
   fetchGroups() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groupsList = result;
+    });
+  }
+
+  fetchManufacturesByIDs() {
+    this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
+      this.manufacturersObjects = result;
+    });
+  }
+
+  fetchModalsByIDs() {
+    this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
+      this.modelsObjects = result;
     });
   }
 

@@ -158,7 +158,7 @@
   
                                         </div>
                                         <div class="col-lg-1 mar-top-37  pl-0">
-                                          <a data-toggle="modal" data-target="#addGroupModal"  href="javascript:;" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                          <a data-toggle="modal" data-target="#addDriverGroupModal"  href="javascript:;" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
                                        </div>
                                      </div>
                                   </div>
@@ -373,7 +373,7 @@
                                               <input [(ngModel)]="document.issuingAuthority" [attr.name]="'documentDetails['+i+'].issuingAuthority'" [ngModelOptions]="{standalone: true}"  type="text" class="form-control" placeholder="Select licence issuing authority">
                                            </div>
                                            <div class="col-lg-1">
-                                              <a href="javascript:;" *ngIf="i === 0;" (click)="addDocument()" id="add-document" class="btn btn-success"><i class="fa fa-plus"></i></a>
+                                              <a href="javascript:;" *ngIf="i === 0;" (click)="addDocument()" id="add-document" class="btn btn-success">Add Document</a>
                                               <a href="javascript:;" *ngIf="i != 0;" (click)="remove('document', i)" class="btn btn-success"><i class="fa fa-minus"></i></a>
                                            </div>
                                           </div>
@@ -434,7 +434,7 @@
                                                   name="document.uploadedDocs{{i}}" (change)="selectDocuments($event, i)" type="file" multiple
                                               >
                                           </div>
-                                          <div class="col-lg-10 mt-2">
+                                          <div class="col-lg-10 mt-2" *ngIf="assetsDocs[i]">
                                              <div class="vehicle-common-box p-3">
                                                 <div class="row">
                                                    <div class="col-lg-6"><label
@@ -905,7 +905,7 @@
          </div>
       </div>
 
-      <div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal" aria-hidden="true">
+      <div class="modal fade" id="addDriverGroupModal" tabindex="-1" role="dialog" aria-labelledby="addDriverGroupModal" aria-hidden="true">
          <div class="modal-dialog" style="max-width: 600px;" role="document">
            <div class="modal-content">
              <div class="modal-header">
@@ -946,7 +946,7 @@
              </div>
              <div class="modal-footer text-right">
                <a class="btn btn-default modal-dismiss" data-dismiss="modal">Cancel</a>
-               <a class="btn btn-success" (click)="addGroup()">Save</a>
+               <a href="javascript:;" class="btn btn-success" (click)="addGroup()">Save</a>
              </div>
          </div>
      </div>
