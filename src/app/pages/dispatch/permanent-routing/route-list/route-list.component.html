@@ -23,6 +23,7 @@
                     </div>
 
                     <div class="col-md-2 col-lg-2">   
+                        <a href="javascript:;" class="btn btn-success btn-sm ml-2 modal-with-form" style="color:white;" (click)="searchFilter()">Search</a>
                         <a href="javascript:;" class="btn btn-success btn-sm ml-2 modal-with-form" style="color:white;" (click)="resetFilter()">Reset</a>
                     </div>
 
@@ -35,7 +36,7 @@
                                 <a class="dropdown-item text-1" href="">Export</a>
                             </div>
                         </div>
-                        <a routerLink="/dispatch/routes/add-route" class="btn btn-success btn-sm modal-with-form" style="color:white;"><i class="fas fa-plus"></i> Add Route</a>
+                        <a routerLink="/dispatch/routes/add" class="btn btn-success btn-sm modal-with-form" style="color:white;"><i class="fas fa-plus"></i> Add Route</a>
                     </div>                           
                 </div>
             </header>
@@ -62,7 +63,7 @@
                                     <tbody *ngIf="routes.length > 0">
                                         <tr class="cursorpoint" *ngFor="let route of routes; let i= index">
                                             <!-- <td class="w-50px sorting_1"><input type="checkbox"></td> -->
-                                            <td routerLink="/dispatch/routes/route-detail/{{ route.routeID }}">{{ route.routeName }}</td>
+                                            <td routerLink="/dispatch/routes/detail/{{ route.routeID }}">{{ route.routeName }}</td>
                                             <td>{{ route.sourceInformation.sourceAddress }}</td>                                                
                                             <td>{{ route.destinationInformation.destinationAddress }}</td>
                                             <td>{{ route.miles }} miles</td>
@@ -81,7 +82,7 @@
                                                        <i class="fas fa-ellipsis-v"></i>
                                                     </button>
                                                     <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                       <a class="dropdown-item" routerLink="/dispatch/routes/edit-route/{{ route.routeID }}">Edit</a>
+                                                       <a class="dropdown-item" routerLink="/dispatch/routes/edit/{{ route.routeID }}">Edit</a>
                                                        <a class="dropdown-item" href="javascript:;" (click)="deleteRoute(route.routeID)">Delete</a>
                                                     </div>
                                                   </div>

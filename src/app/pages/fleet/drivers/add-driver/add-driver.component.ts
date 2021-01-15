@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Router, ActivatedRoute, RouterStateSnapshot, RouterState} from '@angular/router';
 import { BehaviorSubject, EMPTY, from, Subject, throwError } from 'rxjs';
 import { ApiService } from '../../../../services';
 import { Auth } from 'aws-amplify';
@@ -9,15 +9,15 @@ import { AwsUploadService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HttpClient } from '@angular/common/http';
-import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
-import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import {map, debounceTime, distinctUntilChanged, switchMap, catchError, takeUntil} from 'rxjs/operators';
+import {NgbCalendar, NgbDateAdapter, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
 import { NgForm } from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
-import { resolve } from 'url';
+import {ModalService} from '../../../../services/modal.service';
 
 declare var $: any;
 
@@ -26,10 +26,9 @@ declare var $: any;
   templateUrl: './add-driver.component.html',
   styleUrls: ['./add-driver.component.css'],
 })
-export class AddDriverComponent implements CanComponentDeactivate {
+export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   @ViewChild('driverForm',null) driverForm: NgForm;
-  isLeave: BehaviorSubject<boolean> = new BehaviorSubject(true);
-
+  takeUntil$ = new Subject();
   Asseturl = this.apiService.AssetUrl;
   pageTitle: string;
   lastElement;
@@ -58,7 +57,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
     groupType : 'drivers'
   };
 
-  driverAddress = {
+  driverAddress = {   
     address: [],
   };
   driverData = {
@@ -75,9 +74,9 @@ export class AddDriverComponent implements CanComponentDeactivate {
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: { 
-        lat: '', 
-        lng: '' 
+      geoCords: {
+        lat: '',
+        lng: ''
       }
     }],
     documentDetails: [{
@@ -92,7 +91,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
     }],
     crossBorderDetails: {},
     paymentDetails: {},
-    licenceDetails: {},
+    licenceDetails: {DOB: ''},
     hosDetails: {},
     emergencyDetails: {},
   };
@@ -136,7 +135,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
     type: '',
   };
   yardID = '';
-  
+
   documentTypeList: any = [];
   driverLicenseCountry = '';
   groups = [];
@@ -156,9 +155,15 @@ export class AddDriverComponent implements CanComponentDeactivate {
   getcurrentDate: any;
   birthDateMinLimit: any;
   uploadedPhotos = [];
-    uploadedDocs = [];
-  constructor(private apiService: ApiService,
 
+  uploadedDocs = [];
+  existingPhotos = [];
+  existingDocs = [];
+  assetsImages = []
+  assetsDocs = [];
+  pdfSrc:any = '';
+
+  constructor(private apiService: ApiService,
               private httpClient: HttpClient,
               private toastr: ToastrService,
               private awsUS: AwsUploadService,
@@ -169,26 +174,48 @@ export class AddDriverComponent implements CanComponentDeactivate {
               private domSanitizer: DomSanitizer,
               private location: Location,
               private modalService: NgbModal,
+              private modalServiceOwn: ModalService,
               private dateAdapter: NgbDateAdapter<string>,
               private router: Router) {
-      this.selectedFileNames = new Map<any, any>();
-      var date = new Date();
-      this.getcurrentDate = {year: date.getFullYear(),month: date.getMonth() + 1, day: date.getDate()};
-      this.birthDateMinLimit = {year: 1960, month: 1, day: 1};
-      
+    this.modalServiceOwn.triggerRedirect.next(false);
+
+    this.router.events
+      .pipe(takeUntil(this.takeUntil$))
+      .subscribe((v: any) => {
+        if ((v.url !== 'undefined' || v.url !== '')) {
+          this.modalServiceOwn.setUrlToNavigate(v.url);
+        }
+      });
+    this.modalServiceOwn.triggerRedirect$
+      .pipe(takeUntil(this.takeUntil$))
+      .subscribe((v) => {
+        if (v) {
+          this.router.navigateByUrl(this.modalServiceOwn.urlToRedirect.getValue());
+      }
+    })
+
+    this.selectedFileNames = new Map<any, any>();
+    const date = new Date();
+    this.getcurrentDate = {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()};
+    this.birthDateMinLimit = {year: 1960, month: 1, day: 1};
+
     }
-  
+
     /**
      * Unsaved Changes
      */
     canLeave(): boolean {
-    if(this.driverForm.dirty) {
-      this.modalService.open(UnsavedChangesComponent);
-      return false;
-      // return window.confirm('are you sure?');
+      if (this.driverForm.dirty) {
+        if (!this.modalService.hasOpenModals()) {
+          this.modalService.open(UnsavedChangesComponent, { size: 'sm' });
+        }
+        return false;
+      }
+      this.modalServiceOwn.triggerRedirect.next(true);
+      this.takeUntil$.next();
+      this.takeUntil$.complete();
+      return true;
     }
-    return true;
-  };
 
 
   get today() {
@@ -218,7 +245,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
     this.fetchAllCitiesIDs(); // fetch all cities Ids with name
 
     this.fetchDocuments();
-    
+
     $(document).ready(() => {
       this.form = $('#driverForm, #groupForm').validate();
     });
@@ -266,9 +293,9 @@ export class AddDriverComponent implements CanComponentDeactivate {
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: { 
-        lat: '', 
-        lng: '' 
+      geoCords: {
+        lat: '',
+        lng: ''
       }
     });
   }
@@ -280,7 +307,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
       });
   }
 
-  
+
   fetchGroups() {
     this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
@@ -320,7 +347,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
     if(oid != null) {
       this.driverData.address[oid].countryName = this.countriesObject[id];
     }
-   
+
     this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
         this.states = result.Items;
@@ -331,7 +358,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
     if(oid != null) {
       this.driverData.address[oid].stateName = this.statesObject[id];
     }
-    
+
     this.apiService.getData('cities/state/' + id)
       .subscribe((result: any) => {
         this.cities = result.Items;
@@ -364,7 +391,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
       this.documentTypeList = data;
     })
   }
-  
+
 
   getToday(): string {
     return new Date().toISOString().split('T')[0];
@@ -375,14 +402,15 @@ export class AddDriverComponent implements CanComponentDeactivate {
    * Selecting files before uploading
    */
   selectDocuments(event, i) {
-    
-    let files = [...event.target.files];
 
-    if(this.uploadedDocs[i] == undefined){
+    let files = [...event.target.files];
+    
+    if(this.uploadedDocs[i] == undefined) {
       this.uploadedDocs[i] = files;
     }
-    
+
   }
+  
   selectPhoto(event) {
     let files = [...event.target.files];
     const reader = new FileReader();
@@ -390,7 +418,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
     reader.readAsDataURL(files[0]);
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0])
-    
+
   }
 
 
@@ -455,16 +483,19 @@ export class AddDriverComponent implements CanComponentDeactivate {
 
 
   async onSubmit() {
-    
+
     this.hasError = false;
     this.hasSuccess = false;
     // this.register();
     this.hideErrors();
-   
+    if (this.driverData.licenceDetails.DOB !== '') {
+      //date in Y-m-d format 
+      this.driverData.licenceDetails.DOB = this.driverData.licenceDetails.DOB.split('-').reverse().join('-');
+    }
     if (this.driverData.address[0].countryName !== '' || this.driverData.address[0].stateName !== '' || this.driverData.address[0].cityName !== '') {
       for (let i = 0; i < this.driverData.address.length; i++) {
         const element = this.driverData.address[i];
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]} 
+        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
                            ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
         result = result.items[0];
@@ -485,18 +516,18 @@ export class AddDriverComponent implements CanComponentDeactivate {
     for(let j = 0; j < this.uploadedDocs.length; j++){
       for (let k = 0; k < this.uploadedDocs[j].length; k++) {
         let file = this.uploadedDocs[j][k];
-        formData.append(`uploadedDocs-${j}`, file);  
+        formData.append(`uploadedDocs-${j}`, file);
       }
-      
+
     }
 
     //append other fields
     formData.append('data', JSON.stringify(this.driverData));
-    
+
     this.apiService.postData('drivers',formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
-        from(err.error) 
+        from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
@@ -528,7 +559,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
   async userAddress(i, item) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
-    
+
     this.driverData.address[i]['userLocation'] = result.address.label;
     this.driverData.address[i].geoCords.lat = result.position.lat;
     this.driverData.address[i].geoCords.lng = result.position.lng;
@@ -538,7 +569,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
     this.driverData.address[i].countryName = result.address.countryName;
 
     $('div').removeClass('show-search__result');
-    
+
     let stateID = await this.fetchStatesByName(result.address.state, i);
     this.driverData.address[i].stateID = stateID;
     this.driverData.address[i].stateName = result.address.state;
@@ -641,7 +672,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-        
+
         this.driverData['driverType'] = result.driverType;
         this.driverData['employeeId'] = result.employeeId;
         this.driverData['companyId'] = result.companyId;
@@ -654,7 +685,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
         this.driverData['assignedVehicle'] = result.assignedVehicle;
         this.driverData['groupID'] = result.groupID;
         this.driverProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.driverImage}`;
-        
+
         this.driverData['gender'] = result.gender;
         this.driverData['workEmail'] = result.workEmail;
         this.driverData['workPhone'] = result.workPhone;
@@ -674,14 +705,14 @@ export class AddDriverComponent implements CanComponentDeactivate {
               zipCode: result.address[i].zipCode,
               address1: result.address[i].address1,
               address2: result.address[i].address2,
-              geoCords: { 
-                lat: result.address[i].geoCords.lat, 
+              geoCords: {
+                lat: result.address[i].geoCords.lat,
                 lng: result.address[i].geoCords.lng
               },
               manual: result.address[i].manual
             })
           } else {
-            
+
             let newUserAddress = `${result.address[i].address1} ${result.address[i].address2}, ${result.address[i].cityName}, ${result.address[i].stateName}, ${result.address[i].countryName} ${result.address[i].zipCode}`;
             this.newAddress.push({
               addressType: result.address[i].addressType,
@@ -694,19 +725,24 @@ export class AddDriverComponent implements CanComponentDeactivate {
               zipCode: result.address[i].zipCode,
               address1: result.address[i].address1,
               address2: result.address[i].address2,
-              geoCords: { 
-                lat: result.address[i].geoCords.lat, 
+              geoCords: {
+                lat: result.address[i].geoCords.lat,
                 lng: result.address[i].geoCords.lng
               },
               userLocation: newUserAddress
-              
+
             })
           }
-         
+
         }
-       
+
         this.driverData.address = this.newAddress;
         for (let i = 0; i < result.documentDetails.length; i++) {
+          let docmnt = []
+          if(result.documentDetails[i].uploadedDocs != undefined && result.documentDetails[i].uploadedDocs.length > 0){
+            docmnt = result.documentDetails[i].uploadedDocs;
+          }
+          
           this.newDocuments.push({
             documentType: result.documentDetails[i].documentType,
             document: result.documentDetails[i].document,
@@ -715,12 +751,13 @@ export class AddDriverComponent implements CanComponentDeactivate {
             issuingState: result.documentDetails[i].issuingState,
             issueDate: result.documentDetails[i].issueDate,
             expiryDate: result.documentDetails[i].expiryDate,
+            uploadedDocs: docmnt
           });
           if(result.documentDetails[i].uploadedDocs != undefined && result.documentDetails[i].uploadedDocs.length > 0){
-            result.documentDetails[i].uploadedDocs = result.documentDetails[i].uploadedDocs.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+            this.assetsDocs[i] = result.documentDetails[i].uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
           }
         }
-        
+
         this.driverData.documentDetails = this.newDocuments;
 
         this.driverData.crossBorderDetails['ACI_ID'] = result.crossBorderDetails.ACI_ID;
@@ -749,7 +786,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
         this.driverData.licenceDetails['contractStart'] = result.licenceDetails.contractStart;
         this.driverData.licenceDetails['contractEnd'] = result.licenceDetails.contractEnd;
         this.driverData.licenceDetails['vehicleType'] = result.licenceDetails.vehicleType;
-        this.driverData.licenceDetails['DOB'] = result.licenceDetails.DOB;
+        this.driverData.licenceDetails['DOB'] = result.licenceDetails.DOB.split('-').reverse().join('-');
         this.driverData.hosDetails['hosStatus'] = result.hosDetails.hosStatus;
         this.driverData.hosDetails['type'] = result.hosDetails.type;
         this.driverData.hosDetails['hosRemarks'] = result.hosDetails.hosRemarks;
@@ -769,27 +806,24 @@ export class AddDriverComponent implements CanComponentDeactivate {
     //this.spinner.show(); // loader init
     // this.register();
     this.hideErrors();
+    if (this.driverData.licenceDetails.DOB !== '') {
+      //date in Y-m-d format 
+      this.driverData.licenceDetails.DOB = this.driverData.licenceDetails.DOB.split('-').reverse().join('-');
+    }
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
       delete element['userLocation'];
     }
     this.driverData['driverID'] = this.driverID;
-    
+
     // create form data instance
     const formData = new FormData();
-
-    //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-    }
-
-    //append docs if any
     for(let j = 0; j < this.uploadedDocs.length; j++){
       for (let k = 0; k < this.uploadedDocs[j].length; k++) {
         let file = this.uploadedDocs[j][k];
-        formData.append(`uploadedDocs-${j}`, file);  
+        formData.append(`uploadedDocs-${j}`, file);
       }
-      
+
     }
 
     //append other fields
@@ -816,7 +850,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        
+
         this.toastr.success('Driver updated successfully');
         this.router.navigateByUrl('/fleet/drivers/list');
 
@@ -858,7 +892,7 @@ export class AddDriverComponent implements CanComponentDeactivate {
     this.concatArrayKeys = this.concatArrayKeys.substring(0, this.concatArrayKeys.length - 1);
     return this.concatArrayKeys;
   }
-  
+
 
   register = async () => {
     try {
@@ -872,9 +906,32 @@ export class AddDriverComponent implements CanComponentDeactivate {
         },
       });
     } catch (err) {
-      
+
       // this.hasError = true;
       // this.Error = err.message || 'Error during login';
     }
+  }
+
+  ngOnDestroy(): void {
+    this.takeUntil$.next();
+    this.takeUntil$.complete();
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
+  // delete uploaded images and documents 
+  delete(type: string,name: string, index:string){
+    this.apiService.deleteData(`drivers/uploadDelete/${this.driverID}/${type}/${name}/${index}`).subscribe((result: any) => {
+      this.fetchDriverByID();
+    });
   }
 }

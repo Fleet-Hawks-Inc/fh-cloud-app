@@ -23,7 +23,7 @@ export class AddInventoryComponent implements OnInit {
   cost = "";
   costUnit = "";
   quantity = "";
-  name = "";
+  itemName = "";
   description = "";
   categoryID = "";
   warehouseID = "";
@@ -132,7 +132,7 @@ export class AddInventoryComponent implements OnInit {
       this.cost = result.cost;
       this.costUnit = result.costUnit;
       this.quantity = result.quantity;
-      this.name = result.name;
+      this.itemName = result.itemName;
       this.description = result.description;
       this.categoryID = result.categoryID;
       this.warehouseID = result.warehouseID;
@@ -232,7 +232,7 @@ export class AddInventoryComponent implements OnInit {
       cost: this.cost,
       costUnit: this.costUnit,
       quantity: this.quantity,
-      name: this.name,
+      itemName: this.itemName,
       description: this.description,
       categoryID: this.categoryID,
       warehouseID: this.warehouseID,
@@ -291,7 +291,7 @@ export class AddInventoryComponent implements OnInit {
         this.cost = "";
         this.costUnit = "";
         this.quantity = "";
-        this.name = "";
+        this.itemName = "";
         this.description = "";
         this.categoryID = "";
         this.warehouseID = "";
@@ -308,6 +308,8 @@ export class AddInventoryComponent implements OnInit {
         this.time = "";
         this.notes = "";
         this.Success = "Inventory Added successfully";
+        this.toastr.success('Inventory Added Successfully');
+        this.router.navigateByUrl('/fleet/inventory/list');
       },
     });
   }
@@ -389,7 +391,7 @@ export class AddInventoryComponent implements OnInit {
       cost: this.cost,
       costUnit: this.costUnit,
       quantity: this.quantity,
-      name: this.name,
+      itemName: this.itemName,
       description: this.description,
       categoryID: this.categoryID,
       warehouseID: this.warehouseID,

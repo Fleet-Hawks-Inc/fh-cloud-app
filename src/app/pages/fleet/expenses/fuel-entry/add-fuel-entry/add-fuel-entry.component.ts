@@ -25,8 +25,10 @@ export class AddFuelEntryComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   public entryID;
   /********** Form Fields ***********/
+
   fuelData = {
     unitType: 'vehicle',
+    unitID: '',
     currency: 'USD',
     fuelQtyAmt: 0,
     fuelQty: 0,
@@ -37,9 +39,16 @@ export class AddFuelEntryComponent implements OnInit {
     amountPaid: 0,
     costPerGallon: 0,
     fuelDate: '',
+    fuelTime: '',
+    fuelType: '',
     totalGallons: 0,
     countryID: '',
     stateID: '',
+    cityID: '',
+    tripID: '',
+    vendorID : '',
+    paidBy: '',
+    paymentMode: '',
     reimburseToDriver: false,
     deductFromPay: false,
     additionalDetails: {
@@ -47,9 +56,9 @@ export class AddFuelEntryComponent implements OnInit {
       odometer: 0,
       description: '',
        uploadedPhotos: [],
-    },
-   // uploadedPhotos: []
+    }
   };
+
   fuelQtyUnit = 'gallon';
   DEFFuelQtyUnit = 'gallon';
   costPerUnit = 0;
@@ -352,6 +361,7 @@ export class AddFuelEntryComponent implements OnInit {
         this.fuelData[`additionalDetails`][`odometer`] = result.additionalDetails.odometer;
         this.fuelData[`additionalDetails`][`description`] = result.additionalDetails.description;
         this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
+        this.fuelData[`timeCreated`] = result.timeCreated;
         this.existingPhotos = result.additionalDetails.uploadedPhotos;
         if(result.additionalDetails.uploadedPhotos != undefined && result.additionalDetails.uploadedPhotos.length > 0){
           this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
@@ -362,8 +372,6 @@ export class AddFuelEntryComponent implements OnInit {
       });
   }
    deleteImage(i: number) {
-  //   this.carrierID = this.apiService.getCarrierID();
-  //   this.awsUS.deleteFile(this.carrierID, this.fuelData.additionalDetails.uploadedPhotos[i]);
      this.fuelData.additionalDetails.uploadedPhotos.splice(i, 1);
      this.fuelEntryImages.splice(i, 1);
  }

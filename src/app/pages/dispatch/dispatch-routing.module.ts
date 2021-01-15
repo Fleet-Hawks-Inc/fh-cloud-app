@@ -141,10 +141,10 @@ const routes: Routes = [
   {
     path: 'routes',
     children: [
-      { path: 'route-list', component: RouteListComponent},
-      { path: 'add-route', component: AddRouteComponent },
-      { path: 'edit-route/:routeID', component: EditRouteComponent},
-      { path: 'route-detail/:routeID', component: RouteDetailComponent},
+      { path: 'list', component: RouteListComponent},
+      { path: 'add', component: AddRouteComponent },
+      { path: 'edit/:routeID', component: AddRouteComponent},
+      { path: 'detail/:routeID', component: RouteDetailComponent},
     ]
   },
   {

@@ -45,8 +45,8 @@
                                     aria-expanded="false">Actions<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" href="">Import</a>
-                                    <a class="dropdown-item text-1" href="">Export</a>
+                                    <a class="dropdown-item text-1" href="javascript:;">Import</a>
+                                    <a class="dropdown-item text-1" href="javascript:;">Export</a>
                                 </div>
                             </div>
                             
@@ -95,113 +95,124 @@
                                 <div class="tab-pane show active" id="service-log" role="tabpanel" aria-labelledby="service-log-tab">
                                     <div class="row">
                                         <div class="col pr-0">
-                                           <section class="card">
-                                            
-                                              <div class="card-body p-0">
-                                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                                                    class="row-border hover table table-bordered table-striped mb-0">
-                                                    <thead>
-                                                       <tr>
-                                                          <!-- <th width="5%"><input type="checkbox"></th> -->
-                                                          <th width="20%">Vehicle</th>
-                                                          <th  width="15%">Completion Date/Meter</th>                                  
-                                                          <th width="50%">Details</th>
-                                                          <th width="15%">Total</th>
-                                                          <th>Actions</th>
-                                                       </tr>
-                                                    </thead>
-
-                                                    <tbody *ngIf="logs.length > 0">
-                                                       <tr class="cursorpoint" *ngFor="let item of logs; let i = index;">
-
-                                                          <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
-                                                            <span class="font-weight-bold">{{vehiclesObject[item.vehicleID]}}</span>
-                                                            <span *ngIf="!item?.vehicleID" class="font-weight-bold">{{assetsObject[item.assetID]}}</span><br>
-                                                            <span class="text-success text-capitalize">{{item.unitStatus}}</span>
-                                                           </td>
-                                                          <td>{{item.completionDate}}<br><span *ngIf="item?.vehicleID" class="font-size-12">{{item.odometer}} miles</span></td>
-                                                          <td>
-                                                              <span title="Service Task" *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index">{{task.taskName}}, <br></span>
-                                                               <div *ngIf="item?.selectedIssues.length > 0">
-                                                                    <a *ngFor="let issue of item.selectedIssues;" href="javascript:;" class="text-info font-size-12" title="Issue"> {{issuesObject[issue]}} <br></a>
-                                                               </div>
-                                                               <a href="javascript:;" class="text-info font-size-12" title="Vendor"> {{vendorsObject[item.vendorID]}}</a>
-                                                            </td>
-                                                          <td>$  {{ (item.allServiceParts.total ? item.allServiceParts.total : 0 + item.allServiceTasks.total ? item.allServiceTasks.total : 0).toFixed(2) }} </td>  
-                                                          <td>
-                                                             
-                                                            <div class="dropdown dropright">
-                                                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                   <i class="fas fa-ellipsis-v"></i>
-                                                                </button>
-                                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                   <a class="dropdown-item" routerLink="/fleet/maintenance/service-log/edit/{{item.logID}}">Edit</a>
-                                                                   <a class="dropdown-item" (click)="deleteProgram(item.logID)" href="javascript:;">Delete</a>
-                                                                </div>
-                                                              </div>
-                                                          </td>                                 
-                                                       </tr>
-                                                       
-                                                       <!-- <tr>
-                                                         <td><input type="checkbox"></td>
-                                                          <td onclick="window.location='service-log-details.php';"><span class="font-weight-bold">Vehicle 2</span><br><span class="text-danger">Sold</span>
-                                                           </td>
-                                                          <td onclick="window.location='service-log-details.php';">May 23, 2020 <br><span class="font-size-12">2,378 mi</span></td>
-                                                          <td onclick="window.location='service-log-details.php';"><span title="Service Task">Oil Change</span><br><a href="#" class="text-info font-size-12" title="Issue"> Oil Leakage</a>
-                                                          </td>
-                                                          <td onclick="window.location='service-log-details.php';">$ 46</td>                                   
-                                                       </tr>
-                                                       
-                                                       <tr>
-                                                         <td><input type="checkbox"></td>
-                                                          <td onclick="window.location='service-log-details.php';"><span class="font-weight-bold">Vehicle 3</span><br><span class="text-success">Active</span>
-                                                           </td>
-                                                          <td onclick="window.location='service-log-details.php';">Jun 23, 2020 <br><span class="font-size-12">4,678 mi</span></td>
-                                                          <td onclick="window.location='service-log-details.php';"><span title="Service Task">A/C Condenser Replacement</span><br><a href="#" class="text-info font-size-12" title="Issue"> Brake Light</a>
-                                                          <br><a href="#" class="text-info font-size-12" title="Issue"> Belts</a></td>
-                                                          <td onclick="window.location='service-log-details.php';">$ 466</td>                                   
-                                                       </tr>
-                                                       
-                                                       <tr>
-                                                         <td><input type="checkbox"></td>
-                                                          <td onclick="window.location='service-log-details.php';"><span class="font-weight-bold">Vehicle 4</span><br><span class="text-danger">Sold</span>
-                                                           </td>
-                                                          <td onclick="window.location='service-log-details.php';">May 23, 2020 <br><span class="font-size-12">2,378 mi</span></td>
-                                                          <td onclick="window.location='service-log-details.php';"><span title="Service Task">Oil Change</span><br><a href="#" class="text-info font-size-12" title="Issue"> Oil Leakage</a>
-                                                          </td>
-                                                          <td onclick="window.location='service-log-details.php';">$ 46</td>                                   
-                                                       </tr>
-                                                       
-                                                       <tr>
-                                                         <td><input type="checkbox"></td>
-                                                          <td  onclick="window.location='service-log-details.php';"><span class="font-weight-bold">Vehicle 5</span><br><span class="text-success">Active</span>
-                                                           </td>
-                                                          <td onclick="window.location='service-log-details.php';">Jun 23, 2020 <br><span class="font-size-12">4,678 mi</span></td>
-                                                          <td onclick="window.location='service-log-details.php';"><span title="Service Task">A/C Condenser Replacement</span><br><a href="#" class="text-info font-size-12" title="Issue"> Brake Light</a>
-                                                          </td>
-                                                          <td onclick="window.location='service-log-details.php';">$ 466</td>                                   
-                                                       </tr>
-                                                       
-                                                       <tr>
-                                                         <td><input type="checkbox"></td>
-                                                          <td  onclick="window.location='service-log-details.php';"><span class="font-weight-bold">Vehicle 6</span><br><span class="text-danger">Sold</span>
-                                                           </td>
-                                                          <td onclick="window.location='service-log-details.php';">May 23, 2020 <br><span class="font-size-12">2,378 mi</span></td>
-                                                          <td onclick="window.location='service-log-details.php';"><span title="Service Task">Oil Change</span><br><a href="#" class="text-info font-size-12" title="Issue"> Oil Leakage</a>
-                                                          </td>
-                                                          <td onclick="window.location='service-log-details.php';">$ 46</td>                                   
-                                                       </tr>
-                                                     -->
-                                                      
-                                                    </tbody>
-                                                    <tbody *ngIf="logs.length === 0">
-                                                        <tr>
-                                                            <td colspan="5" class="no-data-available">No records found</td>
-                                                        </tr>
-                                                    <tbody>
-                                                 </table>
-                                              </div>
-                                           </section>
+                                            <section class="card">
+                                                <div class="card-body p-0">
+                                                    <div class="table-responsive">
+                                                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                                            class="row-border hover table table-bordered table-striped mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <!-- <th width="5%"><input type="checkbox"></th> -->
+                                                                    <th width="20%">Vehicle</th>
+                                                                    <th width="15%">Completion Date/Meter</th>
+                                                                    <th width="50%">Details</th>
+                                                                    <th width="15%">Total</th>
+                                                                    <th>Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                        
+                                                            <tbody *ngIf="logs.length > 0">
+                                                                <tr class="cursorpoint" *ngFor="let item of logs; let i = index;">
+                                        
+                                                                    <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
+                                                                        <span class="font-weight-bold">{{vehiclesObject[item.vehicleID]}}</span>
+                                                                        <span *ngIf="!item?.vehicleID"
+                                                                            class="font-weight-bold">{{assetsObject[item.assetID]}}</span><br>
+                                                                        <span class="text-success text-capitalize">{{item.unitStatus}}</span>
+                                                                    </td>
+                                                                    <td>{{item.completionDate}}<br><span *ngIf="item?.vehicleID"
+                                                                            class="font-size-12">{{item.odometer}} miles</span></td>
+                                                                    <td>
+                                                                        <span title="Service Task"
+                                                                            *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index">{{task.taskName}},
+                                                                            <br></span>
+                                                                        <div *ngIf="item?.selectedIssues.length > 0">
+                                                                            <a *ngFor="let issue of item.selectedIssues;" href="javascript:;"
+                                                                                class="text-info font-size-12" title="Issue"> {{issuesObject[issue]}} <br></a>
+                                                                        </div>
+                                                                        <a href="javascript:;" class="text-info font-size-12" title="Vendor">
+                                                                            {{vendorsObject[item.vendorID]}}</a>
+                                                                    </td>
+                                                                    <td>$ {{ (item.allServiceParts.total ? item.allServiceParts.total : 0 +
+                                                                        item.allServiceTasks.total ? item.allServiceTasks.total : 0).toFixed(2) }} </td>
+                                                                    <td>
+                                        
+                                                                        <div class="dropdown dropright">
+                                                                            <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}"
+                                                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <i class="fas fa-ellipsis-v"></i>
+                                                                            </button>
+                                                                            <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                                <a class="dropdown-item"
+                                                                                    routerLink="/fleet/maintenance/service-log/edit/{{item.logID}}">Edit</a>
+                                                                                <a class="dropdown-item" (click)="deleteProgram(item.logID)"
+                                                                                    href="javascript:;">Delete</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                        
+                                                                <!-- <tr>
+                                                                                                 <td><input type="checkbox"></td>
+                                                                                                  <td onclick="window.location='service-log-details.php';"><span class="font-weight-bold">Vehicle 2</span><br><span class="text-danger">Sold</span>
+                                                                                                   </td>
+                                                                                                  <td onclick="window.location='service-log-details.php';">May 23, 2020 <br><span class="font-size-12">2,378 mi</span></td>
+                                                                                                  <td onclick="window.location='service-log-details.php';"><span title="Service Task">Oil Change</span><br><a href="#" class="text-info font-size-12" title="Issue"> Oil Leakage</a>
+                                                                                                  </td>
+                                                                                                  <td onclick="window.location='service-log-details.php';">$ 46</td>                                   
+                                                                                               </tr>
+                                                                                               
+                                                                                               <tr>
+                                                                                                 <td><input type="checkbox"></td>
+                                                                                                  <td onclick="window.location='service-log-details.php';"><span class="font-weight-bold">Vehicle 3</span><br><span class="text-success">Active</span>
+                                                                                                   </td>
+                                                                                                  <td onclick="window.location='service-log-details.php';">Jun 23, 2020 <br><span class="font-size-12">4,678 mi</span></td>
+                                                                                                  <td onclick="window.location='service-log-details.php';"><span title="Service Task">A/C Condenser Replacement</span><br><a href="#" class="text-info font-size-12" title="Issue"> Brake Light</a>
+                                                                                                  <br><a href="#" class="text-info font-size-12" title="Issue"> Belts</a></td>
+                                                                                                  <td onclick="window.location='service-log-details.php';">$ 466</td>                                   
+                                                                                               </tr>
+                                                                                               
+                                                                                               <tr>
+                                                                                                 <td><input type="checkbox"></td>
+                                                                                                  <td onclick="window.location='service-log-details.php';"><span class="font-weight-bold">Vehicle 4</span><br><span class="text-danger">Sold</span>
+                                                                                                   </td>
+                                                                                                  <td onclick="window.location='service-log-details.php';">May 23, 2020 <br><span class="font-size-12">2,378 mi</span></td>
+                                                                                                  <td onclick="window.location='service-log-details.php';"><span title="Service Task">Oil Change</span><br><a href="#" class="text-info font-size-12" title="Issue"> Oil Leakage</a>
+                                                                                                  </td>
+                                                                                                  <td onclick="window.location='service-log-details.php';">$ 46</td>                                   
+                                                                                               </tr>
+                                                                                               
+                                                                                               <tr>
+                                                                                                 <td><input type="checkbox"></td>
+                                                                                                  <td  onclick="window.location='service-log-details.php';"><span class="font-weight-bold">Vehicle 5</span><br><span class="text-success">Active</span>
+                                                                                                   </td>
+                                                                                                  <td onclick="window.location='service-log-details.php';">Jun 23, 2020 <br><span class="font-size-12">4,678 mi</span></td>
+                                                                                                  <td onclick="window.location='service-log-details.php';"><span title="Service Task">A/C Condenser Replacement</span><br><a href="#" class="text-info font-size-12" title="Issue"> Brake Light</a>
+                                                                                                  </td>
+                                                                                                  <td onclick="window.location='service-log-details.php';">$ 466</td>                                   
+                                                                                               </tr>
+                                                                                               
+                                                                                               <tr>
+                                                                                                 <td><input type="checkbox"></td>
+                                                                                                  <td  onclick="window.location='service-log-details.php';"><span class="font-weight-bold">Vehicle 6</span><br><span class="text-danger">Sold</span>
+                                                                                                   </td>
+                                                                                                  <td onclick="window.location='service-log-details.php';">May 23, 2020 <br><span class="font-size-12">2,378 mi</span></td>
+                                                                                                  <td onclick="window.location='service-log-details.php';"><span title="Service Task">Oil Change</span><br><a href="#" class="text-info font-size-12" title="Issue"> Oil Leakage</a>
+                                                                                                  </td>
+                                                                                                  <td onclick="window.location='service-log-details.php';">$ 46</td>                                   
+                                                                                               </tr>
+                                                                                             -->
+                                        
+                                                            </tbody>
+                                                            <tbody *ngIf="logs.length === 0">
+                                                                <tr>
+                                                                    <td colspan="5" class="no-data-available">No records found</td>
+                                                                </tr>
+                                                            <tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </section>
                                         </div>
                                      </div>
                                 </div>

@@ -15,6 +15,5 @@ export * from './service-log/add-service/add-service.component';
 
 export * from './service-log/service-detail/service-detail.component';
 export * from './service-program/add-service-program/add-service-program.component';
-export * from './service-program/edit-service-program/edit-service-program.component';
 export * from './service-program/service-program-list/service-program-list.component';
 export * from './service-program/service-program-detail/service-program-detail.component';
